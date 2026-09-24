@@ -11,7 +11,7 @@
   "education": {
     "desc": "Đầu tư cho kiến thức và kỹ năng của bản thân.",
     "items": [
-      { "label": "Mua sách", "link": "https://your-affiliate-link.com/sach" },
+      { "label": "Mua sách kỹ năng sống", "link": "https://your-affiliate-link.com/sach" },
       { "label": "Đồ dùng học tập", "link": "https://your-affiliate-link.com/dungcuhoctap" },
       { "label": "Khóa học online", "link": "https://your-affiliate-link.com/khoahoc" }
     ]

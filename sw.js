@@ -1,7 +1,7 @@
 // Service Worker cho 6PAY — cho phép app hoạt động khi offline
 // và được trình duyệt nhận diện là "có thể cài đặt" (PWA).
 const CACHE_NAME='6pay-cache-v1';
-const ASSETS=['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png'];
+const ASSETS=['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png','./icon-1024.png'];
 
 self.addEventListener('install',e=>{
  e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(ASSETS)).catch(()=>{}));

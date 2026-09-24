@@ -1,0 +1,51 @@
+{
+  "essential": {
+    "desc": "Ưu tiên cho nhu cầu sống cơ bản: ăn uống, nhà ở, đi lại, hóa đơn.",
+    "items": [
+      { "label": "Gạo", "link": "https://s.shopee.vn/1BMYaoqRlS" },
+      { "label": "Thực phẩm, đồ dùng gia đình", "link": "" },
+      { "label": "Hóa đơn điện, nước, internet", "link": "" },
+      { "label": "Xăng xe, di chuyển", "link": "" }
+    ]
+  },
+  "education": {
+    "desc": "Đầu tư cho kiến thức và kỹ năng của bản thân.",
+    "items": [
+      { "label": "Mua sách", "link": "https://your-affiliate-link.com/sach" },
+      { "label": "Đồ dùng học tập", "link": "https://your-affiliate-link.com/dungcuhoctap" },
+      { "label": "Khóa học online", "link": "https://your-affiliate-link.com/khoahoc" }
+    ]
+  },
+  "saving": {
+    "desc": "Tích lũy cho mục tiêu dài hạn và các tình huống bất ngờ.",
+    "items": [
+      { "label": "Gửi tiết kiệm ngân hàng", "link": "https://your-affiliate-link.com/tietkiem" },
+      { "label": "Ứng dụng tiết kiệm tự động", "link": "https://your-affiliate-link.com/apptietkiem" },
+      { "label": "Quỹ dự phòng khẩn cấp", "link": "" }
+    ]
+  },
+  "invest": {
+    "desc": "Phát triển tài sản thông qua đầu tư dài hạn.",
+    "items": [
+      { "label": "Mở tài khoản chứng khoán", "link": "https://your-affiliate-link.com/chungkhoan" },
+      { "label": "Chứng chỉ quỹ / ETF", "link": "https://your-affiliate-link.com/etf" },
+      { "label": "Khóa học đầu tư", "link": "https://your-affiliate-link.com/hocdautu" }
+    ]
+  },
+  "share": {
+    "desc": "Chia sẻ với gia đình, bạn bè và cộng đồng.",
+    "items": [
+      { "label": "Quà tặng người thân", "link": "https://your-affiliate-link.com/quatang" },
+      { "label": "Từ thiện, đóng góp cộng đồng", "link": "" },
+      { "label": "Hỗ trợ bạn bè khi cần", "link": "" }
+    ]
+  },
+  "enjoy": {
+    "desc": "Tận hưởng cuộc sống, tái tạo năng lượng cho bản thân.",
+    "items": [
+      { "label": "Ăn uống, giải trí", "link": "https://your-affiliate-link.com/giaitri" },
+      { "label": "Du lịch, nghỉ dưỡng", "link": "https://your-affiliate-link.com/dulich" },
+      { "label": "Mua sắm sở thích cá nhân", "link": "https://your-affiliate-link.com/muasam" }
+    ]
+  }
+}

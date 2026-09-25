@@ -7,7 +7,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<meta name="theme-color" content="#2A9D8F">
+<meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -123,26 +123,19 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .guide-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px 14px 0 0;padding:14px 16px;margin-bottom:0;font-size:15px;text-decoration:none;color:var(--text);}
 .affiliate-note{font-size:11.5px;color:var(--text-soft);background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 14px 14px;padding:5px 16px 8px;margin-bottom:10px;}
 
-.boot-splash{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#F3EAD9;transition:opacity .45s ease;}
+.boot-splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5vw;padding:0 10vw;text-align:center;background:#FFFFFF;transition:opacity .5s ease;}
 .boot-splash.hide{opacity:0;pointer-events:none;}
-.boot-splash svg{overflow:visible;}
-.boot-six{animation:bootSixUp 1.05s cubic-bezier(.25,1.3,.4,1) forwards;animation-delay:.3s;transform-origin:150px 175px;}
-@keyframes bootSixUp{
- 0%{transform:translateY(115px) scale(0.82);}
- 100%{transform:translateY(0) scale(1);}
+.boot-wallet{width:46vw;max-width:230px;min-width:130px;height:auto;animation:bootZoom 1.3s cubic-bezier(.2,1.15,.4,1) forwards;}
+@keyframes bootZoom{
+ 0%{transform:scale(.55);opacity:0;}
+ 55%{opacity:1;}
+ 100%{transform:scale(1);opacity:1;}
 }
-.boot-coin{opacity:0;animation:bootCoinFall 1.05s ease-in forwards;}
-.boot-coin.c1{animation-delay:1.15s;}
-.boot-coin.c2{animation-delay:1.30s;}
-.boot-coin.c3{animation-delay:1.45s;}
-.boot-coin.c4{animation-delay:1.55s;}
-.boot-coin.c5{animation-delay:1.70s;}
-.boot-coin.c6{animation-delay:1.85s;}
-.boot-coin.c7{animation-delay:1.95s;}
-@keyframes bootCoinFall{
- 0%{opacity:1;transform:translateY(0);}
- 78%{opacity:1;}
- 100%{opacity:0;transform:translateY(195px) scale(.5);}
+.boot-brand{font-size:11vw;line-height:1;font-weight:800;letter-spacing:.02em;opacity:0;animation:bootTaglineIn .7s ease forwards;animation-delay:.55s;}
+.boot-tagline{font-size:4.6vw;font-weight:700;color:#0D2A6E;max-width:340px;line-height:1.6;opacity:0;animation:bootTaglineIn .8s ease forwards;animation-delay:1.15s;}
+@keyframes bootTaglineIn{
+ 0%{opacity:0;transform:translateY(12px);}
+ 100%{opacity:1;transform:translateY(0);}
 }
 .guide-item.plain{color:var(--text-soft);}
 .guide-cta{color:var(--accent);font-weight:700;font-size:13.5px;white-space:nowrap;}
@@ -158,19 +151,9 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 </head>
 <body>
 <div id="bootSplash" class="boot-splash" aria-hidden="true">
- <svg viewBox="0 0 300 300" width="230" height="230" overflow="visible">
-  <rect x="42" y="148" width="216" height="128" rx="18" fill="#8B5A2B"/>
-  <rect x="42" y="140" width="216" height="30" rx="13" fill="#6E4520"/>
-  <circle cx="150" cy="155" r="6" fill="#F4A300"/>
-  <circle class="boot-coin c1" cx="80" cy="-10" r="15" fill="#F4A300"/>
-  <circle class="boot-coin c2" cx="115" cy="-40" r="15" fill="#F4A300"/>
-  <circle class="boot-coin c3" cx="150" cy="-15" r="15" fill="#F4A300"/>
-  <circle class="boot-coin c4" cx="185" cy="-45" r="15" fill="#F4A300"/>
-  <circle class="boot-coin c5" cx="220" cy="-10" r="15" fill="#F4A300"/>
-  <circle class="boot-coin c6" cx="98" cy="-70" r="15" fill="#F4A300"/>
-  <circle class="boot-coin c7" cx="202" cy="-70" r="15" fill="#F4A300"/>
-  <text class="boot-six" x="150" y="175" text-anchor="middle" font-size="120" font-weight="800" fill="#F4A300" stroke="#B87400" stroke-width="3" font-family="'Be Vietnam Pro',system-ui,sans-serif">6</text>
- </svg>
+ <img class="boot-wallet" src="icon-512.png" alt="">
+ <div class="boot-brand"><span style="color:#E63946">6</span><span style="color:#F4A300">P</span><span style="color:#2A9D8F">A</span><span style="color:#3E6FB8">Y</span></div>
+ <div class="boot-tagline">Hãy ghi chép thường xuyên để tạo thói quen quản lý tài chính của bạn</div>
 </div>
 <div class="wrap"><div id="app"></div></div>
 <div class="modal-overlay" id="confirmModal">
@@ -606,6 +589,6 @@ if('serviceWorker' in navigator){
 setTimeout(()=>{
  const sp=document.getElementById('bootSplash');
  if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),500); }
-},2700);</script>
+},5000);</script>
 </body>
 </html>

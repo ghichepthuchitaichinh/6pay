@@ -409,7 +409,7 @@ function scrLogin(){
   <div class="form-row"><label>Số điện thoại</label><input type="tel" id="auth-phone" placeholder="09xxxxxxxx" value="${acc?esc(acc.phone||''):''}"></div>
   <div class="form-row"><label>Mật khẩu</label><input type="password" id="auth-pass" placeholder="Mật khẩu"></div>
   <button class="btn primary" onclick="loginOrRegister()">Đăng nhập / Đăng ký</button>
-  <div class="guide-desc" style="margin-top:16px;">App không có máy chủ, mọi thông tin đăng nhập và ghi chép chỉ lưu trữ trên thiết bị của bạn. Hoàn toàn bảo mật thông tin cá nhân.</div>
+  <div class="guide-desc" style="margin-top:16px;">App không có máy chủ, mọi thông tin đăng nhập và ghi chép chỉ lưu trữ trên thiết bị của bạn. Hoàn toàn bảo mật thông tin cá nhân. Không cần đăng nhập vẫn có thể sử dụng.</div>
  `);
 }
 function scrSettings(){
@@ -505,7 +505,7 @@ function scrExpenseOverview(){
     <span>${j.i} ${j.l}</span>
     <span class="stack"><span class="${c} amt-lg">${fmt(remain)} ₫</span><span class="neg">${fmt(spent)} ₫ đã chi</span></span>
    </div>`;}).join('')}
-  <div class="guide-desc" style="margin-top:14px;text-align:center;">Kích mua một sản phẩm bạn nhận được một vé dự thưởng, hãy Thêm khoản chi để có thêm cơ hội nhận thưởng</div>
+  <div class="guide-desc" style="margin-top:14px;text-align:center;">Trước khi mua hãy lướt xem Số dư tài khoản dành cho hoạt động mua sản phẩm đó. Điều này giúp bạn cân nhắc trước khi quyết định mua.</div>
  `);
 }
 function scrExpenseDetail(opts){

@@ -125,7 +125,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 
 .boot-splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5vw;padding:0 10vw;text-align:center;background:#FFFFFF;transition:opacity .5s ease;}
 .boot-splash.hide{opacity:0;pointer-events:none;}
-.boot-wallet{width:46vw;max-width:230px;min-width:130px;height:auto;animation:bootZoom 1.3s cubic-bezier(.2,1.15,.4,1) forwards;}
+.boot-emoji{font-size:20vw;line-height:1;animation:bootZoom 1.3s cubic-bezier(.2,1.15,.4,1) forwards;}
 @keyframes bootZoom{
  0%{transform:scale(.55);opacity:0;}
  55%{opacity:1;}
@@ -151,9 +151,9 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 </head>
 <body>
 <div id="bootSplash" class="boot-splash" aria-hidden="true">
- <img class="boot-wallet" src="icon-512.png" alt="">
+ <div class="boot-emoji">💰</div>
  <div class="boot-brand"><span style="color:#E63946">6</span><span style="color:#F4A300">P</span><span style="color:#2A9D8F">A</span><span style="color:#3E6FB8">Y</span></div>
- <div class="boot-tagline">Hãy ghi chép thường xuyên để tạo thói quen quản lý tài chính của bạn</div>
+ <div class="boot-tagline">Hãy ghi chép thường xuyên<br>để tạo thói quen<br>Quản lý tài chính của bạn</div>
 </div>
 <div class="wrap"><div id="app"></div></div>
 <div class="modal-overlay" id="confirmModal">
@@ -162,6 +162,14 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
   <div class="modal-actions">
    <button class="btn cancel" onclick="closeConfirm()">Hủy</button>
    <button class="btn confirm" onclick="runConfirm()">Đồng ý</button>
+  </div>
+ </div>
+</div>
+<div class="modal-overlay" id="startupNotice">
+ <div class="modal-box">
+  <p>6Pay tổ chức nhiều sự kiện trao thưởng cho người dùng, điều kiện nhận thưởng đầu tiên là nhật ký chi tiêu phải hoạt động thường xuyên, bạn chắc chắn đã nắm được điều này chứ?</p>
+  <div class="modal-actions">
+   <button class="btn confirm" style="width:100%;" onclick="document.getElementById('startupNotice').classList.remove('open')">Tôi đã hiểu</button>
   </div>
  </div>
 </div>
@@ -589,6 +597,8 @@ if('serviceWorker' in navigator){
 setTimeout(()=>{
  const sp=document.getElementById('bootSplash');
  if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),500); }
+ const notice=document.getElementById('startupNotice');
+ if(notice) notice.classList.add('open');
 },5000);</script>
 </body>
 </html>

@@ -167,7 +167,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 </div>
 <div class="modal-overlay" id="startupNotice">
  <div class="modal-box">
-  <p>6Pay tổ chức nhiều sự kiện trao thưởng cho người dùng, điều kiện nhận thưởng đầu tiên là nhật ký chi tiêu phải hoạt động thường xuyên, bạn chắc chắn đã nắm được điều này chứ?</p>
+  <p>6Pay tổ chức nhiều sự kiện trao thưởng cho người dùng. Điều kiện nhận thưởng đầu tiên là mọi hoạt động chi tiêu phải được ghi chép thường xuyên. Bạn chắc chắn đã nắm được điều này chứ?</p>
   <div class="modal-actions">
    <button class="btn confirm" style="width:100%;" onclick="document.getElementById('startupNotice').classList.remove('open')">Tôi đã hiểu</button>
   </div>
@@ -409,7 +409,7 @@ function scrLogin(){
   <div class="form-row"><label>Số điện thoại</label><input type="tel" id="auth-phone" placeholder="09xxxxxxxx" value="${acc?esc(acc.phone||''):''}"></div>
   <div class="form-row"><label>Mật khẩu</label><input type="password" id="auth-pass" placeholder="Mật khẩu"></div>
   <button class="btn primary" onclick="loginOrRegister()">Đăng nhập / Đăng ký</button>
-  <div class="guide-desc" style="margin-top:16px;">Lưu ý: App hiện chưa kết nối máy chủ, nên thông tin đăng nhập chỉ được lưu trên chính thiết bị này — chưa đồng bộ dữ liệu giữa các máy và chưa đạt chuẩn bảo mật cấp tài khoản thật.</div>
+  <div class="guide-desc" style="margin-top:16px;">App không có máy chủ, mọi thông tin đăng nhập và ghi chép chỉ lưu trữ trên thiết bị của bạn. Hoàn toàn bảo mật thông tin cá nhân.</div>
  `);
 }
 function scrSettings(){
@@ -505,6 +505,7 @@ function scrExpenseOverview(){
     <span>${j.i} ${j.l}</span>
     <span class="stack"><span class="${c} amt-lg">${fmt(remain)} ₫</span><span class="neg">${fmt(spent)} ₫ đã chi</span></span>
    </div>`;}).join('')}
+  <div class="guide-desc" style="margin-top:14px;text-align:center;">Kích mua một sản phẩm bạn nhận được một vé dự thưởng, hãy Thêm khoản chi để có thêm cơ hội nhận thưởng</div>
  `);
 }
 function scrExpenseDetail(opts){

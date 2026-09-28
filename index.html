@@ -47,7 +47,7 @@ html{scroll-padding-top:env(safe-area-inset-top,0);}
 *{box-sizing:inherit;}
 html,body{height:100%;}
 body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro',system-ui,sans-serif;}
-.wrap{max-width:480px;margin:0 auto;height:100dvh;padding:18px 16px 24px;display:flex;flex-direction:column;overflow:hidden;}
+.wrap{max-width:480px;margin:0 auto;height:100dvh;padding:10px 14px 12px;display:flex;flex-direction:column;overflow:hidden;}
 #app{flex:1;min-height:0;display:flex;flex-direction:column;}
 .topbar{display:flex;align-items:center;gap:12px;padding:4px 2px 18px;}
 .icon-btn{width:44px;height:44px;flex:none;border:1px solid var(--border);background:#FFFFFF;color:#1B1F23;font-size:24px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
@@ -55,37 +55,39 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .brand-title{font-size:22px;font-weight:800;letter-spacing:0.01em;}
 .brand-title.small{font-size:17px;font-weight:700;}
 .brand-sub{font-size:12.5px;color:var(--text-soft);margin-top:1px;}
-.topbar.sub{padding-bottom:14px;}
-.home-header{display:flex;flex-direction:column;align-items:center;text-align:center;padding:10px 2px 26px;}
-.home-topbar{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:8px;}
+.topbar.sub{padding-bottom:8px;}
+.home-header{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 2px 10px;}
+.home-topbar{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:4px;}
 .home-topbar .icon-btn{width:42px;height:42px;font-size:19px;border-radius:12px;flex:none;}
 .home-topbar .icon-btn.named{width:auto;padding:0 12px;border-radius:20px;gap:6px;background:#FFFFFF;border:1px solid var(--border);font-size:14px;font-weight:600;color:#1B1F23;}
-.home-icon-badge{width:72px;height:72px;font-size:42px;border-radius:20px;background:#FFFFFF;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
-.home-brand{font-size:32px;font-weight:800;letter-spacing:0.02em;}
-.home-header .brand-sub{margin-top:4px;font-size:14px;}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 18px;margin-bottom:12px;cursor:pointer;transition:transform .08s;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.home-icon-badge{width:50px;height:50px;font-size:30px;border-radius:14px;background:#FFFFFF;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:4px;}
+.home-brand{font-size:26px;font-weight:800;letter-spacing:0.02em;}
+.home-header .brand-sub{margin-top:1px;font-size:13px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:10px 16px;margin-bottom:8px;cursor:pointer;transition:transform .08s;display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .card:active{transform:scale(0.99);}
 .card-label{font-size:13.5px;color:var(--text-soft);}
-.card-amount{font-size:24px;font-weight:700;}
+.card-amount{font-size:21px;font-weight:700;}
 .card.balance .card-amount.pos{color:var(--pos);}
 .card.balance .card-amount.neg{color:var(--neg);}
 .card.income{background:var(--income-bg);}
 .card.income .card-label,.card.income .card-amount{color:var(--income-text);}
 .card.expense{background:var(--expense-bg);}
 .card.expense .card-label,.card.expense .card-amount{color:var(--expense-text);}
-.ad-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:10px 14px 6px;margin-bottom:12px;}
+.home-wrap{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;}
+.ad-box{flex:1 1 220px;min-height:220px;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:10px 14px 4px;margin-bottom:6px;}
 .ad-title{font-size:11.5px;color:var(--text-soft);padding-bottom:4px;}
-.ad-list{height:96px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-.ad-item{display:block;padding:10px 0;border-top:1px solid var(--border);color:var(--text);text-decoration:none;font-size:14px;line-height:1.45;}
+.ad-list{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.ver{text-align:center;font-size:10.5px;color:var(--text-soft);opacity:.7;padding:2px 0;}
+.ad-item{display:block;padding:13px 0;border-top:1px solid var(--border);color:var(--text);text-decoration:none;font-size:14px;line-height:1.45;}
 .ad-item:first-child{border-top:none;}
 .ad-item b{color:var(--accent);}
 .screen-flex{display:flex;flex-direction:column;flex:1;min-height:0;}
 .scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .fixed-top{flex:none;}
 .fixed-bottom{flex:none;padding-top:8px;}
-.fixed-bottom .btn.primary{margin-top:8px;}
+.fixed-bottom .btn.primary{margin-top:6px;}
 .fixed-bottom .btn.primary:first-child{margin-top:4px;}
-.list-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;font-size:15px;}
+.list-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px 14px;margin-bottom:8px;font-size:15px;}
 .list-item.clickable{cursor:pointer;}
 .list-item.clickable:active{transform:scale(0.99);}
 .list-item .note{font-size:12.5px;color:var(--text-soft);margin-top:2px;}
@@ -107,22 +109,22 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .mode-row input{width:20px;height:20px;accent-color:var(--accent);flex:none;}
 .err{color:var(--neg)!important;}
 .err-msg{color:var(--neg);font-size:13px;margin:4px 0 12px;}
-.filter-row{display:flex;gap:8px;margin-bottom:12px;}
-.filter-row select,.filter-row input{flex:1;font:inherit;font-size:14px;padding:9px 10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);}
+.filter-row{display:flex;gap:8px;margin-bottom:8px;}
+.filter-row select,.filter-row input{flex:1;font:inherit;font-size:14px;padding:7px 10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);}
 .filter-total{font-size:14px;color:var(--text-soft);margin-bottom:12px;}
 .form-row{margin-bottom:14px;}
-.form-row.tight{margin-bottom:10px;}
-.form-row label{display:block;font-size:13px;color:var(--text-soft);margin-bottom:5px;}
-.form-row input{width:100%;font:inherit;font-size:17px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);}
+.form-row.tight{margin-bottom:6px;}
+.form-row label{display:block;font-size:12px;color:var(--text-soft);margin-bottom:3px;}
+.form-row input{width:100%;font:inherit;font-size:16px;padding:9px 12px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);}
 .form-row input:focus{outline:none;border-color:var(--accent);}
 .amt-hint{font-size:12.5px;color:var(--accent);margin-top:4px;min-height:0;}
 .shake{animation:shake .3s;}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
-.btn{font:inherit;font-size:15.5px;font-weight:700;border:none;border-radius:14px;padding:14px;cursor:pointer;width:100%;}
+.btn{font:inherit;font-size:15px;font-weight:700;border:none;border-radius:14px;padding:11px;cursor:pointer;width:100%;}
 .btn.primary{background:var(--accent);color:var(--accent-text);margin-top:4px;}
 .btn.primary:disabled{opacity:0.45;cursor:not-allowed;}
-.btn.back{background:none;color:var(--text-soft);border:1px solid var(--border);margin-top:10px;}
-.btn.home{background:none;color:var(--accent);border:1px solid var(--accent);margin-top:8px;}
+.btn.back{background:none;color:var(--text-soft);border:1px solid var(--border);margin-top:6px;}
+.btn.home{background:none;color:var(--accent);border:1px solid var(--accent);margin-top:6px;}
 .btn.market{background:var(--newtx-bg);color:var(--newtx-text);}
 .empty{text-align:center;color:var(--text-soft);font-size:14.5px;padding:36px 0;}
 .guide-desc{font-size:14px;color:var(--text-soft);margin:2px 0 14px;line-height:1.5;}
@@ -165,13 +167,15 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 </div>
 <div class="modal-overlay" id="startupNotice">
  <div class="modal-box">
-  <p>6Pay tổ chức nhiều sự kiện trao thưởng cho người dùng. Hãy đồng hành cùng 6Pay để có thêm nhiều cơ hội trúng thưởng.</p>
+  <p>6Pay tổ chức nhiều sự kiện trao thưởng cho người dùng. Bạn ok chứ?</p>
   <div class="modal-actions">
    <button class="btn confirm" style="width:100%;" onclick="closeNotice()">Tôi đã hiểu</button>
   </div>
  </div>
 </div>
 <script>
+// Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
+const APP_VERSION='2026.09.28-2';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},
@@ -188,7 +192,7 @@ const INCOME_TYPES=[
 ];
 // Danh sách quảng cáo ở màn hình chính (cuộn được). Muốn thêm dòng mới, thêm phần tử vào mảng này.
 const ADS=[
- {html:'<b>Luật sư của bạn.</b>(Zalo, SĐT 098.55.22.892)',link:'http://zalo.me/0985522892'}
+ {html:'<b>Luật sư của bạn.</b> Luật sư Trần Hường (Zalo, SĐT 098.55.22.892)',link:'http://zalo.me/0985522892'}
 ];
 // Chữ trên nút mua hàng tiếp thị của từng ví
 const MARKET_LABELS={
@@ -393,7 +397,7 @@ function screenWrap(title,body,fixedBottom,titleRight){
 function scrHome(){
  const bal=balance(); const cls=bal>=0?'pos':'neg';
  const acc=getAccount();
- return `<div class="scroll">
+ return `<div class="home-wrap">
   <div class="home-header">
    <div class="home-topbar">
     <button class="icon-btn ${loggedIn&&acc?'named':''}" onclick="push('login')" aria-label="Đăng nhập">${loggedIn&&acc?('👤 '+esc(acc.name||acc.phone)):'🔐'}</button>
@@ -419,6 +423,7 @@ function scrHome(){
    <div class="ad-title">Quảng cáo</div>
    <div class="ad-list">${ADS.map(a=>`<a class="ad-item" href="${a.link}" target="_blank" rel="noopener">${a.html}</a>`).join('')}</div>
   </div>
+  <div class="ver">Phiên bản ${APP_VERSION}</div>
  </div>`;
 }
 
@@ -649,8 +654,22 @@ function render(){
 render();
 fetchGuides();
 if('serviceWorker' in navigator){
- window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});
+ window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{r.update().catch(()=>{});}).catch(()=>{});});
 }
+// Tự kiểm tra bản mới: so APP_VERSION đang chạy với bản trên GitHub, khác thì tải lại (chỉ khi đang ở trang chủ, mỗi bản chỉ tải lại 1 lần)
+function checkUpdate(){
+ if(!navigator.onLine)return;
+ fetch('index.html?v='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():'').then(t=>{
+  const m=t.match(/APP_VERSION\s*=\s*'([^']+)'/);
+  if(!m||m[1]===APP_VERSION||stack.length!==1)return;
+  let done='';try{done=sessionStorage.getItem('6pay-reloaded')||'';}catch(e){}
+  if(done===m[1])return;
+  try{sessionStorage.setItem('6pay-reloaded',m[1]);}catch(e){}
+  location.reload();
+ }).catch(()=>{});
+}
+checkUpdate();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate();});
 setTimeout(()=>{
  const sp=document.getElementById('bootSplash');
  if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),500); }

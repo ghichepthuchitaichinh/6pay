@@ -179,6 +179,34 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .modal-actions .btn{margin-top:0;}
 .modal-actions .btn.cancel{background:none;color:var(--text-soft);border:1px solid var(--border);}
 .modal-actions .btn.confirm{background:var(--accent);color:var(--accent-text);}
+body.home-white{background:#FFFFFF;}
+.ad-item,.ad-title{text-align:center;}
+.partner-head{flex:none;text-align:center;background:#FFF3D9;border:1px solid #F6E2B0;border-radius:16px;padding:10px 14px;margin-bottom:10px;}
+.ph-title{font-size:clamp(18px,2.9vh,24px);font-weight:800;color:#7A4B00;}
+.ph-contact{font-size:13.5px;font-weight:600;color:#7A4B00;margin-top:3px;}
+.ph-contact a{color:#7A4B00;text-decoration:underline;}
+.home-ver{flex:none;text-align:center;font-size:11px;line-height:1.4;color:#6B7280;padding:6px 8px 0;}
+.home-wrap{--bg:#FFFFFF;--surface:#FFFFFF;--text:#1B1F23;--text-soft:#6B7280;--border:#E3E7EE;--pos:#1D8A4C;--neg:#D8453D;--income-bg:#E6F6EC;--income-text:#17703D;--expense-bg:#FCEAE9;--expense-text:#C23A33;color:var(--text);}
+.home-wrap .home-header{padding:0 2px 16px;}
+.home-wrap .home-icon-badge{width:84px;height:84px;font-size:50px;border-radius:24px;margin-bottom:8px;}
+.home-wrap .home-brand{font-size:34px;}
+.home-wrap .home-header .brand-sub{font-size:14px;margin-top:2px;}
+.home-wrap .card{min-height:62px;padding:12px 18px;margin-bottom:10px;border-radius:16px;border:1px solid transparent;}
+.home-wrap .card-label{font-size:15px;font-weight:600;}
+.home-wrap .card-amount{font-size:20px;font-weight:800;}
+.home-wrap .card.balance{background:#E8F0FC;border-color:#D3E2F8;}
+.home-wrap .card.balance .card-label{color:#1F4E8C;}
+.home-wrap .card.balance .card-amount.pos{color:#1B3F73;}
+.home-wrap .card.balance .card-amount.neg{color:#C0392B;}
+.home-wrap .card.income{border-color:#CDEBD8;}
+.home-wrap .card.expense{border-color:#F5CFCC;}
+.home-wrap .card.partner{background:#FFF3D9;border-color:#F6E2B0;}
+.home-wrap .card.partner .card-label,.home-wrap .card.partner .card-amount{color:#7A4B00;}
+.home-wrap .card.partner .card-amount{font-size:26px;line-height:1;}
+.link-row{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:8px;font-size:15px;font-weight:600;color:var(--text);text-decoration:none;}
+.link-row .lk-ic{width:24px;height:24px;}
+.link-row.off{color:var(--text-soft);font-weight:500;}
+.link-row .go{margin-left:auto;color:var(--accent);font-size:20px;line-height:1;}
 </style>
 </head>
 <body>
@@ -213,7 +241,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.28-8';
+const APP_VERSION='2026.09.28-6';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},
@@ -228,15 +256,15 @@ const JAR_DESC={
  saving:'Tiết kiệm đúng cách giúp cuộc sống của bạn an tâm hơn',
  invest:'Đừng để tiền ngủ yên trong ví của bạn',
  share:'Giúp người chính là giúp mình',
- enjoy:'Hưởng thụ là cái đích của công việc, hãy trân trọng những giá trị của cuộc sống'
+ enjoy:'Hưởng thụ là cái đích của cuộc sống, hãy trân trọng những giá trị của cuộc sống'
 };
 // 3 đường link ở màn hình chính — dán link vào chỗ link:'' (để trống thì hiện chữ mờ, chưa bấm được)
 const IC_FB='<svg class="lk-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.3c0-.9.3-1.4 1.500-1.400h1.400V5.200c-.3 0-1.100-.1-2.100-.1-2.100 0-3.500 1.300-3.500 3.600V11H8.500v3h2.300v7z" fill="#fff"/></svg>';
 const IC_ZALO='<svg class="lk-ic" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#0068FF"/><text x="24" y="31" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="17" fill="#fff">Zalo</text></svg>';
 const LINKS=[
- {t:'🌐 Website 6Pay',link:'http://6pay.vn'},
- {t:IC_FB+' Fanpage 6Pay',link:'https://www.facebook.com/share/1K4Zzw5ZjJ/'},
- {t:IC_ZALO+' Nhóm Zalo 6Pay',link:'http://zalo.me/0342190588'}
+ {t:'🌐 Website 6Pay',link:''},
+ {t:IC_FB+' Fanpage 6Pay',link:''},
+ {t:IC_ZALO+' Nhóm Zalo 6Pay',link:''}
 ];
 const INCOME_TYPES=[
  {k:'luong',l:'Lương',i:'💼',d:'Lương là nguồn thu nhập chính để bạn duy trì một cuộc sống ổn định'},
@@ -246,8 +274,8 @@ const INCOME_TYPES=[
 ];
 // Danh sách quảng cáo ở màn hình chính (cuộn được). Muốn thêm dòng mới, thêm phần tử vào mảng này.
 // Quảng cáo ở trang Số dư hiện tại và trang Các hình thức thu nhập (thêm dòng theo dạng {html:'...',link:'...'})
-function makePH(n){return Array.from({length:n},(_,i)=>({html:'Trần Văn Linh '+(i+1),link:'http://zalo.me/0342190588'}));}
-const AD_HEAD='Liên hệ vị trí quảng cáo: <a href="tel:0342190588">0342.19.05.88</a>';
+function makePH(n){return Array.from({length:n},(_,i)=>({html:'Người liên hệ quảng cáo '+(i+1),link:''}));}
+const AD_HEAD='Liên hệ đồng hành SĐT <a href="tel:0342190588">0342.19.05.88</a>';
 function adItems(list){return list.map(a=>a.link?`<a class="ad-item" href="${a.link}" target="_blank" rel="noopener">${a.html}</a>`:`<div class="ad-item ph">${a.html}</div>`).join('');}
 // Hàng chờ quảng cáo: thay dòng {html:'Người liên hệ quảng cáo N',link:''} bằng {html:'Tên',link:'https://...'}
 const ADS_BALANCE=makePH(5);
@@ -459,7 +487,7 @@ function screenWrap(title,body,fixedBottom,titleRight){
 function scrHome(){
  const bal=balance(); const cls=bal>=0?'pos':'neg';
  const acc=getAccount();
- return `<div class="home-wrap">
+ return `<div class="screen-flex"><div class="home-wrap">
   <div class="home-header">
    <div class="home-topbar">
     <button class="icon-btn ${loggedIn&&acc?'named':''}" onclick="push('login')" aria-label="Đăng nhập">${loggedIn&&acc?('👤 '+esc(acc.name||acc.phone)):'🔐'}</button>
@@ -468,7 +496,6 @@ function scrHome(){
    <div class="home-icon-badge" aria-hidden="true">💰</div>
    <div class="brand-title home-brand"><span style="color:#E63946">6</span><span style="color:#F4A300">P</span><span style="color:#2A9D8F">A</span><span style="color:#3E6FB8">Y</span></div>
    <div class="brand-sub">Quản lý tài chính cá nhân</div>
-   <div class="home-links">${LINKS.map(l=>l.link?`<a href="${l.link}" target="_blank" rel="noopener">${l.t}</a>`:`<span class="off">${l.t}</span>`).join('')}</div>
   </div>
   <div class="card balance" onclick="push('wallets')">
    <div class="card-label">Số dư hiện tại</div>
@@ -482,11 +509,22 @@ function scrHome(){
    <div class="card-label">Chi</div>
    <div class="card-amount">${fmt(totalExpense())} ₫</div>
   </div>
-  <div class="ad-box">
-   <div class="ad-title">${AD_HEAD}</div>
-   <div class="ad-list">${adItems(ADS)}</div>
+  <div class="card partner" onclick="push('partner')">
+   <div class="card-label">Đồng hành cùng 6Pay</div>
+   <div class="card-amount">›</div>
   </div>
-  <div class="ver">Phiên bản ${APP_VERSION}</div>
+  </div>
+  <div class="home-ver"><div>6Pay là một phiên bản nâng cấp của excel định dạng HTML dùng để ghi chép nhật ký thu chi và hoạt động hoàn toàn nội bộ.</div><div>Phiên bản ${APP_VERSION}</div></div>
+ </div>`;
+}
+
+// Trang "Đồng hành cùng 6Pay": link website/fanpage/Zalo + liên hệ quảng cáo + danh sách link tiếp thị
+function scrPartner(){
+ return `<div class="screen-flex">
+  <div class="partner-head"><div class="ph-title">Đồng hành cùng 6Pay</div><div class="ph-contact">${AD_HEAD}</div></div>
+  <div class="fixed-top">${LINKS.map(l=>l.link?`<a class="link-row" href="${l.link}" target="_blank" rel="noopener">${l.t}<span class="go">›</span></a>`:`<div class="link-row off">${l.t}</div>`).join('')}</div>
+  <div class="fill-ads"><div class="ad-list">${adItems(ADS)}</div></div>
+  <button class="btn back" onclick="back()">◀ Quay lại</button>
  </div>`;
 }
 
@@ -732,12 +770,13 @@ function confirmIncome(sub){
 }
 
 const SCREENS={
- settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
+ partner:scrPartner, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
  incomeCategories:scrIncomeCategories, incomeDetail:scrIncomeDetail,
  expenseOverview:scrExpenseOverview, expenseDetail:scrExpenseDetail
 };
 function render(){
  const top=stack[stack.length-1];
+ document.body.classList.toggle('home-white',top.id==='home');
  document.getElementById('app').innerHTML = top.id==='home' ? scrHome() : SCREENS[top.id](top.opts||{});
 }
 render();

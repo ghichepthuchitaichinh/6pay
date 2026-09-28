@@ -100,6 +100,12 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .fill-rows.big{overflow-y:auto;-webkit-overflow-scrolling:touch;--fs:clamp(10px,1.35vh,12px);}
 .fill-rows.big .fill-row{min-height:auto;overflow:visible;padding-top:6px;padding-bottom:6px;}
 .fill-rows.big .fill-row .d{font-style:italic;line-height:1.25;}
+.fill-rows.natural{flex:0 0 auto;overflow:visible;gap:10px;}
+.fill-rows.natural .fill-row{flex:0 0 auto;min-height:auto;padding-top:15px;padding-bottom:15px;}
+.fill-row.xrow.ctr .d{text-align:center;text-align-last:center;text-wrap:balance;}
+.fill-row.xrow{flex-direction:column;align-items:stretch;justify-content:center;gap:5px;}
+.fill-row.xrow .top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.fill-row.xrow .d{margin-top:0;font-size:clamp(11.5px,1.55vh,13px);font-style:italic;font-weight:400;line-height:1.45;color:var(--text-soft);text-align:justify;text-align-last:center;text-wrap:pretty;hyphens:none;padding:0 2px;}
 .fill-row{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0 14px;cursor:pointer;font-size:var(--fl);font-weight:600;overflow:hidden;}
 .fill-row:active{transform:scale(0.99);}
 .fill-row .ic{font-size:var(--fi);margin-right:10px;line-height:1;}
@@ -239,7 +245,7 @@ body.home-white{background:#FFFFFF;}
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.28-8';
+const APP_VERSION='2026.09.28-11';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},
@@ -265,9 +271,9 @@ const LINKS=[
  {t:IC_ZALO+' Nhóm Zalo 6Pay',link:''}
 ];
 const INCOME_TYPES=[
- {k:'luong',l:'Lương',i:'💼',d:'Lương là nguồn thu nhập chính để bạn duy trì một cuộc sống ổn định'},
+ {k:'luong',l:'Lương',i:'💼',d:'Lương là nguồn thu nhập chính<br>để bạn duy trì một cuộc sống ổn định'},
  {k:'thuong',l:'Thưởng',i:'🎁',d:'Hãy làm việc hiệu quả để có thêm những khoản thưởng xứng đáng'},
- {k:'dautu',l:'Đầu tư',i:'📈',d:'Đầu tư sẽ có lợi nhuận và rủi ro, hãy thông minh và sáng suốt trong đầu tư'},
+ {k:'dautu',l:'Đầu tư',i:'📈',d:'Đầu tư sáng suốt để có lợi nhuận ổn định'},
  {k:'khac',l:'Thu khác',i:'➕',d:'Đa dạng nguồn thu để có thêm thu nhập'}
 ];
 // Danh sách quảng cáo ở màn hình chính (cuộn được). Muốn thêm dòng mới, thêm phần tử vào mảng này.
@@ -592,7 +598,8 @@ function fillScreen(title,sub,rows,ads,big){
  return `<div class="screen-flex">
   <div class="center-title">${title}</div>
   ${sub?`<div class="center-sub">${sub}</div>`:''}
-  <div class="fill-rows ${big?'big':''} ${ads?'two':''}">${rows}</div>
+  <div class="fill-rows ${big===true?'big':(big||'')} ${ads?'two':''}">${rows}</div>
+  ${String(big).indexOf('natural')>-1?'<div style="flex:1 1 0;min-height:0;"></div>':''}
   ${ads?ads:''}
   <button class="btn back" onclick="back()">◀ Quay lại</button>
   ${stack.length>=3?'<button class="btn home" onclick="goHome()">🏠 Về trang chủ</button>':''}
@@ -601,7 +608,7 @@ function fillScreen(title,sub,rows,ads,big){
 function scrWallets(){
  const rows=JARS.map(j=>{const b=jarRemain(j.k);const c=b<0?'neg':'pos';return `
   <div class="fill-row" onclick="push('jarGuide',{jar:'${j.k}'})"><span class="lb"><span class="ic">${j.i}</span>${j.l}</span><span class="am ${c}">${fmt(b)} ₫</span></div>`;}).join('');
- return fillScreen('Số dư hiện tại','',rows,'',true);
+ return fillScreen('Số dư hiện tại','',rows,'','big natural');
 }
 
 function guideLinks(jarKey,onlyLinks){
@@ -641,8 +648,11 @@ function matchExpenseFilter(t){
 }
 function scrIncomeCategories(){
  const rows=INCOME_TYPES.map(t=>{const total=tx.filter(x=>x.type==='in'&&x.sub===t.k).reduce((s,x)=>s+x.amount,0);return `
-  <div class="fill-row" onclick="openIncome('${t.k}')"><span class="lb"><span class="ic">${t.i}</span><span class="tx"><span>${t.l}</span><span class="d">${t.d}</span></span></span><span class="am pos">${fmt(total)} ₫</span></div>`;}).join('');
- return fillScreen('Các hình thức thu nhập','Thêm nguồn thu nhập để chi tiêu được thoải mái hơn',rows,'',true);
+  <div class="fill-row xrow ctr" onclick="openIncome('${t.k}')">
+   <div class="top"><span class="lb"><span class="ic">${t.i}</span><span>${t.l}</span></span><span class="am pos">${fmt(total)} ₫</span></div>
+   <div class="d">${nbLast(t.d)}</div>
+  </div>`;}).join('');
+ return fillScreen('Các hình thức thu nhập','Thêm nguồn thu nhập để chi tiêu được thoải mái hơn',rows,'','big natural');
 }
 let incDraft={amount:'',exact:'',note:'',editId:''};
 function openIncome(k){incDraft={amount:'',exact:'',note:'',editId:''};push('incomeDetail',{sub:k});}
@@ -689,9 +699,13 @@ function scrIncomeDetail(opts){
  </div>`;
 }
 
+function nbLast(t){return t.replace(/ (\S+) (\S+) (\S+)$/,' $1&nbsp;$2&nbsp;$3');}
 function scrExpenseOverview(){
  const rows=JARS.map(j=>{const spent=jarSpent(j.k);const remain=jarRemain(j.k);const c=remain<0?'neg':'pos';return `
-  <div class="fill-row" onclick="openJar('${j.k}')"><span class="lb"><span class="ic">${j.i}</span><span class="tx"><span>${j.l}</span><span class="d">${JAR_DESC[j.k]}</span></span></span><span class="stack"><span class="am ${c}">${fmt(remain)} ₫</span><span class="sm neg">${fmt(spent)} ₫ đã chi</span></span></div>`;}).join('');
+  <div class="fill-row xrow" onclick="openJar('${j.k}')">
+   <div class="top"><span class="lb"><span class="ic">${j.i}</span><span>${j.l}</span></span><span class="stack"><span class="am ${c}">${fmt(remain)} ₫</span><span class="sm neg">${fmt(spent)} ₫ đã chi</span></span></div>
+   <div class="d">${nbLast(JAR_DESC[j.k])}</div>
+  </div>`;}).join('');
  return fillScreen('Hãy cân nhắc trước khi chi','',rows,'',true);
 }
 

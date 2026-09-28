@@ -74,12 +74,17 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .card.expense{background:var(--expense-bg);}
 .card.expense .card-label,.card.expense .card-amount{color:var(--expense-text);}
 .home-wrap{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;}
-.ad-box{flex:1 1 220px;min-height:220px;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:10px 14px 4px;margin-bottom:6px;}
-.ad-title{font-size:11.5px;color:var(--text-soft);padding-bottom:4px;}
+.ad-box{flex:1 1 180px;min-height:180px;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:10px 14px 4px;margin-bottom:6px;}
+.ad-title{font-size:13px;font-weight:700;color:var(--text);padding-bottom:6px;line-height:1.35;}
+.ad-title a{color:var(--accent);text-decoration:none;}
 .ad-list{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .ver{text-align:center;font-size:10.5px;color:var(--text-soft);opacity:.7;padding:2px 0;}
 .ad-item{display:block;padding:13px 0;border-top:1px solid var(--border);color:var(--text);text-decoration:none;font-size:14px;line-height:1.45;}
 .ad-item:first-child{border-top:none;}
+.ad-item.ph{color:var(--text-soft);font-size:13.5px;}
+.home-links{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;font-size:13px;}
+.home-links a{color:var(--accent);text-decoration:none;font-weight:600;}
+.home-links .off{color:var(--text-soft);}
 .ad-item b{color:var(--accent);}
 .screen-flex{display:flex;flex-direction:column;flex:1;min-height:0;}
 .scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
@@ -87,13 +92,16 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .screen-flex>.btn,.fixed-bottom .btn{flex:none;}
 .center-title{flex:none;text-align:center;font-size:clamp(18px,2.9vh,24px);font-weight:800;padding:6px 4px 8px;}
 .center-sub{flex:none;text-align:center;font-size:clamp(12.5px,1.9vh,15px);color:var(--text-soft);padding:0 8px 10px;line-height:1.4;}
-.fill-rows{flex:1 1 0;min-height:0;display:flex;flex-direction:column;gap:8px;margin-bottom:8px;--fl:clamp(14px,2.1vh,19px);--fi:clamp(20px,3vh,28px);--fa:clamp(14px,2.2vh,19px);--fs:clamp(11px,1.5vh,13px);}
-.fill-rows.big{--fl:clamp(17px,3vh,25px);--fi:clamp(26px,4.6vh,42px);--fa:clamp(17px,3vh,26px);--fs:clamp(12px,1.9vh,15px);}
+.fill-rows{flex:1 1 0;min-height:0;display:flex;flex-direction:column;gap:8px;margin-bottom:8px;--fl:clamp(14px,2.1vh,18px);--fi:clamp(20px,3vh,28px);--fa:clamp(14px,2.2vh,18px);--fs:clamp(11px,1.5vh,13px);}
+.fill-rows.big{--fl:clamp(14px,2.2vh,18px);--fi:clamp(22px,3.4vh,32px);--fa:clamp(14px,2.2vh,18px);--fs:clamp(10.5px,1.5vh,12.5px);}
 .fill-rows.two{flex-grow:2;}
-.fill-row{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0 16px;cursor:pointer;font-size:var(--fl);font-weight:600;}
+.fill-row{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0 14px;cursor:pointer;font-size:var(--fl);font-weight:600;overflow:hidden;}
 .fill-row:active{transform:scale(0.99);}
 .fill-row .ic{font-size:var(--fi);margin-right:10px;line-height:1;}
-.fill-row .lb{display:flex;align-items:center;min-width:0;}
+.fill-row .lb{display:flex;align-items:center;min-width:0;flex:1;}
+.fill-row .tx{display:flex;flex-direction:column;min-width:0;}
+.fill-row .d{font-size:var(--fs);font-weight:400;color:var(--text-soft);line-height:1.3;margin-top:2px;}
+.fill-row .stack{flex:none;}
 .fill-row .am{font-size:var(--fa);font-weight:800;white-space:nowrap;}
 .fill-row .sm{font-size:var(--fs);font-weight:600;}
 .fill-ads{flex:1 1 0;min-height:0;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:8px 14px 4px;margin-bottom:6px;}
@@ -203,7 +211,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.28-4';
+const APP_VERSION='2026.09.28-5';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},
@@ -212,18 +220,37 @@ const JARS=[
  {k:'share',l:'Chia sẻ',i:'🤝'},
  {k:'enjoy',l:'Hưởng thụ',i:'🎉'}
 ];
+const JAR_DESC={
+ essential:'Dùng cho những nhu cầu cố định của bản thân để bảo đảm cuộc sống luôn ổn định',
+ education:'Học tập là cách đầu tư tốt nhất cho bản thân',
+ saving:'Tiết kiệm đúng cách giúp cuộc sống của bạn an tâm hơn',
+ invest:'Đừng để tiền ngủ yên trong ví của bạn',
+ share:'Giúp người chính là giúp mình',
+ enjoy:'Hưởng thụ là cái đích của cuộc sống, hãy trân trọng những giá trị của cuộc sống'
+};
+// 3 đường link ở màn hình chính — dán link vào chỗ link:'' (để trống thì hiện chữ mờ, chưa bấm được)
+const LINKS=[
+ {t:'🌐 Website 6Pay',link:''},
+ {t:'📘 Fanpage 6Pay',link:''},
+ {t:'💬 Nhóm Zalo 6Pay',link:''}
+];
 const INCOME_TYPES=[
- {k:'luong',l:'Lương',i:'💼'},
- {k:'thuong',l:'Thưởng',i:'🎁'},
- {k:'dautu',l:'Đầu tư',i:'📈'},
- {k:'khac',l:'Thu khác',i:'➕'}
+ {k:'luong',l:'Lương',i:'💼',d:'Lương là nguồn thu nhập chính để bạn duy trì một cuộc sống ổn định'},
+ {k:'thuong',l:'Thưởng',i:'🎁',d:'Hãy làm việc hiệu quả để có thêm những khoản thưởng xứng đáng'},
+ {k:'dautu',l:'Đầu tư',i:'📈',d:'Đầu tư sẽ có lợi nhuận và rủi ro, hãy thông minh và sáng suốt trong đầu tư'},
+ {k:'khac',l:'Thu khác',i:'➕',d:'Đa dạng nguồn thu để có thêm thu nhập'}
 ];
 // Danh sách quảng cáo ở màn hình chính (cuộn được). Muốn thêm dòng mới, thêm phần tử vào mảng này.
 // Quảng cáo ở trang Số dư hiện tại và trang Các hình thức thu nhập (thêm dòng theo dạng {html:'...',link:'...'})
-const ADS_BALANCE=[];
-const ADS_INCOME=[];
+function makePH(n){return Array.from({length:n},(_,i)=>({html:'Người liên hệ quảng cáo '+(i+1),link:''}));}
+const AD_HEAD='Liên hệ vị trí quảng cáo: <a href="tel:0342190588">0342.19.05.88</a>';
+function adItems(list){return list.map(a=>a.link?`<a class="ad-item" href="${a.link}" target="_blank" rel="noopener">${a.html}</a>`:`<div class="ad-item ph">${a.html}</div>`).join('');}
+// Hàng chờ quảng cáo: thay dòng {html:'Người liên hệ quảng cáo N',link:''} bằng {html:'Tên',link:'https://...'}
+const ADS_BALANCE=makePH(5);
+const ADS_INCOME=makePH(5);
 const ADS=[
- {html:'<b>Luật sư của bạn.</b> Luật sư Trần Hường (Zalo, SĐT 098.55.22.892)',link:'http://zalo.me/0985522892'}
+ {html:'<b>Luật sư của bạn.</b> Luật sư Trần Hường (Zalo, SĐT 098.55.22.892)',link:'http://zalo.me/0985522892'},
+ ...makePH(4)
 ];
 // Chữ trên nút mua hàng tiếp thị của từng ví
 const MARKET_LABELS={
@@ -437,6 +464,7 @@ function scrHome(){
    <div class="home-icon-badge" aria-hidden="true">💰</div>
    <div class="brand-title home-brand"><span style="color:#E63946">6</span><span style="color:#F4A300">P</span><span style="color:#2A9D8F">A</span><span style="color:#3E6FB8">Y</span></div>
    <div class="brand-sub">Quản lý tài chính cá nhân</div>
+   <div class="home-links">${LINKS.map(l=>l.link?`<a href="${l.link}" target="_blank" rel="noopener">${l.t}</a>`:`<span class="off">${l.t}</span>`).join('')}</div>
   </div>
   <div class="card balance" onclick="push('wallets')">
    <div class="card-label">Số dư hiện tại</div>
@@ -451,8 +479,8 @@ function scrHome(){
    <div class="card-amount">${fmt(totalExpense())} ₫</div>
   </div>
   <div class="ad-box">
-   <div class="ad-title">Quảng cáo</div>
-   <div class="ad-list">${ADS.map(a=>`<a class="ad-item" href="${a.link}" target="_blank" rel="noopener">${a.html}</a>`).join('')}</div>
+   <div class="ad-title">${AD_HEAD}</div>
+   <div class="ad-list">${adItems(ADS)}</div>
   </div>
   <div class="ver">Phiên bản ${APP_VERSION}</div>
  </div>`;
@@ -518,9 +546,7 @@ function saveSettings(){
 }
 
 function adBox(list){
- return `<div class="fill-ads"><div class="ad-title">Quảng cáo</div><div class="ad-list">${
-  list.length?list.map(a=>`<a class="ad-item" href="${a.link}" target="_blank" rel="noopener">${a.html}</a>`).join(''):'<div class="empty" style="padding:16px 0;">Khu vực quảng cáo</div>'
- }</div></div>`;
+ return `<div class="fill-ads"><div class="ad-title">${AD_HEAD}</div><div class="ad-list">${adItems(list)}</div></div>`;
 }
 function fillScreen(title,sub,rows,ads,big){
  return `<div class="screen-flex">
@@ -575,7 +601,7 @@ function matchExpenseFilter(t){
 }
 function scrIncomeCategories(){
  const rows=INCOME_TYPES.map(t=>{const total=tx.filter(x=>x.type==='in'&&x.sub===t.k).reduce((s,x)=>s+x.amount,0);return `
-  <div class="fill-row" onclick="openIncome('${t.k}')"><span class="lb"><span class="ic">${t.i}</span>${t.l}</span><span class="am pos">${fmt(total)} ₫</span></div>`;}).join('');
+  <div class="fill-row" onclick="openIncome('${t.k}')"><span class="lb"><span class="ic">${t.i}</span><span class="tx"><span>${t.l}</span><span class="d">${t.d}</span></span></span><span class="am pos">${fmt(total)} ₫</span></div>`;}).join('');
  return fillScreen('Các hình thức thu nhập','Thêm nguồn thu nhập để chi tiêu được thoải mái hơn',rows,adBox(ADS_INCOME),false);
 }
 let incDraft={amount:'',exact:'',note:'',editId:''};
@@ -625,7 +651,7 @@ function scrIncomeDetail(opts){
 
 function scrExpenseOverview(){
  const rows=JARS.map(j=>{const spent=jarSpent(j.k);const remain=jarRemain(j.k);const c=remain<0?'neg':'pos';return `
-  <div class="fill-row" onclick="openJar('${j.k}')"><span class="lb"><span class="ic">${j.i}</span>${j.l}</span><span class="stack"><span class="am ${c}">${fmt(remain)} ₫</span><span class="sm neg">${fmt(spent)} ₫ đã chi</span></span></div>`;}).join('');
+  <div class="fill-row" onclick="openJar('${j.k}')"><span class="lb"><span class="ic">${j.i}</span><span class="tx"><span>${j.l}</span><span class="d">${JAR_DESC[j.k]}</span></span></span><span class="stack"><span class="am ${c}">${fmt(remain)} ₫</span><span class="sm neg">${fmt(spent)} ₫ đã chi</span></span></div>`;}).join('');
  return fillScreen('Hãy cân nhắc trước khi chi','',rows,'',true);
 }
 

@@ -85,6 +85,18 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .fixed-top{flex:none;}
 .screen-flex>.btn,.fixed-bottom .btn{flex:none;}
+.center-title{flex:none;text-align:center;font-size:clamp(18px,2.9vh,24px);font-weight:800;padding:6px 4px 8px;}
+.center-sub{flex:none;text-align:center;font-size:clamp(12.5px,1.9vh,15px);color:var(--text-soft);padding:0 8px 10px;line-height:1.4;}
+.fill-rows{flex:1 1 0;min-height:0;display:flex;flex-direction:column;gap:8px;margin-bottom:8px;--fl:clamp(14px,2.1vh,19px);--fi:clamp(20px,3vh,28px);--fa:clamp(14px,2.2vh,19px);--fs:clamp(11px,1.5vh,13px);}
+.fill-rows.big{--fl:clamp(17px,3vh,25px);--fi:clamp(26px,4.6vh,42px);--fa:clamp(17px,3vh,26px);--fs:clamp(12px,1.9vh,15px);}
+.fill-rows.two{flex-grow:2;}
+.fill-row{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0 16px;cursor:pointer;font-size:var(--fl);font-weight:600;}
+.fill-row:active{transform:scale(0.99);}
+.fill-row .ic{font-size:var(--fi);margin-right:10px;line-height:1;}
+.fill-row .lb{display:flex;align-items:center;min-width:0;}
+.fill-row .am{font-size:var(--fa);font-weight:800;white-space:nowrap;}
+.fill-row .sm{font-size:var(--fs);font-weight:600;}
+.fill-ads{flex:1 1 0;min-height:0;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:8px 14px 4px;margin-bottom:6px;}
 @media (max-height:700px){
  .list-item{padding:8px 12px;margin-bottom:6px;}
  .form-row input{padding:7px 12px;}
@@ -191,7 +203,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.28-3';
+const APP_VERSION='2026.09.28-4';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},
@@ -207,6 +219,9 @@ const INCOME_TYPES=[
  {k:'khac',l:'Thu khác',i:'➕'}
 ];
 // Danh sách quảng cáo ở màn hình chính (cuộn được). Muốn thêm dòng mới, thêm phần tử vào mảng này.
+// Quảng cáo ở trang Số dư hiện tại và trang Các hình thức thu nhập (thêm dòng theo dạng {html:'...',link:'...'})
+const ADS_BALANCE=[];
+const ADS_INCOME=[];
 const ADS=[
  {html:'<b>Luật sư của bạn.</b> Luật sư Trần Hường (Zalo, SĐT 098.55.22.892)',link:'http://zalo.me/0985522892'}
 ];
@@ -502,11 +517,25 @@ function saveSettings(){
  persist(); back();
 }
 
+function adBox(list){
+ return `<div class="fill-ads"><div class="ad-title">Quảng cáo</div><div class="ad-list">${
+  list.length?list.map(a=>`<a class="ad-item" href="${a.link}" target="_blank" rel="noopener">${a.html}</a>`).join(''):'<div class="empty" style="padding:16px 0;">Khu vực quảng cáo</div>'
+ }</div></div>`;
+}
+function fillScreen(title,sub,rows,ads,big){
+ return `<div class="screen-flex">
+  <div class="center-title">${title}</div>
+  ${sub?`<div class="center-sub">${sub}</div>`:''}
+  <div class="fill-rows ${big?'big':''} ${ads?'two':''}">${rows}</div>
+  ${ads?ads:''}
+  <button class="btn back" onclick="back()">◀ Quay lại</button>
+  ${stack.length>=3?'<button class="btn home" onclick="goHome()">🏠 Về trang chủ</button>':''}
+ </div>`;
+}
 function scrWallets(){
- return screenWrap('Số dư theo 6 ví',`
-  ${JARS.map(j=>{const b=jarRemain(j.k);const c=b<0?'neg':'pos';return `
-   <div class="list-item clickable" onclick="push('jarGuide',{jar:'${j.k}'})"><span>${j.i} ${j.l}</span><span class="${c}">${fmt(b)} ₫</span></div>`;}).join('')}
- `);
+ const rows=JARS.map(j=>{const b=jarRemain(j.k);const c=b<0?'neg':'pos';return `
+  <div class="fill-row" onclick="push('jarGuide',{jar:'${j.k}'})"><span class="lb"><span class="ic">${j.i}</span>${j.l}</span><span class="am ${c}">${fmt(b)} ₫</span></div>`;}).join('');
+ return fillScreen('Số dư hiện tại','',rows,adBox(ADS_BALANCE),false);
 }
 
 function guideLinks(jarKey,onlyLinks){
@@ -545,10 +574,9 @@ function matchExpenseFilter(t){
  return true;
 }
 function scrIncomeCategories(){
- return screenWrap('Thu theo loại',`
-  ${INCOME_TYPES.map(t=>{const total=tx.filter(x=>x.type==='in'&&x.sub===t.k).reduce((s,x)=>s+x.amount,0);return `
-   <div class="list-item clickable" onclick="openIncome('${t.k}')"><span>${t.i} ${t.l}</span><span class="pos">${fmt(total)} ₫</span></div>`;}).join('')}
- `);
+ const rows=INCOME_TYPES.map(t=>{const total=tx.filter(x=>x.type==='in'&&x.sub===t.k).reduce((s,x)=>s+x.amount,0);return `
+  <div class="fill-row" onclick="openIncome('${t.k}')"><span class="lb"><span class="ic">${t.i}</span>${t.l}</span><span class="am pos">${fmt(total)} ₫</span></div>`;}).join('');
+ return fillScreen('Các hình thức thu nhập','Thêm nguồn thu nhập để chi tiêu được thoải mái hơn',rows,adBox(ADS_INCOME),false);
 }
 let incDraft={amount:'',exact:'',note:'',editId:''};
 function openIncome(k){incDraft={amount:'',exact:'',note:'',editId:''};push('incomeDetail',{sub:k});}
@@ -596,14 +624,9 @@ function scrIncomeDetail(opts){
 }
 
 function scrExpenseOverview(){
- return screenWrap('Chi theo 6 ví',`
-  ${JARS.map(j=>{const spent=jarSpent(j.k);const remain=jarRemain(j.k);const c=remain<0?'neg':'pos';return `
-   <div class="list-item clickable" onclick="openJar('${j.k}')">
-    <span>${j.i} ${j.l}</span>
-    <span class="stack"><span class="${c} amt-lg">${fmt(remain)} ₫</span><span class="neg">${fmt(spent)} ₫ đã chi</span></span>
-   </div>`;}).join('')}
-  <div class="guide-desc" style="margin-top:14px;text-align:center;">Cân nhắc kỹ trước khi mua.</div>
- `);
+ const rows=JARS.map(j=>{const spent=jarSpent(j.k);const remain=jarRemain(j.k);const c=remain<0?'neg':'pos';return `
+  <div class="fill-row" onclick="openJar('${j.k}')"><span class="lb"><span class="ic">${j.i}</span>${j.l}</span><span class="stack"><span class="am ${c}">${fmt(remain)} ₫</span><span class="sm neg">${fmt(spent)} ₫ đã chi</span></span></div>`;}).join('');
+ return fillScreen('Hãy cân nhắc trước khi chi','',rows,'',true);
 }
 
 // Trang chi tiết ví (dùng chung cho cả 6 ví)

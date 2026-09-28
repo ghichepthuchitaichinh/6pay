@@ -83,6 +83,8 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .ad-item:first-child{border-top:none;}
 .ad-item.ph{color:var(--text-soft);font-size:13.5px;}
 .home-links{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;font-size:13px;}
+.home-links a,.home-links .off{display:inline-flex;align-items:center;gap:6px;}
+.lk-ic{width:18px;height:18px;flex:none;}
 .home-links a{color:var(--accent);text-decoration:none;font-weight:600;}
 .home-links .off{color:var(--text-soft);}
 .ad-item b{color:var(--accent);}
@@ -211,7 +213,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.28-5';
+const APP_VERSION='2026.09.28-6';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},
@@ -229,10 +231,12 @@ const JAR_DESC={
  enjoy:'Hưởng thụ là cái đích của cuộc sống, hãy trân trọng những giá trị của cuộc sống'
 };
 // 3 đường link ở màn hình chính — dán link vào chỗ link:'' (để trống thì hiện chữ mờ, chưa bấm được)
+const IC_FB='<svg class="lk-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.3c0-.9.3-1.4 1.500-1.400h1.400V5.200c-.3 0-1.100-.1-2.100-.1-2.100 0-3.500 1.300-3.500 3.600V11H8.500v3h2.300v7z" fill="#fff"/></svg>';
+const IC_ZALO='<svg class="lk-ic" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#0068FF"/><text x="24" y="31" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="17" fill="#fff">Zalo</text></svg>';
 const LINKS=[
  {t:'🌐 Website 6Pay',link:''},
- {t:'📘 Fanpage 6Pay',link:''},
- {t:'💬 Nhóm Zalo 6Pay',link:''}
+ {t:IC_FB+' Fanpage 6Pay',link:''},
+ {t:IC_ZALO+' Nhóm Zalo 6Pay',link:''}
 ];
 const INCOME_TYPES=[
  {k:'luong',l:'Lương',i:'💼',d:'Lương là nguồn thu nhập chính để bạn duy trì một cuộc sống ổn định'},

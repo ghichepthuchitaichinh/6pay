@@ -97,6 +97,9 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .fill-rows{flex:1 1 0;min-height:0;display:flex;flex-direction:column;gap:8px;margin-bottom:8px;--fl:clamp(14px,2.1vh,18px);--fi:clamp(20px,3vh,28px);--fa:clamp(14px,2.2vh,18px);--fs:clamp(11px,1.5vh,13px);}
 .fill-rows.big{--fl:clamp(14px,2.2vh,18px);--fi:clamp(22px,3.4vh,32px);--fa:clamp(14px,2.2vh,18px);--fs:clamp(10.5px,1.5vh,12.5px);}
 .fill-rows.two{flex-grow:2;}
+.fill-rows.big{overflow-y:auto;-webkit-overflow-scrolling:touch;--fs:clamp(10px,1.35vh,12px);}
+.fill-rows.big .fill-row{min-height:auto;overflow:visible;padding-top:6px;padding-bottom:6px;}
+.fill-rows.big .fill-row .d{font-style:italic;line-height:1.25;}
 .fill-row{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0 14px;cursor:pointer;font-size:var(--fl);font-weight:600;overflow:hidden;}
 .fill-row:active{transform:scale(0.99);}
 .fill-row .ic{font-size:var(--fi);margin-right:10px;line-height:1;}
@@ -179,7 +182,10 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .modal-actions .btn{margin-top:0;}
 .modal-actions .btn.cancel{background:none;color:var(--text-soft);border:1px solid var(--border);}
 .modal-actions .btn.confirm{background:var(--accent);color:var(--accent-text);}
+.home-quote{text-align:center;text-wrap:balance;font-size:14px;font-weight:600;line-height:1.55;color:#4B5563;padding:6px 14px 4px;}
 body.home-white{background:#FFFFFF;}
+.notice-box{padding:28px 24px;}
+.notice-box p{margin:0;font-size:17px;font-weight:700;line-height:1.6;text-align:center;text-wrap:balance;}
 .ad-item,.ad-title{text-align:center;}
 .partner-head{flex:none;text-align:center;background:#FFF3D9;border:1px solid #F6E2B0;border-radius:16px;padding:10px 14px;margin-bottom:10px;}
 .ph-title{font-size:clamp(18px,2.9vh,24px);font-weight:800;color:#7A4B00;}
@@ -188,7 +194,7 @@ body.home-white{background:#FFFFFF;}
 .home-ver{flex:none;text-align:center;font-size:11px;line-height:1.4;color:#6B7280;padding:6px 8px 0;}
 .home-wrap{--bg:#FFFFFF;--surface:#FFFFFF;--text:#1B1F23;--text-soft:#6B7280;--border:#E3E7EE;--pos:#1D8A4C;--neg:#D8453D;--income-bg:#E6F6EC;--income-text:#17703D;--expense-bg:#FCEAE9;--expense-text:#C23A33;color:var(--text);}
 .home-wrap .home-header{padding:0 2px 16px;}
-.home-wrap .home-icon-badge{width:84px;height:84px;font-size:50px;border-radius:24px;margin-bottom:8px;}
+.home-wrap .home-icon-badge{width:84px;height:84px;font-size:50px;border-radius:24px;margin-bottom:8px;border:none;background:transparent;}
 .home-wrap .home-brand{font-size:34px;}
 .home-wrap .home-header .brand-sub{font-size:14px;margin-top:2px;}
 .home-wrap .card{min-height:62px;padding:12px 18px;margin-bottom:10px;border-radius:16px;border:1px solid transparent;}
@@ -231,14 +237,6 @@ body.home-white{background:#FFFFFF;}
   <div id="amtModalBody"></div>
  </div>
 </div>
-<div class="modal-overlay" id="startupNotice">
- <div class="modal-box">
-  <p>6Pay tổ chức nhiều sự kiện trao thưởng cho người dùng. Bạn ok chứ?</p>
-  <div class="modal-actions">
-   <button class="btn confirm" style="width:100%;" onclick="closeNotice()">Tôi đã hiểu</button>
-  </div>
- </div>
-</div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
 const APP_VERSION='2026.09.28-6';
@@ -251,12 +249,12 @@ const JARS=[
  {k:'enjoy',l:'Hưởng thụ',i:'🎉'}
 ];
 const JAR_DESC={
- essential:'Dùng cho những nhu cầu cố định của bản thân để bảo đảm cuộc sống luôn ổn định',
- education:'Học tập là cách đầu tư tốt nhất cho bản thân',
- saving:'Tiết kiệm đúng cách giúp cuộc sống của bạn an tâm hơn',
- invest:'Đừng để tiền ngủ yên trong ví của bạn',
- share:'Giúp người chính là giúp mình',
- enjoy:'Hưởng thụ là cái đích của cuộc sống, hãy trân trọng những giá trị của cuộc sống'
+ essential:'“Chăm lo điều căn bản, kiến tạo điều phi thường!<br>Đừng đánh đổi những điều thiết yếu hôm nay để chạy theo những điều xa xỉ ngày mai!”',
+ education:'“Tri thức là đôi cánh, hành động là bầu trời!<br>Học không phải để biết nhiều hơn, giỏi nhiều hơn người khác, mà để trở thành phiên bản tốt hơn của chính mình!”',
+ saving:'“Giàu có không bắt đầu từ kiếm được bao nhiêu, mà từ giữ lại được bao nhiêu!<br>Đừng tiết kiệm những gì còn lại sau khi chi tiêu, hãy chi tiêu những gì còn lại sau khi tiết kiệm!”',
+ invest:'“Đừng chỉ kiếm tiền bằng sức lực – Hãy khiến tiền tạo ra giá trị!<br>Rủi ro đến từ việc bạn không biết mình đang làm gì!”',
+ share:'“Một bàn tay trao đi – Triệu trái tim được sưởi ấm!<br>Của cải làm nên sự giàu có, lòng nhân ái làm nên sự vĩ đại!”',
+ enjoy:'“Kiếm tiền để sống, đừng sống chỉ để kiếm tiền!<br>Đừng chờ đến khi giàu có mới hạnh phúc, hãy học cách hạnh phúc trên hành trình làm giàu!”'
 };
 // 3 đường link ở màn hình chính — dán link vào chỗ link:'' (để trống thì hiện chữ mờ, chưa bấm được)
 const IC_FB='<svg class="lk-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.3c0-.9.3-1.4 1.500-1.400h1.400V5.200c-.3 0-1.100-.1-2.100-.1-2.100 0-3.500 1.300-3.500 3.600V11H8.500v3h2.300v7z" fill="#fff"/></svg>';
@@ -463,7 +461,6 @@ function runConfirm(){
  closeConfirm();
  if(fn)fn();
 }
-function closeNotice(){document.getElementById('startupNotice').classList.remove('open');}
 
 let stack=[{id:'home'}];
 function push(id,opts){stack.push({id,opts:opts||{}});render();window.scrollTo(0,0);}
@@ -513,6 +510,7 @@ function scrHome(){
    <div class="card-label">Đồng hành cùng 6Pay</div>
    <div class="card-amount">›</div>
   </div>
+  <div class="home-quote">Tiền không tự tạo nên tương lai mà cách bạn sử dụng tiền sẽ quyết định tương lai của bạn</div>
   </div>
   <div class="home-ver"><div>6Pay là một phiên bản nâng cấp của excel định dạng HTML dùng để ghi chép nhật ký thu chi và hoạt động hoàn toàn nội bộ.</div><div>Phiên bản ${APP_VERSION}</div></div>
  </div>`;
@@ -603,7 +601,7 @@ function fillScreen(title,sub,rows,ads,big){
 function scrWallets(){
  const rows=JARS.map(j=>{const b=jarRemain(j.k);const c=b<0?'neg':'pos';return `
   <div class="fill-row" onclick="push('jarGuide',{jar:'${j.k}'})"><span class="lb"><span class="ic">${j.i}</span>${j.l}</span><span class="am ${c}">${fmt(b)} ₫</span></div>`;}).join('');
- return fillScreen('Số dư hiện tại','',rows,adBox(ADS_BALANCE),false);
+ return fillScreen('Số dư hiện tại','',rows,'',true);
 }
 
 function guideLinks(jarKey,onlyLinks){
@@ -644,7 +642,7 @@ function matchExpenseFilter(t){
 function scrIncomeCategories(){
  const rows=INCOME_TYPES.map(t=>{const total=tx.filter(x=>x.type==='in'&&x.sub===t.k).reduce((s,x)=>s+x.amount,0);return `
   <div class="fill-row" onclick="openIncome('${t.k}')"><span class="lb"><span class="ic">${t.i}</span><span class="tx"><span>${t.l}</span><span class="d">${t.d}</span></span></span><span class="am pos">${fmt(total)} ₫</span></div>`;}).join('');
- return fillScreen('Các hình thức thu nhập','Thêm nguồn thu nhập để chi tiêu được thoải mái hơn',rows,adBox(ADS_INCOME),false);
+ return fillScreen('Các hình thức thu nhập','Thêm nguồn thu nhập để chi tiêu được thoải mái hơn',rows,'',true);
 }
 let incDraft={amount:'',exact:'',note:'',editId:''};
 function openIncome(k){incDraft={amount:'',exact:'',note:'',editId:''};push('incomeDetail',{sub:k});}
@@ -801,11 +799,6 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdat
 setTimeout(()=>{
  const sp=document.getElementById('bootSplash');
  if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),500); }
- const notice=document.getElementById('startupNotice');
- if(notice){
-  notice.classList.add('open');
-  setTimeout(closeNotice,5000); // tự tắt sau 5 giây nếu người dùng không bấm "Tôi đã hiểu"
- }
 },5000);
 </script>
 </body>

@@ -213,7 +213,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.28-7';
+const APP_VERSION='2026.09.28-8';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},
@@ -246,7 +246,7 @@ const INCOME_TYPES=[
 ];
 // Danh sách quảng cáo ở màn hình chính (cuộn được). Muốn thêm dòng mới, thêm phần tử vào mảng này.
 // Quảng cáo ở trang Số dư hiện tại và trang Các hình thức thu nhập (thêm dòng theo dạng {html:'...',link:'...'})
-function makePH(n){return Array.from({length:n},(_,i)=>({html:'Người liên hệ quảng cáo '+(i+1),link:''}));}
+function makePH(n){return Array.from({length:n},(_,i)=>({html:'Trần Văn Linh '+(i+1),link:'http://zalo.me/0342190588'}));}
 const AD_HEAD='Liên hệ vị trí quảng cáo: <a href="tel:0342190588">0342.19.05.88</a>';
 function adItems(list){return list.map(a=>a.link?`<a class="ad-item" href="${a.link}" target="_blank" rel="noopener">${a.html}</a>`:`<div class="ad-item ph">${a.html}</div>`).join('');}
 // Hàng chờ quảng cáo: thay dòng {html:'Người liên hệ quảng cáo N',link:''} bằng {html:'Tên',link:'https://...'}

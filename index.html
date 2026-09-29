@@ -233,6 +233,14 @@ body.home-white{background:#FFFFFF;}
 .home-wrap .card.quiz{background:#EEE9FB;border-color:#DDD3F6;}
 .home-wrap .card.quiz .card-label,.home-wrap .card.quiz .card-amount{color:#4A2F93;}
 .star-line{margin-top:6px;font-size:14px;font-weight:700;color:#B7791F;}
+.home-wrap .home-header{flex:none;padding:0 2px clamp(6px,1.2vh,16px);}
+.home-wrap .home-icon-badge{width:clamp(44px,7.5vh,84px);height:clamp(44px,7.5vh,84px);font-size:clamp(26px,4.5vh,50px);margin-bottom:4px;}
+.home-wrap .home-brand{font-size:clamp(26px,4vh,34px);line-height:1.1;}
+.home-wrap .home-header .brand-sub{font-size:clamp(12px,1.7vh,14px);}
+.home-wrap .star-line{margin-top:clamp(2px,.5vh,6px);font-size:clamp(12.5px,1.8vh,14px);}
+.home-wrap .card{flex:1 1 0;min-height:44px;max-height:76px;padding:0 18px;margin-bottom:clamp(5px,1vh,10px);}
+.home-wrap .home-quote{flex:none;font-size:clamp(12px,1.7vh,14px);line-height:1.4;padding:2px 14px 0;}
+.home-ver{font-size:clamp(9.5px,1.3vh,11px);padding-top:4px;}
 </style>
 </head>
 <body>
@@ -259,7 +267,7 @@ body.home-white{background:#FFFFFF;}
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.29-7';
+const APP_VERSION='2026.09.29-8';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},

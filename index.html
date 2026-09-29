@@ -232,6 +232,7 @@ body.home-white{background:#FFFFFF;}
 .qz-big{font-size:46px;font-weight:800;text-align:center;margin:10px 0 0;}
 .home-wrap .card.quiz{background:#EEE9FB;border-color:#DDD3F6;}
 .home-wrap .card.quiz .card-label,.home-wrap .card.quiz .card-amount{color:#4A2F93;}
+.star-line{margin-top:6px;font-size:14px;font-weight:700;color:#B7791F;}
 </style>
 </head>
 <body>
@@ -258,7 +259,7 @@ body.home-white{background:#FFFFFF;}
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.29-6';
+const APP_VERSION='2026.09.29-7';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},
@@ -404,6 +405,10 @@ try{
   const raw=localStorage.getItem(STORE_KEY);
   if(raw){const d=JSON.parse(raw); if(d.pct)pct=d.pct; if(d.tx)tx=d.tx; if(d.amtMode==='x1000')amtMode='x1000';}
 }catch(e){}
+const STAR_KEY='6pay-stars-v1';
+let stars=0;
+try{stars=parseInt(localStorage.getItem(STAR_KEY),10)||0;}catch(e){}
+function addStar(){stars++;try{localStorage.setItem(STAR_KEY,String(stars));}catch(e){}}
 function persist(){try{localStorage.setItem(STORE_KEY,JSON.stringify({pct,tx,amtMode}));}catch(e){}}
 
 const ACCOUNT_KEY='6pay-account-v1';
@@ -512,6 +517,7 @@ function scrHome(){
    <div class="home-icon-badge" aria-hidden="true">💰</div>
    <div class="brand-title home-brand"><span style="color:#E63946">6</span><span style="color:#F4A300">P</span><span style="color:#2A9D8F">A</span><span style="color:#3E6FB8">Y</span></div>
    <div class="brand-sub">Quản lý tài chính cá nhân</div>
+   <div class="star-line">⭐ ${fmt(stars)} điểm</div>
   </div>
   <div class="card balance" onclick="push('wallets')">
    <div class="card-label">Số dư hiện tại</div>
@@ -783,7 +789,7 @@ function confirmExpense(jar){
  if(!amt||amt<=0){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),300);return;}
  const note=(document.getElementById('out-note').value||'').trim();
  if(expDraft.editId){const t=tx.find(x=>x.id===expDraft.editId);if(t){t.amount=amt;t.note=note;}}
- else{tx.push({id:uid(),type:'out',jar,amount:amt,note,ts:Date.now()});}
+ else{tx.push({id:uid(),type:'out',jar,amount:amt,note,ts:Date.now()});addStar();}
  expDraft={amount:'',exact:'',note:'',editId:''};
  persist(); render();
 }
@@ -793,7 +799,7 @@ function confirmIncome(sub){
  if(!amt||amt<=0){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),300);return;}
  const note=(document.getElementById('in-note').value||'').trim();
  if(incDraft.editId){const t=tx.find(x=>x.id===incDraft.editId);if(t){t.amount=amt;t.note=note;}}
- else{tx.push({id:uid(),type:'in',sub,amount:amt,note,ts:Date.now()});}
+ else{tx.push({id:uid(),type:'in',sub,amount:amt,note,ts:Date.now()});addStar();}
  incDraft={amount:'',exact:'',note:'',editId:''};
  persist(); render();
 }
@@ -928,7 +934,7 @@ fetchGuides();
 setTimeout(()=>{
  const sp=document.getElementById('bootSplash');
  if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),300); }
-},1700);
+},2700);
 if('serviceWorker' in navigator){
  window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{r.update().catch(()=>{});}).catch(()=>{});});
 }

@@ -105,7 +105,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .fill-row.xrow.ctr .d{text-align:center;text-align-last:center;text-wrap:balance;}
 .fill-row.xrow{flex-direction:column;align-items:stretch;justify-content:center;gap:5px;}
 .fill-row.xrow .top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.fill-row.xrow .d{margin-top:0;font-size:clamp(11.5px,1.55vh,13px);font-style:italic;font-weight:400;line-height:1.45;color:var(--text-soft);text-align:justify;text-align-last:center;text-wrap:pretty;hyphens:none;padding:0 2px;}
+.fill-row.xrow .d{margin-top:0;font-size:clamp(11.5px,1.55vh,13px);font-style:italic;font-weight:400;line-height:1.45;color:var(--text-soft);text-align:center;text-align-last:center;text-wrap:balance;hyphens:none;padding:0 2px;}
 .fill-row{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0 14px;cursor:pointer;font-size:var(--fl);font-weight:600;overflow:hidden;}
 .fill-row:active{transform:scale(0.99);}
 .fill-row .ic{font-size:var(--fi);margin-right:10px;line-height:1;}
@@ -171,12 +171,12 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .guide-desc{font-size:14px;color:var(--text-soft);margin:2px 0 14px;line-height:1.5;}
 .guide-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px 14px 0 0;padding:14px 16px;margin-bottom:0;font-size:15px;text-decoration:none;color:var(--text);}
 .affiliate-note{font-size:11.5px;color:var(--text-soft);background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 14px 14px;padding:5px 16px 8px;margin-bottom:10px;}
-.boot-splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5vw;padding:0 10vw;text-align:center;background:#FFFFFF;transition:opacity .5s ease;}
+.boot-splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5vw;padding:0 10vw;text-align:center;background:#FFFFFF;transition:opacity .3s ease;}
 .boot-splash.hide{opacity:0;pointer-events:none;}
-.boot-emoji{font-size:20vw;line-height:1;animation:bootZoom 1.3s cubic-bezier(.2,1.15,.4,1) forwards;}
+.boot-emoji{font-size:20vw;line-height:1;animation:bootZoom .8s cubic-bezier(.2,1.15,.4,1) forwards;}
 @keyframes bootZoom{0%{transform:scale(.55);opacity:0;}55%{opacity:1;}100%{transform:scale(1);opacity:1;}}
-.boot-brand{font-size:11vw;line-height:1;font-weight:800;letter-spacing:.02em;opacity:0;animation:bootTaglineIn .7s ease forwards;animation-delay:.55s;}
-.boot-tagline{font-size:4.6vw;font-weight:700;color:#0D2A6E;max-width:340px;line-height:1.6;opacity:0;animation:bootTaglineIn .8s ease forwards;animation-delay:1.15s;}
+.boot-brand{font-size:11vw;line-height:1;font-weight:800;letter-spacing:.02em;opacity:0;animation:bootTaglineIn .5s ease forwards;animation-delay:.3s;}
+.boot-tagline{font-size:4.6vw;font-weight:700;color:#0D2A6E;max-width:340px;line-height:1.6;opacity:0;animation:bootTaglineIn .6s ease forwards;animation-delay:.6s;}
 @keyframes bootTaglineIn{0%{opacity:0;transform:translateY(12px);}100%{opacity:1;transform:translateY(0);}}
 .guide-item.plain{color:var(--text-soft);}
 .guide-cta{color:var(--accent);font-weight:700;font-size:13.5px;white-space:nowrap;}
@@ -219,6 +219,19 @@ body.home-white{background:#FFFFFF;}
 .link-row .lk-ic{width:24px;height:24px;}
 .link-row.off{color:var(--text-soft);font-weight:500;}
 .link-row .go{margin-left:auto;color:var(--accent);font-size:20px;line-height:1;}
+.qz-meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;margin-bottom:8px;}
+.qz-bar{height:6px;border-radius:3px;background:var(--border);overflow:hidden;margin-bottom:14px;}
+.qz-bar i{display:block;height:100%;background:var(--accent);transition:width 1s linear;}
+.qz-q{font-size:17px;font-weight:700;line-height:1.45;margin-bottom:14px;text-wrap:balance;}
+.qz-opt{display:block;width:100%;text-align:left;font:inherit;font-size:14.5px;line-height:1.4;padding:12px 14px;margin-bottom:8px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);cursor:pointer;}
+.qz-opt:active{transform:scale(.99);}
+.qz-opt:disabled{cursor:default;transform:none;}
+.qz-opt.ok{background:var(--income-bg);border-color:var(--pos);color:var(--income-text);font-weight:700;}
+.qz-opt.bad{background:var(--expense-bg);border-color:var(--neg);color:var(--expense-text);}
+.qz-exp{font-size:13.5px;line-height:1.5;background:var(--newtx-bg);color:var(--newtx-text);border-radius:12px;padding:10px 14px;margin-top:4px;}
+.qz-big{font-size:46px;font-weight:800;text-align:center;margin:10px 0 0;}
+.home-wrap .card.quiz{background:#EEE9FB;border-color:#DDD3F6;}
+.home-wrap .card.quiz .card-label,.home-wrap .card.quiz .card-amount{color:#4A2F93;}
 </style>
 </head>
 <body>
@@ -245,7 +258,7 @@ body.home-white{background:#FFFFFF;}
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.28-11';
+const APP_VERSION='2026.09.29-6';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},
@@ -291,7 +304,7 @@ const ADS=[
 // Chữ trên nút mua hàng tiếp thị của từng ví
 const MARKET_LABELS={
  essential:'Mua sắm cùng 6Pay',
- education:'Mua sắm cùng 6Pay',
+ education:'Học tập cùng 6Pay',
  saving:'Tiết kiệm cùng 6Pay',
  invest:'Đầu tư cùng 6Pay',
  share:'Chia sẻ cùng 6Pay',
@@ -511,6 +524,10 @@ function scrHome(){
   <div class="card expense" onclick="push('expenseOverview')">
    <div class="card-label">Chi</div>
    <div class="card-amount">${fmt(totalExpense())} ₫</div>
+  </div>
+  <div class="card quiz" onclick="openQuiz()">
+   <div class="card-label">🎯 Đố vui tài chính</div>
+   <div class="card-amount">›</div>
   </div>
   <div class="card partner" onclick="push('partner')">
    <div class="card-label">Đồng hành cùng 6Pay</div>
@@ -781,18 +798,137 @@ function confirmIncome(sub){
  persist(); render();
 }
 
+// ===== Đố vui tài chính: thêm câu hỏi bằng cách thêm 1 dòng vào QZ_BANK =====
+// Định dạng: [câu hỏi, đáp án ĐÚNG, sai 1, sai 2, sai 3, giải thích]
+const QZ_KEY='6pay-quiz-v1';
+const QZ_BANK=[
+["Quy tắc 50/30/20 chia thu nhập như thế nào?","50% nhu cầu thiết yếu, 30% mong muốn, 20% tiết kiệm và đầu tư","50% mong muốn, 30% nhu cầu thiết yếu, 20% tiết kiệm","50% tiết kiệm, 30% thiết yếu, 20% mong muốn","Chia đều 33% cho ba khoản","Đây là cách chia gọn để cân bằng chi tiêu bắt buộc, sở thích và tích lũy."],
+["Quỹ dự phòng khẩn cấp nên đủ cho khoảng bao lâu chi tiêu?","3 đến 6 tháng","1 tuần","2 đến 3 năm","Không cần nếu có thẻ tín dụng","Quỹ này giúp bạn vượt qua mất việc hoặc ốm đau mà không phải đi vay."],
+["Lãi kép là gì?","Lãi được tính trên cả tiền gốc lẫn lãi đã sinh ra trước đó","Lãi chỉ tính trên tiền gốc ban đầu","Lãi suất được giảm dần theo thời gian","Lãi ngân hàng trả trước cho khách hàng","Lãi kép khiến tiền tăng nhanh dần theo thời gian, nên bắt đầu sớm rất có lợi."],
+["Theo quy tắc 72, lãi 8%/năm thì tiền nhân đôi sau khoảng bao lâu?","9 năm","5 năm","12 năm","20 năm","72 chia cho lãi suất năm (%) cho ra số năm gần đúng để tiền nhân đôi: 72 ÷ 8 = 9."],
+["Lạm phát ảnh hưởng thế nào đến tiền mặt bạn cất trong nhà?","Cùng số tiền nhưng mua được ít hàng hóa hơn theo thời gian","Tiền tự động sinh lãi","Giá trị tiền không đổi","Tiền tăng giá theo vàng","Giá cả chung tăng làm sức mua của tiền giảm dần."],
+["\"Trả cho chính mình trước\" nghĩa là gì?","Trích tiết kiệm và đầu tư ngay khi nhận thu nhập, phần còn lại mới chi tiêu","Mua sắm cho bản thân trước khi trả hóa đơn","Chỉ trả nợ khi còn tiền dư","Tiêu hết rồi tiết kiệm phần còn lại","Tiết kiệm sau khi chi tiêu thường không còn đồng nào, nên hãy tiết kiệm trước."],
+["Đa dạng hóa danh mục đầu tư giúp ích gì?","Giảm rủi ro khi một khoản đầu tư gặp biến động xấu","Đảm bảo chắc chắn có lãi","Loại bỏ hoàn toàn rủi ro","Tăng lợi nhuận gấp đôi","Không bỏ hết trứng vào một giỏ: thua lỗ ở một nơi được bù đắp phần nào bởi nơi khác."],
+["Lời mời đầu tư cam kết lãi 5%/tháng, không rủi ro. Bạn nên nghĩ gì?","Rất đáng ngờ, có thể là lừa đảo","Cơ hội hiếm, nên đầu tư nhanh","Đáng tin nếu nhiều người tham gia","An toàn vì có hợp đồng","Lãi cao cố định và không rủi ro là dấu hiệu điển hình của lừa đảo hoặc đa cấp."],
+["Đâu là ví dụ về tài sản theo nghĩa tài chính?","Căn hộ cho thuê mỗi tháng đều có tiền vào","Chiếc xe mua trả góp chỉ để khoe","Thẻ tín dụng đã quẹt hết hạn mức","Bộ quần áo mua theo mốt","Tài sản là thứ tạo ra dòng tiền vào cho bạn."],
+["Cách dùng thẻ tín dụng để không mất tiền lãi là gì?","Thanh toán toàn bộ dư nợ trước ngày đến hạn","Chỉ trả khoản tối thiểu mỗi tháng","Rút tiền mặt để tiêu","Chờ sao kê lần sau mới trả","Trả tối thiểu hoặc rút tiền mặt đều phát sinh lãi và phí cao."],
+["Sở hữu cổ phiếu của một công ty nghĩa là gì?","Bạn sở hữu một phần nhỏ của công ty đó","Bạn cho công ty vay tiền với lãi cố định","Công ty đảm bảo hoàn vốn cho bạn","Bạn trở thành nhân viên công ty","Giá trị cổ phiếu có thể tăng hoặc giảm theo kết quả kinh doanh và thị trường."],
+["Quỹ ETF thường có đặc điểm nào sau đây?","Theo dõi một chỉ số hoặc rổ tài sản, chi phí thường thấp","Đảm bảo lãi cố định hằng năm","Chỉ dành cho người có trên 1 tỷ đồng","Không có rủi ro thị trường","ETF cho phép đầu tư vào cả rổ cổ phiếu chỉ với một mã, nhưng vẫn chịu biến động thị trường."],
+["Đầu tư định kỳ (DCA) nghĩa là gì?","Đầu tư một số tiền cố định đều đặn, bất kể giá lên hay xuống","Dồn toàn bộ tiền vào đúng đáy thị trường","Chỉ mua khi giá tăng mạnh","Bán hết khi thị trường giảm","DCA giảm áp lực phải chọn đúng thời điểm và tạo kỷ luật đầu tư."],
+["Nhìn chung, khoản đầu tư có lợi nhuận kỳ vọng cao thì thường...","Đi kèm rủi ro cao hơn","Luôn an toàn hơn gửi tiết kiệm","Không có rủi ro","Chắc chắn có lãi","Rủi ro và lợi nhuận đi cùng nhau. Hãy chọn mức rủi ro bạn chịu được."],
+["FOMO trong đầu tư là gì?","Mua theo đám đông vì sợ bỏ lỡ cơ hội","Chiến lược đầu tư dài hạn","Một loại chỉ số chứng khoán","Việc chia nhỏ khoản đầu tư","Quyết định theo cảm xúc thường dẫn đến mua ở giá cao."],
+["Bảo hiểm sức khỏe giúp ích gì cho tài chính cá nhân?","Chuyển bớt gánh nặng chi phí y tế lớn bất ngờ sang công ty bảo hiểm","Giúp bạn sinh lời nhanh","Thay thế hoàn toàn quỹ dự phòng","Được hoàn lại toàn bộ phí đóng","Bảo hiểm bảo vệ kế hoạch tài chính khỏi những biến cố lớn."],
+["Khoản nợ nào thường được xem là nợ xấu?","Vay lãi cao để mua thứ không cần thiết","Vay học nghề để tăng thu nhập","Vay mua nhà để ở với khả năng trả ổn định","Vay vốn kinh doanh có kế hoạch rõ ràng","Nợ xấu là nợ không tạo ra giá trị hay thu nhập mà lãi lại cao."],
+["Bạn đang nợ thẻ tín dụng lãi rất cao. Nên ưu tiên gì?","Trả bớt nợ lãi cao trước khi đầu tư rủi ro","Đầu tư ngay để lấy lời trả nợ","Vay thêm để đầu tư","Bỏ qua vì nợ nào cũng như nhau","Lãi nợ cao thường lớn hơn mức lợi nhuận bạn có thể chắc chắn đạt được."],
+["Bước đầu tiên hiệu quả để quản lý tài chính là gì?","Ghi chép thu chi để biết tiền đi đâu","Mua bảo hiểm nhiều nhất có thể","Đầu tư vào cổ phiếu nóng","Tăng hạn mức thẻ tín dụng","Có số liệu thực tế thì mới lập được ngân sách và mục tiêu phù hợp."],
+["Nguyên tắc nào nên có trước khi đầu tư?","Chỉ đầu tư vào thứ bạn hiểu và bằng tiền nhàn rỗi","Đầu tư theo lời hứa của người quen","Vay tiền để đầu tư lớn hơn","Dồn hết tiền vào một cơ hội","Hiểu rõ sản phẩm và dùng tiền nhàn rỗi giúp bạn tránh quyết định vội vàng."],
+["Ngân sách cá nhân là gì?","Kế hoạch phân bổ thu nhập cho chi tiêu, tiết kiệm và đầu tư","Bảng liệt kê các khoản nợ","Số tiền tối đa ngân hàng cho vay","Danh sách hàng cần mua trong tháng","Ngân sách giúp bạn chủ động kiểm soát dòng tiền thay vì tiêu theo cảm hứng."],
+["Khoản nào sau đây là chi phí cố định hằng tháng?","Tiền thuê nhà","Tiền đi ăn nhà hàng","Tiền mua quà sinh nhật","Tiền đi du lịch","Chi phí cố định gần như không đổi mỗi tháng, còn chi phí biến đổi thì thay đổi theo hành vi."],
+["Cách đơn giản để hạn chế mua sắm bốc đồng là gì?","Chờ 24 đến 48 giờ trước khi quyết định mua","Mua ngay khi đang có khuyến mãi","Mua bằng thẻ tín dụng cho tiện","Đi mua sắm khi đang buồn chán","Khoảng chờ giúp bạn phân biệt món đồ cần thiết với ham muốn nhất thời."],
+["Gửi 100 triệu đồng, lãi đơn 6%/năm trong 2 năm, tiền lãi là bao nhiêu?","12 triệu đồng","6 triệu đồng","10 triệu đồng","14 triệu đồng","Lãi đơn chỉ tính trên gốc: 100 triệu × 6% × 2 năm = 12 triệu."],
+["Mục tiêu tài chính tốt nên như thế nào?","Cụ thể, đo lường được và có thời hạn","Mơ hồ để linh hoạt","Càng lớn càng tốt, không cần thời hạn","Chỉ nghĩ trong đầu, không ghi lại","Ví dụ: tiết kiệm 60 triệu trong 12 tháng rõ ràng hơn là muốn có nhiều tiền."],
+["Tài sản nào có tính thanh khoản cao nhất?","Tiền mặt hoặc tiền gửi không kỳ hạn","Bất động sản","Xe ô tô","Đất nông nghiệp","Thanh khoản là khả năng quy đổi ra tiền nhanh mà không mất giá trị."],
+["Rút sổ tiết kiệm có kỳ hạn trước hạn thường dẫn đến điều gì?","Chỉ được hưởng lãi suất không kỳ hạn, thấp hơn nhiều","Được thưởng thêm lãi","Được hưởng nguyên lãi suất kỳ hạn","Bị phạt gấp đôi tiền gốc","Vì vậy hãy chọn kỳ hạn phù hợp với thời điểm bạn thực sự cần tiền."],
+["Điểm đặc trưng của vàng khi dùng để tích trữ là gì?","Giá biến động và không tự sinh lãi hay cổ tức","Luôn tăng giá mỗi năm","Có lãi suất cố định","Không bao giờ bị lỗ","Vàng giữ giá trị trong một số giai đoạn nhưng không tạo dòng tiền như cổ tức hay lãi."],
+["Cổ tức là gì?","Phần lợi nhuận công ty chia cho cổ đông","Khoản phí khi mua cổ phiếu","Tiền lãi ngân hàng trả cho người gửi","Thuế đánh vào nhà đầu tư","Không phải công ty nào cũng trả cổ tức, và mức chi trả có thể thay đổi."],
+["Khi mua trái phiếu, bạn thực chất là...","Người cho tổ chức phát hành vay tiền và nhận lãi","Cổ đông sở hữu công ty","Người bảo lãnh cho công ty","Người đi vay của công ty","Trái phiếu vẫn có rủi ro, nhất là khi tổ chức phát hành yếu về tài chính."],
+["Quỹ mở (chứng chỉ quỹ) hoạt động thế nào?","Nhiều nhà đầu tư góp vốn để chuyên gia quản lý theo danh mục","Mỗi người tự chọn cổ phiếu trong quỹ","Quỹ cam kết lãi cố định","Chỉ dành cho ngân hàng","Bạn vẫn chịu rủi ro thị trường và phí quản lý, dù không phải tự chọn từng mã."],
+["Việc cố gắng mua đúng đáy và bán đúng đỉnh thị trường...","Rất khó, ngay cả với người chuyên nghiệp","Dễ nếu theo dõi tin tức","Luôn làm được với biểu đồ","Chắc chắn mang lại lãi lớn","Đầu tư đều đặn dài hạn thường thực tế hơn là dự đoán thời điểm."],
+["Cắt lỗ trong đầu tư có nghĩa là gì?","Bán khi khoản lỗ chạm ngưỡng đã đặt ra để tránh lỗ nặng hơn","Mua thêm khi giá giảm bất kể lý do","Giữ mãi không bán","Bán khi có lãi nhỏ","Đặt ngưỡng cắt lỗ từ trước giúp bạn bớt quyết định theo cảm xúc."],
+["Đòn bẩy tài chính (vay để đầu tư) có tác động nào?","Khuếch đại cả lãi lẫn lỗ","Chỉ khuếch đại lãi","Loại bỏ rủi ro","Giúp không phải trả lãi","Có thể mất nhiều hơn số vốn tự có, nên cần rất thận trọng."],
+["Thị trường giảm mạnh, nhà đầu tư dài hạn nên làm gì?","Giữ bình tĩnh, xem lại kế hoạch thay vì bán tháo hoảng loạn","Bán hết ngay lập tức","Vay thêm để mua gấp","Nghe theo tin đồn trên mạng","Bán tháo vì sợ hãi thường biến khoản lỗ trên giấy thành lỗ thật."],
+["Nhóm kín báo mã này sẽ x2 tuần sau, hãy mua ngay. Bạn nên...","Nghi ngờ và tự kiểm chứng, tránh làm theo","Mua dồn hết vốn","Rủ thêm bạn bè cùng mua","Vay tiền để mua","Lời hứa lãi chắc chắn thường là chiêu thổi giá hoặc lừa đảo."],
+["Mô hình Ponzi hoạt động dựa vào điều gì?","Dùng tiền của người tham gia mới để trả lãi cho người cũ","Đầu tư vào tài sản thật có lãi ổn định","Kinh doanh hàng hóa hợp pháp","Nhận vốn từ ngân hàng","Khi người mới ngừng vào, mô hình sụp đổ và người vào sau mất tiền."],
+["Lãi suất gửi 6%, lạm phát 4%. Lãi suất thực tế xấp xỉ bao nhiêu?","Khoảng 2%","Khoảng 10%","Khoảng 6%","Khoảng 4%","Lãi thực xấp xỉ lãi danh nghĩa trừ lạm phát: 6% − 4% = 2%."],
+["Thu nhập thụ động là gì?","Khoản thu đến đều đặn mà không cần bỏ công sức trực tiếp mỗi ngày","Tiền lương hằng tháng","Tiền thưởng cuối năm","Tiền làm thêm ngoài giờ","Ví dụ: tiền cho thuê nhà hoặc cổ tức. Tuy vậy thường vẫn cần vốn và quản lý ban đầu."],
+["Chi phí cơ hội là gì?","Giá trị của lựa chọn tốt nhất mà bạn bỏ qua khi chọn phương án khác","Phí bạn trả cho ngân hàng","Chi phí phát sinh khi hàng hỏng","Số tiền đã tiêu trong quá khứ","Dùng tiền vào việc này nghĩa là bạn không dùng được vào việc khác."],
+["Vì sao đầu tư vào học tập được xem là khoản đầu tư tốt?","Nâng cao kỹ năng và khả năng tạo thu nhập lâu dài","Vì luôn có lãi ngay lập tức","Vì không tốn tiền","Vì được ngân hàng bảo đảm","Kỹ năng tốt giúp tăng thu nhập, từ đó có thêm vốn để tiết kiệm và đầu tư."],
+["Mua trả góp 0% lãi suất cần lưu ý điều gì?","Đọc kỹ phí chuyển đổi, phí phạt và điều kiện đi kèm","Chắc chắn không có phí nào","Không cần đọc hợp đồng","Trả muộn không bị ảnh hưởng","Nhiều chương trình có phí ẩn hoặc phí chuyển đổi, nên hãy tính tổng chi phí thực."],
+["Lịch sử trả nợ của bạn ảnh hưởng thế nào đến việc vay sau này?","Nợ trả đúng hạn giúp dễ vay hơn, nợ xấu gây khó khăn","Không ảnh hưởng gì","Chỉ ảnh hưởng khi vay dưới 10 triệu","Chỉ tính tiền gốc, không tính trả muộn","Ngân hàng dựa vào lịch sử tín dụng để đánh giá mức độ tin cậy của bạn."],
+["Khi giao dịch ngân hàng online, mã OTP...","Tuyệt đối không chia sẻ cho bất kỳ ai","Có thể đọc cho nhân viên gọi điện","Gửi cho người quen để hỗ trợ","Đăng lên nhóm để nhờ kiểm tra","Ngân hàng chính thống không yêu cầu bạn cung cấp OTP qua điện thoại hay tin nhắn."],
+["Trong mô hình 6 hũ, hũ Tiết kiệm phù hợp nhất cho mục đích nào?","Mục tiêu dài hạn và dự phòng cho tình huống bất ngờ","Chi tiêu hằng ngày","Ăn uống, giải trí","Mua sắm theo sở thích","Tách riêng tiền tiết kiệm giúp bạn khó bị tiêu nhầm cho khoản khác."],
+["Trong mô hình 6 hũ, hũ Hưởng thụ có vai trò gì?","Cho phép bạn tận hưởng có kế hoạch để duy trì động lực","Là khoản để tiêu vượt mức bất kỳ lúc nào","Dùng để trả nợ","Là quỹ đầu tư rủi ro cao","Chi tiêu vui vẻ trong giới hạn giúp bạn theo đuổi kế hoạch tài chính lâu dài hơn."],
+["Người có thu nhập không ổn định (như làm tự do) nên...","Có quỹ dự phòng lớn hơn bình thường","Không cần quỹ dự phòng","Chi tiêu hết ở những tháng thu nhập cao","Vay nợ để bù tháng thấp","Thu nhập dao động khiến khoản đệm cần dày hơn để yên tâm."],
+["Cài nhắc hạn thanh toán hóa đơn giúp bạn...","Tránh phí phạt và ảnh hưởng xấu do trả muộn","Được giảm giá điện nước","Không phải trả tiền","Tăng lãi suất tiết kiệm","Trả muộn có thể phát sinh phí và ảnh hưởng đến lịch sử tín dụng."],
+["Vì sao đầu tư dài hạn thường được khuyến khích?","Giảm ảnh hưởng của biến động ngắn hạn và tận dụng lãi kép","Vì bảo đảm có lãi mỗi năm","Vì không có rủi ro","Vì không phải theo dõi gì","Dài hạn không loại bỏ rủi ro nhưng cho thời gian để tài sản phục hồi và tăng trưởng."],
+["Số tiền bạn cần dùng trong 1 đến 2 năm tới nên để ở đâu?","Kênh an toàn, dễ rút như tiền gửi tiết kiệm","Cổ phiếu rủi ro cao","Tiền mã hóa","Cho người quen vay không giấy tờ","Tiền cần dùng gần không nên chịu rủi ro biến động lớn."]
+];
+let qz={phase:'intro',list:[],i:0,score:0,ok:0,streak:0,picked:null,left:15,timer:0,opts:[],newBest:false};
+function qzStore(){try{return JSON.parse(localStorage.getItem(QZ_KEY))||{best:0,plays:0};}catch(e){return {best:0,plays:0};}}
+function qzShuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function openQuiz(){qz.phase='intro';push('quiz');}
+function qzStart(){qz.list=qzShuffle(QZ_BANK).slice(0,10);qz.i=0;qz.score=0;qz.ok=0;qz.streak=0;qzAsk();}
+function qzAsk(){
+ const r=qz.list[qz.i];
+ qz.opts=qzShuffle([{t:r[1],c:1},{t:r[2]},{t:r[3]},{t:r[4]}]);
+ qz.picked=null;qz.left=15;qz.phase='play';
+ clearInterval(qz.timer);qz.timer=setInterval(qzTick,1000);
+ render();
+}
+function qzTick(){
+ qz.left--;
+ const b=document.getElementById('qz-bar'),s=document.getElementById('qz-sec');
+ if(b)b.style.width=(qz.left/15*100)+'%';
+ if(s)s.textContent=qz.left+'s';
+ if(qz.left<=0)qzPick(-1);
+}
+function qzPick(k){
+ if(qz.picked!==null)return;
+ clearInterval(qz.timer);qz.timer=0;qz.picked=k;
+ if(k>=0&&qz.opts[k].c){qz.streak++;qz.ok++;qz.score+=100+qz.left*4+Math.min(qz.streak-1,4)*20;}else qz.streak=0;
+ render();
+}
+function qzNext(){
+ if(qz.i<qz.list.length-1){qz.i++;qzAsk();return;}
+ const st=qzStore();st.plays++;qz.newBest=qz.score>st.best;if(qz.newBest)st.best=qz.score;
+ try{localStorage.setItem(QZ_KEY,JSON.stringify(st));}catch(e){}
+ qz.phase='done';render();
+}
+function scrQuiz(){
+ const T='🎯 Đố vui tài chính';
+ if(qz.phase==='intro'){
+  const st=qzStore();
+  return screenWrap(T,`
+   <div class="guide-desc">10 câu hỏi về quản lý chi tiêu, tiết kiệm và đầu tư. Mỗi câu có 15 giây: trả lời đúng và nhanh để được nhiều điểm, đúng liên tiếp được thưởng thêm.</div>
+   <div class="list-item"><span>Điểm cao nhất</span><b>${fmt(st.best)}</b></div>
+   <div class="list-item"><span>Số lượt đã chơi</span><b>${st.plays}</b></div>
+   <button class="btn primary" style="margin-top:10px;" onclick="qzStart()">▶ Bắt đầu chơi</button>`);
+ }
+ if(qz.phase==='done'){
+  const n=qz.ok,msg=n>=8?'Bạn có nền tảng tài chính rất vững! 🏆':n>=5?'Khá tốt, đọc thêm để chắc hơn nhé 👍':'Đừng lo, mỗi lượt chơi là một lần học thêm 📚';
+  return screenWrap('🎯 Kết quả',`
+   <div class="qz-big">${fmt(qz.score)}</div>
+   <div class="guide-desc" style="text-align:center;">điểm${qz.newBest?' · 🎉 Kỷ lục mới!':''}</div>
+   <div class="list-item"><span>Trả lời đúng</span><b>${n}/${qz.list.length}</b></div>
+   <div class="guide-desc" style="text-align:center;">${msg}</div>
+   <button class="btn primary" onclick="qzStart()">↻ Chơi lại</button>`);
+ }
+ const r=qz.list[qz.i],ans=qz.picked!==null;
+ const body=`<div class="qz-meta"><span>Câu ${qz.i+1}/${qz.list.length}</span><span id="qz-sec">${qz.left}s</span><span>⭐ ${fmt(qz.score)}${qz.streak>1?' · 🔥'+qz.streak:''}</span></div>
+  <div class="qz-bar"><i id="qz-bar" style="width:${qz.left/15*100}%"></i></div>
+  <div class="qz-q">${r[0]}</div>
+  ${qz.opts.map((o,k)=>`<button class="qz-opt ${ans?(o.c?'ok':(k===qz.picked?'bad':'')):''}" ${ans?'disabled':''} onclick="qzPick(${k})">${o.t}</button>`).join('')}
+  ${ans?`<div class="qz-exp">${qz.picked===-1?'⏰ Hết giờ! ':(qz.opts[qz.picked].c?'✅ Chính xác! ':'❌ Chưa đúng. ')}${r[5]}</div>`:''}`;
+ return screenWrap(T,body,ans?`<button class="btn primary" onclick="qzNext()">${qz.i<qz.list.length-1?'Câu tiếp ›':'Xem kết quả'}</button>`:'');
+}
+
 const SCREENS={
  partner:scrPartner, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
  incomeCategories:scrIncomeCategories, incomeDetail:scrIncomeDetail,
- expenseOverview:scrExpenseOverview, expenseDetail:scrExpenseDetail
+ expenseOverview:scrExpenseOverview, expenseDetail:scrExpenseDetail, quiz:scrQuiz
 };
 function render(){
  const top=stack[stack.length-1];
+ if(qz.timer&&top.id!=='quiz'){clearInterval(qz.timer);qz.timer=0;}
  document.body.classList.toggle('home-white',top.id==='home');
  document.getElementById('app').innerHTML = top.id==='home' ? scrHome() : SCREENS[top.id](top.opts||{});
 }
 render();
 fetchGuides();
+setTimeout(()=>{
+ const sp=document.getElementById('bootSplash');
+ if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),300); }
+},1700);
 if('serviceWorker' in navigator){
  window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{r.update().catch(()=>{});}).catch(()=>{});});
 }
@@ -810,10 +946,6 @@ function checkUpdate(){
 }
 checkUpdate();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate();});
-setTimeout(()=>{
- const sp=document.getElementById('bootSplash');
- if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),500); }
-},5000);
 </script>
 </body>
 </html>

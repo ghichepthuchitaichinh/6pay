@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-17';
+const APP_VERSION='2026.09.30-18';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -589,7 +589,7 @@ function scrHome(){
    <div class="card-label">Đồng hành</div>
    <div class="card-amount">›</div>
   </div>
-  <div class="home-quote">Tiền không tự tạo nên tương lai mà cách bạn sử dụng tiền sẽ quyết định tương lai của bạn</div>
+  <div class="home-quote">Tiền không tự tạo nên tương lai của bạn<br>mà cách bạn sử dụng tiền sẽ quyết định điều đó</div>
   </div>
   <div class="home-ver"><div>6Pay là công cụ ghi chép thông thường định dạng HTML<br>dùng để ghi chép hoạt động thu chi của bạn.</div><div>Phiên bản ${APP_VERSION}</div></div>
  </div>`;
@@ -618,8 +618,8 @@ function scrLogin(){
   <div class="form-row"><label>Tên người dùng</label><input type="text" id="auth-name" placeholder="Nguyễn Văn A" value="${acc?esc(acc.name||''):''}"></div>
   <div class="form-row"><label>Số điện thoại</label><input type="tel" id="auth-phone" placeholder="09xxxxxxxx" value="${acc?esc(acc.phone||''):''}"></div>
   <div class="form-row"><label>Mật khẩu</label><input type="password" id="auth-pass" placeholder="Mật khẩu"></div>
-  <button class="btn primary" onclick="loginOrRegister()">Đăng nhập / Đăng ký</button>
-  <div class="guide-desc" style="margin-top:16px;">App không có máy chủ, mọi thông tin đăng nhập và ghi chép chỉ lưu trữ trên thiết bị của bạn. Hoàn toàn bảo mật thông tin cá nhân. Không cần đăng nhập vẫn có thể sử dụng.</div>
+  <button class="btn primary" onclick="loginOrRegister()">Xác nhận</button>
+  <div class="guide-desc" style="margin-top:16px;">App không bắt buộc đăng nhập hay đăng ký khi sử dụng. Nếu bạn không muốn người lạ xem được nội dung thu chi trên điện thiết bị của bạn thì hãy đăng ký</div>
  `);
 }
 function scrSettings(){

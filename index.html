@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-25';
+const APP_VERSION='2026.09.30-26';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -286,6 +286,12 @@ body.home-white{background:#FFFFFF;}
 .lock-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 12px;}
 .lock-key{font:inherit;font-size:22px;font-weight:700;height:clamp(46px,7.2vh,58px);border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--text);cursor:pointer;}
 .lock-key:active{background:var(--border);}
+.ins-tabs{display:flex;gap:8px;margin-bottom:12px;}
+.ins-tab{flex:1;font:inherit;font-size:14px;font-weight:700;padding:9px;border:1px solid var(--border);border-radius:12px;background:var(--bg);color:var(--text-soft);cursor:pointer;}
+.ins-tab.on{background:var(--accent);border-color:var(--accent);color:var(--accent-text);}
+.ins-steps{text-align:left;font-size:14.5px;line-height:1.55;margin:0 0 12px;padding-left:22px;}
+.ins-steps li{margin-bottom:6px;}
+.ins-warn{text-align:left;font-size:13.5px;line-height:1.5;background:#FFF3D9;color:#7A4B00;border-radius:12px;padding:10px 12px;margin-bottom:12px;}
 </style>
 </head>
 <body>
@@ -312,6 +318,9 @@ body.home-white{background:#FFFFFF;}
 </div>
 <div class="modal-overlay" id="calModal" onclick="if(event.target===this)closeCal()">
  <div class="modal-box" id="calBox"></div>
+</div>
+  <div class="modal-overlay" id="installModal" onclick="if(event.target===this)closeInstall()">
+ <div class="modal-box" id="installBox" style="max-height:88vh;overflow-y:auto;"></div>
 </div>
 <script>
 const JARS=[
@@ -676,7 +685,8 @@ function scrSettings(){
  return screenWrap('Cài đặt',`
   <div class="pct-row mode-row" onclick="openAmtModal()"><span>💵 Cách nhập số tiền</span><span id="amt-mode-label" style="color:var(--accent);font-weight:600;">${amtModeText()} ›</span></div>
   <div class="pct-row mode-row" onclick="push('ratios')"><span>🍯 Tỷ lệ phân bổ 6 ví</span><span style="color:var(--accent);font-weight:600;">›</span></div>
-  <div class="pct-row mode-row" onclick="push('planSettings')"><span>📅 Cài đặt Kế hoạch trong ngày</span><span style="color:var(--accent);font-weight:600;">›</span></div>`);
+  <div class="pct-row mode-row" onclick="push('planSettings')"><span>📅 Cài đặt Kế hoạch trong ngày</span><span style="color:var(--accent);font-weight:600;">›</span></div>
+  <div class="pct-row mode-row" onclick="openInstall()"><span>📲 Hướng dẫn cài app ra màn hình</span><span style="color:var(--accent);font-weight:600;">›</span></div>`);
 }
 function scrRatios(){
  const enjoy=pctEnjoy(); const over=enjoy<0;
@@ -1119,6 +1129,56 @@ function scrPlanSettings(){
   <div class="pct-row"><span>Số dòng của bảng</span><div class="pct-input"><input type="number" min="1" max="30" value="${plan.rows}" onchange="plan.rows=Math.min(30,Math.max(1,parseInt(this.value,10)||8));this.value=plan.rows;planSave();"></div></div>
   <button class="btn primary" onclick="openConfirm('Xóa toàn bộ nội dung kế hoạch của ngày đang chọn?',function(){delete plan.data[planDay];planSave();render();})">🗑 Xóa kế hoạch ngày đang chọn</button>`);
 }
+// ===== Hướng dẫn cài app ra màn hình chính =====
+const INSTALL_KEY='6pay-install-seen-v1';
+let insTab='ios',deferredInstall=null;
+window.addEventListener('beforeinstallprompt',e=>{
+ e.preventDefault();deferredInstall=e;
+ if(document.getElementById('installModal').classList.contains('open'))drawInstall();
+});
+function isStandalone(){return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;}
+function detectOS(){
+ const ua=navigator.userAgent||'';
+ if(/iPhone|iPad|iPod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))return 'ios';
+ return 'android';
+}
+function inAppBrowser(){return /Zalo|FBAN|FBAV|FB_IAB|Messenger|Instagram|Line\/|TikTok|musical_ly/i.test(navigator.userAgent||'');}
+function drawInstall(){
+ const warn=inAppBrowser()?`<div class="ins-warn">⚠️ Bạn đang mở link trong ứng dụng (Zalo, Facebook...). Hãy bấm nút <b>⋯</b> hoặc <b>⋮</b> ở góc màn hình rồi chọn <b>“Mở bằng trình duyệt”</b> (Safari trên iPhone, Chrome trên Android), sau đó làm theo các bước bên dưới.</div>`:'';
+ const ios=`<ol class="ins-steps">
+  <li>Mở link này bằng <b>Safari</b>.</li>
+  <li>Bấm nút <b>Chia sẻ</b> (hình vuông có mũi tên hướng lên) ở thanh dưới màn hình.</li>
+  <li>Kéo xuống và chọn <b>“Thêm vào Màn hình chính”</b>.</li>
+  <li>Bấm <b>“Thêm”</b> ở góc phải phía trên. Biểu tượng 6PAY sẽ hiện ngoài màn hình chính.</li></ol>`;
+ const andr=`<ol class="ins-steps">
+  <li>Mở link này bằng <b>Chrome</b>.</li>
+  <li>Bấm nút <b>⋮</b> (ba chấm) ở góc phải phía trên.</li>
+  <li>Chọn <b>“Cài đặt ứng dụng”</b> hoặc <b>“Thêm vào Màn hình chính”</b>.</li>
+  <li>Bấm <b>“Cài đặt”</b> hoặc <b>“Thêm”</b>. Biểu tượng 6PAY sẽ hiện ngoài màn hình chính.</li></ol>
+  <div class="guide-desc" style="margin:0 0 10px;">Trình duyệt Samsung Internet: bấm <b>☰</b> → <b>“Thêm trang vào”</b> → <b>“Màn hình chính”</b>.</div>`;
+ const btn=(insTab==='android'&&deferredInstall)?'<button class="btn primary" style="margin:0 0 8px;" onclick="doInstall()">📲 Cài đặt ngay</button>':'';
+ document.getElementById('installBox').innerHTML=`
+  <p style="font-weight:800;font-size:17px;margin-bottom:4px;">📲 Đưa 6PAY ra màn hình chính</p>
+  <div class="guide-desc" style="margin:0 0 12px;">Cài một lần, lần sau chỉ cần chạm vào biểu tượng để mở app.</div>
+  ${warn}
+  <div class="ins-tabs"><button class="ins-tab ${insTab==='ios'?'on':''}" onclick="insTab='ios';drawInstall()">iPhone (iOS)</button><button class="ins-tab ${insTab==='android'?'on':''}" onclick="insTab='android';drawInstall()">Android</button></div>
+  ${insTab==='ios'?ios:andr}${btn}
+  <button class="btn back" style="margin-top:0;" onclick="closeInstall()">Đã hiểu, đóng</button>`;
+}
+function doInstall(){
+ if(!deferredInstall)return;
+ deferredInstall.prompt();
+ deferredInstall.userChoice.finally(()=>{deferredInstall=null;closeInstall();});
+}
+function openInstall(){insTab=detectOS();drawInstall();document.getElementById('installModal').classList.add('open');}
+function closeInstall(){document.getElementById('installModal').classList.remove('open');}
+function maybeShowInstall(){
+ if(isStandalone()||locked)return;
+ let seen='';try{seen=localStorage.getItem(INSTALL_KEY)||'';}catch(e){}
+ if(seen)return;
+ try{localStorage.setItem(INSTALL_KEY,'1');}catch(e){}
+ openInstall();
+}
 const SCREENS={
  partner:scrPartner, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
  incomeCategories:scrIncomeCategories, incomeDetail:scrIncomeDetail,
@@ -1145,6 +1205,7 @@ fetchGuides();
 setTimeout(()=>{
  const sp=document.getElementById('bootSplash');
  if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),300); }
+ setTimeout(maybeShowInstall,500);
 },2700);
 if('serviceWorker' in navigator){
  window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{r.update().catch(()=>{});}).catch(()=>{});});

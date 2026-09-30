@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-31';
+const APP_VERSION='2026.09.30-32';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -342,6 +342,7 @@ body.home-white{background:#FFFFFF;}
  <div class="bv-bar">
   <button class="mini-btn" onclick="closeBook()">✕ Đóng</button>
   <div class="bv-title" id="bvTitle"></div>
+  <span id="bvSz" style="display:none;gap:6px;"><button class="mini-btn" onclick="bvSize(-1)">A−</button><button class="mini-btn" onclick="bvSize(1)">A+</button></span>
   <a class="mini-btn" id="bvOpen" href="#" target="_blank" rel="noopener">↗</a>
  </div>
  <div class="bv-body" id="bvBody"></div>
@@ -1093,57 +1094,102 @@ function scrBooks(){
    <span class="guide-cta">Đọc ›</span></div>`).join(''):'<div class="empty">Sách sẽ sớm được cập nhật.</div>';
  return screenWrap('📖 Đọc sách (miễn phí)',list);
 }
-let bvTok=0;
-function closeBook(){bvTok++;document.getElementById('bookView').classList.remove('open');document.getElementById('bvBody').innerHTML='';}
+const READ_KEY='6pay-read-v1', FS_KEY='6pay-fs-v1';
+function rdGet(){try{return JSON.parse(localStorage.getItem(READ_KEY))||{};}catch(e){return {};}}
+function rdSave(f,v){try{const d=rdGet();d[f]=v;localStorage.setItem(READ_KEY,JSON.stringify(d));}catch(e){}}
+let bvFs=17;try{bvFs=parseInt(localStorage.getItem(FS_KEY),10)||17;}catch(e){}
+function bvFsStep(d){bvFs=Math.min(40,Math.max(12,bvFs+d*2));try{localStorage.setItem(FS_KEY,String(bvFs));}catch(e){}return bvFs;}
+let bvTok=0,bvIo=null,bvOnSize=null;
+function bvSize(d){if(bvOnSize)bvOnSize(d);}
+function closeBook(){
+ bvTok++;bvOnSize=null;
+ if(bvIo){bvIo.disconnect();bvIo=null;}
+ const body=document.getElementById('bvBody');body.onscroll=null;body.innerHTML='';
+ document.getElementById('bookView').classList.remove('open');
+}
 function bvMsg(h){document.getElementById('bvBody').innerHTML='<div class="bv-msg">'+h+'</div>';}
 function openBook(i){
  const b=BOOKS[i]; if(!b)return;
- const tok=++bvTok, body=document.getElementById('bvBody');
+ const tok=++bvTok, body=document.getElementById('bvBody'), key=b.f;
  const url=new URL(encodeURI(b.f),location.href).href, ext=bookExt(b.f);
+ const saved=rdGet()[key]||{};
+ bvOnSize=null; body.onscroll=null;
+ if(bvIo){bvIo.disconnect();bvIo=null;}
  document.getElementById('bvTitle').textContent=b.t;
  document.getElementById('bvOpen').href=url;
+ document.getElementById('bvSz').style.display=(ext==='pdf'||ext==='epub'||ext==='txt'||ext==='md')?'flex':'none';
  body.scrollTop=0; body.innerHTML='';
  document.getElementById('bookView').classList.add('open');
  bvMsg('Đang tải sách...');
  const fail=()=>{if(tok===bvTok)bvMsg('Không mở được sách trong app. Hãy bấm nút ↗ ở góc phải phía trên để mở bằng trình duyệt.');};
  if(ext==='pdf'){
+  let zoom=saved.z||1, page=saved.p||1;
   lib(PDFJS+'pdf.min.js').then(()=>{
    pdfjsLib.GlobalWorkerOptions.workerSrc=PDFJS+'pdf.worker.min.js';
    return pdfjsLib.getDocument({url:url,cMapUrl:PDFJS+'cmaps/',cMapPacked:true}).promise;
   }).then(async pdf=>{
    if(tok!==bvTok)return;
-   body.innerHTML='';
-   const p1=await pdf.getPage(1), v1=p1.getViewport({scale:1}), w=body.clientWidth||360;
-   const io=new IntersectionObserver(es=>es.forEach(async e=>{
-    if(!e.isIntersecting)return; const d=e.target; io.unobserve(d);
-    const n=+d.dataset.n, pg=await pdf.getPage(n);
-    const sc=(w/pg.getViewport({scale:1}).width);
-    const vp=pg.getViewport({scale:sc*Math.min(window.devicePixelRatio||1,2)});
-    const c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
-    await pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
-    if(tok!==bvTok)return; d.style.minHeight='0'; d.appendChild(c);
-   }),{root:body,rootMargin:'800px 0px'});
-   for(let n=1;n<=pdf.numPages;n++){
-    const d=document.createElement('div'); d.className='bv-pg'; d.dataset.n=n;
-    d.style.minHeight=(w*v1.height/v1.width)+'px'; body.appendChild(d); io.observe(d);
-   }
+   const p1=await pdf.getPage(1), v1=p1.getViewport({scale:1});
+   const draw=()=>{
+    if(bvIo){bvIo.disconnect();bvIo=null;}
+    body.onscroll=null; body.innerHTML='';
+    const w=body.clientWidth||360, W=w*zoom, H=W*v1.height/v1.width;
+    bvIo=new IntersectionObserver(es=>es.forEach(async e=>{
+     const d=e.target;
+     if(!e.isIntersecting){d.dataset.r='';d.innerHTML='';return;}
+     if(d.dataset.r==='1')return;
+     d.dataset.r='1'; const k=(+d.dataset.k||0)+1; d.dataset.k=k;
+     const pg=await pdf.getPage(+d.dataset.n);
+     const sc=W/pg.getViewport({scale:1}).width;
+     const out=Math.min(Math.max(window.devicePixelRatio||1,2),2600/W); // vẽ nét gấp đôi màn hình, tối đa 2600px ngang
+     const vp=pg.getViewport({scale:sc*out});
+     const c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
+     await pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+     if(tok!==bvTok||d.dataset.k!=k||d.dataset.r!=='1')return;
+     d.innerHTML=''; d.appendChild(c);
+    }),{root:body,rootMargin:'600px 0px'});
+    for(let n=1;n<=pdf.numPages;n++){
+     const d=document.createElement('div'); d.className='bv-pg'; d.dataset.n=n;
+     d.style.width=W+'px'; d.style.minHeight=H+'px'; body.appendChild(d); bvIo.observe(d);
+    }
+    body.scrollLeft=0;
+    if(page>1&&body.children[page-1])body.scrollTop=body.children[page-1].offsetTop;
+    let t=0;
+    body.onscroll=()=>{clearTimeout(t);t=setTimeout(()=>{
+     const y=body.scrollTop+20,c=body.children;let k=0;
+     while(k+1<c.length&&c[k+1].offsetTop<=y)k++;
+     page=k+1; rdSave(key,{p:page,z:zoom});
+    },300);};
+   };
+   bvOnSize=d=>{zoom=Math.min(3,Math.max(1,zoom+d*0.5));rdSave(key,{p:page,z:zoom});draw();};
+   draw();
   }).catch(fail);
  }else if(ext==='epub'){
-  Promise.all([lib('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js')]).then(()=>lib('https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.3.93/epub.min.js'))
+  lib('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js').then(()=>lib('https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.3.93/epub.min.js'))
   .then(()=>fetch(url)).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer();}).then(buf=>{
    if(tok!==bvTok)return;
    body.innerHTML='<div class="bv-epub" id="bvEpub"></div>';
    const bk=ePub(buf);
    const rd=bk.renderTo('bvEpub',{width:'100%',height:'100%',flow:'scrolled',manager:'continuous'});
-   rd.themes.default({body:{'line-height':'1.7 !important','padding':'0 14px !important','font-size':'17px !important'}});
-   return rd.display();
+   rd.themes.default({body:{'line-height':'1.7 !important','padding':'0 14px !important'}});
+   const applyFs=()=>rd.themes.override('font-size',bvFs+'px',true);
+   applyFs();
+   rd.on('relocated',loc=>{if(loc&&loc.start&&tok===bvTok)rdSave(key,{c:loc.start.cfi});});
+   bvOnSize=d=>{bvFsStep(d);applyFs();};
+   return rd.display(saved.c||undefined);
   }).catch(fail);
  }else if(ext==='txt'||ext==='md'){
   fetch(url).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer();}).then(buf=>{
    if(tok!==bvTok)return;
-   let t; // ưu tiên UTF-8, nếu file cũ mã hóa Windows thì đọc bằng windows-1258 để không lỗi dấu
+   let t;
    try{t=new TextDecoder('utf-8',{fatal:true}).decode(buf);}catch(e){t=new TextDecoder('windows-1258').decode(buf);}
-   body.innerHTML='<div class="bv-txt"></div>'; body.firstChild.textContent=t.replace(/^\uFEFF/,'');
+   body.innerHTML='<div class="bv-txt"></div>'; const el=body.firstChild;
+   el.textContent=t.replace(/^\uFEFF/,''); el.style.fontSize=bvFs+'px';
+   const span=()=>Math.max(1,body.scrollHeight-body.clientHeight);
+   if(saved.r)body.scrollTop=saved.r*span();
+   let tm=0;
+   body.onscroll=()=>{clearTimeout(tm);tm=setTimeout(()=>rdSave(key,{r:body.scrollTop/span()}),300);};
+   bvOnSize=d=>{const r=body.scrollTop/span();el.style.fontSize=bvFsStep(d)+'px';body.scrollTop=r*span();};
   }).catch(fail);
  }else if(['doc','docx','xls','xlsx','ppt','pptx','odt','rtf'].indexOf(ext)>-1){
   body.innerHTML='<iframe src="https://docs.google.com/viewer?embedded=true&url='+encodeURIComponent(url)+'"></iframe>';

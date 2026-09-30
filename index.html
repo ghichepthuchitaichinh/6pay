@@ -204,8 +204,8 @@ body.home-white{background:#FFFFFF;}
 .home-wrap .home-brand{font-size:34px;}
 .home-wrap .home-header .brand-sub{font-size:14px;margin-top:2px;}
 .home-wrap .card{min-height:62px;padding:12px 18px;margin-bottom:10px;border-radius:16px;border:1px solid transparent;}
-.home-wrap .card-label{font-size:15px;font-weight:600;}
-.home-wrap .card-amount{font-size:20px;font-weight:800;}
+.home-wrap .card-label{font-size:clamp(16.7px,2.4vh,18.2px);}
+.home-wrap .card-amount{font-size:clamp(19.7px,3vh,22.7px);}
 .home-wrap .card.balance{background:#E8F0FC;border-color:#D3E2F8;}
 .home-wrap .card.balance .card-label{color:#1F4E8C;}
 .home-wrap .card.balance .card-amount.pos{color:#1B3F73;}
@@ -306,7 +306,7 @@ body.home-white{background:#FFFFFF;}
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-7';
+const APP_VERSION='2026.09.30-8';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},

@@ -258,6 +258,15 @@ body.home-white{background:#FFFFFF;}
 .res-btn.v{color:var(--pos);}
 .res-btn.x{color:var(--neg);}
 .res-btn.n{color:var(--text-soft);opacity:.4;}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:15px;}
+.cal-head .mini-btn{font-size:18px;padding:2px 14px;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-w{font-size:11px;color:var(--text-soft);padding:2px 0;}
+.cal-d{padding:8px 0;border-radius:10px;font-size:14px;font-weight:600;color:var(--text-soft);cursor:pointer;}
+.cal-d.done{color:var(--pos);background:var(--income-bg);font-weight:800;}
+.cal-d.fail{color:var(--neg);background:var(--expense-bg);font-weight:800;}
+.cal-d.today{outline:2px solid var(--accent);outline-offset:-2px;}
+.cal-sum{font-size:12.5px;margin:10px 0 12px;}
 </style>
 </head>
 <body>
@@ -281,6 +290,9 @@ body.home-white{background:#FFFFFF;}
   <p style="font-weight:700;margin-bottom:12px;">Chọn cách nhập số tiền</p>
   <div id="amtModalBody"></div>
  </div>
+</div>
+<div class="modal-overlay" id="calModal" onclick="if(event.target===this)closeCal()">
+ <div class="modal-box" id="calBox"></div>
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
@@ -976,13 +988,20 @@ function planSave(){try{localStorage.setItem(PLAN_KEY,JSON.stringify(plan));}cat
 function planRows(){const a=plan.data[planDay]||[];const r=[];for(let i=0;i<Math.max(plan.rows,a.length);i++)r.push(a[i]||{s:'',e:'',c:'',r:''});return r;}
 function planSet(i,f,v){const a=plan.data[planDay]=plan.data[planDay]||[];while(a.length<=i)a.push({s:'',e:'',c:'',r:''});a[i][f]=v;planSave();planCnt();}
 // Số ngày hoàn thành: ngày có ít nhất 1 dòng kế hoạch và mọi dòng có nội dung đều được đánh dấu v
-function planDone(){let n=0;for(const k in plan.data){const u=(plan.data[k]||[]).filter(x=>x&&(x.s||x.e||x.c));if(u.length&&u.every(x=>x.r==='v'))n++;}return n;}
-function planCnt(){const e=document.getElementById('plan-cnt');if(e)e.textContent='v '+planDone()+' ngày';}
+const RES_IC={v:'✅',x:'❌','':'○'};
+// Trạng thái ngày: '' = chưa có kế hoạch, 'done' = mọi dòng có nội dung đều ✅, 'fail' = có kế hoạch nhưng chưa hoàn thành hết
+function planStatus(k){
+ const u=(plan.data[k]||[]).filter(x=>x&&(x.s||x.e||x.c));
+ if(!u.length)return '';
+ return u.every(x=>x.r==='v')?'done':'fail';
+}
+function planDone(){let n=0;for(const k in plan.data)if(planStatus(k)==='done')n++;return n;}
+function planCnt(){const e=document.getElementById('plan-cnt');if(e)e.textContent='✅ '+planDone()+' ngày ›';}
 function planToggle(i,el){
  const cur=planRows()[i].r;
  const nx=cur==='v'?'x':(cur==='x'?'':'v');
  planSet(i,'r',nx);
- el.className='res-btn '+(nx||'n');el.textContent=nx||'·';
+ el.className='res-btn '+(nx||'n');el.textContent=RES_IC[nx];
 }
 function scrPlanner(){
  const q=v=>esc(v).replace(/"/g,'&quot;');
@@ -990,13 +1009,49 @@ function scrPlanner(){
   <td><input type="time" value="${x.s}" onchange="planSet(${i},'s',this.value)"></td>
   <td><input type="time" value="${x.e}" onchange="planSet(${i},'e',this.value)"></td>
   <td><input type="text" value="${q(x.c)}" oninput="planSet(${i},'c',this.value)"></td>
-  <td><button class="res-btn ${r||'n'}" onclick="planToggle(${i},this)">${r||'·'}</button></td></tr>`;}).join('');
+  <td><button class="res-btn ${r||'n'}" onclick="planToggle(${i},this)">${RES_IC[r]}</button></td></tr>`;}).join('');
  return screenWrap('📅 Kế hoạch trong ngày',`
   <div class="form-row tight"><label>Ngày</label><input type="date" value="${planDay}" onchange="planDay=this.value||dayKey();render();"></div>
   <table class="plan"><thead><tr><th>Bắt đầu</th><th>Kết thúc</th><th>Nội dung thực hiện</th><th>Kết quả</th></tr></thead><tbody>${rows}</tbody></table>
-  <div class="guide-desc" style="margin-top:8px;">Chạm vào cột Kết quả để chọn: <b class="pos">v</b> hoàn thành, <b class="neg">x</b> không hoàn thành. Một ngày chỉ được tính là hoàn thành khi mọi dòng kế hoạch trong ngày đều là <b class="pos">v</b>.</div>`,
-  '',`<span id="plan-cnt" class="pos" style="font-size:15px;font-weight:800;">v ${planDone()} ngày</span>`);
+  <div class="guide-desc" style="margin-top:8px;">Chạm vào cột Kết quả để chọn: ✅ hoàn thành, ❌ không hoàn thành. Một ngày chỉ được tính là hoàn thành khi mọi dòng kế hoạch trong ngày đều là ✅. Chạm vào ✅ ở góc phải để xem lịch.</div>`,
+  '',`<button class="mini-btn" id="plan-cnt" onclick="openCal()" style="font-size:14px;font-weight:800;color:var(--pos);padding:5px 10px;">✅ ${planDone()} ngày ›</button>`);
 }
+
+// ===== Cửa sổ lịch theo dõi ngày hoàn thành =====
+let calM={y:0,m:0},calX=0;
+function openCal(){const d=new Date();calM={y:d.getFullYear(),m:d.getMonth()};drawCal();document.getElementById('calModal').classList.add('open');}
+function closeCal(){document.getElementById('calModal').classList.remove('open');}
+function calMove(n){
+ calM.m+=n;
+ if(calM.m<0){calM.m=11;calM.y--;}
+ if(calM.m>11){calM.m=0;calM.y++;}
+ drawCal();
+}
+function calPick(k){planDay=k;closeCal();render();}
+function drawCal(){
+ const y=calM.y,m=calM.m;
+ const off=(new Date(y,m,1).getDay()+6)%7; // thứ Hai đứng đầu tuần
+ const days=new Date(y,m+1,0).getDate();
+ const today=dayKey();
+ let cells='',ok=0,bad=0;
+ for(let i=0;i<off;i++)cells+='<div></div>';
+ for(let d=1;d<=days;d++){
+  const k=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+  const s=planStatus(k);
+  if(s==='done')ok++; else if(s==='fail')bad++;
+  cells+=`<div class="cal-d ${s}${k===today?' today':''}" onclick="calPick('${k}')">${d}</div>`;
+ }
+ document.getElementById('calBox').innerHTML=`
+  <div class="cal-head"><button class="mini-btn" onclick="calMove(-1)">‹</button><b>Tháng ${m+1}/${y}</b><button class="mini-btn" onclick="calMove(1)">›</button></div>
+  <div class="cal-grid">${['T2','T3','T4','T5','T6','T7','CN'].map(w=>`<div class="cal-w">${w}</div>`).join('')}${cells}</div>
+  <div class="cal-sum"><span class="pos">${ok} ngày hoàn thành</span> · <span class="neg">${bad} ngày chưa hoàn thành</span></div>
+  <button class="btn back" style="margin-top:0;" onclick="closeCal()">Đóng</button>`;
+}
+(function(){
+ const cb=document.getElementById('calBox');
+ cb.addEventListener('touchstart',e=>{calX=e.changedTouches[0].clientX;},{passive:true});
+ cb.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-calX;if(Math.abs(dx)>50)calMove(dx<0?1:-1);},{passive:true});
+})();
 function scrPlanSettings(){
  return screenWrap('📅 Cài đặt Kế hoạch',`
   <div class="pct-row"><span>Số dòng của bảng</span><div class="pct-input"><input type="number" min="1" max="30" value="${plan.rows}" onchange="plan.rows=Math.min(30,Math.max(1,parseInt(this.value,10)||8));this.value=plan.rows;planSave();"></div></div>

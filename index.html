@@ -296,7 +296,7 @@ body.home-white{background:#FFFFFF;}
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-2';
+const APP_VERSION='2026.09.30-3';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},
@@ -1013,7 +1013,7 @@ function scrPlanner(){
  return screenWrap('📅 Kế hoạch trong ngày',`
   <div class="form-row tight"><label>Ngày</label><input type="date" value="${planDay}" onchange="planDay=this.value||dayKey();render();"></div>
   <table class="plan"><thead><tr><th>Bắt đầu</th><th>Kết thúc</th><th>Nội dung thực hiện</th><th>Kết quả</th></tr></thead><tbody>${rows}</tbody></table>
-  <div class="guide-desc" style="margin-top:8px;">Chạm vào cột Kết quả để chọn: ✅ hoàn thành, ❌ không hoàn thành. Một ngày chỉ được tính là hoàn thành khi mọi dòng kế hoạch trong ngày đều là ✅. Chạm vào ✅ ở góc phải để xem lịch.</div>`,
+  <div class="guide-desc" style="margin-top:8px;">Chạm vào cột Kết quả để chọn: ✅ hoàn thành, ❌ không hoàn thành thêm một chạm. Một ngày chỉ được tính là hoàn thành khi mọi dòng kế hoạch trong ngày đều là ✅. Chạm vào ✅ ở góc phải để xem lịch.</div>`,
   '',`<button class="mini-btn" id="plan-cnt" onclick="openCal()" style="font-size:14px;font-weight:800;color:var(--pos);padding:5px 10px;">✅ ${planDone()} ngày ›</button>`);
 }
 

@@ -279,8 +279,8 @@ body.home-white{background:#FFFFFF;}
 .home-wrap .home-header .brand-sub{font-size:clamp(13px,1.9vh,16px);margin-top:4px;}
 .home-wrap .star-line{margin-top:clamp(4px,.9vh,8px);font-size:clamp(13px,1.9vh,15px);}
 .home-wrap .card{flex:1 1 0;min-height:clamp(46px,6.8vh,58px);max-height:66px;padding:0 18px;margin-bottom:clamp(6px,1vh,9px);border-radius:15px;}
-.home-wrap .card-label{font-size:clamp(16.7px,2.4vh,18.2px);font-weight:800;}
-.home-wrap .card-amount{font-size:clamp(19.7px,3vh,22.7px);font-weight:800;}
+.home-wrap .card-label{font-size:clamp(16.7px,2.4vh,18.2px);}
+.home-wrap .card-amount{font-size:clamp(19.7px,3vh,22.7px);}
 </style>
 </head>
 <body>
@@ -582,7 +582,7 @@ function scrHome(){
    <div class="card-amount">${fmt(totalExpense())} ₫</div>
   </div>
   <div class="card quiz" onclick="push('extra')">
-   <div class="card-label">Mở rộng</div>
+   <div class="card-label">Tiện ích</div>
    <div class="card-amount">›</div>
   </div>
   <div class="card partner" onclick="push('partner')">
@@ -614,12 +614,12 @@ function scrLogin(){
    <button class="btn primary" style="margin-top:14px;" onclick="openConfirm('Bạn có chắc muốn đăng xuất không?',function(){logoutAccount()})">Đăng xuất</button>
   `);
  }
- return screenWrap('Đăng nhập / Đăng ký',`
+ return screenWrap('Đăng ký / Đăng nhập',`
   <div class="form-row"><label>Tên người dùng</label><input type="text" id="auth-name" placeholder="Nguyễn Văn A" value="${acc?esc(acc.name||''):''}"></div>
   <div class="form-row"><label>Số điện thoại</label><input type="tel" id="auth-phone" placeholder="09xxxxxxxx" value="${acc?esc(acc.phone||''):''}"></div>
   <div class="form-row"><label>Mật khẩu</label><input type="password" id="auth-pass" placeholder="Mật khẩu"></div>
   <button class="btn primary" onclick="loginOrRegister()">Xác nhận</button>
-  <div class="guide-desc" style="margin-top:16px;">App không bắt buộc đăng nhập hay đăng ký khi sử dụng. Nếu bạn không muốn người lạ xem được nội dung thu chi trên điện thiết bị của bạn thì hãy đăng ký</div>
+  <div class="guide-desc" style="margin-top:16px;">Nội dung này không bắt buộc. Tuy nhiên, hãy đăng ký để tránh người lạ xem nhật ký chi tiêu của bạn</div>
  `);
 }
 function scrSettings(){
@@ -984,10 +984,10 @@ function streakTick(){
 }
 function streakHtml(){const s=streakGet(),on=s.last===dayKey();return `<span class="streak ${on?'on':'off'}"><span class="fl">🔥</span> <span class="sn">${s.count} ngày</span></span>`;}
 
-// ===== 6Pay mở rộng =====
+// ===== Tiện ích 6Pay =====
 function scrExtra(){
- return screenWrap('🧩 6Pay mở rộng',`
-  <div class="list-item clickable" onclick="push('planner')"><span>📅 Kế hoạch trong ngày</span><span class="guide-cta">›</span></div>
+ return screenWrap('Tiện ích 6Pay',`
+  <div class="list-item clickable" onclick="push('planner')"><span>📅 Quản lý thời gian</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>`);
 }
 

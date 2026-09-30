@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-40';
+const APP_VERSION='2026.09.30-41';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1106,7 +1106,23 @@ const BOOKS=[
 ];
 const PDFJS='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
 const _libs={};
-function lib(src){return _libs[src]||(_libs[src]=new Promise((ok,ko)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=ko;document.head.appendChild(s);}));}
+function lib(srcs){
+  if(!Array.isArray(srcs))srcs=[srcs];
+  const key=srcs[0];
+  if(_libs[key])return _libs[key];
+  const one=src=>new Promise((ok,ko)=>{
+    const s=document.createElement('script');
+    s.src=src;s.onload=ok;
+    s.onerror=()=>{s.remove();ko(new Error('Không tải được '+src));};
+    document.head.appendChild(s);
+  });
+  return _libs[key]=(async()=>{
+    let last;
+    for(const s of srcs){try{return await one(s);}catch(e){last=e;}}
+    delete _libs[key];
+    throw last;
+  })();
+}
 function bookExt(f){return (f.split('?')[0].split('.').pop()||'').toLowerCase();}
 function scrBooks(){
  const list=BOOKS.length?BOOKS.map((b,i)=>`
@@ -1189,8 +1205,8 @@ function openBook(i){
   (async()=>{
    let st='tải thư viện JSZip / epub.js';
    try{
-    await lib('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
-    await lib('https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.3.93/epub.min.js');
+    await lib(['https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js','https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js']);
+    await lib(['https://cdn.jsdelivr.net/npm/epubjs@0.3.93/dist/epub.min.js','https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.3.93/epub.min.js']);
     if(tok!==bvTok)return;
     st='tải file sách';
     const r=await fetch(url);

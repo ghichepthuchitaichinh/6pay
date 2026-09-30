@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-26';
+const APP_VERSION='2026.09.30-27';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -278,9 +278,9 @@ body.home-white{background:#FFFFFF;}
 .home-wrap .home-brand{font-size:clamp(44px,7.6vh,66px);line-height:1.05;letter-spacing:.04em;}
 .home-wrap .home-header .brand-sub{font-size:clamp(13px,1.9vh,16px);margin-top:4px;}
 .home-wrap .star-line{margin-top:clamp(4px,.9vh,8px);font-size:clamp(13px,1.9vh,15px);}
-.home-wrap .card{flex:1 1 0;min-height:clamp(46px,6.8vh,58px);max-height:66px;padding:0 18px;margin-bottom:clamp(6px,1vh,9px);border-radius:15px;}
-.home-wrap .card-label{font-size:clamp(16.7px,2.4vh,18.2px);}
-.home-wrap .card-amount{font-size:clamp(19.7px,3vh,22.7px);}
+.home-wrap .card{flex:1 1 0;min-height:clamp(54px,7.8vh,66px);max-height:76px;padding:0 18px;margin-bottom:clamp(6px,1vh,9px);border-radius:15px;}
+.home-wrap .card-label{font-size:clamp(17.5px,2.6vh,19.5px);}
+.home-wrap .card-amount{font-size:clamp(23px,3.6vh,27px);line-height:1.2;}
 .home-wrap .home-header .brand-sub{font-weight:700;}
 .lock-dots{text-align:center;font-size:26px;font-weight:800;letter-spacing:6px;padding:10px 12px;min-height:26px;line-height:1.4;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);}
 .lock-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 12px;}
@@ -292,6 +292,9 @@ body.home-white{background:#FFFFFF;}
 .ins-steps{text-align:left;font-size:14.5px;line-height:1.55;margin:0 0 12px;padding-left:22px;}
 .ins-steps li{margin-bottom:6px;}
 .ins-warn{text-align:left;font-size:13.5px;line-height:1.5;background:#FFF3D9;color:#7A4B00;border-radius:12px;padding:10px 12px;margin-bottom:12px;}
+.home-wrap .card.balance .card-amount,
+.home-wrap .card.income .card-amount,
+.home-wrap .card.expense .card-amount{font-weight:400;}
 </style>
 </head>
 <body>

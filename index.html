@@ -245,12 +245,19 @@ body.home-white{background:#FFFFFF;}
 .streak .sn{font-weight:800;color:#E8590C;}
 .streak.off .fl{filter:grayscale(1);opacity:.3;}
 .streak.off .sn{color:var(--text-soft);opacity:.4;}
-.plan{border-collapse:collapse;width:100%;font-size:13px;}
-.plan th{font-size:11.5px;color:var(--text-soft);text-align:left;padding:4px;}
+.plan{border-collapse:collapse;width:100%;table-layout:fixed;font-size:13px;}
+.plan th{font-size:11px;color:var(--text-soft);text-align:center;padding:4px 2px;}
+.plan th:nth-child(1),.plan th:nth-child(2){width:16%;}
+.plan th:nth-child(4){width:13%;}
 .plan td{padding:2px;border:1px solid var(--border);}
-.plan input{width:100%;box-sizing:border-box;font:inherit;font-size:13px;padding:7px 4px;border:none;background:transparent;color:var(--text);}
-.plan td:nth-child(1),.plan td:nth-child(2){min-width:92px;}
-.plan td:nth-child(3),.plan td:nth-child(4){min-width:120px;}
+.plan input{width:100%;min-width:0;box-sizing:border-box;font:inherit;font-size:12px;padding:7px 1px;border:none;background:transparent;color:var(--text);}
+.plan input[type=time]{text-align:center;padding:7px 0;}
+.plan input[type=time]::-webkit-calendar-picker-indicator{display:none;}
+.plan td:nth-child(3) input{font-size:13px;padding:7px 4px;}
+.res-btn{width:100%;height:32px;border:none;background:transparent;font:inherit;font-size:20px;font-weight:800;cursor:pointer;line-height:1;}
+.res-btn.v{color:var(--pos);}
+.res-btn.x{color:var(--neg);}
+.res-btn.n{color:var(--text-soft);opacity:.4;}
 </style>
 </head>
 <body>
@@ -277,7 +284,7 @@ body.home-white{background:#FFFFFF;}
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-1';
+const APP_VERSION='2026.09.30-2';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},
@@ -595,7 +602,7 @@ function scrSettings(){
  return screenWrap('Cài đặt',`
   <div class="pct-row mode-row" onclick="openAmtModal()"><span>💵 Cách nhập số tiền</span><span id="amt-mode-label" style="color:var(--accent);font-weight:600;">${amtModeText()} ›</span></div>
   <div class="pct-row mode-row" onclick="push('ratios')"><span>🍯 Tỷ lệ phân bổ 6 ví</span><span style="color:var(--accent);font-weight:600;">›</span></div>
-  <div class="pct-row mode-row" onclick="push('planSettings')"><span>📅 Cài đặt lịch kế hoạch trong ngày</span><span style="color:var(--accent);font-weight:600;">›</span></div>`);
+  <div class="pct-row mode-row" onclick="push('planSettings')"><span>📅 Cài đặt Kế hoạch trong ngày</span><span style="color:var(--accent);font-weight:600;">›</span></div>`);
 }
 function scrRatios(){
  const enjoy=pctEnjoy(); const over=enjoy<0;
@@ -956,7 +963,7 @@ function streakHtml(){const s=streakGet(),on=s.last===dayKey();return `<span cla
 // ===== 6Pay mở rộng =====
 function scrExtra(){
  return screenWrap('🧩 6Pay mở rộng',`
-  <div class="list-item clickable" onclick="push('planner')"><span>📅 Lịch kế hoạch trong ngày</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable" onclick="push('planner')"><span>📅 Kế hoạch trong ngày</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>`);
 }
 
@@ -967,22 +974,33 @@ try{const p=JSON.parse(localStorage.getItem(PLAN_KEY));if(p&&p.data)plan=p;}catc
 let planDay=dayKey();
 function planSave(){try{localStorage.setItem(PLAN_KEY,JSON.stringify(plan));}catch(e){}}
 function planRows(){const a=plan.data[planDay]||[];const r=[];for(let i=0;i<Math.max(plan.rows,a.length);i++)r.push(a[i]||{s:'',e:'',c:'',r:''});return r;}
-function planSet(i,f,v){const a=plan.data[planDay]=plan.data[planDay]||[];while(a.length<=i)a.push({s:'',e:'',c:'',r:''});a[i][f]=v;planSave();}
+function planSet(i,f,v){const a=plan.data[planDay]=plan.data[planDay]||[];while(a.length<=i)a.push({s:'',e:'',c:'',r:''});a[i][f]=v;planSave();planCnt();}
+// Số ngày hoàn thành: ngày có ít nhất 1 dòng kế hoạch và mọi dòng có nội dung đều được đánh dấu v
+function planDone(){let n=0;for(const k in plan.data){const u=(plan.data[k]||[]).filter(x=>x&&(x.s||x.e||x.c));if(u.length&&u.every(x=>x.r==='v'))n++;}return n;}
+function planCnt(){const e=document.getElementById('plan-cnt');if(e)e.textContent='v '+planDone()+' ngày';}
+function planToggle(i,el){
+ const cur=planRows()[i].r;
+ const nx=cur==='v'?'x':(cur==='x'?'':'v');
+ planSet(i,'r',nx);
+ el.className='res-btn '+(nx||'n');el.textContent=nx||'·';
+}
 function scrPlanner(){
  const q=v=>esc(v).replace(/"/g,'&quot;');
- const rows=planRows().map((x,i)=>`<tr>
+ const rows=planRows().map((x,i)=>{const r=(x.r==='v'||x.r==='x')?x.r:'';return `<tr>
   <td><input type="time" value="${x.s}" onchange="planSet(${i},'s',this.value)"></td>
   <td><input type="time" value="${x.e}" onchange="planSet(${i},'e',this.value)"></td>
   <td><input type="text" value="${q(x.c)}" oninput="planSet(${i},'c',this.value)"></td>
-  <td><input type="text" value="${q(x.r)}" oninput="planSet(${i},'r',this.value)"></td></tr>`).join('');
- return screenWrap('📅 Lịch kế hoạch trong ngày',`
+  <td><button class="res-btn ${r||'n'}" onclick="planToggle(${i},this)">${r||'·'}</button></td></tr>`;}).join('');
+ return screenWrap('📅 Kế hoạch trong ngày',`
   <div class="form-row tight"><label>Ngày</label><input type="date" value="${planDay}" onchange="planDay=this.value||dayKey();render();"></div>
-  <div style="overflow-x:auto;"><table class="plan"><thead><tr><th>Bắt đầu</th><th>Kết thúc</th><th>Nội dung thực hiện</th><th>Kết quả thực hiện</th></tr></thead><tbody>${rows}</tbody></table></div>`);
+  <table class="plan"><thead><tr><th>Bắt đầu</th><th>Kết thúc</th><th>Nội dung thực hiện</th><th>Kết quả</th></tr></thead><tbody>${rows}</tbody></table>
+  <div class="guide-desc" style="margin-top:8px;">Chạm vào cột Kết quả để chọn: <b class="pos">v</b> hoàn thành, <b class="neg">x</b> không hoàn thành. Một ngày chỉ được tính là hoàn thành khi mọi dòng kế hoạch trong ngày đều là <b class="pos">v</b>.</div>`,
+  '',`<span id="plan-cnt" class="pos" style="font-size:15px;font-weight:800;">v ${planDone()} ngày</span>`);
 }
 function scrPlanSettings(){
- return screenWrap('📅 Cài đặt lịch kế hoạch',`
+ return screenWrap('📅 Cài đặt Kế hoạch',`
   <div class="pct-row"><span>Số dòng của bảng</span><div class="pct-input"><input type="number" min="1" max="30" value="${plan.rows}" onchange="plan.rows=Math.min(30,Math.max(1,parseInt(this.value,10)||8));this.value=plan.rows;planSave();"></div></div>
-  <button class="btn primary" onclick="openConfirm('Xóa toàn bộ nội dung lịch của ngày đang chọn?',function(){delete plan.data[planDay];planSave();render();})">🗑 Xóa lịch ngày đang chọn</button>`);
+  <button class="btn primary" onclick="openConfirm('Xóa toàn bộ nội dung kế hoạch của ngày đang chọn?',function(){delete plan.data[planDay];planSave();render();})">🗑 Xóa kế hoạch ngày đang chọn</button>`);
 }
 const SCREENS={
  partner:scrPartner, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,

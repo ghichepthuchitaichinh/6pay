@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-42';
+const APP_VERSION='2026.09.30-43';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -316,10 +316,15 @@ body.home-white{background:#FFFFFF;}
 .debt-form{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:12px;}
 .debt-late{color:var(--neg);font-weight:700;}
   /* ===== Màn hình chính: thu nhỏ chữ, số tiền và các ô ===== */
-.home-wrap .card{min-height:clamp(46px,6.6vh,56px);max-height:68px;margin-bottom:clamp(5px,.9vh,8px);}
-.home-wrap .card-label{font-size:clamp(16px,2.3vh,18px);}
-.home-wrap .card-amount{font-size:clamp(20px,3.2vh,24px);}
+.home-wrap .card{min-height:clamp(38px,5.4vh,46px);max-height:54px;margin-bottom:clamp(4px,.7vh,6px);border-radius:14px;}
+.home-wrap .card-label{font-size:clamp(15px,2.1vh,17px);}
+.home-wrap .card-amount{font-size:clamp(18px,2.9vh,22px);}
 .home-wrap .home-quote{padding-top:4px;}
+  /* ===== Tiện ích: nới rộng các mục ===== */
+.util-item{padding:18px 16px;margin-bottom:12px;font-size:16.5px;font-weight:600;border-radius:16px;}
+@media (max-height:700px){
+ .util-item{padding:15px 14px;margin-bottom:10px;}
+}
 </style>
 </head>
 <body>
@@ -1090,10 +1095,11 @@ function streakHtml(){const s=streakGet(),on=s.last===dayKey();return `<span cla
 // ===== Tiện ích 6Pay =====
 function scrExtra(){
  return screenWrap('Tiện ích 6Pay',`
-  <div class="list-item clickable" onclick="openPlanner()"><span>📅 Quản lý thời gian</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable" onclick="push('debts')"><span>💳 Quản lý khoản nợ</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable" onclick="push('books')"><span>📖 Đọc sách (miễn phí)</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>`);
+  <div class="list-item clickable util-item" onclick="openPlanner()"><span>📅 Quản lý thời gian</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="push('debts')"><span>💳 Quản lý khoản nợ</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="push('books')"><span>📖 Đọc sách (miễn phí)</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>`);
+}
 }
 // ===== Đọc sách miễn phí =====
 // Thêm sách: thêm 1 dòng vào BOOKS. f = đường dẫn file (nên để trong thư mục books/ cùng chỗ với index.html)

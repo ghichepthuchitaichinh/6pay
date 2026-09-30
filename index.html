@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-20';
+const APP_VERSION='2026.09.30-21';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -481,7 +481,36 @@ function loginOrRegister(){
  }
  else{openConfirm('Số điện thoại hoặc mật khẩu không đúng.',function(){});}
 }
-function logoutAccount(){loggedIn=false; render();}
+let locked=!!getAccount(); // có tài khoản thì khóa ngay khi mở app
+function logoutAccount(){loggedIn=false;locked=true;stack=[{id:'home'}];render();}
+function unlockApp(){
+ const acc=getAccount(),el=document.getElementById('lock-pass');
+ if(!acc){locked=false;render();return;}
+ if((el.value||'')===acc.pass){locked=false;loggedIn=true;render();}
+ else{
+  el.value='';el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),300);
+  document.getElementById('lock-err').textContent='Mật khẩu không đúng.';
+ }
+}
+function forgotPass(){
+ openConfirm('Nếu quên mật khẩu, cách duy nhất là xóa toàn bộ dữ liệu trên máy này (thu chi, tài khoản, kế hoạch...). Bạn có chắc muốn xóa không?',function(){
+  [ACCOUNT_KEY,STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,QZ_KEY,CLICK_LOG_KEY].forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
+  location.reload();
+ });
+}
+function scrLock(){
+ const acc=getAccount()||{};
+ return `<div class="screen-flex" style="justify-content:center;">
+  <div style="text-align:center;font-size:64px;line-height:1;margin-bottom:6px;">🔐</div>
+  <div class="brand-title" style="text-align:center;margin-bottom:4px;">6PAY</div>
+  <div class="center-sub">Nhập mật khẩu để tiếp tục</div>
+  <div class="form-row"><label>Tên đăng nhập</label><input type="text" value="${esc(acc.name||acc.phone||'').replace(/"/g,'&quot;')}" readonly></div>
+  <div class="form-row"><label>Mật khẩu</label><input type="password" id="lock-pass" placeholder="Mật khẩu" autocomplete="current-password" onkeydown="if(event.key==='Enter')unlockApp()"></div>
+  <div class="err-msg" id="lock-err" style="text-align:center;min-height:18px;"></div>
+  <button class="btn primary" onclick="unlockApp()">Mở khóa</button>
+  <button class="mini-btn" style="align-self:center;margin-top:16px;" onclick="forgotPass()">Quên mật khẩu?</button>
+ </div>`;
+}
 
 function fmt(n){return Math.round(n).toLocaleString('vi-VN');}
 function parseAmount(v){const d=(v||'').replace(/[^\d]/g,'');return d?parseInt(d,10):0;}

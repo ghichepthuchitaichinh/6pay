@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-21';
+const APP_VERSION='2026.09.30-22';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1108,18 +1108,16 @@ const SCREENS={
 function render(){
  const top=stack[stack.length-1];
  if(qz.timer&&top.id!=='quiz'){clearInterval(qz.timer);qz.timer=0;}
+ if(locked){
+  document.body.classList.remove('home-white');
+  if(!document.getElementById('lock-pass')){ // không vẽ lại khi đang gõ mật khẩu
+   document.getElementById('app').innerHTML=scrLock();
+   setTimeout(()=>{const e=document.getElementById('lock-pass');if(e)e.focus();},50);
+  }
+  return;
+ }
  document.body.classList.toggle('home-white',top.id==='home');
  document.getElementById('app').innerHTML = top.id==='home' ? scrHome() : SCREENS[top.id](top.opts||{});
-}
-streakTick();
-render();
-fetchGuides();
-setTimeout(()=>{
- const sp=document.getElementById('bootSplash');
- if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),300); }
-},2700);
-if('serviceWorker' in navigator){
- window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{r.update().catch(()=>{});}).catch(()=>{});});
 }
 // Tự kiểm tra bản mới: so APP_VERSION đang chạy với bản trên GitHub, khác thì tải lại (chỉ khi đang ở trang chủ, mỗi bản chỉ tải lại 1 lần)
 function checkUpdate(){

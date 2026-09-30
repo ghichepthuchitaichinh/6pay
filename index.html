@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-34';
+const APP_VERSION='2026.09.30-35';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -308,6 +308,13 @@ body.home-white{background:#FFFFFF;}
 .bv-epub{width:100%;height:100%;background:#fff;}
 .bv-body img{max-width:100%;display:block;margin:0 auto;}
 .bv-msg{padding:30px 16px;text-align:center;color:var(--text-soft);font-size:14.5px;line-height:1.5;}
+.debt-sum{display:flex;gap:8px;margin-bottom:12px;}
+.debt-sum div{flex:1;border-radius:14px;padding:10px 12px;font-size:12.5px;}
+.debt-sum b{display:block;font-size:17px;margin-top:2px;}
+.debt-sum .o{background:var(--expense-bg);color:var(--expense-text);}
+.debt-sum .l{background:var(--income-bg);color:var(--income-text);}
+.debt-form{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:12px;}
+.debt-late{color:var(--neg);font-weight:700;}
 </style>
 </head>
 <body>
@@ -319,6 +326,9 @@ body.home-white{background:#FFFFFF;}
 <div class="wrap"><div id="app"></div></div>
 <div class="modal-overlay" id="planAskModal" onclick="if(event.target===this)this.classList.remove('open')">
  <div class="modal-box" id="planAskBox"></div>
+</div>
+<div class="modal-overlay" id="debtPayModal" onclick="if(event.target===this)this.classList.remove('open')">
+ <div class="modal-box" id="debtPayBox"></div>
 </div>
 <div class="modal-overlay" id="confirmModal">
  <div class="modal-box">
@@ -1076,6 +1086,7 @@ function streakHtml(){const s=streakGet(),on=s.last===dayKey();return `<span cla
 function scrExtra(){
  return screenWrap('Tiện ích 6Pay',`
   <div class="list-item clickable" onclick="openPlanner()"><span>📅 Quản lý thời gian</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable" onclick="push('debts')"><span>💳 Quản lý khoản nợ</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable" onclick="push('books')"><span>📖 Đọc sách (miễn phí)</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>`);
 }
@@ -1203,6 +1214,96 @@ function openBook(i){
  }else{
   bvMsg('Định dạng này không xem trực tiếp được. Hãy bấm nút ↗ ở góc phải phía trên để mở.');
  }
+}
+  // ===== Quản lý khoản nợ =====
+const DEBT_KEY='6pay-debts-v1';
+let debts=[];
+try{const s=JSON.parse(localStorage.getItem(DEBT_KEY));if(Array.isArray(s))debts=s;}catch(e){}
+function debtSave(){try{localStorage.setItem(DEBT_KEY,JSON.stringify(debts));}catch(e){}}
+let debtDraft={type:'owe',who:'',amount:'',exact:'',note:'',due:''};
+let debtPayId='';
+function debtLeft(d){return Math.max(0,d.amount-d.paid);}
+function qa(s){return esc(s).replace(/"/g,'&quot;');}
+function scrDebts(){
+ const owe=debts.filter(d=>d.type==='owe').reduce((s,d)=>s+debtLeft(d),0);
+ const lend=debts.filter(d=>d.type==='lend').reduce((s,d)=>s+debtLeft(d),0);
+ const today=dayKey(), isOwe=debtDraft.type==='owe';
+ const list=debts.slice().sort((a,b)=>{
+  const x=debtLeft(a)>0?0:1, y=debtLeft(b)>0?0:1;
+  if(x!==y)return x-y;
+  return (a.due||'9999')<(b.due||'9999')?-1:1;
+ });
+ const items=list.map(d=>{
+  const left=debtLeft(d), late=d.due&&d.due<today&&left>0, o=d.type==='owe';
+  return `<div class="list-item" style="align-items:flex-start;">
+   <div class="tx-info">
+    <div style="font-weight:600;">${o?'🔴':'🟢'} ${esc(d.who)}</div>
+    ${d.note?`<div class="note">${esc(d.note)}</div>`:''}
+    <div class="date">${o?'Tôi nợ':'Nợ tôi'} · Tổng ${fmt(d.amount)} ₫ · Đã ${o?'trả':'thu'} ${fmt(d.paid)} ₫</div>
+    ${d.due?`<div class="date ${late?'debt-late':''}">Hạn: ${planFmt(d.due)}${late?' (quá hạn)':''}</div>`:''}
+   </div>
+   <div class="tx-right">
+    ${left>0?`<span class="${o?'neg':'pos'}">${fmt(left)} ₫</span>`:'<span class="pos">✓ Đã tất toán</span>'}
+    <div class="tx-actions">
+     ${left>0?`<button class="mini-btn" onclick="openDebtPay('${d.id}')">💵 ${o?'Trả':'Thu'}</button>`:''}
+     <button class="mini-btn" onclick="openConfirm('Bạn có chắc muốn xóa khoản này không?',function(){delDebt('${d.id}')})">🗑 Xóa</button>
+    </div>
+   </div>
+  </div>`;}).join('');
+ return screenWrap('💳 Quản lý khoản nợ',`
+  <div class="debt-sum"><div class="o">Tôi đang nợ<b>${fmt(owe)} ₫</b></div><div class="l">Người khác nợ tôi<b>${fmt(lend)} ₫</b></div></div>
+  <div class="debt-form">
+   <div class="ins-tabs">
+    <button class="ins-tab ${isOwe?'on':''}" onclick="debtDraft.type='owe';render()">Tôi nợ</button>
+    <button class="ins-tab ${!isOwe?'on':''}" onclick="debtDraft.type='lend';render()">Người khác nợ tôi</button>
+   </div>
+   <div class="form-row tight"><label>${isOwe?'Nợ ai':'Ai nợ bạn'}</label><input type="text" id="debt-who" placeholder="Tên người hoặc tổ chức" value="${qa(debtDraft.who)}" oninput="debtDraft.who=this.value"></div>
+   <div class="form-row tight"><label>Số tiền</label>${amtInput('debt-amount',debtDraft.amount,debtDraft.exact,"debtDraft.amount=this.value;debtDraft.exact='';")}</div>
+   <div class="form-row tight"><label>Ghi chú</label><input type="text" id="debt-note" placeholder="Ví dụ: vay mua xe" value="${qa(debtDraft.note)}" oninput="debtDraft.note=this.value"></div>
+   <div class="form-row tight"><label>Hạn trả (không bắt buộc)</label><input type="date" value="${debtDraft.due}" onchange="debtDraft.due=this.value"></div>
+   <button class="btn primary" onclick="addDebt()">✓ Thêm khoản nợ</button>
+  </div>
+  ${items||'<div class="empty">Chưa có khoản nợ nào.</div>'}
+ `);
+}
+function addDebt(){
+ const who=(debtDraft.who||'').trim();
+ const el=document.getElementById('debt-amount'), amt=getAmt(el);
+ if(!who){const w=document.getElementById('debt-who');w.classList.add('shake');setTimeout(()=>w.classList.remove('shake'),300);return;}
+ if(!amt||amt<=0){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),300);return;}
+ debts.push({id:uid(),type:debtDraft.type,who:who,amount:amt,paid:0,note:(debtDraft.note||'').trim(),due:debtDraft.due||'',ts:Date.now()});
+ debtSave();
+ debtDraft={type:debtDraft.type,who:'',amount:'',exact:'',note:'',due:''};
+ render();
+}
+function delDebt(id){debts=debts.filter(d=>d.id!==id);debtSave();render();}
+function openDebtPay(id){
+ const d=debts.find(x=>x.id===id); if(!d)return;
+ debtPayId=id;
+ const o=d.type==='owe';
+ document.getElementById('debtPayBox').innerHTML=`
+  <p style="font-weight:800;font-size:17px;margin-bottom:4px;">${o?'Ghi nhận khoản đã trả':'Ghi nhận khoản đã thu'}</p>
+  <div class="guide-desc" style="margin:0 0 10px;">${esc(d.who)} · Còn lại ${fmt(debtLeft(d))} ₫</div>
+  <div class="form-row" style="text-align:left;"><label>Số tiền</label>${amtInput('pay-amount','','','')}</div>
+  <button class="btn primary" style="margin-top:0;" onclick="confirmDebtPay()">✓ Xác nhận</button>
+  <button class="btn home" onclick="payDebtAll()">${o?'Trả hết':'Thu hết'} ${fmt(debtLeft(d))} ₫</button>
+  <button class="btn back" onclick="document.getElementById('debtPayModal').classList.remove('open')">Hủy</button>`;
+ document.getElementById('debtPayModal').classList.add('open');
+}
+function confirmDebtPay(){
+ const el=document.getElementById('pay-amount'), amt=getAmt(el);
+ if(!amt||amt<=0){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),300);return;}
+ const d=debts.find(x=>x.id===debtPayId); if(!d)return;
+ d.paid=Math.min(d.amount,d.paid+amt);
+ debtSave();
+ document.getElementById('debtPayModal').classList.remove('open');
+ render();
+}
+function payDebtAll(){
+ const d=debts.find(x=>x.id===debtPayId); if(!d)return;
+ d.paid=d.amount;debtSave();
+ document.getElementById('debtPayModal').classList.remove('open');
+ render();
 }
 // ===== Lịch kế hoạch trong ngày =====
 const PLAN_KEY='6pay-plan-v1';
@@ -1373,7 +1474,7 @@ const SCREENS={
  partner:scrPartner, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
  incomeCategories:scrIncomeCategories, incomeDetail:scrIncomeDetail,
  expenseOverview:scrExpenseOverview, expenseDetail:scrExpenseDetail, quiz:scrQuiz
- ,extra:scrExtra, planner:scrPlanner, ratios:scrRatios, planSettings:scrPlanSettings,books:scrBooks
+ ,extra:scrExtra, planner:scrPlanner, ratios:scrRatios, planSettings:scrPlanSettings,books:scrBooks,debts:scrDebts
 };
 function render(){
  const top=stack[stack.length-1];

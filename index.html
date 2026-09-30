@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-28';
+const APP_VERSION='2026.09.30-29';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -295,6 +295,19 @@ body.home-white{background:#FFFFFF;}
 .home-wrap .card.balance .card-amount,
 .home-wrap .card.income .card-amount,
 .home-wrap .card.expense .card-amount{font-weight:500;}
+.book-view{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+.book-view.open{display:flex;}
+.bv-bar{flex:none;display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--surface);}
+.bv-title{flex:1;min-width:0;font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bv-bar a.mini-btn{text-decoration:none;}
+.bv-body{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;position:relative;}
+.bv-body iframe{width:100%;height:100%;border:0;background:#fff;}
+.bv-txt{padding:16px;font-size:17px;line-height:1.7;white-space:pre-wrap;word-wrap:break-word;font-family:'Be Vietnam Pro',Georgia,'Times New Roman',serif;}
+.bv-pg{margin:0 auto 8px;background:#fff;}
+.bv-pg canvas{display:block;width:100%;height:auto;}
+.bv-epub{width:100%;height:100%;background:#fff;}
+.bv-body img{max-width:100%;display:block;margin:0 auto;}
+.bv-msg{padding:30px 16px;text-align:center;color:var(--text-soft);font-size:14.5px;line-height:1.5;}
 </style>
 </head>
 <body>
@@ -324,6 +337,14 @@ body.home-white{background:#FFFFFF;}
 </div>
   <div class="modal-overlay" id="installModal" onclick="if(event.target===this)closeInstall()">
  <div class="modal-box" id="installBox" style="max-height:88vh;overflow-y:auto;"></div>
+</div>
+  <div class="book-view" id="bookView">
+ <div class="bv-bar">
+  <button class="mini-btn" onclick="closeBook()">✕ Đóng</button>
+  <div class="bv-title" id="bvTitle"></div>
+  <a class="mini-btn" id="bvOpen" href="#" target="_blank" rel="noopener">↗</a>
+ </div>
+ <div class="bv-body" id="bvBody"></div>
 </div>
 <script>
 const JARS=[
@@ -1051,9 +1072,89 @@ function streakHtml(){const s=streakGet(),on=s.last===dayKey();return `<span cla
 function scrExtra(){
  return screenWrap('Tiện ích 6Pay',`
   <div class="list-item clickable" onclick="push('planner')"><span>📅 Quản lý thời gian</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable" onclick="push('books')"><span>📖 Đọc sách (miễn phí)</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>`);
 }
-
+// ===== Đọc sách miễn phí =====
+// Thêm sách: thêm 1 dòng vào BOOKS. f = đường dẫn file (nên để trong thư mục books/ cùng chỗ với index.html)
+const BOOKS=[
+ {t:'Tên cuốn sách 1',a:'Tác giả A',f:'books/sach-1.pdf'},
+ {t:'Tên cuốn sách 2',a:'Tác giả B',f:'books/sach-2.epub'},
+ {t:'Tên cuốn sách 3',a:'Tác giả C',f:'books/sach-3.txt'}
+];
+const PDFJS='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+const _libs={};
+function lib(src){return _libs[src]||(_libs[src]=new Promise((ok,ko)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=ko;document.head.appendChild(s);}));}
+function bookExt(f){return (f.split('?')[0].split('.').pop()||'').toLowerCase();}
+function scrBooks(){
+ const list=BOOKS.length?BOOKS.map((b,i)=>`
+  <div class="list-item clickable" onclick="openBook(${i})">
+   <div class="tx-info"><div style="font-weight:600;">📕 ${esc(b.t)}</div>${b.a?`<div class="note">${esc(b.a)}</div>`:''}</div>
+   <span class="guide-cta">Đọc ›</span></div>`).join(''):'<div class="empty">Sách sẽ sớm được cập nhật.</div>';
+ return screenWrap('📖 Đọc sách (miễn phí)',list);
+}
+let bvTok=0;
+function closeBook(){bvTok++;document.getElementById('bookView').classList.remove('open');document.getElementById('bvBody').innerHTML='';}
+function bvMsg(h){document.getElementById('bvBody').innerHTML='<div class="bv-msg">'+h+'</div>';}
+function openBook(i){
+ const b=BOOKS[i]; if(!b)return;
+ const tok=++bvTok, body=document.getElementById('bvBody');
+ const url=new URL(encodeURI(b.f),location.href).href, ext=bookExt(b.f);
+ document.getElementById('bvTitle').textContent=b.t;
+ document.getElementById('bvOpen').href=url;
+ body.scrollTop=0; body.innerHTML='';
+ document.getElementById('bookView').classList.add('open');
+ bvMsg('Đang tải sách...');
+ const fail=()=>{if(tok===bvTok)bvMsg('Không mở được sách trong app. Hãy bấm nút ↗ ở góc phải phía trên để mở bằng trình duyệt.');};
+ if(ext==='pdf'){
+  lib(PDFJS+'pdf.min.js').then(()=>{
+   pdfjsLib.GlobalWorkerOptions.workerSrc=PDFJS+'pdf.worker.min.js';
+   return pdfjsLib.getDocument({url:url,cMapUrl:PDFJS+'cmaps/',cMapPacked:true}).promise;
+  }).then(async pdf=>{
+   if(tok!==bvTok)return;
+   body.innerHTML='';
+   const p1=await pdf.getPage(1), v1=p1.getViewport({scale:1}), w=body.clientWidth||360;
+   const io=new IntersectionObserver(es=>es.forEach(async e=>{
+    if(!e.isIntersecting)return; const d=e.target; io.unobserve(d);
+    const n=+d.dataset.n, pg=await pdf.getPage(n);
+    const sc=(w/pg.getViewport({scale:1}).width);
+    const vp=pg.getViewport({scale:sc*Math.min(window.devicePixelRatio||1,2)});
+    const c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
+    await pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+    if(tok!==bvTok)return; d.style.minHeight='0'; d.appendChild(c);
+   }),{root:body,rootMargin:'800px 0px'});
+   for(let n=1;n<=pdf.numPages;n++){
+    const d=document.createElement('div'); d.className='bv-pg'; d.dataset.n=n;
+    d.style.minHeight=(w*v1.height/v1.width)+'px'; body.appendChild(d); io.observe(d);
+   }
+  }).catch(fail);
+ }else if(ext==='epub'){
+  Promise.all([lib('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js')]).then(()=>lib('https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.3.93/epub.min.js'))
+  .then(()=>fetch(url)).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer();}).then(buf=>{
+   if(tok!==bvTok)return;
+   body.innerHTML='<div class="bv-epub" id="bvEpub"></div>';
+   const bk=ePub(buf);
+   const rd=bk.renderTo('bvEpub',{width:'100%',height:'100%',flow:'scrolled',manager:'continuous'});
+   rd.themes.default({body:{'line-height':'1.7 !important','padding':'0 14px !important','font-size':'17px !important'}});
+   return rd.display();
+  }).catch(fail);
+ }else if(ext==='txt'||ext==='md'){
+  fetch(url).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer();}).then(buf=>{
+   if(tok!==bvTok)return;
+   let t; // ưu tiên UTF-8, nếu file cũ mã hóa Windows thì đọc bằng windows-1258 để không lỗi dấu
+   try{t=new TextDecoder('utf-8',{fatal:true}).decode(buf);}catch(e){t=new TextDecoder('windows-1258').decode(buf);}
+   body.innerHTML='<div class="bv-txt"></div>'; body.firstChild.textContent=t.replace(/^\uFEFF/,'');
+  }).catch(fail);
+ }else if(['doc','docx','xls','xlsx','ppt','pptx','odt','rtf'].indexOf(ext)>-1){
+  body.innerHTML='<iframe src="https://docs.google.com/viewer?embedded=true&url='+encodeURIComponent(url)+'"></iframe>';
+ }else if(ext==='html'||ext==='htm'){
+  body.innerHTML='<iframe src="'+url+'"></iframe>';
+ }else if(['jpg','jpeg','png','webp','gif'].indexOf(ext)>-1){
+  body.innerHTML='<img src="'+url+'" alt="">';
+ }else{
+  bvMsg('Định dạng này không xem trực tiếp được. Hãy bấm nút ↗ ở góc phải phía trên để mở.');
+ }
+}
 // ===== Lịch kế hoạch trong ngày =====
 const PLAN_KEY='6pay-plan-v1';
 let plan={rows:8,data:{}};
@@ -1186,7 +1287,7 @@ const SCREENS={
  partner:scrPartner, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
  incomeCategories:scrIncomeCategories, incomeDetail:scrIncomeDetail,
  expenseOverview:scrExpenseOverview, expenseDetail:scrExpenseDetail, quiz:scrQuiz
- ,extra:scrExtra, planner:scrPlanner, ratios:scrRatios, planSettings:scrPlanSettings
+ ,extra:scrExtra, planner:scrPlanner, ratios:scrRatios, planSettings:scrPlanSettings,books:scrBooks
 };
 function render(){
  const top=stack[stack.length-1];

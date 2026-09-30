@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-41';
+const APP_VERSION='2026.09.30-42';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -315,6 +315,11 @@ body.home-white{background:#FFFFFF;}
 .debt-sum .l{background:var(--income-bg);color:var(--income-text);}
 .debt-form{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:12px;}
 .debt-late{color:var(--neg);font-weight:700;}
+  /* ===== Màn hình chính: thu nhỏ chữ, số tiền và các ô ===== */
+.home-wrap .card{min-height:clamp(46px,6.6vh,56px);max-height:68px;margin-bottom:clamp(5px,.9vh,8px);}
+.home-wrap .card-label{font-size:clamp(16px,2.3vh,18px);}
+.home-wrap .card-amount{font-size:clamp(20px,3.2vh,24px);}
+.home-wrap .home-quote{padding-top:4px;}
 </style>
 </head>
 <body>

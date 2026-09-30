@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-15';
+const APP_VERSION='2026.09.30-17';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -279,8 +279,8 @@ body.home-white{background:#FFFFFF;}
 .home-wrap .home-header .brand-sub{font-size:clamp(13px,1.9vh,16px);margin-top:4px;}
 .home-wrap .star-line{margin-top:clamp(4px,.9vh,8px);font-size:clamp(13px,1.9vh,15px);}
 .home-wrap .card{flex:1 1 0;min-height:clamp(46px,6.8vh,58px);max-height:66px;padding:0 18px;margin-bottom:clamp(6px,1vh,9px);border-radius:15px;}
-.home-wrap .card-label{font-size:clamp(16.7px,2.4vh,18.2px);}
-.home-wrap .card-amount{font-size:clamp(19.7px,3vh,22.7px);}
+.home-wrap .card-label{font-size:clamp(16.7px,2.4vh,18.2px);font-weight:800;}
+.home-wrap .card-amount{font-size:clamp(19.7px,3vh,22.7px);font-weight:800;}
 </style>
 </head>
 <body>
@@ -591,7 +591,7 @@ function scrHome(){
   </div>
   <div class="home-quote">Tiền không tự tạo nên tương lai mà cách bạn sử dụng tiền sẽ quyết định tương lai của bạn</div>
   </div>
-  <div class="home-ver"><div>6Pay là công cụ ghi chép thông thường định dạng HTML dùng để ghi chép hoạt động thu chi của bạn.</div><div>Phiên bản ${APP_VERSION}</div></div>
+  <div class="home-ver"><div>6Pay là công cụ ghi chép thông thường định dạng HTML<br>dùng để ghi chép hoạt động thu chi của bạn.</div><div>Phiên bản ${APP_VERSION}</div></div>
  </div>`;
 }
 

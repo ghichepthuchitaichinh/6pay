@@ -267,16 +267,16 @@ body.home-white{background:#FFFFFF;}
 .cal-d.fail{color:var(--neg);background:var(--expense-bg);font-weight:800;}
 .cal-d.today{outline:2px solid var(--accent);outline-offset:-2px;}
 .cal-sum{font-size:12.5px;margin:10px 0 12px;}
-/* ===== Màn hình chính: logo to hơn, các ô gọn lại ===== */
-.home-wrap .home-header{flex:1 1 auto;padding:0 2px clamp(6px,1.4vh,14px);}
-.home-wrap .home-topbar{margin-bottom:auto;}
-.home-wrap .home-icon-badge{display:flex;margin-top:auto;width:clamp(58px,11vh,112px);height:clamp(58px,11vh,112px);font-size:clamp(40px,7.6vh,78px);margin-bottom:clamp(2px,.8vh,8px);}
-.home-wrap .home-brand{font-size:clamp(38px,6.6vh,58px);line-height:1.05;letter-spacing:.04em;}
+/* ===== Màn hình chính: logo to hơn, các ô dày vừa phải ===== */
+.home-wrap .home-header{flex:0 0 auto;padding:0 2px clamp(6px,1.2vh,12px);}
+.home-wrap .home-topbar{margin-bottom:2px;}
+.home-wrap .home-icon-badge{display:flex;margin-top:0;width:clamp(66px,12.5vh,124px);height:clamp(66px,12.5vh,124px);font-size:clamp(46px,8.8vh,90px);margin-bottom:clamp(2px,.6vh,6px);}
+.home-wrap .home-brand{font-size:clamp(44px,7.6vh,66px);line-height:1.05;letter-spacing:.04em;}
 .home-wrap .home-header .brand-sub{font-size:clamp(13px,1.9vh,16px);margin-top:4px;}
 .home-wrap .star-line{margin-top:clamp(4px,.9vh,8px);font-size:clamp(13px,1.9vh,15px);}
-.home-wrap .card{flex:0 0 auto;height:clamp(42px,6.2vh,54px);min-height:0;max-height:none;padding:0 16px;margin-bottom:clamp(5px,.9vh,8px);border-radius:14px;}
-.home-wrap .card-label{font-size:clamp(13px,1.8vh,14.5px);}
-.home-wrap .card-amount{font-size:clamp(16px,2.4vh,19px);}
+.home-wrap .card{flex:1 1 0;min-height:clamp(46px,6.8vh,58px);max-height:66px;padding:0 18px;margin-bottom:clamp(6px,1vh,9px);border-radius:15px;}
+.home-wrap .card-label{font-size:clamp(14px,1.9vh,15.5px);}
+.home-wrap .card-amount{font-size:clamp(17px,2.5vh,20px);}
 </style>
 </head>
 <body>
@@ -306,7 +306,7 @@ body.home-white{background:#FFFFFF;}
 </div>
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-6';
+const APP_VERSION='2026.09.30-7';
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
  {k:'education',l:'Học tập',i:'📚'},

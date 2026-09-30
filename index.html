@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-32';
+const APP_VERSION='2026.09.30-34';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -317,6 +317,9 @@ body.home-white{background:#FFFFFF;}
  <div class="boot-tagline">Hãy ghi chép thường xuyên<br>để tạo thói quen<br>Quản lý tài chính của bạn</div>
 </div>
 <div class="wrap"><div id="app"></div></div>
+<div class="modal-overlay" id="planAskModal" onclick="if(event.target===this)this.classList.remove('open')">
+ <div class="modal-box" id="planAskBox"></div>
+</div>
 <div class="modal-overlay" id="confirmModal">
  <div class="modal-box">
   <p id="confirmModalText"></p>
@@ -1072,7 +1075,7 @@ function streakHtml(){const s=streakGet(),on=s.last===dayKey();return `<span cla
 // ===== Tiện ích 6Pay =====
 function scrExtra(){
  return screenWrap('Tiện ích 6Pay',`
-  <div class="list-item clickable" onclick="push('planner')"><span>📅 Quản lý thời gian</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable" onclick="openPlanner()"><span>📅 Quản lý thời gian</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable" onclick="push('books')"><span>📖 Đọc sách (miễn phí)</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>`);
 }
@@ -1238,7 +1241,44 @@ function scrPlanner(){
   <div class="guide-desc" style="margin-top:8px;">Chạm vào cột Kết quả để chọn: ✅ hoàn thành, ❌ không hoàn thành thêm một chạm. Một ngày chỉ được tính là hoàn thành khi mọi dòng kế hoạch trong ngày đều là ✅. Chạm vào ✅ ở góc phải để xem lịch.</div>`,
   '',`<button class="mini-btn" id="plan-cnt" onclick="openCal()" style="font-size:14px;font-weight:800;color:var(--pos);padding:5px 10px;">✅ ${planDone()} ngày ›</button>`);
 }
-
+// ===== Sang ngày mới: chọn sửa kế hoạch cũ hoặc xây dựng kế hoạch mới =====
+const PLAN_ASK_KEY='6pay-planask-v1';
+let planPrev='';
+function planHas(k){return (plan.data[k]||[]).some(x=>x&&(x.s||x.e||x.c));}
+function planFmt(k){const p=k.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
+function openPlanner(){
+ planDay=dayKey();
+ push('planner');
+ planAskCheck();
+}
+function planAskCheck(){
+ const t=dayKey();
+ let asked='';try{asked=localStorage.getItem(PLAN_ASK_KEY)||'';}catch(e){}
+ if(asked===t||planHas(t))return;
+ const ks=Object.keys(plan.data).filter(k=>k<t&&planHas(k)).sort();
+ if(!ks.length)return;
+ planPrev=ks[ks.length-1];
+ document.getElementById('planAskBox').innerHTML=`
+  <p style="font-weight:800;font-size:17px;margin-bottom:6px;">📅 Kế hoạch hôm nay</p>
+  <div class="guide-desc" style="margin:0 0 12px;">Bạn đã có kế hoạch ngày ${planFmt(planPrev)}. Hôm nay bạn muốn thế nào?</div>
+  <button class="amt-opt" onclick="planPickOld()"><span>✏️ Sửa kế hoạch cũ<small>Dùng lại kế hoạch ngày ${planFmt(planPrev)} rồi chỉnh sửa</small></span></button>
+  <button class="amt-opt" onclick="planPickNew()"><span>🆕 Xây dựng kế hoạch mới<small>Bảng để trống, nhập từ đầu</small></span></button>`;
+ document.getElementById('planAskModal').classList.add('open');
+}
+function planPickOld(){
+ openConfirm('Sao chép kế hoạch ngày '+planFmt(planPrev)+' sang hôm nay để bạn chỉnh sửa? Cột Kết quả sẽ được đặt lại.',function(){
+  plan.data[dayKey()]=(plan.data[planPrev]||[]).filter(x=>x&&(x.s||x.e||x.c)).map(x=>({s:x.s,e:x.e,c:x.c,r:''}));
+  planSave();planAskDone();
+ });
+}
+function planPickNew(){
+ openConfirm('Xây dựng kế hoạch mới cho hôm nay? Bảng sẽ để trống để bạn nhập từ đầu.',function(){planAskDone();});
+}
+function planAskDone(){
+ try{localStorage.setItem(PLAN_ASK_KEY,dayKey());}catch(e){}
+ document.getElementById('planAskModal').classList.remove('open');
+ render();
+}
 // ===== Cửa sổ lịch theo dõi ngày hoàn thành =====
 let calM={y:0,m:0},calX=0;
 function openCal(){const d=new Date();calM={y:d.getFullYear(),m:d.getMonth()};drawCal();document.getElementById('calModal').classList.add('open');}

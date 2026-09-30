@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-12';
+const APP_VERSION='2026.09.30-13';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -340,7 +340,7 @@ const INCOME_TYPES=[
  {k:'khac',l:'Thu khác',i:'➕',d:'Đa dạng nguồn thu để có thêm thu nhập'}
 ];
 // Danh sách quảng cáo ở màn hình chính (cuộn được). Muốn thêm dòng mới, thêm phần tử vào mảng này.
-// Quảng cáo ở trang Số dư hiện tại và trang Các hình thức thu nhập (thêm dòng theo dạng {html:'...',link:'...'})
+// Quảng cáo ở trang Số dư và trang Các hình thức thu nhập (thêm dòng theo dạng {html:'...',link:'...'})
 function makePH(n){return Array.from({length:n},(_,i)=>({html:'Người liên hệ quảng cáo '+(i+1),link:''}));}
 const AD_HEAD='Hotline <a href="tel:0342190588">0342.19.05.88</a>';
 function adItems(list){return list.map(a=>a.link?`<a class="ad-item" href="${a.link}" target="_blank" rel="noopener">${a.html}</a>`:`<div class="ad-item ph">${a.html}</div>`).join('');}
@@ -570,7 +570,7 @@ function scrHome(){
    <div class="star-line">${streakHtml()} &nbsp;·&nbsp; ⭐ ${fmt(stars)} điểm</div>
   </div>
   <div class="card balance" onclick="push('wallets')">
-   <div class="card-label">Số dư hiện tại</div>
+   <div class="card-label">Số dư</div>
    <div class="card-amount ${cls}">${fmt(bal)} ₫</div>
   </div>
   <div class="card income" onclick="push('incomeCategories')">
@@ -684,7 +684,7 @@ function fillScreen(title,sub,rows,ads,big){
 function scrWallets(){
  const rows=JARS.map(j=>{const b=jarRemain(j.k);const c=b<0?'neg':'pos';return `
   <div class="fill-row" onclick="push('jarGuide',{jar:'${j.k}'})"><span class="lb"><span class="ic">${j.i}</span>${j.l}</span><span class="am ${c}">${fmt(b)} ₫</span></div>`;}).join('');
- return fillScreen('Số dư hiện tại','',rows,'','big natural');
+ return fillScreen('Số dư','',rows,'','big natural');
 }
 
 function guideLinks(jarKey,onlyLinks){

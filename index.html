@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-45';
+const APP_VERSION='2026.09.30-46';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -565,7 +565,7 @@ function lockDel(){lockIn=lockIn.slice(0,-1);lockShow();document.getElementById(
 function unlockApp(){
  const acc=getAccount();
  if(!acc){locked=false;render();return;}
- if(lockIn===acc.pass){lockIn='';locked=false;loggedIn=true;render();return;}
+ if(lockIn===acc.pass){lockIn='';locked=false;loggedIn=true;render();setTimeout(maybeShowInstall,500);return;}
  const msg=lockIn?'Mật khẩu sai, vui lòng nhập lại.':'Vui lòng nhập mật khẩu.';
  lockIn='';lockShow();
  document.getElementById('lock-err').textContent=msg;
@@ -1511,9 +1511,10 @@ function openInstall(){insTab=detectOS();drawInstall();document.getElementById('
 function closeInstall(){document.getElementById('installModal').classList.remove('open');}
 function maybeShowInstall(){
  if(isStandalone()||locked)return;
- let seen='';try{seen=localStorage.getItem(INSTALL_KEY)||'';}catch(e){}
- if(seen)return;
- try{localStorage.setItem(INSTALL_KEY,'1');}catch(e){}
+ const t=dayKey();
+ let last='';try{last=localStorage.getItem(INSTALL_KEY)||'';}catch(e){}
+ if(last===t)return;
+ try{localStorage.setItem(INSTALL_KEY,t);}catch(e){}
  openInstall();
 }
 const SCREENS={

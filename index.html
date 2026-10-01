@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-47';
+const APP_VERSION='2026.09.30-48';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -748,12 +748,58 @@ function scrLogin(){
  render();
  openConfirm('Đã đổi mật khẩu thành công.',function(){});
 }
+  // ===== Sao lưu / khôi phục dữ liệu =====
+// Không sao lưu tài khoản và mật khẩu, nên khôi phục xong mật khẩu hiện tại trên máy vẫn giữ nguyên.
+function backupKeys(){return [STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,QZ_KEY,DEBT_KEY,READ_KEY,FS_KEY];}
+function backupExport(){
+ const data={};
+ backupKeys().forEach(k=>{try{const v=localStorage.getItem(k);if(v!==null)data[k]=v;}catch(e){}});
+ const json=JSON.stringify({app:'6pay',version:APP_VERSION,ts:Date.now(),data:data});
+ const name='6pay-sao-luu-'+dayKey()+'.json';
+ const file=new File([json],name,{type:'application/json'});
+ if(detectOS()==='ios'&&navigator.canShare&&navigator.canShare({files:[file]})){
+  navigator.share({files:[file],title:'Sao lưu 6PAY'}).catch(()=>{});
+  return;
+ }
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(file);a.download=name;
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+}
+function backupPick(){document.getElementById('bk-file').click();}
+function backupImport(inp){
+ const f=inp.files&&inp.files[0]; if(!f)return;
+ const r=new FileReader();
+ r.onload=function(){
+  let o=null;
+  try{o=JSON.parse(r.result);}catch(e){}
+  inp.value='';
+  if(!o||o.app!=='6pay'||!o.data||typeof o.data!=='object'){
+   openConfirm('File không hợp lệ. Hãy chọn đúng file sao lưu 6PAY (đuôi .json).',function(){});
+   return;
+  }
+  openConfirm('Khôi phục sẽ THAY THẾ toàn bộ dữ liệu hiện có trên máy bằng dữ liệu trong file. Bạn có chắc không?',function(){
+   backupKeys().forEach(k=>{
+    try{
+     if(typeof o.data[k]==='string')localStorage.setItem(k,o.data[k]);
+     else localStorage.removeItem(k);
+    }catch(e){}
+   });
+   location.reload();
+  });
+ };
+ r.readAsText(f);
+}
 function scrSettings(){
  return screenWrap('Cài đặt',`
   <div class="pct-row mode-row" onclick="openAmtModal()"><span>💵 Cách nhập số tiền</span><span id="amt-mode-label" style="color:var(--accent);font-weight:600;">${amtModeText()} ›</span></div>
   <div class="pct-row mode-row" onclick="push('ratios')"><span>🍯 Tỷ lệ phân bổ 6 ví</span><span style="color:var(--accent);font-weight:600;">›</span></div>
   <div class="pct-row mode-row" onclick="push('planSettings')"><span>📅 Cài đặt Kế hoạch trong ngày</span><span style="color:var(--accent);font-weight:600;">›</span></div>
-  <div class="pct-row mode-row" onclick="openInstall()"><span>📲 Hướng dẫn cài app ra màn hình</span><span style="color:var(--accent);font-weight:600;">›</span></div>`);
+  <div class="pct-row mode-row" onclick="openInstall()"><span>📲 Hướng dẫn cài app ra màn hình</span><span style="color:var(--accent);font-weight:600;">›</span></div>
+  <div class="pct-row mode-row" onclick="backupExport()"><span>💾 Sao lưu dữ liệu (tải file)</span><span style="color:var(--accent);font-weight:600;">›</span></div>
+  <div class="pct-row mode-row" onclick="backupPick()"><span>♻️ Khôi phục dữ liệu từ file</span><span style="color:var(--accent);font-weight:600;">›</span></div>
+  <input type="file" id="bk-file" accept=".json,application/json" style="display:none" onchange="backupImport(this)">
+  <div class="guide-desc">Nên sao lưu định kỳ và lưu file vào Google Drive hoặc gửi qua Zalo cho chính mình. Khi app bị gỡ hay đổi điện thoại, bạn chỉ cần mở app và chọn Khôi phục.</div>`);
 }
 function scrRatios(){
  const enjoy=pctEnjoy(); const over=enjoy<0;

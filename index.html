@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-46';
+const APP_VERSION='2026.09.30-47';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -719,6 +719,13 @@ function scrLogin(){
    <div class="list-item"><span>Số điện thoại</span><span>${esc(acc.phone)}</span></div>
    <button class="btn primary" style="margin-top:14px;" onclick="openConfirm('Bạn có chắc muốn đăng xuất không?',function(){logoutAccount()})">Đăng xuất</button>
   `);
+      <div class="debt-form" style="margin-top:14px;">
+    <div style="font-weight:700;margin-bottom:8px;">🔑 Đổi mật khẩu</div>
+    <div class="form-row tight"><label>Mật khẩu hiện tại</label><input type="password" inputmode="numeric" maxlength="12" id="pw-old" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+    <div class="form-row tight"><label>Mật khẩu mới (chỉ nhập số)</label><input type="password" inputmode="numeric" maxlength="12" id="pw-new" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+    <div class="form-row tight"><label>Nhập lại mật khẩu mới</label><input type="password" inputmode="numeric" maxlength="12" id="pw-new2" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+    <button class="btn primary" onclick="changePass()">✓ Đổi mật khẩu</button>
+   </div>
  }
  return screenWrap('Đăng ký / Đăng nhập',`
   <div class="form-row"><label>Tên người dùng</label><input type="text" id="auth-name" placeholder="Nguyễn Văn A" value="${acc?esc(acc.name||''):''}"></div>
@@ -727,6 +734,19 @@ function scrLogin(){
   <button class="btn primary" onclick="loginOrRegister()">Xác nhận</button>
   <div class="guide-desc" style="margin-top:16px;">Nội dung này không bắt buộc. Tuy nhiên, hãy đăng ký để tránh người lạ xem nhật ký chi tiêu của bạn</div>
  `);
+}
+  function changePass(){
+ const acc=getAccount(); if(!acc)return;
+ const o=document.getElementById('pw-old').value||'';
+ const n=document.getElementById('pw-new').value||'';
+ const c=document.getElementById('pw-new2').value||'';
+ if(o!==acc.pass){openConfirm('Mật khẩu hiện tại không đúng.',function(){});return;}
+ if(!n){openConfirm('Vui lòng nhập mật khẩu mới.',function(){});return;}
+ if(n!==c){openConfirm('Mật khẩu mới nhập lại không khớp.',function(){});return;}
+ acc.pass=n;
+ try{localStorage.setItem(ACCOUNT_KEY,JSON.stringify(acc));}catch(e){}
+ render();
+ openConfirm('Đã đổi mật khẩu thành công.',function(){});
 }
 function scrSettings(){
  return screenWrap('Cài đặt',`

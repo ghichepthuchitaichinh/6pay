@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-51';
+const APP_VERSION='2026.09.30-52';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1577,10 +1577,6 @@ function openInstall(){insTab=detectOS();drawInstall();document.getElementById('
 function closeInstall(){document.getElementById('installModal').classList.remove('open');}
 function maybeShowInstall(){
  if(isStandalone()||locked)return;
- const t=dayKey();
- let last='';try{last=localStorage.getItem(INSTALL_KEY)||'';}catch(e){}
- if(last===t)return;
- try{localStorage.setItem(INSTALL_KEY,t);}catch(e){}
  openInstall();
 }
 const SCREENS={

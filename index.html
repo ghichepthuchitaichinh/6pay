@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.09.30-52';
+const APP_VERSION='2026.09.30-54';
 </script>
 <meta name="theme-color" content="#8B5A2B">
 <meta name="mobile-web-app-capable" content="yes">
@@ -750,7 +750,7 @@ function scrLogin(){
 }
   // ===== Sao lưu / khôi phục dữ liệu =====
 // Không sao lưu tài khoản và mật khẩu, nên khôi phục xong mật khẩu hiện tại trên máy vẫn giữ nguyên.
-function backupKeys(){return [STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,QZ_KEY,DEBT_KEY,READ_KEY,FS_KEY];}
+function backupKeys(){return [STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,PLAN_DONE_KEY,QZ_KEY,DEBT_KEY,READ_KEY,FS_KEY];}
 function backupExport(){
  const data={};
  backupKeys().forEach(k=>{try{const v=localStorage.getItem(k);if(v!==null)data[k]=v;}catch(e){}});
@@ -1428,12 +1428,24 @@ function planSet(i,f,v){const a=plan.data[planDay]=plan.data[planDay]||[];while(
 // Số ngày hoàn thành: ngày có ít nhất 1 dòng kế hoạch và mọi dòng có nội dung đều được đánh dấu v
 const RES_IC={v:'✅',x:'❌','':'○'};
 // Trạng thái ngày: '' = chưa có kế hoạch, 'done' = mọi dòng có nội dung đều ✅, 'fail' = có kế hoạch nhưng chưa hoàn thành hết
-function planStatus(k){
+const PLAN_DONE_KEY='6pay-plandone-v1';
+let planDoneSet={};
+try{planDoneSet=JSON.parse(localStorage.getItem(PLAN_DONE_KEY))||{};}catch(e){}
+function planDoneSave(){try{localStorage.setItem(PLAN_DONE_KEY,JSON.stringify(planDoneSet));}catch(e){}}
+function planStatusRaw(k){
  const u=(plan.data[k]||[]).filter(x=>x&&(x.s||x.e||x.c));
  if(!u.length)return '';
  return u.every(x=>x.r==='v')?'done':'fail';
 }
-function planDone(){let n=0;for(const k in plan.data)if(planStatus(k)==='done')n++;return n;}
+function planStatus(k){
+ const s=planStatusRaw(k);
+ if(s==='done'&&!planDoneSet[k]){planDoneSet[k]=1;planDoneSave();}
+ return planDoneSet[k]?'done':s;
+}
+function planDone(){
+ for(const k in plan.data)planStatus(k);
+ return Object.keys(planDoneSet).length;
+}
 function planCnt(){const e=document.getElementById('plan-cnt');if(e)e.textContent='✅ '+planDone()+' ngày ›';}
 function planToggle(i,el){
  const cur=planRows()[i].r;
@@ -1598,14 +1610,31 @@ function render(){
  }
  document.body.classList.toggle('home-white',top.id==='home');
  document.getElementById('app').innerHTML = top.id==='home' ? scrHome() : SCREENS[top.id](top.opts||{});
+ saveSession();
 }
+  // ===== Giữ nguyên trang làm việc nếu quay lại trong vòng 5 phút =====
+const SESS_KEY='6pay-session-v1';
+const SESS_MS=5*60*1000;
+let fastStart=false;
+function saveSession(){
+ try{localStorage.setItem(SESS_KEY,JSON.stringify({ts:Date.now(),loggedIn:loggedIn,stack:stack.map(s=>({id:s.id,opts:s.opts||{}}))}));}catch(e){}
+}
+(function(){
+ try{
+  const s=JSON.parse(localStorage.getItem(SESS_KEY));
+  if(s&&Date.now()-s.ts<SESS_MS&&Array.isArray(s.stack)&&s.stack.length&&s.stack.every(x=>x.id==='home'||SCREENS[x.id])){
+   stack=s.stack;locked=false;loggedIn=!!s.loggedIn;fastStart=true;
+   const sp=document.getElementById('bootSplash');if(sp)sp.remove();
+  }
+ }catch(e){}
+})();
 streakTick();
 render();
 fetchGuides();
 setTimeout(()=>{
  const sp=document.getElementById('bootSplash');
  if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),300); }
- setTimeout(maybeShowInstall,500);
+  if(!fastStart)setTimeout(maybeShowInstall,500);
 },2700);
 if('serviceWorker' in navigator){
  window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{r.update().catch(()=>{});}).catch(()=>{});});
@@ -1623,7 +1652,23 @@ function checkUpdate(){
  }).catch(()=>{});
 }
 checkUpdate();
-document.addEventListener('visibilitychange',()=>{if(!document.hidden){streakTick();if(stack.length===1)render();checkUpdate();}});
+let hiddenAt=0;
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){hiddenAt=Date.now();if(!locked)saveSession();return;}
+ streakTick();
+ if(hiddenAt&&Date.now()-hiddenAt>SESS_MS){
+  // quá 5 phút: khởi động lại về trang chủ (có khóa mật khẩu nếu đã đăng ký)
+  hiddenAt=0;
+  try{closeBook();}catch(e){}
+  document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
+  stack=[{id:'home'}];loggedIn=false;locked=!!getAccount();lockIn='';
+  render();
+ }else{
+  hiddenAt=0;
+  if(stack.length===1)render();
+ }
+ checkUpdate();
+});
 </script>
 </body>
 </html>

@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.02-04';
+const APP_VERSION='2026.10.02-05';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -1704,6 +1704,48 @@ document.addEventListener('visibilitychange',()=>{
 </div>
 
 <script>
+<!-- ===== 6PAY RUNNER: BẮT ĐẦU (dán ngay phía trên thẻ </body>) ===== -->
+<style>
+#g6Btn{position:fixed;left:14px;bottom:90px;width:48px;height:48px;border-radius:50%;border:none;background:#f5b301;color:#fff;font-size:24px;line-height:48px;padding:0;box-shadow:0 4px 12px rgba(0,0,0,.35);z-index:9998;cursor:pointer}
+#g6Wrap{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:rgba(10,15,30,.95);align-items:center;justify-content:center;padding:12px;box-sizing:border-box;font-family:sans-serif;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#g6Wrap.show{display:flex}
+#g6Box{width:100%;max-width:640px;color:#fff}
+#g6Top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:16px;font-weight:bold}
+#g6Close{background:#33415f;color:#fff;border:none;border-radius:8px;font-size:16px;padding:6px 12px;cursor:pointer}
+#g6Cv{width:100%;height:auto;border-radius:12px;touch-action:none;display:block}
+#g6Btns{display:flex;gap:10px;margin-top:10px}
+#g6Btns button{flex:1;height:56px;border:none;border-radius:12px;font-size:17px;font-weight:bold;color:#fff;background:#33415f;touch-action:none}
+#g6Btns button:active{background:#f5b301}
+#g6Msg{margin-top:10px;font-size:14px;line-height:1.4;color:#c9d4ee;text-align:center;min-height:20px}
+#g6Rot{display:none;margin-top:8px;text-align:center;font-size:13px;color:#ffd54f}
+@media (orientation:portrait) and (max-width:700px){#g6Rot{display:block}}
+@media (orientation:landscape) and (max-height:500px){
+#g6Wrap{padding:6px}
+#g6Box{max-width:none}
+#g6Top{margin-bottom:4px;font-size:14px}
+#g6Cv{width:100%;height:calc(100vh - 140px);object-fit:contain}
+#g6Btns{margin-top:6px}
+#g6Btns button{height:44px;font-size:15px}
+#g6Msg{margin-top:6px;font-size:12px;min-height:16px}
+}
+</style>
+
+<button id="g6Btn" type="button" aria-label="Chơi game 6Pay Runner">🎮</button>
+
+<div id="g6Wrap">
+  <div id="g6Box">
+    <div id="g6Top"><span>6Pay Runner</span><button id="g6Close" type="button">✕ Đóng</button></div>
+    <canvas id="g6Cv" width="640" height="240"></canvas>
+    <div id="g6Btns">
+      <button id="g6Duck" type="button">⬇ Cúi (giữ)</button>
+      <button id="g6Jump" type="button">⬆ Nhảy</button>
+    </div>
+    <div id="g6Msg"></div>
+    <div id="g6Rot">📱 Xoay ngang điện thoại để chơi thoải mái hơn</div>
+  </div>
+</div>
+
+<script>
 (function () {
   if (window.open6PayGame) return;
 
@@ -1968,12 +2010,43 @@ document.addEventListener('visibilitychange',()=>{
     if (e.code === 'ArrowDown' || e.code === 'KeyS') duck = false;
   }
 
+  function lockLandscape() {
+    try {
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('landscape').catch(function () {});
+      }
+    } catch (e) {}
+  }
+  function goLandscape() {
+    try {
+      var el = document.documentElement;
+      var req = el.requestFullscreen || el.webkitRequestFullscreen;
+      if (req) {
+        var p = req.call(el);
+        if (p && p.then) { p.then(lockLandscape, lockLandscape); }
+        else { lockLandscape(); }
+      } else {
+        lockLandscape();
+      }
+    } catch (e) {}
+  }
+  function leaveLandscape() {
+    try {
+      if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
+    } catch (e) {}
+    try {
+      if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitFullscreenElement && document.webkitExitFullscreen) document.webkitExitFullscreen();
+    } catch (e) {}
+  }
+
   function open() {
     reset();
     state = 'ready';
     msg.textContent = HINT;
     wrap.classList.add('show');
     document.body.style.overflow = 'hidden';
+    goLandscape();
     document.addEventListener('keydown', kd);
     document.addEventListener('keyup', ku);
     last = performance.now();
@@ -1984,6 +2057,7 @@ document.addEventListener('visibilitychange',()=>{
   function close() {
     wrap.classList.remove('show');
     document.body.style.overflow = '';
+    leaveLandscape();
     cancelAnimationFrame(raf);
     document.removeEventListener('keydown', kd);
     document.removeEventListener('keyup', ku);

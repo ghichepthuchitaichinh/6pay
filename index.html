@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.02-15';
+const APP_VERSION='2026.10.07-1';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -341,6 +341,22 @@ body.home-white{background:#FFFFFF;}
 .hist-time{font-size:11.5px;color:var(--text-soft);margin-top:2px;}
 .home-wrap .card.hist .card-amount.pos{color:#1D8A4C;}
 .home-wrap .card.hist .card-amount.neg{color:#C0392B;}
+  /* ===== Chi: ô ví + dòng Hướng dẫn chi tiêu ===== */
+.fill-rows.jarblocks{gap:clamp(5px,1vh,10px);overflow:hidden;}
+.jar-block{flex:1 1 0;min-height:0;display:flex;flex-direction:column;gap:3px;}
+.jar-block .fill-row{flex:1 1 0;min-height:0;}
+.jar-guide{flex:none;height:clamp(24px,3.8vh,34px);display:flex;align-items:center;justify-content:center;background:var(--newtx-bg);color:var(--newtx-text);border-radius:10px;font-size:clamp(11.5px,1.7vh,13.5px);font-weight:700;cursor:pointer;}
+.jar-guide:active{transform:scale(0.99);}
+#jarGuideBox{position:relative;text-align:left;max-height:80vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px 18px 14px;}
+.jg-x{position:absolute;top:8px;right:8px;width:34px;height:34px;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:10px;font-size:16px;cursor:pointer;}
+.jg-title{font-size:17px;font-weight:800;line-height:1.35;padding-right:34px;margin-bottom:6px;}
+.jg-pct{font-size:13px;color:var(--text-soft);margin-bottom:10px;}
+.jg-h{font-size:14px;font-weight:800;margin:10px 0 4px;}
+.jg-h.ok{color:var(--pos);}
+.jg-h.no{color:var(--neg);}
+#jarGuideBox ul{margin:0;padding-left:20px;font-size:14px;line-height:1.55;}
+#jarGuideBox li{margin-bottom:3px;}
+.jg-foot{text-align:center;font-size:12px;color:var(--text-soft);margin-top:12px;}
 </style>
 </head>
 <body>
@@ -376,6 +392,9 @@ body.home-white{background:#FFFFFF;}
 </div>
   <div class="modal-overlay" id="installModal" onclick="if(event.target===this)closeInstall()">
  <div class="modal-box" id="installBox" style="max-height:88vh;overflow-y:auto;"></div>
+</div>
+  <div class="modal-overlay" id="jarGuideModal" onclick="closeJarGuide()">
+ <div class="modal-box" id="jarGuideBox"></div>
 </div>
   <div class="book-view" id="bookView">
  <div class="bv-bar">
@@ -970,13 +989,56 @@ function scrIncomeDetail(opts){
 }
 
 function nbLast(t){return t.replace(/ (\S+) (\S+) (\S+)$/,' $1&nbsp;$2&nbsp;$3');}
+const JAR_TIPS={
+ essential:{
+  ok:['Tiền nhà, điện, nước, internet','Ăn uống hằng ngày, thực phẩm trong nhà','Xăng xe, đi lại đi làm','Thuốc men, khám chữa bệnh, bảo hiểm','Đồ dùng gia đình thật sự cần thiết'],
+  no:['Ăn ngoài thường xuyên','Mua đồ xa xỉ nhưng gọi là cần thiết','Mua dự trữ quá nhiều']
+ },
+ education:{
+  ok:['Sách, khóa học, học phí','Đồ dùng học tập','Học ngoại ngữ, kỹ năng nghề nghiệp','Hội thảo, workshop hữu ích'],
+  no:['Mua khóa học nhưng không học','Sắm thiết bị học tập quá đắt','Mua sách chất đống mà không đọc']
+ },
+ saving:{
+  ok:['Gửi tiết kiệm ngân hàng','Quỹ dự phòng khẩn cấp (3 đến 6 tháng chi tiêu)','Mục tiêu lớn: mua nhà, mua xe, cưới hỏi','Dự phòng cho tuổi già'],
+  no:['Rút ra tiêu vặt','Dùng khi chưa thật sự khẩn cấp','Cho vay không giấy tờ']
+ },
+ invest:{
+  ok:['Chứng chỉ quỹ, ETF','Cổ phiếu, trái phiếu bạn hiểu rõ','Vàng tích trữ dài hạn','Vốn kinh doanh nhỏ tạo thêm thu nhập'],
+  no:['Vay tiền để đầu tư','Tin lời hứa lãi cao, cam kết không rủi ro','Dồn hết vốn vào một chỗ']
+ },
+ share:{
+  ok:['Biếu cha mẹ, hỗ trợ người thân','Hiếu hỷ: cưới hỏi, thăm bệnh, viếng','Từ thiện, đóng góp cộng đồng','Quà tặng ý nghĩa cho bạn bè'],
+  no:['Chi vượt quá khả năng chỉ vì sĩ diện','Cho vay vượt sức mà ảnh hưởng cuộc sống','Chia sẻ nhưng bỏ quên chính mình']
+ },
+ enjoy:{
+  ok:['Ăn nhà hàng, cà phê cùng bạn bè','Xem phim, giải trí, du lịch','Mua sắm sở thích cá nhân','Tự thưởng cho bản thân sau khi đạt mục tiêu'],
+  no:['Chi vượt mức của ví','Trả góp để hưởng thụ','Mua theo hứng, theo khuyến mãi']
+ }
+};
+function openJarGuide(k){
+ const j=JARS.find(x=>x.k===k), g=JAR_TIPS[k]; if(!j||!g)return;
+ document.getElementById('jarGuideBox').innerHTML=`
+  <button class="jg-x" onclick="closeJarGuide()" aria-label="Đóng">✕</button>
+  <div class="jg-title">${j.i} Hướng dẫn chi tiêu<br>Ví ${j.l}</div>
+  <div class="jg-pct">Tỷ lệ phân bổ hiện tại: <b>${jarPct(k)}%</b> thu nhập</div>
+  <div class="jg-h ok">✅ Nên chi cho</div>
+  <ul>${g.ok.map(t=>'<li>'+t+'</li>').join('')}</ul>
+  <div class="jg-h no">⚠️ Nên hạn chế</div>
+  <ul>${g.no.map(t=>'<li>'+t+'</li>').join('')}</ul>
+  <div class="jg-foot">Chạm vào chỗ bất kỳ hoặc nút ✕ để đóng</div>`;
+ document.getElementById('jarGuideModal').classList.add('open');
+}
+function closeJarGuide(){document.getElementById('jarGuideModal').classList.remove('open');}
 function scrExpenseOverview(){
  const rows=JARS.map(j=>{const spent=jarSpent(j.k);const remain=jarRemain(j.k);const c=remain<0?'neg':'pos';return `
-  <div class="fill-row xrow" onclick="openJar('${j.k}')">
-   <div class="top"><span class="lb"><span class="ic">${j.i}</span><span>${j.l}</span></span><span class="stack"><span class="am ${c}">${fmt(remain)} ₫</span><span class="sm neg">${fmt(spent)} ₫ đã chi</span></span></div>
-   <div class="d">${nbLast(JAR_DESC[j.k])}</div>
+  <div class="jar-block">
+   <div class="fill-row" onclick="openJar('${j.k}')">
+    <span class="lb"><span class="ic">${j.i}</span>${j.l}</span>
+    <span class="stack"><span class="am ${c}">${fmt(remain)} ₫</span><span class="sm neg">${fmt(spent)} ₫ đã chi</span></span>
+   </div>
+   <div class="jar-guide" onclick="openJarGuide('${j.k}')">💡 Hướng dẫn chi tiêu ›</div>
   </div>`;}).join('');
- return fillScreen('Hãy cân nhắc trước khi chi','',rows,'',true);
+ return fillScreen('Hãy cân nhắc trước khi chi','',rows,'','jarblocks');
 }
 
 // Trang chi tiết ví (dùng chung cho cả 6 ví)

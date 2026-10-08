@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.08-2';
+const APP_VERSION='2026.10.08-4';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -740,8 +740,8 @@ function scrHome(){
    <div class="card-label">Đồng hành</div>
    <div class="card-amount">›</div>
   </div>
-    <div class="card hist" onclick="push('todayHistory')">
-   <div class="card-label">GD trong ngày</div>
+    <div class="card hist" onclick="histFilter={mode:'day',day:'',month:'',from:'',to:''};push('todayHistory')">
+   <div class="card-label">Lịch sử giao dịch</div>
    <div class="card-amount ${todayNet()>=0?'pos':'neg'}">${fmt(todayNet())} ₫</div>
   </div>
   <div class="home-quote">Tiền không tự tạo nên tương lai của bạn<br>mà cách bạn sử dụng tiền sẽ quyết định điều đó</div>
@@ -1709,8 +1709,23 @@ function todayTx(){
 function todayNet(){
  return todayTx().reduce((s,x)=>s+(x.type==='in'?x.amount:-x.amount),0);
 }
+let histFilter={mode:'day',day:'',month:'',from:'',to:''};
+function histList(){
+ const f=histFilter;
+ return tx.filter(x=>{
+  const k=dayKey(new Date(x.ts));
+  if(f.mode==='month')return k.slice(0,7)===(f.month||dayKey().slice(0,7));
+  if(f.mode==='range'){
+   if(f.from&&k<f.from)return false;
+   if(f.to&&k>f.to)return false;
+   return true;
+  }
+  return k===(f.day||dayKey());
+ }).sort((a,b)=>b.ts-a.ts);
+}
 function scrTodayHistory(){
- const list=todayTx();
+ const f=histFilter, today=dayKey();
+ const list=histList();
  const inc=list.filter(x=>x.type==='in').reduce((s,x)=>s+x.amount,0);
  const out=list.filter(x=>x.type==='out').reduce((s,x)=>s+x.amount,0);
  const rows=list.map(x=>{
@@ -1721,12 +1736,28 @@ function scrTodayHistory(){
   return `<div class="list-item">
    <div class="tx-info"><div style="font-weight:600;">${name}</div>
     <div class="note">${esc(x.note||'(không ghi chú)')}</div>
-    <div class="hist-time">${isIn?'Thu':'Chi'} · ${time}</div></div>
+    <div class="hist-time">${isIn?'Thu':'Chi'} · ${dateFmt(x.ts)} · ${time}</div></div>
    <span class="${isIn?'pos':'neg'}">${isIn?'+':'−'}${fmt(x.amount)} ₫</span>
   </div>`;}).join('');
- return screenWrap('🕒 GD trong ngày',`
-  <div class="hist-sum"><div class="i">Tổng thu hôm nay<b>${fmt(inc)} ₫</b></div><div class="o">Tổng chi hôm nay<b>${fmt(out)} ₫</b></div></div>
-  ${rows||'<div class="empty">Hôm nay chưa có giao dịch nào.</div>'}`);
+ let pick='';
+ if(f.mode==='day')pick=`<input type="date" value="${f.day||today}" onchange="histFilter.day=this.value;render();">`;
+ if(f.mode==='month')pick=`<input type="month" value="${f.month||today.slice(0,7)}" onchange="histFilter.month=this.value;render();">`;
+ const range=f.mode==='range'?`<div class="filter-row">
+   <div class="form-row tight" style="flex:1;"><label>Từ ngày</label><input type="date" value="${f.from}" onchange="histFilter.from=this.value;render();"></div>
+   <div class="form-row tight" style="flex:1;"><label>Đến ngày</label><input type="date" value="${f.to}" onchange="histFilter.to=this.value;render();"></div>
+  </div>`:'';
+ return screenWrap('🕒 Giao dịch',`
+  <div class="filter-row">
+   <select onchange="histFilter.mode=this.value;render();">
+    <option value="day" ${f.mode==='day'?'selected':''}>Theo ngày</option>
+    <option value="month" ${f.mode==='month'?'selected':''}>Theo tháng</option>
+    <option value="range" ${f.mode==='range'?'selected':''}>Từ ngày đến ngày</option>
+   </select>
+   ${pick}
+  </div>
+  ${range}
+  <div class="hist-sum"><div class="i">Tổng thu<b>${fmt(inc)} ₫</b></div><div class="o">Tổng chi<b>${fmt(out)} ₫</b></div></div>
+  ${rows||'<div class="empty">Không có giao dịch nào trong thời gian đã chọn.</div>'}`);
 }
 const SCREENS={
  partner:scrPartner, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,

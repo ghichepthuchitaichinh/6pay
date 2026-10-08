@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.08-1';
+const APP_VERSION='2026.10.08-2';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -967,7 +967,7 @@ function scrIncomeCategories(){
    <div class="top"><span class="lb"><span class="ic">${t.i}</span><span>${t.l}</span></span><span class="am pos">${fmt(total)} ₫</span></div>
    <div class="d">${nbLast(t.d)}</div>
   </div>`;}).join('');
- return fillScreen('Các hình thức thu nhập','Thêm nguồn thu nhập để chi tiêu được thoải mái hơn',rows,'','big natural');
+ return fillScreen('Các hình thức thu nhập','Thêm nhiều nguồn thu nhập<br>Để chi tiêu được thoải mái hơn',rows,'','big natural');
 }
 let incDraft={amount:'',exact:'',note:'',editId:''};
 function openIncome(k){incDraft={amount:'',exact:'',note:'',editId:''};push('incomeDetail',{sub:k});}

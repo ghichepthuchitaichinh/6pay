@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.08-5';
+const APP_VERSION='2026.10.08-6';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -434,10 +434,14 @@ const JAR_DESC={
 // 3 đường link ở màn hình chính — dán link vào chỗ link:'' (để trống thì hiện chữ mờ, chưa bấm được)
 const IC_FB='<svg class="lk-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.3c0-.9.3-1.4 1.500-1.400h1.400V5.200c-.3 0-1.100-.1-2.100-.1-2.100 0-3.500 1.300-3.500 3.600V11H8.500v3h2.300v7z" fill="#fff"/></svg>';
 const IC_ZALO='<svg class="lk-ic" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#0068FF"/><text x="24" y="31" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="17" fill="#fff">Zalo</text></svg>';
-const LINKS=[
+const IC_YT='<svg class="lk-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="0" y="4" width="24" height="16" rx="5" fill="#FF0000"/><path d="M10 8.500v7l6-3.500z" fill="#fff"/></svg>';
+const IC_TT='<svg class="lk-ic" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#000"/><text x="24" y="29" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="12" fill="#fff">TikTok</text></svg>';
+  const LINKS=[
  {t:'🌐 Website 6Pay',link:'http://6pay.vn'},
  {t:IC_FB+' Sự kiện 6Pay',link:'https://www.facebook.com/share/19bKZLWVzq/'},
- {t:IC_ZALO+' Trung tâm hỗ trợ 6Pay',link:'https://zalo.me/g/z7pzytxzrsitdwprfa1d'}
+ {t:IC_ZALO+' Trung tâm hỗ trợ 6Pay',link:'https://zalo.me/g/z7pzytxzrsitdwprfa1d'},
+ {t:IC_YT+' Kênh Youtube 6Pay',link:'https://youtube.com/@6pay-vn?si=z3junLJI4LAb-o3y'},
+ {t:IC_TT+' Kênh Tiktok 6Pay',link:'https://tiktok.com/@6pay.vn'}
 ];
 const INCOME_TYPES=[
  {k:'luong',l:'Lương',i:'💼',d:'Lương là nguồn thu nhập chính<br>để bạn duy trì một cuộc sống ổn định'},

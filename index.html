@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.07-3';
+const APP_VERSION='2026.10.08-1';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -109,7 +109,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .fill-rows.big .fill-row .d{font-style:italic;line-height:1.25;}
 .fill-rows.natural{flex:0 0 auto;overflow:visible;gap:10px;}
 .fill-rows.natural .fill-row{flex:0 0 auto;min-height:auto;padding-top:15px;padding-bottom:15px;}
-.fill-row.xrow.ctr .d{text-align:center;text-align-last:center;text-wrap:balance;}
+.fill-row.xrow.ctr .d{text-align:left;text-align-last:left;text-wrap:pretty;padding:0;}
 .fill-row.xrow{flex-direction:column;align-items:stretch;justify-content:center;gap:5px;}
 .fill-row.xrow .top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .fill-row.xrow .d{margin-top:0;font-size:clamp(11.5px,1.55vh,13px);font-style:italic;font-weight:400;line-height:1.45;color:var(--text-soft);text-align:center;text-align-last:center;text-wrap:balance;hyphens:none;padding:0 2px;}
@@ -861,7 +861,7 @@ function setRtAmt(k,p){
 function scrRatios(){
  const enjoy=pctEnjoy(); const over=enjoy<0;
  return screenWrap('Tỷ lệ phân bổ 6 ví',`
-  <div class="rt-total">Tổng thu nhập: <b>${fmt(totalIncome())} ₫</b></div>
+  <div class="rt-total">Số dư hiện tại: <b>${fmt(balance())} ₫</b></div>
   ${JARS.slice(0,5).map(j=>`
    <div class="pct-row rt-row">
     <div class="rt-l"><span class="rt-n">${j.i} ${j.l}</span>${ratioAmtHtml(j.k,pct[j.k])}</div>

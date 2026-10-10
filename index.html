@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.08-6';
+const APP_VERSION='2026.10.08-9';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -417,7 +417,7 @@ body.home-white{background:#FFFFFF;}
 <script>
 const JARS=[
  {k:'essential',l:'Thiết yếu',i:'🏠'},
- {k:'education',l:'Học tập',i:'📚'},
+ {k:'education',l:'Phát triển bản thân',i:'📚'},
  {k:'saving',l:'Tiết kiệm',i:'🐷'},
  {k:'invest',l:'Đầu tư',i:'📈'},
  {k:'share',l:'Chia sẻ',i:'🤝'},
@@ -465,7 +465,7 @@ const ADS=[
 // Chữ trên nút mua hàng tiếp thị của từng ví
 const MARKET_LABELS={
  essential:'Mua sắm cùng 6Pay',
- education:'Học tập cùng 6Pay',
+ education:'Mua sắm cùng 6Pay',
  saving:'Tiết kiệm cùng 6Pay',
  invest:'Đầu tư cùng 6Pay',
  share:'Chia sẻ cùng 6Pay',
@@ -481,6 +481,7 @@ const DEFAULT_GUIDES={
  education:{desc:'Đầu tư cho kiến thức và kỹ năng của bản thân.',items:[
    {label:'Mua sách',link:'https://your-affiliate-link.com/sach'},
    {label:'Đồ dùng học tập',link:'https://your-affiliate-link.com/dungcuhoctap'},
+   {label:'Dây nhảy dây cao cấp DELI Bantex',link:'https://s.shopee.vn/7AeDasYYA8'},
    {label:'Khóa học online',link:'https://your-affiliate-link.com/khoahoc'}
  ]},
  saving:{desc:'Tích lũy cho mục tiêu dài hạn và các tình huống bất ngờ.',items:[
@@ -496,7 +497,8 @@ const DEFAULT_GUIDES={
  share:{desc:'Chia sẻ với gia đình, bạn bè và cộng đồng.',items:[
    {label:'Quà tặng người thân',link:'https://your-affiliate-link.com/quatang'},
    {label:'Từ thiện, đóng góp cộng đồng',link:''},
-   {label:'Hỗ trợ bạn bè khi cần',link:''}
+   {label:'Hỗ trợ bạn bè khi cần',link:''},
+    {label:'Mở tài khoản MB kết nối yêu thương',link:'https://mbbank.onelink.me/QPF5?pid=SF%20Email%20Warmup&c=SF_Email_WarmUP_AppInstall&af_force_deeplink=true&af_dp=mbbank%3A%2F%2F&referral_code=OAGPLQ343XAR97XBSSJ3B'}
  ]},
  enjoy:{desc:'Tận hưởng cuộc sống, tái tạo năng lượng cho bản thân.',items:[
    {label:'Ăn uống, giải trí',link:'https://your-affiliate-link.com/giaitri'},

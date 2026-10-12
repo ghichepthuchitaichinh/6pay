@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.12-9';
+const APP_VERSION='2026.10.12-10';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -551,7 +551,7 @@ function adItems(list){return list.map(a=>a.link?`<a class="ad-item" href="${a.l
 const ADS_BALANCE=makePH(5);
 const ADS_INCOME=makePH(5);
 const ADS=[
- {html:'⚖️ <b>Luật sư Trần Hường</b> <br>Zalo, SĐT 098.55.22.892',link:'http://zalo.me/0985522892'},
+ {html:'⚖️ <b>Luật sư Trần Hường - Công ty Luật FANCI</b> <br>Zalo, SĐT 098.55.22.892',link:'http://zalo.me/0985522892'},
  {html:' <b>Hãy quảng bá thương hiệu của bạn',link:'http://zalo.me/0342190588'},
  {html:' <b>Hãy quảng bá thương hiệu của bạn </b>',link:'http://zalo.me/0342190588'}
 ];
@@ -1366,16 +1366,16 @@ function streakHtml(){const s=streakGet(),on=s.last===dayKey();return `<span cla
 // ===== Tiện ích 6Pay =====
 function scrExtra(){
  return screenWrap('Tiện ích 6Pay',`
-  <div class="list-item clickable util-item" onclick="openPlanner()"><span>📅 Kỷ luật thời gian và công việc</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="openPlanner()"><span>📅 Kế hoạch bản thân</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('debts')"><span>💳 Quản lý khoản nợ</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('books')"><span>📖 Đọc sách Free</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openNotes()"><span>📝 Sổ ghi chú</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openLunar()"><span>🗓️ Lịch vạn niên</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('stopwatch')"><span>⏱️ Đồng hồ bấm giờ</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('calc')"><span>🧮 Máy tính</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('units')"><span>📐 Đổi đơn vị đo</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="open6PayGame()"><span>🎮 Game 6Pay Runner</span><span class="guide-cta">›</span></div>`);
+  <div class="list-item clickable util-item" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="open6PayGame()"><span>🎮 Bước nhảy tài chính</span><span class="guide-cta">›</span></div>`);
 }
 // ===== Đọc sách miễn phí =====
 // Thêm sách: thêm 1 dòng vào BOOKS. f = đường dẫn file (nên để trong thư mục books/ cùng chỗ với index.html)

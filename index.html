@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.12-24';
+const APP_VERSION='2026.10.12-25';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -653,13 +653,25 @@ const GUIDES_URL='https://raw.githubusercontent.com/ghichepthuchitaichinh/6pay/m
 const GUIDES_CACHE_KEY='6pay-guides-cache-v1';
 // Chỉ nhận link https://, bỏ link mẫu chưa có thật; luôn đảm bảo đủ 6 ví để không bao giờ lỗi màn hình
 function safeUrl(u){u=String(u||'').trim();return /^https?:\/\//i.test(u)&&u.indexOf('your-affiliate-link.com')<0?u:'';}
-function cleanGuides(d){
+function cleanInfo(x){
+  if(!x||typeof x!=='object')return null;
+  const o={};let any=false;
+  ['shop','product','price','policy'].forEach(k=>{
+    let v=x[k]; if(typeof v==='string')v=[v];
+    if(Array.isArray(v)){
+      v=v.filter(s=>typeof s==='string'&&s.trim()).slice(0,12).map(s=>s.trim().slice(0,200));
+      if(v.length){o[k]=v;any=true;}
+    }
+  });
+  return any?o:null;
+}
+  function cleanGuides(d){
   const out={};
   JARS.forEach(j=>{
     const g=d&&d[j.k], base=DEFAULT_GUIDES[j.k];
     if(g&&Array.isArray(g.items)){
       out[j.k]={desc:(typeof g.desc==='string'&&g.desc)||base.desc,items:g.items.filter(it=>it&&typeof it.label==='string'&&it.label.trim()).slice(0,50).map(it=>{
-        const o={label:it.label.trim().slice(0,150),link:safeUrl(it.link)}; const v=safeUrl(it.video); if(v)o.video=v; return o;})};
+        const o={label:it.label.trim().slice(0,150),link:safeUrl(it.link)}; const v=safeUrl(it.video); if(v)o.video=v; const inf=cleanInfo(it.info); if(inf)o.info=inf; return o;})};
     }else out[j.k]={desc:base.desc,items:base.items.map(it=>({label:it.label,link:safeUrl(it.link)}))};
   });
   return out;
@@ -1953,19 +1965,23 @@ const PRODUCT_VIDEO='https://youtube.com/@6pay-vn?si=z3junLJI4LAb-o3y';
 function openProdInfo(k,i){
  const it=(GUIDES[k]&&GUIDES[k].items[i]); if(!it)return;
  const video=safeUrl(it.video)||PRODUCT_VIDEO;
+ const D={
+  shop:['Tên shop:','Shopee Mall / Yêu Thích+','Điểm đánh giá ≥ 4.7','Tỷ lệ phản hồi chat','Thời gian hoạt động','Doanh số bán'],
+  product:['Hàng chính hãng / tem xác nhận','Thông số kỹ thuật, kích thước, chất liệu','Xuất xứ, quy cách đóng gói','Ảnh thực tế / đánh giá có ảnh'],
+  price:['Giá cuối cùng (đã gồm ship)','Mã giảm giá, miễn ship','Bảo hành giá'],
+  policy:['Đổi trả 7 ngày / 15 ngày','Shopee Đảm Bảo','Bảo hành hãng / bảo hành shop','Hóa đơn điện tử','Thanh toán trên sàn','Video khui hàng']
+ };
+ const inf=it.info||{};
+ const ul=key=>'<ul>'+(inf[key]||D[key]).map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul>';
  document.getElementById('prodInfoBox').innerHTML=`
   <button class="jg-x" onclick="closeProdInfo()" aria-label="Đóng">✕</button>
-  <div class="pi-title">ℹ️ Thông tin sản phẩm</div>
+  <div class="pi-title">ℹ️ Thông tin sản phẩm tiếp thị</div>
   <div class="pi-name">${esc(it.label)}</div>
   <div class="guide-desc" style="margin:0 0 4px;">Hãy xem kỹ thông tin sản phẩm:</div>
-  <div class="pi-h">🏪 Về Người Bán</div>
-  <ul><li>Tên shop: </li><li>Shopee Mall / Yêu Thích+</li><li>Điểm đánh giá ≥ 4.7</li><li>Tỷ lệ phản hồi chat</li><li>Thời gian hoạt động</li><li>Doanh số bán</li></ul>
-  <div class="pi-h">📦 Về Sản Phẩm</div>
-  <ul><li>Hàng chính hãng / tem xác nhận</li><li>Thông số kỹ thuật, kích thước, chất liệu</li><li>Xuất xứ, quy cách đóng gói</li><li>Ảnh thực tế / đánh giá có ảnh</li></ul>
-  <div class="pi-h">💰 Về Giá &amp; Ưu Đãi</div>
-  <ul><li>Giá cuối cùng (đã gồm ship)</li><li>Mã giảm giá, miễn ship</li><li>Bảo hành giá</li></ul>
-  <div class="pi-h">🛡️ Về Chính Sách &amp; Quyền Lợi</div>
-  <ul><li>Đổi trả 7 ngày / 15 ngày</li><li>Shopee Đảm Bảo</li><li>Bảo hành hãng / bảo hành shop</li><li>Hóa đơn điện tử</li><li>Thanh toán trên sàn</li><li>Video khui hàng</li></ul>
+  <div class="pi-h">🏪 Về Người Bán</div>${ul('shop')}
+  <div class="pi-h">📦 Về Sản Phẩm</div>${ul('product')}
+  <div class="pi-h">💰 Về Giá &amp; Ưu Đãi</div>${ul('price')}
+  <div class="pi-h">🛡️ Về Chính Sách &amp; Quyền Lợi</div>${ul('policy')}
   <a class="pi-video" href="${qa(video)}" target="_blank" rel="noopener noreferrer">▶ Xem video sản phẩm</a>
   <div class="pi-foot">Nút “Mua ngay” là link tiếp thị liên kết.</div>`;
  document.getElementById('prodInfoModal').classList.add('open');

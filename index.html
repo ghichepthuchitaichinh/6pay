@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.12-11';
+const APP_VERSION='2026.10.12-12';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -317,6 +317,12 @@ body.home-white{background:#FFFFFF;}
 .link-row .lk-ic{width:24px;height:24px;}
 .link-row.off{color:var(--text-soft);font-weight:500;}
 .link-row .go{margin-left:auto;color:var(--accent);font-size:20px;line-height:1;}
+.link-pair{display:flex;gap:8px;}
+.link-pair .link-row{flex:1 1 0;min-width:0;justify-content:center;padding:12px 8px;font-size:14px;}
+.link-pair .link-row .go{margin-left:0;}
+.link-row.shop{background:#FFF3D9;border-color:#F6E2B0;color:#7A4B00;cursor:pointer;}
+.link-row.shop .go{color:#7A4B00;}
+.shop-h{font-size:14.5px;font-weight:800;margin:14px 0 8px;}
 .qz-meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;margin-bottom:8px;}
 .qz-bar{height:6px;border-radius:3px;background:var(--border);overflow:hidden;margin-bottom:14px;}
 .qz-bar i{display:block;height:100%;background:var(--accent);transition:width 1s linear;}
@@ -532,9 +538,9 @@ const IC_TT='<svg class="lk-ic" viewBox="0 0 48 48" aria-hidden="true"><rect wid
   const LINKS=[
  {t:'🌐 Website 6Pay',link:'http://6pay.vn'},
  {t:IC_FB+' Sự kiện 6Pay',link:'https://www.facebook.com/share/19bKZLWVzq/'},
- {t:IC_ZALO+' Trung tâm hỗ trợ 6Pay',link:'https://zalo.me/g/z7pzytxzrsitdwprfa1d'},
- {t:IC_YT+' Kênh Youtube 6Pay',link:'https://youtube.com/@6pay-vn?si=z3junLJI4LAb-o3y'},
- {t:IC_TT+' Kênh Tiktok 6Pay',link:'https://tiktok.com/@6pay.vn'}
+ {t:IC_ZALO+' Hỗ trợ 6Pay',link:'https://zalo.me/g/z7pzytxzrsitdwprfa1d'},
+ {t:IC_YT+' Youtube',link:'https://youtube.com/@6pay-vn?si=z3junLJI4LAb-o3y'},
+ {t:IC_TT+' Tiktok',link:'https://tiktok.com/@6pay.vn'}
 ];
 const INCOME_TYPES=[
  {k:'luong',l:'Lương',i:'💼',d:'Lương là nguồn thu nhập chính<br>để bạn duy trì một cuộc sống ổn định'},
@@ -848,13 +854,23 @@ function scrHome(){
 }
 
 // Trang "Đồng hành cùng 6Pay": link website/fanpage/Zalo + liên hệ quảng cáo + danh sách link tiếp thị
+function linkRow(l){return l.link?`<a class="link-row" href="${l.link}" target="_blank" rel="noopener">${l.t}<span class="go">›</span></a>`:`<div class="link-row off">${l.t}</div>`;}
 function scrPartner(){
  return `<div class="screen-flex">
   <div class="partner-head"><div class="ph-title">Đồng hành cùng 6Pay</div><div class="ph-contact">${AD_HEAD}</div></div>
-  <div class="fixed-top">${LINKS.map(l=>l.link?`<a class="link-row" href="${l.link}" target="_blank" rel="noopener">${l.t}<span class="go">›</span></a>`:`<div class="link-row off">${l.t}</div>`).join('')}</div>
+  <div class="fixed-top">
+   <div class="link-pair">${linkRow(LINKS[1])}${linkRow(LINKS[2])}</div>
+   <div class="link-pair">${linkRow(LINKS[3])}${linkRow(LINKS[4])}</div>
+   ${linkRow(LINKS[0])}
+   <div class="link-row shop" onclick="push('shopAll')">🛒 Mua sắm cùng 6Pay<span class="go">›</span></div>
+  </div>
   <div class="fill-ads"><div class="ad-list">${adItems(ADS)}</div></div>
   <button class="btn back" onclick="back()">◀ Quay lại</button>
  </div>`;
+}
+function scrShopAll(){
+ const sec=JARS.filter(j=>GUIDES[j.k]&&GUIDES[j.k].items.some(it=>it.link)).map(j=>`<div class="shop-h">${j.i} ${j.l}</div>${guideLinks(j.k,true)}`).join('');
+ return screenWrap('🛒 Mua sắm cùng 6Pay',sec||'<div class="empty">Chưa có sản phẩm nào.</div>');
 }
 
 function scrLogin(){
@@ -2316,7 +2332,7 @@ function scrUnits(){
 }
 
 const SCREENS={
- partner:scrPartner, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
+ partner:scrPartner, shopAll:scrShopAll, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
  incomeCategories:scrIncomeCategories, incomeDetail:scrIncomeDetail,
  expenseOverview:scrExpenseOverview, expenseDetail:scrExpenseDetail, quiz:scrQuiz
  ,extra:scrExtra, planner:scrPlanner, ratios:scrRatios, planSettings:scrPlanSettings,books:scrBooks,debts:scrDebts, todayHistory:scrTodayHistory,

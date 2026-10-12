@@ -5,11 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>6PAY — Quản lý tài chính cá nhân</title>
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png" type="image/png">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.12-16';
+const APP_VERSION='2026.10.12-17';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -19,6 +20,22 @@ try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="6PAY">
+<link rel="apple-touch-startup-image" href="splash/1290x2796.png" media="(device-width:430px) and (device-height:932px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/1179x2556.png" media="(device-width:393px) and (device-height:852px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/1284x2778.png" media="(device-width:428px) and (device-height:926px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/1170x2532.png" media="(device-width:390px) and (device-height:844px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/1125x2436.png" media="(device-width:375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/1242x2688.png" media="(device-width:414px) and (device-height:896px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/828x1792.png" media="(device-width:414px) and (device-height:896px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/1242x2208.png" media="(device-width:414px) and (device-height:736px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/750x1334.png" media="(device-width:375px) and (device-height:667px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/1206x2622.png" media="(device-width:402px) and (device-height:874px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/1320x2868.png" media="(device-width:440px) and (device-height:956px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/1668x2388.png" media="(device-width:834px) and (device-height:1194px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/2048x2732.png" media="(device-width:1024px) and (device-height:1366px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/1640x2360.png" media="(device-width:820px) and (device-height:1180px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/1536x2048.png" media="(device-width:768px) and (device-height:1024px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="splash/1668x2224.png" media="(device-width:834px) and (device-height:1112px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -272,6 +289,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .boot-splash.hide{opacity:0;pointer-events:none;}
 .boot-emoji{font-size:20vw;line-height:1;animation:bootZoom .8s cubic-bezier(.2,1.15,.4,1) forwards;}
 @keyframes bootZoom{0%{transform:scale(.55);opacity:0;}55%{opacity:1;}100%{transform:scale(1);opacity:1;}}
+.boot-logo{width:46vw;max-width:240px;height:auto;animation:bootZoom .8s cubic-bezier(.2,1.15,.4,1) forwards;}
 .boot-brand{font-size:11vw;line-height:1;font-weight:800;letter-spacing:.02em;opacity:0;animation:bootTaglineIn .5s ease forwards;animation-delay:.3s;}
 .boot-tagline{font-size:4.6vw;font-weight:700;color:#0D2A6E;max-width:340px;line-height:1.6;opacity:0;animation:bootTaglineIn .6s ease forwards;animation-delay:.6s;}
 @keyframes bootTaglineIn{0%{opacity:0;transform:translateY(12px);}100%{opacity:1;transform:translateY(0);}}
@@ -484,8 +502,7 @@ body.home-white{background:#FFFFFF;}
 </head>
 <body>
 <div id="bootSplash" class="boot-splash" aria-hidden="true">
- <div class="boot-emoji">💰</div>
- <div class="boot-brand"><span style="color:#E63946">6</span><span style="color:#F4A300">P</span><span style="color:#2A9D8F">A</span><span style="color:#3E6FB8">Y</span></div>
+ <img class="boot-logo" src="icon-512.png" width="512" height="512" alt="">
  <div class="boot-tagline">Hãy ghi chép thường xuyên<br>để tạo thói quen<br>Quản lý tài chính của bạn</div>
 </div>
 <div class="wrap"><div id="app"></div></div>
@@ -596,19 +613,19 @@ const DEFAULT_GUIDES={
    {label:'Xăng xe, di chuyển',link:''}
  ]},
  education:{desc:'Đầu tư cho kiến thức và kỹ năng của bản thân.',items:[
-   {label:'Mua sách',link:'https://your-affiliate-link.com/sach'},
+   {label:'Mua sách',link:''},
    {label:'Dây nhảy dây cao cấp DELI Bantex',link:'https://s.shopee.vn/7AeDasYYA8'},
-   {label:'Khóa học online',link:'https://your-affiliate-link.com/khoahoc'}
+   {label:'Khóa học online',link:''}
  ]},
  saving:{desc:'Tích lũy cho mục tiêu dài hạn và các tình huống bất ngờ.',items:[
-   {label:'Gửi tiết kiệm ngân hàng',link:'https://your-affiliate-link.com/tietkiem'},
-   {label:'Ứng dụng tiết kiệm tự động',link:'https://your-affiliate-link.com/apptietkiem'},
+   {label:'Gửi tiết kiệm ngân hàng',link:''},
+   {label:'Ứng dụng tiết kiệm tự động',link:''},
    {label:'Quỹ dự phòng khẩn cấp',link:''}
  ]},
  invest:{desc:'Phát triển tài sản thông qua đầu tư dài hạn.',items:[
-   {label:'Mở tài khoản chứng khoán',link:'https://your-affiliate-link.com/chungkhoan'},
-   {label:'Chứng chỉ quỹ / ETF',link:'https://your-affiliate-link.com/etf'},
-   {label:'Khóa học đầu tư',link:'https://your-affiliate-link.com/hocdautu'}
+   {label:'Mở tài khoản chứng khoán',link:''},
+   {label:'Chứng chỉ quỹ / ETF',link:''},
+   {label:'Khóa học đầu tư',link:''}
  ]},
  share:{desc:'Chia sẻ với gia đình, bạn bè và cộng đồng.',items:[
    {label:'Mở tài khoản MB kết nối yêu thương',link:'https://mbbank.onelink.me/QPF5?pid=SF%20Email%20Warmup&c=SF_Email_WarmUP_AppInstall&af_force_deeplink=true&af_dp=mbbank%3A%2F%2F&referral_code=OAGPLQ343XAR97XBSSJ3B'},
@@ -616,36 +633,41 @@ const DEFAULT_GUIDES={
    {label:'Hỗ trợ bạn bè khi cần',link:''}
  ]},
  enjoy:{desc:'Tận hưởng cuộc sống, tái tạo năng lượng cho bản thân.',items:[
-   {label:'Ăn uống, giải trí',link:'https://your-affiliate-link.com/giaitri'},
-   {label:'Du lịch, nghỉ dưỡng',link:'https://your-affiliate-link.com/dulich'},
-   {label:'Mua sắm sở thích cá nhân',link:'https://your-affiliate-link.com/muasam'}
+   {label:'Ăn uống, giải trí',link:''},
+   {label:'Du lịch, nghỉ dưỡng',link:''},
+   {label:'Mua sắm sở thích cá nhân',link:''}
  ]}
 };
 
 // Cập nhật gợi ý & link tiếp thị từ xa (guides.json cùng cấu trúc DEFAULT_GUIDES), có cache cho offline.
 const GUIDES_URL='https://raw.githubusercontent.com/ghichepthuchitaichinh/6pay/main/guides.json';
 const GUIDES_CACHE_KEY='6pay-guides-cache-v1';
-let GUIDES=DEFAULT_GUIDES;
+// Chỉ nhận link https://, bỏ link mẫu chưa có thật; luôn đảm bảo đủ 6 ví để không bao giờ lỗi màn hình
+function safeUrl(u){u=String(u||'').trim();return /^https?:\/\//i.test(u)&&u.indexOf('your-affiliate-link.com')<0?u:'';}
+function cleanGuides(d){
+  const out={};
+  JARS.forEach(j=>{
+    const g=d&&d[j.k], base=DEFAULT_GUIDES[j.k];
+    if(g&&Array.isArray(g.items)){
+      out[j.k]={desc:(typeof g.desc==='string'&&g.desc)||base.desc,items:g.items.filter(it=>it&&typeof it.label==='string'&&it.label.trim()).slice(0,50).map(it=>{
+        const o={label:it.label.trim().slice(0,150),link:safeUrl(it.link)}; const v=safeUrl(it.video); if(v)o.video=v; return o;})};
+    }else out[j.k]={desc:base.desc,items:base.items.map(it=>({label:it.label,link:safeUrl(it.link)}))};
+  });
+  return out;
+}
+let GUIDES=cleanGuides(DEFAULT_GUIDES);
 try{
   const cachedGuides=localStorage.getItem(GUIDES_CACHE_KEY);
-  if(cachedGuides){const d=JSON.parse(cachedGuides); if(d&&typeof d==='object')GUIDES=d;}
+  if(cachedGuides){const d=JSON.parse(cachedGuides); if(d&&typeof d==='object')GUIDES=cleanGuides(d);}
 }catch(e){}
 function applyRemoteGuides(data){
   if(!data||typeof data!=='object')return false;
-  const merged={...GUIDES};
-  let changed=false;
-  JARS.forEach(j=>{
-    const g=data[j.k];
-    if(g&&Array.isArray(g.items)){
-      merged[j.k]={desc:(typeof g.desc==='string'&&g.desc)||(GUIDES[j.k]&&GUIDES[j.k].desc)||'',items:g.items};
-      changed=true;
-    }
-  });
-  if(changed){
-    GUIDES=merged;
-    try{localStorage.setItem(GUIDES_CACHE_KEY,JSON.stringify(GUIDES));}catch(e){}
-  }
-  return changed;
+  if(!JARS.some(j=>data[j.k]&&Array.isArray(data[j.k].items)))return false;
+  const merged={};
+  JARS.forEach(j=>{merged[j.k]=(data[j.k]&&Array.isArray(data[j.k].items))?data[j.k]:GUIDES[j.k];});
+  GUIDES=cleanGuides(merged);
+  try{localStorage.setItem(GUIDES_CACHE_KEY,JSON.stringify(GUIDES));}catch(e){}
+  return true;
 }
 function fetchGuides(){
   if(!GUIDES_URL||GUIDES_URL.indexOf('<')>-1)return;
@@ -659,6 +681,7 @@ function fetchGuides(){
 // Ghi lại lượt bấm link tiếp thị (CLICK_LOG_URL tùy chọn, ví dụ Google Apps Script)
 const CLICK_LOG_URL='';
 const CLICK_LOG_KEY='6pay-clicks-v1';
+function trackClickIdx(jarKey,i){const it=(GUIDES[jarKey]&&GUIDES[jarKey].items[i]); if(it)trackClick(jarKey,it.label,it.link);}
 function trackClick(jarKey,label,link){
  try{
   const logs=JSON.parse(localStorage.getItem(CLICK_LOG_KEY)||'[]');
@@ -711,7 +734,7 @@ let locked=!!getAccount(); // có tài khoản thì khóa ngay khi mở app
 function logoutAccount(){loggedIn=false;locked=true;stack=[{id:'home'}];render();}
 function forgotPass(){
  openConfirm('Nếu quên mật khẩu, cách duy nhất là xóa toàn bộ dữ liệu trên máy này (thu chi, tài khoản, kế hoạch...). Bạn có chắc muốn xóa không?',function(){
-  [ACCOUNT_KEY,STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,QZ_KEY,CLICK_LOG_KEY,NOTES_KEY,GOAL_KEY,BILL_KEY,POMO_KEY,DEBT_KEY].forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
+  backupKeys().concat([ACCOUNT_KEY,CLICK_LOG_KEY,PLAN_ASK_KEY,INSTALL_KEY,GUIDES_CACHE_KEY,'6pay-session-v1']).forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
   location.reload();
  });
 }
@@ -919,7 +942,7 @@ function scrLogin(){
   <div class="form-row"><label>Số điện thoại</label><input type="tel" id="auth-phone" placeholder="09xxxxxxxx" value="${acc?esc(acc.phone||''):''}"></div>
   <div class="form-row"><label>Mật khẩu (chỉ nhập số)</label><input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="12" id="auth-pass" placeholder="Mật khẩu" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
   <button class="btn primary" onclick="loginOrRegister()">Xác nhận</button>
-  <div class="guide-desc" style="margin-top:16px;">Nội dung này không bắt buộc. Tuy nhiên, hãy đăng ký để tránh người lạ xem nhật ký chi tiêu của bạn</div>
+  <div class="guide-desc" style="margin-top:16px;">Nội dung này không bắt buộc. Mật khẩu chỉ khóa app trên chính điện thoại này để tránh người lạ xem nhật ký chi tiêu, không đồng bộ giữa các máy. Hãy dùng Sao lưu trong Cài đặt để giữ an toàn dữ liệu.</div>
  `);
 }
   function changePass(){
@@ -1067,14 +1090,14 @@ function scrWallets(){
 function guideLinks(jarKey,onlyLinks){
  const items=GUIDES[jarKey].items.map((it,i)=>({it,i})).filter(o=>!onlyLinks||o.it.link);
  if(!items.length)return '<div class="empty">Chưa có sản phẩm nào.</div>';
- return items.map(o=>{const it=o.it; return it.link ? `<a class="guide-item" href="${it.link}" target="_blank" rel="noopener" onclick="trackClick('${jarKey}','${esc(it.label)}','${it.link}')"><span>${it.label}</span><span class="guide-cta">Mua ngay ↗</span></a><div class="affiliate-note" onclick="openProdInfo('${jarKey}',${o.i})">ℹ️ Thông tin sản phẩm ›</div>` : `<div class="guide-item plain"><span>${it.label}</span></div>`;}).join('');
+ return items.map(o=>{const it=o.it; return it.link ? `<a class="guide-item" href="${qa(it.link)}" target="_blank" rel="noopener noreferrer sponsored" onclick="trackClickIdx('${jarKey}',${o.i})"><span>${esc(it.label)}</span><span class="guide-cta">Mua ngay ↗</span></a><div class="affiliate-note" onclick="openProdInfo('${jarKey}',${o.i})">ℹ️ Lưu ý khi mua · Link liên kết ›</div>` : `<div class="guide-item plain"><span>${esc(it.label)}</span></div>`;}).join('');
 }
 function scrJarGuide(opts){
  const j=JARS.find(x=>x.k===opts.jar); const g=GUIDES[opts.jar];
  const bal=jarRemain(opts.jar); const cls=bal<0?'neg':'pos';
  return screenWrap(j.i+' '+j.l,`
   <div class="list-item"><span>Số dư ví</span><span class="${cls}">${fmt(bal)} ₫</span></div>
-  <div class="guide-desc">${g.desc}</div>
+  <div class="guide-desc">${esc(g.desc)}</div>
   ${guideLinks(opts.jar,false)}
  `);
 }
@@ -1921,11 +1944,12 @@ function convertSolar2Lunar(dd,mm,yy,tz){var dayNumber=jdFromDate(dd,mm,yy),k=Ma
 const PRODUCT_VIDEO='https://youtube.com/@6pay-vn?si=z3junLJI4LAb-o3y';
 function openProdInfo(k,i){
  const it=(GUIDES[k]&&GUIDES[k].items[i]); if(!it)return;
- const video=it.video||PRODUCT_VIDEO;
+ const video=safeUrl(it.video)||PRODUCT_VIDEO;
  document.getElementById('prodInfoBox').innerHTML=`
   <button class="jg-x" onclick="closeProdInfo()" aria-label="Đóng">✕</button>
-  <div class="pi-title">ℹ️ Thông tin sản phẩm</div>
+  <div class="pi-title">ℹ️ Lưu ý khi mua hàng trực tuyến</div>
   <div class="pi-name">${esc(it.label)}</div>
+  <div class="guide-desc" style="margin:0 0 4px;">Những điều nên tự kiểm tra trên trang bán hàng trước khi đặt mua:</div>
   <div class="pi-h">🏪 Về Người Bán</div>
   <ul><li>Thông tin shop</li><li>Shopee Mall / Yêu Thích+</li><li>Điểm đánh giá ≥ 4.7</li><li>Tỷ lệ phản hồi chat</li><li>Thời gian hoạt động</li><li>Doanh số bán</li></ul>
   <div class="pi-h">📦 Về Sản Phẩm</div>
@@ -1934,7 +1958,7 @@ function openProdInfo(k,i){
   <ul><li>Giá cuối cùng (đã gồm ship)</li><li>Mã giảm giá, miễn ship</li><li>Bảo hành giá</li></ul>
   <div class="pi-h">🛡️ Về Chính Sách &amp; Quyền Lợi</div>
   <ul><li>Đổi trả 7 ngày / 15 ngày</li><li>Shopee Đảm Bảo</li><li>Bảo hành hãng / bảo hành shop</li><li>Hóa đơn điện tử</li><li>Thanh toán trên sàn</li><li>Video khui hàng</li></ul>
-  <a class="pi-video" href="${esc(video)}" target="_blank" rel="noopener">▶ Xem video thực tế sản phẩm</a>
+  <a class="pi-video" href="${qa(video)}" target="_blank" rel="noopener noreferrer">▶ Xem video trên kênh Youtube 6Pay</a>
   <div class="pi-foot">Nút “Mua ngay” là link tiếp thị liên kết. 6Pay có thể nhận hoa hồng khi bạn mua hàng, giá bạn trả không đổi.</div>`;
  document.getElementById('prodInfoModal').classList.add('open');
 }
@@ -2818,6 +2842,7 @@ if(window.visualViewport){window.visualViewport.addEventListener('resize',setApp
 streakTick();
 render();
 fetchGuides();
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}
 setTimeout(()=>{
  const sp=document.getElementById('bootSplash');
  if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),300); }

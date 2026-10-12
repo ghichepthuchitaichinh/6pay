@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.12-2';
+const APP_VERSION='2026.10.12-4';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -221,7 +221,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .lc-d.today{border-color:var(--accent);}
 .lc-d.sel{background:var(--accent);}
 .lc-d.sel b,.lc-d.sel small{color:var(--accent-text);}
-.lc-hero{text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:12px 10px;margin:10px 0;}
+.lc-hero{touch-action:pan-y;-webkit-user-select:none;user-select:none;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:12px 10px;margin:10px 0;}
 .lc-wd{font-size:13px;font-weight:700;color:var(--text-soft);}
 .lc-big{font-size:44px;font-weight:800;line-height:1.1;}
 .lc-big small{font-size:18px;font-weight:600;color:var(--text-soft);}
@@ -2061,6 +2061,24 @@ function lcDetail(k){
 function openLunar(){const d=new Date();lcSel=dayKey();lcView={y:d.getFullYear(),m:d.getMonth()};push('lunar');}
 function lcPick(k){lcSel=k;const p=k.split('-');lcView={y:+p[0],m:+p[1]-1};render();}
 function lcMove(n){let m=lcView.m+n,y=lcView.y;if(m<0){m=11;y--;}if(m>11){m=0;y++;}lcView={y,m};render();}
+function lcShift(n){
+ const p=lcSel.split('-').map(Number), dt=new Date(p[0],p[1]-1,p[2]+n);
+ if(dt.getFullYear()<1900||dt.getFullYear()>2199)return;
+ const sc=document.querySelector('#app .scroll'), top=sc?sc.scrollTop:0;
+ lcPick(dayKey(dt));
+ const sc2=document.querySelector('#app .scroll'); if(sc2)sc2.scrollTop=top;
+}
+// Vuốt trái/phải trên ô ngày (khung có câu châm ngôn) để đổi ngày: trái = ngày sau, phải = ngày trước
+(function(){
+ const app=document.getElementById('app'); let sx=0,sy=0,on=false;
+ app.addEventListener('pointerdown',e=>{on=!!(e.target.closest&&e.target.closest('.lc-hero'));sx=e.clientX;sy=e.clientY;},{passive:true});
+ app.addEventListener('pointerup',e=>{
+  if(!on)return; on=false;
+  const dx=e.clientX-sx, dy=e.clientY-sy;
+  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.5)lcShift(dx<0?1:-1);
+ },{passive:true});
+ app.addEventListener('pointercancel',()=>{on=false;},{passive:true});
+})();
 function lcGoto(v){if(!v)return;lcPick(v);}
 function scrLunar(){
  const v=lcView, today=dayKey();

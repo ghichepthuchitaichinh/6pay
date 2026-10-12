@@ -3,8 +3,16 @@
     "desc": "Ăn uống, ngủ nghỉ, tắm giặt, đi lại",
     "items": [
       {
-        "label": "Gạo chuẩn ST25",
-        "link": "https://s.shopee.vn/1BMYaoqRlS"
+  "label": "Gạo",
+  "link": "https://s.shopee.vn/1BMYaoqRlS",
+  "video": "https://youtube.com/...",
+  "info": {
+    "shop": ["Tên shop: Gạo Sạch ABC", "Shopee Mall", "Đánh giá 4.9/5", "Phản hồi chat 98%", "Hoạt động 3 năm", "Đã bán 12k+"],
+    "product": ["Gạo ST25 túi 5kg", "Xuất xứ: Sóc Trăng", "Đóng gói hút chân không"],
+    "price": ["Giá 165.000đ đã gồm ship", "Mã giảm 10k cho đơn đầu tiên"],
+    "policy": ["Đổi trả 15 ngày", "Shopee Đảm Bảo", "Hoàn tiền nếu hàng lỗi"]
+  }
+}
       },
       {
         "label": "Nước giặt xả Topgia",

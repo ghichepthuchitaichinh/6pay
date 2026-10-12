@@ -323,11 +323,11 @@ body.home-white{background:#FFFFFF;}
 .link-row.shop{background:#FFF3D9;border-color:#F6E2B0;color:#7A4B00;cursor:pointer;}
 .link-row.shop .go{color:#7A4B00;}
 .shop-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px;}
-.shop-tab{display:flex;align-items:center;justify-content:center;gap:4px;padding:8px 2px;font:inherit;font-size:clamp(12px,3.3vw,14px);font-weight:700;white-space:nowrap;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);cursor:pointer;}
-.shop-tab span:first-child{font-size:1.15em;line-height:1;}
+.shop-tab{display:flex;align-items:center;justify-content:center;gap:4px;padding:13px 2px;font:inherit;font-size:clamp(13px,3.8vw,16px);font-weight:700;white-space:nowrap;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);cursor:pointer;}
+.shop-tab span:first-child{font-size:1.2em;line-height:1;}
 .shop-tab.on{background:var(--accent);border-color:var(--accent);color:var(--accent-text);}
-.shop-list .guide-item{padding:8px 12px;font-size:13.5px;border-radius:12px 12px 0 0;}
-.shop-list .affiliate-note{padding:4px 12px 5px;font-size:11.5px;margin-bottom:6px;border-radius:0 0 12px 12px;}
+.shop-list .guide-item{padding:13px 14px;font-size:15px;border-radius:12px 12px 0 0;}
+.shop-list .affiliate-note{padding:7px 14px 8px;font-size:12.5px;margin-bottom:8px;border-radius:0 0 12px 12px;}
 .shop-list .empty{padding:20px 0;}
 .gl-bar{height:8px;border-radius:4px;background:var(--border);overflow:hidden;margin:6px 0 4px;}
 .gl-bar i{display:block;height:100%;background:var(--pos);}
@@ -1407,17 +1407,17 @@ function streakHtml(){const s=streakGet(),on=s.last===dayKey();return `<span cla
 // ===== Tiện ích 6Pay =====
 function scrExtra(){
  return screenWrap('Tiện ích 6Pay',`
-  <div class="list-item clickable util-item" onclick="openPlanner()"><span>📅 Kế hoạch bản thân</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('debts')"><span>💳 Quản lý khoản nợ</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('goals')"><span>🐷 Mục tiêu tiết kiệm</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="fc.tab='loan';push('fincalc')"><span>🏦 Tính lãi vay và tiết kiệm</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('bills')"><span>🔔 Nhắc hóa đơn, chi định kỳ</span><span class="guide-cta">${billDueCount()?'<span class="neg">● '+billDueCount()+'</span> ':''}›</span></div>
-  <div class="list-item clickable util-item" onclick="push('books')"><span>📖 Đọc sách Free</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="openNotes()"><span>📝 Sổ ghi chú</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="openLunar()"><span>🗓️ Lịch vạn niên</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="push('stopwatch')"><span>⏱️ Đồng hồ bấm giờ, Pomodoro</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('calc')"><span>🧮 Máy tính</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('units')"><span>📐 Đổi đơn vị đo</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="openPlanner()"><span>📅 Kế hoạch bản thân</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="push('stopwatch')"><span>⏱️ Đồng hồ bấm giờ, Pomodoro</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="openNotes()"><span>📝 Sổ ghi chú</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="openLunar()"><span>🗓️ Lịch vạn niên</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="push('books')"><span>📖 Đọc sách Free</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="open6PayGame()"><span>🎮 Bước nhảy tài chính</span><span class="guide-cta">›</span></div>`);
 }

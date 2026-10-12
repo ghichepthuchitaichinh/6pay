@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.12-23';
+const APP_VERSION='2026.10.12-24';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -1955,11 +1955,11 @@ function openProdInfo(k,i){
  const video=safeUrl(it.video)||PRODUCT_VIDEO;
  document.getElementById('prodInfoBox').innerHTML=`
   <button class="jg-x" onclick="closeProdInfo()" aria-label="Đóng">✕</button>
-  <div class="pi-title">ℹ️ Thông tin sản phẩm tiếp thị</div>
+  <div class="pi-title">ℹ️ Thông tin sản phẩm</div>
   <div class="pi-name">${esc(it.label)}</div>
   <div class="guide-desc" style="margin:0 0 4px;">Hãy xem kỹ thông tin sản phẩm:</div>
   <div class="pi-h">🏪 Về Người Bán</div>
-  <ul><li>Tên shop:</li><li>Shopee Mall / Yêu Thích+</li><li>Điểm đánh giá ≥ 4.7</li><li>Tỷ lệ phản hồi chat</li><li>Thời gian hoạt động</li><li>Doanh số bán</li></ul>
+  <ul><li>Tên shop: </li><li>Shopee Mall / Yêu Thích+</li><li>Điểm đánh giá ≥ 4.7</li><li>Tỷ lệ phản hồi chat</li><li>Thời gian hoạt động</li><li>Doanh số bán</li></ul>
   <div class="pi-h">📦 Về Sản Phẩm</div>
   <ul><li>Hàng chính hãng / tem xác nhận</li><li>Thông số kỹ thuật, kích thước, chất liệu</li><li>Xuất xứ, quy cách đóng gói</li><li>Ảnh thực tế / đánh giá có ảnh</li></ul>
   <div class="pi-h">💰 Về Giá &amp; Ưu Đãi</div>

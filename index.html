@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.12-22';
+const APP_VERSION='2026.10.12-23';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -503,8 +503,8 @@ body.home-white{background:#FFFFFF;}
 .gr-info{flex:1;min-width:0;padding:9px 14px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:2px;}
 .gr-info:active{background:var(--bg);}
 .gr-name{font-size:15px;line-height:1.35;color:var(--text);}
-.gr-note{font-size:12.5px;font-weight:700;color:var(--accent);}
-.gr-buy{flex:none;display:flex;align-items:center;justify-content:center;padding:0 16px;border-left:1px solid var(--border);color:var(--accent);font-weight:700;font-size:13.5px;text-decoration:none;white-space:nowrap;}
+.gr-note{font-size:clamp(10.5px,3vw,12.5px);font-weight:700;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gr-buy{flex:none;display:flex;align-items:center;justify-content:center;padding:0 9px;border-left:1px solid var(--border);color:var(--accent);font-weight:700;font-size:12.5px;text-decoration:none;white-space:nowrap;}
 .gr-buy:active{background:var(--bg);}
 .guide-item.plain,.shop-list .guide-item.plain{border-radius:14px;margin-bottom:8px;}
 </style>
@@ -1099,7 +1099,7 @@ function scrWallets(){
 function guideLinks(jarKey,onlyLinks){
  const items=GUIDES[jarKey].items.map((it,i)=>({it,i})).filter(o=>!onlyLinks||o.it.link);
  if(!items.length)return '<div class="empty">Chưa có sản phẩm nào.</div>';
- return items.map(o=>{const it=o.it; return it.link ? `<div class="guide-row"><div class="gr-info" onclick="openProdInfo('${jarKey}',${o.i})"><span class="gr-name">${esc(it.label)}</span><span class="gr-note">ℹ️ Thông tin sản phẩm liên kết ›</span></div><a class="gr-buy" href="${qa(it.link)}" target="_blank" rel="noopener noreferrer sponsored" onclick="trackClickIdx('${jarKey}',${o.i})">Mua ngay ↗</a></div>` : `<div class="guide-item plain"><span>${esc(it.label)}</span></div>`;}).join('');
+ return items.map(o=>{const it=o.it; return it.link ? `<div class="guide-row"><div class="gr-info" onclick="openProdInfo('${jarKey}',${o.i})"><span class="gr-name">${esc(it.label)}</span><span class="gr-note">ℹ️ Thông tin sản phẩm liên kết ›</span></div><a class="gr-buy" href="${qa(it.link)}" target="_blank" rel="noopener noreferrer sponsored" onclick="trackClickIdx('${jarKey}',${o.i})">Mua ngay</a></div>` : `<div class="guide-item plain"><span>${esc(it.label)}</span></div>`;}).join('');
 }
 function scrJarGuide(opts){
  const j=JARS.find(x=>x.k===opts.jar); const g=GUIDES[opts.jar];

@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.08-10';
+const APP_VERSION='2026.10.12-1';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -177,7 +177,69 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .empty{text-align:center;color:var(--text-soft);font-size:14.5px;padding:36px 0;}
 .guide-desc{font-size:14px;color:var(--text-soft);margin:2px 0 14px;line-height:1.5;}
 .guide-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px 14px 0 0;padding:14px 16px;margin-bottom:0;font-size:15px;text-decoration:none;color:var(--text);}
-.affiliate-note{font-size:11.5px;color:var(--text-soft);background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 14px 14px;padding:5px 16px 8px;margin-bottom:10px;}
+.affiliate-note{font-size:12.5px;font-weight:700;color:var(--accent);background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 14px 14px;padding:7px 16px 9px;margin-bottom:10px;cursor:pointer;}
+.affiliate-note:active{background:var(--bg);}
+#prodInfoBox{position:relative;text-align:left;max-height:86vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px 18px 14px;}
+.pi-title{font-size:17px;font-weight:800;line-height:1.35;padding-right:34px;margin-bottom:2px;}
+.pi-name{font-size:13px;color:var(--text-soft);margin-bottom:6px;}
+.pi-h{font-size:14.5px;font-weight:800;margin:12px 0 4px;}
+#prodInfoBox ul{margin:0;padding-left:20px;font-size:14px;line-height:1.55;}
+#prodInfoBox li{margin-bottom:3px;}
+.pi-video{display:block;text-align:center;margin-top:14px;padding:12px;border-radius:14px;background:#FF0000;color:#fff;font-weight:800;font-size:15px;text-decoration:none;}
+.pi-foot{text-align:center;font-size:11.5px;color:var(--text-soft);margin-top:10px;line-height:1.4;}
+/* ===== Sổ ghi chú ===== */
+.nt-grid{column-count:2;column-gap:10px;}
+.nt-card{position:relative;break-inside:avoid;margin-bottom:10px;padding:12px 12px 8px;border-radius:14px;border:1px solid var(--border);cursor:pointer;word-wrap:break-word;overflow-wrap:anywhere;}
+.nt-card:active{transform:scale(.99);}
+.nt-t{font-weight:800;font-size:14.5px;margin-bottom:4px;padding-right:18px;}
+.nt-b{font-size:13.5px;line-height:1.45;white-space:pre-wrap;}
+.nt-d{font-size:10.5px;opacity:.6;margin-top:6px;}
+.nt-pin{position:absolute;top:6px;right:8px;font-size:12px;}
+.nc0{background:var(--surface);color:var(--text);}
+.nc1{background:#FFF3D9;color:#3B2F10;}
+.nc2{background:#E6F6EC;color:#173323;}
+.nc3{background:#E8F0FC;color:#1B2A40;}
+.nc4{background:#FCE4EC;color:#4A1F2C;}
+.nc5{background:#EEE9FB;color:#2E2057;}
+.nt-edit{border-radius:14px;border:1px solid var(--border);padding:10px 12px;}
+.nt-in-t,.nt-in-b{display:block;width:100%;font:inherit;color:inherit;background:transparent;border:none;outline:none;resize:none;}
+.nt-in-t{font-size:18px;font-weight:800;padding:6px 0;border-bottom:1px solid rgba(128,128,128,.25);}
+.nt-in-b{font-size:16px;line-height:1.5;min-height:34vh;padding:8px 0;}
+.nt-in-t::placeholder,.nt-in-b::placeholder{color:inherit;opacity:.45;}
+.nt-tools{display:flex;align-items:center;gap:8px;margin:10px 0 4px;flex-wrap:wrap;}
+.nt-dots{display:flex;gap:6px;flex:1;}
+.nt-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);cursor:pointer;padding:0;}
+.nt-dot.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent);}
+/* ===== Lịch vạn niên ===== */
+.lc-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;}
+.lc-d{padding:5px 0 4px;border-radius:10px;cursor:pointer;border:1px solid transparent;}
+.lc-d b{display:block;font-size:15px;line-height:1.25;}
+.lc-d small{display:block;font-size:10px;color:var(--text-soft);line-height:1.2;}
+.lc-d.sun b{color:var(--neg);}
+.lc-d.rm small,.lc-d.hol small{color:var(--neg);font-weight:700;}
+.lc-d.hol b{text-decoration:underline;text-decoration-color:var(--neg);}
+.lc-d.today{border-color:var(--accent);}
+.lc-d.sel{background:var(--accent);}
+.lc-d.sel b,.lc-d.sel small{color:var(--accent-text);}
+.lc-hero{text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:12px 10px;margin:10px 0;}
+.lc-wd{font-size:13px;font-weight:700;color:var(--text-soft);}
+.lc-big{font-size:44px;font-weight:800;line-height:1.1;}
+.lc-big small{font-size:18px;font-weight:600;color:var(--text-soft);}
+.lc-lun{font-size:14px;margin-top:4px;}
+.lc-hol{margin-top:6px;font-size:13.5px;font-weight:700;color:var(--neg);}
+.lc-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px 14px;margin-bottom:10px;}
+.lc-h{font-size:14px;font-weight:800;margin-bottom:6px;}
+.lc-row{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-top:1px solid var(--border);font-size:13.5px;line-height:1.45;}
+.lc-row:first-of-type{border-top:none;}
+.lc-l{color:var(--text-soft);flex:none;}
+.lc-v{text-align:right;font-weight:600;}
+.lc-hrs{font-size:13.5px;line-height:1.6;margin-bottom:6px;}
+.lc-hrs span{font-weight:800;}
+.lc-hrs small{color:var(--text-soft);font-size:11px;}
+.lc-do{font-size:13.5px;line-height:1.5;margin-bottom:6px;}
+.lc-q{padding:7px 0;border-top:1px solid var(--border);font-size:13.5px;line-height:1.5;}
+.lc-q:first-of-type{border-top:none;}
+.lc-q div{font-style:italic;color:var(--text-soft);}
 .boot-splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5vw;padding:0 10vw;text-align:center;background:#FFFFFF;transition:opacity .3s ease;}
 .boot-splash.hide{opacity:0;pointer-events:none;}
 .boot-emoji{font-size:20vw;line-height:1;animation:bootZoom .8s cubic-bezier(.2,1.15,.4,1) forwards;}
@@ -405,6 +467,9 @@ body.home-white{background:#FFFFFF;}
   <div class="modal-overlay" id="jarGuideModal" onclick="closeJarGuide()">
  <div class="modal-box" id="jarGuideBox"></div>
 </div>
+<div class="modal-overlay" id="prodInfoModal" onclick="if(event.target===this)closeProdInfo()">
+ <div class="modal-box" id="prodInfoBox"></div>
+</div>
   <div class="book-view" id="bookView">
  <div class="bv-bar">
   <button class="mini-btn" onclick="closeBook()">✕ Đóng</button>
@@ -594,7 +659,7 @@ let locked=!!getAccount(); // có tài khoản thì khóa ngay khi mở app
 function logoutAccount(){loggedIn=false;locked=true;stack=[{id:'home'}];render();}
 function forgotPass(){
  openConfirm('Nếu quên mật khẩu, cách duy nhất là xóa toàn bộ dữ liệu trên máy này (thu chi, tài khoản, kế hoạch...). Bạn có chắc muốn xóa không?',function(){
-  [ACCOUNT_KEY,STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,QZ_KEY,CLICK_LOG_KEY].forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
+  [ACCOUNT_KEY,STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,QZ_KEY,CLICK_LOG_KEY,NOTES_KEY].forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
   location.reload();
  });
 }
@@ -803,7 +868,7 @@ function scrLogin(){
 }
   // ===== Sao lưu / khôi phục dữ liệu =====
 // Không sao lưu tài khoản và mật khẩu, nên khôi phục xong mật khẩu hiện tại trên máy vẫn giữ nguyên.
-function backupKeys(){return [STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,PLAN_DONE_KEY,QZ_KEY,DEBT_KEY,READ_KEY,FS_KEY];}
+function backupKeys(){return [STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,PLAN_DONE_KEY,QZ_KEY,DEBT_KEY,READ_KEY,FS_KEY,NOTES_KEY];}
 function backupExport(){
  const data={};
  backupKeys().forEach(k=>{try{const v=localStorage.getItem(k);if(v!==null)data[k]=v;}catch(e){}});
@@ -931,9 +996,9 @@ function scrWallets(){
 }
 
 function guideLinks(jarKey,onlyLinks){
- const items=GUIDES[jarKey].items.filter(it=>!onlyLinks||it.link);
+ const items=GUIDES[jarKey].items.map((it,i)=>({it,i})).filter(o=>!onlyLinks||o.it.link);
  if(!items.length)return '<div class="empty">Chưa có sản phẩm nào.</div>';
- return items.map(it=> it.link ? `<a class="guide-item" href="${it.link}" target="_blank" rel="noopener" onclick="trackClick('${jarKey}','${esc(it.label)}','${it.link}')"><span>${it.label}</span><span class="guide-cta">Mua ngay ↗</span></a><div class="affiliate-note">Link tiếp thị liên kết</div>` : `<div class="guide-item plain"><span>${it.label}</span></div>`).join('');
+ return items.map(o=>{const it=o.it; return it.link ? `<a class="guide-item" href="${it.link}" target="_blank" rel="noopener" onclick="trackClick('${jarKey}','${esc(it.label)}','${it.link}')"><span>${it.label}</span><span class="guide-cta">Mua ngay ↗</span></a><div class="affiliate-note" onclick="openProdInfo('${jarKey}',${o.i})">ℹ️ Thông tin sản phẩm ›</div>` : `<div class="guide-item plain"><span>${it.label}</span></div>`;}).join('');
 }
 function scrJarGuide(opts){
  const j=JARS.find(x=>x.k===opts.jar); const g=GUIDES[opts.jar];
@@ -1277,6 +1342,8 @@ function scrExtra(){
   <div class="list-item clickable util-item" onclick="push('debts')"><span>💳 Quản lý khoản nợ</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('books')"><span>📖 Đọc sách Free</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="openNotes()"><span>📝 Sổ ghi chú</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="openLunar()"><span>🗓️ Lịch vạn niên</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="open6PayGame()"><span>🎮 Game 6Pay Runner</span><span class="guide-cta">›</span></div>`);
 }
 // ===== Đọc sách miễn phí =====
@@ -1763,11 +1830,260 @@ function scrTodayHistory(){
   <div class="hist-sum"><div class="i">Tổng thu<b>${fmt(inc)} ₫</b></div><div class="o">Tổng chi<b>${fmt(out)} ₫</b></div></div>
   ${rows||'<div class="empty">Không có giao dịch nào trong thời gian đã chọn.</div>'}`);
 }
+// ===== Lịch âm (thuật toán Hồ Ngọc Đức, múi giờ +7) =====
+function jdFromDate(dd,mm,yy){var a=Math.floor((14-mm)/12),y=yy+4800-a,m=mm+12*a-3;var jd=dd+Math.floor((153*m+2)/5)+365*y+Math.floor(y/4)-Math.floor(y/100)+Math.floor(y/400)-32045;if(jd<2299161)jd=dd+Math.floor((153*m+2)/5)+365*y+Math.floor(y/4)-32083;return jd;}
+function lcNewMoon(k){var T=k/1236.85,T2=T*T,T3=T2*T,dr=Math.PI/180;var Jd1=2415020.75933+29.53058868*k+0.0001178*T2-0.000000155*T3;Jd1=Jd1+0.00033*Math.sin((166.56+132.87*T-0.009173*T2)*dr);var M=359.2242+29.10535608*k-0.0000333*T2-0.00000347*T3;var Mpr=306.0253+385.81691806*k+0.0107306*T2+0.00001236*T3;var F=21.2964+390.67050646*k-0.0016528*T2-0.00000239*T3;var C1=(0.1734-0.000393*T)*Math.sin(M*dr)+0.0021*Math.sin(2*dr*M);C1=C1-0.4068*Math.sin(Mpr*dr)+0.0161*Math.sin(dr*2*Mpr);C1=C1-0.0004*Math.sin(dr*3*Mpr);C1=C1+0.0104*Math.sin(dr*2*F)-0.0051*Math.sin(dr*(M+Mpr));C1=C1-0.0074*Math.sin(dr*(M-Mpr))+0.0004*Math.sin(dr*(2*F+M));C1=C1-0.0004*Math.sin(dr*(2*F-M))-0.0006*Math.sin(dr*(2*F+Mpr));C1=C1+0.0010*Math.sin(dr*(2*F-Mpr))+0.0005*Math.sin(dr*(2*Mpr+M));var dt;if(T<-11){dt=0.001+0.000839*T+0.0002261*T2-0.00000845*T3-0.000000081*T*T3;}else{dt=-0.000278+0.000265*T+0.000262*T2;}return Jd1+C1-dt;}
+function lcSunLong(jdn){var T=(jdn-2451545.0)/36525,T2=T*T,dr=Math.PI/180;var M=357.52910+35999.05030*T-0.0001559*T2-0.00000048*T*T2;var L0=280.46645+36000.76983*T+0.0003032*T2;var DL=(1.914600-0.004817*T-0.000014*T2)*Math.sin(dr*M);DL=DL+(0.019993-0.000101*T)*Math.sin(dr*2*M)+0.000290*Math.sin(dr*3*M);var L=(L0+DL)*dr;L=L-Math.PI*2*Math.floor(L/(Math.PI*2));return L;}
+function lcSunSector(dayNumber,tz){return Math.floor(lcSunLong(dayNumber-0.5-tz/24)/Math.PI*6);}
+function lcNewMoonDay(k,tz){return Math.floor(lcNewMoon(k)+0.5+tz/24);}
+function lcMonth11(yy,tz){var off=jdFromDate(31,12,yy)-2415021,k=Math.floor(off/29.530588853),nm=lcNewMoonDay(k,tz);if(lcSunSector(nm,tz)>=9)nm=lcNewMoonDay(k-1,tz);return nm;}
+function lcLeapOffset(a11,tz){var k=Math.floor((a11-2415021.076998695)/29.530588853+0.5),last=0,i=1,arc=lcSunSector(lcNewMoonDay(k+i,tz),tz);do{last=arc;i++;arc=lcSunSector(lcNewMoonDay(k+i,tz),tz);}while(arc!=last&&i<14);return i-1;}
+function convertSolar2Lunar(dd,mm,yy,tz){var dayNumber=jdFromDate(dd,mm,yy),k=Math.floor((dayNumber-2415021.076998695)/29.530588853),monthStart=lcNewMoonDay(k+1,tz);if(monthStart>dayNumber)monthStart=lcNewMoonDay(k,tz);var a11=lcMonth11(yy,tz),b11=a11,lunarYear;if(a11>=monthStart){lunarYear=yy;a11=lcMonth11(yy-1,tz);}else{lunarYear=yy+1;b11=lcMonth11(yy+1,tz);}var lunarDay=dayNumber-monthStart+1,diff=Math.floor((monthStart-a11)/29),lunarLeap=0,lunarMonth=diff+11;if(b11-a11>365){var lm=lcLeapOffset(a11,tz);if(diff>=lm){lunarMonth=diff+10;if(diff==lm)lunarLeap=1;}}if(lunarMonth>12)lunarMonth-=12;if(lunarMonth>=11&&diff<4)lunarYear-=1;return [lunarDay,lunarMonth,lunarYear,lunarLeap];}
+
+// ===== Thông tin sản phẩm (cửa sổ khi bấm vào mỗi sản phẩm tiếp thị) =====
+// Video thực tế mặc định: kênh Youtube của 6Pay. Muốn mỗi sản phẩm một video riêng, thêm "video":"https://youtube.com/..." vào mục đó trong guides.json
+const PRODUCT_VIDEO='https://youtube.com/@6pay-vn?si=z3junLJI4LAb-o3y';
+function openProdInfo(k,i){
+ const it=(GUIDES[k]&&GUIDES[k].items[i]); if(!it)return;
+ const video=it.video||PRODUCT_VIDEO;
+ document.getElementById('prodInfoBox').innerHTML=`
+  <button class="jg-x" onclick="closeProdInfo()" aria-label="Đóng">✕</button>
+  <div class="pi-title">ℹ️ Thông tin sản phẩm</div>
+  <div class="pi-name">${esc(it.label)}</div>
+  <div class="pi-h">🏪 Về Người Bán</div>
+  <ul><li>Thông tin shop</li><li>Shopee Mall / Yêu Thích+</li><li>Điểm đánh giá ≥ 4.7</li><li>Tỷ lệ phản hồi chat</li><li>Thời gian hoạt động</li><li>Doanh số bán</li></ul>
+  <div class="pi-h">📦 Về Sản Phẩm</div>
+  <ul><li>Hàng chính hãng / tem xác nhận</li><li>Thông số kỹ thuật, kích thước, chất liệu</li><li>Xuất xứ, quy cách đóng gói</li><li>Ảnh thực tế / đánh giá có ảnh</li></ul>
+  <div class="pi-h">💰 Về Giá &amp; Ưu Đãi</div>
+  <ul><li>Giá cuối cùng (đã gồm ship)</li><li>Mã giảm giá, miễn ship</li><li>Bảo hành giá</li></ul>
+  <div class="pi-h">🛡️ Về Chính Sách &amp; Quyền Lợi</div>
+  <ul><li>Đổi trả 7 ngày / 15 ngày</li><li>Shopee Đảm Bảo</li><li>Bảo hành hãng / bảo hành shop</li><li>Hóa đơn điện tử</li><li>Thanh toán trên sàn</li><li>Video khui hàng</li></ul>
+  <a class="pi-video" href="${esc(video)}" target="_blank" rel="noopener">▶ Xem video thực tế sản phẩm</a>
+  <div class="pi-foot">Nút “Mua ngay” là link tiếp thị liên kết. 6Pay có thể nhận hoa hồng khi bạn mua hàng, giá bạn trả không đổi.</div>`;
+ document.getElementById('prodInfoModal').classList.add('open');
+}
+function closeProdInfo(){document.getElementById('prodInfoModal').classList.remove('open');}
+
+// ===== Sổ ghi chú (giống Google Keep) =====
+const NOTES_KEY='6pay-notes-v1';
+let notes=[];
+try{const s=JSON.parse(localStorage.getItem(NOTES_KEY));if(Array.isArray(s))notes=s;}catch(e){}
+function notesSave(){try{localStorage.setItem(NOTES_KEY,JSON.stringify(notes));}catch(e){}}
+let noteDraft={id:'',title:'',body:'',color:0,pin:false};
+let noteQuery='';
+function noteList(){
+ const q=noteQuery.trim().toLowerCase();
+ return notes.filter(n=>!q||(n.title+' '+n.body).toLowerCase().indexOf(q)>-1)
+  .sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||b.upd-a.upd);
+}
+function noteCardHtml(n){
+ return `<div class="nt-card nc${n.color||0}" onclick="openNote('${n.id}')">
+  ${n.pin?'<span class="nt-pin">📌</span>':''}
+  ${n.title?`<div class="nt-t">${esc(n.title)}</div>`:''}
+  ${n.body?`<div class="nt-b">${esc(n.body.length>220?n.body.slice(0,220)+'…':n.body)}</div>`:''}
+  <div class="nt-d">${dateFmt(n.upd)}</div></div>`;
+}
+function noteListHtml(){
+ const l=noteList();
+ if(!l.length)return `<div class="empty">${notes.length?'Không tìm thấy ghi chú nào.':'Chưa có ghi chú nào. Bấm “＋ Ghi chú mới” để bắt đầu.'}</div>`;
+ return `<div class="nt-grid">${l.map(noteCardHtml).join('')}</div>`;
+}
+function noteSearch(v){noteQuery=v;const e=document.getElementById('note-list');if(e)e.innerHTML=noteListHtml();}
+function openNotes(){noteQuery='';push('notes');}
+function scrNotes(){
+ return screenWrap('📝 Sổ ghi chú',`
+  <div class="form-row tight"><input type="text" id="note-q" placeholder="🔍 Tìm ghi chú" value="${qa(noteQuery)}" oninput="noteSearch(this.value)"></div>
+  <div id="note-list">${noteListHtml()}</div>`,
+  `<button class="btn primary" onclick="newNote()">＋ Ghi chú mới</button>`);
+}
+function newNote(){noteDraft={id:'',title:'',body:'',color:0,pin:false};push('noteEdit');}
+function openNote(id){
+ const n=notes.find(x=>x.id===id);if(!n)return;
+ noteDraft={id:n.id,title:n.title,body:n.body,color:n.color||0,pin:!!n.pin};
+ push('noteEdit');
+}
+// Tự lưu mỗi khi gõ; ghi chú trống hoàn toàn thì không tạo
+function noteTouch(){
+ const d=noteDraft, empty=!(d.title||'').trim()&&!(d.body||'').trim();
+ let n=d.id?notes.find(x=>x.id===d.id):null;
+ if(!n){
+  if(empty)return;
+  n={id:uid(),title:'',body:'',color:0,pin:false,upd:Date.now()};
+  notes.push(n);d.id=n.id;
+ }
+ n.title=d.title;n.body=d.body;n.color=d.color;n.pin=d.pin;n.upd=Date.now();
+ notesSave();
+}
+function noteSetColor(c){noteDraft.color=c;noteTouch();render();}
+function noteTogglePin(){noteDraft.pin=!noteDraft.pin;noteTouch();render();}
+function noteDelete(){
+ openConfirm('Bạn có chắc muốn xóa ghi chú này không?',function(){
+  notes=notes.filter(x=>x.id!==noteDraft.id);notesSave();
+  noteDraft={id:'',title:'',body:'',color:0,pin:false};back();
+ });
+}
+function scrNoteEdit(){
+ const d=noteDraft;
+ const dots=[0,1,2,3,4,5].map(c=>`<button class="nt-dot nc${c}${d.color===c?' on':''}" onclick="noteSetColor(${c})" aria-label="Màu ${c+1}"></button>`).join('');
+ return screenWrap(d.id?'✏️ Sửa ghi chú':'📝 Ghi chú mới',`
+  <div class="nt-edit nc${d.color}">
+   <input type="text" class="nt-in-t" placeholder="Tiêu đề" value="${qa(d.title)}" oninput="noteDraft.title=this.value;noteTouch()">
+   <textarea class="nt-in-b" placeholder="Nội dung ghi chú..." oninput="noteDraft.body=this.value;noteTouch()">${esc(d.body)}</textarea>
+  </div>
+  <div class="nt-tools"><div class="nt-dots">${dots}</div>
+   <button class="mini-btn" onclick="noteTogglePin()">${d.pin?'📌 Bỏ ghim':'📍 Ghim'}</button>
+   ${d.id?'<button class="mini-btn" onclick="noteDelete()">🗑 Xóa</button>':''}
+  </div>
+  <div class="guide-desc">Ghi chú được tự động lưu khi bạn gõ.</div>`,
+  `<button class="btn primary" onclick="back()">✓ Xong</button>`);
+}
+
+// ===== Lịch vạn niên =====
+const LC_CAN=['Giáp','Ất','Bính','Đinh','Mậu','Kỷ','Canh','Tân','Nhâm','Quý'];
+const LC_CHI=['Tý','Sửu','Dần','Mão','Thìn','Tỵ','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi'];
+const LC_ANI=['Chuột','Trâu','Hổ','Mèo','Rồng','Rắn','Ngựa','Dê','Khỉ','Gà','Chó','Heo'];
+const LC_HOUR=['23h-1h','1h-3h','3h-5h','5h-7h','7h-9h','9h-11h','11h-13h','13h-15h','15h-17h','17h-19h','19h-21h','21h-23h'];
+const LC_HOANG=[[0,1,3,6,8,9],[2,3,5,8,10,11],[0,1,4,5,7,10],[0,2,3,6,7,9],[2,4,5,8,9,11],[1,4,6,7,10,11]]; // theo chi ngày % 6
+const LC_NAPAM=['Hải trung kim','Lư trung hỏa','Đại lâm mộc','Lộ bàng thổ','Kiếm phong kim','Sơn đầu hỏa','Giản hạ thủy','Thành đầu thổ','Bạch lạp kim','Dương liễu mộc','Tuyền trung thủy','Ốc thượng thổ','Tích lịch hỏa','Tùng bách mộc','Trường lưu thủy','Sa trung kim','Sơn hạ hỏa','Bình địa mộc','Bích thượng thổ','Kim bạch kim','Phú đăng hỏa','Thiên hà thủy','Đại trạch thổ','Thoa xuyến kim','Tang đố mộc','Đại khê thủy','Sa trung thổ','Thiên thượng hỏa','Thạch lựu mộc','Đại hải thủy'];
+const LC_TIET=['Xuân phân','Thanh minh','Cốc vũ','Lập hạ','Tiểu mãn','Mang chủng','Hạ chí','Tiểu thử','Đại thử','Lập thu','Xử thử','Bạch lộ','Thu phân','Hàn lộ','Sương giáng','Lập đông','Tiểu tuyết','Đại tuyết','Đông chí','Tiểu hàn','Đại hàn','Lập xuân','Vũ thủy','Kinh trập'];
+const LC_TRUC=[
+ ['Kiến','tốt vừa','Xuất hành, khởi sự việc nhỏ, nhậm chức, thăm hỏi','Động thổ, đào giếng, an táng'],
+ ['Trừ','tốt','Dọn dẹp nhà cửa, chữa bệnh, cúng giải hạn, trừ bỏ điều cũ','Xuất hành xa, nhậm chức, cưới hỏi'],
+ ['Mãn','tốt','Cầu tài, nhập kho, cúng tế, tích trữ','Khởi công lớn, xuất hành, an táng'],
+ ['Bình','tốt','Việc thông thường, sửa chữa, đặt nền móng, giao dịch nhỏ','An táng, việc lớn cần chọn giờ kỹ'],
+ ['Định','tốt','Cưới hỏi, ký kết hợp đồng, mua bán, nhập học','Kiện tụng, xuất hành xa'],
+ ['Chấp','tốt vừa','Xây dựng, bắt đầu công việc, giữ gìn, cầu tự','Xuất hành, dời chỗ ở, mở kho'],
+ ['Phá','xấu','Phá dỡ, dọn dẹp, thanh lý đồ cũ','Cưới hỏi, khai trương, ký kết, khởi công'],
+ ['Nguy','xấu','Cúng lễ, tu sửa nhỏ, việc cẩn trọng','Leo cao, đi thuyền, khai trương, việc mạo hiểm'],
+ ['Thành','tốt','Khai trương, cưới hỏi, ký kết, nhập học, khởi sự','Kiện tụng, tranh chấp'],
+ ['Thu','trung bình','Thu hoạch, thu nợ, nhập kho, cất giữ','An táng, xuất hành xa, khởi công'],
+ ['Khai','tốt','Khai trương, động thổ, cưới hỏi, xuất hành, học tập','An táng, đào đất không cần thiết'],
+ ['Bế','xấu','Đóng cửa nghỉ ngơi, lấp hố, tu sửa kín đáo','Khai trương, cưới hỏi, xuất hành, động thổ']
+];
+const LC_SAO=['Giác','Cang','Đê','Phòng','Tâm','Vĩ','Cơ','Đẩu','Ngưu','Nữ','Hư','Nguy','Thất','Bích','Khuê','Lâu','Vị','Mão','Tất','Chủy','Sâm','Tỉnh','Quỷ','Liễu','Tinh','Trương','Dực','Chẩn'];
+const LC_SAO_TOT=['Giác','Phòng','Tâm','Vĩ','Đẩu','Thất','Bích','Khuê','Lâu','Vị','Tất','Sâm','Tỉnh','Trương','Chẩn'];
+const LC_HD=['Thanh Long','Minh Đường','Thiên Hình','Chu Tước','Kim Quỹ','Thiên Đức','Bạch Hổ','Ngọc Đường','Thiên Lao','Huyền Vũ','Tư Mệnh','Câu Trần'];
+const LC_HD_TOT=[0,1,4,5,7,10];
+const LC_QUOTES={
+ essential:[JAR_DESC.essential,'“Sống giản dị không phải là thiếu thốn, mà là biết mình thật sự cần gì”','“Nền móng vững chắc của cuộc sống bắt đầu từ những khoản chi nhỏ được tính toán kỹ”'],
+ education:[JAR_DESC.education,'“Mỗi ngày học một chút, một năm sau bạn đã là người khác”','“Khoản đầu tư sinh lời bền nhất là khoản đầu tư vào chính mình”'],
+ saving:[JAR_DESC.saving,'“Giọt nước nhỏ mỗi ngày rồi cũng đầy bình, đồng tiền nhỏ đều đặn rồi cũng thành của”','“Tiết kiệm không phải là nhịn chi, mà là mua cho mình sự an tâm ngày mai”'],
+ invest:[JAR_DESC.invest,'“Hãy kiên nhẫn như người trồng cây: gieo hôm nay, hái quả mai sau”','“Chỉ đầu tư vào những gì bạn hiểu, bằng số tiền bạn có thể chờ đợi”'],
+ share:[JAR_DESC.share,'“Cho đi không làm bạn nghèo đi, mà làm cuộc sống thêm ấm áp”','“Một bữa cơm sẻ chia đôi cũng là một bữa cơm đầy”'],
+ enjoy:[JAR_DESC.enjoy,'“Biết nghỉ ngơi cũng là một phần của việc đi đường dài”','“Niềm vui nhỏ trả bằng tiền của chính mình, không nợ nần, mới là niềm vui trọn vẹn”']
+};
+const LC_SOLAR_HOL={'1-1':'Tết Dương lịch','14-2':'Lễ Tình nhân','8-3':'Quốc tế Phụ nữ','30-4':'Giải phóng miền Nam','1-5':'Quốc tế Lao động','1-6':'Quốc tế Thiếu nhi','27-7':'Ngày Thương binh Liệt sĩ','2-9':'Quốc khánh','20-10':'Phụ nữ Việt Nam','20-11':'Nhà giáo Việt Nam','22-12':'Thành lập Quân đội Nhân dân','24-12':'Đêm Giáng sinh','25-12':'Lễ Giáng sinh'};
+const LC_LUNAR_HOL={'1-1':'Tết Nguyên Đán','2-1':'Mùng 2 Tết','3-1':'Mùng 3 Tết','15-1':'Rằm tháng Giêng (Nguyên tiêu)','3-3':'Tết Hàn thực','10-3':'Giỗ Tổ Hùng Vương','15-4':'Lễ Phật Đản','5-5':'Tết Đoan Ngọ','15-7':'Rằm tháng Bảy (Vu Lan)','15-8':'Tết Trung thu','9-9':'Tết Trùng Cửu','10-10':'Tết Thường Tân','15-10':'Tết Hạ nguyên','23-12':'Ông Táo chầu trời'};
+let lcSel='', lcView={y:0,m:0};
+function lcHolidays(d,m,y,L,eve){
+ const r=[];
+ if(LC_SOLAR_HOL[d+'-'+m])r.push(LC_SOLAR_HOL[d+'-'+m]);
+ if(!L[3]&&LC_LUNAR_HOL[L[0]+'-'+L[1]])r.push(LC_LUNAR_HOL[L[0]+'-'+L[1]]);
+ if(eve&&L[1]===12){
+  const nx=new Date(y,m-1,d+1),N=convertSolar2Lunar(nx.getDate(),nx.getMonth()+1,nx.getFullYear(),7);
+  if(N[0]===1&&N[1]===1)r.push('Giao thừa (30 Tết)');
+ }
+ return r;
+}
+function lcInfo(y,m,d){
+ const jd=jdFromDate(d,m,y), L=convertSolar2Lunar(d,m,y,7);
+ const dCan=(jd+9)%10, dChi=(jd+1)%12;
+ const yCan=(L[2]+6)%10, yChi=(L[2]+8)%12;
+ const mCan=(yCan*2+L[1]+1)%10, mChi=(L[1]+1)%12;
+ const lonDeg=lcSunLong(jd-0.5-7/24)*180/Math.PI;
+ const lonPrev=lcSunLong(jd-1.5-7/24)*180/Math.PI;
+ const tiet=Math.floor(lonDeg/15), tietStart=Math.floor(lonPrev/15)!==tiet;
+ const sm=Math.floor(((lonDeg-315+360)%360)/30), tChi=(sm+2)%12; // chi của tháng theo tiết khí
+ const truc=LC_TRUC[(dChi-tChi+12)%12];
+ const sao=LC_SAO[(jd+11)%28];
+ const hdStart=((tChi-2+12)%6)*2, hdIdx=(dChi-hdStart+12)%12, hdTot=LC_HD_TOT.indexOf(hdIdx)>-1;
+ const s60=(jd+49)%60, napam=LC_NAPAM[Math.floor(s60/2)];
+ const nyS=(function(){for(let s=0;s<60;s++)if(s%10===yCan&&s%12===yChi)return s;return 0;})(), nyNap=LC_NAPAM[Math.floor(nyS/2)];
+ const good=LC_HOANG[dChi%6];
+ const tam=[dChi,(dChi+4)%12,(dChi+8)%12].filter(x=>x!==dChi);
+ const hop=(13-dChi)%12, xung=(dChi+6)%12;
+ const kk=[];
+ if([3,7,13,18,22,27].indexOf(L[0])>-1)kk.push('Ngày Tam Nương (nên tránh khởi sự việc lớn)');
+ if([5,14,23].indexOf(L[0])>-1)kk.push('Ngày Nguyệt kỵ (nên hạn chế đi xa, khai trương)');
+ if(!hdTot)kk.push('Ngày Hắc đạo ('+LC_HD[hdIdx]+'), nên cẩn trọng việc quan trọng');
+ if(truc[1]==='xấu')kk.push('Trực '+truc[0]+' là trực xấu');
+ return {y,m,d,jd,L,dCan,dChi,yCan,yChi,mCan,mChi,tiet,tietStart,truc,sao,saoTot:LC_SAO_TOT.indexOf(sao)>-1,hdIdx,hdTot,napam,nyNap,good,tam,hop,xung,kk,
+  hol:lcHolidays(d,m,y,L,true)};
+}
+function lcChi(i){return LC_CHI[i]+' ('+LC_ANI[i]+')';}
+function lcRow(l,v){return `<div class="lc-row"><span class="lc-l">${l}</span><span class="lc-v">${v}</span></div>`;}
+function lcDetail(k){
+ const p=k.split('-').map(Number), I=lcInfo(p[0],p[1],p[2]), L=I.L;
+ const wd=['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ năm','Thứ sáu','Thứ bảy'][new Date(I.y,I.m-1,I.d).getDay()];
+ const hours=h=>h.map(i=>LC_CHI[i]+' <small>'+LC_HOUR[i]+'</small>').join(' · ');
+ const bad=[0,1,2,3,4,5,6,7,8,9,10,11].filter(i=>I.good.indexOf(i)<0);
+ const nap=I.napam, hanh=nap.split(' ').pop();
+ const nyHanh=I.nyNap.split(' ').pop();
+ const nenLam=I.truc[2]+(I.hdTot?'. Ngày Hoàng đạo thuận lợi cho việc quan trọng.':'.');
+ const nenTranh=I.truc[3]+(I.kk.filter(x=>x.indexOf('Tam Nương')>-1||x.indexOf('Nguyệt kỵ')>-1).length?'. Ngoài ra nên tránh khởi sự việc lớn vì ngày kiêng kỵ.':'.');
+ const q=JARS.map(j=>{const a=LC_QUOTES[j.k];return `<div class="lc-q"><b>${j.i} ${j.l}</b><div>${a[I.jd%3]}</div></div>`;}).join('');
+ return `
+ <div class="lc-hero">
+  <div class="lc-wd">${wd}</div>
+  <div class="lc-big">${I.d}<small>/${I.m}/${I.y}</small></div>
+  <div class="lc-lun">Âm lịch: ngày <b>${L[0]}</b> tháng <b>${L[1]}${L[3]?' (nhuận)':''}</b> năm <b>${LC_CAN[I.yCan]} ${LC_CHI[I.yChi]}</b></div>
+  ${I.hol.length?`<div class="lc-hol">🎊 ${I.hol.join(' · ')}</div>`:''}
+  ${L[0]===1?'<div class="lc-hol">🌑 Mùng 1 (ngày đầu tháng âm)</div>':''}${L[0]===15?'<div class="lc-hol">🌕 Ngày Rằm</div>':''}
+ </div>
+ <div class="lc-card"><div class="lc-h">📜 Can Chi &amp; Con giáp</div>
+  ${lcRow('Ngày',LC_CAN[I.dCan]+' '+LC_CHI[I.dChi])}
+  ${lcRow('Tháng',LC_CAN[I.mCan]+' '+LC_CHI[I.mChi]+(L[3]?' (nhuận)':''))}
+  ${lcRow('Năm',LC_CAN[I.yCan]+' '+LC_CHI[I.yChi])}
+  ${lcRow('Con giáp (năm)',LC_CHI[I.yChi]+' – '+LC_ANI[I.yChi])}
+  ${lcRow('Con giáp (ngày)',lcChi(I.dChi))}</div>
+ <div class="lc-card"><div class="lc-h">🌿 Ngũ hành &amp; Tiết khí</div>
+  ${lcRow('Ngũ hành ngày',nap+' (mệnh '+hanh+')')}
+  ${lcRow('Ngũ hành năm',I.nyNap+' (mệnh '+nyHanh+')')}
+  ${lcRow('Tiết khí',LC_TIET[I.tiet]+(I.tietStart?' <b class="pos">(bắt đầu hôm nay)</b>':''))}</div>
+ <div class="lc-card"><div class="lc-h">⭐ Giờ Hoàng đạo / Hắc đạo</div>
+  <div class="lc-hrs"><span class="pos">Hoàng đạo (giờ tốt)</span><div>${hours(I.good)}</div></div>
+  <div class="lc-hrs"><span class="neg">Hắc đạo (giờ xấu)</span><div>${hours(bad)}</div></div></div>
+ <div class="lc-card"><div class="lc-h">🔮 Sao, Trực &amp; Ngày kiêng kỵ</div>
+  ${lcRow('Ngày',I.hdTot?'<span class="pos">Hoàng đạo – '+LC_HD[I.hdIdx]+'</span>':'<span class="neg">Hắc đạo – '+LC_HD[I.hdIdx]+'</span>')}
+  ${lcRow('Sao (Nhị thập bát tú)',I.saoTot?'<span class="pos">Sao '+I.sao+' (tốt)</span>':'<span class="neg">Sao '+I.sao+' (xấu)</span>')}
+  ${lcRow('Trực','Trực '+I.truc[0]+' ('+I.truc[1]+')')}
+  ${lcRow('Ngày kiêng kỵ',I.kk.length?'<span class="neg">'+I.kk.join('<br>')+'</span>':'<span class="pos">Không phạm ngày kiêng kỵ thông thường</span>')}</div>
+ <div class="lc-card"><div class="lc-h">✅ Việc nên làm / ❌ Nên tránh</div>
+  <div class="lc-do"><b class="pos">Nên làm</b><div>${nenLam}</div></div>
+  <div class="lc-do"><b class="neg">Nên tránh</b><div>${nenTranh}</div></div></div>
+ <div class="lc-card"><div class="lc-h">👥 Tuổi hợp / xung</div>
+  ${lcRow('Tuổi hợp',I.tam.map(lcChi).join(', ')+' (tam hợp), '+lcChi(I.hop)+' (lục hợp)')}
+  ${lcRow('Tuổi xung','<span class="neg">'+lcChi(I.xung)+'</span>')}</div>
+ <div class="lc-card"><div class="lc-h">💬 Châm ngôn theo 6 ví</div>${q}</div>
+ <div class="guide-desc">Thông tin Can Chi, giờ, sao, trực mang tính tham khảo theo phương pháp phổ biến. Các lịch khác nhau có thể chênh lệch đôi chút.</div>`;
+}
+function openLunar(){const d=new Date();lcSel=dayKey();lcView={y:d.getFullYear(),m:d.getMonth()};push('lunar');}
+function lcPick(k){lcSel=k;const p=k.split('-');lcView={y:+p[0],m:+p[1]-1};render();}
+function lcMove(n){let m=lcView.m+n,y=lcView.y;if(m<0){m=11;y--;}if(m>11){m=0;y++;}lcView={y,m};render();}
+function lcGoto(v){if(!v)return;lcPick(v);}
+function scrLunar(){
+ const v=lcView, today=dayKey();
+ const off=(new Date(v.y,v.m,1).getDay()+6)%7, n=new Date(v.y,v.m+1,0).getDate();
+ let cells='';for(let i=0;i<off;i++)cells+='<div></div>';
+ for(let d=1;d<=n;d++){
+  const k=v.y+'-'+String(v.m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+  const L=convertSolar2Lunar(d,v.m+1,v.y,7), wd=(off+d-1)%7;
+  const hol=lcHolidays(d,v.m+1,v.y,L,false).length>0;
+  cells+=`<div class="lc-d${k===lcSel?' sel':''}${k===today?' today':''}${wd===6?' sun':''}${hol?' hol':''}${(L[0]===1||L[0]===15)?' rm':''}" onclick="lcPick('${k}')"><b>${d}</b><small>${L[0]===1?'1/'+L[1]:L[0]}</small></div>`;
+ }
+ return screenWrap('🗓️ Lịch vạn niên',`
+  <div class="cal-head"><button class="mini-btn" onclick="lcMove(-1)">‹</button><b>Tháng ${v.m+1}/${v.y}</b><button class="mini-btn" onclick="lcMove(1)">›</button></div>
+  <div class="lc-grid">${['T2','T3','T4','T5','T6','T7','CN'].map(w=>`<div class="cal-w">${w}</div>`).join('')}${cells}</div>
+  <div class="filter-row" style="margin-top:8px;"><input type="date" value="${lcSel}" min="1900-01-01" max="2199-12-31" onchange="lcGoto(this.value)"><button class="mini-btn" style="flex:none;" onclick="lcPick(dayKey())">Hôm nay</button></div>
+  ${lcDetail(lcSel)}`);
+}
+
 const SCREENS={
  partner:scrPartner, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
  incomeCategories:scrIncomeCategories, incomeDetail:scrIncomeDetail,
  expenseOverview:scrExpenseOverview, expenseDetail:scrExpenseDetail, quiz:scrQuiz
- ,extra:scrExtra, planner:scrPlanner, ratios:scrRatios, planSettings:scrPlanSettings,books:scrBooks,debts:scrDebts, todayHistory:scrTodayHistory
+ ,extra:scrExtra, planner:scrPlanner, ratios:scrRatios, planSettings:scrPlanSettings,books:scrBooks,debts:scrDebts, todayHistory:scrTodayHistory,
+ notes:scrNotes, noteEdit:scrNoteEdit, lunar:scrLunar
 };
 function render(){
  const top=stack[stack.length-1];

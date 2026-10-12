@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.12-13';
+const APP_VERSION='2026.10.12-14';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -323,6 +323,18 @@ body.home-white{background:#FFFFFF;}
 .link-row.shop{background:#FFF3D9;border-color:#F6E2B0;color:#7A4B00;cursor:pointer;}
 .link-row.shop .go{color:#7A4B00;}
 .shop-h{font-size:14.5px;font-weight:800;margin:14px 0 8px;}
+.gl-bar{height:8px;border-radius:4px;background:var(--border);overflow:hidden;margin:6px 0 4px;}
+.gl-bar i{display:block;height:100%;background:var(--pos);}
+.fc-wrap{max-height:340px;overflow:auto;-webkit-overflow-scrolling:touch;}
+.fc-t{width:100%;border-collapse:collapse;font-size:12px;}
+.fc-t th,.fc-t td{padding:5px 4px;text-align:right;border-top:1px solid var(--border);}
+.fc-t th{position:sticky;top:0;background:var(--surface);color:var(--text-soft);font-size:11px;}
+.fc-t td:first-child,.fc-t th:first-child{text-align:center;}
+.cd-in{display:flex;gap:10px;justify-content:center;margin:18px 0 10px;}
+.cd-in div{text-align:center;}
+.cd-in input{width:76px;font:inherit;font-size:34px;font-weight:800;text-align:center;padding:8px 4px;border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--text);}
+.cd-in label{display:block;font-size:12px;color:var(--text-soft);margin-top:3px;}
+.cd-presets{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;}
 .qz-meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;margin-bottom:8px;}
 .qz-bar{height:6px;border-radius:3px;background:var(--border);overflow:hidden;margin-bottom:14px;}
 .qz-bar i{display:block;height:100%;background:var(--accent);transition:width 1s linear;}
@@ -693,7 +705,7 @@ let locked=!!getAccount(); // có tài khoản thì khóa ngay khi mở app
 function logoutAccount(){loggedIn=false;locked=true;stack=[{id:'home'}];render();}
 function forgotPass(){
  openConfirm('Nếu quên mật khẩu, cách duy nhất là xóa toàn bộ dữ liệu trên máy này (thu chi, tài khoản, kế hoạch...). Bạn có chắc muốn xóa không?',function(){
-  [ACCOUNT_KEY,STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,QZ_KEY,CLICK_LOG_KEY,NOTES_KEY].forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
+  [ACCOUNT_KEY,STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,QZ_KEY,CLICK_LOG_KEY,NOTES_KEY,GOAL_KEY,BILL_KEY,POMO_KEY,DEBT_KEY].forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
   location.reload();
  });
 }
@@ -912,7 +924,7 @@ function scrLogin(){
 }
   // ===== Sao lưu / khôi phục dữ liệu =====
 // Không sao lưu tài khoản và mật khẩu, nên khôi phục xong mật khẩu hiện tại trên máy vẫn giữ nguyên.
-function backupKeys(){return [STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,PLAN_DONE_KEY,QZ_KEY,DEBT_KEY,READ_KEY,FS_KEY,NOTES_KEY];}
+function backupKeys(){return [STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,PLAN_DONE_KEY,QZ_KEY,DEBT_KEY,READ_KEY,FS_KEY,NOTES_KEY,GOAL_KEY,BILL_KEY,POMO_KEY];}
 function backupExport(){
  const data={};
  backupKeys().forEach(k=>{try{const v=localStorage.getItem(k);if(v!==null)data[k]=v;}catch(e){}});
@@ -1384,10 +1396,13 @@ function scrExtra(){
  return screenWrap('Tiện ích 6Pay',`
   <div class="list-item clickable util-item" onclick="openPlanner()"><span>📅 Kế hoạch bản thân</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('debts')"><span>💳 Quản lý khoản nợ</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="push('goals')"><span>🐷 Mục tiêu tiết kiệm</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="fc.tab='loan';push('fincalc')"><span>🏦 Tính lãi vay và tiết kiệm</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="push('bills')"><span>🔔 Nhắc hóa đơn, chi định kỳ</span><span class="guide-cta">${billDueCount()?'<span class="neg">● '+billDueCount()+'</span> ':''}›</span></div>
   <div class="list-item clickable util-item" onclick="push('books')"><span>📖 Đọc sách Free</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openNotes()"><span>📝 Sổ ghi chú</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openLunar()"><span>🗓️ Lịch vạn niên</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="push('stopwatch')"><span>⏱️ Đồng hồ bấm giờ</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="push('stopwatch')"><span>⏱️ Đồng hồ: bấm giờ, đếm ngược, Pomodoro</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('calc')"><span>🧮 Máy tính</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('units')"><span>📐 Đổi đơn vị đo</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>
@@ -1592,6 +1607,7 @@ function scrDebts(){
   </div>`;}).join('');
  return screenWrap('💳 Quản lý khoản nợ',`
   <div class="debt-sum"><div class="o">Tôi đang nợ<b>${fmt(owe)} ₫</b></div><div class="l">Người khác nợ tôi<b>${fmt(lend)} ₫</b></div></div>
+  <button class="btn home" style="margin:0 0 12px;" onclick="fc.tab='loan';push('fincalc')">🏦 Tính lãi và lịch trả nợ</button>
   <div class="debt-form">
    <div class="ins-tabs">
     <button class="ins-tab ${isOwe?'on':''}" onclick="debtDraft.type='owe';render()">Tôi nợ</button>
@@ -2170,16 +2186,16 @@ function swLap(){
  render();
 }
 function swReset(){sw={run:false,start:0,acc:0,laps:[]};clearInterval(swTimer);swTimer=0;render();}
-function scrStopwatch(){
+function swBody(){
  swEnsure();
  const t=swNow(), has=t>0||sw.laps.length>0;
  const left=sw.run?`<button class="sw-b" onclick="swLap()">🏁 Vòng</button>`:`<button class="sw-b" ${has?'':'disabled'} onclick="swReset()">↺ Đặt lại</button>`;
  const right=`<button class="sw-b main ${sw.run?'stop':''}" onclick="swToggle()">${sw.run?'⏸ Tạm dừng':(t>0?'▶ Tiếp tục':'▶ Bắt đầu')}</button>`;
  const laps=sw.laps.slice().reverse().map((l,i)=>{const n=sw.laps.length-i;return `<div class="list-item"><span>Vòng ${n}</span><span style="font-weight:700;">${swFmt(l.d)}</span><span class="note" style="margin:0;">${swFmt(l.t)}</span></div>`;}).join('');
- return screenWrap('⏱️ Đồng hồ bấm giờ',`
+ return `
   <div class="sw-time" id="sw-time">${swFmt(t)}</div>
   <div class="sw-btns">${left}${right}</div>
-  ${laps||'<div class="guide-desc" style="text-align:center;">Bấm “Vòng” khi đang chạy để ghi lại thời gian từng vòng.</div>'}`);
+  ${laps||'<div class="guide-desc" style="text-align:center;">Bấm “Vòng” khi đang chạy để ghi lại thời gian từng vòng.</div>'}`;
 }
 
 // ===== Máy tính =====
@@ -2331,8 +2347,405 @@ function scrUnits(){
   <div class="lc-card" style="margin-top:12px;"><div class="lc-h">Bảng quy đổi</div><div id="cv-all"></div></div>`);
 }
 
+// ===== Mục tiêu tiết kiệm =====
+const GOAL_KEY='6pay-goals-v1';
+let goals=[];
+try{const s=JSON.parse(localStorage.getItem(GOAL_KEY));if(Array.isArray(s))goals=s;}catch(e){}
+function goalSave(){try{localStorage.setItem(GOAL_KEY,JSON.stringify(goals));}catch(e){}}
+let goalDraft={name:'',amount:'',exact:'',due:''};
+let goalPayId='';
+function goalMonthsLeft(due){
+ if(!due)return 0;
+ const days=Math.round((new Date(due+'T00:00:00')-new Date(dayKey()+'T00:00:00'))/86400000);
+ return days<=0?0:Math.max(1,Math.ceil(days/30.44));
+}
+function scrGoals(){
+ const tot=goals.reduce((s,g)=>s+g.saved,0), tgt=goals.reduce((s,g)=>s+g.target,0);
+ const today=dayKey();
+ const list=goals.slice().sort((a,b)=>((a.saved>=a.target)?1:0)-((b.saved>=b.target)?1:0)||((a.due||'9999')<(b.due||'9999')?-1:1));
+ const items=list.map(g=>{
+  const done=g.saved>=g.target, pc=Math.min(100,Math.floor(g.saved/g.target*100)), left=Math.max(0,g.target-g.saved);
+  const ml=goalMonthsLeft(g.due);
+  let hint='';
+  if(done)hint='<div class="date pos">🎉 Đã đạt mục tiêu!</div>';
+  else if(g.due){
+   if(g.due<today)hint='<div class="date debt-late">Đã quá hạn '+planFmt(g.due)+'</div>';
+   else if(ml===0)hint='<div class="date">Hạn là hôm nay · còn thiếu <b>'+fmt(left)+' ₫</b></div>';
+   else hint='<div class="date">Hạn: '+planFmt(g.due)+' · còn '+ml+' tháng → cần để dành <b>'+fmt(left/ml)+' ₫</b>/tháng</div>';
+  }
+  return `<div class="list-item" style="align-items:flex-start;">
+   <div class="tx-info">
+    <div style="font-weight:600;">${done?'🏆':'🐷'} ${esc(g.name)}</div>
+    <div class="gl-bar"><i style="width:${pc}%"></i></div>
+    <div class="date">${fmt(g.saved)} / ${fmt(g.target)} ₫ · ${pc}%</div>
+    ${hint}
+   </div>
+   <div class="tx-right">
+    <div class="tx-actions">
+     <button class="mini-btn" onclick="openGoalPay('${g.id}')">💵 Nạp/Rút</button>
+     <button class="mini-btn" onclick="openConfirm('Bạn có chắc muốn xóa mục tiêu này không?',function(){delGoal('${g.id}')})">🗑</button>
+    </div>
+   </div>
+  </div>`;}).join('');
+ return screenWrap('🐷 Mục tiêu tiết kiệm',`
+  <div class="debt-sum"><div class="l">Đã để dành<b>${fmt(tot)} ₫</b></div><div class="o" style="background:var(--newtx-bg);color:var(--newtx-text);">Tổng mục tiêu<b>${fmt(tgt)} ₫</b></div></div>
+  <div class="debt-form">
+   <div class="form-row tight"><label>Tên mục tiêu</label><input type="text" id="goal-name" placeholder="Ví dụ: Mua xe máy, du lịch Đà Lạt" value="${qa(goalDraft.name)}" oninput="goalDraft.name=this.value"></div>
+   <div class="form-row tight"><label>Số tiền cần đạt</label>${amtInput('goal-amount',goalDraft.amount,goalDraft.exact,"goalDraft.amount=this.value;goalDraft.exact='';")}</div>
+   <div class="form-row tight"><label>Hạn hoàn thành (không bắt buộc)</label><input type="date" value="${goalDraft.due}" onchange="goalDraft.due=this.value"></div>
+   <button class="btn primary" onclick="addGoal()">✓ Thêm mục tiêu</button>
+  </div>
+  <button class="btn home" style="margin:0 0 12px;" onclick="fc.tab='save';push('fincalc')">🏦 Tính lãi gửi tiết kiệm</button>
+  ${items||'<div class="empty">Chưa có mục tiêu nào. Hãy đặt mục tiêu đầu tiên của bạn.</div>'}
+ `);
+}
+function addGoal(){
+ const name=(goalDraft.name||'').trim();
+ const el=document.getElementById('goal-amount'), amt=getAmt(el);
+ if(!name){const w=document.getElementById('goal-name');w.classList.add('shake');setTimeout(()=>w.classList.remove('shake'),300);return;}
+ if(!amt||amt<=0){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),300);return;}
+ goals.push({id:uid(),name:name,target:amt,saved:0,due:goalDraft.due||'',ts:Date.now()});
+ goalSave();
+ goalDraft={name:'',amount:'',exact:'',due:''};
+ render();
+}
+function delGoal(id){goals=goals.filter(g=>g.id!==id);goalSave();render();}
+function openGoalPay(id){
+ const g=goals.find(x=>x.id===id); if(!g)return;
+ goalPayId=id;
+ document.getElementById('debtPayBox').innerHTML=`
+  <p style="font-weight:800;font-size:17px;margin-bottom:4px;">🐷 ${esc(g.name)}</p>
+  <div class="guide-desc" style="margin:0 0 10px;">Đã có ${fmt(g.saved)} ₫ · Còn thiếu ${fmt(Math.max(0,g.target-g.saved))} ₫</div>
+  <div class="form-row" style="text-align:left;"><label>Số tiền</label>${amtInput('gp-amount','','','')}</div>
+  <button class="btn primary" style="margin-top:0;" onclick="confirmGoalPay(1)">＋ Nạp thêm</button>
+  <button class="btn home" onclick="confirmGoalPay(-1)">− Rút ra</button>
+  <button class="btn back" onclick="document.getElementById('debtPayModal').classList.remove('open')">Hủy</button>`;
+ document.getElementById('debtPayModal').classList.add('open');
+}
+function confirmGoalPay(sign){
+ const el=document.getElementById('gp-amount'), amt=getAmt(el);
+ if(!amt||amt<=0){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),300);return;}
+ const g=goals.find(x=>x.id===goalPayId); if(!g)return;
+ g.saved=Math.max(0,g.saved+sign*amt);
+ goalSave();
+ document.getElementById('debtPayModal').classList.remove('open');
+ render();
+}
+
+// ===== Tính lãi vay và tiết kiệm =====
+let fc={tab:'loan',la:'',lr:'',lm:'',lmethod:'annuity',sp:'',sc:'',sr:'',sm:'',skind:'compound'};
+function fcMoney(el,key){
+ const d=el.value.replace(/\D/g,'');
+ fc[key]=d; el.value=d?Number(d).toLocaleString('vi-VN'):'';
+ fcRefresh();
+}
+function fcSet(key,val){fc[key]=val;fcRefresh();}
+function fcRefresh(){const e=document.getElementById('fc-out');if(e)e.innerHTML=fcResultHtml();}
+function fcIn(key,label,ph,money,dec){
+ if(money)return `<div class="form-row tight"><label>${label}</label><input type="text" inputmode="numeric" placeholder="${ph}" value="${fc[key]?Number(fc[key]).toLocaleString('vi-VN'):''}" oninput="fcMoney(this,'${key}')"></div>`;
+ return `<div class="form-row tight"><label>${label}</label><input type="text" inputmode="${dec?'decimal':'numeric'}" placeholder="${ph}" value="${qa(fc[key])}" oninput="fcSet('${key}',this.value)"></div>`;
+}
+function fcRate(v){return parseFloat(String(v||'').replace(',','.'))||0;}
+function fcLoan(P,r,n,method){
+ const rows=[]; let bal=P,tI=0,tot=0; const rm=r/100/12;
+ const pay=method==='annuity'?(rm===0?P/n:P*rm/(1-Math.pow(1+rm,-n))):0;
+ for(let k=1;k<=n;k++){
+  const i=bal*rm; let pr=method==='annuity'?pay-i:P/n;
+  if(k===n)pr=bal;
+  const t=pr+i; bal=Math.max(0,bal-pr); tI+=i; tot+=t;
+  rows.push([k,pr,i,t,bal]);
+ }
+ return {rows,tI,tot,first:rows[0][3],last:rows[rows.length-1][3]};
+}
+function fcSave(P,C,r,n,kind){
+ const rm=r/100/12; let bal=P,prin=P,sint=0;
+ for(let k=1;k<=n;k++){
+  if(kind==='compound'){bal+=bal*rm;}else{sint+=prin*rm;}
+  if(C){bal+=C;prin+=C;}
+ }
+ const final=kind==='compound'?bal:prin+sint;
+ return {final,prin,interest:final-prin};
+}
+function fcResultHtml(){
+ if(fc.tab==='loan'){
+  const P=parseInt(fc.la,10)||0, r=fcRate(fc.lr), n=parseInt(fc.lm,10)||0;
+  if(!P||!n)return '<div class="guide-desc">Nhập số tiền vay và số tháng để xem kết quả.</div>';
+  if(n>600)return '<div class="err-msg">Số tháng tối đa là 600.</div>';
+  const R=fcLoan(P,r,n,fc.lmethod);
+  const head=fc.lmethod==='annuity'
+   ?`<div class="lc-row"><span class="lc-l">Trả mỗi tháng</span><span class="lc-v">${fmt(R.first)} ₫</span></div>`
+   :`<div class="lc-row"><span class="lc-l">Trả tháng đầu</span><span class="lc-v">${fmt(R.first)} ₫</span></div><div class="lc-row"><span class="lc-l">Trả tháng cuối</span><span class="lc-v">${fmt(R.last)} ₫</span></div>`;
+  const tr=R.rows.map(x=>`<tr><td>${x[0]}</td><td>${fmt(x[1])}</td><td>${fmt(x[2])}</td><td>${fmt(x[3])}</td><td>${fmt(x[4])}</td></tr>`).join('');
+  return `<div class="lc-card"><div class="lc-h">Kết quả vay</div>${head}
+   <div class="lc-row"><span class="lc-l">Tổng tiền lãi</span><span class="lc-v neg">${fmt(R.tI)} ₫</span></div>
+   <div class="lc-row"><span class="lc-l">Tổng gốc và lãi phải trả</span><span class="lc-v">${fmt(R.tot)} ₫</span></div></div>
+   <div class="lc-card"><div class="lc-h">Lịch trả nợ</div><div class="fc-wrap"><table class="fc-t"><thead><tr><th>Kỳ</th><th>Gốc</th><th>Lãi</th><th>Tổng trả</th><th>Dư nợ</th></tr></thead><tbody>${tr}</tbody></table></div></div>`;
+ }
+ const P=parseInt(fc.sp,10)||0, C=parseInt(fc.sc,10)||0, r=fcRate(fc.sr), n=parseInt(fc.sm,10)||0;
+ if((!P&&!C)||!n)return '<div class="guide-desc">Nhập số tiền gửi và số tháng để xem kết quả.</div>';
+ if(n>600)return '<div class="err-msg">Số tháng tối đa là 600.</div>';
+ const R=fcSave(P,C,r,n,fc.skind), yrs=n%12===0?(n/12)+' năm':n+' tháng';
+ return `<div class="lc-card"><div class="lc-h">Kết quả sau ${yrs}</div>
+  <div class="lc-row"><span class="lc-l">Tổng tiền đã gửi</span><span class="lc-v">${fmt(R.prin)} ₫</span></div>
+  <div class="lc-row"><span class="lc-l">Tiền lãi nhận được</span><span class="lc-v pos">+${fmt(R.interest)} ₫</span></div>
+  <div class="lc-row"><span class="lc-l">Tổng số tiền nhận về</span><span class="lc-v" style="font-size:16px;">${fmt(R.final)} ₫</span></div></div>
+  <div class="guide-desc">Kết quả mang tính tham khảo. Khoản góp hằng tháng được tính vào cuối mỗi tháng. Lãi thực tế phụ thuộc quy định của ngân hàng và có thể phải chịu thuế.</div>`;
+}
+function scrFincalc(){
+ const loan=fc.tab==='loan';
+ const form=loan?`
+  ${fcIn('la','Số tiền vay','0',true)}
+  ${fcIn('lr','Lãi suất vay (%/năm)','Ví dụ 10,5',false,true)}
+  ${fcIn('lm','Thời hạn vay (số tháng)','Ví dụ 60',false)}
+  <div class="form-row tight"><label>Cách trả nợ</label><select class="cv-sel" style="width:100%;" onchange="fcSet('lmethod',this.value)">
+   <option value="annuity" ${fc.lmethod==='annuity'?'selected':''}>Trả đều mỗi tháng (gốc + lãi cố định)</option>
+   <option value="declining" ${fc.lmethod==='declining'?'selected':''}>Gốc đều, lãi giảm dần theo dư nợ</option></select></div>`:`
+  ${fcIn('sp','Số tiền gửi ban đầu','0',true)}
+  ${fcIn('sc','Góp thêm mỗi tháng (không bắt buộc)','0',true)}
+  ${fcIn('sr','Lãi suất (%/năm)','Ví dụ 6',false,true)}
+  ${fcIn('sm','Thời gian gửi (số tháng)','Ví dụ 12',false)}
+  <div class="form-row tight"><label>Cách tính lãi</label><select class="cv-sel" style="width:100%;" onchange="fcSet('skind',this.value)">
+   <option value="compound" ${fc.skind==='compound'?'selected':''}>Lãi kép (lãi nhập gốc mỗi tháng)</option>
+   <option value="simple" ${fc.skind==='simple'?'selected':''}>Lãi đơn (lãi trả cuối kỳ)</option></select></div>`;
+ return screenWrap('🏦 Tính lãi vay và tiết kiệm',`
+  <div class="ins-tabs"><button class="ins-tab ${loan?'on':''}" onclick="fc.tab='loan';render()">Vay vốn</button><button class="ins-tab ${!loan?'on':''}" onclick="fc.tab='save';render()">Gửi tiết kiệm</button></div>
+  <div class="debt-form">${form}</div>
+  <div id="fc-out">${fcResultHtml()}</div>`);
+}
+
+// ===== Nhắc hóa đơn và khoản chi định kỳ =====
+const BILL_KEY='6pay-bills-v1';
+let bills=[];
+try{const s=JSON.parse(localStorage.getItem(BILL_KEY));if(Array.isArray(s))bills=s;}catch(e){}
+function billSave(){try{localStorage.setItem(BILL_KEY,JSON.stringify(bills));}catch(e){}}
+let billDraft={name:'',amount:'',exact:'',freq:'m',day:'',mon:'1',remind:'3',jar:'essential'};
+let billPayId='',billPayKey='';
+function billNext(b){
+ const now=new Date(), cr=new Date(b.ts||Date.now());
+ let idx=now.getFullYear()*12+now.getMonth()-1;
+ const cidx=cr.getFullYear()*12+cr.getMonth();
+ if(idx<cidx)idx=cidx;
+ for(let i=0;i<26;i++){
+  const x=idx+i, yy=Math.floor(x/12), mm=x%12;
+  if(b.freq==='y'&&mm+1!==+b.mon)continue;
+  const key=yy+'-'+String(mm+1).padStart(2,'0');
+  if(b.paid&&b.paid[key])continue;
+  const dim=new Date(yy,mm+1,0).getDate();
+  return {key:key,due:new Date(yy,mm,Math.min(+b.day||1,dim))};
+ }
+ return null;
+}
+function billDays(due){return Math.round((new Date(due.getFullYear(),due.getMonth(),due.getDate())-new Date(dayKey()+'T00:00:00'))/86400000);}
+function billRows(){
+ return bills.map(b=>{const n=billNext(b);return n?{b:b,n:n,d:billDays(n.due)}:null;}).filter(Boolean).sort((a,b)=>a.d-b.d);
+}
+function billDueCount(){return billRows().filter(x=>x.d<=(+x.b.remind||3)).length;}
+function billFreqText(b){return b.freq==='y'?'Hằng năm (ngày '+b.day+'/'+b.mon+')':'Hằng tháng (ngày '+b.day+')';}
+function scrBills(){
+ const rows=billRows();
+ const soon=rows.filter(x=>x.d<=7).reduce((s,x)=>s+x.b.amount,0);
+ const late=rows.filter(x=>x.d<0).length;
+ const month=bills.reduce((s,b)=>s+(b.freq==='y'?b.amount/12:b.amount),0);
+ const yearly=billDraft.freq==='y';
+ const items=rows.map(x=>{
+  const b=x.b, d=x.d, near=d<=(+b.remind||3);
+  const st=d<0?`<div class="date debt-late">Quá hạn ${-d} ngày</div>`:(d===0?'<div class="date debt-late">Hạn trả là hôm nay</div>':`<div class="date"${near?' style="color:#B7791F;font-weight:700;"':''}>Còn ${d} ngày</div>`);
+  const jar=JARS.find(j=>j.k===b.jar);
+  return `<div class="list-item" style="align-items:flex-start;">
+   <div class="tx-info">
+    <div style="font-weight:600;">${d<0?'🔴':(near?'🟠':'🔔')} ${esc(b.name)}</div>
+    <div class="date">${billFreqText(b)}${jar?' · ví '+jar.l:''}</div>
+    <div class="date">Hạn kế tiếp: ${planFmt(dayKey(x.n.due))}</div>
+    ${st}
+   </div>
+   <div class="tx-right">
+    <span class="neg">${b.amount?fmt(b.amount)+' ₫':'Chưa nhập'}</span>
+    <div class="tx-actions">
+     <button class="mini-btn" onclick="openBillPay('${b.id}')">✓ Đã trả</button>
+     <button class="mini-btn" onclick="openConfirm('Bỏ qua kỳ này (không ghi chi tiêu)?',function(){billSkip('${b.id}')})">⏭</button>
+     <button class="mini-btn" onclick="openConfirm('Bạn có chắc muốn xóa khoản này không?',function(){delBill('${b.id}')})">🗑</button>
+    </div>
+   </div>
+  </div>`;}).join('');
+ const jarOpts='<option value="">Không ghi vào chi tiêu</option>'+JARS.map(j=>`<option value="${j.k}" ${billDraft.jar===j.k?'selected':''}>${j.i} ${j.l}</option>`).join('');
+ const monOpts=Array.from({length:12},(_,i)=>`<option value="${i+1}" ${String(billDraft.mon)===String(i+1)?'selected':''}>Tháng ${i+1}</option>`).join('');
+ return screenWrap('🔔 Nhắc hóa đơn & chi định kỳ',`
+  <div class="debt-sum"><div class="o">Cần trả trong 7 ngày<b>${fmt(soon)} ₫</b></div><div class="l" style="background:var(--newtx-bg);color:var(--newtx-text);">Chi cố định/tháng<b>${fmt(month)} ₫</b></div></div>
+  ${late?`<div class="ins-warn" style="margin-bottom:12px;">⚠️ Bạn có ${late} khoản đã quá hạn.</div>`:''}
+  <div class="debt-form">
+   <div class="form-row tight"><label>Tên khoản chi</label><input type="text" placeholder="Ví dụ: Tiền điện, tiền nhà, Netflix" value="${qa(billDraft.name)}" oninput="billDraft.name=this.value" id="bill-name"></div>
+   <div class="form-row tight"><label>Số tiền (có thể bỏ trống nếu thay đổi mỗi kỳ)</label>${amtInput('bill-amount',billDraft.amount,billDraft.exact,"billDraft.amount=this.value;billDraft.exact='';")}</div>
+   <div class="form-row tight"><label>Chu kỳ</label><select class="cv-sel" style="width:100%;" onchange="billDraft.freq=this.value;render()"><option value="m" ${!yearly?'selected':''}>Hằng tháng</option><option value="y" ${yearly?'selected':''}>Hằng năm</option></select></div>
+   ${yearly?`<div class="form-row tight"><label>Tháng đến hạn</label><select class="cv-sel" style="width:100%;" onchange="billDraft.mon=this.value">${monOpts}</select></div>`:''}
+   <div class="form-row tight"><label>Ngày đến hạn trong tháng (1 đến 31)</label><input type="text" inputmode="numeric" maxlength="2" placeholder="Ví dụ: 5" value="${qa(billDraft.day)}" oninput="this.value=this.value.replace(/\D/g,'');billDraft.day=this.value" id="bill-day"></div>
+   <div class="form-row tight"><label>Nhắc trước (số ngày)</label><input type="text" inputmode="numeric" maxlength="2" value="${qa(billDraft.remind)}" oninput="this.value=this.value.replace(/\D/g,'');billDraft.remind=this.value"></div>
+   <div class="form-row tight"><label>Khi bấm “Đã trả”, ghi tự động vào chi tiêu của ví</label><select class="cv-sel" style="width:100%;" onchange="billDraft.jar=this.value">${jarOpts}</select></div>
+   <button class="btn primary" onclick="addBill()">✓ Thêm khoản chi</button>
+  </div>
+  ${items||'<div class="empty">Chưa có khoản chi định kỳ nào.</div>'}
+ `);
+}
+function addBill(){
+ const name=(billDraft.name||'').trim(), day=parseInt(billDraft.day,10);
+ const sh=id=>{const w=document.getElementById(id);if(w){w.classList.add('shake');setTimeout(()=>w.classList.remove('shake'),300);}};
+ if(!name){sh('bill-name');return;}
+ if(!day||day<1||day>31){sh('bill-day');return;}
+ const amt=getAmt(document.getElementById('bill-amount'))||0;
+ bills.push({id:uid(),name:name,amount:amt,freq:billDraft.freq,day:day,mon:+billDraft.mon||1,remind:Math.min(30,parseInt(billDraft.remind,10)||3),jar:billDraft.jar,paid:{},ts:Date.now()});
+ billSave();
+ billDraft={name:'',amount:'',exact:'',freq:billDraft.freq,day:'',mon:billDraft.mon,remind:billDraft.remind,jar:billDraft.jar};
+ render();
+}
+function delBill(id){bills=bills.filter(b=>b.id!==id);billSave();render();}
+function billSkip(id){
+ const b=bills.find(x=>x.id===id);if(!b)return;const n=billNext(b);if(!n)return;
+ b.paid=b.paid||{};b.paid[n.key]='skip';billSave();render();
+}
+function openBillPay(id){
+ const b=bills.find(x=>x.id===id);if(!b)return;const n=billNext(b);if(!n)return;
+ billPayId=id;billPayKey=n.key;
+ const jar=JARS.find(j=>j.k===b.jar);
+ document.getElementById('debtPayBox').innerHTML=`
+  <p style="font-weight:800;font-size:17px;margin-bottom:4px;">✓ Xác nhận đã trả</p>
+  <div class="guide-desc" style="margin:0 0 10px;">${esc(b.name)} · hạn ${planFmt(dayKey(n.due))}</div>
+  <div class="form-row" style="text-align:left;"><label>Số tiền thực trả</label>${amtInput('bp-amount',b.amount?editVal(b.amount):'',b.amount&&needExact(b.amount)?String(b.amount):'','')}</div>
+  <div class="guide-desc" style="margin:0 0 10px;">${jar?'Sẽ tự ghi vào chi tiêu của ví '+jar.i+' '+jar.l+'.':'Không ghi vào chi tiêu.'}</div>
+  <button class="btn primary" style="margin-top:0;" onclick="confirmBillPay()">✓ Xác nhận</button>
+  <button class="btn back" onclick="document.getElementById('debtPayModal').classList.remove('open')">Hủy</button>`;
+ document.getElementById('debtPayModal').classList.add('open');
+}
+function confirmBillPay(){
+ const el=document.getElementById('bp-amount'), amt=getAmt(el);
+ const b=bills.find(x=>x.id===billPayId);if(!b)return;
+ if(b.jar&&(!amt||amt<=0)){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),300);return;}
+ b.paid=b.paid||{};
+ let tid='1';
+ if(b.jar){tid=uid();tx.push({id:tid,type:'out',jar:b.jar,amount:amt,note:b.name,ts:Date.now()});addStar();persist();}
+ b.paid[billPayKey]=tid;
+ if(amt>0)b.amount=amt;
+ billSave();
+ document.getElementById('debtPayModal').classList.remove('open');
+ render();
+}
+
+// ===== Đếm ngược và Pomodoro (nằm trong màn hình Đồng hồ) =====
+const POMO_KEY='6pay-pomo-v1';
+let pmSet={w:25,s:5,l:15,n:4,done:{}};
+try{const p=JSON.parse(localStorage.getItem(POMO_KEY));if(p&&typeof p==='object')pmSet=Object.assign(pmSet,p);}catch(e){}
+function pmSave(){try{localStorage.setItem(POMO_KEY,JSON.stringify(pmSet));}catch(e){}}
+let swTab='sw', tmTimer=0;
+let cd={run:false,end:0,left:0,total:0}, cdIn={h:'',m:'5',s:''};
+function pmDur(m){return (m==='w'?pmSet.w:(m==='s'?pmSet.s:pmSet.l))*60000;}
+let pm={mode:'w',run:false,end:0,left:pmDur('w'),total:pmDur('w'),cyc:0};
+function tmFmt(ms,hours){
+ const t=Math.ceil(ms/1000), h=Math.floor(t/3600), m=Math.floor(t%3600/60), s=t%60;
+ return (hours||h?h+':'+swPad(m):swPad(m))+':'+swPad(s);
+}
+function tmBeep(){
+ try{
+  const A=window.AudioContext||window.webkitAudioContext, c=new A();
+  [0,0.3,0.6].forEach(t=>{const o=c.createOscillator(),g=c.createGain();o.frequency.value=880;o.connect(g);g.connect(c.destination);g.gain.value=0.25;o.start(c.currentTime+t);o.stop(c.currentTime+t+0.2);});
+ }catch(e){}
+ try{if(navigator.vibrate)navigator.vibrate([300,150,300,150,300]);}catch(e){}
+}
+function tmEnsure(){if((cd.run||pm.run)&&!tmTimer)tmTimer=setInterval(tmTick,250);}
+function cdLeft(){return cd.run?Math.max(0,cd.end-Date.now()):cd.left;}
+function pmLeft(){return pm.run?Math.max(0,pm.end-Date.now()):pm.left;}
+function tmTick(){
+ if(cd.run){
+  const l=cdLeft(), e=document.getElementById('cd-time'), b=document.getElementById('cd-bar');
+  if(e)e.textContent=tmFmt(l,cd.total>=3600000);
+  if(b)b.style.width=(cd.total?l/cd.total*100:0)+'%';
+  if(l<=0)cdFinish();
+ }
+ if(pm.run){
+  const l=pmLeft(), e=document.getElementById('pm-time'), b=document.getElementById('pm-bar');
+  if(e)e.textContent=tmFmt(l);
+  if(b)b.style.width=(pm.total?l/pm.total*100:0)+'%';
+  if(l<=0)pmFinish();
+ }
+ if(!cd.run&&!pm.run){clearInterval(tmTimer);tmTimer=0;}
+}
+function cdFinish(){
+ cd={run:false,end:0,left:0,total:0};
+ tmBeep(); render();
+ openConfirm('⏰ Hết giờ đếm ngược!',function(){});
+}
+function cdStart(){
+ if(!cd.total){
+  const h=parseInt(cdIn.h,10)||0, m=parseInt(cdIn.m,10)||0, s=parseInt(cdIn.s,10)||0;
+  const ms=(h*3600+m*60+s)*1000;
+  if(ms<=0){const e=document.getElementById('cd-m');if(e){e.classList.add('shake');setTimeout(()=>e.classList.remove('shake'),300);}return;}
+  cd.total=ms;cd.left=ms;
+ }
+ cd.end=Date.now()+cd.left;cd.run=true;tmEnsure();render();
+}
+function cdPause(){cd.left=cdLeft();cd.run=false;render();}
+function cdReset(){cd={run:false,end:0,left:0,total:0};render();}
+function cdPreset(min){cdIn={h:'',m:String(min),s:''};render();}
+function cdBody(){
+ const idle=!cd.total;
+ const l=cdLeft();
+ const view=idle?`
+  <div class="cd-in">
+   <div><input type="text" inputmode="numeric" maxlength="2" placeholder="0" value="${qa(cdIn.h)}" oninput="this.value=this.value.replace(/\D/g,'');cdIn.h=this.value"><label>giờ</label></div>
+   <div><input type="text" inputmode="numeric" maxlength="2" placeholder="0" id="cd-m" value="${qa(cdIn.m)}" oninput="this.value=this.value.replace(/\D/g,'');cdIn.m=this.value"><label>phút</label></div>
+   <div><input type="text" inputmode="numeric" maxlength="2" placeholder="0" value="${qa(cdIn.s)}" oninput="this.value=this.value.replace(/\D/g,'');cdIn.s=this.value"><label>giây</label></div>
+  </div>
+  <div class="cd-presets">${[1,5,10,15,30,60].map(m=>`<button class="mini-btn" onclick="cdPreset(${m})">${m} phút</button>`).join('')}</div>`
+  :`<div class="sw-time" id="cd-time">${tmFmt(l,cd.total>=3600000)}</div><div class="qz-bar"><i id="cd-bar" style="width:${l/cd.total*100}%;transition:none;"></i></div>`;
+ const left=`<button class="sw-b" ${idle?'disabled':''} onclick="cdReset()">↺ Đặt lại</button>`;
+ const right=`<button class="sw-b main ${cd.run?'stop':''}" onclick="${cd.run?'cdPause()':'cdStart()'}">${cd.run?'⏸ Tạm dừng':(idle?'▶ Bắt đầu':'▶ Tiếp tục')}</button>`;
+ return view+`<div class="sw-btns">${left}${right}</div><div class="guide-desc" style="text-align:center;">Hết giờ sẽ có âm báo và rung (nếu máy hỗ trợ). Hãy giữ app mở để chuông kêu.</div>`;
+}
+function pmStart(){pm.end=Date.now()+pm.left;pm.run=true;tmEnsure();render();}
+function pmPause(){pm.left=pmLeft();pm.run=false;render();}
+function pmReset(){pm.run=false;pm.left=pmDur(pm.mode);pm.total=pm.left;render();}
+function pmGoto(m){pm.mode=m;pm.run=false;pm.left=pmDur(m);pm.total=pm.left;render();}
+function pmNextMode(){return pm.mode==='w'?(pm.cyc%pmSet.n===0&&pm.cyc>0?'l':'s'):'w';}
+function pmSkip(){pmGoto(pmNextMode());}
+function pmFinish(){
+ const wasWork=pm.mode==='w';
+ pm.run=false;
+ if(wasWork){
+  const t=dayKey();pmSet.done[t]=(pmSet.done[t]||0)+1;pmSave();addStar();pm.cyc++;
+ }
+ const nxt=pmNextMode();
+ pm.mode=nxt;pm.left=pmDur(nxt);pm.total=pm.left;
+ tmBeep();render();
+ openConfirm(wasWork?'🍅 Hoàn thành 1 phiên tập trung! Bạn nhận thêm 1 điểm ⭐. Đến giờ nghỉ nào.':'⏰ Hết giờ nghỉ, bắt đầu phiên tập trung tiếp theo nhé.',function(){});
+}
+function pmCfg(k,v){
+ const lim={w:[1,180],s:[1,60],l:[1,120],n:[2,10]}[k];
+ pmSet[k]=Math.min(lim[1],Math.max(lim[0],parseInt(v,10)||pmSet[k]));
+ pmSave();
+ if(!pm.run){pm.left=pmDur(pm.mode);pm.total=pm.left;}
+ render();
+}
+function pmBody(){
+ const l=pmLeft(), today=pmSet.done[dayKey()]||0;
+ const lab={w:'🍅 Tập trung',s:'☕ Nghỉ ngắn',l:'🛌 Nghỉ dài'};
+ const tabs=['w','s','l'].map(m=>`<button class="ins-tab ${pm.mode===m?'on':''}" onclick="${pm.run?"openConfirm('Đang chạy. Đổi chế độ sẽ đặt lại đồng hồ, bạn có chắc không?',function(){pmGoto('"+m+"')})":"pmGoto('"+m+"')"}">${lab[m]}</button>`).join('');
+ const left=`<button class="sw-b" onclick="pmReset()">↺ Đặt lại</button>`;
+ const right=`<button class="sw-b main ${pm.run?'stop':''}" onclick="${pm.run?'pmPause()':'pmStart()'}">${pm.run?'⏸ Tạm dừng':'▶ Bắt đầu'}</button>`;
+ const num=(k,t)=>`<div class="pct-row"><span>${t}</span><div class="pct-input"><input type="number" min="1" value="${pmSet[k]}" onchange="pmCfg('${k}',this.value)"></div></div>`;
+ return `<div class="ins-tabs">${tabs}</div>
+  <div class="sw-time" id="pm-time">${tmFmt(l)}</div>
+  <div class="qz-bar"><i id="pm-bar" style="width:${pm.total?l/pm.total*100:0}%;transition:none;"></i></div>
+  <div class="sw-btns">${left}${right}<button class="sw-b" onclick="pmSkip()">⏭ Bỏ qua</button></div>
+  <div class="list-item"><span>Hôm nay đã hoàn thành</span><b>${'🍅'.repeat(Math.min(today,12))||'0'}${today>12?' ×'+today:''}</b></div>
+  <div class="guide-desc" style="margin-bottom:8px;">Mỗi phiên tập trung hoàn thành được cộng 1 điểm ⭐. Sau ${pmSet.n} phiên sẽ đến giờ nghỉ dài.</div>
+  <div class="lc-h" style="margin:10px 0 6px;">Cài đặt (phút)</div>
+  ${num('w','Thời gian tập trung')}${num('s','Nghỉ ngắn')}${num('l','Nghỉ dài')}${num('n','Số phiên trước khi nghỉ dài')}`;
+}
+function scrStopwatch(){
+ const tab=(k,t)=>`<button class="ins-tab ${swTab===k?'on':''}" onclick="swTab='${k}';render()">${t}</button>`;
+ const body=swTab==='cd'?cdBody():(swTab==='pm'?pmBody():swBody());
+ return screenWrap('⏱️ Đồng hồ',`<div class="ins-tabs">${tab('sw','Bấm giờ')}${tab('cd','Đếm ngược')}${tab('pm','Pomodoro')}</div>`+body);
+}
+
 const SCREENS={
- partner:scrPartner, shopAll:scrShopAll, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
+ partner:scrPartner, shopAll:scrShopAll, goals:scrGoals, fincalc:scrFincalc, bills:scrBills, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
  incomeCategories:scrIncomeCategories, incomeDetail:scrIncomeDetail,
  expenseOverview:scrExpenseOverview, expenseDetail:scrExpenseDetail, quiz:scrQuiz
  ,extra:scrExtra, planner:scrPlanner, ratios:scrRatios, planSettings:scrPlanSettings,books:scrBooks,debts:scrDebts, todayHistory:scrTodayHistory,

@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.12-4';
+const APP_VERSION='2026.10.12-5';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -2081,6 +2081,7 @@ function lcShift(n){
 })();
 function lcGoto(v){if(!v)return;lcPick(v);}
 function scrLunar(){
+ if(!lcSel||!lcView.y){const t=new Date();lcSel=dayKey();lcView={y:t.getFullYear(),m:t.getMonth()};}
  const v=lcView, today=dayKey();
  const off=(new Date(v.y,v.m,1).getDay()+6)%7, n=new Date(v.y,v.m+1,0).getDate();
  let cells='';for(let i=0;i<off;i++)cells+='<div></div>';
@@ -2116,7 +2117,16 @@ function render(){
   return;
  }
  document.body.classList.toggle('home-white',top.id==='home');
- document.getElementById('app').innerHTML = top.id==='home' ? scrHome() : SCREENS[top.id](top.opts||{});
+ let html;
+ try{ html = top.id==='home' ? scrHome() : SCREENS[top.id](top.opts||{}); }
+ catch(err){ // màn hình lỗi thì quay về trang chủ, xóa phiên đã lưu để app luôn mở được
+  try{console.error(err);}catch(e){}
+  stack=[{id:'home'}];
+  try{localStorage.removeItem('6pay-session-v1');}catch(e){}
+  document.body.classList.add('home-white');
+  html=scrHome();
+ }
+ document.getElementById('app').innerHTML = html;
  saveSession();
 }
   // ===== Giữ nguyên trang làm việc nếu quay lại trong vòng 5 phút =====

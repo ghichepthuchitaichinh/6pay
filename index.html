@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.12-27';
+const APP_VERSION='2026.10.12-29';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -507,6 +507,12 @@ body.home-white{background:#FFFFFF;}
 .gr-buy{flex:none;display:flex;align-items:center;justify-content:center;padding:0 9px;border-left:1px solid var(--border);color:var(--accent);font-weight:700;font-size:12.5px;text-decoration:none;white-space:nowrap;}
 .gr-buy:active{background:var(--bg);}
 .guide-item.plain,.shop-list .guide-item.plain{border-radius:14px;margin-bottom:8px;}
+  /* ===== Cửa sổ video và cửa sổ mua hàng trong app ===== */
+.vd-frame{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;}
+.vd-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+.buy-name{font-size:17px;font-weight:800;line-height:1.4;margin:0 0 6px;}
+.buy-note{font-size:13.5px;line-height:1.5;color:var(--text-soft);margin:0 0 14px;}
+.buy-go{display:block;text-align:center;padding:13px;border-radius:14px;background:var(--accent);color:var(--accent-text);font-weight:800;font-size:15px;text-decoration:none;}
 </style>
 </head>
 <body>
@@ -547,6 +553,15 @@ body.home-white{background:#FFFFFF;}
 </div>
 <div class="modal-overlay" id="prodInfoModal" onclick="if(event.target===this)closeProdInfo()">
  <div class="modal-box" id="prodInfoBox"></div>
+</div>
+  <div class="modal-overlay" id="videoModal" onclick="if(event.target===this)closeVideo()">
+ <div class="modal-box" style="max-width:560px;padding:10px;">
+  <div style="text-align:right;margin-bottom:8px;"><button class="mini-btn" onclick="closeVideo()">✕ Đóng video</button></div>
+  <div class="vd-frame" id="vdFrame"></div>
+ </div>
+</div>
+<div class="modal-overlay" id="buyModal" onclick="if(event.target===this)closeBuy()">
+ <div class="modal-box" id="buyBox" style="text-align:left;"></div>
 </div>
   <div class="book-view" id="bookView">
  <div class="bv-bar">
@@ -1107,11 +1122,10 @@ function scrWallets(){
   <div class="fill-row" onclick="push('jarGuide',{jar:'${j.k}'})"><span class="lb"><span class="ic">${j.i}</span>${j.l}</span><span class="am ${c}">${fmt(b)} ₫</span></div>`;}).join('');
  return fillScreen('Số dư','',rows,'','big natural');
 }
-
 function guideLinks(jarKey,onlyLinks){
  const items=GUIDES[jarKey].items.map((it,i)=>({it,i})).filter(o=>!onlyLinks||o.it.link);
  if(!items.length)return '<div class="empty">Chưa có sản phẩm nào.</div>';
- return items.map(o=>{const it=o.it; return it.link ? `<div class="guide-row"><div class="gr-info" onclick="openProdInfo('${jarKey}',${o.i})"><span class="gr-name">${esc(it.label)}</span><span class="gr-note">ℹ️ Thông tin sản phẩm liên kết ›</span></div><a class="gr-buy" href="${qa(it.link)}" target="_blank" rel="noopener noreferrer sponsored" onclick="trackClickIdx('${jarKey}',${o.i})">Mua ngay</a></div>` : `<div class="guide-item plain"><span>${esc(it.label)}</span></div>`;}).join('');
+ return items.map(o=>{const it=o.it; return it.link ? `<div class="guide-row"><div class="gr-info" onclick="openProdInfo('${jarKey}',${o.i})"><span class="gr-name">${esc(it.label)}</span><span class="gr-note">ℹ️ Thông tin sản phẩm liên kết ›</span></div><a class="gr-buy" href="${qa(it.link)}" onclick="openBuy('${jarKey}',${o.i});return false;">Mua ngay</a></div>` : `<div class="guide-item plain"><span>${esc(it.label)}</span></div>`;}).join('');
 }
 function scrJarGuide(opts){
  const j=JARS.find(x=>x.k===opts.jar); const g=GUIDES[opts.jar];
@@ -1982,10 +1996,35 @@ function openProdInfo(k,i){
   <div class="pi-h">📦 Về Sản Phẩm</div>${ul('product')}
   <div class="pi-h">💰 Về Giá &amp; Ưu Đãi</div>${ul('price')}
   <div class="pi-h">🛡️ Về Chính Sách &amp; Quyền Lợi</div>${ul('policy')}
-  <a class="pi-video" href="${qa(video)}" target="_blank" rel="noopener noreferrer">▶ Xem video sản phẩm</a>
+ <a class="pi-video" href="${qa(video)}" target="_blank" rel="noopener noreferrer" onclick="return playVideo(this.href)">▶ Xem video sản phẩm</a>
   <div class="pi-foot">Nút “Mua ngay” là link tiếp thị liên kết.</div>`;
  document.getElementById('prodInfoModal').classList.add('open');
 }
+  function ytId(u){
+ const m=String(u||'').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/))([\w-]{11})/i);
+ return m?m[1]:'';
+}
+// Trả về false nếu đã phát trong app; true nếu không nhúng được thì mở link bình thường
+function playVideo(url){
+ const id=ytId(url); if(!id)return true;
+ document.getElementById('vdFrame').innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+ document.getElementById('videoModal').classList.add('open');
+ return false;
+}
+function closeVideo(){
+ document.getElementById('videoModal').classList.remove('open');
+ document.getElementById('vdFrame').innerHTML='';
+}
+function openBuy(k,i){
+ const it=(GUIDES[k]&&GUIDES[k].items[i]); if(!it||!it.link)return;
+ document.getElementById('buyBox').innerHTML=`
+  <div class="buy-name">🛒 ${esc(it.label)}</div>
+  <p class="buy-note">Bạn sắp được chuyển sang Shopee để xem và đặt mua sản phẩm. Đây là link tiếp thị liên kết, giá bạn trả không đổi. Hãy xem kỹ thông tin sản phẩm trước khi mua.</p>
+  <a class="buy-go" href="${qa(it.link)}" target="_blank" rel="noopener noreferrer sponsored" onclick="trackClickIdx('${k}',${i});closeBuy()">Tiếp tục đến Shopee ›</a>
+  <button class="btn back" onclick="closeBuy()">Để sau</button>`;
+ document.getElementById('buyModal').classList.add('open');
+}
+function closeBuy(){document.getElementById('buyModal').classList.remove('open');}
 function closeProdInfo(){document.getElementById('prodInfoModal').classList.remove('open');}
 
 // ===== Sổ ghi chú (giống Google Keep) =====

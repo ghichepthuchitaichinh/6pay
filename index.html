@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.12-5';
+const APP_VERSION='2026.10.12-9';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -30,7 +30,7 @@ try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()
   --expense-bg:#FCEAE9; --expense-text:#D8453D;
   --newtx-bg:#E8F0FC; --newtx-text:#2C5FA8;
   --accent:#2C5FA8; --accent-text:#FFFFFF;
-  box-sizing:border-box; padding-top:env(safe-area-inset-top,0); padding-bottom:env(safe-area-inset-bottom,0);
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0); padding-bottom:0;
 }
 html{scroll-padding-top:env(safe-area-inset-top,0);}
 @media (prefers-color-scheme:dark){
@@ -53,8 +53,10 @@ html{scroll-padding-top:env(safe-area-inset-top,0);}
 }
 *{box-sizing:inherit;}
 html,body{height:100%;overflow:hidden;}
+@media (min-width:700px){.wrap{max-width:600px;}}
+@media (min-width:1000px){.wrap{max-width:680px;}}
 body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro',system-ui,sans-serif;}
-.wrap{max-width:480px;margin:0 auto;height:100vh;height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));padding:10px 14px 12px;display:flex;flex-direction:column;overflow:hidden;}
+.wrap{max-width:480px;margin:0 auto;height:100vh;height:calc(var(--app-h,100dvh) - env(safe-area-inset-top,0px));padding:10px 14px max(8px,calc(env(safe-area-inset-bottom,0px) - 12px));display:flex;flex-direction:column;overflow:hidden;}
 #app{flex:1;min-height:0;display:flex;flex-direction:column;}
 .topbar{display:flex;align-items:center;gap:12px;padding:4px 2px 18px;}
 .icon-btn{width:44px;height:44px;flex:none;border:1px solid var(--border);background:#FFFFFF;color:#1B1F23;font-size:24px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
@@ -211,6 +213,31 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro
 .nt-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);cursor:pointer;padding:0;}
 .nt-dot.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent);}
 /* ===== Lịch vạn niên ===== */
+
+/* ===== Đồng hồ bấm giờ / Máy tính / Đổi đơn vị ===== */
+.sw-time{text-align:center;font-size:clamp(44px,10vw,60px);font-weight:800;font-variant-numeric:tabular-nums;margin:18px 0 16px;}
+.sw-btns{display:flex;gap:12px;margin-bottom:16px;}
+.sw-b{flex:1;font:inherit;font-size:16px;font-weight:700;padding:15px 8px;border-radius:14px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;}
+.sw-b:disabled{opacity:.4;cursor:not-allowed;}
+.sw-b.main{background:var(--accent);border-color:var(--accent);color:var(--accent-text);}
+.sw-b.main.stop{background:var(--neg);border-color:var(--neg);}
+.calc-disp{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:10px 14px;margin-bottom:12px;text-align:right;min-height:84px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;}
+.calc-expr{font-size:15px;color:var(--text-soft);min-height:20px;word-break:break-all;}
+.calc-res{font-size:40px;font-weight:800;line-height:1.2;word-break:break-all;}
+.calc-pad{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;}
+.calc-k{font:inherit;font-size:22px;font-weight:700;height:clamp(50px,8vh,62px);border-radius:14px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;}
+.calc-k:active{background:var(--border);}
+.calc-k.fn{background:var(--bg);color:var(--text-soft);}
+.calc-k.op{background:var(--newtx-bg);color:var(--newtx-text);}
+.calc-k.eq{background:var(--accent);border-color:var(--accent);color:var(--accent-text);}
+.calc-k.zero{grid-column:span 2;}
+.cv-sel{font:inherit;font-size:14px;padding:10px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);}
+.cv-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px 12px;margin-top:10px;}
+.cv-box label{display:block;font-size:12px;color:var(--text-soft);margin-bottom:4px;}
+.cv-line{display:flex;gap:8px;align-items:center;}
+.cv-line input{flex:1;min-width:0;font:inherit;font-size:22px;font-weight:700;padding:6px 8px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);}
+.cv-line select{flex:none;max-width:46%;}
+.cv-out{flex:1;min-width:0;font-size:22px;font-weight:800;color:var(--accent);padding:6px 8px;word-break:break-all;}
 .lc-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;}
 .lc-d{padding:5px 0 4px;border-radius:10px;cursor:pointer;border:1px solid transparent;}
 .lc-d b{display:block;font-size:15px;line-height:1.25;}
@@ -1345,6 +1372,9 @@ function scrExtra(){
   <div class="list-item clickable util-item" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openNotes()"><span>📝 Sổ ghi chú</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openLunar()"><span>🗓️ Lịch vạn niên</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="push('stopwatch')"><span>⏱️ Đồng hồ bấm giờ</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="push('calc')"><span>🧮 Máy tính</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="push('units')"><span>📐 Đổi đơn vị đo</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="open6PayGame()"><span>🎮 Game 6Pay Runner</span><span class="guide-cta">›</span></div>`);
 }
 // ===== Đọc sách miễn phí =====
@@ -2098,12 +2128,199 @@ function scrLunar(){
   ${lcDetail(lcSel)}`);
 }
 
+// ===== Đồng hồ bấm giờ =====
+let sw={run:false,start:0,acc:0,laps:[]}, swTimer=0;
+function swNow(){return sw.acc+(sw.run?Date.now()-sw.start:0);}
+function swPad(n){return String(n).padStart(2,'0');}
+function swFmt(ms){
+ const cs=Math.floor(ms/10)%100, s=Math.floor(ms/1000)%60, m=Math.floor(ms/60000)%60, h=Math.floor(ms/3600000);
+ return (h?h+':'+swPad(m):swPad(m))+':'+swPad(s)+'.'+swPad(cs);
+}
+function swTick(){
+ const el=document.getElementById('sw-time');
+ if(!el){clearInterval(swTimer);swTimer=0;return;}
+ el.textContent=swFmt(swNow());
+}
+function swEnsure(){if(sw.run&&!swTimer)swTimer=setInterval(swTick,50);}
+function swToggle(){
+ if(sw.run){sw.acc=swNow();sw.run=false;clearInterval(swTimer);swTimer=0;}
+ else{sw.start=Date.now();sw.run=true;}
+ render();
+}
+function swLap(){
+ if(!sw.run)return;
+ const t=swNow(), prev=sw.laps.length?sw.laps[sw.laps.length-1].t:0;
+ sw.laps.push({t:t,d:t-prev});
+ render();
+}
+function swReset(){sw={run:false,start:0,acc:0,laps:[]};clearInterval(swTimer);swTimer=0;render();}
+function scrStopwatch(){
+ swEnsure();
+ const t=swNow(), has=t>0||sw.laps.length>0;
+ const left=sw.run?`<button class="sw-b" onclick="swLap()">🏁 Vòng</button>`:`<button class="sw-b" ${has?'':'disabled'} onclick="swReset()">↺ Đặt lại</button>`;
+ const right=`<button class="sw-b main ${sw.run?'stop':''}" onclick="swToggle()">${sw.run?'⏸ Tạm dừng':(t>0?'▶ Tiếp tục':'▶ Bắt đầu')}</button>`;
+ const laps=sw.laps.slice().reverse().map((l,i)=>{const n=sw.laps.length-i;return `<div class="list-item"><span>Vòng ${n}</span><span style="font-weight:700;">${swFmt(l.d)}</span><span class="note" style="margin:0;">${swFmt(l.t)}</span></div>`;}).join('');
+ return screenWrap('⏱️ Đồng hồ bấm giờ',`
+  <div class="sw-time" id="sw-time">${swFmt(t)}</div>
+  <div class="sw-btns">${left}${right}</div>
+  ${laps||'<div class="guide-desc" style="text-align:center;">Bấm “Vòng” khi đang chạy để ghi lại thời gian từng vòng.</div>'}`);
+}
+
+// ===== Máy tính =====
+let calc={e:'',done:false,err:false};
+function calcEval(s){
+ const t=s.match(/\d+\.?\d*|\.\d+|[+\-×÷%]/g)||[]; let i=0;
+ function num(){
+  let neg=1; while(t[i]==='-'){neg=-neg;i++;}
+  if(i>=t.length||/^[+\-×÷%]$/.test(t[i]))throw 1;
+  let v=parseFloat(t[i++])*neg;
+  while(t[i]==='%'){v/=100;i++;}
+  return v;
+ }
+ function term(){let v=num();while(t[i]==='×'||t[i]==='÷'){const o=t[i++],r=num();if(o==='×')v*=r;else{if(r===0)throw 2;v/=r;}}return v;}
+ function expr(){let v=term();while(t[i]==='+'||t[i]==='-'){const o=t[i++],r=term();v=o==='+'?v+r:v-r;}return v;}
+ const v=expr(); if(i<t.length)throw 1; return v;
+}
+function calcNumStr(v){return String(parseFloat(v.toPrecision(12)));}
+function calcDisp(e){
+ return e.replace(/\d+\.?\d*|\.\d+/g,tok=>{
+  const p=tok.split('.'); let r=(p[0]||'0').replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+  if(tok.indexOf('.')>-1)r+=','+(p[1]||''); return r;
+ }).replace(/([\d,%])([+\-×÷])/g,'$1 $2 ').replace(/-/g,'−');
+}
+function calcPreview(){
+ if(calc.err)return 'Lỗi';
+ let e=calc.e.replace(/[+\-×÷]+$/,'');
+ if(!e)return '0';
+ try{const v=calcEval(e);if(!isFinite(v))return 'Lỗi';const s=calcNumStr(v);return s.indexOf('e')>-1?s:calcDisp(s);}catch(x){return '';}
+}
+function calcRefresh(){
+ const a=document.getElementById('calc-expr'),b=document.getElementById('calc-res');
+ if(!a||!b)return;
+ a.textContent=calc.done?'':calcDisp(calc.e);
+ const r=calcPreview(); b.textContent=r||'';
+ b.style.fontSize=(r.length>14?22:(r.length>10?30:40))+'px';
+ b.className='calc-res'+(calc.err?' neg':'');
+}
+function calcKey(k){
+ if(calc.err){calc.e='';calc.err=false;calc.done=false;}
+ let e=calc.e;
+ if(k==='C'){calc.e='';calc.done=false;}
+ else if(k==='⌫'){calc.e=calc.done?'':e.slice(0,-1);calc.done=false;}
+ else if(k==='='){
+  const s=e.replace(/[+\-×÷]+$/,'');
+  if(!s){calcRefresh();return;}
+  try{
+   const v=calcEval(s);
+   if(!isFinite(v))throw 2;
+   const r=calcNumStr(v);
+   calc.e=r.indexOf('e')>-1?'':r; calc.done=true;
+  }catch(x){calc.err=true;}
+ }
+ else if(/\d/.test(k)){
+  if(calc.done){e='';calc.done=false;}
+  if(e.slice(-1)==='%')return;
+  const tok=(e.match(/\d*\.?\d*$/)||[''])[0];
+  if(tok==='0'&&k!=='.')e=e.slice(0,-1);
+  if(e.length<40)calc.e=e+k;
+ }
+ else if(k==='.'){
+  if(calc.done){e='';calc.done=false;}
+  if(e.slice(-1)==='%')return;
+  const tok=(e.match(/\d*\.?\d*$/)||[''])[0];
+  if(tok.indexOf('.')>-1)return;
+  calc.e=e+(tok===''?'0.':'.');
+ }
+ else if(k==='%'){
+  if(/[\d%]$/.test(e)){calc.e=e+'%';calc.done=false;}
+ }
+ else{ // + - × ÷
+  calc.done=false;
+  if(e===''){if(k==='-')calc.e='-';}
+  else{
+   if(/[×÷]$/.test(e)&&k==='-')calc.e=e+k;
+   else{
+    while(/[+\-×÷]$/.test(e)&&!(e.length===1))e=e.slice(0,-1);
+    if(e.length===1&&/[+\-×÷]/.test(e)){if(k==='-')calc.e='-';}
+    else calc.e=e+k;
+   }
+  }
+ }
+ calcRefresh();
+}
+function scrCalc(){
+ const K=(k,l,c)=>`<button class="calc-k ${c||''}" onclick="calcKey('${k}')">${l||k}</button>`;
+ return screenWrap('🧮 Máy tính',`
+  <div class="calc-disp"><div class="calc-expr" id="calc-expr"></div><div class="calc-res" id="calc-res">0</div></div>
+  <div class="calc-pad">
+   ${K('C','C','fn')}${K('⌫','⌫','fn')}${K('%','%','fn')}${K('÷','÷','op')}
+   ${K('7')}${K('8')}${K('9')}${K('×','×','op')}
+   ${K('4')}${K('5')}${K('6')}${K('-','−','op')}
+   ${K('1')}${K('2')}${K('3')}${K('+','+','op')}
+   ${K('0','0','zero')}${K('.',',')}${K('=','=','eq')}
+  </div>
+  <div class="guide-desc">Dấu % chia số trước nó cho 100 (ví dụ 50% = 0,5).</div>`);
+}
+
+// ===== Đổi đơn vị đo =====
+const CV_CATS={
+ length:{l:'📏 Chiều dài',def:['m','cm'],u:[['mm','Milimét (mm)',0.001],['cm','Xentimét (cm)',0.01],['m','Mét (m)',1],['km','Kilômét (km)',1000],['in','Inch (in)',0.0254],['ft','Feet (ft)',0.3048],['yd','Yard (yd)',0.9144],['mi','Dặm (mi)',1609.344],['nmi','Hải lý',1852]]},
+ area:{l:'⬛ Diện tích',def:['m2','ha'],u:[['cm2','Xentimét vuông (cm²)',0.0001],['m2','Mét vuông (m²)',1],['ha','Hecta (ha)',10000],['km2','Kilômét vuông (km²)',1000000],['ft2','Feet vuông (ft²)',0.09290304],['ac','Acre',4046.8564224]]},
+ mass:{l:'⚖️ Khối lượng',def:['kg','g'],u:[['g','Gam (g)',0.001],['lang','Lạng (100 g)',0.1],['kg','Kilôgam (kg)',1],['yen','Yến (10 kg)',10],['ta','Tạ (100 kg)',100],['tan','Tấn',1000],['oz','Ounce (oz)',0.028349523125],['lb','Pound (lb)',0.45359237],['chi','Chỉ vàng (3,75 g)',0.00375],['luong','Lượng vàng (37,5 g)',0.0375]]},
+ volume:{l:'🧪 Thể tích',def:['l','ml'],u:[['ml','Mililít (ml)',0.001],['l','Lít (l)',1],['m3','Mét khối (m³)',1000],['floz','Fluid ounce (US)',0.0295735295625],['cup','Cup (US)',0.2365882365],['gal','Gallon (US)',3.785411784]]},
+ pressure:{l:'🎈 Áp suất',def:['bar','psi'],u:[['pa','Pascal (Pa)',1],['kpa','Kilopascal (kPa)',1000],['mpa','Megapascal (MPa)',1000000],['mbar','Milibar (mbar)',100],['bar','Bar',100000],['atm','Atmosphere (atm)',101325],['at','Kgf/cm² (at)',98066.5],['mmhg','Milimét thủy ngân (mmHg)',133.322387415],['psi','Pound/inch² (psi)',6894.757293168]]},
+ temp:{l:'🌡️ Nhiệt độ',def:['c','f'],u:[['c','Độ C (°C)',1],['f','Độ F (°F)',1],['k','Kelvin (K)',1]]},
+ speed:{l:'🚀 Tốc độ',def:['kmh','ms'],u:[['ms','Mét/giây (m/s)',1],['kmh','Kilômét/giờ (km/h)',1/3.6],['mph','Dặm/giờ (mph)',0.44704],['kn','Hải lý/giờ (knot)',1852/3600]]},
+ time:{l:'⏳ Thời gian',def:['h','min'],u:[['s','Giây',1],['min','Phút',60],['h','Giờ',3600],['d','Ngày',86400],['w','Tuần',604800],['mo','Tháng (30,44 ngày)',2629800],['y','Năm (365,25 ngày)',31557600]]},
+ data:{l:'💾 Dung lượng',def:['mb','gb'],u:[['b','Byte (B)',1],['kb','Kilobyte (KB)',1024],['mb','Megabyte (MB)',1048576],['gb','Gigabyte (GB)',1073741824],['tb','Terabyte (TB)',1099511627776]]}
+};
+let cv={cat:'length',from:'m',to:'cm',val:'1'};
+function cvConv(cat,from,to,v){
+ if(cat==='temp'){
+  const c=from==='c'?v:(from==='f'?(v-32)*5/9:v-273.15);
+  return to==='c'?c:(to==='f'?c*9/5+32:c+273.15);
+ }
+ const u=CV_CATS[cat].u, f=u.find(x=>x[0]===from)[2], t=u.find(x=>x[0]===to)[2];
+ return v*f/t;
+}
+function cvFmt(x){
+ if(!isFinite(x))return '—';
+ if(x===0)return '0';
+ const a=Math.abs(x);
+ if(a>=1e15||a<1e-9)return x.toExponential(6).replace('.',',');
+ return parseFloat(x.toPrecision(12)).toLocaleString('vi-VN',{maximumFractionDigits:10});
+}
+function cvVal(){const v=parseFloat(String(cv.val).replace(',','.'));return isNaN(v)?null:v;}
+function cvRefresh(){
+ const o=document.getElementById('cv-out'),a=document.getElementById('cv-all');
+ if(!o||!a)return;
+ const v=cvVal();
+ if(v===null){o.textContent='—';a.innerHTML='';return;}
+ o.textContent=cvFmt(cvConv(cv.cat,cv.from,cv.to,v));
+ a.innerHTML=CV_CATS[cv.cat].u.map(u=>`<div class="lc-row"><span class="lc-l">${u[1]}</span><span class="lc-v ${u[0]===cv.to?'pos':''}">${cvFmt(cvConv(cv.cat,cv.from,u[0],v))}</span></div>`).join('');
+}
+function cvCat(c){cv={cat:c,from:CV_CATS[c].def[0],to:CV_CATS[c].def[1],val:cv.val};render();}
+function cvSet(w,k){cv[w]=k;render();}
+function cvSwap(){const t=cv.from;cv.from=cv.to;cv.to=t;render();}
+function scrUnits(){
+ if(!CV_CATS[cv.cat])cv={cat:'length',from:'m',to:'cm',val:'1'};
+ const C=CV_CATS[cv.cat];
+ const opts=sel=>C.u.map(u=>`<option value="${u[0]}" ${u[0]===sel?'selected':''}>${u[1]}</option>`).join('');
+ const cats=Object.keys(CV_CATS).map(k=>`<option value="${k}" ${k===cv.cat?'selected':''}>${CV_CATS[k].l}</option>`).join('');
+ return screenWrap('📐 Đổi đơn vị đo',`
+  <div class="form-row tight"><label>Loại đơn vị</label><select class="cv-sel" style="width:100%;" onchange="cvCat(this.value)">${cats}</select></div>
+  <div class="cv-box"><label>Từ</label><div class="cv-line"><input type="text" inputmode="decimal" id="cv-val" value="${qa(cv.val)}" oninput="cv.val=this.value;cvRefresh()"><select class="cv-sel" onchange="cvSet('from',this.value)">${opts(cv.from)}</select></div></div>
+  <div style="text-align:center;margin:6px 0;"><button class="mini-btn" onclick="cvSwap()">⇅ Đổi chiều</button></div>
+  <div class="cv-box"><label>Sang</label><div class="cv-line"><div class="cv-out" id="cv-out">—</div><select class="cv-sel" onchange="cvSet('to',this.value)">${opts(cv.to)}</select></div></div>
+  <div class="lc-card" style="margin-top:12px;"><div class="lc-h">Bảng quy đổi</div><div id="cv-all"></div></div>`);
+}
+
 const SCREENS={
  partner:scrPartner, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
  incomeCategories:scrIncomeCategories, incomeDetail:scrIncomeDetail,
  expenseOverview:scrExpenseOverview, expenseDetail:scrExpenseDetail, quiz:scrQuiz
  ,extra:scrExtra, planner:scrPlanner, ratios:scrRatios, planSettings:scrPlanSettings,books:scrBooks,debts:scrDebts, todayHistory:scrTodayHistory,
- notes:scrNotes, noteEdit:scrNoteEdit, lunar:scrLunar
+ notes:scrNotes, noteEdit:scrNoteEdit, lunar:scrLunar, stopwatch:scrStopwatch, calc:scrCalc, units:scrUnits
 };
 function render(){
  const top=stack[stack.length-1];
@@ -2127,6 +2344,7 @@ function render(){
   html=scrHome();
  }
  document.getElementById('app').innerHTML = html;
+ if(top.id==='calc')calcRefresh(); else if(top.id==='units')cvRefresh();
  saveSession();
 }
   // ===== Giữ nguyên trang làm việc nếu quay lại trong vòng 5 phút =====
@@ -2145,6 +2363,16 @@ function saveSession(){
   }
  }catch(e){}
 })();
+// Đo chiều cao vùng nhìn thấy thật của thiết bị (thanh địa chỉ Safari, bàn phím, xoay ngang...) để khung app luôn vừa khít màn hình
+function setAppH(){
+ const vv=window.visualViewport;
+ const h=vv?Math.round(vv.height*vv.scale):window.innerHeight;
+ if(h>200)document.documentElement.style.setProperty('--app-h',h+'px');
+}
+setAppH();
+window.addEventListener('resize',setAppH);
+window.addEventListener('orientationchange',()=>{setAppH();setTimeout(setAppH,250);});
+if(window.visualViewport){window.visualViewport.addEventListener('resize',setAppH);}
 streakTick();
 render();
 fetchGuides();

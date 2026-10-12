@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.12-25';
+const APP_VERSION='2026.10.12-26';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -1975,7 +1975,7 @@ function openProdInfo(k,i){
  const ul=key=>'<ul>'+(inf[key]||D[key]).map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul>';
  document.getElementById('prodInfoBox').innerHTML=`
   <button class="jg-x" onclick="closeProdInfo()" aria-label="Đóng">✕</button>
-  <div class="pi-title">ℹ️ Thông tin sản phẩm tiếp thị</div>
+  <div class="pi-title">ℹ️ Thông tin sản phẩm</div>
   <div class="pi-name">${esc(it.label)}</div>
   <div class="guide-desc" style="margin:0 0 4px;">Hãy xem kỹ thông tin sản phẩm:</div>
   <div class="pi-h">🏪 Về Người Bán</div>${ul('shop')}

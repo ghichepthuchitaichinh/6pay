@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.13-3';
+const APP_VERSION='2026.10.13-4';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -488,6 +488,10 @@ body.home-white{background:#FFFFFF;}
 .jg-h.no{color:var(--neg);}
 #jarGuideBox ul{margin:0;padding-left:20px;font-size:14px;line-height:1.55;}
 #jarGuideBox li{margin-bottom:3px;}
+.jg-inline{padding:4px 2px;}
+.jg-inline .jg-title{padding-right:0;}
+.jg-inline ul{margin:0;padding-left:20px;font-size:14px;line-height:1.55;}
+.jg-inline li{margin-bottom:3px;}
 .jg-foot{text-align:center;font-size:12px;color:var(--text-soft);margin-top:12px;}
   /* ===== Cài đặt: Tỷ lệ phân bổ có hiển thị số tiền ===== */
 .rt-total{font-size:clamp(12.5px,1.8vh,14px);color:var(--text-soft);margin-bottom:8px;text-align:center;}
@@ -1131,12 +1135,18 @@ function guideLinks(jarKey,onlyLinks){
  return items.map(o=>{const it=o.it; return it.link ? `<div class="guide-row"><div class="gr-info" onclick="openProdInfo('${jarKey}',${o.i})"><span class="gr-name">${esc(it.label)}</span><span class="gr-note">ℹ️ Thông tin sản phẩm liên kết ›</span></div><a class="gr-buy" href="${qa(it.link)}" onclick="openBuy('${jarKey}',${o.i});return false;">Mua ngay</a></div>` : `<div class="guide-item plain"><span>${esc(it.label)}</span></div>`;}).join('');
 }
 function scrJarGuide(opts){
- const j=JARS.find(x=>x.k===opts.jar); const g=GUIDES[opts.jar];
+ const j=JARS.find(x=>x.k===opts.jar); const g=JAR_TIPS[opts.jar];
  const bal=jarRemain(opts.jar); const cls=bal<0?'neg':'pos';
  return screenWrap(j.i+' '+j.l,`
   <div class="list-item"><span>Số dư ví</span><span class="${cls}">${fmt(bal)} ₫</span></div>
-  <div class="guide-desc">${esc(g.desc)}</div>
-  ${guideLinks(opts.jar,false)}
+  <div class="jg-inline">
+   <div class="jg-title">💡 Hướng dẫn chi tiêu</div>
+   <div class="jg-pct">Tỷ lệ phân bổ hiện tại: <b>${jarPct(opts.jar)}%</b> thu nhập</div>
+   <div class="jg-h ok">✅ Nên chi cho</div>
+   <ul>${g.ok.map(t=>'<li>'+t+'</li>').join('')}</ul>
+   <div class="jg-h no">⚠️ Nên hạn chế</div>
+   <ul>${g.no.map(t=>'<li>'+t+'</li>').join('')}</ul>
+  </div>
  `);
 }
 function scrMarketing(opts){

@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.13-7';
+const APP_VERSION='2026.10.13-8';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -1489,7 +1489,7 @@ function scrExtra(){
   <div class="list-item clickable util-item" onclick="openLunar()"><span>🗓️ Lịch vạn niên</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('books')"><span>📖 Đọc sách Free</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="open6PayGame()"><span>🎮 Bước nhảy tài chính</span><span class="guide-cta">›</span></div>`);
+  <div class="list-item clickable util-item" onclick="open6PayGame()"><span>🎮 Bước nhảy chi tiêu</span><span class="guide-cta">›</span></div>`);
 }
 // ===== Đọc sách miễn phí =====
 // Thêm sách: thêm 1 dòng vào BOOKS. f = đường dẫn file (nên để trong thư mục books/ cùng chỗ với index.html)
@@ -2987,7 +2987,7 @@ document.addEventListener('visibilitychange',()=>{
 
 <div id="g6Wrap">
   <div id="g6Box">
-    <div id="g6Top"><span>6Pay Runner</span><button id="g6Close" type="button">✕ Đóng</button></div>
+    <div id="g6Top"><span>Bước nhảy chi tiêu</span><button id="g6Close" type="button">✕ Đóng</button></div>
     <canvas id="g6Cv" width="640" height="240"></canvas>
     <div id="g6Btns">
       <button id="g6Duck" type="button">⬇ Cúi (giữ)</button>
@@ -3004,19 +3004,59 @@ document.addEventListener('visibilitychange',()=>{
 
   var W = 640, H = 240, GY = 200, PX = 60, PW = 36, PH = 36, PD = 20;
   var GRAV = 0.7, JUMP = 12.5;
-  var KEY = '6pay_game_best';
+  var KEY = '6pay_game_best_v2';
 
-  // Chướng ngại vật dưới đất (nhảy qua) và trên không (cúi xuống)
-  var G = ['Tiền điện', 'Tiền nước', 'Tiền nhà', 'Nợ thẻ', 'Sale 11/11', 'Trà sữa', 'Wifi'];
-  var A = ['Viện phí', 'Lạm phát', 'Sửa xe', 'Giá tăng'];
-  var TIPS = [
-    'Hãy lập ngân sách hằng tháng để không bị bất ngờ nhé!',
-    'Quỹ khẩn cấp giúp bạn đứng vững trước chi phí phát sinh.',
-    'Ghi chép chi tiêu mỗi ngày với 6Pay để kiểm soát tài chính.',
-    'Ưu tiên trả khoản nợ có lãi cao trước, bạn sẽ nhẹ gánh hơn.',
-    'Trước khi mua sắm, thử chờ 24 giờ rồi hãy quyết định.'
+  // [tên ngắn trên chướng ngại vật, nội dung đầy đủ hiện ở trên cùng]
+  // Khoản NÊN CHI (màu xanh, ăn được). Phần tử thứ 3 = 1 nghĩa là nhận khiên bảo vệ.
+  var GOOD = [
+    ['Nhà, điện, nước', 'Tiền nhà, điện, nước, internet'],
+    ['Ăn uống', 'Ăn uống hằng ngày, thực phẩm trong nhà'],
+    ['Xăng xe', 'Xăng xe, đi lại đi làm'],
+    ['Thuốc, bảo hiểm', 'Thuốc men, khám chữa bệnh, bảo hiểm'],
+    ['Đồ gia đình', 'Đồ dùng gia đình thật sự cần thiết'],
+    ['Sách, học phí', 'Sách, khóa học, học phí'],
+    ['Đồ học tập', 'Đồ dùng học tập'],
+    ['Học ngoại ngữ', 'Học ngoại ngữ, kỹ năng nghề nghiệp'],
+    ['Hội thảo', 'Hội thảo, workshop hữu ích'],
+    ['Gửi tiết kiệm', 'Gửi tiết kiệm ngân hàng'],
+    ['Quỹ dự phòng', 'Quỹ dự phòng khẩn cấp (3 đến 6 tháng chi tiêu)', 1],
+    ['Mua nhà, xe', 'Mục tiêu lớn: mua nhà, mua xe, cưới hỏi'],
+    ['Dưỡng già', 'Dự phòng cho tuổi già'],
+    ['Chứng chỉ quỹ', 'Chứng chỉ quỹ, ETF'],
+    ['Cổ phiếu hiểu rõ', 'Cổ phiếu, trái phiếu bạn hiểu rõ'],
+    ['Vàng dài hạn', 'Vàng tích trữ dài hạn'],
+    ['Vốn kinh doanh', 'Vốn kinh doanh nhỏ tạo thêm thu nhập'],
+    ['Biếu cha mẹ', 'Biếu cha mẹ, hỗ trợ người thân'],
+    ['Hiếu hỷ', 'Hiếu hỷ: cưới hỏi, thăm bệnh, viếng'],
+    ['Từ thiện', 'Từ thiện, đóng góp cộng đồng'],
+    ['Quà ý nghĩa', 'Quà tặng ý nghĩa cho bạn bè'],
+    ['Cà phê bạn bè', 'Ăn nhà hàng, cà phê cùng bạn bè'],
+    ['Phim, du lịch', 'Xem phim, giải trí, du lịch'],
+    ['Sở thích', 'Mua sắm sở thích cá nhân'],
+    ['Tự thưởng', 'Tự thưởng cho bản thân sau khi đạt mục tiêu']
   ];
-  var HINT = 'Chạm màn hình hoặc nút Nhảy để nhảy. Giữ nút Cúi để cúi. Máy tính: Space/↑ nhảy, ↓ cúi.';
+  // Khoản NÊN TRÁNH (chướng ngại vật: nhảy qua hoặc cúi)
+  var BAD = [
+    ['Ăn ngoài nhiều', 'Ăn ngoài thường xuyên'],
+    ['Đồ xa xỉ', 'Mua đồ xa xỉ nhưng gọi là cần thiết'],
+    ['Mua dự trữ', 'Mua dự trữ quá nhiều'],
+    ['Khóa học bỏ dở', 'Mua khóa học nhưng không học'],
+    ['Thiết bị đắt', 'Sắm thiết bị học tập quá đắt'],
+    ['Sách chất đống', 'Mua sách chất đống mà không đọc'],
+    ['Rút tiêu vặt', 'Rút ra tiêu vặt'],
+    ['Chưa khẩn cấp', 'Dùng khi chưa thật sự khẩn cấp'],
+    ['Cho vay miệng', 'Cho vay không giấy tờ'],
+    ['Vay để đầu tư', 'Vay tiền để đầu tư'],
+    ['Hứa lãi cao', 'Tin lời hứa lãi cao, cam kết không rủi ro'],
+    ['Dồn một chỗ', 'Dồn hết vốn vào một chỗ'],
+    ['Chi vì sĩ diện', 'Chi vượt quá khả năng chỉ vì sĩ diện'],
+    ['Cho vay vượt sức', 'Cho vay vượt sức mà ảnh hưởng cuộc sống'],
+    ['Bỏ quên mình', 'Chia sẻ nhưng bỏ quên chính mình'],
+    ['Chi vượt mức ví', 'Chi vượt mức của ví'],
+    ['Trả góp', 'Trả góp để hưởng thụ'],
+    ['Mua theo hứng', 'Mua theo hứng, theo khuyến mãi']
+  ];
+  var HINT = 'Ăn các ô xanh (nên chi), nhảy qua hoặc cúi tránh ô đỏ, tím (nên tránh). Chạm màn hình hoặc nút Nhảy để nhảy, giữ nút Cúi để cúi. Máy tính: Space/↑ nhảy, ↓ cúi.';
 
   var wrap = document.getElementById('g6Wrap');
   var cv = document.getElementById('g6Cv');
@@ -3028,8 +3068,8 @@ document.addEventListener('visibilitychange',()=>{
 
   try { best = parseInt(localStorage.getItem(KEY), 10) || 0; } catch (e) { best = 0; }
 
-  function money(n) { return n.toLocaleString('vi-VN') + 'đ'; }
-  function score() { return Math.floor(dist) * 1000 + bonus; }
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function score() { return Math.floor(dist) + bonus; }
 
   function reset() {
     y = 0; vy = 0; duck = false; speed = 6; dist = 0; bonus = 0;
@@ -3053,30 +3093,27 @@ document.addEventListener('visibilitychange',()=>{
   }
 
   function spawn() {
-    var r = Math.random(), o;
+    var r = Math.random(), o, b;
     ctx.font = 'bold 13px sans-serif';
     if (r < 0.55) {
-      var l = G[Math.floor(Math.random() * G.length)];
+      b = pick(BAD);
       var h = 34 + Math.floor(Math.random() * 16);
-      o = { k: 'g', label: l, w: Math.ceil(ctx.measureText(l).width) + 18, h: h, top: GY - h, col: '#e74c3c' };
+      o = { k: 'g', label: b[0], f: b[1], w: Math.ceil(ctx.measureText(b[0]).width) + 18, h: h, top: GY - h, col: '#e74c3c' };
     } else if (r < 0.75 && dist > 150) {
-      var a = A[Math.floor(Math.random() * A.length)];
-      o = { k: 'a', label: a, w: Math.ceil(ctx.measureText(a).width) + 18, h: 28, top: 148, col: '#8e44ad' };
+      b = pick(BAD);
+      o = { k: 'a', label: b[0], f: b[1], w: Math.ceil(ctx.measureText(b[0]).width) + 18, h: 28, top: 148, col: '#8e44ad' };
     } else {
-      var p;
-      var q = Math.random();
-      if (q < 0.15) p = { label: 'Quỹ khẩn cấp', val: 0, sh: true, col: '#0288d1' };
-      else if (q < 0.6) p = { label: 'Lương +500k', val: 500000, sh: false, col: '#2e9e5b' };
-      else p = { label: 'Thưởng +1tr', val: 1000000, sh: false, col: '#2e9e5b' };
+      var g = pick(GOOD);
+      var lb = (g[2] ? '🛡 ' : '') + g[0];
       var h0 = Math.random() < 0.5 ? 10 : 70;
-      o = { k: 'p', label: p.label, val: p.val, sh: p.sh, col: p.col,
-            w: Math.ceil(ctx.measureText(p.label).width) + 18, h: 24, top: GY - h0 - 24 };
+      o = { k: 'p', label: lb, f: g[1], sh: !!g[2], col: '#2e9e5b',
+            w: Math.ceil(ctx.measureText(lb).width) + 18, h: 24, top: GY - h0 - 24 };
     }
     o.x = W + 20;
     obs.push(o);
   }
 
-  function gameOver() {
+  function gameOver(o) {
     state = 'over';
     overAt = Date.now();
     var s = score();
@@ -3084,7 +3121,7 @@ document.addEventListener('visibilitychange',()=>{
       best = s;
       try { localStorage.setItem(KEY, String(best)); } catch (e) {}
     }
-    msg.textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
+    msg.textContent = o ? ('Bạn đã va vào: ' + o.f + '. Hãy hạn chế khoản chi này nhé!') : '';
   }
 
   function update(dt) {
@@ -3100,7 +3137,7 @@ document.addEventListener('visibilitychange',()=>{
     spawnIn -= speed * dt;
     if (spawnIn <= 0) {
       spawn();
-      spawnIn = 320 + Math.random() * 240 + speed * 14;
+      spawnIn = 340 + Math.random() * 240 + speed * 14;
     }
 
     if (toast) { toast.t -= dt; if (toast.t <= 0) toast = null; }
@@ -3120,18 +3157,45 @@ document.addEventListener('visibilitychange',()=>{
       if (!hit) continue;
 
       if (o.k === 'p') {
-        if (o.sh) { shield = true; toast = { txt: 'Có quỹ khẩn cấp!', t: 60 }; }
-        else { bonus += o.val; toast = { txt: '+' + money(o.val), t: 60 }; }
+        if (o.sh) { shield = true; toast = { txt: 'Có quỹ dự phòng!', t: 60 }; }
+        else { bonus += 50; toast = { txt: '+50 điểm', t: 60 }; }
         obs.splice(i, 1);
       } else if (shield) {
         shield = false;
-        toast = { txt: 'Quỹ khẩn cấp đã cứu bạn!', t: 70 };
+        toast = { txt: 'Quỹ dự phòng đã cứu bạn!', t: 70 };
         obs.splice(i, 1);
       } else {
-        gameOver();
+        gameOver(o);
         return;
       }
     }
+  }
+
+  // Thanh cố định phía trên: tên đầy đủ của vật phẩm / chướng ngại vật kế tiếp.
+  // Vượt qua (hoặc ăn) vật này thì tự chuyển sang vật tiếp theo.
+  function drawBanner() {
+    var t = null;
+    for (var i = 0; i < obs.length; i++) {
+      var o = obs[i];
+      if (o.x + o.w >= PX - 4 && o.x < W) { t = o; break; }
+    }
+    if (!t) return;
+    var good = t.k === 'p';
+    var txt = (good ? 'NÊN CHI: ' : 'NÊN TRÁNH: ') + t.f;
+    var fs = 14;
+    ctx.font = 'bold ' + fs + 'px sans-serif';
+    while (ctx.measureText(txt).width > W - 50 && fs > 9) {
+      fs--;
+      ctx.font = 'bold ' + fs + 'px sans-serif';
+    }
+    var tw = ctx.measureText(txt).width + 24;
+    ctx.fillStyle = good ? '#2e9e5b' : (t.k === 'a' ? '#8e44ad' : '#d64541');
+    rr((W - tw) / 2, 32, tw, 24, 12);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(txt, W / 2, 45);
   }
 
   function draw() {
@@ -3148,7 +3212,7 @@ document.addEventListener('visibilitychange',()=>{
     ctx.fillStyle = '#5b6f96';
     for (var i = -1; i < 18; i++) ctx.fillRect(i * 40 - (scroll % 40) + 10, GY + 10, 14, 2);
 
-    // vật cản và phần thưởng
+    // chướng ngại vật và khoản nên chi
     ctx.font = 'bold 13px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -3160,6 +3224,8 @@ document.addEventListener('visibilitychange',()=>{
       ctx.fillStyle = '#fff';
       ctx.fillText(o.label, o.x + o.w / 2, o.top + o.h / 2 + 1);
     }
+
+    drawBanner();
 
     // nhân vật 6Pay
     var ph = (duck && y === 0) ? PD : PH;
@@ -3197,7 +3263,7 @@ document.addEventListener('visibilitychange',()=>{
       ctx.font = 'bold 15px sans-serif';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
-      ctx.fillText(toast.txt, PX, 70);
+      ctx.fillText(toast.txt, PX, 90);
     }
 
     // điểm
@@ -3205,29 +3271,31 @@ document.addEventListener('visibilitychange',()=>{
     ctx.textBaseline = 'alphabetic';
     ctx.textAlign = 'right';
     ctx.fillStyle = '#fff';
-    ctx.fillText('Đã tiết kiệm: ' + money(score()), W - 12, 24);
+    ctx.fillText('Điểm: ' + score(), W - 12, 22);
     ctx.textAlign = 'left';
     ctx.fillStyle = '#ffd54f';
-    ctx.fillText('Kỷ lục: ' + money(best), 12, 24);
+    ctx.fillText('Kỷ lục: ' + best, 12, 22);
 
     // màn hình chờ / kết thúc
     if (state === 'ready' || state === 'over') {
       ctx.fillStyle = 'rgba(10,15,30,.6)';
       ctx.fillRect(0, 0, W, H);
       ctx.textAlign = 'center';
+      ctx.textBaseline = 'alphabetic';
       ctx.fillStyle = '#fff';
       if (state === 'over') {
         ctx.font = 'bold 30px sans-serif';
         ctx.fillText('GAME OVER', W / 2, 95);
         ctx.font = 'bold 18px sans-serif';
-        ctx.fillText('Đã tiết kiệm: ' + money(score()), W / 2, 130);
+        ctx.fillText('Điểm: ' + score(), W / 2, 130);
         ctx.font = '15px sans-serif';
         ctx.fillText('Chạm để chơi lại', W / 2, 165);
       } else {
         ctx.font = 'bold 24px sans-serif';
-        ctx.fillText('6Pay Runner', W / 2, 100);
+        ctx.fillText('Bước nhảy chi tiêu', W / 2, 95);
         ctx.font = '15px sans-serif';
-        ctx.fillText('Chạm hoặc nhấn Space để bắt đầu', W / 2, 135);
+        ctx.fillText('Ăn khoản nên chi (xanh), nhảy qua khoản nên tránh', W / 2, 128);
+        ctx.fillText('Chạm hoặc nhấn Space để bắt đầu', W / 2, 155);
       }
     }
   }

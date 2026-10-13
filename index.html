@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.12-31';
+const APP_VERSION='2026.10.13-3';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -621,6 +621,8 @@ const ADS=[
  {html:' <b>Hãy quảng bá thương hiệu của bạn',link:'http://zalo.me/0342190588'},
  {html:' <b>Hãy quảng bá thương hiệu của bạn </b>',link:'http://zalo.me/0342190588'}
 ];
+// Đặt true để hiện lại mục Mua sắm và các sản phẩm tiếp thị liên kết
+const SHOW_AFFILIATE=false;
 // Chữ trên nút mua hàng tiếp thị của từng ví
 const MARKET_LABELS={
  essential:'Mua sắm cùng 6Pay',
@@ -940,7 +942,7 @@ function scrPartner(){
    <div class="link-pair">${linkRow(LINKS[1])}${linkRow(LINKS[2])}</div>
    <div class="link-pair">${linkRow(LINKS[3])}${linkRow(LINKS[4])}</div>
    ${linkRow(LINKS[0])}
-   <div class="link-row shop" onclick="shopJar='essential';push('shopAll')">🛒 Mua sắm cùng 6Pay<span class="go">›</span></div>
+   ${SHOW_AFFILIATE?`<div class="link-row shop" onclick="shopJar='essential';push('shopAll')">🛒 Mua sắm cùng 6Pay<span class="go">›</span></div>`:''}
   </div>
   <div class="fill-ads"><div class="ad-list">${adItems(ADS)}</div></div>
   <button class="btn back" onclick="back()">◀ Quay lại</button>
@@ -1124,7 +1126,7 @@ function scrWallets(){
  return fillScreen('Số dư','',rows,'','big natural');
 }
 function guideLinks(jarKey,onlyLinks){
- const items=GUIDES[jarKey].items.map((it,i)=>({it,i})).filter(o=>!onlyLinks||o.it.link);
+ const items=GUIDES[jarKey].items.map((it,i)=>({it,i})).filter(o=>SHOW_AFFILIATE?(!onlyLinks||o.it.link):(!onlyLinks&&!o.it.link));
  if(!items.length)return '<div class="empty">Chưa có sản phẩm nào.</div>';
  return items.map(o=>{const it=o.it; return it.link ? `<div class="guide-row"><div class="gr-info" onclick="openProdInfo('${jarKey}',${o.i})"><span class="gr-name">${esc(it.label)}</span><span class="gr-note">ℹ️ Thông tin sản phẩm liên kết ›</span></div><a class="gr-buy" href="${qa(it.link)}" onclick="openBuy('${jarKey}',${o.i});return false;">Mua ngay</a></div>` : `<div class="guide-item plain"><span>${esc(it.label)}</span></div>`;}).join('');
 }
@@ -1310,7 +1312,7 @@ function scrExpenseDetail(opts){
   </div>
   <div class="fixed-bottom">
    <button class="btn primary" onclick="confirmExpense('${opts.jar}')">${editing?'✓ Cập nhật':'✓ Xác nhận'}</button>
-   <button class="btn primary market" onclick="push('marketing',{jar:'${opts.jar}'})">🛒 ${MARKET_LABELS[opts.jar]}</button>
+   ${SHOW_AFFILIATE?`<button class="btn primary market" onclick="push('marketing',{jar:'${opts.jar}'})">🛒 ${MARKET_LABELS[opts.jar]}</button>`:''}
   </div>
   <button class="btn back" onclick="back()">◀ Quay lại</button>
   <button class="btn home" onclick="goHome()">🏠 Về trang chủ</button>
@@ -2911,7 +2913,7 @@ setTimeout(()=>{
  const sp=document.getElementById('bootSplash');
  if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),300); }
   if(!fastStart)setTimeout(maybeShowInstall,500);
-},3500);
+},3000);
 if('serviceWorker' in navigator){
  window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{r.update().catch(()=>{});}).catch(()=>{});});
 }

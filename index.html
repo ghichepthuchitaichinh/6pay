@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.13-10';
+const APP_VERSION='2026.10.13-11';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -1489,7 +1489,7 @@ function scrExtra(){
   <div class="list-item clickable util-item" onclick="openLunar()"><span>🗓️ Lịch vạn niên</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('books')"><span>📖 Đọc sách Free</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="open6PayGame()"><span>🎮 Bước nhảy chi tiêu</span><span class="guide-cta">›</span></div>`);
+  <div class="list-item clickable util-item" onclick="open6PayGame()"><span>🎮 Bước nhảy tài chính</span><span class="guide-cta">›</span></div>`);
 }
 // ===== Đọc sách miễn phí =====
 // Thêm sách: thêm 1 dòng vào BOOKS. f = đường dẫn file (nên để trong thư mục books/ cùng chỗ với index.html)
@@ -2959,11 +2959,11 @@ document.addEventListener('visibilitychange',()=>{
 </script>
 <!-- ===== 6PAY RUNNER: BẮT ĐẦU (dán ngay phía trên thẻ </body>) ===== -->
 <style>
-#g6Wrap{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:rgba(10,15,30,.95);align-items:center;justify-content:center;padding:12px;box-sizing:border-box;font-family:sans-serif;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#g6Wrap{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:rgba(10,15,30,.95);align-items:center;justify-content:center;padding:12px;box-sizing:border-box;font-family:'Be Vietnam Pro',system-ui,sans-serif;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 #g6Wrap.show{display:flex}
 #g6Box{width:100%;max-width:640px;color:#fff}
 #g6Top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:16px;font-weight:bold}
-#g6Close{background:#33415f;color:#fff;border:none;border-radius:8px;font-size:16px;padding:6px 12px;cursor:pointer}
+#g6Close{background:#33415f;color:#fff;border:none;border-radius:8px;font:inherit;font-size:16px;padding:6px 12px;cursor:pointer}
 #g6Cv{width:100%;height:auto;border-radius:12px;touch-action:none;display:block}
 #g6Msg{margin-top:10px;font-size:14px;line-height:1.4;color:#c9d4ee;text-align:center;min-height:20px}
 #g6Rot{display:none;margin-top:8px;text-align:center;font-size:13px;color:#ffd54f}
@@ -3002,13 +3002,17 @@ document.addEventListener('visibilitychange',()=>{
   var STUMBLE_T = 0.6;      // thời gian loạng choạng sau khi va ô đỏ (giây)
   var STUMBLE_F = 0.5;      // tốc độ lúc loạng choạng (0,5 = còn một nửa)
   var HOLD_MS = 180;        // giữ nửa phải quá thời gian này thì tính là cúi
+  var MAX_DPR = 4;          // độ nét tối đa của canvas (nhân với mật độ điểm ảnh màn hình)
   // =====================================
+
+  var FONT = "'Be Vietnam Pro','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif";
 
   var W = 640, H = 240, GY = 200, PX = 70, PW = 36, PH = 36, PD = 20;
   var GRAV = 2200, JUMP = 700;
   var LEN = V0 * MAXT;      // quãng đường mỗi cửa
   var OW = 56;
   var KEY = '6pay_game_rank_v3';
+  var PAUSE_CY = 231;       // vị trí biểu tượng tạm dừng (giữa dòng chữ hướng dẫn phía dưới)
 
   var DOORS = [
     { l: 'Thiết yếu', i: '🏠', c: '#2c7be5',
@@ -3031,23 +3035,41 @@ document.addEventListener('visibilitychange',()=>{
       bad: 'Chi vượt mức ví|Trả góp để hưởng thụ|Mua theo hứng|Mua vì khuyến mãi|Nhậu mỗi ngày|Du lịch bằng thẻ vay|Spa trả góp|Mua đồ hiệu|Săn sale vô độ|Cá cược|Nạp tiền game|Mua skin|Quẹt thẻ quên tính|Tiêu hết lương|Tiệc tùng quá đà|Phòng sang chảnh|Mua xe để khoe|Sống ảo tốn kém|Ăn uống lãng phí|Lấy tiền ví khác|Vay để đi chơi|Nợ thẻ tín dụng|Mua điện thoại đắt|Cà phê sang mỗi ngày|Đồ công nghệ thừa|Gói thuê bao thừa|Cá độ bóng đá|Xổ số mỗi ngày|Hưởng thụ trước nghĩa vụ|Mua sắm lúc buồn'.split('|') }
   ];
 
-  var HINT = 'Nửa trái màn hình: giữ để chạy nhanh (đang cúi thì không tăng tốc được), nhả ra thì chậm dần. Nửa phải: chạm để nhảy, giữ để cúi. Ô xanh: chạm vào để nhận tiền. Ô đỏ: tránh, chạm vào bị trừ tiền và chậm lại. Máy tính: Space nhảy, ↓ cúi, → chạy nhanh.';
+  var HINT = 'Nửa trái màn hình: giữ để chạy nhanh (đang cúi thì không tăng tốc được), nhả ra thì chậm dần. Nửa phải: chạm để nhảy, giữ để cúi. Ô xanh: chạm vào để nhận tiền. Ô đỏ: tránh, chạm vào bị trừ tiền và chậm lại. Tạm dừng: chạm vào hai gạch dọc ở giữa phía dưới khung game. Máy tính: Space nhảy, ↓ cúi, → chạy nhanh, P tạm dừng.';
 
   var wrap = document.getElementById('g6Wrap');
   var cv = document.getElementById('g6Cv');
   var ctx = cv.getContext('2d');
   var msg = document.getElementById('g6Msg');
 
-  var state = 'ready', stateAt = 0;
+  var state = 'ready', stateAt = 0, paused = false;
   var di = 0, totMoney = 0, totTime = 0, doorRes = null, rankIdx = -1;
   var y, vy, dist, t, money, base, slow, mult, obs, got, hits, flash, toast, duck, scroll;
-  var ptrs = {}, kJ = false, kD = false, kB = false;
+  var ptrs = {}, kD = false, kB = false;
   var last = 0, raf = 0;
+  var SX = 1, SY = 1;       // hệ số quy đổi từ tọa độ game (640×240) sang điểm ảnh thật của canvas
 
   function sh(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
   function fm(n) { return Math.round(n).toLocaleString('vi-VN') + ' ₫'; }
-  function ft(s) { return Math.floor(s / 60) + ':' + ('0' + (s % 60).toFixed(1)).slice(-4); }
-  function setState(s) { state = s; stateAt = Date.now(); ptrs = {}; }
+  function ft(s) { return Math.floor(s / 60) + ':' + ('0' + (s % 60).toFixed(1)).slice(-4).replace('.', ','); }
+
+  function setState(s) { state = s; stateAt = Date.now(); ptrs = {}; paused = false; }
+  function togglePause() {
+    if (state !== 'run') return;
+    paused = !paused;
+    ptrs = {}; kD = false; kB = false;
+  }
+
+  // ===== Độ nét: độ phân giải thật của canvas = kích thước hiển thị × mật độ điểm ảnh màn hình =====
+  function fit() {
+    var r = cv.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    var dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+    var s = Math.min(r.width / W, r.height / H) * dpr;
+    var nw = Math.max(W, Math.round(W * s)), nh = Math.round(nw * H / W);
+    if (cv.width !== nw || cv.height !== nh) { cv.width = nw; cv.height = nh; }
+  }
+  function onResize() { if (wrap.classList.contains('show')) { fit(); setTimeout(fit, 250); } }
 
   function rankLoad() { try { var a = JSON.parse(localStorage.getItem(KEY)); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
   function rankSave(m, tm) {
@@ -3103,7 +3125,7 @@ document.addEventListener('visibilitychange',()=>{
     else if (state === 'final') { resetAll(); startDoor(); }
   }
 
-  function jump() { if (state === 'run' && y === 0) vy = JUMP; }
+  function jump() { if (state === 'run' && !paused && y === 0) vy = JUMP; }
   function anyLeft() { for (var k in ptrs) if (ptrs[k].s === 'l') return true; return false; }
   function holdDuck() {
     var n = performance.now();
@@ -3140,7 +3162,7 @@ document.addEventListener('visibilitychange',()=>{
       if (hit(pl, pt, pw, pH, sx + 4, g.y + 3, OW - 8, g.h - 3)) {
         o.done = true;
         if (o.blue) { money += BLUE_MONEY; got++; toast = { txt: '+' + fm(BLUE_MONEY), t: 0.9, c: '#7dffa8' }; }
-        else { money -= RED_MONEY; hits++; mult = 1; slow = STUMBLE_T; flash = 0.35; toast = { txt: '−' + fm(RED_MONEY), t: 0.9, c: '#ff8a80' }; }
+        else { money -= RED_MONEY; hits++; mult = 1; slow = STUMBLE_T; flash = 0.35; toast = { txt: '-' + fm(RED_MONEY), t: 0.9, c: '#ff8a80' }; }
       }
     }
     if (dist >= LEN || t >= MAXT) endDoor();
@@ -3155,14 +3177,44 @@ document.addEventListener('visibilitychange',()=>{
     ctx.arcTo(x, yy, x + w, yy, r);
     ctx.closePath();
   }
+
+  // ===== Vẽ chữ nét nhất có thể =====
+  // Chữ được vẽ trực tiếp bằng điểm ảnh thật (cỡ chữ nhân hệ số, tọa độ làm tròn về số nguyên)
+  // nên các nét chữ và dấu tiếng Việt khớp đúng lưới điểm ảnh, không bị nhòe do phóng to.
+  function fnt(sz) { return 'bold ' + Math.max(8, Math.round(sz * SX)) + 'px ' + FONT; }
+  // Font Be Vietnam Pro có ký tự ghép (ligature) cho các cặp như "Ti", "fi", "fl": chữ i bị mất chấm và dính vào chữ T
+  // nên "Tiền" trông như "TIền". Chèn ký tự không độ rộng (U+200C) vào trước i, f, l để ngắt ký tự ghép, giữ chữ i bình thường.
+  function nl(s) { return String(s).replace(/([A-Za-z])(?=[ifl])/g, '$1\u200C'); }
   function T(s, x, yy, sz, col, al) {
-    ctx.font = 'bold ' + sz + 'px sans-serif';
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.font = fnt(sz);
     ctx.fillStyle = col || '#fff';
     ctx.textAlign = al || 'center';
     ctx.textBaseline = 'alphabetic';
-    ctx.fillText(s, x, yy);
+    ctx.fillText(nl(s), Math.round(x * SX), Math.round(yy * SY));
+    ctx.restore();
+  }
+  function tw(s, sz) {
+    ctx.save();
+    ctx.font = fnt(sz);
+    var w = ctx.measureText(nl(s)).width;
+    ctx.restore();
+    return w / SX;
   }
   function panel() { ctx.fillStyle = 'rgba(10,15,30,.8)'; ctx.fillRect(0, 0, W, H); }
+
+  // Biểu tượng tạm dừng (hai gạch dọc xám mờ) hoặc tiếp tục (tam giác) ở giữa dòng chữ hướng dẫn
+  function drawPauseIcon(play) {
+    var cx = W / 2, cy = PAUSE_CY;
+    ctx.fillStyle = 'rgba(190,198,215,.55)';
+    if (play) {
+      ctx.beginPath(); ctx.moveTo(cx - 5, cy - 8); ctx.lineTo(cx + 8, cy); ctx.lineTo(cx - 5, cy + 8); ctx.closePath(); ctx.fill();
+    } else {
+      rr(cx - 8, cy - 7, 5, 14, 1.5); ctx.fill();
+      rr(cx + 3, cy - 7, 5, 14, 1.5); ctx.fill();
+    }
+  }
 
   function drawBanner() {
     var n = null;
@@ -3174,15 +3226,18 @@ document.addEventListener('visibilitychange',()=>{
     if (!n) return;
     var txt = (n.blue ? 'NÊN CHI: ' : 'NÊN TRÁNH: ') + n.label;
     var fs = 14;
-    ctx.font = 'bold ' + fs + 'px sans-serif';
-    while (ctx.measureText(txt).width > W - 50 && fs > 9) { fs--; ctx.font = 'bold ' + fs + 'px sans-serif'; }
-    var tw = ctx.measureText(txt).width + 24;
+    while (tw(txt, fs) > W - 50 && fs > 9) fs--;
+    var w = tw(txt, fs) + 24;
     ctx.fillStyle = n.blue ? '#2e86de' : '#d64541';
-    rr((W - tw) / 2, 32, tw, 24, 12); ctx.fill();
+    rr((W - w) / 2, 32, w, 24, 12); ctx.fill();
     T(txt, W / 2, 49, fs, '#fff');
   }
 
   function draw() {
+    SX = cv.width / W; SY = cv.height / H;
+    ctx.setTransform(SX, 0, 0, SY, 0, 0);
+    try { ctx.textRendering = 'optimizeLegibility'; ctx.fontKerning = 'normal'; } catch (e) {}
+
     var d = DOORS[di] || DOORS[0];
     var gr = ctx.createLinearGradient(0, 0, 0, H);
     gr.addColorStop(0, '#1b2a4a'); gr.addColorStop(1, '#16213e');
@@ -3204,7 +3259,11 @@ document.addEventListener('visibilitychange',()=>{
         if (o.air) { ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(sx + OW / 2, 58); ctx.lineTo(sx + OW / 2, g.y); ctx.stroke(); }
         ctx.fillStyle = o.blue ? '#2e86de' : '#e74c3c';
         rr(sx, g.y, OW, g.h, 8); ctx.fill();
-        T(o.blue ? '+' : '−', sx + OW / 2, g.y + g.h / 2 + 9, 28, '#fff');
+        // dấu + / − vẽ bằng hình khối để không phụ thuộc font
+        var mx = sx + OW / 2, my = g.y + g.h / 2;
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(mx - 9, my - 2, 18, 4);
+        if (o.blue) ctx.fillRect(mx - 2, my - 9, 4, 18);
       }
     }
 
@@ -3255,17 +3314,19 @@ document.addEventListener('visibilitychange',()=>{
       ctx.fillStyle = d.c; ctx.fillRect(0, 0, W * Math.min(1, dist / LEN), 4);
       // thông tin
       T(d.i + ' Cửa ' + (di + 1) + '/6 · ' + d.l, 12, 24, 13, '#fff', 'left');
-      T('⏱ ' + t.toFixed(1) + 's / ' + MAXT + 's', W / 2, 24, 13, '#ffd54f');
+      T('Thời gian: ' + t.toFixed(1).replace('.', ',') + ' s / ' + MAXT + ' s', W / 2, 24, 13, '#ffd54f');
       T('💰 ' + fm(money), W - 12, 24, 13, money < 0 ? '#ff8a80' : '#7dffa8', 'right');
       // thanh tốc độ
       ctx.fillStyle = 'rgba(255,255,255,.15)'; ctx.fillRect(12, 216, 110, 6);
       ctx.fillStyle = '#f5b301'; ctx.fillRect(12, 216, 110 * (mult - 1) / (BOOST_MAX - 1), 6);
-      T('⚡ tốc độ', 130, 223, 10, '#c9d4ee', 'left');
-      // gợi ý hai nửa màn hình
+      T('Tốc độ', 130, 223, 11, '#c9d4ee', 'left');
+      // đường chia hai nửa màn hình
       ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.setLineDash([6, 6]); ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(W / 2, 62); ctx.lineTo(W / 2, 236); ctx.stroke(); ctx.setLineDash([]);
-      T('◀ GIỮ: CHẠY NHANH', 160, 236, 11, 'rgba(255,255,255,.35)');
-      T('CHẠM: NHẢY · GIỮ: CÚI ▶', 480, 236, 11, 'rgba(255,255,255,.35)');
+      ctx.beginPath(); ctx.moveTo(W / 2, 62); ctx.lineTo(W / 2, 214); ctx.stroke(); ctx.setLineDash([]);
+      // chữ hướng dẫn phía dưới + nút tạm dừng ở chính giữa
+      T('Giữ: Chạy nhanh', 160, 236, 12, 'rgba(255,255,255,.5)');
+      T('Chạm: Nhảy · Giữ: Cúi', 480, 236, 12, 'rgba(255,255,255,.5)');
+      drawPauseIcon(false);
       if (toast) T(toast.txt, PX + 18, 92, 15, toast.c, 'left');
     }
 
@@ -3287,11 +3348,10 @@ document.addEventListener('visibilitychange',()=>{
     }
     if (state === 'doorEnd' && doorRes) {
       panel();
-      T('Xong cửa ' + (di + 1) + ': ' + d.i + ' ' + d.l, W / 2, 55, 22);
-      T('Cửa này: ' + (doorRes.money >= 0 ? '+' : '') + fm(doorRes.money), W / 2, 84, 17, doorRes.money >= 0 ? '#7dffa8' : '#ff8a80');
-      T('Tổng cộng: ' + fm(doorRes.total), W / 2, 112, 20, doorRes.total >= 0 ? '#7dffa8' : '#ff8a80');
-      T('Thời gian: ' + ft(doorRes.time), W / 2, 138, 16, '#ffd54f');
-      T('Xanh ăn được ' + doorRes.got + '/30 · Chạm đỏ ' + doorRes.hits + ' lần', W / 2, 162, 14, '#c9d4ee');
+      T('Xong cửa ' + (di + 1) + ': ' + d.i + ' ' + d.l, W / 2, 62, 22);
+      T('Cửa này: ' + (doorRes.money >= 0 ? '+' : '') + fm(doorRes.money), W / 2, 98, 17, doorRes.money >= 0 ? '#7dffa8' : '#ff8a80');
+      T('Tổng cộng: ' + fm(doorRes.total), W / 2, 130, 20, doorRes.total >= 0 ? '#7dffa8' : '#ff8a80');
+      T('Thời gian: ' + ft(doorRes.time), W / 2, 160, 16, '#ffd54f');
       T(di + 1 >= DOORS.length ? 'Chạm để xem kết quả' : 'Chạm để qua cửa tiếp theo', W / 2, 205, 16);
     }
     if (state === 'final') {
@@ -3306,6 +3366,12 @@ document.addEventListener('visibilitychange',()=>{
       }
       T('Chạm để chơi lại', W / 2, 224, 15);
     }
+    if (paused) {
+      panel();
+      T('Tạm dừng', W / 2, 108, 30, '#ffd54f');
+      T('Chạm vào màn hình để tiếp tục', W / 2, 146, 15, '#c9d4ee');
+      drawPauseIcon(true);
+    }
   }
 
   function loop(ts) {
@@ -3313,17 +3379,28 @@ document.addEventListener('visibilitychange',()=>{
     if (isNaN(dt) || dt < 0) dt = 0.016;
     if (dt > 0.05) dt = 0.05;
     last = ts;
-    if (state === 'run') update(dt);
+    if (state === 'run' && !paused) update(dt);
     if (state === 'door' && Date.now() - stateAt > 1700) setState('run');
     draw();
     raf = requestAnimationFrame(loop);
   }
 
-  // ===== Điều khiển cảm ứng: nửa trái = chạy nhanh, nửa phải = chạm nhảy / giữ cúi =====
-  function sideOf(e) { var r = cv.getBoundingClientRect(); return (e.clientX - r.left) < r.width / 2 ? 'l' : 'r'; }
+  // ===== Điều khiển cảm ứng =====
+  // Đổi tọa độ chạm sang tọa độ game (tính cả phần viền khi canvas hiển thị kiểu "contain")
+  function toGame(e) {
+    var r = cv.getBoundingClientRect();
+    var sc = Math.min(r.width / W, r.height / H) || 1;
+    var ox = (r.width - W * sc) / 2, oy = (r.height - H * sc) / 2;
+    return { x: (e.clientX - r.left - ox) / sc, y: (e.clientY - r.top - oy) / sc };
+  }
+  function pauseHit(e) { var g = toGame(e); return Math.abs(g.x - W / 2) <= 30 && g.y >= 206; }
+  function sideOf(e) { var g = toGame(e); return g.x < W / 2 ? 'l' : 'r'; }
+
   cv.addEventListener('pointerdown', function (e) {
     e.preventDefault();
     if (state !== 'run') { advance(); return; }
+    if (paused) { togglePause(); return; }       // đang tạm dừng: chạm bất kỳ đâu để tiếp tục
+    if (pauseHit(e)) { togglePause(); return; }  // chạm hai gạch dọc ở giữa phía dưới: tạm dừng
     try { cv.setPointerCapture(e.pointerId); } catch (x) {}
     ptrs[e.pointerId] = { s: sideOf(e), t0: performance.now() };
   });
@@ -3338,7 +3415,8 @@ document.addEventListener('visibilitychange',()=>{
   // ===== Bàn phím (máy tính) =====
   function kd(e) {
     var c = e.code;
-    if (c === 'Space' || c === 'ArrowUp' || c === 'KeyW') {
+    if (c === 'KeyP') { e.preventDefault(); if (!e.repeat) togglePause(); }
+    else if (c === 'Space' || c === 'ArrowUp' || c === 'KeyW') {
       e.preventDefault();
       if (!e.repeat) { if (state === 'run') jump(); else advance(); }
     } else if (c === 'ArrowDown' || c === 'KeyS') { e.preventDefault(); kD = true; }
@@ -3375,7 +3453,11 @@ document.addEventListener('visibilitychange',()=>{
     msg.textContent = HINT;
     wrap.classList.add('show');
     document.body.style.overflow = 'hidden';
+    fit();
+    // Nạp sẵn font có đủ dấu tiếng Việt để chữ trong canvas không bị đổi font giữa chừng
+    try { if (document.fonts && document.fonts.load) document.fonts.load('700 16px "Be Vietnam Pro"', 'Ạ ắ ữ ỳ ₫ Đ ơ ư').catch(function () {}); } catch (e) {}
     goLandscape();
+    setTimeout(fit, 300);
     document.addEventListener('keydown', kd);
     document.addEventListener('keyup', ku);
     last = performance.now();
@@ -3389,9 +3471,19 @@ document.addEventListener('visibilitychange',()=>{
     cancelAnimationFrame(raf);
     document.removeEventListener('keydown', kd);
     document.removeEventListener('keyup', ku);
-    ptrs = {}; kD = false; kB = false;
+    ptrs = {}; kD = false; kB = false; paused = false;
     state = 'ready';
   }
+
+  // Đổi kích thước / xoay màn hình thì tính lại độ phân giải canvas cho nét
+  window.addEventListener('resize', onResize);
+  window.addEventListener('orientationchange', onResize);
+  document.addEventListener('fullscreenchange', onResize);
+  document.addEventListener('webkitfullscreenchange', onResize);
+  // Chuyển sang app khác / khóa màn hình thì tự tạm dừng
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden && wrap.classList.contains('show') && state === 'run' && !paused) togglePause();
+  });
 
   wrap.addEventListener('contextmenu', function (e) { e.preventDefault(); });
   document.getElementById('g6Close').addEventListener('click', close);

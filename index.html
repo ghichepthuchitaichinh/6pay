@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.13-11';
+const APP_VERSION='2026.10.13-12';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -2963,7 +2963,7 @@ document.addEventListener('visibilitychange',()=>{
 #g6Wrap.show{display:flex}
 #g6Box{width:100%;max-width:640px;color:#fff}
 #g6Top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:16px;font-weight:bold}
-#g6Close{background:#33415f;color:#fff;border:none;border-radius:8px;font:inherit;font-size:16px;padding:6px 12px;cursor:pointer}
+#g6Snd,#g6Close{background:#33415f;color:#fff;border:none;border-radius:8px;font:inherit;font-size:16px;padding:6px 12px;cursor:pointer}
 #g6Cv{width:100%;height:auto;border-radius:12px;touch-action:none;display:block}
 #g6Msg{margin-top:10px;font-size:14px;line-height:1.4;color:#c9d4ee;text-align:center;min-height:20px}
 #g6Rot{display:none;margin-top:8px;text-align:center;font-size:13px;color:#ffd54f}
@@ -2979,7 +2979,7 @@ document.addEventListener('visibilitychange',()=>{
 
 <div id="g6Wrap">
   <div id="g6Box">
-    <div id="g6Top"><span>Bước nhảy tài chính</span><button id="g6Close" type="button">✕ Đóng</button></div>
+   <div id="g6Top"><span>Bước nhảy tài chính</span><span><button id="g6Snd" type="button" aria-label="Bật tắt âm thanh">🔊</button> <button id="g6Close" type="button">✕ Đóng</button></span></div>
     <canvas id="g6Cv" width="640" height="240"></canvas>
     <div id="g6Msg"></div>
     <div id="g6Rot">📱 Xoay ngang điện thoại để chơi thoải mái hơn</div>
@@ -3037,6 +3037,53 @@ document.addEventListener('visibilitychange',()=>{
 
   var HINT = 'Nửa trái màn hình: giữ để chạy nhanh (đang cúi thì không tăng tốc được), nhả ra thì chậm dần. Nửa phải: chạm để nhảy, giữ để cúi. Ô xanh: chạm vào để nhận tiền. Ô đỏ: tránh, chạm vào bị trừ tiền và chậm lại. Tạm dừng: chạm vào hai gạch dọc ở giữa phía dưới khung game. Máy tính: Space nhảy, ↓ cúi, → chạy nhanh, P tạm dừng.';
 
+  // ===== Âm thanh (tạo bằng Web Audio, không cần file âm thanh) =====
+  var SND_KEY='6pay_game_sound', sndOn=true;
+  try{sndOn=localStorage.getItem(SND_KEY)!=='0';}catch(e){}
+  var AC=null, mg=null, musicTimer=0, musicStep=0;
+  function acInit(){
+    if(AC){ if(AC.state==='suspended'){try{AC.resume();}catch(e){}} return; }
+    try{
+      var A=window.AudioContext||window.webkitAudioContext; if(!A)return;
+      AC=new A(); mg=AC.createGain(); mg.gain.value=sndOn?1:0; mg.connect(AC.destination);
+    }catch(e){AC=null;}
+  }
+  function tone(f,d,type,vol,delay,slideTo){
+    if(!AC||!sndOn)return;
+    try{
+      var t0=AC.currentTime+(delay||0), o=AC.createOscillator(), g=AC.createGain();
+      o.type=type||'square'; o.frequency.setValueAtTime(f,t0);
+      if(slideTo)o.frequency.exponentialRampToValueAtTime(slideTo,t0+d);
+      g.gain.setValueAtTime(0.0001,t0);
+      g.gain.exponentialRampToValueAtTime(vol||0.15,t0+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001,t0+d);
+      o.connect(g); g.connect(mg); o.start(t0); o.stop(t0+d+0.03);
+    }catch(e){}
+  }
+  var SND={
+    jump:function(){tone(300,0.16,'square',0.12,0,700);},
+    coin:function(){tone(988,0.08,'square',0.13,0);tone(1319,0.2,'square',0.13,0.07);},
+    hit:function(){tone(220,0.3,'sawtooth',0.2,0,60);},
+    start:function(){tone(440,0.1,'square',0.12,0);tone(660,0.18,'square',0.12,0.1);},
+    door:function(){[523,659,784,1047].forEach(function(f,i){tone(f,0.18,'triangle',0.18,i*0.12);});},
+    win:function(){[523,659,784,1047,784,1047,1319].forEach(function(f,i){tone(f,0.22,'triangle',0.2,i*0.13);});}
+  };
+  var MEL=[523,0,659,0,784,659,0,523,587,0,698,0,880,698,0,587];
+  function musicTick(){
+    if(!AC||!sndOn||state!=='run'||paused||!wrap.classList.contains('show'))return;
+    var f=MEL[musicStep%MEL.length]; musicStep++;
+    if(f)tone(f,0.14,'triangle',0.05,0);
+    if(musicStep%4===1)tone(131,0.35,'sine',0.07,0);
+  }
+  function musicStart(){ if(!musicTimer)musicTimer=setInterval(musicTick,200); }
+  function musicStop(){ clearInterval(musicTimer); musicTimer=0; }
+  function sndBtn(){ var b=document.getElementById('g6Snd'); if(b)b.textContent=sndOn?'🔊':'🔇'; }
+  function toggleSound(){
+    sndOn=!sndOn;
+    try{localStorage.setItem(SND_KEY,sndOn?'1':'0');}catch(e){}
+    if(mg)mg.gain.value=sndOn?1:0;
+    sndBtn();
+  }
   var wrap = document.getElementById('g6Wrap');
   var cv = document.getElementById('g6Cv');
   var ctx = cv.getContext('2d');
@@ -3111,21 +3158,21 @@ document.addEventListener('visibilitychange',()=>{
   function endDoor() {
     doorRes = { money: money - base, total: money, time: t, got: got, hits: hits };
     totMoney = money; totTime += t;
-    setState('doorEnd');
+   SND.door(); setState('doorEnd');
   }
   function advance() {
     if (Date.now() - stateAt < 450) return;
-    if (state === 'ready') { resetAll(); startDoor(); }
+  if (state === 'ready') { SND.start(); resetAll(); startDoor(); }
     else if (state === 'door') { setState('run'); }
     else if (state === 'doorEnd') {
       di++;
-      if (di >= DOORS.length) { rankIdx = rankSave(totMoney, totTime); setState('final'); }
+      if (di >= DOORS.length) { rankIdx = rankSave(totMoney, totTime); SND.win(); setState('final'); }
       else startDoor();
     }
     else if (state === 'final') { resetAll(); startDoor(); }
   }
 
-  function jump() { if (state === 'run' && !paused && y === 0) vy = JUMP; }
+function jump() { if (state === 'run' && !paused && y === 0) { vy = JUMP; SND.jump(); } }
   function anyLeft() { for (var k in ptrs) if (ptrs[k].s === 'l') return true; return false; }
   function holdDuck() {
     var n = performance.now();
@@ -3161,8 +3208,8 @@ document.addEventListener('visibilitychange',()=>{
       var g = oGeom(o);
       if (hit(pl, pt, pw, pH, sx + 4, g.y + 3, OW - 8, g.h - 3)) {
         o.done = true;
-        if (o.blue) { money += BLUE_MONEY; got++; toast = { txt: '+' + fm(BLUE_MONEY), t: 0.9, c: '#7dffa8' }; }
-        else { money -= RED_MONEY; hits++; mult = 1; slow = STUMBLE_T; flash = 0.35; toast = { txt: '-' + fm(RED_MONEY), t: 0.9, c: '#ff8a80' }; }
+      if (o.blue) { SND.coin(); money += BLUE_MONEY; got++; toast = { txt: '+' + fm(BLUE_MONEY), t: 0.9, c: '#7dffa8' }; }
+      else { SND.hit(); money -= RED_MONEY; hits++; mult = 1; slow = STUMBLE_T; flash = 0.35; toast = { txt: '-' + fm(RED_MONEY), t: 0.9, c: '#ff8a80' }; }
       }
     }
     if (dist >= LEN || t >= MAXT) endDoor();
@@ -3398,7 +3445,7 @@ document.addEventListener('visibilitychange',()=>{
 
   cv.addEventListener('pointerdown', function (e) {
     e.preventDefault();
-    if (state !== 'run') { advance(); return; }
+ acInit(); if (state !== 'run') { advance(); return; }
     if (paused) { togglePause(); return; }       // đang tạm dừng: chạm bất kỳ đâu để tiếp tục
     if (pauseHit(e)) { togglePause(); return; }  // chạm hai gạch dọc ở giữa phía dưới: tạm dừng
     try { cv.setPointerCapture(e.pointerId); } catch (x) {}
@@ -3457,7 +3504,7 @@ document.addEventListener('visibilitychange',()=>{
     // Nạp sẵn font có đủ dấu tiếng Việt để chữ trong canvas không bị đổi font giữa chừng
     try { if (document.fonts && document.fonts.load) document.fonts.load('700 16px "Be Vietnam Pro"', 'Ạ ắ ữ ỳ ₫ Đ ơ ư').catch(function () {}); } catch (e) {}
     goLandscape();
-    setTimeout(fit, 300);
+setTimeout(fit, 300); acInit(); musicStart(); sndBtn();
     document.addEventListener('keydown', kd);
     document.addEventListener('keyup', ku);
     last = performance.now();
@@ -3471,7 +3518,7 @@ document.addEventListener('visibilitychange',()=>{
     cancelAnimationFrame(raf);
     document.removeEventListener('keydown', kd);
     document.removeEventListener('keyup', ku);
-    ptrs = {}; kD = false; kB = false; paused = false;
+  ptrs = {}; kD = false; kB = false; paused = false; musicStop();
     state = 'ready';
   }
 
@@ -3487,6 +3534,7 @@ document.addEventListener('visibilitychange',()=>{
 
   wrap.addEventListener('contextmenu', function (e) { e.preventDefault(); });
   document.getElementById('g6Close').addEventListener('click', close);
+    document.getElementById('g6Snd').addEventListener('click', function(){ acInit(); toggleSound(); });
   window.open6PayGame = open;
 })();
 </script>

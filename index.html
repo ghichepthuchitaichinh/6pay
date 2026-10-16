@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.13-12';
+const APP_VERSION='2026.10.13-13';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -1489,7 +1489,9 @@ function scrExtra(){
   <div class="list-item clickable util-item" onclick="openLunar()"><span>🗓️ Lịch vạn niên</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('books')"><span>📖 Đọc sách Free</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="open6PayGame()"><span>🎮 Bước nhảy tài chính</span><span class="guide-cta">›</span></div>`);
+  <div class="list-item clickable util-item" onclick="open6PayGame()"><span>🎮 Bước nhảy tài chính</span><span class="guide-cta">›</span></div>
+  <div class="list-item clickable util-item" onclick="SixWordGame.open()"><span>🔤 Game học từ vựng tiếng Anh</span><span class="guide-cta">›</span></div>`);
+}
 }
 // ===== Đọc sách miễn phí =====
 // Thêm sách: thêm 1 dòng vào BOOKS. f = đường dẫn file (nên để trong thư mục books/ cùng chỗ với index.html)
@@ -3539,5 +3541,368 @@ setTimeout(fit, 300); acInit(); musicStart(); sndBtn();
 })();
 </script>
 <!-- ===== 6PAY RUNNER: KẾT THÚC ===== -->
+<script>
+(function () {
+  if (window.SixWordGame) return;
+
+  /* ---------- DỮ LIỆU TỪ VỰNG: [từ tiếng Anh, nghĩa tiếng Việt, hình minh hoạ] ---------- */
+  var TOPICS = [
+    { id: 'animals', n: 'Động vật', i: '🦁', c: '#f59e0b', w: [
+      ['cat','con mèo','🐱'],['dog','con chó','🐶'],['horse','con ngựa','🐴'],['rabbit','con thỏ','🐰'],
+      ['monkey','con khỉ','🐵'],['elephant','con voi','🐘'],['lion','sư tử','🦁'],['tiger','con hổ','🐯'],
+      ['bird','con chim','🐦'],['fish','con cá','🐟'],['duck','con vịt','🦆'],['pig','con lợn','🐷']] },
+    { id: 'fruits', n: 'Trái cây & rau củ', i: '🍎', c: '#ef4444', w: [
+      ['apple','quả táo','🍎'],['banana','quả chuối','🍌'],['orange','quả cam','🍊'],['grape','quả nho','🍇'],
+      ['watermelon','dưa hấu','🍉'],['strawberry','dâu tây','🍓'],['pineapple','quả dứa','🍍'],['lemon','quả chanh','🍋'],
+      ['peach','quả đào','🍑'],['cherry','quả anh đào','🍒'],['carrot','cà rốt','🥕'],['tomato','cà chua','🍅']] },
+    { id: 'food', n: 'Đồ ăn & thức uống', i: '🍕', c: '#f97316', w: [
+      ['bread','bánh mì','🍞'],['rice','cơm / gạo','🍚'],['egg','quả trứng','🥚'],['milk','sữa','🥛'],
+      ['cheese','phô mai','🧀'],['pizza','bánh pizza','🍕'],['noodles','mì / phở','🍜'],['coffee','cà phê','☕'],
+      ['cake','bánh ngọt','🍰'],['ice cream','kem','🍦'],['chicken','thịt gà','🍗'],['hamburger','bánh hamburger','🍔']] },
+    { id: 'jobs', n: 'Nghề nghiệp', i: '👨‍⚕️', c: '#06b6d4', w: [
+      ['doctor','bác sĩ','👨‍⚕️'],['teacher','giáo viên','👩‍🏫'],['farmer','nông dân','👨‍🌾'],['cook','đầu bếp','👨‍🍳'],
+      ['police officer','cảnh sát','👮'],['firefighter','lính cứu hỏa','🧑‍🚒'],['pilot','phi công','🧑‍✈️'],['artist','họa sĩ','🧑‍🎨'],
+      ['singer','ca sĩ','🧑‍🎤'],['scientist','nhà khoa học','🧑‍🔬'],['mechanic','thợ máy','🧑‍🔧'],['astronaut','phi hành gia','🧑‍🚀']] },
+    { id: 'transport', n: 'Phương tiện', i: '🚗', c: '#3b82f6', w: [
+      ['car','ô tô','🚗'],['bus','xe buýt','🚌'],['train','tàu hỏa','🚆'],['plane','máy bay','✈️'],
+      ['bicycle','xe đạp','🚲'],['motorbike','xe máy','🏍️'],['ship','tàu thủy','🚢'],['helicopter','trực thăng','🚁'],
+      ['taxi','xe taxi','🚕'],['truck','xe tải','🚚'],['rocket','tên lửa','🚀'],['ambulance','xe cứu thương','🚑']] },
+    { id: 'nature', n: 'Thiên nhiên & thời tiết', i: '🌈', c: '#10b981', w: [
+      ['sun','mặt trời','☀️'],['moon','mặt trăng','🌙'],['star','ngôi sao','⭐'],['rain','cơn mưa','🌧️'],
+      ['snow','tuyết','❄️'],['cloud','đám mây','☁️'],['rainbow','cầu vồng','🌈'],['lightning','tia chớp','⚡'],
+      ['tree','cái cây','🌳'],['flower','bông hoa','🌸'],['mountain','ngọn núi','⛰️'],['wave','con sóng','🌊']] },
+    { id: 'objects', n: 'Đồ vật quanh ta', i: '🎒', c: '#8b5cf6', w: [
+      ['book','quyển sách','📖'],['phone','điện thoại','📱'],['key','chìa khóa','🔑'],['clock','đồng hồ','⏰'],
+      ['umbrella','cái ô / dù','☂️'],['glasses','kính mắt','👓'],['bag','cái cặp / ba lô','🎒'],['computer','máy tính','💻'],
+      ['camera','máy ảnh','📷'],['lamp','bóng đèn','💡'],['scissors','cái kéo','✂️'],['gift','món quà','🎁']] }
+  ];
+
+  var GAME_SECONDS = 120, REWARD = 10000, PENALTY = 5000;
+  var EMOJI_FONT = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+  var TEXT_FONT = '-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+
+  /* ---------- CSS ---------- */
+  var css = '' +
+  '.wg-root{position:fixed;left:0;top:0;right:0;bottom:0;height:100vh;height:100dvh;z-index:99999;display:none;flex-direction:column;background:linear-gradient(180deg,#0b1d3a 0%,#1d4e89 100%);color:#fff;font-family:' + TEXT_FONT + ';-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;-webkit-user-select:none;user-select:none;overflow:hidden}' +
+  '.wg-root.on{display:flex}' +
+  '.wg-root *{box-sizing:border-box}' +
+  '.wg-scr{display:none;flex:1;flex-direction:column;min-height:0}.wg-scr.on{display:flex}' +
+  '.wg-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:max(12px,env(safe-area-inset-top)) 16px 10px}' +
+  '.wg-title{font-size:20px;font-weight:800;letter-spacing:.2px}' +
+  '.wg-btn{border:0;border-radius:14px;padding:10px 16px;font-size:16px;font-weight:700;color:#fff;background:rgba(255,255,255,.16);cursor:pointer;font-family:inherit}' +
+  '.wg-btn:active{transform:scale(.97)}' +
+  '.wg-btn.main{background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 6px 18px rgba(34,197,94,.35)}' +
+  '.wg-rules{margin:0 16px 12px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.1);font-size:14px;line-height:1.5;color:#e2ecff}' +
+  '.wg-grid{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 16px max(20px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;align-content:start}' +
+  '.wg-topic{border:0;border-radius:18px;padding:18px 10px 14px;color:#fff;font-family:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 8px 20px rgba(0,0,0,.25)}' +
+  '.wg-topic:active{transform:scale(.97)}' +
+  '.wg-topic .ic{font-size:46px;line-height:1.1;font-family:' + EMOJI_FONT + '}' +
+  '.wg-topic .nm{font-size:16px;font-weight:800;text-align:center;line-height:1.25}' +
+  '.wg-topic .sub{font-size:12px;opacity:.9}' +
+  '.wg-hud{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:max(10px,env(safe-area-inset-top)) 14px 8px}' +
+  '.wg-pill{background:rgba(255,255,255,.16);border-radius:999px;padding:7px 14px;font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}' +
+  '.wg-pill.bad{color:#fecaca}' +
+  '.wg-bar{height:6px;margin:0 14px 6px;border-radius:6px;background:rgba(255,255,255,.18);overflow:hidden}' +
+  '.wg-bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#facc15,#ef4444);transform-origin:left}' +
+  '.wg-stage{position:relative;flex:1;min-height:0;touch-action:none}' +
+  '.wg-stage canvas{position:absolute;left:0;top:0;width:100%;height:100%;display:block;touch-action:none}' +
+  '.wg-mean{padding:12px 16px max(16px,env(safe-area-inset-bottom));background:rgba(8,20,45,.78);border-top:2px solid rgba(255,255,255,.25);text-align:center}' +
+  '.wg-mean small{display:block;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#9fc0ff;font-weight:700}' +
+  '.wg-mean b{display:block;font-size:30px;line-height:1.2;font-weight:800;margin-top:2px;color:#fff}' +
+  '.wg-res{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:max(20px,env(safe-area-inset-top)) 18px max(24px,env(safe-area-inset-bottom));text-align:center}' +
+  '.wg-res h2{margin:6px 0 4px;font-size:26px}' +
+  '.wg-big{font-size:44px;font-weight:900;margin:6px 0;font-variant-numeric:tabular-nums}' +
+  '.wg-stats{display:flex;justify-content:center;gap:10px;margin:10px 0 14px;flex-wrap:wrap}' +
+  '.wg-stat{background:rgba(255,255,255,.12);border-radius:14px;padding:10px 14px;min-width:92px;font-size:13px}' +
+  '.wg-stat b{display:block;font-size:22px}' +
+  '.wg-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:8px 0 18px}' +
+  '.wg-list{text-align:left;max-width:520px;margin:0 auto}' +
+  '.wg-list h3{font-size:15px;margin:14px 0 6px;color:#bcd3ff}' +
+  '.wg-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.09);margin-bottom:6px;font-size:15px}' +
+  '.wg-row .e{font-size:26px;font-family:' + EMOJI_FONT + '}' +
+  '.wg-row .t{flex:1}.wg-row .t b{display:block;font-size:16px}.wg-row .t span{opacity:.85;font-size:14px}' +
+  '.wg-row.miss{background:rgba(239,68,68,.22)}';
+  var st = document.createElement('style');
+  st.textContent = css;
+  document.head.appendChild(st);
+
+  /* ---------- DOM ---------- */
+  var root = document.createElement('div');
+  root.className = 'wg-root';
+  root.innerHTML = '' +
+  '<div class="wg-scr on" id="wgTopics">' +
+    '<div class="wg-top"><div class="wg-title">🎮 Hứng từ vựng tiếng Anh</div><button class="wg-btn" data-a="close">✕ Đóng</button></div>' +
+    '<div class="wg-rules">Nghĩa tiếng Việt hiện ở dưới cùng. Các từ tiếng Anh kèm hình rơi từ trên xuống – kéo giỏ sang trái/phải để hứng <b>đúng từ</b>.<br>✅ Đúng <b>+10.000đ</b> &nbsp; ❌ Sai <b>−5.000đ</b> &nbsp; ⏱ 2 phút</div>' +
+    '<div class="wg-grid" id="wgGrid"></div>' +
+  '</div>' +
+  '<div class="wg-scr" id="wgPlay">' +
+    '<div class="wg-hud"><button class="wg-btn" data-a="quit" style="padding:8px 12px">←</button>' +
+      '<div class="wg-pill" id="wgTime">⏱ 2:00</div><div class="wg-pill" id="wgMoney">💰 0đ</div></div>' +
+    '<div class="wg-bar"><i id="wgBar"></i></div>' +
+    '<div class="wg-stage" id="wgStage"><canvas id="wgCv"></canvas></div>' +
+    '<div class="wg-mean"><small>Nghĩa của từ – hứng từ tiếng Anh đúng</small><b id="wgMean">…</b></div>' +
+  '</div>' +
+  '<div class="wg-scr" id="wgEnd"><div class="wg-res" id="wgRes"></div></div>';
+  document.body.appendChild(root);
+
+  var $ = function (id) { return document.getElementById(id); };
+  var scrTopics = $('wgTopics'), scrPlay = $('wgPlay'), scrEnd = $('wgEnd');
+  var cv = $('wgCv'), ctx = cv.getContext('2d');
+  function show(s) { [scrTopics, scrPlay, scrEnd].forEach(function (x) { x.classList.toggle('on', x === s); }); }
+  function money(n, sign) {
+    var s = Math.abs(n).toLocaleString('vi-VN') + 'đ';
+    return n < 0 ? '−' + s : (sign && n > 0 ? '+' + s : s);
+  }
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function best(id) { try { return +localStorage.getItem('wg_best_' + id) || 0; } catch (e) { return 0; } }
+  function setBest(id, v) { try { localStorage.setItem('wg_best_' + id, v); } catch (e) {} }
+
+  /* ---------- Màn chọn chủ đề ---------- */
+  var ALL = [];
+  TOPICS.forEach(function (t) { ALL = ALL.concat(t.w); });
+  var MENU = TOPICS.concat([{ id: 'mix', n: 'Tổng hợp tất cả', i: '🎲', c: '#ec4899', w: ALL }]);
+  var grid = $('wgGrid');
+  function renderTopics() {
+    grid.innerHTML = '';
+    MENU.forEach(function (t) {
+      var b = document.createElement('button');
+      b.className = 'wg-topic';
+      b.style.background = 'linear-gradient(145deg,' + t.c + ',' + t.c + 'bb)';
+      var bs = best(t.id);
+      b.innerHTML = '<span class="ic">' + t.i + '</span><span class="nm">' + t.n + '</span><span class="sub">' + t.w.length + ' từ' + (bs ? ' · Kỷ lục ' + money(bs) : '') + '</span>';
+      b.onclick = function () { start(t); };
+      grid.appendChild(b);
+    });
+  }
+
+  /* ---------- Trạng thái game ---------- */
+  var G = null, raf = 0, W = 0, H = 0, DPR = 2, keys = {};
+  var hudTime = $('wgTime'), hudMoney = $('wgMoney'), hudBar = $('wgBar'), meanEl = $('wgMean');
+
+  function resize() {
+    var r = $('wgStage').getBoundingClientRect();
+    W = Math.max(200, r.width); H = Math.max(200, r.height);
+    DPR = Math.min(4, Math.max(2, window.devicePixelRatio || 1)); // luôn vẽ ≥2x để chữ/hình nét
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    if (G) {
+      G.bw = Math.min(130, W * 0.3);
+      G.tx = Math.min(W - G.bw / 2, Math.max(G.bw / 2, G.tx));
+    }
+  }
+
+  function start(topic) {
+    show(scrPlay);
+    G = { topic: topic, left: GAME_SECONDS, money: 0, ok: 0, bad: 0, items: [], floats: [], bag: [],
+          got: {}, missed: {}, wait: 0.4, target: null, bx: 0, tx: 0, bw: 120, flash: 0, flashC: '', last: 0 };
+    resize();
+    G.bx = G.tx = W / 2;
+    meanEl.textContent = 'Sẵn sàng…';
+    updateHud();
+    cancelAnimationFrame(raf);
+    G.last = performance.now();
+    raf = requestAnimationFrame(loop);
+  }
+
+  function nextWord() {
+    if (!G.bag.length) G.bag = shuffle(G.topic.w.slice());
+    return G.bag.pop();
+  }
+
+  function newRound() {
+    var t = nextWord();
+    G.target = t;
+    meanEl.textContent = t[1];
+    var n = W > 560 ? 4 : 3;
+    var pool = shuffle(G.topic.w.filter(function (x) { return x !== t && x[0] !== t[0]; }));
+    var opts = shuffle([t].concat(pool.slice(0, n - 1)));
+    var laneW = W / n;
+    var cw = Math.min(118, laneW - 10), ch = cw * 1.12;
+    var base = H * (0.30 + 0.10 * (1 - G.left / GAME_SECONDS)); // rơi nhanh dần
+    G.items = opts.map(function (o, i) {
+      return { w: o, ok: o === t, x: i * laneW + (laneW - cw) / 2 + rand(-4, 4), y: -ch - rand(0, 40),
+               cw: cw, ch: ch, vy: base * rand(0.92, 1.12) };
+    });
+  }
+
+  function floatText(x, y, text, color) { G.floats.push({ x: x, y: y, t: 0, text: text, color: color }); }
+
+  function speak(w) {
+    try {
+      if (!window.speechSynthesis) return;
+      speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = 0.9;
+      speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+
+  function updateHud() {
+    var s = Math.max(0, Math.ceil(G.left));
+    hudTime.textContent = '⏱ ' + Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2);
+    hudMoney.textContent = '💰 ' + money(G.money);
+    hudMoney.classList.toggle('bad', G.money < 0);
+    hudBar.style.transform = 'scaleX(' + Math.max(0, G.left / GAME_SECONDS) + ')';
+  }
+
+  function loop(now) {
+    if (!G) return;
+    var dt = Math.min(0.05, (now - G.last) / 1000); G.last = now;
+    G.left -= dt;
+    if (G.left <= 0) { G.left = 0; updateHud(); return finish(); }
+
+    // điều khiển giỏ
+    var sp = W * 1.3;
+    if (keys.ArrowLeft || keys.a) G.tx -= sp * dt;
+    if (keys.ArrowRight || keys.d) G.tx += sp * dt;
+    G.tx = Math.min(W - G.bw / 2, Math.max(G.bw / 2, G.tx));
+    G.bx += (G.tx - G.bx) * Math.min(1, dt * 20);
+
+    // vòng mới
+    if (!G.items.length) {
+      G.wait -= dt;
+      if (G.wait <= 0) newRound();
+    }
+
+    var bh = 60, by = H - bh - 6, top = by + 6;
+    for (var i = G.items.length - 1; i >= 0; i--) {
+      var it = G.items[i];
+      it.y += it.vy * dt;
+      var overlapX = it.x + it.cw > G.bx - G.bw / 2 + 8 && it.x < G.bx + G.bw / 2 - 8;
+      if (overlapX && it.y + it.ch >= top && it.y < by + bh) {
+        if (it.ok) {
+          G.money += REWARD; G.ok++; G.got[it.w[0]] = it.w;
+          floatText(G.bx, by - 10, money(REWARD, 1), '#4ade80');
+          G.flash = 0.25; G.flashC = 'rgba(34,197,94,.30)';
+          speak(it.w[0]);
+          G.items = []; G.wait = 0.55;
+          break;
+        } else {
+          G.money -= PENALTY; G.bad++;
+          floatText(G.bx, by - 10, '−' + money(PENALTY), '#f87171');
+          G.flash = 0.25; G.flashC = 'rgba(239,68,68,.30)';
+          G.items.splice(i, 1);
+        }
+      } else if (it.y > H + 10) {
+        if (it.ok) { G.missed[it.w[0]] = it.w; floatText(W / 2, H * 0.5, 'Lỡ: ' + it.w[0], '#fde68a'); }
+        G.items.splice(i, 1);
+      }
+    }
+    if (G.target && !G.items.length && G.wait <= 0) { G.wait = 0.45; }
+
+    updateHud();
+    draw(by, bh);
+    raf = requestAnimationFrame(loop);
+  }
+
+  function rr(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
+  }
+
+  function draw(by, bh) {
+    ctx.clearRect(0, 0, W, H);
+    if (G.flash > 0) { ctx.fillStyle = G.flashC; ctx.fillRect(0, 0, W, H); G.flash -= 0.016; }
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+
+    // thẻ rơi
+    G.items.forEach(function (it) {
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,.35)'; ctx.shadowBlur = 12; ctx.shadowOffsetY = 5;
+      ctx.fillStyle = '#ffffff';
+      rr(it.x, it.y, it.cw, it.ch, 16); ctx.fill();
+      ctx.restore();
+      ctx.font = Math.round(it.cw * 0.46) + 'px ' + EMOJI_FONT;
+      ctx.fillStyle = '#000';
+      ctx.fillText(it.w[2], it.x + it.cw / 2, it.y + it.ch * 0.38);
+      var fs = Math.round(Math.max(14, it.cw * 0.16));
+      ctx.font = '800 ' + fs + 'px ' + TEXT_FONT;
+      while (ctx.measureText(it.w[0]).width > it.cw - 12 && fs > 10) { fs--; ctx.font = '800 ' + fs + 'px ' + TEXT_FONT; }
+      ctx.fillStyle = '#0f2a52';
+      ctx.fillText(it.w[0], it.x + it.cw / 2, it.y + it.ch * 0.80);
+    });
+
+    // giỏ
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,.4)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4;
+    ctx.fillStyle = 'rgba(255,255,255,.22)';
+    rr(G.bx - G.bw / 2, by + 20, G.bw, bh - 22, 14); ctx.fill();
+    ctx.restore();
+    ctx.font = Math.round(Math.min(78, G.bw * 0.68)) + 'px ' + EMOJI_FONT;
+    ctx.fillStyle = '#000';
+    ctx.fillText('🧺', G.bx, by + bh * 0.52);
+
+    // chữ nổi
+    for (var i = G.floats.length - 1; i >= 0; i--) {
+      var f = G.floats[i]; f.t += 0.016;
+      if (f.t > 1) { G.floats.splice(i, 1); continue; }
+      ctx.globalAlpha = 1 - f.t;
+      ctx.font = '900 24px ' + TEXT_FONT;
+      ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.strokeText(f.text, f.x, f.y - f.t * 50);
+      ctx.fillStyle = f.color; ctx.fillText(f.text, f.x, f.y - f.t * 50);
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  /* ---------- Kết thúc ---------- */
+  function finish() {
+    cancelAnimationFrame(raf);
+    var g = G, id = g.topic.id, prev = best(id), isNew = g.money > prev && g.money > 0;
+    if (isNew) setBest(id, g.money);
+    var total = g.ok + g.bad, acc = total ? Math.round(g.ok * 100 / total) : 0;
+    var html = '<div style="font-size:54px">' + (g.money > 0 ? '🎉' : '⏰') + '</div>' +
+      '<h2>Hết giờ! – ' + g.topic.n + '</h2>' +
+      '<div class="wg-big" style="color:' + (g.money >= 0 ? '#4ade80' : '#f87171') + '">' + money(g.money, 1) + '</div>' +
+      (isNew ? '<div style="color:#fde68a;font-weight:800">🏆 Kỷ lục mới!</div>' : (prev ? '<div style="opacity:.8">Kỷ lục: ' + money(prev) + '</div>' : '')) +
+      '<div class="wg-stats"><div class="wg-stat"><b>' + g.ok + '</b>Hứng đúng</div><div class="wg-stat"><b>' + g.bad + '</b>Hứng sai</div><div class="wg-stat"><b>' + acc + '%</b>Chính xác</div></div>' +
+      '<div class="wg-acts"><button class="wg-btn main" data-a="again">▶ Chơi lại</button><button class="wg-btn" data-a="topics">Chọn chủ đề</button></div>';
+    var got = Object.keys(g.got), mis = Object.keys(g.missed).filter(function (k) { return !g.got[k]; });
+    function rows(keysArr, map, cls) {
+      return keysArr.map(function (k) { var w = map[k];
+        return '<div class="wg-row ' + cls + '"><span class="e">' + w[2] + '</span><span class="t"><b>' + w[0] + '</b><span>' + w[1] + '</span></span></div>'; }).join('');
+    }
+    html += '<div class="wg-list">';
+    if (got.length) html += '<h3>✅ Từ bạn đã nhớ (' + got.length + ')</h3>' + rows(got, g.got, '');
+    if (mis.length) html += '<h3>📌 Từ cần ôn lại (' + mis.length + ')</h3>' + rows(mis, g.missed, 'miss');
+    html += '</div>';
+    $('wgRes').innerHTML = html;
+    $('wgRes').scrollTop = 0;
+    show(scrEnd);
+  }
+
+  /* ---------- Sự kiện ---------- */
+  root.addEventListener('click', function (e) {
+    var a = e.target.getAttribute && e.target.getAttribute('data-a');
+    if (!a) return;
+    if (a === 'close') api.close();
+    else if (a === 'quit') { cancelAnimationFrame(raf); G = null; renderTopics(); show(scrTopics); }
+    else if (a === 'again') start(G ? G.topic : TOPICS[0]);
+    else if (a === 'topics') { G = null; renderTopics(); show(scrTopics); }
+  });
+  // lưu chủ đề để "Chơi lại" vẫn đúng sau khi finish (G vẫn giữ nguyên tới khi chọn khác)
+  var stage = $('wgStage');
+  function movePtr(e) {
+    if (!G) return;
+    var r = stage.getBoundingClientRect();
+    G.tx = Math.min(W - G.bw / 2, Math.max(G.bw / 2, e.clientX - r.left));
+  }
+  stage.addEventListener('pointerdown', function (e) { try { stage.setPointerCapture(e.pointerId); } catch (x) {} movePtr(e); });
+  stage.addEventListener('pointermove', movePtr);
+  window.addEventListener('keydown', function (e) { keys[e.key] = true; if (root.classList.contains('on') && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) e.preventDefault(); });
+  window.addEventListener('keyup', function (e) { keys[e.key] = false; });
+  window.addEventListener('resize', function () { if (root.classList.contains('on')) resize(); });
+  document.addEventListener('visibilitychange', function () { if (G) G.last = performance.now(); });
+
+  /* ---------- API công khai ---------- */
+  var api = {
+    open: function () { renderTopics(); show(scrTopics); root.classList.add('on'); document.body.style.overflow = 'hidden'; },
+    close: function () { cancelAnimationFrame(raf); G = null; root.classList.remove('on'); document.body.style.overflow = ''; }
+  };
+  window.SixWordGame = api;
+})();
+</script>
 </body>
 </html>

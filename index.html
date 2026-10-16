@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.16-2';
+const APP_VERSION='2026.10.16-3';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -3575,7 +3575,90 @@ setTimeout(fit, 300); acInit(); musicStart(); sndBtn();
       ['umbrella','cái ô / dù','☂️'],['glasses','kính mắt','👓'],['bag','cái cặp / ba lô','🎒'],['computer','máy tính','💻'],
       ['camera','máy ảnh','📷'],['lamp','bóng đèn','💡'],['scissors','cái kéo','✂️'],['gift','món quà','🎁']] }
   ];
+  /* ---------- BỔ SUNG TỪ MỚI CHO CÁC CHỦ ĐỀ CŨ ---------- */
+  function addWords(id, arr) {
+    for (var i = 0; i < TOPICS.length; i++) if (TOPICS[i].id === id) { TOPICS[i].w = TOPICS[i].w.concat(arr); return; }
+  }
+  addWords('animals', [
+    ['cow','con bò','🐮'],['sheep','con cừu','🐑'],['hen','con gà mái','🐔'],['frog','con ếch','🐸'],
+    ['bear','con gấu','🐻'],['panda','gấu trúc','🐼'],['snake','con rắn','🐍'],['giraffe','hươu cao cổ','🦒'],
+    ['zebra','ngựa vằn','🦓'],['kangaroo','chuột túi','🦘'],['crocodile','cá sấu','🐊'],['owl','con cú','🦉']]);
+  addWords('fruits', [
+    ['mango','quả xoài','🥭'],['coconut','quả dừa','🥥'],['pear','quả lê','🍐'],['kiwi','quả kiwi','🥝'],
+    ['avocado','quả bơ','🥑'],['corn','bắp ngô','🌽'],['potato','khoai tây','🥔'],['onion','củ hành','🧅'],
+    ['garlic','củ tỏi','🧄'],['broccoli','súp lơ xanh','🥦'],['cucumber','dưa chuột','🥒'],['eggplant','cà tím','🍆'],
+    ['mushroom','nấm','🍄'],['chili','quả ớt','🌶️']]);
+  addWords('food', [
+    ['sandwich','bánh sandwich','🥪'],['hot dog','xúc xích kẹp bánh','🌭'],['french fries','khoai tây chiên','🍟'],['sushi','sushi','🍣'],
+    ['soup','món súp','🍲'],['salad','món salad','🥗'],['cookie','bánh quy','🍪'],['chocolate','sô cô la','🍫'],
+    ['candy','kẹo','🍬'],['donut','bánh vòng','🍩'],['honey','mật ong','🍯'],['tea','trà','🍵'],
+    ['juice','nước ép','🧃'],['beer','bia','🍺']]);
+  addWords('jobs', [
+    ['judge','thẩm phán','🧑‍⚖️'],['office worker','nhân viên văn phòng','🧑‍💼'],['builder','công nhân xây dựng','👷'],['guard','lính gác','💂'],
+    ['detective','thám tử','🕵️'],['programmer','lập trình viên','🧑‍💻'],['dancer','vũ công','💃'],['photographer','nhiếp ảnh gia','📸']]);
+  addWords('transport', [
+    ['scooter','xe tay ga','🛵'],['tram','xe điện','🚋'],['subway','tàu điện ngầm','🚇'],['tractor','máy kéo','🚜'],
+    ['sailboat','thuyền buồm','⛵'],['race car','xe đua','🏎️'],['skateboard','ván trượt','🛹'],['fire truck','xe cứu hỏa','🚒'],
+    ['police car','xe cảnh sát','🚓'],['canoe','ca nô','🛶']]);
+  addWords('nature', [
+    ['fire','ngọn lửa','🔥'],['earth','trái đất','🌍'],['volcano','núi lửa','🌋'],['desert','sa mạc','🏜️'],
+    ['island','hòn đảo','🏝️'],['leaf','chiếc lá','🍃'],['cactus','xương rồng','🌵'],['tornado','lốc xoáy','🌪️'],
+    ['fog','sương mù','🌫️'],['snowman','người tuyết','⛄']]);
+  addWords('objects', [
+    ['television','ti vi','📺'],['envelope','phong bì','✉️'],['balloon','bóng bay','🎈'],['trophy','cúp','🏆'],
+    ['flag','lá cờ','🚩'],['pen','cây bút','🖊️'],['map','bản đồ','🗺️'],['tent','cái lều','⛺'],
+    ['microscope','kính hiển vi','🔬'],['telescope','kính thiên văn','🔭'],['medicine','viên thuốc','💊'],['baby bottle','bình sữa','🍼']]);
 
+  /* ---------- CHỦ ĐỀ MỚI ---------- */
+  TOPICS.push(
+    { id: 'body', n: 'Cơ thể', i: '🧍', c: '#f43f5e', w: [
+      ['eye','con mắt','👁️'],['ear','cái tai','👂'],['nose','cái mũi','👃'],['mouth','cái miệng','👄'],
+      ['hand','bàn tay','✋'],['foot','bàn chân','🦶'],['leg','cái chân','🦵'],['arm','cánh tay','💪'],
+      ['tooth','cái răng','🦷'],['brain','bộ não','🧠'],['tongue','cái lưỡi','👅'],['bone','xương','🦴']] },
+    { id: 'clothes', n: 'Quần áo', i: '👕', c: '#0ea5e9', w: [
+      ['shirt','áo sơ mi','👕'],['pants','quần dài','👖'],['dress','váy liền','👗'],['cap','mũ lưỡi trai','🧢'],
+      ['sneakers','giày thể thao','👟'],['socks','đôi tất','🧦'],['coat','áo khoác','🧥'],['scarf','khăn quàng','🧣'],
+      ['gloves','găng tay','🧤'],['tie','cà vạt','👔'],['boots','đôi ủng','🥾'],['bikini','đồ bơi','👙']] },
+    { id: 'home', n: 'Trong nhà', i: '🏠', c: '#a16207', w: [
+      ['house','ngôi nhà','🏠'],['bed','cái giường','🛏️'],['door','cánh cửa','🚪'],['chair','cái ghế','🪑'],
+      ['toilet','bồn cầu','🚽'],['bathtub','bồn tắm','🛁'],['shower','vòi sen','🚿'],['window','cửa sổ','🪟'],
+      ['broom','cái chổi','🧹'],['soap','xà phòng','🧼'],['candle','ngọn nến','🕯️'],['mirror','cái gương','🪞']] },
+    { id: 'sports', n: 'Thể thao', i: '⚽', c: '#16a34a', w: [
+      ['football','bóng đá','⚽'],['basketball','bóng rổ','🏀'],['tennis','quần vợt','🎾'],['volleyball','bóng chuyền','🏐'],
+      ['baseball','bóng chày','⚾'],['swimming','bơi lội','🏊'],['boxing','đấm bốc','🥊'],['golf','đánh gôn','⛳'],
+      ['skiing','trượt tuyết','⛷️'],['cycling','đạp xe','🚴'],['running','chạy bộ','🏃'],['badminton','cầu lông','🏸']] },
+    { id: 'music', n: 'Âm nhạc', i: '🎸', c: '#7c3aed', w: [
+      ['guitar','đàn ghi-ta','🎸'],['piano','đàn piano','🎹'],['drum','cái trống','🥁'],['violin','đàn vi-ô-lông','🎻'],
+      ['trumpet','kèn trumpet','🎺'],['saxophone','kèn saxophone','🎷'],['microphone','micro','🎤'],['headphones','tai nghe','🎧'],
+      ['music note','nốt nhạc','🎵'],['bell','cái chuông','🔔'],['radio','đài radio','📻'],['accordion','đàn accordion','🪗']] },
+    { id: 'emotions', n: 'Cảm xúc', i: '😊', c: '#eab308', w: [
+      ['happy','vui vẻ','😊'],['sad','buồn','😢'],['angry','tức giận','😠'],['sleepy','buồn ngủ','😴'],
+      ['scared','sợ hãi','😱'],['surprised','ngạc nhiên','😮'],['laughing','cười lớn','😂'],['cool','ngầu','😎'],
+      ['sick','bị ốm','🤒'],['in love','đang yêu','😍'],['thinking','đang suy nghĩ','🤔'],['crying','khóc','😭']] },
+    { id: 'sea', n: 'Sinh vật biển', i: '🐬', c: '#0284c7', w: [
+      ['whale','cá voi','🐋'],['dolphin','cá heo','🐬'],['shark','cá mập','🦈'],['octopus','bạch tuộc','🐙'],
+      ['crab','con cua','🦀'],['turtle','con rùa','🐢'],['shrimp','con tôm','🦐'],['squid','con mực','🦑'],
+      ['lobster','tôm hùm','🦞'],['seal','hải cẩu','🦭'],['penguin','chim cánh cụt','🐧'],['oyster','con hàu','🦪']] },
+    { id: 'insects', n: 'Côn trùng', i: '🦋', c: '#65a30d', w: [
+      ['bee','con ong','🐝'],['butterfly','con bướm','🦋'],['ant','con kiến','🐜'],['spider','con nhện','🕷️'],
+      ['ladybug','bọ rùa','🐞'],['mosquito','con muỗi','🦟'],['snail','con ốc sên','🐌'],['worm','con giun','🪱'],
+      ['scorpion','con bọ cạp','🦂'],['cricket','con dế','🦗'],['fly','con ruồi','🪰'],['caterpillar','sâu bướm','🐛']] },
+    { id: 'places', n: 'Địa điểm', i: '🏫', c: '#db2777', w: [
+      ['school','trường học','🏫'],['hospital','bệnh viện','🏥'],['hotel','khách sạn','🏨'],['church','nhà thờ','⛪'],
+      ['factory','nhà máy','🏭'],['castle','lâu đài','🏰'],['stadium','sân vận động','🏟️'],['post office','bưu điện','🏤'],
+      ['shop','cửa hàng','🏪'],['beach','bãi biển','🏖️'],['park','công viên','🏞️'],['bridge','cây cầu','🌉']] },
+    { id: 'tools', n: 'Dụng cụ', i: '🔨', c: '#64748b', w: [
+      ['hammer','cái búa','🔨'],['saw','cái cưa','🪚'],['screwdriver','tua vít','🪛'],['wrench','cờ lê','🔧'],
+      ['axe','cái rìu','🪓'],['ladder','cái thang','🪜'],['magnet','nam châm','🧲'],['pencil','bút chì','✏️'],
+      ['paintbrush','cọ vẽ','🖌️'],['bucket','cái xô','🪣'],['battery','pin','🔋'],['toolbox','hộp đồ nghề','🧰']] },
+    { id: 'colors', n: 'Màu sắc', i: '🎨', c: '#ea580c', w: [
+      ['red','màu đỏ','🔴'],['blue','màu xanh dương','🔵'],['green','màu xanh lá','🟢'],['yellow','màu vàng','🟡'],
+      ['orange','màu cam','🟠'],['purple','màu tím','🟣'],['brown','màu nâu','🟤'],['black','màu đen','⚫'],['white','màu trắng','⚪']] },
+    { id: 'money', n: 'Tiền bạc & mua sắm', i: '💰', c: '#15803d', w: [
+      ['money','tiền','💵'],['coin','đồng xu','🪙'],['credit card','thẻ tín dụng','💳'],['wallet','cái ví','👛'],
+      ['bank','ngân hàng','🏦'],['chart','biểu đồ','📈'],['diamond','kim cương','💎'],['receipt','hóa đơn','🧾'],
+      ['calculator','máy tính','🧮'],['savings','tiền tiết kiệm','💰'],['shopping cart','xe đẩy hàng','🛒'],['price tag','nhãn giá','🏷️']] }
+  );
   var GAME_SECONDS = 120, REWARD = 10000, PENALTY = 5000;
     var SPEED = 0.7; // hệ số tốc độ rơi (1 = tốc độ cũ)
   try { var _sp = parseFloat(localStorage.getItem('wg_speed')); if (_sp >= 0.3 && _sp <= 1.5) SPEED = _sp; } catch (e) {}

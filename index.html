@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.16-1';
+const APP_VERSION='2026.10.16-2';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -3577,6 +3577,8 @@ setTimeout(fit, 300); acInit(); musicStart(); sndBtn();
   ];
 
   var GAME_SECONDS = 120, REWARD = 10000, PENALTY = 5000;
+    var SPEED = 0.7; // hệ số tốc độ rơi (1 = tốc độ cũ)
+  try { var _sp = parseFloat(localStorage.getItem('wg_speed')); if (_sp >= 0.3 && _sp <= 1.5) SPEED = _sp; } catch (e) {}
   var EMOJI_FONT = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
   var TEXT_FONT = '-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 
@@ -3620,7 +3622,10 @@ setTimeout(fit, 300); acInit(); musicStart(); sndBtn();
   '.wg-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.09);margin-bottom:6px;font-size:15px}' +
   '.wg-row .e{font-size:26px;font-family:' + EMOJI_FONT + '}' +
   '.wg-row .t{flex:1}.wg-row .t b{display:block;font-size:16px}.wg-row .t span{opacity:.85;font-size:14px}' +
-  '.wg-row.miss{background:rgba(239,68,68,.22)}';
+  '.wg-row.miss{background:rgba(239,68,68,.22)}' +
+  '.wg-spd{display:flex;align-items:center;gap:8px;margin:0 14px 6px;font-size:14px;color:#cfe0ff}' +
+  '.wg-spd input{flex:1;min-width:0;accent-color:#22c55e;height:28px}' +
+  '.wg-spd b{min-width:48px;text-align:right;color:#fff;font-variant-numeric:tabular-nums}';
   var st = document.createElement('style');
   st.textContent = css;
   document.head.appendChild(st);
@@ -3638,6 +3643,7 @@ setTimeout(fit, 300); acInit(); musicStart(); sndBtn();
     '<div class="wg-hud"><button class="wg-btn" data-a="quit" style="padding:8px 12px">←</button>' +
       '<div class="wg-pill" id="wgTime">⏱ 2:00</div><div class="wg-pill" id="wgMoney">💰 0đ</div></div>' +
     '<div class="wg-bar"><i id="wgBar"></i></div>' +
+        '<div class="wg-spd"><span>🐢</span><input type="range" id="wgSpd" min="0.3" max="1.5" step="0.1"><span>🐇</span><b id="wgSpdV"></b></div>' +
     '<div class="wg-stage" id="wgStage"><canvas id="wgCv"></canvas></div>' +
     '<div class="wg-mean"><small>Nghĩa của từ – hứng từ tiếng Anh đúng</small><b id="wgMean">…</b></div>' +
   '</div>' +
@@ -3678,6 +3684,14 @@ setTimeout(fit, 300); acInit(); musicStart(); sndBtn();
   /* ---------- Trạng thái game ---------- */
   var G = null, raf = 0, W = 0, H = 0, DPR = 2, keys = {};
   var hudTime = $('wgTime'), hudMoney = $('wgMoney'), hudBar = $('wgBar'), meanEl = $('wgMean');
+    var spdEl = $('wgSpd'), spdV = $('wgSpdV');
+  function spdLabel() { spdV.textContent = 'x' + SPEED.toFixed(1).replace('.', ','); }
+  spdEl.value = SPEED; spdLabel();
+  spdEl.addEventListener('input', function () {
+    SPEED = parseFloat(spdEl.value) || 1;
+    try { localStorage.setItem('wg_speed', SPEED); } catch (e) {}
+    spdLabel();
+  });
 
   function resize() {
     var r = $('wgStage').getBoundingClientRect();
@@ -3766,7 +3780,7 @@ setTimeout(fit, 300); acInit(); musicStart(); sndBtn();
     var bh = 60, by = H - bh - 6, top = by + 6;
     for (var i = G.items.length - 1; i >= 0; i--) {
       var it = G.items[i];
-      it.y += it.vy * dt;
+      it.y += it.vy * SPEED * dt;
       var overlapX = it.x + it.cw > G.bx - G.bw / 2 + 8 && it.x < G.bx + G.bw / 2 - 8;
       if (overlapX && it.y + it.ch >= top && it.y < by + bh) {
         if (it.ok) {

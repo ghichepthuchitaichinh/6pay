@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.16-5';
+const APP_VERSION='2026.10.16-6';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -4020,5 +4020,313 @@ setTimeout(fit, 300); acInit(); musicStart(); sndBtn();
   window.SixWordGame = api;
 })();
 </script>
+  <script>
+(function () {
+  if (!window.SixWordGame || window.SixDayGame) return;
+  var EF = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+  var TF = '-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+  var SECS = 105, OK = 10000, BAD = 5000;   // thời gian mỗi màn, tiền đúng, tiền sai
+
+  /* ---------- 9 biểu tượng tự vẽ (SVG) cho từ chưa có emoji ---------- */
+  var SV = {
+    pillow: '<rect x="6" y="16" width="52" height="32" rx="12" fill="#cfe3ff" stroke="#6b8fd6" stroke-width="3"/><path d="M14 26q18 8 36 0" fill="none" stroke="#6b8fd6" stroke-width="2"/>',
+    blanket: '<rect x="6" y="14" width="52" height="36" rx="6" fill="#ffb4c8" stroke="#d6577f" stroke-width="3"/><path d="M6 26h52M6 38h52" stroke="#d6577f" stroke-width="2"/>',
+    toothpaste: '<rect x="8" y="24" width="36" height="16" rx="4" fill="#4aa8ff" stroke="#1f6fc2" stroke-width="3"/><rect x="44" y="28" width="10" height="8" fill="#fff" stroke="#1f6fc2" stroke-width="3"/><path d="M14 32h22" stroke="#fff" stroke-width="3" stroke-linecap="round"/>',
+    towel: '<rect x="14" y="8" width="36" height="48" rx="4" fill="#7fe0c8" stroke="#2a9d8f" stroke-width="3"/><path d="M14 44h36M14 50h36" stroke="#2a9d8f" stroke-width="2"/>',
+    comb: '<rect x="6" y="14" width="52" height="12" rx="4" fill="#ffd54a" stroke="#c99a00" stroke-width="3"/><path d="M12 26v20M20 26v20M28 26v20M36 26v20M44 26v20M52 26v20" stroke="#c99a00" stroke-width="3" stroke-linecap="round"/>',
+    eraser: '<rect x="8" y="22" width="48" height="22" rx="4" fill="#ff9aa8" stroke="#d6577f" stroke-width="3"/><rect x="8" y="22" width="18" height="22" rx="4" fill="#6aa7ff" stroke="#1f6fc2" stroke-width="3"/>',
+    glue: '<rect x="20" y="22" width="24" height="34" rx="5" fill="#fff" stroke="#555" stroke-width="3"/><path d="M26 22l3-12h6l3 12" fill="#ff8a3d" stroke="#555" stroke-width="3"/><rect x="23" y="32" width="18" height="12" fill="#ffd54a"/>',
+    pajamas: '<path d="M20 8l-14 12 8 8 6-4v32h28V24l6 4 8-8-14-12q-6 6-12 0z" fill="#b39dff" stroke="#6a4fd6" stroke-width="3"/><path d="M20 36h24M20 46h24" stroke="#fff" stroke-width="3"/>',
+    tissue: '<rect x="8" y="30" width="48" height="26" rx="4" fill="#9fe0ff" stroke="#2a8fc2" stroke-width="3"/><path d="M24 30c0-14 8-20 8-20s8 6 8 20" fill="#fff" stroke="#999" stroke-width="2"/>'
+  };
+  var IMG = {};
+  Object.keys(SV).forEach(function (k) {
+    var im = new Image();
+    im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">' + SV[k] + '</svg>');
+    IMG[k] = im;
+  });
+
+  /* ---------- 15 màn, mỗi màn 12 từ: "tiếng Anh|nghĩa|hình" (hình bắt đầu bằng @ là SVG tự vẽ) ---------- */
+  var L = [
+    ['🛏️', 'Phòng ngủ', '#6366f1', 'bed|giường|🛏️;pillow|gối|@pillow;blanket|chăn|@blanket;alarm clock|đồng hồ báo thức|⏰;window|cửa sổ|🪟;door|cửa ra vào|🚪;lamp|đèn|💡;teddy bear|gấu bông|🧸;mirror|gương|🪞;slippers|dép|🩴;picture|bức tranh|🖼️;moon|mặt trăng|🌙'],
+    ['🪥', 'Đánh răng rửa mặt', '#0ea5e9', 'toothbrush|bàn chải đánh răng|🪥;toothpaste|kem đánh răng|@toothpaste;tooth|răng|🦷;soap|xà phòng|🧼;water|nước|💧;tap|vòi nước|🚰;bubbles|bọt xà phòng|🫧;towel|khăn mặt|@towel;comb|cái lược|@comb;toilet|bồn cầu|🚽;sponge|bọt biển|🧽;smile|nụ cười|😁'],
+    ['🥣', 'Ăn sáng', '#f59e0b', 'bread|bánh mì|🍞;egg|quả trứng|🥚;milk|sữa|🥛;noodles|mì|🍜;sandwich|bánh sandwich|🥪;banana|quả chuối|🍌;cheese|phô mai|🧀;juice|nước ép|🧃;rice|cơm|🍚;bowl|cái bát|🥣;spoon|cái thìa|🥄;honey|mật ong|🍯'],
+    ['👕', 'Quần áo', '#ec4899', 'shirt|áo sơ mi|👕;pants|quần dài|👖;dress|váy|👗;socks|đôi tất|🧦;shoes|giày|👟;cap|mũ lưỡi trai|🧢;coat|áo khoác|🧥;scarf|khăn quàng|🧣;gloves|găng tay|🧤;glasses|kính mắt|👓;watch|đồng hồ đeo tay|⌚;backpack|ba lô|🎒'],
+    ['🚌', 'Trên đường đi học', '#14b8a6', 'bicycle|xe đạp|🚲;bus|xe buýt|🚌;car|ô tô|🚗;motorbike|xe máy|🏍️;traffic light|đèn giao thông|🚦;stop sign|biển dừng|🛑;road|con đường|🛣️;bridge|cây cầu|🌉;tree|cái cây|🌳;umbrella|cái ô|☂️;rain|cơn mưa|🌧️;shop|cửa hàng|🏪'],
+    ['🏫', 'Đến trường', '#ef4444', 'school|trường học|🏫;teacher|giáo viên|👩‍🏫;student|học sinh|🧑‍🎓;friends|bạn bè|👫;bell|chuông|🔔;flag|lá cờ|🚩;hello|xin chào|👋;morning|buổi sáng|🌅;football|bóng đá|⚽;basketball|bóng rổ|🏀;building|tòa nhà|🏢;clock|đồng hồ|🕗'],
+    ['📖', 'Lớp học', '#8b5cf6', 'book|quyển sách|📖;notebook|quyển vở|📓;pencil|bút chì|✏️;pen|bút mực|🖊️;ruler|thước kẻ|📏;scissors|cái kéo|✂️;eraser|cục tẩy|@eraser;glue|hồ dán|@glue;computer|máy tính|💻;map|bản đồ|🗺️;globe|quả địa cầu|🌍;calculator|máy tính bấm|🧮'],
+    ['🪁', 'Ra chơi', '#f97316', 'kite|con diều|🪁;yo-yo|yo-yo|🪀;puzzle|trò xếp hình|🧩;dice|xúc xắc|🎲;balloon|bóng bay|🎈;ice cream|kem|🍦;candy|kẹo|🍬;cookie|bánh quy|🍪;drink|đồ uống|🥤;run|chạy|🏃;chess|cờ vua|♟️;video game|trò chơi điện tử|🎮'],
+    ['🏠', 'Về nhà', '#16a34a', 'house|ngôi nhà|🏠;key|chìa khóa|🔑;mother|mẹ|👩;father|bố|👨;grandmother|bà|👵;grandfather|ông|👴;baby|em bé|👶;brother|anh/em trai|👦;sister|chị/em gái|👧;dog|con chó|🐶;cat|con mèo|🐱;sofa|ghế sofa|🛋️'],
+    ['🏊', 'Tập thể dục', '#0284c7', 'swimming|bơi lội|🏊;cycling|đạp xe|🚴;volleyball|bóng chuyền|🏐;badminton|cầu lông|🏸;tennis|quần vợt|🎾;table tennis|bóng bàn|🏓;yoga|yoga|🧘;dance|nhảy múa|💃;weightlifting|cử tạ|🏋️;muscle|cơ bắp|💪;medal|huy chương|🏅;trophy|chiếc cúp|🏆'],
+    ['🚿', 'Tắm giặt', '#06b6d4', 'shower|vòi hoa sen|🚿;bathtub|bồn tắm|🛁;shampoo|dầu gội|🧴;laundry basket|giỏ đồ giặt|🧺;bucket|cái xô|🪣;broom|cái chổi|🧹;hot|nóng|🥵;cold|lạnh|🥶;clean|sạch sẽ|✨;rubber duck|vịt cao su|🦆;hair|mái tóc|💇;sun|mặt trời|☀️'],
+    ['🍲', 'Ăn tối', '#dc2626', 'fish|cá|🐟;chicken|thịt gà|🍗;meat|thịt|🥩;soup|món súp|🍲;vegetables|rau|🥬;tomato|cà chua|🍅;carrot|cà rốt|🥕;potato|khoai tây|🥔;corn|bắp ngô|🌽;watermelon|dưa hấu|🍉;plate|cái đĩa|🍽️;chopsticks|đôi đũa|🥢'],
+    ['📝', 'Học bài', '#7c3aed', 'chair|cái ghế|🪑;homework|bài tập về nhà|📝;write|viết|✍️;test|bài kiểm tra|💯;brain|bộ não|🧠;question|câu hỏi|❓;answer|câu trả lời|✅;number|con số|🔢;letters|chữ cái|🔤;headphones|tai nghe|🎧;science|khoa học|🔬;star|ngôi sao|⭐'],
+    ['🤧', 'Vệ sinh buổi tối', '#0d9488', 'pajamas|đồ ngủ|@pajamas;trash can|thùng rác|🗑️;mosquito|con muỗi|🦟;medicine|thuốc|💊;thermometer|nhiệt kế|🌡️;bandage|băng dán|🩹;sneeze|hắt hơi|🤧;mask|khẩu trang|😷;night|ban đêm|🌃;tissue|khăn giấy|@tissue;nine o\'clock|chín giờ|🕘;yawn|ngáp|🥱'],
+    ['😴', 'Đi ngủ', '#4338ca', 'sleep|ngủ|😴;dream|giấc mơ|💭;snore|ngáy|💤;storybook|truyện cổ tích|📚;kiss|hôn|😘;hug|ôm|🤗;owl|con cú|🦉;bat|con dơi|🦇;candle|ngọn nến|🕯️;full moon|trăng tròn|🌕;shooting star|sao băng|🌠;cricket|con dế|🦗']
+  ].map(function (r) {
+    return { i: r[0], n: r[1], c: r[2], w: r[3].split(';').map(function (s) { return s.split('|'); }) };
+  });
+  var CH = [['Buổi sáng ở nhà', 0, 4], ['Đi học', 4, 8], ['Buổi chiều', 8, 11], ['Buổi tối', 11, 15]];
+
+  /* ---------- Tiến độ (tự lưu) ---------- */
+  var P = { s: [], m: 0, lv: 1 };
+  try { var q = JSON.parse(localStorage.getItem('dg_p')); if (q && q.s) P = q; } catch (e) {}
+  while (P.s.length < 15) P.s.push(0);
+  if (P.lv !== 2) P.lv = 1;
+  function save() { try { localStorage.setItem('dg_p', JSON.stringify(P)); } catch (e) {} }
+
+  /* ---------- Tiện ích ---------- */
+  function money(n, sg) { var s = Math.abs(n).toLocaleString('vi-VN') + 'đ'; return n < 0 ? '−' + s : (sg && n > 0 ? '+' + s : s); }
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function stars(n) { return '★'.repeat(n) + '☆'.repeat(3 - n); }
+  function ic(w, sz) { return w[2].charAt(0) === '@' ? '<img src="' + IMG[w[2].slice(1)].src + '" style="width:' + sz + 'px;height:' + sz + 'px;vertical-align:middle">' : w[2]; }
+  function speak(w) { try { if (!window.speechSynthesis) return; speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = 0.85; speechSynthesis.speak(u); } catch (e) {} }
+  function stopSpeak() { try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {} }
+
+  /* ---------- CSS ---------- */
+  var st = document.createElement('style');
+  st.textContent = '' +
+  '.dg-root{position:fixed;left:0;top:0;right:0;bottom:0;height:100vh;height:100dvh;z-index:99999;display:none;flex-direction:column;background:linear-gradient(180deg,#0b1d3a,#1d4e89);color:#fff;font-family:' + TF + ';-webkit-user-select:none;user-select:none;overflow:hidden}' +
+  '.dg-root.on{display:flex}.dg-root *{box-sizing:border-box}' +
+  '.dg-scr{display:none;flex:1;flex-direction:column;min-height:0}.dg-scr.on{display:flex}' +
+  '.dg-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:max(12px,env(safe-area-inset-top)) 16px 10px}' +
+  '.dg-title{font-size:20px;font-weight:800}' +
+  '.dg-btn{border:0;border-radius:14px;padding:10px 16px;font-size:16px;font-weight:700;color:#fff;background:rgba(255,255,255,.16);cursor:pointer;font-family:inherit}' +
+  '.dg-btn:active{transform:scale(.97)}.dg-btn.main{background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 6px 18px rgba(34,197,94,.35)}.dg-btn.sel{background:#f59e0b}' +
+  '.dg-choice{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:16px 18px max(24px,env(safe-area-inset-bottom));max-width:520px;width:100%;margin:0 auto}' +
+  '.dg-big{border:0;border-radius:22px;padding:26px 16px;color:#fff;font-family:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 10px 24px rgba(0,0,0,.3)}' +
+  '.dg-big:active{transform:scale(.98)}.dg-big .ic{font-size:54px;line-height:1.1;font-family:' + EF + '}.dg-big .nm{font-size:21px;font-weight:800}.dg-big .sub{font-size:13px;opacity:.92;text-align:center;line-height:1.4}' +
+  '.dg-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 16px max(20px,env(safe-area-inset-bottom))}' +
+  '.dg-info{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:6px;font-size:15px;font-weight:700}' +
+  '.dg-scroll h3{font-size:15px;margin:14px 0 8px;color:#bcd3ff}' +
+  '.dg-nodes{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}' +
+  '.dg-node{border:0;border-radius:16px;padding:12px 8px;color:#fff;font-family:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:0 6px 16px rgba(0,0,0,.25)}' +
+  '.dg-node .ic{font-size:34px;font-family:' + EF + '}.dg-node .nm{font-size:14px;font-weight:800;text-align:center;line-height:1.25}.dg-node .st{font-size:15px;color:#fde68a;letter-spacing:2px}' +
+  '.dg-node.lock{filter:grayscale(1) brightness(.6);cursor:default}' +
+  '.dg-words{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin:10px 0 16px}' +
+  '.dg-wd{background:rgba(255,255,255,.12);border-radius:14px;padding:10px 6px;text-align:center;cursor:pointer;font-size:13px}' +
+  '.dg-wd .e{font-size:34px;line-height:1.2;font-family:' + EF + '}.dg-wd b{display:block;font-size:15px}.dg-wd span{opacity:.85}' +
+  '.dg-hud{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:max(10px,env(safe-area-inset-top)) 14px 8px}' +
+  '.dg-pill{background:rgba(255,255,255,.16);border-radius:999px;padding:7px 12px;font-size:16px;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}.dg-pill.bad{color:#fecaca}' +
+  '.dg-bar{height:6px;margin:0 14px 6px;border-radius:6px;background:rgba(255,255,255,.18);overflow:hidden}.dg-bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#facc15,#ef4444);transform-origin:left}' +
+  '.dg-stage{position:relative;flex:1;min-height:0;touch-action:none}.dg-stage canvas{position:absolute;left:0;top:0;width:100%;height:100%;display:block;touch-action:none}' +
+  '.dg-mean{padding:12px 16px max(16px,env(safe-area-inset-bottom));background:rgba(8,20,45,.78);border-top:2px solid rgba(255,255,255,.25);text-align:center}' +
+  '.dg-mean small{display:block;font-size:12px;letter-spacing:1px;color:#9fc0ff;font-weight:700}.dg-mean b{display:block;font-size:30px;line-height:1.2;font-weight:800;margin-top:2px}' +
+  '.dg-res{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:max(20px,env(safe-area-inset-top)) 18px max(24px,env(safe-area-inset-bottom));text-align:center}' +
+  '.dg-res h2{margin:6px 0 4px;font-size:25px}.dg-stars{font-size:46px;color:#fde68a;letter-spacing:6px}.dg-mny{font-size:40px;font-weight:900;margin:6px 0}' +
+  '.dg-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0 18px}' +
+  '.dg-list{text-align:left;max-width:520px;margin:0 auto}.dg-list h4{font-size:15px;margin:12px 0 6px;color:#bcd3ff}' +
+  '.dg-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:rgba(239,68,68,.22);margin-bottom:6px;font-size:15px}.dg-row .e{font-size:26px;font-family:' + EF + '}.dg-row b{display:block}.dg-row span{opacity:.85;font-size:14px}';
+  document.head.appendChild(st);
+
+  /* ---------- DOM ---------- */
+  var root = document.createElement('div');
+  root.className = 'dg-root';
+  root.innerHTML = '' +
+  '<div class="dg-scr on" id="dgMenu"><div class="dg-top"><div class="dg-title">🎮 Học từ vựng tiếng Anh</div><button class="dg-btn" data-a="close">✕ Đóng</button></div>' +
+    '<div class="dg-choice">' +
+    '<button class="dg-big" data-a="topics" style="background:linear-gradient(145deg,#3b82f6,#1d4ed8)"><span class="ic">📚</span><span class="nm">Học theo từ vựng</span><span class="sub">Chọn chủ đề yêu thích và hứng từ trong 2 phút</span></button>' +
+    '<button class="dg-big" data-a="day" style="background:linear-gradient(145deg,#f59e0b,#ea580c)"><span class="ic">🌞</span><span class="nm">Một ngày của bé</span><span class="sub">Phá đảo 15 màn từ lúc thức dậy đến khi đi ngủ, khoảng 30 phút</span></button>' +
+    '</div></div>' +
+  '<div class="dg-scr" id="dgMap"><div class="dg-top"><button class="dg-btn" data-a="menu" style="padding:8px 12px">←</button><div class="dg-title">🌞 Một ngày của bé</div><span></span></div>' +
+    '<div class="dg-scroll"><div class="dg-info"><span id="dgInfo"></span><span><button class="dg-btn" id="dgL1" data-a="lv1" style="padding:6px 12px;font-size:14px">Cấp 1 (có hình)</button> <button class="dg-btn" id="dgL2" data-a="lv2" style="padding:6px 12px;font-size:14px">Cấp 2 (chỉ chữ)</button></span></div><div id="dgMapList"></div></div></div>' +
+  '<div class="dg-scr" id="dgIntro"><div class="dg-top"><button class="dg-btn" data-a="map" style="padding:8px 12px">←</button><div class="dg-title" id="dgIT"></div><span></span></div>' +
+    '<div class="dg-scroll"><div style="font-size:14px;color:#cfe0ff">Chạm vào từng thẻ để nghe phát âm, làm quen rồi bấm Bắt đầu. Cần hứng đúng ít nhất 7/12 từ để qua màn.</div><div class="dg-words" id="dgWords"></div><div style="text-align:center"><button class="dg-btn main" data-a="go">▶ Bắt đầu</button></div></div></div>' +
+  '<div class="dg-scr" id="dgPlay"><div class="dg-hud"><button class="dg-btn" data-a="quit" style="padding:8px 12px">←</button><div class="dg-pill" id="dgTime">⏱ 1:45</div><div class="dg-pill" id="dgOk">✅ 0/12</div><div class="dg-pill" id="dgMoney">💰 0đ</div></div>' +
+    '<div class="dg-bar"><i id="dgBar"></i></div><div class="dg-stage" id="dgStage"><canvas id="dgCv"></canvas></div>' +
+    '<div class="dg-mean"><small>Nghĩa của từ – hứng từ tiếng Anh đúng</small><b id="dgMean">…</b></div></div>' +
+  '<div class="dg-scr" id="dgEnd"><div class="dg-res" id="dgRes"></div></div>';
+  document.body.appendChild(root);
+
+  var $ = function (id) { return document.getElementById(id); };
+  var scr = { menu: $('dgMenu'), map: $('dgMap'), intro: $('dgIntro'), play: $('dgPlay'), end: $('dgEnd') };
+  function show(k) { for (var n in scr) scr[n].classList.toggle('on', n === k); }
+  var cv = $('dgCv'), ctx = cv.getContext('2d'), stage = $('dgStage');
+
+  /* ---------- Bản đồ ---------- */
+  var cur = 0;
+  function renderMap() {
+    var tot = P.s.reduce(function (a, b) { return a + b; }, 0);
+    $('dgInfo').textContent = '⭐ ' + tot + '/45 · 💰 ' + money(P.m);
+    $('dgL1').classList.toggle('sel', P.lv === 1); $('dgL2').classList.toggle('sel', P.lv === 2);
+    var h = '';
+    CH.forEach(function (c) {
+      h += '<h3>' + c[0] + '</h3><div class="dg-nodes">';
+      for (var i = c[1]; i < c[2]; i++) {
+        var lock = i > 0 && !P.s[i - 1];
+        h += '<button class="dg-node' + (lock ? ' lock' : '') + '" ' + (lock ? '' : 'data-a="lvl" data-i="' + i + '"') + ' style="background:linear-gradient(145deg,' + L[i].c + ',' + L[i].c + 'bb)"><span class="ic">' + (lock ? '🔒' : L[i].i) + '</span><span class="nm">' + (i + 1) + '. ' + L[i].n + '</span><span class="st">' + stars(P.s[i]) + '</span></button>';
+      }
+      h += '</div>';
+    });
+    $('dgMapList').innerHTML = h;
+  }
+  function openIntro(i) {
+    cur = i; var lv = L[i];
+    $('dgIT').textContent = lv.i + ' Màn ' + (i + 1) + ': ' + lv.n;
+    $('dgWords').innerHTML = lv.w.map(function (w, k) { return '<div class="dg-wd" data-a="say" data-i="' + k + '"><div class="e">' + ic(w, 36) + '</div><b>' + w[0] + '</b><span>' + w[1] + '</span></div>'; }).join('');
+    show('intro');
+  }
+
+  /* ---------- Màn chơi ---------- */
+  var G = null, raf = 0, W = 0, H = 0, DPR = 2, keys = {};
+  function resize() {
+    var r = stage.getBoundingClientRect();
+    W = Math.max(200, r.width); H = Math.max(200, r.height);
+    DPR = Math.min(4, Math.max(2, window.devicePixelRatio || 1));
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    if (G) { G.bw = Math.min(130, W * 0.3); G.tx = Math.min(W - G.bw / 2, Math.max(G.bw / 2, G.tx)); }
+  }
+  function play(li) {
+    cur = li; show('play'); resize();
+    G = { li: li, left: SECS, money: 0, caught: {}, bad: 0, req: {}, miss: {}, bag: shuffle(L[li].w.slice()), items: [], floats: [], wait: 0.4, target: null, bx: W / 2, tx: W / 2, bw: Math.min(130, W * 0.3), flash: 0, fc: '', last: performance.now() };
+    $('dgMean').textContent = 'Sẵn sàng…'; hud();
+    cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
+  }
+  function newRound() {
+    var t = G.bag.pop(); G.target = t; $('dgMean').textContent = t[1]; speak(t[0]);
+    var n = (G.li >= 7 || P.lv === 2) ? 4 : 3, pool = L[G.li].w.slice();
+    for (var p = 0; p < G.li; p++) pool = pool.concat(shuffle(L[p].w.slice()).slice(0, 2));
+    var seen = {}; seen[t[0]] = 1;
+    var opts = shuffle(pool).filter(function (w) { if (seen[w[0]]) return false; seen[w[0]] = 1; return true; }).slice(0, n - 1);
+    opts = shuffle([t].concat(opts));
+    var lane = W / n, cw = Math.min(92, lane - 16), ch = P.lv === 2 ? cw * 0.7 : cw * 1.12;
+    var sp = 0.6 + 0.3 * G.li / 14 + (P.lv === 2 ? 0.15 : 0), base = H * (0.30 + 0.10 * (1 - G.left / SECS)) * sp;
+    G.items = opts.map(function (o, i) { return { w: o, ok: o === t, x: i * lane + (lane - cw) / 2 + rand(-4, 4), y: -ch - rand(0, 40), cw: cw, ch: ch, vy: base * rand(0.92, 1.12) }; });
+  }
+  function fl(x, y, text, color) { G.floats.push({ x: x, y: y, t: 0, text: text, color: color }); }
+  function hud() {
+    var s = Math.max(0, Math.ceil(G.left));
+    $('dgTime').textContent = '⏱ ' + Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2);
+    $('dgOk').textContent = '✅ ' + Object.keys(G.caught).length + '/12';
+    var m = $('dgMoney'); m.textContent = '💰 ' + money(G.money); m.classList.toggle('bad', G.money < 0);
+    $('dgBar').style.transform = 'scaleX(' + Math.max(0, G.left / SECS) + ')';
+  }
+  function loop(now) {
+    if (!G) return;
+    var dt = Math.min(0.05, (now - G.last) / 1000); G.last = now;
+    G.left -= dt;
+    if (G.left <= 0) { G.left = 0; hud(); return finish(); }
+    var sp = W * 1.3;
+    if (keys.ArrowLeft || keys.a) G.tx -= sp * dt;
+    if (keys.ArrowRight || keys.d) G.tx += sp * dt;
+    G.tx = Math.min(W - G.bw / 2, Math.max(G.bw / 2, G.tx));
+    G.bx += (G.tx - G.bx) * Math.min(1, dt * 20);
+    if (!G.items.length) { G.wait -= dt; if (G.wait <= 0) { if (!G.bag.length) { hud(); return finish(); } newRound(); } }
+    var bh = 60, by = H - bh - 6, top = by + 6;
+    for (var i = G.items.length - 1; i >= 0; i--) {
+      var it = G.items[i]; it.y += it.vy * dt;
+      var ox = it.x + it.cw > G.bx - G.bw / 2 + 8 && it.x < G.bx + G.bw / 2 - 8;
+      if (ox && it.y + it.ch >= top && it.y < by + bh) {
+        if (it.ok) {
+          G.money += OK; G.caught[it.w[0]] = 1; fl(G.bx, by - 10, money(OK, 1), '#4ade80');
+          G.flash = 0.25; G.fc = 'rgba(34,197,94,.30)'; speak(it.w[0]); G.items = []; G.wait = 0.55; break;
+        } else {
+          G.money -= BAD; G.bad++; G.miss[G.target[0]] = G.target; fl(G.bx, by - 10, '−' + money(BAD), '#f87171');
+          G.flash = 0.25; G.fc = 'rgba(239,68,68,.30)'; speak(it.w[0]); G.items.splice(i, 1);
+        }
+      } else if (it.y > H + 10) {
+        if (it.ok) { G.miss[it.w[0]] = it.w; if (!G.req[it.w[0]]) { G.req[it.w[0]] = 1; G.bag.unshift(it.w); } fl(W / 2, H * 0.5, 'Lỡ: ' + it.w[0], '#fde68a'); }
+        G.items.splice(i, 1);
+      }
+    }
+    hud(); draw(by, bh); raf = requestAnimationFrame(loop);
+  }
+  function rr(x, y, w, h, r) {
+    ctx.beginPath(); ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h); ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r); ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
+  }
+  function draw(by, bh) {
+    ctx.clearRect(0, 0, W, H);
+    if (G.flash > 0) { ctx.fillStyle = G.fc; ctx.fillRect(0, 0, W, H); G.flash -= 0.016; }
+    ctx.fillStyle = 'rgba(255,255,255,.07)'; ctx.font = Math.round(Math.min(W, H) * 0.7) + 'px ' + EF;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(L[G.li].i, W / 2, H * 0.45);
+    G.items.forEach(function (it) {
+      ctx.save(); ctx.shadowColor = 'rgba(0,0,0,.35)'; ctx.shadowBlur = 12; ctx.shadowOffsetY = 5; ctx.fillStyle = '#fff';
+      rr(it.x, it.y, it.cw, it.ch, 16); ctx.fill(); ctx.restore();
+      var e = it.w[2], txtY = it.y + it.ch * 0.80;
+      if (P.lv === 1) {
+        if (e.charAt(0) === '@') { var im = IMG[e.slice(1)], s = it.cw * 0.52; if (im.complete) ctx.drawImage(im, it.x + (it.cw - s) / 2, it.y + it.ch * 0.38 - s / 2, s, s); }
+        else { ctx.font = Math.round(it.cw * 0.46) + 'px ' + EF; ctx.fillStyle = '#000'; ctx.fillText(e, it.x + it.cw / 2, it.y + it.ch * 0.38); }
+      } else txtY = it.y + it.ch / 2;
+      var fs = Math.round(Math.max(14, it.cw * (P.lv === 1 ? 0.16 : 0.2)));
+      ctx.font = '800 ' + fs + 'px ' + TF;
+      while (ctx.measureText(it.w[0]).width > it.cw - 12 && fs > 9) { fs--; ctx.font = '800 ' + fs + 'px ' + TF; }
+      ctx.fillStyle = '#0f2a52'; ctx.fillText(it.w[0], it.x + it.cw / 2, txtY);
+    });
+    ctx.save(); ctx.shadowColor = 'rgba(0,0,0,.4)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4; ctx.fillStyle = 'rgba(255,255,255,.22)';
+    rr(G.bx - G.bw / 2, by + 20, G.bw, bh - 22, 14); ctx.fill(); ctx.restore();
+    ctx.font = Math.round(Math.min(78, G.bw * 0.68)) + 'px ' + EF; ctx.fillStyle = '#000'; ctx.fillText('🧺', G.bx, by + bh * 0.52);
+    for (var i = G.floats.length - 1; i >= 0; i--) {
+      var f = G.floats[i]; f.t += 0.016; if (f.t > 1) { G.floats.splice(i, 1); continue; }
+      ctx.globalAlpha = 1 - f.t; ctx.font = '900 24px ' + TF; ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.55)';
+      ctx.strokeText(f.text, f.x, f.y - f.t * 50); ctx.fillStyle = f.color; ctx.fillText(f.text, f.x, f.y - f.t * 50); ctx.globalAlpha = 1;
+    }
+  }
+
+  /* ---------- Kết quả màn ---------- */
+  function finish() {
+    cancelAnimationFrame(raf); stopSpeak();
+    var g = G, n = Object.keys(g.caught).length, sr = n >= 12 ? 3 : n >= 10 ? 2 : n >= 7 ? 1 : 0, pass = sr > 0;
+    var gain = g.money + (pass ? sr * 20000 : 0);
+    P.m = Math.max(0, P.m + gain); if (sr > P.s[g.li]) P.s[g.li] = sr; save();
+    var last = g.li === 14, mis = Object.keys(g.miss).filter(function (k) { return !g.caught[k]; });
+    var h = '<div style="font-size:54px">' + (pass ? '🎉' : '💪') + '</div><h2>' + (pass ? 'Qua màn ' + (g.li + 1) + '!' : 'Chưa qua màn, cố lên!') + '</h2>' +
+      '<div class="dg-stars">' + stars(sr) + '</div><div>Hứng đúng <b>' + n + '/12</b> từ</div>' +
+      '<div class="dg-mny" style="color:' + (gain >= 0 ? '#4ade80' : '#f87171') + '">' + money(gain, 1) + '</div>' +
+      (pass ? '<div style="opacity:.85;font-size:14px">đã gồm thưởng ' + money(sr * 20000) + ' cho ' + sr + ' sao</div>' : '<div style="opacity:.85;font-size:14px">Cần hứng đúng ít nhất 7 từ để qua màn</div>') +
+      '<div class="dg-acts">' + (pass ? '<button class="dg-btn main" data-a="' + (last ? 'win' : 'next') + '">' + (last ? '🏆 Phá đảo!' : '▶ Màn tiếp theo') + '</button>' : '') +
+      '<button class="dg-btn" data-a="retry">↻ Chơi lại</button><button class="dg-btn" data-a="map">Bản đồ</button></div>';
+    if (mis.length) h += '<div class="dg-list"><h4>📌 Từ cần ôn lại (' + mis.length + ')</h4>' + mis.map(function (k) { var w = g.miss[k]; return '<div class="dg-row"><span class="e">' + ic(w, 28) + '</span><span><b>' + w[0] + '</b><span>' + w[1] + '</span></span></div>'; }).join('') + '</div>';
+    $('dgRes').innerHTML = h; $('dgRes').scrollTop = 0; show('end');
+  }
+  function winScreen() {
+    var tot = P.s.reduce(function (a, b) { return a + b; }, 0);
+    $('dgRes').innerHTML = '<div style="font-size:70px">🏆</div><h2>Phá đảo "Một ngày của bé"!</h2><div class="dg-stars">★</div>' +
+      '<div>Bé đã hoàn thành cả 15 màn và học 180 từ vựng</div><div class="dg-mny" style="color:#fde68a">⭐ ' + tot + '/45</div>' +
+      '<div style="font-size:18px;font-weight:800">Tổng tiền thưởng: ' + money(P.m) + '</div>' +
+      '<div class="dg-acts"><button class="dg-btn main" data-a="map">Về bản đồ (chơi lại lấy thêm sao)</button></div>';
+    show('end');
+  }
+  function toMap() { G = null; stopSpeak(); renderMap(); show('map'); }
+
+  /* ---------- Sự kiện ---------- */
+  var orig = window.SixWordGame.open;
+  root.addEventListener('click', function (e) {
+    var el = e.target.closest ? e.target.closest('[data-a]') : null; if (!el) return;
+    var a = el.getAttribute('data-a'), i = parseInt(el.getAttribute('data-i'), 10);
+    if (a === 'close') api.close();
+    else if (a === 'menu') show('menu');
+    else if (a === 'topics') { root.classList.remove('on'); orig.call(window.SixWordGame); }
+    else if (a === 'day') { renderMap(); show('map'); }
+    else if (a === 'lv1' || a === 'lv2') { P.lv = a === 'lv1' ? 1 : 2; save(); renderMap(); }
+    else if (a === 'lvl') openIntro(i);
+    else if (a === 'say') speak(L[cur].w[i][0]);
+    else if (a === 'go' || a === 'retry') play(cur);
+    else if (a === 'quit') toMap();
+    else if (a === 'map') toMap();
+    else if (a === 'next') openIntro(cur + 1);
+    else if (a === 'win') winScreen();
+  });
+  function move(e) { if (!G) return; var r = stage.getBoundingClientRect(); G.tx = Math.min(W - G.bw / 2, Math.max(G.bw / 2, e.clientX - r.left)); }
+  stage.addEventListener('pointerdown', function (e) { try { stage.setPointerCapture(e.pointerId); } catch (x) {} move(e); });
+  stage.addEventListener('pointermove', move);
+  window.addEventListener('keydown', function (e) { keys[e.key] = true; if (G && root.classList.contains('on') && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) e.preventDefault(); });
+  window.addEventListener('keyup', function (e) { keys[e.key] = false; });
+  window.addEventListener('resize', function () { if (root.classList.contains('on') && scr.play.classList.contains('on')) resize(); });
+  document.addEventListener('visibilitychange', function () { if (G) G.last = performance.now(); });
+
+  /* ---------- API: mở game sẽ hiện menu 2 lựa chọn ---------- */
+  var api = {
+    open: function () { show('menu'); root.classList.add('on'); document.body.style.overflow = 'hidden'; },
+    close: function () { cancelAnimationFrame(raf); stopSpeak(); G = null; root.classList.remove('on'); document.body.style.overflow = ''; }
+  };
+  window.SixDayGame = api;
+  window.SixWordGame.open = api.open;   // nút "Game học từ vựng tiếng Anh" trong Tiện ích sẽ mở menu mới
+})();
+</script>
+<!-- ===== MỘT NGÀY CỦA BÉ + MENU 2 LỰA CHỌN: KẾT THÚC ===== -->
 </body>
 </html>

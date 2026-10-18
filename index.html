@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.16-7';
+const APP_VERSION='2026.10.18-1';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -1002,7 +1002,7 @@ function scrLogin(){
 }
   // ===== Sao lưu / khôi phục dữ liệu =====
 // Không sao lưu tài khoản và mật khẩu, nên khôi phục xong mật khẩu hiện tại trên máy vẫn giữ nguyên.
-function backupKeys(){return [STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,PLAN_DONE_KEY,QZ_KEY,DEBT_KEY,READ_KEY,FS_KEY,NOTES_KEY,GOAL_KEY,BILL_KEY,POMO_KEY];}
+function backupKeys(){return [STORE_KEY,STAR_KEY,STREAK_KEY,PLAN_KEY,PLAN_DONE_KEY,QZ_KEY,DEBT_KEY,READ_KEY,FS_KEY,NOTES_KEY,GOAL_KEY,BILL_KEY,POMO_KEY,'vnh_history_v1','vnv_travel_v1'];}
 function backupExport(){
  const data={};
  backupKeys().forEach(k=>{try{const v=localStorage.getItem(k);if(v!==null)data[k]=v;}catch(e){}});
@@ -1477,10 +1477,7 @@ function streakHtml(){const s=streakGet(),on=s.last===dayKey();return `<span cla
 // ===== Tiện ích 6Pay =====
 function scrExtra(){
  return screenWrap('Tiện ích 6Pay',`
-  <div class="list-item clickable util-item" onclick="push('debts')"><span>💳 Quản lý khoản nợ</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="push('goals')"><span>🐷 Mục tiêu tiết kiệm</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="fc.tab='loan';push('fincalc')"><span>🏦 Tính lãi vay và tiết kiệm</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="push('bills')"><span>🔔 Nhắc hóa đơn, chi định kỳ</span><span class="guide-cta">${billDueCount()?'<span class="neg">● '+billDueCount()+'</span> ':''}›</span></div>
+  <div class="list-item clickable util-item" onclick="push('finUtil')"><span>💰 Tiện ích tài chính</span><span class="guide-cta">${billDueCount()?'<span class="neg">● '+billDueCount()+'</span> ':''}›</span></div>
   <div class="list-item clickable util-item" onclick="push('calc')"><span>🧮 Máy tính</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('units')"><span>📐 Đổi đơn vị đo</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openPlanner()"><span>📅 Kế hoạch bản thân</span><span class="guide-cta">›</span></div>
@@ -1488,9 +1485,26 @@ function scrExtra(){
   <div class="list-item clickable util-item" onclick="openNotes()"><span>📝 Sổ ghi chú</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="openLunar()"><span>🗓️ Lịch vạn niên</span><span class="guide-cta">›</span></div>
   <div class="list-item clickable util-item" onclick="push('books')"><span>📖 Đọc sách Free</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="openQuiz()"><span>🎯 Đố vui tài chính</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="open6PayGame()"><span>🎮 Bước nhảy tài chính</span><span class="guide-cta">›</span></div>
-  <div class="list-item clickable util-item" onclick="SixWordGame.open()"><span>🔤 Game học từ vựng tiếng Anh</span><span class="guide-cta">›</span></div>`);
+  <div class="list-item clickable util-item" onclick="push('learnPlay')"><span>🎓 Học và Chơi</span><span class="guide-cta">›</span></div>`);
+}
+// ===== Thư mục Tiện ích tài chính =====
+function scrFinUtil(){
+ const it=(fn,t,extra)=>`<div class="list-item clickable util-item" onclick="${fn}"><span>${t}</span><span class="guide-cta">${extra||''}›</span></div>`;
+ return screenWrap('💰 Tiện ích tài chính',
+  it("push('debts')",'💳 Quản lý khoản nợ')+
+  it("push('goals')",'🐷 Mục tiêu tiết kiệm')+
+  it("fc.tab='loan';push('fincalc')",'🏦 Tính lãi vay và tiết kiệm')+
+  it("push('bills')",'🔔 Nhắc hóa đơn, chi định kỳ',billDueCount()?'<span class="neg">● '+billDueCount()+'</span> ':''));
+}
+// ===== Thư mục Học và Chơi =====
+function scrLearnPlay(){
+ const it=(fn,t)=>`<div class="list-item clickable util-item" onclick="${fn}"><span>${t}</span><span class="guide-cta">›</span></div>`;
+ return screenWrap('🎓 Học và Chơi',
+  it('openQuiz()','🎯 Đố vui tài chính')+
+  it('open6PayGame()','🎮 Bước nhảy tài chính')+
+  it('SixWordGame.open()','🔤 Game học từ vựng tiếng Anh')+
+  it("GameOv.open('vnh')",'<svg viewBox="0 0 30 20" width="22" height="15" style="vertical-align:-2px;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.35)" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><polygon fill="#FFFF00" points="15,4.5 16.35,8.65 20.71,8.65 17.18,11.21 18.53,15.35 15,12.79 11.47,15.35 12.82,11.21 9.29,8.65 13.65,8.65"/></svg> Khám phá lịch sử Việt Nam')+
+  it("GameOv.open('vnv')",'🧭 Khám phá Việt Nam'));
 }
 // ===== Đọc sách miễn phí =====
 // Thêm sách: thêm 1 dòng vào BOOKS. f = đường dẫn file (nên để trong thư mục books/ cùng chỗ với index.html)
@@ -2862,7 +2876,7 @@ const SCREENS={
  incomeCategories:scrIncomeCategories, incomeDetail:scrIncomeDetail,
  expenseOverview:scrExpenseOverview, expenseDetail:scrExpenseDetail, quiz:scrQuiz
  ,extra:scrExtra, planner:scrPlanner, ratios:scrRatios, planSettings:scrPlanSettings,books:scrBooks,debts:scrDebts, todayHistory:scrTodayHistory,
- notes:scrNotes, noteEdit:scrNoteEdit, lunar:scrLunar, stopwatch:scrStopwatch, calc:scrCalc, units:scrUnits
+ finUtil:scrFinUtil, learnPlay:scrLearnPlay, notes:scrNotes, noteEdit:scrNoteEdit, lunar:scrLunar, stopwatch:scrStopwatch, calc:scrCalc, units:scrUnits
 };
 function render(){
  const top=stack[stack.length-1];
@@ -4118,5 +4132,837 @@ setTimeout(fit, 300); acInit(); musicStart(); sndBtn();
 })();
 </script>
 <!-- ===== GAME HỌC TỪ VỰNG TIẾNG ANH: KẾT THÚC ===== -->
+<!-- ===== HỌC VÀ CHƠI: 2 GAME KHÁM PHÁ (BẮT ĐẦU) ===== -->
+<style>
+.gm-ov{position:fixed;inset:0;z-index:99998;display:none;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.gm-ov.show{display:flex}
+#vnhOv{background:#2b1b10}#vnvOv{background:#0e2a2a}
+.gm-bar{flex:none;display:flex;justify-content:flex-end;padding:8px 12px}
+.gm-x{font:inherit;font-size:14px;font-weight:700;border:0;border-radius:10px;padding:8px 14px;background:rgba(255,255,255,.18);color:#fff;cursor:pointer}
+.gm-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 10px 20px}
+
+#vnh-root{--bg:#f7edd8;--paper:#fffaf0;--ink:#3a2817;--muted:#7a6650;--red:#b3261e;--gold:#c9922e;--line:#e6d6b0;--ok:#2e7d32;--bad:#c62828;
+  font-family:"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:18px;max-width:900px;margin:0 auto;overflow:hidden;position:relative;line-height:1.5}
+#vnh-root *{box-sizing:border-box}
+#vnh-root button{font:inherit;color:inherit;cursor:pointer}
+.vh-top{display:flex;align-items:center;gap:8px;padding:12px 16px;background:linear-gradient(90deg,#7a1d16,#b3261e);color:#fff;flex-wrap:wrap}
+.vh-top h1{font-size:18px;margin:0;flex:1;cursor:pointer;min-width:180px}
+.vh-chip{background:rgba(255,255,255,.18);padding:4px 10px;border-radius:99px;font-size:13px;white-space:nowrap}
+.vh-main{padding:18px;min-height:420px}
+.vh-h2{font-size:22px;margin:0 0 6px}
+.vh-sub{color:var(--muted);margin:0 0 16px}
+.vh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.vh-mode{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:left;transition:.15s}
+.vh-mode:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(90,50,10,.15);border-color:var(--gold)}
+.vh-mode .big{font-size:34px;display:block}
+.vh-mode b{display:block;font-size:17px;margin:4px 0 2px}
+.vh-mode small{color:var(--muted)}
+.vh-btn{background:var(--red);color:#fff!important;border:0;border-radius:10px;padding:10px 18px;font-weight:600}
+.vh-btn:hover{filter:brightness(1.1)}
+.vh-btn.alt{background:#fff;color:var(--ink)!important;border:1px solid var(--line)}
+.vh-btn.sm{padding:6px 12px;font-size:13px}
+.vh-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.vh-era{display:flex;align-items:center;gap:12px;width:100%;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px;text-align:left}
+.vh-era:hover{border-color:var(--gold)}
+.vh-era.lock{opacity:.5}
+.vh-ico{font-size:28px;width:40px;text-align:center}
+.vh-et{flex:1}.vh-et small{display:block;color:var(--muted)}
+.vh-st{color:var(--gold);letter-spacing:2px;font-size:18px}
+.vh-story{background:var(--paper);border-left:5px solid var(--gold);border-radius:10px;padding:14px 16px;margin:10px 0}
+.vh-q{font-size:19px;font-weight:600;margin:10px 0 14px}
+.vh-opt{display:block;width:100%;text-align:left;background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:9px}
+.vh-opt:hover:not([disabled]){border-color:var(--gold)}
+.vh-opt.ok{background:#e6f4e7;border-color:var(--ok)}
+.vh-opt.bad{background:#fde7e7;border-color:var(--bad)}
+.vh-opt[disabled]{cursor:default}
+.vh-note{background:#fff3d6;border-radius:10px;padding:10px 14px;margin:10px 0}
+.vh-prog{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:6px}
+.vh-prog i{display:block;height:100%;background:var(--red);transition:width .2s}
+.vh-hint{background:var(--paper);border:1px dashed var(--gold);border-radius:10px;padding:9px 12px;margin-bottom:8px}
+.vh-hint.off{opacity:.45}
+.vh-collect{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.vh-cardx{background:var(--paper);border:2px solid var(--gold);border-radius:14px;padding:12px;text-align:center}
+.vh-cardx .big{font-size:40px}
+.vh-cardx small{color:var(--muted);display:block}
+.vh-cardx.off{border-style:dashed;border-color:var(--line);opacity:.55}
+.vh-ord{display:flex;align-items:center;gap:10px;width:100%;background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:9px;text-align:left}
+.vh-ord:hover:not(.done){border-color:var(--gold)}
+.vh-ord.done{background:#e6f4e7;border-color:var(--ok);cursor:default}
+.vh-ord .num{min-width:30px;height:30px;border-radius:50%;background:var(--line);display:flex;align-items:center;justify-content:center;font-weight:700}
+.vh-ord.done .num{background:var(--ok);color:#fff}
+.vh-ord .yr{margin-left:auto;color:var(--ok);font-weight:700}
+@keyframes vhshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.vh-shake{animation:vhshake .3s;border-color:var(--bad)!important}
+.vh-toast{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);background:#3a2817;color:#fff;padding:8px 16px;border-radius:99px;font-size:14px;z-index:5}
+.vh-timer{font-size:28px;font-weight:700;color:var(--red)}
+.vh-big{font-size:56px;text-align:center}
+.vh-center{text-align:center}
+@media(max-width:560px){.vh-main{padding:12px}.vh-q{font-size:17px}}
+
+
+#vnv-root{--bg:#eaf6f3;--paper:#ffffff;--ink:#12302e;--muted:#5b7a76;--main:#0f766e;--gold:#e0a21b;--line:#cfe5e0;--ok:#2e7d32;--bad:#c62828;
+  font-family:"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:18px;max-width:900px;margin:0 auto;overflow:hidden;position:relative;line-height:1.5}
+#vnv-root *{box-sizing:border-box}
+#vnv-root button{font:inherit;color:inherit;cursor:pointer}
+.vv-top{display:flex;align-items:center;gap:8px;padding:12px 16px;background:linear-gradient(90deg,#0b4f4a,#0f766e);color:#fff;flex-wrap:wrap}
+.vv-top h1{font-size:18px;margin:0;flex:1;cursor:pointer;min-width:180px}
+.vv-chip{background:rgba(255,255,255,.18);padding:4px 10px;border-radius:99px;font-size:13px;white-space:nowrap}
+.vv-main{padding:18px;min-height:420px}
+.vv-h2{font-size:22px;margin:0 0 6px}
+.vv-sub{color:var(--muted);margin:0 0 14px}
+.vv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.vv-mode{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:left;transition:.15s}
+.vv-mode:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(10,80,70,.18);border-color:var(--main)}
+.vv-mode .big{font-size:34px;display:block}
+.vv-mode b{display:block;font-size:17px;margin:4px 0 2px}
+.vv-mode small{color:var(--muted)}
+.vv-btn{background:var(--main);color:#fff!important;border:0;border-radius:10px;padding:10px 18px;font-weight:600}
+.vv-btn:hover{filter:brightness(1.12)}
+.vv-btn.alt{background:#fff;color:var(--ink)!important;border:1px solid var(--line)}
+.vv-btn.sm{padding:6px 12px;font-size:13px}
+.vv-btn[disabled]{opacity:.45;cursor:not-allowed}
+.vv-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.vv-mapwrap{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.vv-map{flex:0 0 auto;width:100%;max-width:400px;margin:0 auto;background:linear-gradient(#cfeaf5,#e6f5fb);border-radius:14px;border:1px solid var(--line)}
+.vv-side{flex:1;min-width:220px}
+.vv-node{cursor:pointer}
+.vv-node:hover circle.c{stroke:#000;stroke-width:2}
+.vv-q{font-size:19px;font-weight:600;margin:10px 0 14px}
+.vv-opt{display:block;width:100%;text-align:left;background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:9px}
+.vv-opt:hover:not([disabled]){border-color:var(--main)}
+.vv-opt.ok{background:#e6f4e7;border-color:var(--ok)}
+.vv-opt.bad{background:#fde7e7;border-color:var(--bad)}
+.vv-opt[disabled]{cursor:default}
+.vv-note{background:#e3f6f1;border-radius:10px;padding:10px 14px;margin:10px 0}
+.vv-story{background:var(--paper);border-left:5px solid var(--main);border-radius:10px;padding:14px 16px;margin:10px 0}
+.vv-prog{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:6px}
+.vv-prog i{display:block;height:100%;background:var(--main);transition:width .2s}
+.vv-big{font-size:56px;text-align:center}
+.vv-center{text-align:center}
+.vv-stamps{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.vv-stamp{background:var(--paper);border:3px double var(--main);border-radius:14px;padding:12px;text-align:center}
+.vv-stamp .big{font-size:36px}
+.vv-stamp small{display:block;color:var(--muted)}
+.vv-stamp.off{border-style:dashed;border-color:var(--line);opacity:.55}
+.vv-pic{font-size:110px;text-align:center;padding:14px;background:var(--paper);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:filter .2s}
+.vv-hint{background:var(--paper);border:1px dashed var(--gold);border-radius:10px;padding:8px 12px;margin-bottom:8px}
+.vv-hint.off{opacity:.45}
+.vv-food{font-size:64px;text-align:center}
+.vv-regs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.vv-reg{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:14px 6px;font-weight:700}
+.vv-reg:hover:not([disabled]){border-color:var(--main)}
+.vv-reg.ok{background:#e6f4e7;border-color:var(--ok)}
+.vv-reg.bad{background:#fde7e7;border-color:var(--bad)}
+.vv-act{display:flex;align-items:center;gap:10px;width:100%;background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;text-align:left}
+.vv-act:hover:not([disabled]){border-color:var(--main)}
+.vv-act.sel{background:#e3f6f1;border-color:var(--main)}
+.vv-act[disabled]:not(.sel){opacity:.4}
+.vv-act .ic{font-size:24px}
+.vv-act .tx{flex:1}.vv-act .tx small{display:block;color:var(--muted)}
+.vv-act .jy{color:var(--gold);font-weight:700;white-space:nowrap}
+.vv-meter{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 12px}
+.vv-meter span{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:6px 12px;font-weight:600}
+.vv-meter .over{color:var(--bad)}
+.vv-toast{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);background:#12302e;color:#fff;padding:8px 16px;border-radius:99px;font-size:14px;z-index:5}
+@media(max-width:560px){.vv-main{padding:12px}.vv-q{font-size:17px}.vv-pic{font-size:80px}}
+
+</style>
+<div class="gm-ov" id="vnhOv"><div class="gm-bar"><button class="gm-x" onclick="GameOv.close('vnh')">✕ Đóng</button></div><div class="gm-body"><div id="vnh-root"></div></div></div>
+<div class="gm-ov" id="vnvOv"><div class="gm-bar"><button class="gm-x" onclick="GameOv.close('vnv')">✕ Đóng</button></div><div class="gm-body"><div id="vnv-root"></div></div></div>
+<script>
+(function(){
+'use strict';
+const KEY='vnh_history_v1';
+const root=document.getElementById('vnh-root');
+const DEF=()=>({done:{},pts:0,best:{arena:0,order:0,who:0},unlockAll:false});
+let S=DEF();
+try{const x=JSON.parse(localStorage.getItem(KEY));if(x)S=Object.assign(DEF(),x)}catch(e){}
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ===================== DỮ LIỆU ===================== */
+/* Câu hỏi: [câu hỏi, ĐÁP ÁN ĐÚNG, sai1, sai2, sai3, giải thích] — thứ tự đáp án sẽ được xáo khi chơi */
+const ERAS=[
+{id:'hb',ic:'🥁',n:'Hồng Bàng – Văn Lang – Âu Lạc',y:'Đến năm 179 TCN',
+ story:'Theo truyền thuyết, Lạc Long Quân và Âu Cơ sinh ra một bọc trăm trứng, nở thành trăm người con. Người con trưởng lên ngôi, xưng Hùng Vương, lập nước Văn Lang, đóng đô ở Phong Châu. Sau đó, An Dương Vương hợp nhất hai bộ tộc Âu Việt và Lạc Việt, lập nước Âu Lạc và xây thành Cổ Loa.',
+ qs:[
+ ['Vị vua đầu tiên của nước Văn Lang xưng là gì?','Hùng Vương','Lý Nam Đế','Ngô Quyền','Triệu Đà','Các vua Hùng đóng đô ở Phong Châu, truyền được nhiều đời.'],
+ ['Kinh đô của nước Âu Lạc thời An Dương Vương là?','Cổ Loa','Hoa Lư','Thăng Long','Phú Xuân','Thành Cổ Loa có kiến trúc xoắn ốc độc đáo, nay thuộc Hà Nội.'],
+ ['Theo truyền thuyết, Âu Cơ sinh ra bao nhiêu người con?','100 người con','50 người con','81 người con','9 người con','Sau đó 50 con theo mẹ lên núi, 50 con theo cha xuống biển.']],
+ card:{ic:'🥁',t:'Trống đồng Đông Sơn',d:'Biểu tượng của nền văn minh sông Hồng.'}},
+{id:'bt',ic:'⚔️',n:'Một nghìn năm Bắc thuộc',y:'179 TCN – 938',
+ story:'Hơn một nghìn năm bị phương Bắc đô hộ, người Việt vẫn giữ tiếng nói, phong tục và liên tục nổi dậy: Hai Bà Trưng (năm 40), Bà Triệu (năm 248), Lý Bí (năm 544)... Năm 938, Ngô Quyền đánh tan quân Nam Hán trên sông Bạch Đằng, mở ra thời kỳ độc lập lâu dài.',
+ qs:[
+ ['Hai Bà Trưng khởi nghĩa vào năm nào?','Năm 40','Năm 248','Năm 544','Năm 938','Cuộc khởi nghĩa nổ ra ở Mê Linh, nhanh chóng giành lại 65 thành.'],
+ ['Trận đánh nào năm 938 chấm dứt thời Bắc thuộc?','Trận Bạch Đằng','Trận Chi Lăng','Trận Đống Đa','Trận Rạch Gầm – Xoài Mút','Ngô Quyền dùng cọc ngầm trên sông Bạch Đằng để đánh bại quân Nam Hán.'],
+ ['Lý Bí lập nước nào vào năm 544?','Vạn Xuân','Đại Cồ Việt','Đại Việt','Văn Lang','Lý Bí xưng là Lý Nam Đế, đặt quốc hiệu Vạn Xuân.']],
+ card:{ic:'🐘',t:'Hai Bà Trưng',d:'Hai nữ anh hùng đầu tiên dựng cờ khởi nghĩa.'}},
+{id:'dl',ic:'🏯',n:'Ngô – Đinh – Tiền Lê',y:'939 – 1009',
+ story:'Ngô Quyền xưng vương năm 939. Sau thời loạn 12 sứ quân, Đinh Bộ Lĩnh thống nhất đất nước, lên ngôi hoàng đế năm 968, đặt quốc hiệu Đại Cồ Việt, đóng đô ở Hoa Lư. Năm 981, Lê Hoàn chỉ huy quân dân đánh bại quân Tống xâm lược.',
+ qs:[
+ ['Quốc hiệu của nước ta thời nhà Đinh là gì?','Đại Cồ Việt','Vạn Xuân','Đại Ngu','Đại Nam','Đinh Bộ Lĩnh xưng là Đinh Tiên Hoàng.'],
+ ['Kinh đô thời Đinh – Tiền Lê đặt ở đâu?','Hoa Lư','Cổ Loa','Thăng Long','Phú Xuân','Hoa Lư nay thuộc Ninh Bình, nơi có núi non hiểm trở dễ phòng thủ.'],
+ ['Ai chỉ huy cuộc kháng chiến chống Tống lần thứ nhất (năm 981)?','Lê Hoàn','Lý Thường Kiệt','Trần Hưng Đạo','Quang Trung','Lê Hoàn lên ngôi, lập nhà Tiền Lê.']],
+ card:{ic:'⛰️',t:'Cố đô Hoa Lư',d:'Kinh đô đầu tiên của nhà nước phong kiến độc lập.'}},
+{id:'ly',ic:'🐉',n:'Nhà Lý – Thăng Long ra đời',y:'1009 – 1225',
+ story:'Năm 1009, Lý Công Uẩn lên ngôi. Năm 1010, ông dời đô từ Hoa Lư ra thành Đại La và đổi tên là Thăng Long. Triều Lý lập Văn Miếu (1070), mở mang giáo dục. Năm 1075–1077, Lý Thường Kiệt chặn quân Tống ở phòng tuyến sông Như Nguyệt; bài thơ “Nam quốc sơn hà” được xem là bản tuyên ngôn độc lập đầu tiên.',
+ qs:[
+ ['Sự kiện nổi tiếng năm 1010 của Lý Công Uẩn là gì?','Dời đô từ Hoa Lư ra Thăng Long','Đánh thắng quân Mông Cổ','Xây thành Cổ Loa','Lập nước Vạn Xuân','Ông ban Chiếu dời đô, chọn đất Đại La làm kinh đô.'],
+ ['Văn Miếu (xây năm 1070) được dựng dưới triều đại nào?','Nhà Lý','Nhà Trần','Nhà Nguyễn','Nhà Hồ','Văn Miếu – Quốc Tử Giám được coi là trường đại học đầu tiên của nước ta.'],
+ ['Lý Thường Kiệt xây phòng tuyến chặn quân Tống trên sông nào?','Sông Như Nguyệt','Sông Bạch Đằng','Sông Gianh','Sông Bến Hải','Phòng tuyến Như Nguyệt (sông Cầu) giúp đánh bại quân Tống.']],
+ card:{ic:'🏙️',t:'Thăng Long',d:'Kinh đô nghìn năm của đất nước.'}},
+{id:'tr',ic:'🛡️',n:'Nhà Trần – Ba lần đánh Mông–Nguyên',y:'1225 – 1400',
+ story:'Quân Mông – Nguyên từng chinh phục nhiều vùng đất rộng lớn, nhưng ba lần xâm lược Đại Việt (1258, 1285, 1287–1288) đều thất bại. Hội nghị Diên Hồng thể hiện ý chí quyết chiến. Trần Hưng Đạo soạn “Hịch tướng sĩ” và chỉ huy chiến thắng Bạch Đằng năm 1288.',
+ qs:[
+ ['Quân dân nhà Trần đã chiến thắng quân Mông – Nguyên mấy lần?','3 lần','2 lần','4 lần','5 lần','Các năm 1258, 1285 và 1287–1288.'],
+ ['Hội nghị nào họp các bô lão để hỏi “đánh hay hòa”?','Hội nghị Diên Hồng','Hội thề Lũng Nhai','Hội nghị Genève','Hội nghị Fontainebleau','Các bô lão đồng thanh hô “Đánh!”.'],
+ ['Năm 1288, Trần Hưng Đạo dùng kế gì để thắng thủy quân Nguyên trên sông Bạch Đằng?','Cắm cọc ngầm, lợi dụng thủy triều','Dùng voi chiến phá thành','Đào hào đắp lũy chặn bộ binh','Hỏa công đốt kho lương trên bờ','Khi nước triều lên, thuyền địch tiến vào bãi cọc; khi nước rút, thuyền mắc cọc và bị tiêu diệt.']],
+ card:{ic:'🌊',t:'Hưng Đạo Vương',d:'Vị tướng ba lần đánh thắng quân Mông – Nguyên.'}},
+{id:'ls',ic:'🗡️',n:'Hồ – Lê sơ & Khởi nghĩa Lam Sơn',y:'1400 – 1527',
+ story:'Năm 1400, Hồ Quý Ly lập nhà Hồ, xây Thành Nhà Hồ bằng đá ở Thanh Hóa. Năm 1407, nhà Minh xâm lược. Năm 1418, Lê Lợi dựng cờ khởi nghĩa ở Lam Sơn, có Nguyễn Trãi làm quân sư. Năm 1428, nghĩa quân toàn thắng, Lê Lợi lên ngôi, “Bình Ngô đại cáo” ra đời. Đến thời Lê Thánh Tông, đất nước cực thịnh.',
+ qs:[
+ ['Lê Lợi dựng cờ khởi nghĩa chống quân Minh ở đâu?','Lam Sơn','Mê Linh','Tây Sơn','Hoa Lư','Cuộc khởi nghĩa Lam Sơn kéo dài 10 năm (1418–1427).'],
+ ['Ai là tác giả “Bình Ngô đại cáo”?','Nguyễn Trãi','Lý Thường Kiệt','Trần Quốc Tuấn','Nguyễn Du','Nguyễn Trãi được UNESCO tôn vinh là Danh nhân văn hóa thế giới.'],
+ ['Thành Nhà Hồ (Tây Đô), Di sản thế giới của UNESCO, thuộc tỉnh nào?','Thanh Hóa','Nghệ An','Ninh Bình','Thừa Thiên Huế','Thành được xây bằng những khối đá lớn, chỉ trong khoảng ba tháng.']],
+ card:{ic:'📜',t:'Bình Ngô đại cáo',d:'Áng văn khẳng định nền độc lập của dân tộc.'}},
+{id:'ts',ic:'🔥',n:'Phong trào Tây Sơn',y:'1771 – 1802',
+ story:'Ba anh em Nguyễn Nhạc, Nguyễn Huệ, Nguyễn Lữ khởi nghĩa ở ấp Tây Sơn năm 1771. Năm 1785, Nguyễn Huệ đại phá quân Xiêm ở Rạch Gầm – Xoài Mút. Năm 1788 ông lên ngôi hoàng đế, lấy niên hiệu Quang Trung, rồi thần tốc hành quân ra Bắc, đại phá quân Thanh vào đầu xuân Kỷ Dậu 1789.',
+ qs:[
+ ['Nguyễn Huệ lên ngôi hoàng đế với niên hiệu gì?','Quang Trung','Gia Long','Thái Tổ','Hồng Đức','Ông là một trong những nhà quân sự kiệt xuất của lịch sử Việt Nam.'],
+ ['Chiến thắng nào năm 1789 đánh tan quân Thanh?','Ngọc Hồi – Đống Đa','Rạch Gầm – Xoài Mút','Chi Lăng – Xương Giang','Bạch Đằng','Quân Tây Sơn tiến công thần tốc trong dịp Tết Kỷ Dậu.'],
+ ['Trận Rạch Gầm – Xoài Mút (1785) đánh bại đội quân nào?','Quân Xiêm','Quân Thanh','Quân Minh','Quân Nguyên','Trận thủy chiến diễn ra trên sông Tiền (Tiền Giang).']],
+ card:{ic:'🐎',t:'Hoàng đế Quang Trung',d:'Nguyễn Huệ – “Người anh hùng áo vải”.'}},
+{id:'ng',ic:'⚓',n:'Triều Nguyễn & Thời Pháp thuộc',y:'1802 – 1945',
+ story:'Năm 1802, Nguyễn Ánh lên ngôi (Gia Long), đóng đô ở Phú Xuân (Huế); từ năm 1804 quốc hiệu là Việt Nam. Năm 1858, Pháp nổ súng tấn công Đà Nẵng, bắt đầu xâm lược. Đến năm 1884 hiệp ước Patenôtre được ký, nước ta mất độc lập. Năm 1911, Nguyễn Tất Thành ra đi tìm đường cứu nước; năm 1930 Đảng Cộng sản Việt Nam ra đời.',
+ qs:[
+ ['Kinh đô của triều Nguyễn đặt ở đâu?','Huế (Phú Xuân)','Hà Nội','Hoa Lư','Cổ Loa','Quần thể di tích Cố đô Huế là Di sản thế giới của UNESCO.'],
+ ['Năm 1858, thực dân Pháp nổ súng xâm lược nước ta lần đầu tại đâu?','Đà Nẵng','Hải Phòng','Hà Nội','Cần Thơ','Quân Pháp và Tây Ban Nha tấn công bán đảo Sơn Trà, cảng Đà Nẵng.'],
+ ['Năm 1911, Nguyễn Tất Thành ra đi tìm đường cứu nước từ bến cảng nào?','Bến Nhà Rồng (Sài Gòn)','Cảng Hải Phòng','Cảng Cam Ranh','Cảng Tourane (Đà Nẵng)','Ông rời Bến Nhà Rồng trên tàu Đô đốc Latouche-Tréville.']],
+ card:{ic:'🏰',t:'Kinh thành Huế',d:'Kinh đô cuối cùng của chế độ phong kiến Việt Nam.'}},
+{id:'hd',ic:'🇻🇳',n:'Độc lập, Thống nhất & Đổi mới',y:'1945 – nay',
+ story:'Ngày 2/9/1945, Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập tại Quảng trường Ba Đình, khai sinh nước Việt Nam Dân chủ Cộng hòa. Chiến thắng Điện Biên Phủ (7/5/1954) kết thúc kháng chiến chống Pháp. Ngày 30/4/1975, miền Nam được giải phóng, đất nước thống nhất. Năm 1986, công cuộc Đổi mới mở ra giai đoạn phát triển mới.',
+ qs:[
+ ['Tuyên ngôn Độc lập ngày 2/9/1945 được đọc tại đâu?','Quảng trường Ba Đình','Nhà hát Lớn Hà Nội','Dinh Độc Lập','Bến Nhà Rồng','Quảng trường Ba Đình hiện có Lăng Chủ tịch Hồ Chí Minh.'],
+ ['Chiến dịch nào năm 1954 kết thúc cuộc kháng chiến chống Pháp?','Điện Biên Phủ','Việt Bắc','Biên giới','Hồ Chí Minh','Đại tướng Võ Nguyên Giáp chỉ huy chiến dịch.'],
+ ['Công cuộc Đổi mới của Việt Nam bắt đầu vào năm nào?','1986','1975','1954','1991','Từ năm 1986, Việt Nam chuyển sang phát triển kinh tế thị trường định hướng xã hội chủ nghĩa.']],
+ card:{ic:'🌟',t:'Ngày Thống nhất',d:'30/4/1975 – non sông thu về một mối.'}}
+];
+
+/* Ai là ai: [tên, icon, gợi ý 1, 2, 3] — gợi ý càng về sau càng dễ */
+const WHO=[
+['Ngô Quyền','🌊','Quê ở Đường Lâm (Sơn Tây).','Dùng cọc nhọn cắm ngầm dưới lòng sông.','Năm 938 đánh bại quân Nam Hán, xưng vương năm 939.'],
+['Đinh Bộ Lĩnh','🌾','Thuở nhỏ chăn trâu, lấy bông lau làm cờ tập trận.','Dẹp loạn 12 sứ quân.','Lên ngôi hoàng đế, đặt quốc hiệu Đại Cồ Việt, đóng đô Hoa Lư.'],
+['Lý Công Uẩn','🐉','Lớn lên trong chùa, được nhà sư nuôi dạy.','Lập ra triều đại nhà Lý năm 1009.','Ban Chiếu dời đô, đưa kinh đô ra Thăng Long.'],
+['Lý Thường Kiệt','🏹','Danh tướng triều Lý.','Chủ động tiến công sang đất Tống năm 1075 để phá thế chuẩn bị xâm lược.','Bài thơ “Nam quốc sơn hà” gắn với tên tuổi ông.'],
+['Trần Hưng Đạo','⚔️','Được phong Quốc công Tiết chế của nhà Trần.','Soạn “Hịch tướng sĩ”.','Ba lần chỉ huy quân dân đánh thắng quân Mông – Nguyên.'],
+['Lê Lợi','🗡️','Gắn với căn cứ Lam Sơn.','Truyền thuyết về thanh gươm thần và Hồ Hoàn Kiếm.','Lãnh tụ khởi nghĩa Lam Sơn, lên ngôi năm 1428, lập nhà Hậu Lê.'],
+['Nguyễn Trãi','📜','Con của Nguyễn Phi Khanh.','Quân sư số một của nghĩa quân Lam Sơn.','Soạn “Bình Ngô đại cáo”.'],
+['Quang Trung (Nguyễn Huệ)','🐎','Xuất thân từ phong trào khởi nghĩa Tây Sơn.','Hành quân thần tốc từ Phú Xuân ra Bắc.','Đại phá quân Thanh năm 1789 ở Ngọc Hồi – Đống Đa.'],
+['Bà Triệu','🐘','Nữ anh hùng gắn với vùng núi Nưa (Thanh Hóa).','Khởi nghĩa năm 248 chống ách đô hộ nhà Ngô.','Nổi tiếng với lời tuyên bố muốn cưỡi gió mạnh, đạp sóng dữ.'],
+['Hồ Chí Minh','⭐','Tên khai sinh là Nguyễn Sinh Cung.','Năm 1911 ra đi tìm đường cứu nước từ Bến Nhà Rồng.','Đọc Tuyên ngôn Độc lập ngày 2/9/1945 tại Quảng trường Ba Đình.'],
+['Võ Nguyên Giáp','🎖️','Vị Đại tướng đầu tiên của Quân đội nhân dân Việt Nam.','Từng là học trò, sau là cộng sự thân cận của Chủ tịch Hồ Chí Minh.','Chỉ huy chiến dịch Điện Biên Phủ năm 1954.']
+];
+
+/* Sắp xếp sự kiện: [tên sự kiện, năm] */
+const ORD=[
+[['Khởi nghĩa Hai Bà Trưng',40],['Chiến thắng Bạch Đằng của Ngô Quyền',938],['Lý Công Uẩn dời đô ra Thăng Long',1010],['Chiến thắng Bạch Đằng của Trần Hưng Đạo',1288]],
+[['Hồ Quý Ly lập nhà Hồ',1400],['Lê Lợi lên ngôi, kết thúc khởi nghĩa Lam Sơn',1428],['Quang Trung đại phá quân Thanh',1789],['Gia Long lên ngôi, lập nhà Nguyễn',1802]],
+[['Pháp nổ súng tấn công Đà Nẵng',1858],['Hiệp ước Patenôtre',1884],['Đảng Cộng sản Việt Nam thành lập',1930],['Cách mạng tháng Tám',1945]],
+[['Tuyên ngôn Độc lập',1945],['Chiến thắng Điện Biên Phủ',1954],['Giải phóng miền Nam, thống nhất đất nước',1975],['Công cuộc Đổi mới bắt đầu',1986]],
+[['Đinh Bộ Lĩnh lên ngôi hoàng đế',968],['Lê Hoàn đại thắng quân Tống',981],['Xây dựng Văn Miếu',1070],['Lý Thường Kiệt kháng chiến chống Tống (phòng tuyến Như Nguyệt)',1077]],
+[['Chiến thắng Rạch Gầm – Xoài Mút',1785],['Nguyễn Huệ lên ngôi hoàng đế, niên hiệu Quang Trung',1788],['Chiến thắng Ngọc Hồi – Đống Đa',1789],['Nguyễn Ánh lên ngôi, niên hiệu Gia Long',1802]]
+];
+
+/* ===================== KHUNG GIAO DIỆN ===================== */
+root.innerHTML='<div class="vh-top"><h1 data-a="home"><svg viewBox="0 0 30 20" width="26" height="17" style="vertical-align:-3px;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.35)" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><polygon fill="#FFFF00" points="15,4.5 16.35,8.65 20.71,8.65 17.18,11.21 18.53,15.35 15,12.79 11.47,15.35 12.82,11.21 9.29,8.65 13.65,8.65"/></svg> Khám phá lịch sử Việt Nam</h1><span class="vh-chip" id="vh-pts"></span><span class="vh-chip" id="vh-badge"></span></div><div class="vh-main" id="vh-main"></div>';
+const main=document.getElementById('vh-main');
+let timer=null;
+const stopTimer=()=>{if(timer){clearInterval(timer);timer=null}};
+const draw=h=>{main.innerHTML=h;root.scrollIntoView&&0};
+function top(){
+  document.getElementById('vh-pts').textContent='⭐ '+S.pts+' điểm';
+  const n=Object.keys(S.done).length;
+  document.getElementById('vh-badge').textContent=n>=ERAS.length?'🏅 Nhà sử học':'📚 '+n+'/'+ERAS.length+' thời kỳ';
+}
+function toast(t){const d=document.createElement('div');d.className='vh-toast';d.textContent=t;root.appendChild(d);setTimeout(()=>d.remove(),1800)}
+function addPts(n){S.pts+=n;persist();top()}
+
+const A={};
+root.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||t.disabled)return;const f=A[t.dataset.a];if(f)f(t.dataset,t)});
+
+/* ===================== TRANG CHỦ ===================== */
+function home(){
+  stopTimer();top();
+  draw(`<h2 class="vh-h2">Chào mừng bạn đến với dòng thời gian sống!</h2>
+  <p class="vh-sub">Chọn một chế độ chơi. Hoàn thành cả 9 thời kỳ để nhận danh hiệu <b>Nhà sử học</b>.</p>
+  <div class="vh-grid">
+   <button class="vh-mode" data-a="journey"><span class="big">⏳</span><b>Hành trình thời gian</b><small>9 màn theo từng thời kỳ: kể chuyện, thử thách, mở khóa thẻ di sản.</small></button>
+   <button class="vh-mode" data-a="who"><span class="big">🕵️</span><b>Ai là ai?</b><small>Đoán nhân vật qua 3 gợi ý. Gợi ý càng ít, điểm càng cao. Kỷ lục: ${S.best.who}</small></button>
+   <button class="vh-mode" data-a="order"><span class="big">🧩</span><b>Sắp xếp sự kiện</b><small>Bấm các sự kiện theo đúng thứ tự thời gian. Kỷ lục: ${S.best.order}</small></button>
+   <button class="vh-mode" data-a="arena"><span class="big">⚡</span><b>Đấu trường 60 giây</b><small>Trả lời thật nhanh nhiều câu hỏi, chuỗi đúng liên tiếp được thưởng thêm. Kỷ lục: ${S.best.arena}</small></button>
+   <button class="vh-mode" data-a="collect"><span class="big">🎴</span><b>Bộ sưu tập di sản</b><small>Xem các thẻ bạn đã mở khóa.</small></button>
+  </div>
+  <div class="vh-row"><button class="vh-btn alt sm" data-a="reset">🗑️ Xóa tiến trình</button></div>`);
+}
+A.home=home;
+A.reset=()=>{if(confirm('Xóa toàn bộ điểm và tiến trình?')){S=DEF();persist();home()}};
+
+/* ===================== HÀNH TRÌNH ===================== */
+const isOpen=i=>S.unlockAll||i===0||S.done[ERAS[i-1].id]!=null;
+function journey(){
+  stopTimer();
+  draw(`<h2 class="vh-h2">⏳ Hành trình thời gian</h2><p class="vh-sub">Đúng ít nhất 2/3 câu để qua màn và mở khóa thẻ di sản.</p>`+
+  ERAS.map((e,i)=>{const o=isOpen(i),st=S.done[e.id]||0;
+    return `<button class="vh-era ${o?'':'lock'}" data-a="${o?'era':'locked'}" data-i="${i}"><span class="vh-ico">${o?e.ic:'🔒'}</span><span class="vh-et"><b>Màn ${i+1}: ${e.n}</b><small>${e.y}</small></span><span class="vh-st">${'★'.repeat(st)}${'☆'.repeat(3-st)}</span></button>`}).join('')+
+  `<div class="vh-row"><button class="vh-btn alt sm" data-a="home">← Về trang chủ</button>${S.unlockAll?'':'<button class="vh-btn alt sm" data-a="unlock">🔓 Mở hết các màn (bản thử)</button>'}</div>`);
+}
+A.journey=journey;
+A.locked=()=>toast('Hãy hoàn thành màn trước để mở khóa nhé!');
+A.unlock=()=>{S.unlockAll=true;persist();journey()};
+
+let Q=null;
+A.era=d=>{const e=ERAS[+d.i];
+  draw(`<div class="vh-center"><div class="vh-big">${e.ic}</div></div><h2 class="vh-h2 vh-center">${e.n}</h2><p class="vh-sub vh-center">${e.y}</p>
+  <div class="vh-story">${esc(e.story)}</div>
+  <div class="vh-row"><button class="vh-btn" data-a="startq" data-i="${d.i}">Bắt đầu thử thách ▶</button><button class="vh-btn alt" data-a="journey">← Danh sách màn</button></div>`)};
+A.startq=d=>{Q={e:+d.i,n:0,right:0,opts:[],picked:null};qScreen()};
+function qScreen(){
+  const era=ERAS[Q.e],q=era.qs[Q.n];
+  if(!Q.opts.length)Q.opts=shuffle(q.slice(1,5));
+  const p=Q.picked;
+  draw(`<div class="vh-prog"><i style="width:${(Q.n+(p!==null?1:0))/era.qs.length*100}%"></i></div>
+  <small class="vh-sub">${era.n} · Câu ${Q.n+1}/${era.qs.length}</small>
+  <div class="vh-q">${esc(q[0])}</div>`+
+  Q.opts.map((o,i)=>{let c='';if(p!==null){if(o===q[1])c='ok';else if(i===p)c='bad'}
+    return `<button class="vh-opt ${c}" data-a="ans" data-i="${i}" ${p!==null?'disabled':''}>${esc(o)}</button>`}).join('')+
+  (p!==null?`<div class="vh-note">${Q.opts[p]===q[1]?'✅ Chính xác! ':'❌ Chưa đúng. Đáp án: <b>'+esc(q[1])+'</b>. '}${esc(q[5])}</div>
+  <button class="vh-btn" data-a="qnext">${Q.n+1<era.qs.length?'Câu tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
+}
+A.ans=d=>{if(Q.picked!==null)return;Q.picked=+d.i;const q=ERAS[Q.e].qs[Q.n];if(Q.opts[Q.picked]===q[1]){Q.right++;addPts(10)}qScreen()};
+A.qnext=()=>{Q.n++;Q.opts=[];Q.picked=null;if(Q.n>=ERAS[Q.e].qs.length)return qEnd();qScreen()};
+function qEnd(){
+  const era=ERAS[Q.e],pass=Q.right>=2,first=pass&&S.done[era.id]==null;
+  if(pass){S.done[era.id]=Math.max(S.done[era.id]||0,Q.right);if(first)S.pts+=20;persist();top()}
+  draw(`<div class="vh-center"><div class="vh-big">${pass?'🎉':'💪'}</div>
+  <h2 class="vh-h2">${pass?'Vượt ải thành công!':'Gần được rồi, thử lại nhé!'}</h2>
+  <div class="vh-st" style="font-size:30px">${'★'.repeat(Q.right)}${'☆'.repeat(3-Q.right)}</div>
+  <p>Bạn trả lời đúng <b>${Q.right}/${era.qs.length}</b> câu.</p></div>`+
+  (pass?`<div class="vh-cardx" style="max-width:260px;margin:10px auto"><div class="big">${era.card.ic}</div><b>${era.card.t}</b><small>${era.card.d}</small>${first?'<small style="color:#2e7d32">🎁 Thẻ mới! +20 điểm</small>':''}</div>`:'')+
+  `<div class="vh-row" style="justify-content:center">
+   <button class="vh-btn alt" data-a="startq" data-i="${Q.e}">↻ Chơi lại màn này</button>
+   ${pass&&Q.e+1<ERAS.length?`<button class="vh-btn" data-a="era" data-i="${Q.e+1}">Màn kế tiếp ▶</button>`:''}
+   <button class="vh-btn alt" data-a="journey">Danh sách màn</button></div>`);
+}
+
+/* ===================== BỘ SƯU TẬP ===================== */
+A.collect=()=>{stopTimer();
+  draw(`<h2 class="vh-h2">🎴 Bộ sưu tập di sản</h2><p class="vh-sub">Mở khóa thẻ bằng cách vượt qua từng thời kỳ.</p><div class="vh-collect">`+
+  ERAS.map(e=>{const on=S.done[e.id]!=null;
+    return on?`<div class="vh-cardx"><div class="big">${e.card.ic}</div><b>${e.card.t}</b><small>${e.card.d}</small></div>`
+    :`<div class="vh-cardx off"><div class="big">❓</div><b>Chưa mở khóa</b><small>${e.n}</small></div>`}).join('')+
+  `</div><div class="vh-row"><button class="vh-btn alt" data-a="home">← Về trang chủ</button></div>`)};
+
+/* ===================== AI LÀ AI ===================== */
+let W=null;
+A.who=()=>{stopTimer();W={rounds:shuffle(WHO).slice(0,5),r:0,pts:0,shown:1,picked:null,opts:[]};whoScreen()};
+function whoScreen(){
+  if(W.r>=W.rounds.length)return whoEnd();
+  const c=W.rounds[W.r];
+  if(!W.opts.length)W.opts=shuffle([c[0],...shuffle(WHO.filter(x=>x!==c).map(x=>x[0])).slice(0,3)]);
+  const p=W.picked;
+  draw(`<div class="vh-prog"><i style="width:${W.r/W.rounds.length*100}%"></i></div>
+  <small class="vh-sub">Ai là ai? · Vòng ${W.r+1}/${W.rounds.length} · Điểm: ${W.pts}</small>
+  <div class="vh-big">${p!==null?c[1]:'🕵️'}</div>`+
+  [2,3,4].map((k,i)=>`<div class="vh-hint ${i<W.shown?'':'off'}">💡 Gợi ý ${i+1}: ${i<W.shown?esc(c[k]):'???'}</div>`).join('')+
+  (p===null&&W.shown<3?`<button class="vh-btn alt sm" data-a="whint">Xem thêm gợi ý (−10 điểm)</button>`:'')+
+  `<div class="vh-q">Nhân vật này là ai? <small class="vh-sub">(Đúng ngay: ${40-W.shown*10} điểm)</small></div>`+
+  W.opts.map((o,i)=>{let cl='';if(p!==null){if(o===c[0])cl='ok';else if(i===p)cl='bad'}
+    return `<button class="vh-opt ${cl}" data-a="wans" data-i="${i}" ${p!==null?'disabled':''}>${esc(o)}</button>`}).join('')+
+  (p!==null?`<div class="vh-note">${W.opts[p]===c[0]?'✅ Chính xác! +'+(40-W.shown*10)+' điểm.':'❌ Đáp án đúng: <b>'+esc(c[0])+'</b>.'}</div><button class="vh-btn" data-a="wnext">Tiếp ▶</button>`:''));
+}
+A.whint=()=>{if(W.shown<3){W.shown++;whoScreen()}};
+A.wans=d=>{if(W.picked!==null)return;W.picked=+d.i;const c=W.rounds[W.r];if(W.opts[W.picked]===c[0]){const g=40-W.shown*10;W.pts+=g;addPts(g)}whoScreen()};
+A.wnext=()=>{W.r++;W.shown=1;W.picked=null;W.opts=[];whoScreen()};
+function whoEnd(){
+  const nb=W.pts>S.best.who;if(nb){S.best.who=W.pts;persist()}
+  draw(`<div class="vh-center"><div class="vh-big">🕵️</div><h2 class="vh-h2">Kết thúc!</h2><p>Bạn được <b>${W.pts}</b> điểm (tối đa 150). ${nb?'🎉 Kỷ lục mới!':'Kỷ lục: '+S.best.who}</p></div>
+  <div class="vh-row" style="justify-content:center"><button class="vh-btn" data-a="who">Chơi lại</button><button class="vh-btn alt" data-a="home">Trang chủ</button></div>`);
+}
+
+/* ===================== SẮP XẾP SỰ KIỆN ===================== */
+let O=null;
+A.order=()=>{stopTimer();O={sets:shuffle(ORD).slice(0,5),i:0,pts:0};orderSet()};
+function orderSet(){
+  if(O.i>=O.sets.length)return orderEnd();
+  const set=O.sets[O.i].map(x=>({n:x[0],y:x[1]}));
+  O.sorted=set.slice().sort((a,b)=>a.y-b.y);
+  O.items=shuffle(set);O.next=0;O.mist=0;O.placed={};
+  orderDraw();
+}
+function orderDraw(){
+  const fin=O.next>=O.items.length;
+  draw(`<div class="vh-prog"><i style="width:${O.i/O.sets.length*100}%"></i></div>
+  <small class="vh-sub">Sắp xếp sự kiện · Bộ ${O.i+1}/${O.sets.length} · Điểm: ${O.pts}</small>
+  <div class="vh-q">Bấm lần lượt các sự kiện theo thứ tự từ <u>sớm nhất → muộn nhất</u>.</div>`+
+  O.items.map((it,k)=>{const r=O.placed[k];
+    return `<button class="vh-ord ${r!==undefined?'done':''}" data-a="opick" data-k="${k}"><span class="num">${r!==undefined?r+1:'?'}</span><span>${esc(it.n)}</span>${r!==undefined?`<span class="yr">${it.y}</span>`:''}</button>`}).join('')+
+  `<div class="vh-sub">Số lần sai: <b id="vh-mist">${O.mist}</b></div>`+
+  (fin?`<div class="vh-note">🎉 Đúng thứ tự! +${Math.max(5,25-5*O.mist)} điểm.</div><button class="vh-btn" data-a="onext">${O.i+1<O.sets.length?'Bộ tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
+}
+A.opick=(d,t)=>{
+  const k=+d.k;if(O.placed[k]!==undefined)return;
+  if(O.sorted.indexOf(O.items[k])===O.next){O.placed[k]=O.next;O.next++;
+    if(O.next>=O.items.length){const g=Math.max(5,25-5*O.mist);O.pts+=g;addPts(g)}
+    orderDraw();
+  }else{O.mist++;const m=document.getElementById('vh-mist');if(m)m.textContent=O.mist;t.classList.add('vh-shake');setTimeout(()=>t.classList.remove('vh-shake'),350)}
+};
+A.onext=()=>{O.i++;orderSet()};
+function orderEnd(){
+  const nb=O.pts>S.best.order;if(nb){S.best.order=O.pts;persist()}
+  draw(`<div class="vh-center"><div class="vh-big">🧩</div><h2 class="vh-h2">Hoàn thành!</h2><p>Bạn được <b>${O.pts}</b> điểm (tối đa 125). ${nb?'🎉 Kỷ lục mới!':'Kỷ lục: '+S.best.order}</p></div>
+  <div class="vh-row" style="justify-content:center"><button class="vh-btn" data-a="order">Chơi lại</button><button class="vh-btn alt" data-a="home">Trang chủ</button></div>`);
+}
+
+/* ===================== ĐẤU TRƯỜNG 60 GIÂY ===================== */
+let AR=null;
+A.arena=()=>{stopTimer();
+  const all=[];ERAS.forEach(e=>e.qs.forEach(q=>all.push(q)));
+  AR={queue:shuffle(all),k:0,score:0,streak:0,ok:0,bad:0,t0:Date.now(),over:false,lock:false,picked:null,opts:[]};
+  AR.opts=shuffle(AR.queue[0].slice(1,5));
+  arenaDraw();
+  timer=setInterval(()=>{
+    const left=Math.max(0,60-(Date.now()-AR.t0)/1000);
+    const el=document.getElementById('vh-time');if(el)el.textContent=Math.ceil(left)+'s';
+    const bar=document.getElementById('vh-bar');if(bar)bar.style.width=(left/60*100)+'%';
+    if(left<=0)arenaEnd();
+  },200);
+};
+function arenaDraw(){
+  const q=AR.queue[AR.k%AR.queue.length],p=AR.picked;
+  draw(`<div class="vh-row" style="justify-content:space-between;margin:0 0 8px"><span class="vh-timer" id="vh-time">60s</span><span>Điểm: <b>${AR.score}</b> · Chuỗi đúng: <b>${AR.streak}</b>${AR.streak>=3?' 🔥':''}</span></div>
+  <div class="vh-prog"><i id="vh-bar" style="width:100%"></i></div>
+  <div class="vh-q">${esc(q[0])}</div>`+
+  AR.opts.map((o,i)=>{let c='';if(p!==null){if(o===q[1])c='ok';else if(i===p)c='bad'}
+    return `<button class="vh-opt ${c}" data-a="aans" data-i="${i}" ${p!==null?'disabled':''}>${esc(o)}</button>`}).join(''));
+}
+A.aans=d=>{
+  if(AR.over||AR.lock)return;AR.lock=true;AR.picked=+d.i;
+  const q=AR.queue[AR.k%AR.queue.length];
+  if(AR.opts[AR.picked]===q[1]){AR.ok++;AR.streak++;AR.score+=10+(AR.streak>=3?5:0)}else{AR.bad++;AR.streak=0}
+  arenaDraw();
+  setTimeout(()=>{if(AR.over)return;AR.k++;AR.picked=null;AR.lock=false;AR.opts=shuffle(AR.queue[AR.k%AR.queue.length].slice(1,5));arenaDraw()},650);
+};
+function arenaEnd(){
+  if(AR.over)return;AR.over=true;stopTimer();
+  addPts(AR.score);
+  const nb=AR.score>S.best.arena;if(nb){S.best.arena=AR.score;persist()}
+  draw(`<div class="vh-center"><div class="vh-big">⚡</div><h2 class="vh-h2">Hết giờ!</h2>
+  <p>Đúng <b>${AR.ok}</b> câu · Sai <b>${AR.bad}</b> câu</p><p style="font-size:24px">Điểm: <b>${AR.score}</b> ${nb?'🎉 Kỷ lục mới!':'(kỷ lục: '+S.best.arena+')'}</p></div>
+  <div class="vh-row" style="justify-content:center"><button class="vh-btn" data-a="arena">Chơi lại</button><button class="vh-btn alt" data-a="home">Trang chủ</button></div>`);
+}
+
+home();
+})();
+</script>
+<script>
+(function(){
+'use strict';
+const KEY='vnv_travel_v1';
+const root=document.getElementById('vnv-root');
+const DEF=()=>({stamps:{},pts:0,best:{guess:0,food:0,trip:0}});
+let S=DEF();
+try{const x=JSON.parse(localStorage.getItem(KEY));if(x)S=Object.assign(DEF(),x)}catch(e){}
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const vnd=k=>(k*1000).toLocaleString('vi-VN')+'đ';
+
+/* ===================== DỮ LIỆU ===================== */
+/* Câu hỏi: [câu hỏi, ĐÁP ÁN ĐÚNG, sai1, sai2, sai3, giải thích] */
+/* x,y: toạ độ trên bản đồ minh hoạ; a: 'l' (nhãn bên trái) | 'r' (bên phải) | 'b' (bên dưới) */
+const STOPS=[
+{id:'dv',n:'Cao nguyên đá Đồng Văn',s:'Đồng Văn',ic:'⛰️',x:189,y:57,a:'r',
+ intro:'Nơi địa đầu Tổ quốc, với cao nguyên đá tai mèo trùng điệp, đèo Mã Pì Lèng hùng vĩ và cột cờ Lũng Cú.',
+ tip:'Đi vào mùa tam giác mạch (khoảng tháng 10–11) để ngắm hoa. Đường đèo nhiều cua gắt, nên mang áo ấm và đi xe thật chắc tay.',
+ qs:[
+ ['Cột cờ Lũng Cú đánh dấu cực nào của Việt Nam?','Cực Bắc','Cực Đông','Cực Tây','Cực Nam','Lũng Cú là điểm cực Bắc trên đất liền.'],
+ ['Loài hoa nhỏ nở rộ trên cao nguyên đá vào mùa thu – đông là?','Tam giác mạch','Hoa phượng','Hoa sen','Hoa mai vàng','Hoa tam giác mạch có màu hồng, tím rất đặc trưng.'],
+ ['Cao nguyên đá Đồng Văn mang danh hiệu nào của UNESCO?','Công viên địa chất toàn cầu','Di sản tư liệu thế giới','Thành phố sáng tạo','Di sản văn hóa phi vật thể','Đây là công viên địa chất toàn cầu đầu tiên của Việt Nam (năm 2010).']]},
+{id:'sp',n:'Sa Pa',s:'Sa Pa',ic:'🌾',x:117,y:101,a:'l',
+ intro:'Thị trấn trong sương, có ruộng bậc thang uốn lượn, bản làng của người H’Mông, Dao và đỉnh Fansipan cao nhất Đông Dương.',
+ tip:'Thời tiết thay đổi nhanh, quanh năm nên mang áo khoác. Mùa lúa chín (tháng 9–10) là lúc ruộng bậc thang vàng đẹp nhất.',
+ qs:[
+ ['Đỉnh Fansipan được mệnh danh là gì?','Nóc nhà Đông Dương','Nóc nhà thế giới','Mái nhà Tây Nguyên','Đỉnh trời Nam Bộ','Fansipan cao khoảng 3.143 m.'],
+ ['Cảnh quan đặc trưng nhất của Sa Pa là?','Ruộng bậc thang','Rừng ngập mặn','Đồi cát','Hang động đá vôi','Người dân vùng cao khai khẩn sườn núi thành ruộng bậc thang.'],
+ ['Món nào nổi tiếng ở chợ phiên vùng cao Tây Bắc?','Thắng cố','Cao lầu','Hủ tiếu','Bánh pía','Thắng cố là món truyền thống của người H’Mông.']]},
+{id:'hn',n:'Hà Nội',s:'Hà Nội',ic:'🏛️',x:210,y:167,a:'l',
+ intro:'Thủ đô nghìn năm văn hiến, nơi phố cổ, hồ nước và ẩm thực hòa quyện với nhịp sống hiện đại.',
+ tip:'Dạo phố cổ vào cuối tuần khi phố đi bộ quanh Hồ Gươm mở cửa. Thử bún chả, phở và cà phê trứng.',
+ qs:[
+ ['Món ăn nào gắn liền với Hà Nội?','Bún chả','Mì Quảng','Cơm tấm','Bánh xèo miền Tây','Bún chả ăn cùng chả nướng thơm và nước chấm chua ngọt.'],
+ ['Văn Miếu – Quốc Tử Giám được xây dựng từ thời nhà nào?','Nhà Lý','Nhà Trần','Nhà Nguyễn','Nhà Hồ','Văn Miếu xây năm 1070, được coi là trường đại học đầu tiên của nước ta.'],
+ ['Hồ nào ở trung tâm Hà Nội gắn với truyền thuyết trả gươm thần?','Hồ Hoàn Kiếm','Hồ Tây','Hồ Trúc Bạch','Hồ Bảy Mẫu','Hồ Hoàn Kiếm còn gọi là Hồ Gươm.']]},
+{id:'hl',n:'Vịnh Hạ Long',s:'Hạ Long',ic:'🚢',x:272,y:170,a:'r',
+ intro:'Kỳ quan với hàng nghìn đảo đá vôi nhô lên từ mặt nước xanh ngọc, đặc biệt đẹp trong buổi bình minh và hoàng hôn.',
+ tip:'Nên đi du thuyền ngủ đêm để ngắm vịnh lúc sáng sớm vắng người. Tháng 4–6 và 9–11 thường ít mưa bão.',
+ qs:[
+ ['Vịnh Hạ Long nổi tiếng với hàng nghìn gì?','Đảo đá vôi','Bãi cát trắng','Thác nước','Rừng thông','Vịnh có khoảng 1.600 hòn đảo lớn nhỏ.'],
+ ['Hạ Long lần đầu được UNESCO công nhận là Di sản thế giới vào năm nào?','1994','1979','2003','2014','Năm 1994 là lần công nhận đầu tiên về giá trị thẩm mỹ.'],
+ ['Vịnh Hạ Long nằm ở vùng biển nào của Việt Nam?','Vịnh Bắc Bộ','Vịnh Thái Lan','Vịnh Cam Ranh','Vịnh Vân Phong','Hạ Long thuộc phía Tây Bắc của Vịnh Bắc Bộ.']]},
+{id:'nb',n:'Ninh Bình',s:'Ninh Bình',ic:'🛶',x:214,y:207,a:'l',
+ intro:'“Hạ Long trên cạn” với núi đá vôi, sông nước và cố đô Hoa Lư, nơi hai triều Đinh – Tiền Lê đặt kinh đô.',
+ tip:'Đi thuyền Tràng An vào buổi sáng để tránh nắng và đông người. Thử món cơm cháy và dê núi.',
+ qs:[
+ ['Cố đô Hoa Lư là kinh đô của những triều đại nào?','Đinh và Tiền Lê','Lý và Trần','Nguyễn','Hồ và Mạc','Hoa Lư là kinh đô Đại Cồ Việt vào thế kỷ X.'],
+ ['Quần thể danh thắng Tràng An là loại di sản gì của UNESCO?','Di sản hỗn hợp (văn hóa và thiên nhiên)','Chỉ là di sản thiên nhiên','Chỉ là di sản tư liệu','Di sản phi vật thể','Tràng An được công nhận là di sản hỗn hợp năm 2014.'],
+ ['Cách tham quan Tràng An độc đáo nhất là gì?','Ngồi thuyền chèo qua các hang động','Đi cáp treo','Đi tàu hỏa','Đi xe jeep','Thuyền đi xuyên qua nhiều hang động dưới chân núi.']]},
+{id:'hue',n:'Huế',s:'Huế',ic:'🏯',x:297,y:398,a:'l',
+ intro:'Cố đô của triều Nguyễn với Đại Nội, lăng tẩm, sông Hương thơ mộng và nền ẩm thực cung đình tinh tế.',
+ tip:'Dành ít nhất một buổi để tham quan Đại Nội và một buổi đi thuyền rồng nghe ca Huế trên sông Hương.',
+ qs:[
+ ['Huế là kinh đô của triều đại nào?','Triều Nguyễn','Triều Lý','Triều Trần','Triều Đinh','Huế (Phú Xuân) là kinh đô từ năm 1802.'],
+ ['Dòng sông nào chảy qua thành phố Huế?','Sông Hương','Sông Hàn','Sông Cầu','Sông Đồng Nai','Sông Hương (sông Thơm) gắn với nhiều thi ca.'],
+ ['Nhã nhạc Huế thuộc loại hình nghệ thuật nào?','Âm nhạc cung đình','Quan họ','Đờn ca tài tử','Hát then','Nhã nhạc là âm nhạc dùng trong các nghi lễ cung đình.']]},
+{id:'ha',n:'Phố cổ Hội An',s:'Hội An',ic:'🏮',x:326,y:428,a:'r',
+ intro:'Thương cảng cổ rực rỡ đèn lồng, nơi giao thoa văn hóa Việt – Hoa – Nhật, được UNESCO công nhận là Di sản thế giới.',
+ tip:'Đêm rằm (14 âm lịch) phố cổ tắt đèn điện, thắp đèn lồng. Mua vé tham quan phố cổ để vào các di tích.',
+ qs:[
+ ['Phố cổ Hội An nổi tiếng với vật trang trí nào về đêm?','Đèn lồng','Đèn LED','Pháo hoa','Bóng bay','Đèn lồng nhiều màu sắc là biểu tượng của Hội An.'],
+ ['Công trình biểu tượng của Hội An thường được gọi là gì?','Chùa Cầu','Tháp Rùa','Cột cờ Hà Nội','Nhà thờ Đức Bà','Chùa Cầu (cầu Nhật Bản) có từ thế kỷ XVII.'],
+ ['Món mì nổi tiếng của Hội An là?','Cao lầu','Bún mọc','Bánh đa cua','Bún đậu mắm tôm','Sợi cao lầu dai, ăn kèm thịt xíu, rau sống.']]},
+{id:'nt',n:'Nha Trang',s:'Nha Trang',ic:'🏖️',x:372,y:607,a:'r',
+ intro:'Thành phố biển với vịnh đẹp, các đảo, lặn ngắm san hô và Tháp Bà Ponagar của người Chăm.',
+ tip:'Mùa biển đẹp là tháng 2–8. Đi tour đảo sớm để tránh nắng gắt và đông người.',
+ qs:[
+ ['Tháp Bà Ponagar ở Nha Trang do dân tộc nào xây dựng?','Người Chăm','Người Khmer','Người Hoa','Người Tày','Đây là quần thể đền tháp Chăm cổ, thờ nữ thần Po Nagar.'],
+ ['Nha Trang nổi tiếng nhất với loại hình du lịch nào?','Biển đảo','Núi tuyết','Sa mạc','Hang động trên núi cao','Vịnh Nha Trang thuộc những vịnh biển đẹp của thế giới.'],
+ ['Món nào là đặc sản vùng biển Nam Trung Bộ nổi tiếng ở Khánh Hòa?','Nem nướng Ninh Hòa','Bún chả','Cơm tấm','Lẩu mắm','Nem nướng Ninh Hòa ăn kèm bánh tráng, rau sống, nước chấm đặc biệt.']]},
+{id:'dl',n:'Đà Lạt',s:'Đà Lạt',ic:'🌸',x:338,y:624,a:'l',
+ intro:'Thành phố mộng mơ trên cao nguyên Lâm Viên, mát mẻ quanh năm với đồi thông, hồ nước và vườn hoa.',
+ tip:'Mang áo ấm cho buổi tối, sáng sớm có sương mù. Ghé chợ Đà Lạt thử dâu tây, atiso, sữa đậu nành nóng.',
+ qs:[
+ ['Đà Lạt có biệt danh là gì?','Thành phố ngàn hoa','Thành phố hoa phượng đỏ','Thành phố cảng','Thành phố ngàn đảo','Khí hậu mát mẻ thích hợp trồng nhiều loài hoa.'],
+ ['Đà Lạt nằm trên cao nguyên nào?','Lâm Viên','Đồng Văn','Mộc Châu','Kon Tum','Cao nguyên Lâm Viên cao khoảng 1.500 m.'],
+ ['Đà Lạt nổi tiếng với đặc sản nào sau đây?','Dâu tây','Nhãn lồng Hưng Yên','Vải thiều Thanh Hà','Xoài cát Hòa Lộc','Dâu tây Đà Lạt được trồng trong nhà kính và ngoài vườn.']]},
+{id:'sg',n:'TP. Hồ Chí Minh',s:'TP.HCM',ic:'🌆',x:247,y:686,a:'r',
+ intro:'Thành phố năng động nhất cả nước, nơi những tòa nhà chọc trời nằm cạnh kiến trúc Pháp, chợ truyền thống và ẩm thực đường phố.',
+ tip:'Sáng dạo trung tâm (Dinh Độc Lập, Nhà thờ Đức Bà, Bưu điện), tối đi ăn đường phố. Nên mang ô vào mùa mưa.',
+ qs:[
+ ['Tên cũ của Thành phố Hồ Chí Minh là gì?','Sài Gòn','Thăng Long','Phú Xuân','Đông Kinh','Từ năm 1976, Sài Gòn được đổi tên thành TP. Hồ Chí Minh.'],
+ ['Công trình nào gắn với sự kiện thống nhất đất nước ngày 30/4/1975?','Dinh Độc Lập','Nhà hát Lớn Hà Nội','Cột cờ Lũng Cú','Chùa Một Cột','Dinh Độc Lập nay là Hội trường Thống Nhất.'],
+ ['Chợ nào là biểu tượng nổi tiếng ở trung tâm TP.HCM?','Chợ Bến Thành','Chợ Đồng Xuân','Chợ Cồn','Chợ Đầm','Chợ Bến Thành có từ đầu thế kỷ XX.']]},
+{id:'ct',n:'Cần Thơ & Miền Tây',s:'Cần Thơ',ic:'🛶',x:184,y:709,a:'r',
+ intro:'Xứ sở sông nước với chợ nổi, vườn trái cây, kênh rạch chằng chịt và tình người hiền hòa của Đồng bằng sông Cửu Long.',
+ tip:'Đi chợ nổi Cái Răng thật sớm (5–7 giờ sáng) để thấy ghe thuyền tấp nập. Thử bánh xèo, lẩu mắm.',
+ qs:[
+ ['Chợ nổi nổi tiếng ở Cần Thơ có tên là gì?','Chợ nổi Cái Răng','Chợ Bến Thành','Chợ Đồng Xuân','Chợ Hôm','Người dân buôn bán ngay trên ghe thuyền.'],
+ ['Đồng bằng sông Cửu Long được bồi đắp bởi sông nào?','Sông Mê Kông','Sông Hồng','Sông Đà','Sông Cầu','Mê Kông chảy vào Việt Nam thành hai nhánh sông Tiền và sông Hậu.'],
+ ['Lẩu mắm là món đặc trưng của vùng nào?','Miền Tây Nam Bộ','Tây Bắc','Bắc Trung Bộ','Đồng bằng sông Hồng','Lẩu mắm nấu từ mắm cá linh hoặc cá sặc, ăn kèm nhiều loại rau.']]},
+{id:'pq',n:'Đảo Phú Quốc',s:'Phú Quốc',ic:'🏝️',x:107,y:712,a:'b',
+ intro:'Đảo ngọc với bãi biển cát trắng, rừng nguyên sinh, vườn tiêu và nước mắm nổi tiếng.',
+ tip:'Mùa khô (tháng 11–4) biển êm, nước trong. Nên thuê xe máy hoặc xe điện để khám phá quanh đảo.',
+ qs:[
+ ['Hòn đảo lớn nhất của Việt Nam là?','Phú Quốc','Cát Bà','Côn Đảo','Lý Sơn','Phú Quốc có diện tích hơn 570 km².'],
+ ['Phú Quốc nằm trong vịnh nào?','Vịnh Thái Lan','Vịnh Bắc Bộ','Vịnh Hạ Long','Vịnh Nha Trang','Đảo nằm ở phía Tây Nam, gần bờ biển Campuchia.'],
+ ['Đặc sản nổi tiếng nhất của Phú Quốc là gì?','Nước mắm','Cà phê Buôn Ma Thuột','Trà Thái Nguyên','Rượu cần','Nước mắm Phú Quốc làm từ cá cơm, ủ trong thùng gỗ.']]}
+];
+
+/* Đoán địa danh: [tên, emoji, gợi ý 1, gợi ý 2] */
+const PLACES=[
+['Vịnh Hạ Long','⛰️🚢','Có hàng nghìn đảo đá vôi.','Di sản thiên nhiên thế giới ở miền Bắc.'],
+['Phố cổ Hội An','🏮','Nổi tiếng với đèn lồng nhiều màu.','Có Chùa Cầu và món cao lầu.'],
+['Chợ nổi Cái Răng','🛶🍍','Mua bán ngay trên sông nước.','Ở gần thành phố Cần Thơ.'],
+['Đà Lạt','🌸🌲','Thành phố ngàn hoa trên cao nguyên.','Có hồ Xuân Hương.'],
+['Sa Pa','🌾⛰️','Gần đỉnh Fansipan.','Ruộng bậc thang vàng vào mùa lúa chín.'],
+['Phong Nha – Kẻ Bàng','🦇','Có nhiều hang động đá vôi kỳ vĩ.','Nơi có hang Sơn Đoòng, hang động lớn bậc nhất thế giới.'],
+['Cột cờ Lũng Cú','🚩','Ở nơi địa đầu Tổ quốc.','Đánh dấu cực Bắc của Việt Nam.'],
+['Tràng An','🛶⛰️','Du khách ngồi thuyền xuyên qua các hang động.','Gần cố đô Hoa Lư.'],
+['Đảo Phú Quốc','🏝️','Hòn đảo lớn nhất Việt Nam.','Nổi tiếng với nước mắm và hồ tiêu.'],
+['Kinh thành Huế','🏯','Có Ngọ Môn và sông Hương bên cạnh.','Kinh đô cuối cùng của chế độ phong kiến.'],
+['Địa đạo Củ Chi','🕳️','Hệ thống đường hầm dưới lòng đất.','Nằm gần TP. Hồ Chí Minh.']
+];
+
+/* Đặc sản về đúng quê: [tên món, emoji, miền, ghi chú] */
+const FOODS=[
+['Phở','🍜','Bắc','Phở gắn bó với Hà Nội và Nam Định.'],
+['Bún chả','🥢','Bắc','Món nổi tiếng của Hà Nội.'],
+['Chả cá Lã Vọng','🐟','Bắc','Cá rán nghệ ăn với thì là, đặc sản Hà Nội.'],
+['Cốm làng Vòng','🌾','Bắc','Cốm là thức quà thu của Hà Nội.'],
+['Bánh cuốn Thanh Trì','🥟','Bắc','Bánh cuốn mỏng ăn kèm chả quế.'],
+['Bún bò Huế','🍲','Trung','Đậm đà vị sả và mắm ruốc.'],
+['Mì Quảng','🍜','Trung','Đặc sản của vùng Quảng Nam – Đà Nẵng.'],
+['Cao lầu','🥘','Trung','Chỉ có ở Hội An.'],
+['Bánh bèo chén','🥣','Trung','Món bánh nhỏ xinh của cố đô Huế.'],
+['Nem lụi','🍢','Trung','Thịt nướng quấn bánh tráng, đặc sản Huế.'],
+['Cơm tấm','🍚','Nam','Gạo tấm ăn với sườn nướng, hợp với Sài Gòn.'],
+['Hủ tiếu Mỹ Tho','🍜','Nam','Món đặc trưng của miền Tây Nam Bộ.'],
+['Lẩu mắm','🍲','Nam','Đặc sản vùng sông nước miền Tây.'],
+['Bánh pía','🥮','Nam','Bánh nhân sầu riêng, đậu xanh nổi tiếng ở Sóc Trăng.']
+];
+
+/* Chuyến đi có ngân sách: b = ngân sách (nghìn đồng), d = số ngày, it = [tên, emoji, ngày, chi phí(nghìn đồng), điểm hài lòng] */
+const TRIPS=[
+{n:'Bắc Bộ 3 ngày',b:3000,d:3,it:[
+ ['Dạo phố cổ & Hồ Gươm','🚶',0.5,100,6],['Ăn bún chả, phở, chả cá','🍜',0.5,250,7],['Du thuyền Vịnh Hạ Long','🚢',1,1100,10],
+ ['Chèo thuyền Tràng An','🛶',1,400,9],['Chùa Bái Đính','🛕',0.5,150,5],['Văn Miếu & Bảo tàng','🏛️',0.5,80,5],
+ ['Xem múa rối nước','🎭',0.5,120,5],['Spa cao cấp','💆',0.5,900,4],['Nhà hàng hải sản sang trọng','🦞',0.5,800,5],['Đạp xe quanh Hồ Tây','🚲',0.5,50,4]]},
+{n:'Miền Trung 4 ngày',b:4500,d:4,it:[
+ ['Tham quan Đại Nội Huế','🏯',0.5,200,8],['Thuyền trên sông Hương','⛵',0.5,150,6],['Ẩm thực cung đình Huế','🍲',0.5,150,6],
+ ['Phố cổ Hội An về đêm','🏮',0.5,250,8],['Lớp học nấu ăn Hội An','👩‍🍳',0.5,600,6],['Bà Nà Hills','🎡',1,1200,9],
+ ['Biển Mỹ Khê','🏖️',0.5,50,5],['Thánh địa Mỹ Sơn','🛕',0.5,300,7],['Đèo Hải Vân','🏍️',0.5,200,7],['Nghỉ resort 5 sao 1 đêm','🏨',1,2500,6]]},
+{n:'Miền Nam 3 ngày',b:2500,d:3,it:[
+ ['Dinh Độc Lập','🏛️',0.5,80,6],['Chợ Bến Thành & ẩm thực','🍜',0.5,250,7],['Địa đạo Củ Chi','🕳️',0.5,300,7],
+ ['Chợ nổi Cái Răng','🛶',1,700,10],['Vườn trái cây miền Tây','🍍',0.5,150,6],['Phố đi bộ Nguyễn Huệ','🚶',0.5,50,4],
+ ['Bảo tàng Chứng tích chiến tranh','🏛️',0.5,40,6],['Du thuyền ăn tối sang trọng','🍽️',0.5,1200,5],['Cà phê sách & quán cà phê','☕',0.5,100,4],['Bay trực thăng ngắm thành phố','🚁',0.5,1500,5]]}
+];
+
+/* ===================== KHUNG GIAO DIỆN ===================== */
+root.innerHTML='<div class="vv-top"><h1 data-a="home">🧭 Khám phá Việt Nam</h1><span class="vv-chip" id="vv-pts"></span><span class="vv-chip" id="vv-badge"></span></div><div class="vv-main" id="vv-main"></div>';
+const main=document.getElementById('vv-main');
+let timer=null;
+const stopTimer=()=>{if(timer){clearInterval(timer);timer=null}};
+const draw=h=>{main.innerHTML=h};
+function top(){
+  document.getElementById('vv-pts').textContent='⭐ '+S.pts+' điểm';
+  const n=Object.keys(S.stamps).length;
+  document.getElementById('vv-badge').textContent=n>=STOPS.length?'🏅 Người lữ hành':'🛂 '+n+'/'+STOPS.length+' con dấu';
+}
+function toast(t){const d=document.createElement('div');d.className='vv-toast';d.textContent=t;root.appendChild(d);setTimeout(()=>d.remove(),1800)}
+function addPts(n){S.pts+=n;persist();top()}
+
+const A={};
+root.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||t.disabled)return;const f=A[t.dataset.a];if(f)f(t.dataset,t)});
+
+/* ===================== TRANG CHỦ ===================== */
+function home(){
+  stopTimer();top();
+  draw(`<h2 class="vv-h2">Sẵn sàng cho chuyến đi xuyên Việt chưa?</h2>
+  <p class="vv-sub">Thu thập đủ ${STOPS.length} con dấu hộ chiếu để nhận danh hiệu <b>Người lữ hành</b>.</p>
+  <div class="vv-grid">
+   <button class="vv-mode" data-a="trip"><span class="big">🗺️</span><b>Hành trình xuyên Việt</b><small>Bản đồ hình chữ S, ${STOPS.length} điểm dừng, mỗi nơi có thử thách và một con dấu.</small></button>
+   <button class="vv-mode" data-a="food"><span class="big">🍜</span><b>Đặc sản về đúng quê</b><small>Món ăn này thuộc miền nào? Kỷ lục: ${S.best.food}</small></button>
+   <button class="vv-mode" data-a="guess"><span class="big">🔍</span><b>Đoán địa danh qua ảnh mờ</b><small>Hình rõ dần theo thời gian, đoán càng sớm càng nhiều điểm. Kỷ lục: ${S.best.guess}</small></button>
+   <button class="vv-mode" data-a="budget"><span class="big">💰</span><b>Chuyến đi có ngân sách</b><small>Chọn hoạt động trong giới hạn tiền và số ngày để vui nhất. Kỷ lục: ${S.best.trip}</small></button>
+   <button class="vv-mode" data-a="pass"><span class="big">🛂</span><b>Hộ chiếu của tôi</b><small>Xem các con dấu bạn đã sưu tầm.</small></button>
+  </div>
+  <div class="vv-row"><button class="vv-btn alt sm" data-a="reset">🗑️ Xóa tiến trình</button></div>`);
+}
+A.home=home;
+A.reset=()=>{if(confirm('Xóa toàn bộ điểm và tiến trình?')){S=DEF();persist();home()}};
+
+/* ===== Bản đồ Việt Nam: dựng lại theo bản đồ hành chính (toạ độ theo ảnh gốc 600×828) ===== */
+const VN_VIEW='24 38 536 774';
+/* Trung Quốc (kèm đảo Hải Nam), Lào, Thái Lan, Campuchia */
+const VN_NB=[["#fffbd5","M457 217L446 211L441 211L435 214L416 214L407 219L389 216L384 221L374 223L369 226L367 235L361 237L353 245L346 249L345 259L343 262L343 279L346 284L346 293L369 305L378 305L388 308L397 307L400 301L415 297L418 291L433 283L433 277L444 249L453 238L459 236L460 225ZM20 34L20 89L22 92L43 91L54 76L65 81L76 92L81 92L85 85L91 80L93 75L97 77L99 82L103 82L106 77L109 77L114 82L116 88L123 89L126 81L132 74L136 74L138 79L144 79L153 73L159 73L164 69L164 59L169 55L183 50L185 47L188 47L199 61L203 62L211 69L217 69L221 66L225 66L232 72L246 70L253 76L252 83L244 89L244 98L250 104L250 114L264 120L272 130L278 131L281 135L286 135L289 137L306 135L311 140L317 140L320 137L329 136L330 133L337 133L339 128L344 128L348 133L354 133L357 136L363 136L366 138L367 146L384 144L389 141L390 137L393 138L393 141L402 142L404 146L398 149L398 155L394 158L393 174L398 176L398 187L404 194L404 200L407 203L413 203L414 206L428 205L436 197L436 190L426 183L426 174L416 172L415 168L421 163L427 163L431 156L440 155L440 150L443 147L458 145L459 141L475 143L477 138L486 139L488 137L492 137L496 133L497 128L502 128L503 122L506 122L508 125L513 125L518 129L522 129L526 125L535 126L542 119L551 120L553 118L552 108L555 105L555 100L560 99L561 97L565 97L571 103L579 103L578 33Z"],["#fad5e6","M20 91L20 306L28 306L31 310L36 310L38 308L53 308L55 310L73 308L75 311L80 311L88 303L88 299L90 297L106 303L119 303L129 315L136 328L156 348L157 357L152 365L152 395L167 411L184 419L181 426L181 431L185 436L193 441L192 446L186 451L186 455L189 457L187 466L193 471L190 482L190 494L185 499L173 506L173 510L180 517L193 516L195 518L199 518L210 526L221 526L223 524L223 516L218 510L217 506L225 505L228 501L235 500L237 496L242 497L253 507L264 507L266 504L273 504L279 496L289 495L289 491L292 489L293 476L290 471L295 468L296 452L289 446L285 445L276 433L278 429L287 424L288 418L282 417L271 409L271 406L266 405L258 395L254 395L252 397L249 396L243 383L242 371L233 362L232 356L227 356L224 354L214 341L202 330L199 323L199 318L193 315L193 311L191 309L187 309L178 302L174 295L176 289L176 284L174 282L153 275L147 269L133 261L130 257L118 252L118 250L125 244L125 235L127 233L134 232L145 236L152 236L161 227L163 221L168 216L167 210L152 203L153 194L145 194L145 192L152 186L152 181L146 179L132 167L125 167L121 170L113 171L108 179L103 178L99 174L90 174L79 165L70 151L72 140L76 137L75 129L71 128L70 126L61 128L59 118L36 90L26 89Z"],["#e4eaac","M122 301L110 302L97 296L88 296L85 302L79 306L75 317L65 317L56 324L53 324L48 318L34 316L29 312L24 312L24 315L20 316L20 597L24 597L26 599L25 608L30 612L50 616L50 609L53 602L53 595L41 583L40 566L34 558L34 542L36 540L42 540L42 537L52 530L69 507L77 503L87 503L92 500L96 500L100 503L144 503L155 500L163 505L166 512L170 512L180 504L188 501L191 497L191 486L195 474L195 468L190 464L192 460L190 452L194 448L194 438L184 429L187 422L187 417L177 414L171 410L153 391L154 369L158 361L157 344L132 318L130 312Z"],["#fdd8c6","M293 489L288 489L285 493L277 494L272 501L265 501L262 505L255 505L244 494L236 493L232 498L227 498L224 503L214 505L214 509L221 519L218 525L214 525L198 515L182 515L175 508L167 509L164 501L160 499L149 499L143 501L115 501L90 498L85 501L74 500L66 505L52 525L40 534L40 538L31 540L31 552L34 564L39 570L40 587L51 597L49 615L52 623L54 624L55 632L61 636L64 646L66 647L66 677L68 679L82 678L84 668L88 665L94 669L94 674L96 677L95 683L88 684L86 687L86 694L91 698L104 695L110 697L122 696L125 700L129 700L131 703L138 703L142 698L157 698L167 688L167 678L181 680L185 676L196 676L202 674L205 680L211 680L216 684L221 684L222 670L208 658L207 642L212 641L217 636L224 637L228 640L234 640L238 623L263 621L276 609L288 610L293 604L294 590L289 571L295 560L295 541L289 532L289 525L284 519L284 515L286 514L286 506L291 500Z"]];
+/* Các tỉnh/thành, gom theo màu (đường viền kín, lỗ rỗng dùng evenodd) */
+const VN_PROV=[["#efcaa9","M246 788L241 791L241 794L247 791ZM207 720L198 724L197 733L187 740L190 747L190 752L193 755L194 754L204 755L206 757L204 766L210 763L222 760L225 758L227 751L218 738L214 736ZM355 616L351 616L350 618L351 622L348 624L347 632L349 636L349 640L347 643L344 644L344 650L346 653L345 661L346 669L353 669L354 663L357 660L367 658L368 647L373 646L375 644L380 629L370 632L367 630L366 627L360 627L356 623ZM297 455L293 456L293 465L288 468L288 476L290 478L290 494L288 499L284 503L284 511L281 514L281 520L286 527L297 519L300 513L305 512L307 509L317 512L321 506L325 503L326 504L329 503L332 500L331 495L333 493L339 495L343 491L340 486L340 483L337 480L335 480L327 470L325 469L323 470L321 474L319 475L313 469L315 467L315 464L312 461L306 462L304 458L299 458Z"],["#cfdd8c","M163 748L151 750L151 759L149 764L149 799L158 799L166 796L172 796L173 791L179 787L183 778L182 774L175 769L176 764L174 762L174 755L170 754ZM188 674L189 678L195 686L196 690L195 695L201 699L210 697L219 699L220 696L229 696L232 694L237 708L233 710L220 708L216 714L223 716L231 725L237 730L239 730L243 735L248 735L248 727L255 722L257 722L257 716L254 714L254 707L263 706L258 699L254 697L250 693L249 690L245 687L242 675L238 673L230 676L226 675L223 677L217 676L216 678L208 678L205 674L205 671L197 671L193 674ZM350 611L348 609L338 609L329 615L319 615L318 617L311 619L316 624L319 630L313 636L308 631L303 631L300 628L297 628L290 634L287 634L281 637L278 641L281 647L286 649L287 653L297 662L302 657L314 655L316 657L315 659L317 662L323 659L327 659L331 661L339 661L344 664L345 653L343 650L343 644L347 642L348 640L348 636L346 632L347 624L350 622L349 620ZM374 540L365 547L360 546L355 547L353 545L350 548L352 549L354 554L358 557L357 558L358 560L352 565L353 567L351 568L349 574L356 581L363 583L365 586L369 586L373 582L380 582L383 580L388 580L388 574L384 569L384 563L381 561L381 546L378 546L374 542ZM279 421L279 425L274 428L274 436L281 446L286 448L293 455L297 454L299 457L304 457L307 460L306 461L312 460L316 464L316 467L314 469L319 474L325 467L326 459L330 459L332 457L342 455L352 449L349 444L346 443L340 436L336 426L332 422L332 413L321 419L311 414L301 420L282 419ZM172 288L172 298L176 305L179 306L184 311L188 311L191 314L191 318L197 321L202 317L207 316L215 317L216 316L220 323L223 322L227 324L233 320L241 322L241 315L235 312L226 304L223 304L220 302L213 294L208 285L207 279L201 285L199 289L192 287L185 289L177 286ZM207 156L211 163L214 163L219 166L227 167L233 165L233 160L222 157L218 154ZM200 113L196 116L197 120L194 124L193 131L198 141L196 148L201 153L205 153L210 147L218 146L220 143L219 138L226 134L227 131L225 130L225 132L222 133L216 129L223 128L221 117L217 120L208 122L207 121L208 115L206 113ZM48 77L47 81L43 85L47 86L52 94L56 95L58 98L61 97L68 107L74 107L76 109L80 109L81 107L83 107L87 111L95 107L99 113L104 113L106 115L109 122L112 124L116 130L119 130L117 119L121 114L113 105L115 102L113 96L106 95L103 92L104 87L100 80L101 74L97 72L91 72L89 74L89 77L83 82L81 87L75 87L68 79L59 74L51 74Z"],["#f7ca12","M108 700L102 704L102 707L100 709L96 707L95 711L101 710L103 712L106 710L108 712L109 717L108 718L107 717L105 718L104 716L102 718L96 717L96 720L102 719L104 721L105 719L106 720L108 719L110 723L112 724L111 727L113 727L112 725L114 721L113 716L115 713L116 706L111 700ZM187 674L182 674L179 677L176 677L177 683L188 696L186 703L188 716L186 718L180 716L173 717L170 713L167 712L163 708L157 707L154 705L150 700L150 696L139 696L137 698L126 698L126 708L134 708L136 718L151 718L154 722L159 723L159 729L154 732L152 738L151 749L163 747L170 753L175 754L177 752L177 747L181 741L188 739L193 734L196 733L197 724L205 719L201 708L201 700L194 695L195 694L194 686L188 678ZM204 640L204 646L206 648L206 661L209 664L209 667L212 667L217 671L217 675L223 676L226 674L230 675L239 672L238 666L230 662L231 661L230 654L235 649L236 642L229 635L214 634L209 639ZM287 568L287 578L289 582L297 583L304 581L310 586L311 595L316 600L319 614L329 614L338 608L347 608L348 602L353 598L357 599L358 591L364 587L363 584L356 582L347 573L341 572L333 561L322 554L303 553L295 557L293 556ZM269 394L271 398L268 401L269 412L278 418L279 420L282 418L301 419L311 413L321 418L331 412L326 411L316 402L314 402L286 382L278 389L276 388L272 390ZM207 205L212 215L216 216L223 221L229 218L234 212L222 205L214 205L211 203ZM101 114L101 124L104 129L104 132L95 144L93 144L96 150L95 160L89 162L84 173L89 177L97 177L104 182L111 182L116 173L125 171L133 171L141 178L144 184L153 184L157 186L167 182L171 177L171 175L162 164L164 162L162 151L157 147L153 147L150 145L148 145L145 148L138 146L135 142L136 133L125 134L123 132L116 131L111 124L108 122L105 115ZM181 81L178 84L176 94L171 100L168 100L164 109L171 115L171 118L178 126L178 129L185 141L196 147L197 141L192 131L193 124L196 119L195 115L189 106L198 91L198 86L196 84L190 85Z"],["#cee4d4","M282 648L273 649L260 661L263 668L259 672L256 672L255 682L249 688L251 693L258 698L264 706L267 707L267 710L270 710L272 713L278 713L278 709L280 707L287 707L287 699L290 687L292 684L291 677L284 672L291 657L286 653L286 650ZM388 581L383 581L380 583L373 583L369 587L365 587L359 591L359 597L357 600L353 599L349 602L348 608L351 611L351 615L356 616L357 623L360 626L366 626L368 630L370 631L380 628L380 616L382 615L382 600L397 598L397 591L391 590L388 587ZM326 460L325 468L333 475L335 479L337 479L341 483L341 486L344 491L346 492L351 490L369 491L369 482L363 475L361 468L362 455L359 454L357 449L353 449L347 454L342 456L335 457L330 460ZM265 360L261 366L258 366L255 368L252 375L248 373L240 374L241 386L246 394L247 399L256 400L263 407L267 407L267 401L270 398L268 394L271 390L276 387L277 388L280 387L284 382L283 375L277 374L272 369L272 366L269 362ZM212 197L210 202L214 204L222 204L229 209L235 211L231 199L223 191L218 192ZM211 164L214 172L214 176L218 182L221 184L229 183L228 178L225 176L226 168ZM316 138L314 138L308 132L301 132L298 134L285 133L283 136L278 138L277 140L278 145L272 154L268 152L263 159L259 160L255 165L250 167L252 182L257 186L265 186L269 185L270 179L274 179L275 177L282 177L279 171L279 158L278 157L281 154L286 152L288 149L295 149L297 147L304 150L313 150L316 144ZM178 130L170 134L167 134L165 137L167 146L163 149L165 161L170 163L178 161L184 152L196 149L195 147L187 144L184 141ZM190 44L183 44L180 48L175 49L163 55L161 57L161 67L156 71L150 71L146 74L141 74L141 77L145 82L146 93L151 97L151 100L154 99L159 103L160 106L163 107L166 104L167 100L171 99L176 92L177 84L181 80L190 84L196 83L196 81L185 71L191 63L193 64L196 61L201 59Z"],["#faf6ab","M232 695L229 697L220 697L219 700L215 700L213 698L202 700L202 708L206 719L211 718L220 707L230 709L236 708ZM164 675L163 676L163 687L154 696L151 696L151 700L154 704L157 706L163 707L167 711L170 712L173 716L180 715L186 717L187 714L185 703L187 696L176 683L175 677L171 675ZM344 665L339 662L331 662L327 660L323 660L317 663L314 659L315 658L314 656L302 658L297 663L292 659L285 672L291 676L293 679L293 684L291 687L288 699L288 707L289 707L289 704L297 697L305 694L308 691L316 691L319 684L331 684L331 680L333 677L343 669L345 669ZM234 650L231 654L232 656L231 662L239 666L239 671L243 675L245 685L248 688L254 682L255 672L259 671L262 668L259 663L250 664L247 653L245 653L242 650L241 651ZM304 582L297 584L296 583L290 584L291 601L287 606L273 607L277 616L277 621L285 628L284 634L290 633L297 627L300 627L303 630L308 630L313 635L318 630L315 624L310 620L311 618L318 616L315 600L310 595L309 586ZM342 492L339 496L333 494L332 495L333 500L329 504L326 505L325 504L321 507L317 513L307 510L305 513L300 514L299 518L288 526L287 535L293 544L293 555L294 556L303 552L322 553L333 560L341 571L348 573L350 568L352 567L351 565L357 560L356 559L357 557L353 554L351 549L349 548L353 544L357 544L358 541L356 538L355 532L353 530L354 529L350 525L350 519L347 516L347 505L344 497L345 492ZM197 322L197 326L200 330L200 333L212 344L221 356L224 358L230 359L231 365L237 372L239 373L248 372L252 374L254 368L263 363L264 359L252 348L252 342L248 342L246 340L246 337L243 336L241 332L240 322L233 321L227 325L223 323L220 324L216 317L215 318L213 317L202 318ZM222 185L217 183L215 185L211 185L208 187L207 189L209 194L213 196L218 191L222 190ZM144 185L144 188L140 191L140 198L148 198L149 205L151 207L159 210L161 214L171 219L176 220L179 223L176 227L177 233L180 234L182 239L189 245L193 244L197 248L199 248L201 251L208 251L209 237L214 232L216 232L216 223L222 221L211 215L206 206L207 204L204 202L200 202L184 195L179 190L174 190L173 186L167 183L157 187L153 185ZM237 155L234 159L234 165L232 167L227 168L226 176L228 177L239 176L248 181L251 181L249 167L243 162L242 155ZM35 89L35 96L50 111L51 115L57 121L58 130L70 132L70 142L68 145L68 154L71 157L71 160L77 166L77 168L83 172L88 162L90 160L94 160L95 150L92 144L97 141L103 132L103 129L100 124L100 114L95 110L95 108L93 108L89 112L84 113L83 111L80 111L82 112L79 114L70 114L68 111L71 108L68 108L61 98L58 99L56 96L52 95L47 87L42 86L40 89ZM186 70L197 81L199 79L209 80L210 81L209 89L211 91L219 91L222 95L226 95L230 92L235 96L245 95L247 94L247 90L254 86L256 80L256 73L249 68L232 68L230 65L226 63L211 64L204 59L196 62L193 65L191 64L190 67Z"],["#b4aa7d","M381 533L373 538L365 545L358 544L355 546L359 545L365 546L373 539L378 545L381 545ZM224 112L222 116L224 128L217 129L222 132L224 132L225 129L228 131L228 133L224 136L226 139L225 137L229 132L223 125L224 122L223 114L225 112ZM69 111L70 113L79 113L81 112L79 111L80 110L83 110L84 112L86 112L86 110L83 108L81 108L80 110L76 110L72 108ZM149 108L143 107L141 110L142 114L139 118L133 118L130 121L128 120L131 122L135 119L141 119L142 109L144 107L148 109Z"],["#f2a872","M351 491L345 494L348 505L348 516L351 519L351 525L355 529L354 530L356 532L359 543L365 544L381 532L381 526L379 523L378 514L376 512L376 508L372 502L372 498L369 492ZM123 232L123 241L115 248L115 254L127 259L130 263L136 266L140 270L144 271L150 277L171 284L172 287L177 285L185 288L190 286L199 288L200 285L206 279L204 262L208 255L208 252L201 252L193 245L189 246L181 239L180 235L176 233L175 227L178 224L176 221L171 220L161 215L159 224L151 232L141 232L137 230L126 230ZM229 178L230 182L229 184L223 185L223 190L232 199L235 209L237 211L240 207L245 206L248 195L250 193L255 193L256 186L251 182L248 182L239 177ZM184 153L179 162L182 164L190 163L196 169L196 172L200 174L202 178L202 185L205 188L217 182L213 176L210 162L204 154L201 154L197 150ZM228 94L227 97L229 99L230 107L224 114L225 116L224 125L230 132L226 137L227 140L237 145L241 143L242 138L247 135L250 135L253 137L256 136L262 142L262 144L270 153L272 153L274 148L277 145L276 141L277 138L283 135L284 133L282 130L275 128L267 118L261 115L255 114L252 111L252 101L247 95L241 97L235 97L230 93ZM102 74L101 80L105 87L104 92L106 94L112 94L116 100L114 105L121 112L122 115L127 119L130 120L133 117L139 117L141 114L140 110L143 106L147 107L152 106L150 97L145 93L144 82L141 79L139 72L129 72L123 80L117 80L111 74Z"],["#bdbb3e","M272 608L262 618L252 618L250 620L235 621L233 634L230 635L237 642L236 649L237 650L242 649L249 654L250 663L259 662L270 650L273 648L280 647L277 640L283 635L284 628L276 621L276 616Z"],["#b5d0da","M186 741L180 743L178 747L178 752L175 755L175 762L177 764L176 769L183 775L188 771L203 766L205 759L204 756L195 755L193 756L189 752L189 747ZM208 720L215 736L219 738L228 750L238 750L241 748L243 745L243 736L239 731L237 731L231 726L223 717L215 715L211 719ZM163 164L172 175L168 183L172 184L174 186L174 189L179 189L184 194L197 200L204 201L206 203L210 201L211 197L208 194L207 190L201 185L201 178L199 174L195 172L195 169L190 164L182 165L178 162L173 164L165 162ZM305 151L299 148L295 150L288 150L286 153L279 157L280 158L280 171L283 177L293 176L293 170L296 167L296 156ZM267 151L256 137L253 138L250 136L247 136L243 138L242 143L237 146L225 140L224 137L221 137L220 145L218 147L210 148L205 154L210 155L218 153L222 156L232 159L237 154L242 154L244 162L249 166L255 164L259 159L263 158ZM118 119L118 122L120 125L120 131L123 131L125 133L136 132L137 133L136 142L138 145L142 147L145 147L148 144L150 144L153 146L157 146L162 150L166 146L166 143L164 140L165 135L177 129L177 126L170 118L170 115L162 107L160 107L158 103L154 100L152 101L153 106L149 110L145 108L143 109L143 118L141 120L135 120L131 123L122 116ZM199 80L197 82L199 86L199 91L190 106L196 115L200 112L206 112L209 115L208 121L217 119L222 115L224 111L228 109L229 107L228 99L226 96L222 96L219 92L211 92L208 89L209 81Z"]];
+/* Đường bao ngoài lãnh thổ (đất liền + Phú Quốc + Côn Đảo) */
+const VN_SIL="M246 788L241 791L241 794L243 794L247 791ZM108 700L105 703L102 704L101 708L96 707L95 708L95 711L102 711L103 712L107 711L108 716L107 717L104 716L96 717L96 720L103 720L104 721L108 720L111 724L111 727L113 727L113 722L114 721L113 716L115 713L116 706L111 700ZM190 44L183 44L180 48L175 49L169 53L166 53L161 57L161 67L156 71L150 71L146 74L140 74L139 72L129 72L123 80L117 80L111 74L99 74L97 72L91 72L89 74L89 77L83 82L81 87L75 87L68 79L59 74L51 74L48 77L47 81L40 89L35 89L35 96L50 111L51 115L57 121L58 130L59 131L69 131L70 132L70 142L68 145L68 154L71 157L71 160L77 166L77 168L79 170L82 171L89 177L97 177L104 182L111 182L116 173L120 173L125 171L133 171L144 182L144 188L140 191L140 198L148 198L149 199L149 205L161 212L161 219L159 224L151 232L141 232L137 230L126 230L123 232L123 241L115 248L115 254L120 257L127 259L130 263L136 266L140 270L144 271L150 277L160 281L164 281L172 285L172 298L176 305L179 306L184 311L188 311L191 314L191 318L193 318L197 321L197 326L200 330L200 333L212 344L221 356L224 358L229 358L230 359L231 365L240 374L241 386L246 394L247 399L248 400L256 400L263 407L267 407L269 409L269 412L279 419L279 425L274 428L274 436L282 447L286 448L293 454L293 465L288 468L288 476L290 478L290 494L288 499L284 503L284 511L281 514L281 520L286 526L287 535L293 544L293 557L287 568L287 578L291 587L291 601L287 606L273 607L262 618L252 618L250 620L235 621L235 626L232 635L214 634L209 639L204 640L204 646L206 648L206 661L209 664L209 667L212 667L217 671L217 677L216 678L208 678L205 674L205 671L197 671L193 674L182 674L179 677L173 677L171 675L164 675L163 676L163 687L154 696L139 696L137 698L126 698L126 708L134 708L136 718L151 718L154 722L159 723L159 729L154 732L151 744L151 759L149 764L149 799L158 799L166 796L172 796L173 791L179 787L183 776L188 771L199 768L219 760L222 760L225 758L226 752L228 750L238 750L241 748L243 745L243 736L248 735L248 727L255 722L257 722L257 716L254 714L254 707L255 706L266 706L267 710L270 710L272 713L278 713L278 709L280 707L289 707L289 704L297 697L305 694L308 691L316 691L319 684L331 684L331 680L333 677L343 669L353 669L354 663L357 660L366 659L368 653L368 647L373 646L378 638L378 633L380 630L380 616L382 615L382 600L383 599L396 599L397 598L397 591L396 590L391 590L388 587L388 574L384 569L384 563L381 561L381 526L379 523L376 508L373 504L372 498L369 494L369 482L362 473L361 468L362 455L359 454L357 449L353 449L348 443L346 443L340 436L336 426L332 422L332 413L331 412L326 411L324 408L321 407L316 402L314 402L307 396L305 396L300 391L296 390L288 383L285 382L283 380L283 375L277 374L272 369L272 366L269 362L266 361L252 348L252 342L248 342L246 340L246 337L244 337L241 332L241 315L237 312L235 312L226 304L223 304L217 299L208 285L204 269L204 262L208 255L209 237L214 232L216 232L216 223L221 221L225 221L235 211L237 211L240 207L245 206L246 199L248 197L248 195L250 193L255 193L255 187L256 186L269 185L269 180L274 179L275 177L293 176L293 170L296 167L296 156L306 150L313 150L314 146L316 144L316 138L314 138L308 132L301 132L298 134L284 133L281 129L275 128L267 118L265 118L261 115L255 114L252 111L252 101L247 96L247 90L254 86L256 80L256 73L249 68L232 68L230 65L226 63L211 64L206 60L202 59Z";
+/* Quần đảo Hoàng Sa, Trường Sa */
+const VN_ISL=[[485.5,362],[522.8,369.4],[526.4,369.8],[531,371.5],[529.9,376.6],[497.6,392.7],[497.9,404.4],[505.4,406.7],[500.9,415.7],[543.1,415.1],[472.9,429.4],[531.5,742.1],[525.5,747.5],[501.4,780.4],[525.5,780.6],[494.8,784.8],[512.2,784.2],[522.2,784],[488,786.5],[480.5,795.4],[467.1,796]];
+function vnMapBase(){
+  const nb=VN_NB.map(n=>`<path d="${n[1]}" fill="${n[0]}" stroke="#d3c3ae" stroke-width="1" stroke-linejoin="round"/>`).join('');
+  const pv=VN_PROV.map(p=>`<path d="${p[1]}" fill="${p[0]}" fill-rule="evenodd" stroke="#8a7a58" stroke-width=".7" stroke-linejoin="round"/>`).join('');
+  const isl=VN_ISL.map(p=>`<ellipse cx="${p[0]}" cy="${p[1]}" rx="2.6" ry="2" fill="#2f8fc9" stroke="#fff" stroke-width=".6"/>`).join('');
+  return `<defs><filter id="vvSh" x="-10%" y="-10%" width="125%" height="125%"><feDropShadow dx="1.5" dy="2.5" stdDeviation="3" flood-color="#0b4f4a" flood-opacity=".35"/></filter></defs>
+  <rect x="24" y="38" width="536" height="774" fill="#d3effb"/>
+  <path d="M24 316H560M24 617H560" stroke="#7fc3df" stroke-width="1" stroke-dasharray="2 4" fill="none"/>
+  ${nb}
+  <path d="${VN_SIL}" fill="#f1e4b0" filter="url(#vvSh)"/>${pv}
+  <path d="${VN_SIL}" fill="none" stroke="#6e5a35" stroke-width="1.4" stroke-linejoin="round"/>
+  ${isl}
+  <g font-family="Segoe UI,Roboto,Arial,sans-serif" text-anchor="middle" font-style="italic">
+  <text x="400" y="88" font-size="14" fill="#8a8f88" letter-spacing="4">TRUNG QUỐC</text>
+  <text x="70" y="300" font-size="14" fill="#8f7184" letter-spacing="5">LÀO</text>
+  <text x="78" y="418" font-size="14" fill="#7f8a52" letter-spacing="4">THÁI LAN</text>
+  <text x="190" y="560" font-size="14" fill="#9a7866" letter-spacing="4">CAMPUCHIA</text>
+  <text x="345" y="205" font-size="13" fill="#3b7a99" letter-spacing="2">VỊNH BẮC BỘ</text>
+  <text x="405" y="262" font-size="12" fill="#6f6a4a" font-style="normal" font-weight="600">ĐẢO HẢI NAM</text>
+  <text x="405" y="277" font-size="10" fill="#6f6a4a">(Trung Quốc)</text>
+  <text x="488" y="500" font-size="14" fill="#3b7a99" letter-spacing="3">BIỂN ĐÔNG</text>
+  <text x="488" y="600" font-size="14" fill="#3b7a99" letter-spacing="3">BIỂN ĐÔNG</text>
+  <text x="508" y="347" font-size="11" fill="#2d6f95">QĐ. Hoàng Sa</text>
+  <text x="505" y="730" font-size="11" fill="#2d6f95">QĐ. Trường Sa</text>
+  <text x="62" y="745" font-size="12" fill="#3b7a99" letter-spacing="2" transform="rotate(-62 62 745)">Vịnh Thái Lan</text></g>
+  <g transform="translate(538 76)" fill="#5b7a76" font-family="Arial,sans-serif" text-anchor="middle"><path d="M0 -14 L5 4 L0 0 L-5 4Z"/><text y="17" font-size="10" font-weight="700">B</text></g>`;
+}
+
+/* ===================== HÀNH TRÌNH XUYÊN VIỆT ===================== */
+A.trip=()=>{
+  stopTimer();
+  let svg=`<svg class="vv-map" viewBox="${VN_VIEW}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bản đồ Việt Nam">${vnMapBase()}
+  <polyline points="${STOPS.map(s=>s.x+','+s.y).join(' ')}" fill="none" stroke="#0f766e" stroke-width="2.5" stroke-dasharray="6 6" opacity=".7"/>`;
+  STOPS.forEach((s,i)=>{
+    const dn=S.stamps[s.id]!=null,lx=s.a==='r'?s.x+18:s.a==='l'?s.x-18:s.x,ly=s.a==='b'?s.y+34:s.y+5,an=s.a==='r'?'start':s.a==='l'?'end':'middle';
+    svg+=`<g class="vv-node" data-a="stop" data-i="${i}"><circle class="c" cx="${s.x}" cy="${s.y}" r="13" fill="${dn?'#2e7d32':'#e0a21b'}" stroke="#fff" stroke-width="2.5"/>
+    <text x="${s.x}" y="${s.y+4.5}" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">${dn?'✓':i+1}</text>
+    <text x="${lx}" y="${ly}" font-size="15" font-weight="700" fill="#12302e" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" text-anchor="${an}">${esc(s.s)}</text></g>`;
+  });
+  svg+='</svg>';
+  const n=Object.keys(S.stamps).length;
+  draw(`<h2 class="vv-h2">🗺️ Hành trình xuyên Việt</h2><p class="vv-sub">Bấm vào một điểm trên bản đồ (hoặc trong danh sách) để bắt đầu thử thách.</p>
+  <div class="vv-mapwrap">${svg}<div class="vv-side">
+   <div class="vv-note">Đã thu thập: <b>${n}/${STOPS.length}</b> con dấu.<br><small>Bản đồ chỉ mang tính minh họa.</small></div>`+
+  STOPS.map((s,i)=>`<button class="vv-act ${S.stamps[s.id]!=null?'sel':''}" data-a="stop" data-i="${i}"><span class="ic">${s.ic}</span><span class="tx"><b>${i+1}. ${esc(s.n)}</b></span><span class="jy">${S.stamps[s.id]!=null?'✅ '+'★'.repeat(S.stamps[s.id]):''}</span></button>`).join('')+
+  `<div class="vv-row"><button class="vv-btn alt sm" data-a="home">← Về trang chủ</button></div></div></div>`);
+};
+
+let Q=null;
+A.stop=d=>{const s=STOPS[+d.i];
+  draw(`<div class="vv-center"><div class="vv-big">${s.ic}</div></div><h2 class="vv-h2 vv-center">${esc(s.n)}</h2>
+  <div class="vv-story">${esc(s.intro)}</div>
+  <div class="vv-row"><button class="vv-btn" data-a="startq" data-i="${d.i}">Bắt đầu thử thách ▶</button><button class="vv-btn alt" data-a="trip">← Bản đồ</button></div>`)};
+A.startq=d=>{Q={s:+d.i,n:0,right:0,opts:[],picked:null};qScreen()};
+function qScreen(){
+  const st=STOPS[Q.s],q=st.qs[Q.n];
+  if(!Q.opts.length)Q.opts=shuffle(q.slice(1,5));
+  const p=Q.picked;
+  draw(`<div class="vv-prog"><i style="width:${(Q.n+(p!==null?1:0))/st.qs.length*100}%"></i></div>
+  <small class="vv-sub">${esc(st.n)} · Câu ${Q.n+1}/${st.qs.length}</small>
+  <div class="vv-q">${esc(q[0])}</div>`+
+  Q.opts.map((o,i)=>{let c='';if(p!==null){if(o===q[1])c='ok';else if(i===p)c='bad'}
+    return `<button class="vv-opt ${c}" data-a="ans" data-i="${i}" ${p!==null?'disabled':''}>${esc(o)}</button>`}).join('')+
+  (p!==null?`<div class="vv-note">${Q.opts[p]===q[1]?'✅ Chính xác! ':'❌ Chưa đúng. Đáp án: <b>'+esc(q[1])+'</b>. '}${esc(q[5])}</div>
+  <button class="vv-btn" data-a="qnext">${Q.n+1<st.qs.length?'Câu tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
+}
+A.ans=d=>{if(Q.picked!==null)return;Q.picked=+d.i;const q=STOPS[Q.s].qs[Q.n];if(Q.opts[Q.picked]===q[1]){Q.right++;addPts(10)}qScreen()};
+A.qnext=()=>{Q.n++;Q.opts=[];Q.picked=null;if(Q.n>=STOPS[Q.s].qs.length)return qEnd();qScreen()};
+function qEnd(){
+  const st=STOPS[Q.s],pass=Q.right>=2,first=pass&&S.stamps[st.id]==null;
+  if(pass){S.stamps[st.id]=Math.max(S.stamps[st.id]||0,Q.right);if(first)S.pts+=20;persist();top()}
+  draw(`<div class="vv-center"><div class="vv-big">${pass?'🛂':'💪'}</div>
+  <h2 class="vv-h2">${pass?'Đã đóng dấu '+esc(st.s)+'!':'Gần được rồi, thử lại nhé!'}</h2>
+  <div style="color:#e0a21b;font-size:30px;letter-spacing:3px">${'★'.repeat(Q.right)}${'☆'.repeat(3-Q.right)}</div>
+  <p>Bạn trả lời đúng <b>${Q.right}/${st.qs.length}</b> câu. ${first?'🎁 Con dấu mới! +20 điểm.':''}</p></div>`+
+  (pass?`<div class="vv-note">🧳 <b>Mẹo du lịch:</b> ${esc(st.tip)}</div>`:'')+
+  `<div class="vv-row" style="justify-content:center">
+   <button class="vv-btn alt" data-a="startq" data-i="${Q.s}">↻ Chơi lại điểm này</button>
+   ${pass&&Q.s+1<STOPS.length?`<button class="vv-btn" data-a="stop" data-i="${Q.s+1}">Điểm kế tiếp ▶</button>`:''}
+   <button class="vv-btn alt" data-a="trip">🗺️ Bản đồ</button></div>`);
+}
+
+/* ===================== HỘ CHIẾU ===================== */
+A.pass=()=>{stopTimer();
+  draw(`<h2 class="vv-h2">🛂 Hộ chiếu của tôi</h2><p class="vv-sub">Mỗi con dấu là một điểm đến bạn đã chinh phục.</p><div class="vv-stamps">`+
+  STOPS.map(s=>S.stamps[s.id]!=null
+   ?`<div class="vv-stamp"><div class="big">${s.ic}</div><b>${esc(s.s)}</b><small>${'★'.repeat(S.stamps[s.id])}${'☆'.repeat(3-S.stamps[s.id])}</small></div>`
+   :`<div class="vv-stamp off"><div class="big">❓</div><b>${esc(s.s)}</b><small>Chưa đến</small></div>`).join('')+
+  `</div><div class="vv-row"><button class="vv-btn alt" data-a="home">← Về trang chủ</button></div>`)};
+
+/* ===================== ĐẶC SẢN VỀ ĐÚNG QUÊ ===================== */
+let F=null;
+A.food=()=>{stopTimer();F={items:shuffle(FOODS).slice(0,8),i:0,pts:0,ok:0,streak:0,picked:null};foodScreen()};
+function foodScreen(){
+  if(F.i>=F.items.length)return foodEnd();
+  const f=F.items[F.i],p=F.picked,regs=['Bắc','Trung','Nam'];
+  draw(`<div class="vv-prog"><i style="width:${F.i/F.items.length*100}%"></i></div>
+  <small class="vv-sub">Đặc sản về đúng quê · Món ${F.i+1}/${F.items.length} · Điểm: ${F.pts}${F.streak>=3?' 🔥':''}</small>
+  <div class="vv-food">${f[1]}</div><div class="vv-q vv-center">${esc(f[0])} là đặc sản của miền nào?</div>
+  <div class="vv-regs">`+regs.map(r=>{let c='';if(p!==null){if(r===f[2])c='ok';else if(r===p)c='bad'}
+    return `<button class="vv-reg ${c}" data-a="fans" data-r="${r}" ${p!==null?'disabled':''}>Miền ${r}</button>`}).join('')+`</div>`+
+  (p!==null?`<div class="vv-note">${p===f[2]?'✅ Chính xác! ':'❌ Món này thuộc miền '+f[2]+'. '}${esc(f[3])}</div><button class="vv-btn" data-a="fnext">${F.i+1<F.items.length?'Món tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
+}
+A.fans=d=>{if(F.picked!==null)return;F.picked=d.r;const f=F.items[F.i];if(d.r===f[2]){F.ok++;F.streak++;F.pts+=10+(F.streak>=3?5:0)}else F.streak=0;foodScreen()};
+A.fnext=()=>{F.i++;F.picked=null;foodScreen()};
+function foodEnd(){
+  addPts(F.pts);const nb=F.pts>S.best.food;if(nb){S.best.food=F.pts;persist()}
+  draw(`<div class="vv-center"><div class="vv-big">🍜</div><h2 class="vv-h2">Hoàn thành!</h2><p>Đúng <b>${F.ok}/${F.items.length}</b> món · <b>${F.pts}</b> điểm ${nb?'🎉 Kỷ lục mới!':'(kỷ lục: '+S.best.food+')'}</p></div>
+  <div class="vv-row" style="justify-content:center"><button class="vv-btn" data-a="food">Chơi lại</button><button class="vv-btn alt" data-a="home">Trang chủ</button></div>`);
+}
+
+/* ===================== ĐOÁN ĐỊA DANH QUA ẢNH MỜ ===================== */
+let G=null;
+A.guess=()=>{stopTimer();G={rounds:shuffle(PLACES).slice(0,6),r:0,pts:0,picked:null,opts:[],t0:0,hints:1,gain:0};guessRound()};
+function guessRound(){
+  if(G.r>=G.rounds.length)return guessEnd();
+  const c=G.rounds[G.r];
+  G.opts=shuffle([c[0],...shuffle(PLACES.filter(x=>x!==c).map(x=>x[0])).slice(0,3)]);
+  G.picked=null;G.hints=1;G.t0=Date.now();
+  guessDraw();
+  stopTimer();
+  timer=setInterval(()=>{
+    if(G.picked!==null)return;
+    const e=(Date.now()-G.t0)/1000,pic=document.getElementById('vv-pic');
+    if(pic)pic.style.filter='blur('+Math.max(0,22-e*1.6).toFixed(1)+'px)';
+    const h=1+(e>=5?1:0)+(e>=10?1:0);
+    if(h!==G.hints){G.hints=h;guessDraw()}
+  },150);
+}
+function guessDraw(){
+  const c=G.rounds[G.r],p=G.picked,e=(Date.now()-G.t0)/1000;
+  const blur=p!==null?0:Math.max(0,22-e*1.6);
+  draw(`<div class="vv-prog"><i style="width:${G.r/G.rounds.length*100}%"></i></div>
+  <small class="vv-sub">Đoán địa danh · Vòng ${G.r+1}/${G.rounds.length} · Điểm: ${G.pts}</small>
+  <div class="vv-pic" id="vv-pic" style="filter:blur(${blur.toFixed(1)}px)">${c[1]}</div>`+
+  [2,3].map((k,i)=>`<div class="vv-hint ${i<G.hints?'':'off'}">💡 Gợi ý ${i+1}: ${i<G.hints?esc(c[k]):'(sẽ hiện sau '+(i+1)*5+' giây)'}</div>`).join('')+
+  `<div class="vv-q">Đây là đâu? <small class="vv-sub">(Đoán càng sớm, điểm càng cao)</small></div>`+
+  G.opts.map((o,i)=>{let cl='';if(p!==null){if(o===c[0])cl='ok';else if(i===p)cl='bad'}
+    return `<button class="vv-opt ${cl}" data-a="gans" data-i="${i}" ${p!==null?'disabled':''}>${esc(o)}</button>`}).join('')+
+  (p!==null?`<div class="vv-note">${G.opts[p]===c[0]?'✅ Chính xác! +'+G.gain+' điểm.':'❌ Đáp án đúng: <b>'+esc(c[0])+'</b>.'}</div><button class="vv-btn" data-a="gnext">${G.r+1<G.rounds.length?'Vòng tiếp ▶':'Xem kết quả ▶'}</button>`:''));
+}
+A.gans=d=>{
+  if(G.picked!==null)return;
+  const c=G.rounds[G.r],e=(Date.now()-G.t0)/1000;stopTimer();
+  G.picked=+d.i;
+  if(G.opts[G.picked]===c[0]){G.gain=Math.max(10,Math.round(60-e*3));G.pts+=G.gain}
+  guessDraw();
+};
+A.gnext=()=>{G.r++;guessRound()};
+function guessEnd(){
+  stopTimer();addPts(G.pts);const nb=G.pts>S.best.guess;if(nb){S.best.guess=G.pts;persist()}
+  draw(`<div class="vv-center"><div class="vv-big">🔍</div><h2 class="vv-h2">Hoàn thành!</h2><p>Bạn được <b>${G.pts}</b> điểm (tối đa 360). ${nb?'🎉 Kỷ lục mới!':'Kỷ lục: '+S.best.guess}</p></div>
+  <div class="vv-row" style="justify-content:center"><button class="vv-btn" data-a="guess">Chơi lại</button><button class="vv-btn alt" data-a="home">Trang chủ</button></div>`);
+}
+
+/* ===================== CHUYẾN ĐI CÓ NGÂN SÁCH ===================== */
+let B=null;
+function bestPlan(t){
+  const n=t.it.length;let bj=0,bm=0;
+  for(let m=0;m<(1<<n);m++){let c=0,d=0,j=0;
+    for(let k=0;k<n;k++)if(m>>k&1){d+=t.it[k][2];c+=t.it[k][3];j+=t.it[k][4]}
+    if(c<=t.b&&d<=t.d&&j>bj){bj=j;bm=m}}
+  return{j:bj,m:bm};
+}
+const tot=(t,sel)=>sel.reduce((a,k)=>({c:a.c+t.it[k][3],d:a.d+t.it[k][2],j:a.j+t.it[k][4]}),{c:0,d:0,j:0});
+A.budget=()=>{stopTimer();B={t:TRIPS[Math.random()*TRIPS.length|0],sel:[],done:false};budgetDraw()};
+function budgetDraw(){
+  const t=B.t,T=tot(t,B.sel);
+  draw(`<h2 class="vv-h2">💰 Chuyến đi có ngân sách: ${esc(t.n)}</h2>
+  <p class="vv-sub">Chọn các hoạt động để đạt tổng <b>điểm hài lòng</b> cao nhất mà không vượt quá ngân sách và số ngày.</p>
+  <div class="vv-meter"><span class="${T.c>t.b?'over':''}">💵 ${vnd(T.c)} / ${vnd(t.b)}</span><span class="${T.d>t.d?'over':''}">📅 ${T.d} / ${t.d} ngày</span><span>😊 ${T.j} điểm</span></div>`+
+  t.it.map((it,k)=>{const on=B.sel.includes(k),fits=T.c+it[3]<=t.b&&T.d+it[2]<=t.d;
+    return `<button class="vv-act ${on?'sel':''}" data-a="btog" data-k="${k}" ${!on&&!fits?'disabled':''}><span class="ic">${it[1]}</span><span class="tx"><b>${esc(it[0])}</b><small>${vnd(it[3])} · ${it[2]} ngày</small></span><span class="jy">+${it[4]} 😊</span></button>`}).join('')+
+  `<div class="vv-row"><button class="vv-btn" data-a="bdone" ${B.sel.length?'':'disabled'}>Chốt lịch trình ✅</button><button class="vv-btn alt" data-a="budget">Đổi chuyến khác</button><button class="vv-btn alt" data-a="home">Trang chủ</button></div>`);
+}
+A.btog=d=>{
+  const k=+d.k,i=B.sel.indexOf(k);
+  if(i>=0)B.sel.splice(i,1);else{const T=tot(B.t,B.sel),it=B.t.it[k];if(T.c+it[3]>B.t.b||T.d+it[2]>B.t.d){toast('Vượt ngân sách hoặc số ngày!');return}B.sel.push(k)}
+  budgetDraw();
+};
+A.bdone=()=>{
+  const t=B.t,T=tot(t,B.sel),bp=bestPlan(t),ratio=T.j/bp.j,stars=ratio>=.95?3:ratio>=.8?2:1,pts=Math.round(ratio*50);
+  addPts(pts);const nb=pts>S.best.trip;if(nb){S.best.trip=pts;persist()}
+  const opt=t.it.map((it,k)=>bp.m>>k&1?it:null).filter(Boolean);
+  draw(`<div class="vv-center"><div class="vv-big">${stars===3?'🏆':stars===2?'👏':'🙂'}</div><h2 class="vv-h2">Lịch trình của bạn: ${T.j}/${bp.j} điểm hài lòng</h2>
+  <div style="color:#e0a21b;font-size:30px;letter-spacing:3px">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div>
+  <p>+${pts} điểm ${nb?'🎉 Kỷ lục mới!':'(kỷ lục: '+S.best.trip+')'}</p></div>
+  <div class="vv-note"><b>Lịch trình tối ưu</b> (${bp.j} điểm):<br>${opt.map(o=>o[1]+' '+esc(o[0])).join('<br>')}</div>
+  <div class="vv-row" style="justify-content:center"><button class="vv-btn" data-a="budget">Chuyến mới</button><button class="vv-btn alt" data-a="home">Trang chủ</button></div>`);
+};
+
+home();
+})();
+</script>
+<script>
+window.GameOv={
+ open:function(k){document.getElementById(k+'Ov').classList.add('show');document.body.style.overflow='hidden';},
+ close:function(k){
+  try{var h=document.querySelector('#'+k+'-root h1');if(h)h.click();}catch(e){}
+  document.getElementById(k+'Ov').classList.remove('show');document.body.style.overflow='';
+ }
+};
+</script>
+<!-- ===== HỌC VÀ CHƠI: KẾT THÚC ===== -->
 </body>
 </html>

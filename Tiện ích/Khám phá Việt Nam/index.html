@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Khám phá Việt Nam</title>
+<!--
+  CÁCH CHÈN VÀO index.html CỦA BẠN:
+  1) Copy khối <style> bên dưới (các class đều có tiền tố "vv-" nên khó đụng hàng).
+  2) Copy thẻ <div id="vnv-root"></div> vào chỗ bạn muốn hiển thị game.
+  3) Copy khối <script> (nằm trong IIFE, không làm ô nhiễm biến toàn cục).
+  Phần "CHỈ DÀNH CHO TRANG THỬ" có thể bỏ khi chèn.
+-->
+<style>
+/* ===== CHỈ DÀNH CHO TRANG THỬ ===== */
+body{margin:0;padding:20px 10px;background:#0e2a2a}
+/* ===== GAME ===== */
+#vnv-root{--bg:#eaf6f3;--paper:#ffffff;--ink:#12302e;--muted:#5b7a76;--main:#0f766e;--gold:#e0a21b;--line:#cfe5e0;--ok:#2e7d32;--bad:#c62828;
+  font-family:"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:18px;max-width:900px;margin:0 auto;overflow:hidden;position:relative;line-height:1.5}
+#vnv-root *{box-sizing:border-box}
+#vnv-root button{font:inherit;color:inherit;cursor:pointer}
+.vv-top{display:flex;align-items:center;gap:8px;padding:12px 16px;background:linear-gradient(90deg,#0b4f4a,#0f766e);color:#fff;flex-wrap:wrap}
+.vv-top h1{font-size:18px;margin:0;flex:1;cursor:pointer;min-width:180px}
+.vv-chip{background:rgba(255,255,255,.18);padding:4px 10px;border-radius:99px;font-size:13px;white-space:nowrap}
+.vv-main{padding:18px;min-height:420px}
+.vv-h2{font-size:22px;margin:0 0 6px}
+.vv-sub{color:var(--muted);margin:0 0 14px}
+.vv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.vv-mode{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:left;transition:.15s}
+.vv-mode:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(10,80,70,.18);border-color:var(--main)}
+.vv-mode .big{font-size:34px;display:block}
+.vv-mode b{display:block;font-size:17px;margin:4px 0 2px}
+.vv-mode small{color:var(--muted)}
+.vv-btn{background:var(--main);color:#fff!important;border:0;border-radius:10px;padding:10px 18px;font-weight:600}
+.vv-btn:hover{filter:brightness(1.12)}
+.vv-btn.alt{background:#fff;color:var(--ink)!important;border:1px solid var(--line)}
+.vv-btn.sm{padding:6px 12px;font-size:13px}
+.vv-btn[disabled]{opacity:.45;cursor:not-allowed}
+.vv-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.vv-mapwrap{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.vv-map{flex:0 0 auto;width:100%;max-width:330px;margin:0 auto;background:linear-gradient(#cfeaf5,#e6f5fb);border-radius:14px;border:1px solid var(--line)}
+.vv-side{flex:1;min-width:220px}
+.vv-node{cursor:pointer}
+.vv-node:hover circle.c{stroke:#000;stroke-width:2}
+.vv-q{font-size:19px;font-weight:600;margin:10px 0 14px}
+.vv-opt{display:block;width:100%;text-align:left;background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:9px}
+.vv-opt:hover:not([disabled]){border-color:var(--main)}
+.vv-opt.ok{background:#e6f4e7;border-color:var(--ok)}
+.vv-opt.bad{background:#fde7e7;border-color:var(--bad)}
+.vv-opt[disabled]{cursor:default}
+.vv-note{background:#e3f6f1;border-radius:10px;padding:10px 14px;margin:10px 0}
+.vv-story{background:var(--paper);border-left:5px solid var(--main);border-radius:10px;padding:14px 16px;margin:10px 0}
+.vv-prog{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:6px}
+.vv-prog i{display:block;height:100%;background:var(--main);transition:width .2s}
+.vv-big{font-size:56px;text-align:center}
+.vv-center{text-align:center}
+.vv-stamps{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.vv-stamp{background:var(--paper);border:3px double var(--main);border-radius:14px;padding:12px;text-align:center}
+.vv-stamp .big{font-size:36px}
+.vv-stamp small{display:block;color:var(--muted)}
+.vv-stamp.off{border-style:dashed;border-color:var(--line);opacity:.55}
+.vv-pic{font-size:110px;text-align:center;padding:14px;background:var(--paper);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:filter .2s}
+.vv-hint{background:var(--paper);border:1px dashed var(--gold);border-radius:10px;padding:8px 12px;margin-bottom:8px}
+.vv-hint.off{opacity:.45}
+.vv-food{font-size:64px;text-align:center}
+.vv-regs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.vv-reg{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:14px 6px;font-weight:700}
+.vv-reg:hover:not([disabled]){border-color:var(--main)}
+.vv-reg.ok{background:#e6f4e7;border-color:var(--ok)}
+.vv-reg.bad{background:#fde7e7;border-color:var(--bad)}
+.vv-act{display:flex;align-items:center;gap:10px;width:100%;background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;text-align:left}
+.vv-act:hover:not([disabled]){border-color:var(--main)}
+.vv-act.sel{background:#e3f6f1;border-color:var(--main)}
+.vv-act[disabled]:not(.sel){opacity:.4}
+.vv-act .ic{font-size:24px}
+.vv-act .tx{flex:1}.vv-act .tx small{display:block;color:var(--muted)}
+.vv-act .jy{color:var(--gold);font-weight:700;white-space:nowrap}
+.vv-meter{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 12px}
+.vv-meter span{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:6px 12px;font-weight:600}
+.vv-meter .over{color:var(--bad)}
+.vv-toast{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);background:#12302e;color:#fff;padding:8px 16px;border-radius:99px;font-size:14px;z-index:5}
+@media(max-width:560px){.vv-main{padding:12px}.vv-q{font-size:17px}.vv-pic{font-size:80px}}
+</style>
+</head>
+<body>
+
+<div id="vnv-root"></div>
+
+<script>
+(function(){
+'use strict';
+const KEY='vnv_travel_v1';
+const root=document.getElementById('vnv-root');
+const DEF=()=>({stamps:{},pts:0,best:{guess:0,food:0,trip:0}});
+let S=DEF();
+try{const x=JSON.parse(localStorage.getItem(KEY));if(x)S=Object.assign(DEF(),x)}catch(e){}
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const vnd=k=>(k*1000).toLocaleString('vi-VN')+'đ';
+
+/* ===================== DỮ LIỆU ===================== */
+/* Câu hỏi: [câu hỏi, ĐÁP ÁN ĐÚNG, sai1, sai2, sai3, giải thích] */
+/* x,y: toạ độ trên bản đồ minh hoạ; a: 'l' (nhãn bên trái) | 'r' (bên phải) | 'b' (bên dưới) */
+const STOPS=[
+{id:'dv',n:'Cao nguyên đá Đồng Văn',s:'Đồng Văn',ic:'⛰️',x:150,y:35,a:'r',
+ intro:'Nơi địa đầu Tổ quốc, với cao nguyên đá tai mèo trùng điệp, đèo Mã Pì Lèng hùng vĩ và cột cờ Lũng Cú.',
+ tip:'Đi vào mùa tam giác mạch (khoảng tháng 10–11) để ngắm hoa. Đường đèo nhiều cua gắt, nên mang áo ấm và đi xe thật chắc tay.',
+ qs:[
+ ['Cột cờ Lũng Cú đánh dấu cực nào của Việt Nam?','Cực Bắc','Cực Đông','Cực Tây','Cực Nam','Lũng Cú là điểm cực Bắc trên đất liền.'],
+ ['Loài hoa nhỏ nở rộ trên cao nguyên đá vào mùa thu – đông là?','Tam giác mạch','Hoa phượng','Hoa sen','Hoa mai vàng','Hoa tam giác mạch có màu hồng, tím rất đặc trưng.'],
+ ['Cao nguyên đá Đồng Văn mang danh hiệu nào của UNESCO?','Công viên địa chất toàn cầu','Di sản tư liệu thế giới','Thành phố sáng tạo','Di sản văn hóa phi vật thể','Đây là công viên địa chất toàn cầu đầu tiên của Việt Nam (năm 2010).']]},
+{id:'sp',n:'Sa Pa',s:'Sa Pa',ic:'🌾',x:100,y:72,a:'l',
+ intro:'Thị trấn trong sương, có ruộng bậc thang uốn lượn, bản làng của người H’Mông, Dao và đỉnh Fansipan cao nhất Đông Dương.',
+ tip:'Thời tiết thay đổi nhanh, quanh năm nên mang áo khoác. Mùa lúa chín (tháng 9–10) là lúc ruộng bậc thang vàng đẹp nhất.',
+ qs:[
+ ['Đỉnh Fansipan được mệnh danh là gì?','Nóc nhà Đông Dương','Nóc nhà thế giới','Mái nhà Tây Nguyên','Đỉnh trời Nam Bộ','Fansipan cao khoảng 3.143 m.'],
+ ['Cảnh quan đặc trưng nhất của Sa Pa là?','Ruộng bậc thang','Rừng ngập mặn','Đồi cát','Hang động đá vôi','Người dân vùng cao khai khẩn sườn núi thành ruộng bậc thang.'],
+ ['Món nào nổi tiếng ở chợ phiên vùng cao Tây Bắc?','Thắng cố','Cao lầu','Hủ tiếu','Bánh pía','Thắng cố là món truyền thống của người H’Mông.']]},
+{id:'hn',n:'Hà Nội',s:'Hà Nội',ic:'🏛️',x:150,y:125,a:'l',
+ intro:'Thủ đô nghìn năm văn hiến, nơi phố cổ, hồ nước và ẩm thực hòa quyện với nhịp sống hiện đại.',
+ tip:'Dạo phố cổ vào cuối tuần khi phố đi bộ quanh Hồ Gươm mở cửa. Thử bún chả, phở và cà phê trứng.',
+ qs:[
+ ['Món ăn nào gắn liền với Hà Nội?','Bún chả','Mì Quảng','Cơm tấm','Bánh xèo miền Tây','Bún chả ăn cùng chả nướng thơm và nước chấm chua ngọt.'],
+ ['Văn Miếu – Quốc Tử Giám được xây dựng từ thời nhà nào?','Nhà Lý','Nhà Trần','Nhà Nguyễn','Nhà Hồ','Văn Miếu xây năm 1070, được coi là trường đại học đầu tiên của nước ta.'],
+ ['Hồ nào ở trung tâm Hà Nội gắn với truyền thuyết trả gươm thần?','Hồ Hoàn Kiếm','Hồ Tây','Hồ Trúc Bạch','Hồ Bảy Mẫu','Hồ Hoàn Kiếm còn gọi là Hồ Gươm.']]},
+{id:'hl',n:'Vịnh Hạ Long',s:'Hạ Long',ic:'🚢',x:215,y:108,a:'r',
+ intro:'Kỳ quan với hàng nghìn đảo đá vôi nhô lên từ mặt nước xanh ngọc, đặc biệt đẹp trong buổi bình minh và hoàng hôn.',
+ tip:'Nên đi du thuyền ngủ đêm để ngắm vịnh lúc sáng sớm vắng người. Tháng 4–6 và 9–11 thường ít mưa bão.',
+ qs:[
+ ['Vịnh Hạ Long nổi tiếng với hàng nghìn gì?','Đảo đá vôi','Bãi cát trắng','Thác nước','Rừng thông','Vịnh có khoảng 1.600 hòn đảo lớn nhỏ.'],
+ ['Hạ Long lần đầu được UNESCO công nhận là Di sản thế giới vào năm nào?','1994','1979','2003','2014','Năm 1994 là lần công nhận đầu tiên về giá trị thẩm mỹ.'],
+ ['Vịnh Hạ Long nằm ở vùng biển nào của Việt Nam?','Vịnh Bắc Bộ','Vịnh Thái Lan','Vịnh Cam Ranh','Vịnh Vân Phong','Hạ Long thuộc phía Tây Bắc của Vịnh Bắc Bộ.']]},
+{id:'nb',n:'Ninh Bình',s:'Ninh Bình',ic:'🛶',x:150,y:170,a:'l',
+ intro:'“Hạ Long trên cạn” với núi đá vôi, sông nước và cố đô Hoa Lư, nơi hai triều Đinh – Tiền Lê đặt kinh đô.',
+ tip:'Đi thuyền Tràng An vào buổi sáng để tránh nắng và đông người. Thử món cơm cháy và dê núi.',
+ qs:[
+ ['Cố đô Hoa Lư là kinh đô của những triều đại nào?','Đinh và Tiền Lê','Lý và Trần','Nguyễn','Hồ và Mạc','Hoa Lư là kinh đô Đại Cồ Việt vào thế kỷ X.'],
+ ['Quần thể danh thắng Tràng An là loại di sản gì của UNESCO?','Di sản hỗn hợp (văn hóa và thiên nhiên)','Chỉ là di sản thiên nhiên','Chỉ là di sản tư liệu','Di sản phi vật thể','Tràng An được công nhận là di sản hỗn hợp năm 2014.'],
+ ['Cách tham quan Tràng An độc đáo nhất là gì?','Ngồi thuyền chèo qua các hang động','Đi cáp treo','Đi tàu hỏa','Đi xe jeep','Thuyền đi xuyên qua nhiều hang động dưới chân núi.']]},
+{id:'hue',n:'Huế',s:'Huế',ic:'🏯',x:150,y:272,a:'l',
+ intro:'Cố đô của triều Nguyễn với Đại Nội, lăng tẩm, sông Hương thơ mộng và nền ẩm thực cung đình tinh tế.',
+ tip:'Dành ít nhất một buổi để tham quan Đại Nội và một buổi đi thuyền rồng nghe ca Huế trên sông Hương.',
+ qs:[
+ ['Huế là kinh đô của triều đại nào?','Triều Nguyễn','Triều Lý','Triều Trần','Triều Đinh','Huế (Phú Xuân) là kinh đô từ năm 1802.'],
+ ['Dòng sông nào chảy qua thành phố Huế?','Sông Hương','Sông Hàn','Sông Cầu','Sông Đồng Nai','Sông Hương (sông Thơm) gắn với nhiều thi ca.'],
+ ['Nhã nhạc Huế thuộc loại hình nghệ thuật nào?','Âm nhạc cung đình','Quan họ','Đờn ca tài tử','Hát then','Nhã nhạc là âm nhạc dùng trong các nghi lễ cung đình.']]},
+{id:'ha',n:'Phố cổ Hội An',s:'Hội An',ic:'🏮',x:172,y:325,a:'r',
+ intro:'Thương cảng cổ rực rỡ đèn lồng, nơi giao thoa văn hóa Việt – Hoa – Nhật, được UNESCO công nhận là Di sản thế giới.',
+ tip:'Đêm rằm (14 âm lịch) phố cổ tắt đèn điện, thắp đèn lồng. Mua vé tham quan phố cổ để vào các di tích.',
+ qs:[
+ ['Phố cổ Hội An nổi tiếng với vật trang trí nào về đêm?','Đèn lồng','Đèn LED','Pháo hoa','Bóng bay','Đèn lồng nhiều màu sắc là biểu tượng của Hội An.'],
+ ['Công trình biểu tượng của Hội An thường được gọi là gì?','Chùa Cầu','Tháp Rùa','Cột cờ Hà Nội','Nhà thờ Đức Bà','Chùa Cầu (cầu Nhật Bản) có từ thế kỷ XVII.'],
+ ['Món mì nổi tiếng của Hội An là?','Cao lầu','Bún mọc','Bánh đa cua','Bún đậu mắm tôm','Sợi cao lầu dai, ăn kèm thịt xíu, rau sống.']]},
+{id:'nt',n:'Nha Trang',s:'Nha Trang',ic:'🏖️',x:222,y:420,a:'r',
+ intro:'Thành phố biển với vịnh đẹp, các đảo, lặn ngắm san hô và Tháp Bà Ponagar của người Chăm.',
+ tip:'Mùa biển đẹp là tháng 2–8. Đi tour đảo sớm để tránh nắng gắt và đông người.',
+ qs:[
+ ['Tháp Bà Ponagar ở Nha Trang do dân tộc nào xây dựng?','Người Chăm','Người Khmer','Người Hoa','Người Tày','Đây là quần thể đền tháp Chăm cổ, thờ nữ thần Po Nagar.'],
+ ['Nha Trang nổi tiếng nhất với loại hình du lịch nào?','Biển đảo','Núi tuyết','Sa mạc','Hang động trên núi cao','Vịnh Nha Trang thuộc những vịnh biển đẹp của thế giới.'],
+ ['Món nào là đặc sản vùng biển Nam Trung Bộ nổi tiếng ở Khánh Hòa?','Nem nướng Ninh Hòa','Bún chả','Cơm tấm','Lẩu mắm','Nem nướng Ninh Hòa ăn kèm bánh tráng, rau sống, nước chấm đặc biệt.']]},
+{id:'dl',n:'Đà Lạt',s:'Đà Lạt',ic:'🌸',x:192,y:465,a:'l',
+ intro:'Thành phố mộng mơ trên cao nguyên Lâm Viên, mát mẻ quanh năm với đồi thông, hồ nước và vườn hoa.',
+ tip:'Mang áo ấm cho buổi tối, sáng sớm có sương mù. Ghé chợ Đà Lạt thử dâu tây, atiso, sữa đậu nành nóng.',
+ qs:[
+ ['Đà Lạt có biệt danh là gì?','Thành phố ngàn hoa','Thành phố hoa phượng đỏ','Thành phố cảng','Thành phố ngàn đảo','Khí hậu mát mẻ thích hợp trồng nhiều loài hoa.'],
+ ['Đà Lạt nằm trên cao nguyên nào?','Lâm Viên','Đồng Văn','Mộc Châu','Kon Tum','Cao nguyên Lâm Viên cao khoảng 1.500 m.'],
+ ['Đà Lạt nổi tiếng với đặc sản nào sau đây?','Dâu tây','Nhãn lồng Hưng Yên','Vải thiều Thanh Hà','Xoài cát Hòa Lộc','Dâu tây Đà Lạt được trồng trong nhà kính và ngoài vườn.']]},
+{id:'sg',n:'TP. Hồ Chí Minh',s:'TP.HCM',ic:'🌆',x:152,y:545,a:'r',
+ intro:'Thành phố năng động nhất cả nước, nơi những tòa nhà chọc trời nằm cạnh kiến trúc Pháp, chợ truyền thống và ẩm thực đường phố.',
+ tip:'Sáng dạo trung tâm (Dinh Độc Lập, Nhà thờ Đức Bà, Bưu điện), tối đi ăn đường phố. Nên mang ô vào mùa mưa.',
+ qs:[
+ ['Tên cũ của Thành phố Hồ Chí Minh là gì?','Sài Gòn','Thăng Long','Phú Xuân','Đông Kinh','Từ năm 1976, Sài Gòn được đổi tên thành TP. Hồ Chí Minh.'],
+ ['Công trình nào gắn với sự kiện thống nhất đất nước ngày 30/4/1975?','Dinh Độc Lập','Nhà hát Lớn Hà Nội','Cột cờ Lũng Cú','Chùa Một Cột','Dinh Độc Lập nay là Hội trường Thống Nhất.'],
+ ['Chợ nào là biểu tượng nổi tiếng ở trung tâm TP.HCM?','Chợ Bến Thành','Chợ Đồng Xuân','Chợ Cồn','Chợ Đầm','Chợ Bến Thành có từ đầu thế kỷ XX.']]},
+{id:'ct',n:'Cần Thơ & Miền Tây',s:'Cần Thơ',ic:'🛶',x:118,y:598,a:'r',
+ intro:'Xứ sở sông nước với chợ nổi, vườn trái cây, kênh rạch chằng chịt và tình người hiền hòa của Đồng bằng sông Cửu Long.',
+ tip:'Đi chợ nổi Cái Răng thật sớm (5–7 giờ sáng) để thấy ghe thuyền tấp nập. Thử bánh xèo, lẩu mắm.',
+ qs:[
+ ['Chợ nổi nổi tiếng ở Cần Thơ có tên là gì?','Chợ nổi Cái Răng','Chợ Bến Thành','Chợ Đồng Xuân','Chợ Hôm','Người dân buôn bán ngay trên ghe thuyền.'],
+ ['Đồng bằng sông Cửu Long được bồi đắp bởi sông nào?','Sông Mê Kông','Sông Hồng','Sông Đà','Sông Cầu','Mê Kông chảy vào Việt Nam thành hai nhánh sông Tiền và sông Hậu.'],
+ ['Lẩu mắm là món đặc trưng của vùng nào?','Miền Tây Nam Bộ','Tây Bắc','Bắc Trung Bộ','Đồng bằng sông Hồng','Lẩu mắm nấu từ mắm cá linh hoặc cá sặc, ăn kèm nhiều loại rau.']]},
+{id:'pq',n:'Đảo Phú Quốc',s:'Phú Quốc',ic:'🏝️',x:48,y:590,a:'b',
+ intro:'Đảo ngọc với bãi biển cát trắng, rừng nguyên sinh, vườn tiêu và nước mắm nổi tiếng.',
+ tip:'Mùa khô (tháng 11–4) biển êm, nước trong. Nên thuê xe máy hoặc xe điện để khám phá quanh đảo.',
+ qs:[
+ ['Hòn đảo lớn nhất của Việt Nam là?','Phú Quốc','Cát Bà','Côn Đảo','Lý Sơn','Phú Quốc có diện tích hơn 570 km².'],
+ ['Phú Quốc nằm trong vịnh nào?','Vịnh Thái Lan','Vịnh Bắc Bộ','Vịnh Hạ Long','Vịnh Nha Trang','Đảo nằm ở phía Tây Nam, gần bờ biển Campuchia.'],
+ ['Đặc sản nổi tiếng nhất của Phú Quốc là gì?','Nước mắm','Cà phê Buôn Ma Thuột','Trà Thái Nguyên','Rượu cần','Nước mắm Phú Quốc làm từ cá cơm, ủ trong thùng gỗ.']]}
+];
+
+/* Đoán địa danh: [tên, emoji, gợi ý 1, gợi ý 2] */
+const PLACES=[
+['Vịnh Hạ Long','⛰️🚢','Có hàng nghìn đảo đá vôi.','Di sản thiên nhiên thế giới ở miền Bắc.'],
+['Phố cổ Hội An','🏮','Nổi tiếng với đèn lồng nhiều màu.','Có Chùa Cầu và món cao lầu.'],
+['Chợ nổi Cái Răng','🛶🍍','Mua bán ngay trên sông nước.','Ở gần thành phố Cần Thơ.'],
+['Đà Lạt','🌸🌲','Thành phố ngàn hoa trên cao nguyên.','Có hồ Xuân Hương.'],
+['Sa Pa','🌾⛰️','Gần đỉnh Fansipan.','Ruộng bậc thang vàng vào mùa lúa chín.'],
+['Phong Nha – Kẻ Bàng','🦇','Có nhiều hang động đá vôi kỳ vĩ.','Nơi có hang Sơn Đoòng, hang động lớn bậc nhất thế giới.'],
+['Cột cờ Lũng Cú','🚩','Ở nơi địa đầu Tổ quốc.','Đánh dấu cực Bắc của Việt Nam.'],
+['Tràng An','🛶⛰️','Du khách ngồi thuyền xuyên qua các hang động.','Gần cố đô Hoa Lư.'],
+['Đảo Phú Quốc','🏝️','Hòn đảo lớn nhất Việt Nam.','Nổi tiếng với nước mắm và hồ tiêu.'],
+['Kinh thành Huế','🏯','Có Ngọ Môn và sông Hương bên cạnh.','Kinh đô cuối cùng của chế độ phong kiến.'],
+['Địa đạo Củ Chi','🕳️','Hệ thống đường hầm dưới lòng đất.','Nằm gần TP. Hồ Chí Minh.']
+];
+
+/* Đặc sản về đúng quê: [tên món, emoji, miền, ghi chú] */
+const FOODS=[
+['Phở','🍜','Bắc','Phở gắn bó với Hà Nội và Nam Định.'],
+['Bún chả','🥢','Bắc','Món nổi tiếng của Hà Nội.'],
+['Chả cá Lã Vọng','🐟','Bắc','Cá rán nghệ ăn với thì là, đặc sản Hà Nội.'],
+['Cốm làng Vòng','🌾','Bắc','Cốm là thức quà thu của Hà Nội.'],
+['Bánh cuốn Thanh Trì','🥟','Bắc','Bánh cuốn mỏng ăn kèm chả quế.'],
+['Bún bò Huế','🍲','Trung','Đậm đà vị sả và mắm ruốc.'],
+['Mì Quảng','🍜','Trung','Đặc sản của vùng Quảng Nam – Đà Nẵng.'],
+['Cao lầu','🥘','Trung','Chỉ có ở Hội An.'],
+['Bánh bèo chén','🥣','Trung','Món bánh nhỏ xinh của cố đô Huế.'],
+['Nem lụi','🍢','Trung','Thịt nướng quấn bánh tráng, đặc sản Huế.'],
+['Cơm tấm','🍚','Nam','Gạo tấm ăn với sườn nướng, hợp với Sài Gòn.'],
+['Hủ tiếu Mỹ Tho','🍜','Nam','Món đặc trưng của miền Tây Nam Bộ.'],
+['Lẩu mắm','🍲','Nam','Đặc sản vùng sông nước miền Tây.'],
+['Bánh pía','🥮','Nam','Bánh nhân sầu riêng, đậu xanh nổi tiếng ở Sóc Trăng.']
+];
+
+/* Chuyến đi có ngân sách: b = ngân sách (nghìn đồng), d = số ngày, it = [tên, emoji, ngày, chi phí(nghìn đồng), điểm hài lòng] */
+const TRIPS=[
+{n:'Bắc Bộ 3 ngày',b:3000,d:3,it:[
+ ['Dạo phố cổ & Hồ Gươm','🚶',0.5,100,6],['Ăn bún chả, phở, chả cá','🍜',0.5,250,7],['Du thuyền Vịnh Hạ Long','🚢',1,1100,10],
+ ['Chèo thuyền Tràng An','🛶',1,400,9],['Chùa Bái Đính','🛕',0.5,150,5],['Văn Miếu & Bảo tàng','🏛️',0.5,80,5],
+ ['Xem múa rối nước','🎭',0.5,120,5],['Spa cao cấp','💆',0.5,900,4],['Nhà hàng hải sản sang trọng','🦞',0.5,800,5],['Đạp xe quanh Hồ Tây','🚲',0.5,50,4]]},
+{n:'Miền Trung 4 ngày',b:4500,d:4,it:[
+ ['Tham quan Đại Nội Huế','🏯',0.5,200,8],['Thuyền trên sông Hương','⛵',0.5,150,6],['Ẩm thực cung đình Huế','🍲',0.5,150,6],
+ ['Phố cổ Hội An về đêm','🏮',0.5,250,8],['Lớp học nấu ăn Hội An','👩‍🍳',0.5,600,6],['Bà Nà Hills','🎡',1,1200,9],
+ ['Biển Mỹ Khê','🏖️',0.5,50,5],['Thánh địa Mỹ Sơn','🛕',0.5,300,7],['Đèo Hải Vân','🏍️',0.5,200,7],['Nghỉ resort 5 sao 1 đêm','🏨',1,2500,6]]},
+{n:'Miền Nam 3 ngày',b:2500,d:3,it:[
+ ['Dinh Độc Lập','🏛️',0.5,80,6],['Chợ Bến Thành & ẩm thực','🍜',0.5,250,7],['Địa đạo Củ Chi','🕳️',0.5,300,7],
+ ['Chợ nổi Cái Răng','🛶',1,700,10],['Vườn trái cây miền Tây','🍍',0.5,150,6],['Phố đi bộ Nguyễn Huệ','🚶',0.5,50,4],
+ ['Bảo tàng Chứng tích chiến tranh','🏛️',0.5,40,6],['Du thuyền ăn tối sang trọng','🍽️',0.5,1200,5],['Cà phê sách & quán cà phê','☕',0.5,100,4],['Bay trực thăng ngắm thành phố','🚁',0.5,1500,5]]}
+];
+
+/* ===================== KHUNG GIAO DIỆN ===================== */
+root.innerHTML='<div class="vv-top"><h1 data-a="home">🧭 Khám phá Việt Nam</h1><span class="vv-chip" id="vv-pts"></span><span class="vv-chip" id="vv-badge"></span></div><div class="vv-main" id="vv-main"></div>';
+const main=document.getElementById('vv-main');
+let timer=null;
+const stopTimer=()=>{if(timer){clearInterval(timer);timer=null}};
+const draw=h=>{main.innerHTML=h};
+function top(){
+  document.getElementById('vv-pts').textContent='⭐ '+S.pts+' điểm';
+  const n=Object.keys(S.stamps).length;
+  document.getElementById('vv-badge').textContent=n>=STOPS.length?'🏅 Người lữ hành':'🛂 '+n+'/'+STOPS.length+' con dấu';
+}
+function toast(t){const d=document.createElement('div');d.className='vv-toast';d.textContent=t;root.appendChild(d);setTimeout(()=>d.remove(),1800)}
+function addPts(n){S.pts+=n;persist();top()}
+
+const A={};
+root.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||t.disabled)return;const f=A[t.dataset.a];if(f)f(t.dataset,t)});
+
+/* ===================== TRANG CHỦ ===================== */
+function home(){
+  stopTimer();top();
+  draw(`<h2 class="vv-h2">Sẵn sàng cho chuyến đi xuyên Việt chưa?</h2>
+  <p class="vv-sub">Thu thập đủ ${STOPS.length} con dấu hộ chiếu để nhận danh hiệu <b>Người lữ hành</b>.</p>
+  <div class="vv-grid">
+   <button class="vv-mode" data-a="trip"><span class="big">🗺️</span><b>Hành trình xuyên Việt</b><small>Bản đồ hình chữ S, ${STOPS.length} điểm dừng, mỗi nơi có thử thách và một con dấu.</small></button>
+   <button class="vv-mode" data-a="food"><span class="big">🍜</span><b>Đặc sản về đúng quê</b><small>Món ăn này thuộc miền nào? Kỷ lục: ${S.best.food}</small></button>
+   <button class="vv-mode" data-a="guess"><span class="big">🔍</span><b>Đoán địa danh qua ảnh mờ</b><small>Hình rõ dần theo thời gian, đoán càng sớm càng nhiều điểm. Kỷ lục: ${S.best.guess}</small></button>
+   <button class="vv-mode" data-a="budget"><span class="big">💰</span><b>Chuyến đi có ngân sách</b><small>Chọn hoạt động trong giới hạn tiền và số ngày để vui nhất. Kỷ lục: ${S.best.trip}</small></button>
+   <button class="vv-mode" data-a="pass"><span class="big">🛂</span><b>Hộ chiếu của tôi</b><small>Xem các con dấu bạn đã sưu tầm.</small></button>
+  </div>
+  <div class="vv-row"><button class="vv-btn alt sm" data-a="reset">🗑️ Xóa tiến trình</button></div>`);
+}
+A.home=home;
+A.reset=()=>{if(confirm('Xóa toàn bộ điểm và tiến trình?')){S=DEF();persist();home()}};
+
+/* ===================== HÀNH TRÌNH XUYÊN VIỆT ===================== */
+A.trip=()=>{
+  stopTimer();
+  let svg=`<svg class="vv-map" viewBox="0 0 340 680" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bản đồ minh họa Việt Nam">
+  <path d="M130 20 L175 20 L200 60 L225 95 L205 125 L170 175 L180 230 L170 275 L200 320 L215 370 L245 420 L235 470 L195 520 L165 575 L130 620 L95 640 L80 610 L100 570 L130 540 L150 500 L170 450 L150 400 L135 340 L120 280 L110 230 L95 180 L80 130 L70 80 L100 50 Z" fill="#cfe8c8" stroke="#7fb27a" stroke-width="3" stroke-linejoin="round"/>
+  <polyline points="${STOPS.map(s=>s.x+','+s.y).join(' ')}" fill="none" stroke="#0f766e" stroke-width="2" stroke-dasharray="5 5" opacity=".6"/>
+  <text x="290" y="300" font-size="11" fill="#3b7a99" text-anchor="middle">Biển Đông</text>
+  <text x="40" y="330" font-size="11" fill="#3b7a99" text-anchor="middle">Lào</text>`;
+  STOPS.forEach((s,i)=>{
+    const dn=S.stamps[s.id]!=null,lx=s.a==='r'?s.x+14:s.a==='l'?s.x-14:s.x,ly=s.a==='b'?s.y+26:s.y+4,an=s.a==='r'?'start':s.a==='l'?'end':'middle';
+    svg+=`<g class="vv-node" data-a="stop" data-i="${i}"><circle class="c" cx="${s.x}" cy="${s.y}" r="11" fill="${dn?'#2e7d32':'#e0a21b'}" stroke="#fff" stroke-width="2"/>
+    <text x="${s.x}" y="${s.y+4}" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">${dn?'✓':i+1}</text>
+    <text x="${lx}" y="${ly}" font-size="12" font-weight="600" fill="#12302e" text-anchor="${an}">${esc(s.s)}</text></g>`;
+  });
+  svg+='</svg>';
+  const n=Object.keys(S.stamps).length;
+  draw(`<h2 class="vv-h2">🗺️ Hành trình xuyên Việt</h2><p class="vv-sub">Bấm vào một điểm trên bản đồ (hoặc trong danh sách) để bắt đầu thử thách.</p>
+  <div class="vv-mapwrap">${svg}<div class="vv-side">
+   <div class="vv-note">Đã thu thập: <b>${n}/${STOPS.length}</b> con dấu.<br><small>Bản đồ chỉ mang tính minh họa.</small></div>`+
+  STOPS.map((s,i)=>`<button class="vv-act ${S.stamps[s.id]!=null?'sel':''}" data-a="stop" data-i="${i}"><span class="ic">${s.ic}</span><span class="tx"><b>${i+1}. ${esc(s.n)}</b></span><span class="jy">${S.stamps[s.id]!=null?'✅ '+'★'.repeat(S.stamps[s.id]):''}</span></button>`).join('')+
+  `<div class="vv-row"><button class="vv-btn alt sm" data-a="home">← Về trang chủ</button></div></div></div>`);
+};
+
+let Q=null;
+A.stop=d=>{const s=STOPS[+d.i];
+  draw(`<div class="vv-center"><div class="vv-big">${s.ic}</div></div><h2 class="vv-h2 vv-center">${esc(s.n)}</h2>
+  <div class="vv-story">${esc(s.intro)}</div>
+  <div class="vv-row"><button class="vv-btn" data-a="startq" data-i="${d.i}">Bắt đầu thử thách ▶</button><button class="vv-btn alt" data-a="trip">← Bản đồ</button></div>`)};
+A.startq=d=>{Q={s:+d.i,n:0,right:0,opts:[],picked:null};qScreen()};
+function qScreen(){
+  const st=STOPS[Q.s],q=st.qs[Q.n];
+  if(!Q.opts.length)Q.opts=shuffle(q.slice(1,5));
+  const p=Q.picked;
+  draw(`<div class="vv-prog"><i style="width:${(Q.n+(p!==null?1:0))/st.qs.length*100}%"></i></div>
+  <small class="vv-sub">${esc(st.n)} · Câu ${Q.n+1}/${st.qs.length}</small>
+  <div class="vv-q">${esc(q[0])}</div>`+
+  Q.opts.map((o,i)=>{let c='';if(p!==null){if(o===q[1])c='ok';else if(i===p)c='bad'}
+    return `<button class="vv-opt ${c}" data-a="ans" data-i="${i}" ${p!==null?'disabled':''}>${esc(o)}</button>`}).join('')+
+  (p!==null?`<div class="vv-note">${Q.opts[p]===q[1]?'✅ Chính xác! ':'❌ Chưa đúng. Đáp án: <b>'+esc(q[1])+'</b>. '}${esc(q[5])}</div>
+  <button class="vv-btn" data-a="qnext">${Q.n+1<st.qs.length?'Câu tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
+}
+A.ans=d=>{if(Q.picked!==null)return;Q.picked=+d.i;const q=STOPS[Q.s].qs[Q.n];if(Q.opts[Q.picked]===q[1]){Q.right++;addPts(10)}qScreen()};
+A.qnext=()=>{Q.n++;Q.opts=[];Q.picked=null;if(Q.n>=STOPS[Q.s].qs.length)return qEnd();qScreen()};
+function qEnd(){
+  const st=STOPS[Q.s],pass=Q.right>=2,first=pass&&S.stamps[st.id]==null;
+  if(pass){S.stamps[st.id]=Math.max(S.stamps[st.id]||0,Q.right);if(first)S.pts+=20;persist();top()}
+  draw(`<div class="vv-center"><div class="vv-big">${pass?'🛂':'💪'}</div>
+  <h2 class="vv-h2">${pass?'Đã đóng dấu '+esc(st.s)+'!':'Gần được rồi, thử lại nhé!'}</h2>
+  <div style="color:#e0a21b;font-size:30px;letter-spacing:3px">${'★'.repeat(Q.right)}${'☆'.repeat(3-Q.right)}</div>
+  <p>Bạn trả lời đúng <b>${Q.right}/${st.qs.length}</b> câu. ${first?'🎁 Con dấu mới! +20 điểm.':''}</p></div>`+
+  (pass?`<div class="vv-note">🧳 <b>Mẹo du lịch:</b> ${esc(st.tip)}</div>`:'')+
+  `<div class="vv-row" style="justify-content:center">
+   <button class="vv-btn alt" data-a="startq" data-i="${Q.s}">↻ Chơi lại điểm này</button>
+   ${pass&&Q.s+1<STOPS.length?`<button class="vv-btn" data-a="stop" data-i="${Q.s+1}">Điểm kế tiếp ▶</button>`:''}
+   <button class="vv-btn alt" data-a="trip">🗺️ Bản đồ</button></div>`);
+}
+
+/* ===================== HỘ CHIẾU ===================== */
+A.pass=()=>{stopTimer();
+  draw(`<h2 class="vv-h2">🛂 Hộ chiếu của tôi</h2><p class="vv-sub">Mỗi con dấu là một điểm đến bạn đã chinh phục.</p><div class="vv-stamps">`+
+  STOPS.map(s=>S.stamps[s.id]!=null
+   ?`<div class="vv-stamp"><div class="big">${s.ic}</div><b>${esc(s.s)}</b><small>${'★'.repeat(S.stamps[s.id])}${'☆'.repeat(3-S.stamps[s.id])}</small></div>`
+   :`<div class="vv-stamp off"><div class="big">❓</div><b>${esc(s.s)}</b><small>Chưa đến</small></div>`).join('')+
+  `</div><div class="vv-row"><button class="vv-btn alt" data-a="home">← Về trang chủ</button></div>`)};
+
+/* ===================== ĐẶC SẢN VỀ ĐÚNG QUÊ ===================== */
+let F=null;
+A.food=()=>{stopTimer();F={items:shuffle(FOODS).slice(0,8),i:0,pts:0,ok:0,streak:0,picked:null};foodScreen()};
+function foodScreen(){
+  if(F.i>=F.items.length)return foodEnd();
+  const f=F.items[F.i],p=F.picked,regs=['Bắc','Trung','Nam'];
+  draw(`<div class="vv-prog"><i style="width:${F.i/F.items.length*100}%"></i></div>
+  <small class="vv-sub">Đặc sản về đúng quê · Món ${F.i+1}/${F.items.length} · Điểm: ${F.pts}${F.streak>=3?' 🔥':''}</small>
+  <div class="vv-food">${f[1]}</div><div class="vv-q vv-center">${esc(f[0])} là đặc sản của miền nào?</div>
+  <div class="vv-regs">`+regs.map(r=>{let c='';if(p!==null){if(r===f[2])c='ok';else if(r===p)c='bad'}
+    return `<button class="vv-reg ${c}" data-a="fans" data-r="${r}" ${p!==null?'disabled':''}>Miền ${r}</button>`}).join('')+`</div>`+
+  (p!==null?`<div class="vv-note">${p===f[2]?'✅ Chính xác! ':'❌ Món này thuộc miền '+f[2]+'. '}${esc(f[3])}</div><button class="vv-btn" data-a="fnext">${F.i+1<F.items.length?'Món tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
+}
+A.fans=d=>{if(F.picked!==null)return;F.picked=d.r;const f=F.items[F.i];if(d.r===f[2]){F.ok++;F.streak++;F.pts+=10+(F.streak>=3?5:0)}else F.streak=0;foodScreen()};
+A.fnext=()=>{F.i++;F.picked=null;foodScreen()};
+function foodEnd(){
+  addPts(F.pts);const nb=F.pts>S.best.food;if(nb){S.best.food=F.pts;persist()}
+  draw(`<div class="vv-center"><div class="vv-big">🍜</div><h2 class="vv-h2">Hoàn thành!</h2><p>Đúng <b>${F.ok}/${F.items.length}</b> món · <b>${F.pts}</b> điểm ${nb?'🎉 Kỷ lục mới!':'(kỷ lục: '+S.best.food+')'}</p></div>
+  <div class="vv-row" style="justify-content:center"><button class="vv-btn" data-a="food">Chơi lại</button><button class="vv-btn alt" data-a="home">Trang chủ</button></div>`);
+}
+
+/* ===================== ĐOÁN ĐỊA DANH QUA ẢNH MỜ ===================== */
+let G=null;
+A.guess=()=>{stopTimer();G={rounds:shuffle(PLACES).slice(0,6),r:0,pts:0,picked:null,opts:[],t0:0,hints:1,gain:0};guessRound()};
+function guessRound(){
+  if(G.r>=G.rounds.length)return guessEnd();
+  const c=G.rounds[G.r];
+  G.opts=shuffle([c[0],...shuffle(PLACES.filter(x=>x!==c).map(x=>x[0])).slice(0,3)]);
+  G.picked=null;G.hints=1;G.t0=Date.now();
+  guessDraw();
+  stopTimer();
+  timer=setInterval(()=>{
+    if(G.picked!==null)return;
+    const e=(Date.now()-G.t0)/1000,pic=document.getElementById('vv-pic');
+    if(pic)pic.style.filter='blur('+Math.max(0,22-e*1.6).toFixed(1)+'px)';
+    const h=1+(e>=5?1:0)+(e>=10?1:0);
+    if(h!==G.hints){G.hints=h;guessDraw()}
+  },150);
+}
+function guessDraw(){
+  const c=G.rounds[G.r],p=G.picked,e=(Date.now()-G.t0)/1000;
+  const blur=p!==null?0:Math.max(0,22-e*1.6);
+  draw(`<div class="vv-prog"><i style="width:${G.r/G.rounds.length*100}%"></i></div>
+  <small class="vv-sub">Đoán địa danh · Vòng ${G.r+1}/${G.rounds.length} · Điểm: ${G.pts}</small>
+  <div class="vv-pic" id="vv-pic" style="filter:blur(${blur.toFixed(1)}px)">${c[1]}</div>`+
+  [2,3].map((k,i)=>`<div class="vv-hint ${i<G.hints?'':'off'}">💡 Gợi ý ${i+1}: ${i<G.hints?esc(c[k]):'(sẽ hiện sau '+(i+1)*5+' giây)'}</div>`).join('')+
+  `<div class="vv-q">Đây là đâu? <small class="vv-sub">(Đoán càng sớm, điểm càng cao)</small></div>`+
+  G.opts.map((o,i)=>{let cl='';if(p!==null){if(o===c[0])cl='ok';else if(i===p)cl='bad'}
+    return `<button class="vv-opt ${cl}" data-a="gans" data-i="${i}" ${p!==null?'disabled':''}>${esc(o)}</button>`}).join('')+
+  (p!==null?`<div class="vv-note">${G.opts[p]===c[0]?'✅ Chính xác! +'+G.gain+' điểm.':'❌ Đáp án đúng: <b>'+esc(c[0])+'</b>.'}</div><button class="vv-btn" data-a="gnext">${G.r+1<G.rounds.length?'Vòng tiếp ▶':'Xem kết quả ▶'}</button>`:''));
+}
+A.gans=d=>{
+  if(G.picked!==null)return;
+  const c=G.rounds[G.r],e=(Date.now()-G.t0)/1000;stopTimer();
+  G.picked=+d.i;
+  if(G.opts[G.picked]===c[0]){G.gain=Math.max(10,Math.round(60-e*3));G.pts+=G.gain}
+  guessDraw();
+};
+A.gnext=()=>{G.r++;guessRound()};
+function guessEnd(){
+  stopTimer();addPts(G.pts);const nb=G.pts>S.best.guess;if(nb){S.best.guess=G.pts;persist()}
+  draw(`<div class="vv-center"><div class="vv-big">🔍</div><h2 class="vv-h2">Hoàn thành!</h2><p>Bạn được <b>${G.pts}</b> điểm (tối đa 360). ${nb?'🎉 Kỷ lục mới!':'Kỷ lục: '+S.best.guess}</p></div>
+  <div class="vv-row" style="justify-content:center"><button class="vv-btn" data-a="guess">Chơi lại</button><button class="vv-btn alt" data-a="home">Trang chủ</button></div>`);
+}
+
+/* ===================== CHUYẾN ĐI CÓ NGÂN SÁCH ===================== */
+let B=null;
+function bestPlan(t){
+  const n=t.it.length;let bj=0,bm=0;
+  for(let m=0;m<(1<<n);m++){let c=0,d=0,j=0;
+    for(let k=0;k<n;k++)if(m>>k&1){d+=t.it[k][2];c+=t.it[k][3];j+=t.it[k][4]}
+    if(c<=t.b&&d<=t.d&&j>bj){bj=j;bm=m}}
+  return{j:bj,m:bm};
+}
+const tot=(t,sel)=>sel.reduce((a,k)=>({c:a.c+t.it[k][3],d:a.d+t.it[k][2],j:a.j+t.it[k][4]}),{c:0,d:0,j:0});
+A.budget=()=>{stopTimer();B={t:TRIPS[Math.random()*TRIPS.length|0],sel:[],done:false};budgetDraw()};
+function budgetDraw(){
+  const t=B.t,T=tot(t,B.sel);
+  draw(`<h2 class="vv-h2">💰 Chuyến đi có ngân sách: ${esc(t.n)}</h2>
+  <p class="vv-sub">Chọn các hoạt động để đạt tổng <b>điểm hài lòng</b> cao nhất mà không vượt quá ngân sách và số ngày.</p>
+  <div class="vv-meter"><span class="${T.c>t.b?'over':''}">💵 ${vnd(T.c)} / ${vnd(t.b)}</span><span class="${T.d>t.d?'over':''}">📅 ${T.d} / ${t.d} ngày</span><span>😊 ${T.j} điểm</span></div>`+
+  t.it.map((it,k)=>{const on=B.sel.includes(k),fits=T.c+it[3]<=t.b&&T.d+it[2]<=t.d;
+    return `<button class="vv-act ${on?'sel':''}" data-a="btog" data-k="${k}" ${!on&&!fits?'disabled':''}><span class="ic">${it[1]}</span><span class="tx"><b>${esc(it[0])}</b><small>${vnd(it[3])} · ${it[2]} ngày</small></span><span class="jy">+${it[4]} 😊</span></button>`}).join('')+
+  `<div class="vv-row"><button class="vv-btn" data-a="bdone" ${B.sel.length?'':'disabled'}>Chốt lịch trình ✅</button><button class="vv-btn alt" data-a="budget">Đổi chuyến khác</button><button class="vv-btn alt" data-a="home">Trang chủ</button></div>`);
+}
+A.btog=d=>{
+  const k=+d.k,i=B.sel.indexOf(k);
+  if(i>=0)B.sel.splice(i,1);else{const T=tot(B.t,B.sel),it=B.t.it[k];if(T.c+it[3]>B.t.b||T.d+it[2]>B.t.d){toast('Vượt ngân sách hoặc số ngày!');return}B.sel.push(k)}
+  budgetDraw();
+};
+A.bdone=()=>{
+  const t=B.t,T=tot(t,B.sel),bp=bestPlan(t),ratio=T.j/bp.j,stars=ratio>=.95?3:ratio>=.8?2:1,pts=Math.round(ratio*50);
+  addPts(pts);const nb=pts>S.best.trip;if(nb){S.best.trip=pts;persist()}
+  const opt=t.it.map((it,k)=>bp.m>>k&1?it:null).filter(Boolean);
+  draw(`<div class="vv-center"><div class="vv-big">${stars===3?'🏆':stars===2?'👏':'🙂'}</div><h2 class="vv-h2">Lịch trình của bạn: ${T.j}/${bp.j} điểm hài lòng</h2>
+  <div style="color:#e0a21b;font-size:30px;letter-spacing:3px">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div>
+  <p>+${pts} điểm ${nb?'🎉 Kỷ lục mới!':'(kỷ lục: '+S.best.trip+')'}</p></div>
+  <div class="vv-note"><b>Lịch trình tối ưu</b> (${bp.j} điểm):<br>${opt.map(o=>o[1]+' '+esc(o[0])).join('<br>')}</div>
+  <div class="vv-row" style="justify-content:center"><button class="vv-btn" data-a="budget">Chuyến mới</button><button class="vv-btn alt" data-a="home">Trang chủ</button></div>`);
+};
+
+home();
+})();
+</script>
+</body>
+</html>

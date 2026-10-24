@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.24-2';
+const APP_VERSION='2026.10.24-3';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -5257,6 +5257,10 @@ menu();
    <button type="button" id="ckOn">🔊 Đọc thời gian</button>
    <button type="button" id="ckOff">🔇 Không đọc</button>
   </div>
+  <div class="ck-seg">
+   <button type="button" id="ckNumOn">🔢 Hiện giờ bằng số</button>
+   <button type="button" id="ckNumOff">🙈 Ẩn giờ bằng số</button>
+  </div>
   <button class="ck-now" type="button" id="ckNow">🕒 Đặt theo giờ hiện tại</button>
   <div style="font-size:12.5px;color:#9fc0ff;text-align:center;margin-top:10px;max-width:440px;line-height:1.5">Hãy dùng ngón tay xoay một kim bất kỳ. Các kim còn lại sẽ quay theo đúng như đồng hồ thật. Thả tay ra để nghe đọc giờ.</div>
  </div>
@@ -5267,6 +5271,9 @@ menu();
  var ov=document.getElementById('ckOv'), svg=document.getElementById('ckSvg');
  var dig=document.getElementById('ckDig'), say=document.getElementById('ckSay');
  var bOn=document.getElementById('ckOn'), bOff=document.getElementById('ckOff');
+ var bNumOn=document.getElementById('ckNumOn'), bNumOff=document.getElementById('ckNumOff');
+ var showNum=true;
+ try{showNum=localStorage.getItem('6pay_clock_num')!=='0';}catch(e){}
  var T=0;                       // số giây đã trôi qua trong chu kỳ 12 giờ (0 đến 43200)
  var speakOn=true;
  try{speakOn=localStorage.getItem('6pay_clock_speak')!=='0';}catch(e){}
@@ -5343,7 +5350,17 @@ menu();
   bOn.classList.toggle('on',v); bOff.classList.toggle('on',!v);
   if(v)speak(phrase(parts(T)));
  }
- function paintToggle(){bOn.classList.toggle('on',speakOn);bOff.classList.toggle('on',!speakOn);}
+ function paintToggle(){
+  bOn.classList.toggle('on',speakOn);bOff.classList.toggle('on',!speakOn);
+  bNumOn.classList.toggle('on',showNum);bNumOff.classList.toggle('on',!showNum);
+  dig.style.visibility=showNum?'visible':'hidden';
+  say.style.visibility=showNum?'visible':'hidden';
+ }
+ function setNum(v){
+  showNum=v;
+  try{localStorage.setItem('6pay_clock_num',v?'1':'0');}catch(e){}
+  paintToggle();
+ }
 
  // ----- Điều khiển kim -----
  function pt(e){
@@ -5406,6 +5423,8 @@ menu();
  });
  bOn.addEventListener('click',function(){setSpeak(true);});
  bOff.addEventListener('click',function(){setSpeak(false);});
+ bNumOn.addEventListener('click',function(){setNum(true);});
+ bNumOff.addEventListener('click',function(){setNum(false);});
 
  function open(){
   now();render();say.textContent='';paintToggle();

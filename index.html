@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.24-1';
+const APP_VERSION='2026.10.24-2';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -5307,7 +5307,14 @@ menu();
  }
  function pad(n){return (n<10?'0':'')+n;}
  function phrase(p){
-  return (p.m===0&&p.s===0) ? 'Bây giờ là '+p.h+' giờ đúng' : 'Bây giờ là '+p.h+' giờ '+p.m+' phút '+p.s+' giây';
+  if(p.m===0&&p.s===0)return 'Bây giờ là '+p.h+' giờ đúng';
+  var txt='Bây giờ là '+p.h+' giờ '+p.m+' phút '+p.s+' giây';
+  var el=p.m*60+p.s;
+  if(el>1800){ // quá nửa giờ thì đọc thêm cách nói "kém"
+   var rem=3600-el, nh=p.h%12+1;
+   txt+=', hoặc là '+nh+' giờ kém '+Math.floor(rem/60)+' phút '+(rem%60)+' giây';
+  }
+  return txt;
  }
  function render(){
   hH.setAttribute('transform','rotate('+degH().toFixed(3)+' 150 150)');

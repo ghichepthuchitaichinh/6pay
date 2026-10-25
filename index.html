@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.25-5';
+const APP_VERSION='2026.10.26-1';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -4900,6 +4900,254 @@ const STOPS=[
 {id:'p34',n:'Cà Mau',s:'Cà Mau',ic:'📍',x:167.5,y:770.3,intro:'',tip:'',qs:[]}
 ];
 
+
+/* ===== THÔNG TIN CHI TIẾT 34 TỈNH, THÀNH =====
+   Nguồn: Nghị quyết 202/2025/QH15 (sắp xếp đơn vị hành chính cấp tỉnh) và các nghị quyết sắp xếp đơn vị cấp xã năm 2025.
+   Diện tích (km²), dân số (nghìn người, ước tính cuối 2024) mang tính tham khảo.
+   Muốn sửa nội dung một tỉnh: tìm dòng P('pN', ...) tương ứng bên dưới.
+   Thứ tự tham số: id, f (các tỉnh đã sáp nhập, để [] nếu giữ nguyên), trung tâm hành chính, đơn vị cấp xã, diện tích, dân số (nghìn),
+   quốc lộ/cao tốc, sông hồ vịnh, 1 sông/hồ tiêu biểu (dùng cho câu hỏi), 4 địa danh nổi tiếng, danh sách điểm nổi bật, mẹo du lịch. */
+const PI={};
+function P(id,f,tt,hc,dt,dn,ql,song,sk,pl,nb,tip){PI[id]={f:f,tt:tt,hc:hc,dt:dt,dn:dn,ql:ql,song:song,sk:sk,pl:pl,nb:nb,tip:tip};}
+
+P('p1',[],'Khu vực thành phố Lai Châu','38 xã, phường (36 xã và 2 phường)',9068.7,460,
+ 'QL4D, QL12, QL32','Sông Đà, sông Nậm Na; hồ thủy điện Lai Châu','Sông Nậm Na',
+ ['Đèo Ô Quy Hồ','Cao nguyên Sìn Hồ','Đỉnh Putaleng','Thác Tác Tình'],
+ ['Tỉnh cực Tây Bắc, có đường biên giới với Trung Quốc.','Có đỉnh Putaleng cao khoảng 3.049 m và đèo Ô Quy Hồ nối sang Lào Cai.','Nhiều dân tộc cùng sinh sống như Thái, Mông, Dao, Hà Nhì...','Có nhà máy thủy điện Lai Châu trên sông Đà.'],
+ 'Nên đi vào mùa xuân để ngắm hoa ban, hoa đào; đường đèo nhiều nên cần lái xe cẩn thận.');
+
+P('p2',[],'Thành phố Điện Biên Phủ','45 xã, phường (42 xã và 3 phường)',9539.9,674,
+ 'QL12, QL6, QL279','Sông Nậm Rốm, sông Đà, đầu nguồn sông Mã; hồ Pá Khoang','Hồ Pá Khoang',
+ ['Đồi A1','Hầm Đờ Cát','Cánh đồng Mường Thanh','Cửa khẩu Tây Trang'],
+ ['Nơi diễn ra chiến dịch Điện Biên Phủ (13/3 – 7/5/1954), kết thúc cuộc kháng chiến chống Pháp.','Có cánh đồng Mường Thanh, một trong những cánh đồng lớn nhất vùng Tây Bắc.','Có biên giới với Lào và Trung Quốc; cửa khẩu quốc tế Tây Trang thông sang Lào.','Có nhiều di tích: đồi A1, hầm Đờ Cát-xtơ-ri, Bảo tàng Chiến thắng Điện Biên Phủ.'],
+ 'Nên tham quan đồi A1, hầm Đờ Cát và Bảo tàng Chiến thắng Điện Biên Phủ.');
+
+P('p3',['Yên Bái','Lào Cai'],'Khu vực thành phố Yên Bái (cũ)','99 xã, phường (89 xã và 10 phường)',13256.9,1779,
+ 'Cao tốc Nội Bài – Lào Cai, QL70, QL4E, QL37, QL32','Sông Hồng, sông Chảy, sông Nậm Thi; hồ Thác Bà','Hồ Thác Bà',
+ ['Đỉnh Fansipan','Ruộng bậc thang Mù Cang Chải','Bản Cát Cát (Sa Pa)','Chợ phiên Bắc Hà'],
+ ['Có đỉnh Fansipan cao khoảng 3.143 m, được gọi là “nóc nhà Đông Dương”.','Ruộng bậc thang Mù Cang Chải là Di tích quốc gia đặc biệt.','Có cửa khẩu quốc tế Lào Cai thông sang Trung Quốc.','Hồ Thác Bà là hồ nhân tạo lớn ở vùng Tây Bắc, nổi tiếng với hàng nghìn đảo nhỏ.'],
+ 'Mùa lúa chín (tháng 9 – 10) và mùa mây, sương là dịp đẹp để lên Sa Pa, Mù Cang Chải.');
+
+P('p4',['Hà Giang','Tuyên Quang'],'Khu vực thành phố Tuyên Quang','124 xã, phường (117 xã và 7 phường)',13795.6,1865,
+ 'QL2, QL2C, QL37, QL34, QL4C','Sông Lô, sông Gâm, sông Phó Đáy, sông Miện; hồ Na Hang','Hồ Na Hang',
+ ['Cột cờ Lũng Cú','Cao nguyên đá Đồng Văn','Khu di tích Tân Trào','Hồ Na Hang'],
+ ['Cao nguyên đá Đồng Văn là Công viên địa chất toàn cầu của UNESCO.','Cột cờ Lũng Cú ở vùng địa đầu cực Bắc của Tổ quốc.','Tân Trào là thủ đô khu giải phóng, nơi họp Quốc dân Đại hội tháng 8/1945.','Có hồ Na Hang – Lâm Bình và thủy điện Tuyên Quang trên sông Gâm.'],
+ 'Mùa hoa tam giác mạch (tháng 10 – 11) ở Hà Giang rất đẹp; đường đèo cần lái xe cẩn thận.');
+
+P('p5',[],'Thành phố Cao Bằng','56 xã, phường (53 xã và 3 phường)',6700.4,573,
+ 'QL3, QL4A, QL34, QL4C','Sông Bằng Giang, sông Quây Sơn, sông Gâm; hồ Thang Hen','Sông Bằng Giang',
+ ['Thác Bản Giốc','Động Ngườm Ngao','Khu di tích Pác Bó','Hồ Thang Hen'],
+ ['Thác Bản Giốc là một trong những thác nước đẹp nhất nằm trên đường biên giới quốc gia.','Có Công viên địa chất toàn cầu UNESCO Non nước Cao Bằng.','Pác Bó là nơi Chủ tịch Hồ Chí Minh trở về nước năm 1941, có suối Lê-nin và núi Các Mác.','Có đường biên giới dài với Trung Quốc.'],
+ 'Thác Bản Giốc nhiều nước và đẹp hơn vào mùa mưa; mùa đông nên mang áo ấm.');
+
+P('p6',['Bắc Kạn','Thái Nguyên'],'Thành phố Thái Nguyên','92 xã, phường (77 xã và 15 phường)',8375.2,1799,
+ 'QL3, QL3B, QL37, QL1B, QL279; cao tốc Hà Nội – Thái Nguyên','Sông Cầu, sông Công; hồ Núi Cốc, hồ Ba Bể','Hồ Núi Cốc',
+ ['Chè Tân Cương','ATK Định Hóa','Hồ Ba Bể','Bảo tàng Văn hóa các dân tộc Việt Nam'],
+ ['Nổi tiếng với chè Tân Cương, được xem là thủ phủ chè của miền Bắc.','Hồ Ba Bể là hồ nước ngọt tự nhiên lớn nhất Việt Nam, thuộc Vườn quốc gia Ba Bể, khu Ramsar.','ATK Định Hóa là an toàn khu của cách mạng thời kháng chiến chống Pháp.','Là trung tâm công nghiệp lớn của miền Bắc, có khu công nghiệp Yên Bình (Phổ Yên).'],
+ 'Ghé đồi chè Tân Cương và thưởng thức trà mới vào mùa xuân.');
+
+P('p7',[],'Thành phố Lạng Sơn','65 xã, phường (61 xã và 4 phường)',8310.2,881,
+ 'QL1A, QL1B, QL4A, QL4B, QL31, QL279; cao tốc Bắc Giang – Lạng Sơn','Sông Kỳ Cùng, sông Thương','Sông Kỳ Cùng',
+ ['Cửa khẩu Hữu Nghị','Động Tam Thanh','Núi Mẫu Sơn','Ải Chi Lăng'],
+ ['Có cửa khẩu quốc tế Hữu Nghị và ga Đồng Đăng, cửa ngõ sang Trung Quốc.','Sông Kỳ Cùng là con sông lớn chảy ngược về phía Bắc.','Núi Mẫu Sơn cao khoảng 1.541 m, mùa đông có thể có sương muối, băng giá.','Ải Chi Lăng là nơi diễn ra trận đánh lịch sử năm 1427; có Công viên địa chất toàn cầu UNESCO Lạng Sơn.'],
+ 'Nên thưởng thức vịt quay, bánh cuốn Lạng Sơn ở khu chợ Đông Kinh – Kỳ Lừa.');
+
+P('p8',[],'Thành phố Hạ Long','54 xã, phường, đặc khu (30 phường, 22 xã, 2 đặc khu Vân Đồn và Cô Tô)',6207.9,1497,
+ 'QL18, QL10, QL4B, QL18C; cao tốc Hạ Long – Hải Phòng, Hạ Long – Vân Đồn – Móng Cái','Sông Ka Long, sông Bạch Đằng, sông Đá Bạc, sông Tiên Yên; vịnh Hạ Long, vịnh Bái Tử Long','Vịnh Bái Tử Long',
+ ['Vịnh Hạ Long','Đảo Tuần Châu','Đảo Cô Tô','Cửa khẩu Móng Cái'],
+ ['Vịnh Hạ Long là Di sản thiên nhiên thế giới của UNESCO.','Yên Tử là trung tâm của Thiền phái Trúc Lâm do vua Trần Nhân Tông sáng lập.','Có vùng than Hòn Gai – Cẩm Phả, cảng hàng không quốc tế Vân Đồn.','Móng Cái là cửa khẩu lớn với Trung Quốc.'],
+ 'Nên đặt trước tour du thuyền Vịnh Hạ Long vào mùa hè và dịp lễ.');
+
+P('p9',['Bắc Giang','Bắc Ninh'],'Khu vực thành phố Bắc Giang','99 xã, phường (66 xã và 33 phường)',4718.6,3619,
+ 'QL1A, QL17, QL18, QL31, QL37, QL38','Sông Cầu, sông Đuống, sông Thái Bình, sông Thương, sông Lục Nam; hồ Cấm Sơn','Hồ Cấm Sơn',
+ ['Đền Đô','Chùa Bút Tháp','Làng tranh Đông Hồ','Chùa Vĩnh Nghiêm'],
+ ['Dân ca quan họ Bắc Ninh là Di sản văn hóa phi vật thể đại diện của nhân loại (UNESCO 2009).','Có tranh dân gian Đông Hồ và đền Đô thờ các vua nhà Lý.','Là trung tâm công nghiệp điện tử lớn của cả nước.','Bắc Giang (cũ) nổi tiếng với vải thiều Lục Ngạn và chùa Vĩnh Nghiêm.'],
+ 'Hội Lim (ngày 13 tháng Giêng âm lịch) là dịp nghe hát quan họ truyền thống.');
+
+P('p10',['Hòa Bình','Vĩnh Phúc','Phú Thọ'],'Thành phố Việt Trì','148 xã, phường (133 xã và 15 phường)',9361.4,4022,
+ 'QL2, QL32, QL6, QL2C, QL21, QL12B; cao tốc Nội Bài – Lào Cai','Sông Hồng, sông Lô, sông Đà, sông Cà Lồ; hồ Hòa Bình, hồ Đại Lải, đầm Vạc','Ngã ba sông Bạch Hạc',
+ ['Đền Hùng','Thị trấn Tam Đảo','Hồ Hòa Bình','Thung lũng Mai Châu'],
+ ['Đền Hùng là nơi thờ các vua Hùng; Giỗ Tổ vào ngày 10 tháng 3 âm lịch.','Tín ngưỡng thờ cúng Hùng Vương và Hát Xoan Phú Thọ là di sản UNESCO.','Thủy điện Hòa Bình trên sông Đà tạo nên hồ Hòa Bình rộng lớn.','Gồm các vùng Việt Trì, Vĩnh Yên, Hòa Bình với nhiều nghề truyền thống và du lịch nghỉ dưỡng.'],
+ 'Giỗ Tổ Hùng Vương vào ngày 10 tháng 3 âm lịch hằng năm là dịp hành hương lớn nhất.');
+
+P('p11',[],'Thành phố Sơn La','75 xã, phường (67 xã và 8 phường)',14109.8,1404,
+ 'QL6, QL37, QL43, QL4G','Sông Đà, sông Mã, sông Nậm La; hồ thủy điện Sơn La','Hồ thủy điện Sơn La',
+ ['Cao nguyên Mộc Châu','Nhà tù Sơn La','Đỉnh Tà Xùa','Thác Dải Yếm'],
+ ['Thủy điện Sơn La có công suất 2.400 MW, thuộc loại lớn nhất Việt Nam.','Cao nguyên Mộc Châu nổi tiếng với chè, sữa bò, hoa mận, hoa đào.','Nhà tù Sơn La là di tích quốc gia đặc biệt.','Xòe Thái được UNESCO ghi danh là di sản văn hóa phi vật thể (2021).'],
+ 'Mùa hoa mận, hoa đào (tháng 1 – 2) ở Mộc Châu rất đẹp.');
+
+P('p12',[],'Thủ đô Hà Nội','126 xã, phường (51 phường và 75 xã)',3359.8,8719,
+ 'QL1A, QL2, QL3, QL5, QL6, QL32, QL21; cao tốc Pháp Vân – Cầu Giẽ, Nội Bài – Lào Cai, Hà Nội – Hải Phòng, Hà Nội – Thái Nguyên; vành đai 3','Sông Hồng, sông Đuống, sông Đáy, sông Nhuệ, sông Tô Lịch; Hồ Tây, hồ Hoàn Kiếm, hồ Đồng Mô, hồ Suối Hai','Hồ Tây',
+ ['Hồ Hoàn Kiếm','Văn Miếu – Quốc Tử Giám','Hoàng thành Thăng Long','Làng gốm Bát Tràng'],
+ ['Thủ đô của nước Việt Nam, kinh đô Thăng Long từ năm 1010.','Khu di tích Hoàng thành Thăng Long là Di sản văn hóa thế giới (UNESCO 2010).','Có Văn Miếu – Quốc Tử Giám, khu phố cổ 36 phố phường, hồ Gươm.','Có nhiều làng nghề: gốm Bát Tràng, lụa Vạn Phúc...; điểm du lịch Chùa Hương, núi Ba Vì.'],
+ 'Mùa thu Hà Nội (tháng 9 – 11) có tiết trời dễ chịu, hợp để dạo phố cổ.');
+
+P('p13',['Hải Dương','Hải Phòng'],'Khu vực thành phố Hải Phòng','114 xã, phường, đặc khu (45 phường, 67 xã, 2 đặc khu Cát Hải và Bạch Long Vĩ)',3194.7,4664,
+ 'QL5, QL10, QL37, QL38, QL17B; cao tốc Hà Nội – Hải Phòng, Hải Phòng – Hạ Long','Sông Cấm, sông Lạch Tray, sông Bạch Đằng, sông Văn Úc, sông Thái Bình, sông Kinh Thầy','Sông Cấm',
+ ['Đảo Cát Bà','Bán đảo Đồ Sơn','Khu di tích Côn Sơn – Kiếp Bạc','Đảo Bạch Long Vĩ'],
+ ['Có cảng biển lớn nhất miền Bắc, gồm cảng nước sâu Lạch Huyện.','Vịnh Hạ Long – quần đảo Cát Bà là Di sản thiên nhiên thế giới (UNESCO).','Hải Dương (cũ) có khu di tích Côn Sơn – Kiếp Bạc và nổi tiếng với bánh đậu xanh.','Bạch Long Vĩ là đảo giữa vịnh Bắc Bộ.'],
+ 'Mùa hè nên đi biển Đồ Sơn, Cát Bà; thử bánh đa cua, nem cua bể Hải Phòng.');
+
+P('p14',['Thái Bình','Hưng Yên'],'Khu vực thành phố Hưng Yên','104 xã, phường (93 xã và 11 phường)',2514.8,3567,
+ 'QL5, QL10, QL37, QL38, QL39','Sông Hồng, sông Luộc, sông Trà Lý, sông Hóa, sông Thái Bình; hồ Bán Nguyệt, đầm Dạ Trạch','Sông Trà Lý',
+ ['Phố Hiến','Chùa Keo','Biển Đồng Châu','Văn miếu Xích Đằng'],
+ ['Là tỉnh có diện tích nhỏ nhất cả nước sau sáp nhập (khoảng 2.514 km²).','Phố Hiến xưa từng là thương cảng sầm uất: “Thứ nhất Kinh Kỳ, thứ nhì Phố Hiến”.','Nổi tiếng với nhãn lồng Hưng Yên; Thái Bình (cũ) là vựa lúa lớn của đồng bằng Bắc Bộ.','Có chùa Keo, biển Đồng Châu và cửa Ba Lạt (cửa sông Hồng ra biển).'],
+ 'Mùa nhãn chín (khoảng tháng 8) nên ghé Phố Hiến để thưởng thức nhãn lồng.');
+
+P('p15',['Hà Nam','Nam Định','Ninh Bình'],'Thành phố Ninh Bình','129 xã, phường (97 xã và 32 phường)',3942.6,4412,
+ 'QL1A, QL10, QL21, QL38B; cao tốc Pháp Vân – Cầu Giẽ – Ninh Bình, Cao Bồ – Mai Sơn, Ninh Bình – Hải Phòng','Sông Đáy, sông Hoàng Long, sông Vân, sông Châu Giang, sông Ninh Cơ, sông Hồng','Sông Hoàng Long',
+ ['Quần thể Tràng An','Cố đô Hoa Lư','Nhà thờ đá Phát Diệm','Đền Trần (Nam Định)'],
+ ['Quần thể danh thắng Tràng An là Di sản thế giới hỗn hợp (UNESCO 2014).','Hoa Lư là kinh đô của nhà Đinh, nhà Tiền Lê; có chùa Bái Đính, Tam Cốc – Bích Động.','Vườn quốc gia Cúc Phương là vườn quốc gia đầu tiên của Việt Nam (1962).','Nam Định (cũ) có Phủ Dầy, đền Trần; Hà Nam (cũ) có chùa Tam Chúc.'],
+ 'Đi thuyền Tràng An, Tam Cốc vào mùa lúa chín (tháng 5 – 6) rất đẹp.');
+
+P('p16',[],'Thành phố Thanh Hóa','166 xã, phường (147 xã và 19 phường)',11114.7,4324,
+ 'QL1A, QL45, QL47, QL217, QL15C; cao tốc Bắc – Nam phía Đông','Sông Mã, sông Chu, sông Bưởi, sông Yên, sông Lèn; hồ Cửa Đạt, hồ Sông Mực','Hồ Cửa Đạt',
+ ['Thành Nhà Hồ','Biển Sầm Sơn','Di tích Lam Kinh','Khu bảo tồn Pù Luông'],
+ ['Thành Nhà Hồ là Di sản văn hóa thế giới (UNESCO 2011).','Có di tích Lam Kinh (quê hương nhà Lê), trống đồng Đông Sơn, hang Con Moong.','Có biển Sầm Sơn, suối cá thần Cẩm Lương và khu bảo tồn Pù Luông.','Là tỉnh có nhiều đơn vị cấp xã nhất cả nước (166); Nghi Sơn là khu kinh tế lớn.'],
+ 'Mùa hè đi biển Sầm Sơn; ghé Thành Nhà Hồ vào mùa khô để tham quan thuận lợi.');
+
+P('p17',[],'Thành phố Vinh','130 xã, phường (119 xã và 11 phường)',16486.5,3831,
+ 'QL1A, QL7, QL46, QL48; đường Hồ Chí Minh; cao tốc Bắc – Nam','Sông Lam (sông Cả), sông Hiếu, sông Hoàng Mai, sông Con; hồ Vực Mấu, hồ Bản Mồng','Sông Hiếu',
+ ['Làng Sen (quê Bác)','Biển Cửa Lò','Vườn quốc gia Pù Mát','Đền Cuông'],
+ ['Là một trong những tỉnh có diện tích lớn nhất cả nước (khoảng 16.486 km²).','Làng Sen là quê hương Chủ tịch Hồ Chí Minh.','Có Khu dự trữ sinh quyển Tây Nghệ An (UNESCO) và Vườn quốc gia Pù Mát.','Dân ca Ví, Giặm Nghệ Tĩnh là di sản UNESCO (2014).'],
+ 'Mùa hè tắm biển Cửa Lò; thưởng thức cháo lươn và cam Vinh.');
+
+P('p18',[],'Thành phố Hà Tĩnh','69 xã, phường (60 xã và 9 phường)',5994.4,1623,
+ 'QL1A, QL8, QL15A, QL12C; đường Hồ Chí Minh; cao tốc Bắc – Nam','Sông La, sông Lam, sông Ngàn Sâu, sông Ngàn Phố; hồ Kẻ Gỗ, hồ Sông Rác','Hồ Kẻ Gỗ',
+ ['Ngã ba Đồng Lộc','Khu lưu niệm Nguyễn Du','Chùa Hương Tích','Biển Thiên Cầm'],
+ ['Quê hương đại thi hào Nguyễn Du (Tiên Điền), Danh nhân văn hóa thế giới.','Ngã ba Đồng Lộc là di tích ghi dấu 10 cô gái thanh niên xung phong.','Có chùa Hương Tích trên dãy Hồng Lĩnh và biển Thiên Cầm.','Có cửa khẩu Cầu Treo sang Lào; khu kinh tế Vũng Áng.'],
+ 'Thưởng thức kẹo cu đơ, cam bù Hương Sơn và ghé khu lưu niệm Nguyễn Du.');
+
+P('p19',['Quảng Bình','Quảng Trị'],'Khu vực thành phố Đồng Hới (Quảng Bình cũ)','78 xã, phường, đặc khu (69 xã, 8 phường, 1 đặc khu Cồn Cỏ)',12700,1870,
+ 'QL1A, QL9, QL12A, QL15, QL49; đường Hồ Chí Minh; cao tốc Bắc – Nam','Sông Gianh, sông Nhật Lệ, sông Kiến Giang, sông Bến Hải, sông Thạch Hãn; hồ Rào Quán','Sông Bến Hải',
+ ['Thành cổ Quảng Trị','Cầu Hiền Lương','Vườn quốc gia Phong Nha – Kẻ Bàng','Địa đạo Vịnh Mốc'],
+ ['Phong Nha – Kẻ Bàng là Di sản thiên nhiên thế giới, có hang Sơn Đoòng, hang động lớn nhất thế giới.','Sông Bến Hải – cầu Hiền Lương là giới tuyến quân sự tạm thời tại vĩ tuyến 17 (1954 – 1975).','Thành cổ Quảng Trị gắn với 81 ngày đêm chiến đấu năm 1972; có địa đạo Vịnh Mốc.','Đảo Cồn Cỏ nằm ngoài khơi biển Đông.'],
+ 'Muốn thăm hang Sơn Đoòng cần đặt trước vì số lượng khách mỗi năm rất hạn chế.');
+
+P('p20',[],'Thành phố Huế','40 xã, phường (21 phường và 19 xã)',4947.1,1432,
+ 'QL1A, QL49; hầm Hải Vân, hầm Phước Tượng – Phú Gia','Sông Hương, sông Bồ, sông Ô Lâu; phá Tam Giang – Cầu Hai, đầm Lập An; hồ Tả Trạch','Phá Tam Giang – Cầu Hai',
+ ['Đại Nội Huế','Chùa Thiên Mụ','Lăng Tự Đức','Vườn quốc gia Bạch Mã'],
+ ['Quần thể di tích Cố đô Huế là Di sản văn hóa thế giới (UNESCO 1993).','Nhã nhạc cung đình Huế là di sản UNESCO (2003).','Có sông Hương – núi Ngự, chùa Thiên Mụ, các lăng tẩm vua Nguyễn.','Là thành phố trực thuộc Trung ương từ năm 2025.'],
+ 'Nên ghé Đại Nội, thưởng thức bún bò Huế và các món ăn cung đình.');
+
+P('p21',['Quảng Nam','Đà Nẵng'],'Thành phố Đà Nẵng','94 xã, phường, đặc khu (23 phường, 70 xã, 1 đặc khu Hoàng Sa)',11859.6,3065,
+ 'QL1A, QL14B, QL14D, QL14E, QL14G, QL40B; cao tốc Đà Nẵng – Quảng Ngãi; hầm Hải Vân','Sông Hàn, sông Cu Đê, sông Vu Gia, sông Thu Bồn, sông Trường Giang; hồ Phú Ninh, hồ Hòa Trung','Sông Hàn',
+ ['Phố cổ Hội An','Cầu Rồng','Thánh địa Mỹ Sơn','Ngũ Hành Sơn'],
+ ['Phố cổ Hội An và Thánh địa Mỹ Sơn là hai Di sản văn hóa thế giới (UNESCO 1999).','Cù Lao Chàm là Khu dự trữ sinh quyển thế giới (UNESCO 2009).','Có cầu Rồng, cầu sông Hàn, Bà Nà Hills, bán đảo Sơn Trà, Ngũ Hành Sơn.','Quản lý quần đảo Hoàng Sa (đặc khu Hoàng Sa).'],
+ 'Nên đi biển Mỹ Khê vào mùa hè và dạo Hội An đêm rằm để xem đèn lồng.');
+
+P('p22',['Kon Tum','Quảng Ngãi'],'Thành phố Quảng Ngãi','96 xã, phường, đặc khu (86 xã, 9 phường, 1 đặc khu Lý Sơn)',14832.5,2161,
+ 'QL1A, QL14, QL14C, QL24, QL40, QL40B; đường Hồ Chí Minh','Sông Trà Khúc, sông Vệ, sông Trà Bồng, sông Đăk Bla, sông Pô Kô; hồ Thạch Nham, hồ Ya Ly','Sông Trà Khúc',
+ ['Đảo Lý Sơn','Núi Thiên Ấn','Khu chứng tích Sơn Mỹ','Khu du lịch Măng Đen'],
+ ['Đảo Lý Sơn có địa hình núi lửa cổ và nổi tiếng với tỏi.','Có nhà máy lọc dầu Dung Quất.','Có khu chứng tích Sơn Mỹ; Kon Tum (cũ) có nhà rông, nhà thờ gỗ và vùng Măng Đen.','Đỉnh Ngọc Linh (2.598 m) và sâm Ngọc Linh nổi tiếng.'],
+ 'Mùa biển êm (khoảng tháng 3 – 8) là thời điểm tốt để ra đảo Lý Sơn.');
+
+P('p23',['Bình Định','Gia Lai'],'Thành phố Quy Nhơn (Bình Định cũ)','135 xã, phường (110 xã và 25 phường)',21576.5,3583,
+ 'QL1A, QL19, QL14, QL25, QL19B, QL1D; đường Hồ Chí Minh','Sông Ba, sông Kôn, sông Sê San, sông Ayun, sông Hà Thanh; Biển Hồ, hồ Ayun Hạ, hồ Ya Ly, đầm Thị Nại','Đầm Thị Nại',
+ ['Biển Hồ Pleiku','Eo Gió','Tháp Đôi','Bảo tàng Quang Trung'],
+ ['Là tỉnh có diện tích lớn thứ hai cả nước (khoảng 21.577 km²), có cả cao nguyên và biển.','Không gian văn hóa cồng chiêng Tây Nguyên là di sản UNESCO.','Quy Nhơn có Eo Gió, Kỳ Co, Tháp Đôi; Pleiku có Biển Hồ.','Bình Định (cũ) là quê hương Tây Sơn và vùng đất võ.'],
+ 'Mùa khô (tháng 11 – 4) ở Tây Nguyên nắng đẹp, hoa dã quỳ nở rộ cuối năm.');
+
+P('p24',['Phú Yên','Đắk Lắk'],'Thành phố Buôn Ma Thuột','102 xã, phường (88 xã và 14 phường)',18096.4,3347,
+ 'QL1A, QL14, QL25, QL26, QL27, QL29, QL19C; đường Hồ Chí Minh','Sông Srêpốk, sông Krông Ana, sông Krông Nô, sông Ba (Đà Rằng); hồ Lắk, hồ Ea Kao, đầm Ô Loan','Hồ Lắk',
+ ['Buôn Đôn','Hồ Lắk','Bảo tàng Thế giới Cà phê','Gành Đá Đĩa'],
+ ['Buôn Ma Thuột là thủ phủ cà phê của Việt Nam.','Có Buôn Đôn, hồ Lắk, thác Dray Nur – Dray Sáp và lễ hội đua voi.','Phú Yên (cũ) có Gành Đá Đĩa, vịnh Xuân Đài, Mũi Điện (Đại Lãnh) – nơi đón ánh bình minh đầu tiên trên đất liền.','Có cả vùng Tây Nguyên và dải ven biển Nam Trung Bộ.'],
+ 'Lễ hội Cà phê Buôn Ma Thuột thường tổ chức vào tháng 3.');
+
+P('p25',['Ninh Thuận','Khánh Hòa'],'Thành phố Nha Trang','65 xã, phường, đặc khu (48 xã, 16 phường, 1 đặc khu Trường Sa)',8555.9,2243,
+ 'QL1A, QL26, QL27, QL27B, QL27C; cao tốc Bắc – Nam','Sông Cái Nha Trang, sông Dinh, sông Cái Phan Rang; vịnh Nha Trang, vịnh Cam Ranh, vịnh Vân Phong; đầm Nại','Vịnh Cam Ranh',
+ ['Vịnh Nha Trang','Tháp Bà Ponagar','Tháp Po Klong Garai','Vịnh Vĩnh Hy'],
+ ['Vịnh Nha Trang là thành viên Câu lạc bộ những vịnh biển đẹp nhất thế giới.','Quản lý quần đảo Trường Sa (đặc khu Trường Sa).','Có tháp Bà Ponagar, tháp Po Klong Garai; Ninh Thuận (cũ) nổi tiếng với nho, cừu, đồi cát Nam Cương.','Có cảng quốc tế Cam Ranh và vịnh nước sâu Cam Ranh.'],
+ 'Biển Nha Trang thường êm từ tháng 1 đến tháng 8, thích hợp để lặn ngắm san hô.');
+
+P('p26',['Đắk Nông','Bình Thuận','Lâm Đồng'],'Thành phố Đà Lạt','124 xã, phường, đặc khu (103 xã, 20 phường, 1 đặc khu Phú Quý)',24233.1,3872,
+ 'QL1A, QL20, QL27, QL28, QL55, QL14; cao tốc Phan Thiết – Dầu Giây, Vĩnh Hảo – Phan Thiết, Liên Khương – Prenn','Sông Đồng Nai, sông Đa Nhim, sông La Ngà, sông Sêrêpốk; hồ Xuân Hương, hồ Tuyền Lâm, hồ Tà Đùng, hồ Đa Mi','Hồ Tuyền Lâm',
+ ['Hồ Xuân Hương','Núi Lang Biang','Đồi cát Mũi Né','Hồ Tà Đùng'],
+ ['Là tỉnh có diện tích lớn nhất cả nước (khoảng 24.233 km²).','Đà Lạt nổi tiếng là thành phố ngàn hoa trên cao nguyên Lang Biang; Lang Biang là Khu dự trữ sinh quyển UNESCO.','Đắk Nông (cũ) có Công viên địa chất toàn cầu UNESCO và hồ Tà Đùng.','Bình Thuận (cũ) có Mũi Né, Phan Thiết và đảo Phú Quý.'],
+ 'Đà Lạt mát mẻ quanh năm, nên mang theo áo khoác mỏng.');
+
+P('p28',['Bà Rịa – Vũng Tàu','Bình Dương','TP.HCM'],'Thành phố Hồ Chí Minh (cũ)','168 xã, phường, đặc khu (113 phường, 54 xã, 1 đặc khu Côn Đảo)',6772.6,14002,
+ 'QL1, QL13, QL22, QL50, QL51, QL56; cao tốc TP.HCM – Long Thành – Dầu Giây, TP.HCM – Trung Lương; vành đai 3','Sông Sài Gòn, sông Đồng Nai, sông Nhà Bè, sông Thị Vải, sông Soài Rạp; kênh Nhiêu Lộc – Thị Nghè','Sông Nhà Bè',
+ ['Dinh Độc Lập','Nhà thờ Đức Bà','Địa đạo Củ Chi','Nhà tù Côn Đảo'],
+ ['Là địa phương đông dân nhất cả nước (khoảng 14 triệu người).','Có Dinh Độc Lập, Nhà thờ Đức Bà, chợ Bến Thành, địa đạo Củ Chi.','Có cảng Cái Mép – Thị Vải ở Bà Rịa – Vũng Tàu (cũ) và nhiều khu công nghiệp ở Bình Dương (cũ).','Côn Đảo với hệ thống nhà tù lịch sử; Vũng Tàu có Bãi Sau và tượng Chúa Kitô.'],
+ 'Hãy thử ẩm thực đường phố và tránh giờ cao điểm khi di chuyển.');
+
+P('p27',['Bình Phước','Đồng Nai'],'Thành phố Biên Hòa','95 xã, phường (72 xã và 23 phường)',12737.2,4491,
+ 'QL1, QL13, QL14, QL20, QL51, QL56; cao tốc TP.HCM – Long Thành – Dầu Giây, Dầu Giây – Phan Thiết','Sông Đồng Nai, sông Bé, sông La Ngà, sông Thị Vải; hồ Trị An, hồ Thác Mơ','Hồ Trị An',
+ ['Vườn quốc gia Cát Tiên','Văn miếu Trấn Biên','Núi Bà Rá','Khu du lịch Bửu Long'],
+ ['Vườn quốc gia Cát Tiên là Khu dự trữ sinh quyển thế giới (UNESCO 2001).','Văn miếu Trấn Biên ở Biên Hòa là di tích về Nho học vùng Nam Bộ.','Có hồ Trị An rộng lớn trên sông Đồng Nai và dự án sân bay quốc tế Long Thành.','Bình Phước (cũ) nổi tiếng với hạt điều, cao su và núi Bà Rá.'],
+ 'Nên đi Vườn quốc gia Cát Tiên vào mùa khô để đi bộ, ngắm chim.');
+
+P('p29',['Long An','Tây Ninh'],'Thành phố Tân An (Long An cũ)','96 xã, phường (82 xã và 14 phường)',8536.4,3254,
+ 'QL1, QL22, QL22B, QL62, QL50','Sông Sài Gòn, sông Vàm Cỏ Đông, sông Vàm Cỏ Tây; hồ Dầu Tiếng','Hồ Dầu Tiếng',
+ ['Núi Bà Đen','Tòa Thánh Cao Đài','Cửa khẩu Mộc Bài','Vườn quốc gia Lò Gò – Xa Mát'],
+ ['Núi Bà Đen cao khoảng 986 m, là ngọn núi cao nhất Nam Bộ.','Hồ Dầu Tiếng là hồ nhân tạo lớn nhất Việt Nam.','Có Tòa Thánh Cao Đài Tây Ninh và cửa khẩu quốc tế Mộc Bài với Campuchia.','Long An (cũ) có vùng Đồng Tháp Mười và làng nổi Tân Lập.'],
+ 'Có thể đi cáp treo lên núi Bà Đen; xem lễ cúng chính ngọ tại Tòa Thánh.');
+
+P('p30',['Tiền Giang','Đồng Tháp'],'Thành phố Mỹ Tho (Tiền Giang cũ)','102 xã, phường (82 xã và 20 phường)',5938.6,4370,
+ 'QL1A, QL30, QL80, QL62, QL50; cao tốc TP.HCM – Trung Lương – Mỹ Thuận – Cần Thơ','Sông Tiền, sông Sở Thượng, sông Sở Hạ, kênh Nguyễn Văn Tiếp, kênh Hồng Ngự – Vĩnh Hưng','Sông Sở Thượng',
+ ['Vườn quốc gia Tràm Chim','Làng hoa Sa Đéc','Chùa Vĩnh Tràng','Chợ nổi Cái Bè'],
+ ['Vườn quốc gia Tràm Chim là nơi bảo tồn sếu đầu đỏ, khu Ramsar.','Làng hoa Sa Đéc nổi tiếng; Mỹ Tho có chùa Vĩnh Tràng, cù lao Thới Sơn.','Có chợ nổi Cái Bè và vùng vườn cây ăn trái bên sông Tiền.','Có khu di tích Gò Tháp và hủ tiếu Mỹ Tho nổi tiếng.'],
+ 'Mùa nước nổi (khoảng tháng 8 – 11) đi Tràm Chim, Đồng Tháp Mười rất thú vị.');
+
+P('p31',['Kiên Giang','An Giang'],'Thành phố Rạch Giá (Kiên Giang cũ)','102 xã, phường, đặc khu (85 xã, 14 phường, 3 đặc khu Phú Quốc, Thổ Châu, Kiên Hải)',9888.9,4952,
+ 'QL91, QL80, QL91C, QL63, QL61, QL N1','Sông Tiền, sông Hậu, kênh Vĩnh Tế, kênh Rạch Giá – Hà Tiên, kênh Thoại Hà','Kênh Vĩnh Tế',
+ ['Miếu Bà Chúa Xứ núi Sam','Rừng tràm Trà Sư','Đảo Phú Quốc','Hòn Phụ Tử (Hà Tiên)'],
+ ['Phú Quốc là đảo lớn nhất Việt Nam; Kiên Giang có Khu dự trữ sinh quyển UNESCO.','Có vùng Thất Sơn (núi Cấm, núi Sam) và rừng tràm Trà Sư.','Hà Tiên có Hòn Phụ Tử, Mũi Nai; vùng biển đảo Nam Du, Thổ Châu.','Là tỉnh đông dân nhất đồng bằng sông Cửu Long (khoảng 4,95 triệu người).'],
+ 'Lễ vía Bà Chúa Xứ núi Sam tổ chức vào tháng 4 âm lịch hằng năm.');
+
+P('p32',['Bến Tre','Vĩnh Long','Trà Vinh'],'Thành phố Vĩnh Long','124 xã, phường (105 xã và 19 phường)',6296.2,4258,
+ 'QL1A, QL53, QL54, QL57, QL60; cao tốc Trung Lương – Mỹ Thuận – Cần Thơ; cầu Mỹ Thuận','Sông Tiền, sông Hậu, sông Cổ Chiên, sông Hàm Luông, sông Ba Lai, sông Măng Thít','Sông Cổ Chiên',
+ ['Cù lao An Bình','Ao Bà Om','Cầu Mỹ Thuận','Chùa Âng'],
+ ['Gồm vùng đất giữa sông Tiền, sông Hậu với nhiều cù lao và vườn trái cây.','Bến Tre (cũ) được gọi là xứ dừa; Trà Vinh (cũ) có Ao Bà Om, chùa Âng, nhiều chùa Khmer.','Vĩnh Long (cũ) có cầu Mỹ Thuận, nhà cổ Cai Cường, Văn Thánh miếu.','Có đường bờ biển ở phía Đông và nhiều cửa sông lớn.'],
+ 'Đi thuyền trên sông Cổ Chiên, ghé vườn trái cây, thăm cù lao.');
+
+P('p33',['Sóc Trăng','Hậu Giang','Cần Thơ'],'Thành phố Cần Thơ','103 xã, phường (72 xã và 31 phường)',6360.8,4200,
+ 'QL1A, QL91, QL61, QL61C, QL60, đường Nam Sông Hậu; cầu Cần Thơ','Sông Hậu, sông Cần Thơ, sông Mỹ Thanh, kênh Xà No, kênh Quản Lộ – Phụng Hiệp','Sông Cần Thơ',
+ ['Chợ nổi Cái Răng','Bến Ninh Kiều','Nhà cổ Bình Thủy','Chùa Dơi (Sóc Trăng)'],
+ ['Cần Thơ là thành phố trung tâm của đồng bằng sông Cửu Long, gọi là “Tây Đô”.','Có chợ nổi Cái Răng, bến Ninh Kiều, nhà cổ Bình Thủy.','Sóc Trăng (cũ) có chùa Dơi, lễ hội Ok Om Bok và đua ghe ngo của người Khmer.','Hậu Giang (cũ) có ngã bảy Phụng Hiệp; cầu Cần Thơ bắc qua sông Hậu.'],
+ 'Hãy dậy sớm (khoảng 5 – 7 giờ sáng) để ghé chợ nổi Cái Răng.');
+
+P('p34',['Bạc Liêu','Cà Mau'],'Thành phố Cà Mau','64 xã, phường (55 xã và 9 phường)',7942.4,2607,
+ 'QL1A, QL63; đường Hồ Chí Minh (Năm Căn – Đất Mũi); cao tốc Cần Thơ – Cà Mau','Sông Gành Hào, sông Ông Đốc, sông Bảy Háp, sông Cửa Lớn, sông Đầm Dơi','Sông Gành Hào',
+ ['Mũi Cà Mau','Vườn quốc gia U Minh Hạ','Nhà Công tử Bạc Liêu','Điện gió Bạc Liêu'],
+ ['Mũi Cà Mau (Đất Mũi) là điểm cực Nam của Tổ quốc; Vườn quốc gia Mũi Cà Mau là khu Ramsar và dự trữ sinh quyển.','Có rừng đước, rừng tràm U Minh Hạ.','Bạc Liêu (cũ) có Nhà Công tử Bạc Liêu, điện gió ven biển, nghề làm muối và bài “Dạ cổ hoài lang”.','Cà Mau (cũ) có bờ biển dài khoảng 254 km.'],
+ 'Có thể đi ca nô vào Vườn quốc gia Mũi Cà Mau; nhớ mang đồ chống muỗi.');
+
+
+STOPS.forEach(s=>{const x=PI[s.id];if(!x)return;Object.assign(s,x);s.intro=x.nb.join('\n');s.tip=x.tip;});
+
+function vvNum(v,d){return v.toLocaleString('vi-VN',{minimumFractionDigits:d||0,maximumFractionDigits:d||0});}
+function vvPop(k){return k>=1000?'khoảng '+(k/1000).toLocaleString('vi-VN',{minimumFractionDigits:2,maximumFractionDigits:2})+' triệu người':'khoảng '+k+' nghìn người';}
+function vvRank(key,s){return STOPS.slice().sort((a,b)=>b[key]-a[key]).indexOf(s)+1;}
+function vvMerge(s){return s.f&&s.f.length?'Sáp nhập từ '+s.f.join(' + '):'Giữ nguyên, không sáp nhập';}
+function vvCap(t){return t.charAt(0).toUpperCase()+t.slice(1);}
+
+/* Tự tạo 3 câu hỏi cho mỗi tỉnh từ dữ liệu ở trên */
+(function(){
+  const J=a=>a.join(' + ');
+  const pick=(a,n)=>shuffle(a).slice(0,n);
+  const merged=STOPS.filter(s=>s.f&&s.f.length);
+  const kept=STOPS.filter(s=>s.pl&&!(s.f&&s.f.length));
+  STOPS.forEach(s=>{
+    if(!s.pl)return;
+    const others=STOPS.filter(o=>o!==s&&o.pl);
+    const qs=[];
+    if(s.f&&s.f.length){
+      const w=pick(merged.filter(o=>o!==s).map(o=>J(o.f)),3);
+      qs.push(['Tỉnh, thành '+s.s+' hiện nay được hình thành từ việc sáp nhập những tỉnh nào?',J(s.f),w[0],w[1],w[2],s.s+' được sắp xếp theo Nghị quyết 202/2025/QH15 từ: '+J(s.f)+'.']);
+    }else{
+      const w=pick(merged.map(o=>o.s),3);
+      qs.push(['Tỉnh, thành nào sau đây được giữ nguyên, không sáp nhập năm 2025?',s.s,w[0],w[1],w[2],'Cả nước có 11 tỉnh, thành giữ nguyên: '+kept.map(o=>o.s).join(', ')+'.']);
+    }
+    const pw=pick(others.map(o=>pick(o.pl,1)[0]),3);
+    qs.push(['Địa danh nào sau đây thuộc '+s.s+'?',pick(s.pl,1)[0],pw[0],pw[1],pw[2],'Một số địa danh nổi bật của '+s.s+': '+s.pl.join(', ')+'.']);
+    const sw=pick(others.map(o=>o.sk),3);
+    qs.push(['Sông, hồ hoặc vịnh nào sau đây thuộc '+s.s+'?',s.sk,sw[0],sw[1],sw[2],'Các sông, hồ, vịnh tiêu biểu của '+s.s+': '+s.song+'.']);
+    s.qs=qs;
+  });
+})();
+
 /* Đoán địa danh: [tên, emoji, gợi ý 1, gợi ý 2] */
 const PLACES=[
 ['Vịnh Hạ Long','⛰️🚢','Có hàng nghìn đảo đá vôi.','Di sản thiên nhiên thế giới ở miền Bắc.'],
@@ -5043,10 +5291,20 @@ A.trip=()=>{
 
 let Q=null;
 A.stop=d=>{const s=STOPS[+d.i];
-  if(!s.qs||!s.qs.length){draw(`<div class="vv-center"><div class="vv-big">${s.ic}</div></div><h2 class="vv-h2 vv-center">${+d.i+1}. ${esc(s.n)}</h2><div class="vv-story">Nội dung của nơi này sẽ sớm được cập nhật.</div><div class="vv-row"><button class="vv-btn alt" data-a="trip">← Bản đồ</button></div>`);return}
-  draw(`<div class="vv-center"><div class="vv-big">${s.ic}</div></div><h2 class="vv-h2 vv-center">${esc(s.n)}</h2>
-  <div class="vv-story">${esc(s.intro)}</div>
-  <div class="vv-row"><button class="vv-btn" data-a="startq" data-i="${d.i}">Bắt đầu thử thách ▶</button><button class="vv-btn alt" data-a="trip">← Bản đồ</button></div>`)};
+  const hdr=`<div class="vv-center"><div class="vv-big">${s.ic}</div></div><h2 class="vv-h2 vv-center">${+d.i+1}. ${esc(s.n)}</h2>`;
+  if(!s.hc){draw(hdr+`<div class="vv-story">Nội dung của nơi này sẽ sớm được cập nhật.</div><div class="vv-row"><button class="vv-btn alt" data-a="trip">← Bản đồ</button></div>`);return}
+  const rows=[
+   ['🏛️ Hình thành',vvMerge(s)],
+   ['📍 Trung tâm hành chính',vvCap(s.tt.replace(/^Khu vực /,''))],
+   ['🧩 Đơn vị cấp xã',s.hc],
+   ['📐 Diện tích','khoảng '+vvNum(s.dt,1)+' km² (thứ '+vvRank('dt',s)+'/34 cả nước)'],
+   ['👥 Dân số',vvPop(s.dn)+' (thứ '+vvRank('dn',s)+'/34, số liệu làm tròn)'],
+   ['🛣️ Quốc lộ, cao tốc chính',s.ql],
+   ['🌊 Sông, hồ, vịnh',s.song]
+  ].map(r=>`<div style="margin:6px 0"><b>${r[0]}:</b> ${esc(r[1])}</div>`).join('');
+  draw(hdr+`<div class="vv-note">${rows}</div>
+  <div class="vv-story"><b>⭐ Điểm nổi bật</b><br>${s.intro.split('\n').map(x=>'• '+esc(x)).join('<br>')}</div>
+  <div class="vv-row">${s.qs&&s.qs.length?`<button class="vv-btn" data-a="startq" data-i="${d.i}">Bắt đầu thử thách ▶</button>`:''}<button class="vv-btn alt" data-a="trip">← Bản đồ</button></div>`)};
 A.startq=d=>{Q={s:+d.i,n:0,right:0,opts:[],picked:null};qScreen()};
 function qScreen(){
   const st=STOPS[Q.s],q=st.qs[Q.n];

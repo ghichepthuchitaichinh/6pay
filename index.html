@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa index.html trên GitHub, hãy đổi số này (vd. 2026.09.28-2 -> 2026.09.28-3) để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.25-3';
+const APP_VERSION='2026.10.25-5';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -4862,91 +4862,42 @@ const vnd=k=>(k*1000).toLocaleString('vi-VN')+'đ';
 /* ===================== DỮ LIỆU ===================== */
 /* Câu hỏi: [câu hỏi, ĐÁP ÁN ĐÚNG, sai1, sai2, sai3, giải thích] */
 /* x,y: toạ độ trên bản đồ minh hoạ; a: 'l' (nhãn bên trái) | 'r' (bên phải) | 'b' (bên dưới) */
+/* 34 tỉnh, thành phố sau sáp nhập (đánh số 1-34 từ Bắc xuống Nam). x,y: vị trí số trên bản đồ. Thêm nội dung cho từng nơi bằng intro, tip, qs: [câu hỏi, ĐÁP ÁN ĐÚNG, sai1, sai2, sai3, giải thích] */
 const STOPS=[
-{id:'dv',n:'Cao nguyên đá Đồng Văn',s:'Đồng Văn',ic:'⛰️',x:189,y:57,a:'r',
- intro:'Nơi địa đầu Tổ quốc, với cao nguyên đá tai mèo trùng điệp, đèo Mã Pì Lèng hùng vĩ và cột cờ Lũng Cú.',
- tip:'Đi vào mùa tam giác mạch (khoảng tháng 10–11) để ngắm hoa. Đường đèo nhiều cua gắt, nên mang áo ấm và đi xe thật chắc tay.',
- qs:[
- ['Cột cờ Lũng Cú đánh dấu cực nào của Việt Nam?','Cực Bắc','Cực Đông','Cực Tây','Cực Nam','Lũng Cú là điểm cực Bắc trên đất liền.'],
- ['Loài hoa nhỏ nở rộ trên cao nguyên đá vào mùa thu – đông là?','Tam giác mạch','Hoa phượng','Hoa sen','Hoa mai vàng','Hoa tam giác mạch có màu hồng, tím rất đặc trưng.'],
- ['Cao nguyên đá Đồng Văn mang danh hiệu nào của UNESCO?','Công viên địa chất toàn cầu','Di sản tư liệu thế giới','Thành phố sáng tạo','Di sản văn hóa phi vật thể','Đây là công viên địa chất toàn cầu đầu tiên của Việt Nam (năm 2010).']]},
-{id:'sp',n:'Sa Pa',s:'Sa Pa',ic:'🌾',x:117,y:101,a:'l',
- intro:'Thị trấn trong sương, có ruộng bậc thang uốn lượn, bản làng của người H’Mông, Dao và đỉnh Fansipan cao nhất Đông Dương.',
- tip:'Thời tiết thay đổi nhanh, quanh năm nên mang áo khoác. Mùa lúa chín (tháng 9–10) là lúc ruộng bậc thang vàng đẹp nhất.',
- qs:[
- ['Đỉnh Fansipan được mệnh danh là gì?','Nóc nhà Đông Dương','Nóc nhà thế giới','Mái nhà Tây Nguyên','Đỉnh trời Nam Bộ','Fansipan cao khoảng 3.143 m.'],
- ['Cảnh quan đặc trưng nhất của Sa Pa là?','Ruộng bậc thang','Rừng ngập mặn','Đồi cát','Hang động đá vôi','Người dân vùng cao khai khẩn sườn núi thành ruộng bậc thang.'],
- ['Món nào nổi tiếng ở chợ phiên vùng cao Tây Bắc?','Thắng cố','Cao lầu','Hủ tiếu','Bánh pía','Thắng cố là món truyền thống của người H’Mông.']]},
-{id:'hn',n:'Hà Nội',s:'Hà Nội',ic:'🏛️',x:210,y:167,a:'l',
- intro:'Thủ đô nghìn năm văn hiến, nơi phố cổ, hồ nước và ẩm thực hòa quyện với nhịp sống hiện đại.',
- tip:'Dạo phố cổ vào cuối tuần khi phố đi bộ quanh Hồ Gươm mở cửa. Thử bún chả, phở và cà phê trứng.',
- qs:[
- ['Món ăn nào gắn liền với Hà Nội?','Bún chả','Mì Quảng','Cơm tấm','Bánh xèo miền Tây','Bún chả ăn cùng chả nướng thơm và nước chấm chua ngọt.'],
- ['Văn Miếu – Quốc Tử Giám được xây dựng từ thời nhà nào?','Nhà Lý','Nhà Trần','Nhà Nguyễn','Nhà Hồ','Văn Miếu xây năm 1070, được coi là trường đại học đầu tiên của nước ta.'],
- ['Hồ nào ở trung tâm Hà Nội gắn với truyền thuyết trả gươm thần?','Hồ Hoàn Kiếm','Hồ Tây','Hồ Trúc Bạch','Hồ Bảy Mẫu','Hồ Hoàn Kiếm còn gọi là Hồ Gươm.']]},
-{id:'hl',n:'Vịnh Hạ Long',s:'Hạ Long',ic:'🚢',x:283,y:154,a:'r',
- intro:'Kỳ quan với hàng nghìn đảo đá vôi nhô lên từ mặt nước xanh ngọc, đặc biệt đẹp trong buổi bình minh và hoàng hôn.',
- tip:'Nên đi du thuyền ngủ đêm để ngắm vịnh lúc sáng sớm vắng người. Tháng 4–6 và 9–11 thường ít mưa bão.',
- qs:[
- ['Vịnh Hạ Long nổi tiếng với hàng nghìn gì?','Đảo đá vôi','Bãi cát trắng','Thác nước','Rừng thông','Vịnh có khoảng 1.600 hòn đảo lớn nhỏ.'],
- ['Hạ Long lần đầu được UNESCO công nhận là Di sản thế giới vào năm nào?','1994','1979','2003','2014','Năm 1994 là lần công nhận đầu tiên về giá trị thẩm mỹ.'],
- ['Vịnh Hạ Long nằm ở vùng biển nào của Việt Nam?','Vịnh Bắc Bộ','Vịnh Thái Lan','Vịnh Cam Ranh','Vịnh Vân Phong','Hạ Long thuộc phía Tây Bắc của Vịnh Bắc Bộ.']]},
-{id:'nb',n:'Ninh Bình',s:'Ninh Bình',ic:'🛶',x:214,y:207,a:'l',
- intro:'“Hạ Long trên cạn” với núi đá vôi, sông nước và cố đô Hoa Lư, nơi hai triều Đinh – Tiền Lê đặt kinh đô.',
- tip:'Đi thuyền Tràng An vào buổi sáng để tránh nắng và đông người. Thử món cơm cháy và dê núi.',
- qs:[
- ['Cố đô Hoa Lư là kinh đô của những triều đại nào?','Đinh và Tiền Lê','Lý và Trần','Nguyễn','Hồ và Mạc','Hoa Lư là kinh đô Đại Cồ Việt vào thế kỷ X.'],
- ['Quần thể danh thắng Tràng An là loại di sản gì của UNESCO?','Di sản hỗn hợp (văn hóa và thiên nhiên)','Chỉ là di sản thiên nhiên','Chỉ là di sản tư liệu','Di sản phi vật thể','Tràng An được công nhận là di sản hỗn hợp năm 2014.'],
- ['Cách tham quan Tràng An độc đáo nhất là gì?','Ngồi thuyền chèo qua các hang động','Đi cáp treo','Đi tàu hỏa','Đi xe jeep','Thuyền đi xuyên qua nhiều hang động dưới chân núi.']]},
-{id:'hue',n:'Huế',s:'Huế',ic:'🏯',x:297,y:398,a:'l',
- intro:'Cố đô của triều Nguyễn với Đại Nội, lăng tẩm, sông Hương thơ mộng và nền ẩm thực cung đình tinh tế.',
- tip:'Dành ít nhất một buổi để tham quan Đại Nội và một buổi đi thuyền rồng nghe ca Huế trên sông Hương.',
- qs:[
- ['Huế là kinh đô của triều đại nào?','Triều Nguyễn','Triều Lý','Triều Trần','Triều Đinh','Huế (Phú Xuân) là kinh đô từ năm 1802.'],
- ['Dòng sông nào chảy qua thành phố Huế?','Sông Hương','Sông Hàn','Sông Cầu','Sông Đồng Nai','Sông Hương (sông Thơm) gắn với nhiều thi ca.'],
- ['Nhã nhạc Huế thuộc loại hình nghệ thuật nào?','Âm nhạc cung đình','Quan họ','Đờn ca tài tử','Hát then','Nhã nhạc là âm nhạc dùng trong các nghi lễ cung đình.']]},
-{id:'ha',n:'Phố cổ Hội An',s:'Hội An',ic:'🏮',x:326,y:428,a:'r',
- intro:'Thương cảng cổ rực rỡ đèn lồng, nơi giao thoa văn hóa Việt – Hoa – Nhật, được UNESCO công nhận là Di sản thế giới.',
- tip:'Đêm rằm (14 âm lịch) phố cổ tắt đèn điện, thắp đèn lồng. Mua vé tham quan phố cổ để vào các di tích.',
- qs:[
- ['Phố cổ Hội An nổi tiếng với vật trang trí nào về đêm?','Đèn lồng','Đèn LED','Pháo hoa','Bóng bay','Đèn lồng nhiều màu sắc là biểu tượng của Hội An.'],
- ['Công trình biểu tượng của Hội An thường được gọi là gì?','Chùa Cầu','Tháp Rùa','Cột cờ Hà Nội','Nhà thờ Đức Bà','Chùa Cầu (cầu Nhật Bản) có từ thế kỷ XVII.'],
- ['Món mì nổi tiếng của Hội An là?','Cao lầu','Bún mọc','Bánh đa cua','Bún đậu mắm tôm','Sợi cao lầu dai, ăn kèm thịt xíu, rau sống.']]},
-{id:'nt',n:'Nha Trang',s:'Nha Trang',ic:'🏖️',x:372,y:607,a:'r',
- intro:'Thành phố biển với vịnh đẹp, các đảo, lặn ngắm san hô và Tháp Bà Ponagar của người Chăm.',
- tip:'Mùa biển đẹp là tháng 2–8. Đi tour đảo sớm để tránh nắng gắt và đông người.',
- qs:[
- ['Tháp Bà Ponagar ở Nha Trang do dân tộc nào xây dựng?','Người Chăm','Người Khmer','Người Hoa','Người Tày','Đây là quần thể đền tháp Chăm cổ, thờ nữ thần Po Nagar.'],
- ['Nha Trang nổi tiếng nhất với loại hình du lịch nào?','Biển đảo','Núi tuyết','Sa mạc','Hang động trên núi cao','Vịnh Nha Trang thuộc những vịnh biển đẹp của thế giới.'],
- ['Món nào là đặc sản vùng biển Nam Trung Bộ nổi tiếng ở Khánh Hòa?','Nem nướng Ninh Hòa','Bún chả','Cơm tấm','Lẩu mắm','Nem nướng Ninh Hòa ăn kèm bánh tráng, rau sống, nước chấm đặc biệt.']]},
-{id:'dl',n:'Đà Lạt',s:'Đà Lạt',ic:'🌸',x:338,y:624,a:'l',
- intro:'Thành phố mộng mơ trên cao nguyên Lâm Viên, mát mẻ quanh năm với đồi thông, hồ nước và vườn hoa.',
- tip:'Mang áo ấm cho buổi tối, sáng sớm có sương mù. Ghé chợ Đà Lạt thử dâu tây, atiso, sữa đậu nành nóng.',
- qs:[
- ['Đà Lạt có biệt danh là gì?','Thành phố ngàn hoa','Thành phố hoa phượng đỏ','Thành phố cảng','Thành phố ngàn đảo','Khí hậu mát mẻ thích hợp trồng nhiều loài hoa.'],
- ['Đà Lạt nằm trên cao nguyên nào?','Lâm Viên','Đồng Văn','Mộc Châu','Kon Tum','Cao nguyên Lâm Viên cao khoảng 1.500 m.'],
- ['Đà Lạt nổi tiếng với đặc sản nào sau đây?','Dâu tây','Nhãn lồng Hưng Yên','Vải thiều Thanh Hà','Xoài cát Hòa Lộc','Dâu tây Đà Lạt được trồng trong nhà kính và ngoài vườn.']]},
-{id:'sg',n:'TP. Hồ Chí Minh',s:'TP.HCM',ic:'🌆',x:247,y:686,a:'r',
- intro:'Thành phố năng động nhất cả nước, nơi những tòa nhà chọc trời nằm cạnh kiến trúc Pháp, chợ truyền thống và ẩm thực đường phố.',
- tip:'Sáng dạo trung tâm (Dinh Độc Lập, Nhà thờ Đức Bà, Bưu điện), tối đi ăn đường phố. Nên mang ô vào mùa mưa.',
- qs:[
- ['Tên cũ của Thành phố Hồ Chí Minh là gì?','Sài Gòn','Thăng Long','Phú Xuân','Đông Kinh','Từ năm 1976, Sài Gòn được đổi tên thành TP. Hồ Chí Minh.'],
- ['Công trình nào gắn với sự kiện thống nhất đất nước ngày 30/4/1975?','Dinh Độc Lập','Nhà hát Lớn Hà Nội','Cột cờ Lũng Cú','Chùa Một Cột','Dinh Độc Lập nay là Hội trường Thống Nhất.'],
- ['Chợ nào là biểu tượng nổi tiếng ở trung tâm TP.HCM?','Chợ Bến Thành','Chợ Đồng Xuân','Chợ Cồn','Chợ Đầm','Chợ Bến Thành có từ đầu thế kỷ XX.']]},
-{id:'ct',n:'Cần Thơ & Miền Tây',s:'Cần Thơ',ic:'🛶',x:184,y:709,a:'r',
- intro:'Xứ sở sông nước với chợ nổi, vườn trái cây, kênh rạch chằng chịt và tình người hiền hòa của Đồng bằng sông Cửu Long.',
- tip:'Đi chợ nổi Cái Răng thật sớm (5–7 giờ sáng) để thấy ghe thuyền tấp nập. Thử bánh xèo, lẩu mắm.',
- qs:[
- ['Chợ nổi nổi tiếng ở Cần Thơ có tên là gì?','Chợ nổi Cái Răng','Chợ Bến Thành','Chợ Đồng Xuân','Chợ Hôm','Người dân buôn bán ngay trên ghe thuyền.'],
- ['Đồng bằng sông Cửu Long được bồi đắp bởi sông nào?','Sông Mê Kông','Sông Hồng','Sông Đà','Sông Cầu','Mê Kông chảy vào Việt Nam thành hai nhánh sông Tiền và sông Hậu.'],
- ['Lẩu mắm là món đặc trưng của vùng nào?','Miền Tây Nam Bộ','Tây Bắc','Bắc Trung Bộ','Đồng bằng sông Hồng','Lẩu mắm nấu từ mắm cá linh hoặc cá sặc, ăn kèm nhiều loại rau.']]},
-{id:'pq',n:'Đảo Phú Quốc',s:'Phú Quốc',ic:'🏝️',x:112,y:712,a:'b',
- intro:'Đảo ngọc với bãi biển cát trắng, rừng nguyên sinh, vườn tiêu và nước mắm nổi tiếng.',
- tip:'Mùa khô (tháng 11–4) biển êm, nước trong. Nên thuê xe máy hoặc xe điện để khám phá quanh đảo.',
- qs:[
- ['Hòn đảo lớn nhất của Việt Nam là?','Phú Quốc','Cát Bà','Côn Đảo','Lý Sơn','Phú Quốc có diện tích hơn 570 km².'],
- ['Phú Quốc nằm trong vịnh nào?','Vịnh Thái Lan','Vịnh Bắc Bộ','Vịnh Hạ Long','Vịnh Nha Trang','Đảo nằm ở phía Tây Nam, gần bờ biển Campuchia.'],
- ['Đặc sản nổi tiếng nhất của Phú Quốc là gì?','Nước mắm','Cà phê Buôn Ma Thuột','Trà Thái Nguyên','Rượu cần','Nước mắm Phú Quốc làm từ cá cơm, ủ trong thùng gỗ.']]}
+{id:'p1',n:'Lai Châu',s:'Lai Châu',ic:'📍',x:94.5,y:91.0,intro:'',tip:'',qs:[]},
+{id:'p2',n:'Điện Biên',s:'Điện Biên',ic:'📍',x:82.5,y:127.3,intro:'',tip:'',qs:[]},
+{id:'p3',n:'Lào Cai',s:'Lào Cai',ic:'📍',x:131.2,y:108.3,intro:'',tip:'',qs:[]},
+{id:'p4',n:'Tuyên Quang',s:'Tuyên Quang',ic:'📍',x:176.5,y:85.3,intro:'',tip:'',qs:[]},
+{id:'p5',n:'Cao Bằng',s:'Cao Bằng',ic:'📍',x:239.7,y:79.3,intro:'',tip:'',qs:[]},
+{id:'p6',n:'Thái Nguyên',s:'Thái Nguyên',ic:'📍',x:223.8,y:98.3,intro:'',tip:'',qs:[]},
+{id:'p7',n:'Lạng Sơn',s:'Lạng Sơn',ic:'📍',x:246.8,y:119.3,intro:'',tip:'',qs:[]},
+{id:'p8',n:'Quảng Ninh',s:'Quảng Ninh',ic:'📍',x:290.0,y:144.7,intro:'',tip:'',qs:[]},
+{id:'p9',n:'Bắc Ninh',s:'Bắc Ninh',ic:'📍',x:252.8,y:147.5,intro:'',tip:'',qs:[]},
+{id:'p10',n:'Phú Thọ',s:'Phú Thọ',ic:'📍',x:178.5,y:150.8,intro:'',tip:'',qs:[]},
+{id:'p11',n:'Sơn La',s:'Sơn La',ic:'📍',x:116.3,y:151.5,intro:'',tip:'',qs:[]},
+{id:'p12',n:'TP Hà Nội',s:'TP Hà Nội',ic:'📍',x:205.5,y:170.3,intro:'',tip:'',qs:[]},
+{id:'p13',n:'TP Hải Phòng',s:'TP Hải Phòng',ic:'📍',x:252.5,y:172.7,intro:'',tip:'',qs:[]},
+{id:'p14',n:'Hưng Yên',s:'Hưng Yên',ic:'📍',x:238.0,y:189.2,intro:'',tip:'',qs:[]},
+{id:'p15',n:'Ninh Bình',s:'Ninh Bình',ic:'📍',x:221.3,y:199.2,intro:'',tip:'',qs:[]},
+{id:'p16',n:'Thanh Hóa',s:'Thanh Hóa',ic:'📍',x:198.7,y:222.0,intro:'',tip:'',qs:[]},
+{id:'p17',n:'Nghệ An',s:'Nghệ An',ic:'📍',x:165.5,y:256.5,intro:'',tip:'',qs:[]},
+{id:'p18',n:'Hà Tĩnh',s:'Hà Tĩnh',ic:'📍',x:203.7,y:307.0,intro:'',tip:'',qs:[]},
+{id:'p19',n:'Quảng Trị',s:'Quảng Trị',ic:'📍',x:260.2,y:382.8,intro:'',tip:'',qs:[]},
+{id:'p20',n:'TP Huế',s:'TP Huế',ic:'📍',x:290.5,y:406.8,intro:'',tip:'',qs:[]},
+{id:'p21',n:'TP Đà Nẵng',s:'TP Đà Nẵng',ic:'📍',x:319.2,y:442.7,intro:'',tip:'',qs:[]},
+{id:'p22',n:'Quảng Ngãi',s:'Quảng Ngãi',ic:'📍',x:311.2,y:492.0,intro:'',tip:'',qs:[]},
+{id:'p23',n:'Gia Lai',s:'Gia Lai',ic:'📍',x:339.0,y:533.2,intro:'',tip:'',qs:[]},
+{id:'p24',n:'Đắk Lắk',s:'Đắk Lắk',ic:'📍',x:332.2,y:592.0,intro:'',tip:'',qs:[]},
+{id:'p25',n:'Khánh Hòa',s:'Khánh Hòa',ic:'📍',x:361.8,y:638.8,intro:'',tip:'',qs:[]},
+{id:'p26',n:'Lâm Đồng',s:'Lâm Đồng',ic:'📍',x:317.8,y:646.5,intro:'',tip:'',qs:[]},
+{id:'p27',n:'Đồng Nai',s:'Đồng Nai',ic:'📍',x:258.3,y:637.8,intro:'',tip:'',qs:[]},
+{id:'p28',n:'TP.HCM',s:'TP.HCM',ic:'📍',x:246.5,y:670.5,intro:'',tip:'',qs:[]},
+{id:'p29',n:'Tây Ninh',s:'Tây Ninh',ic:'📍',x:220.7,y:649.2,intro:'',tip:'',qs:[]},
+{id:'p30',n:'Đồng Tháp',s:'Đồng Tháp',ic:'📍',x:198.0,y:708.7,intro:'',tip:'',qs:[]},
+{id:'p31',n:'An Giang',s:'An Giang',ic:'📍',x:165.2,y:706.7,intro:'',tip:'',qs:[]},
+{id:'p32',n:'Vĩnh Long',s:'Vĩnh Long',ic:'📍',x:229.7,y:725.8,intro:'',tip:'',qs:[]},
+{id:'p33',n:'TP Cần Thơ',s:'TP Cần Thơ',ic:'📍',x:202.0,y:741.7,intro:'',tip:'',qs:[]},
+{id:'p34',n:'Cà Mau',s:'Cà Mau',ic:'📍',x:167.5,y:770.3,intro:'',tip:'',qs:[]}
 ];
 
 /* Đoán địa danh: [tên, emoji, gợi ý 1, gợi ý 2] */
@@ -5006,7 +4957,7 @@ const stopTimer=()=>{if(timer){clearInterval(timer);timer=null}};
 const draw=h=>{main.innerHTML=h};
 function top(){
   document.getElementById('vv-pts').textContent='⭐ '+S.pts+' điểm';
-  const n=Object.keys(S.stamps).length;
+  const n=STOPS.filter(s=>S.stamps[s.id]!=null).length;
   document.getElementById('vv-badge').textContent=n>=STOPS.length?'🏅 Người lữ hành':'🛂 '+n+'/'+STOPS.length+' con dấu';
 }
 function toast(t){const d=document.createElement('div');d.className='vv-toast';d.textContent=t;root.appendChild(d);setTimeout(()=>d.remove(),1800)}
@@ -5022,7 +4973,7 @@ window.vnvBack=function(){const p=NAVMAP[curScr];if(!p)return false;curScr=p;A[p
 function home(){
   stopTimer();top();
   draw(`<h2 class="vv-h2">Sẵn sàng cho chuyến đi xuyên Việt chưa?</h2>
-  <p class="vv-sub">Thu thập đủ ${STOPS.length} con dấu hộ chiếu để nhận danh hiệu <b>Người lữ hành</b>.</p>
+  <p class="vv-sub">Thu thập đủ ${STOPS.length} con dấu của ${STOPS.length} tỉnh, thành phố để nhận danh hiệu <b>Người lữ hành</b>.</p>
   <div class="vv-grid">
    <button class="vv-mode" data-a="trip"><span class="big">🗺️</span><b>Hành trình xuyên Việt</b><small>Bản đồ hình chữ S, ${STOPS.length} điểm dừng, mỗi nơi có thử thách và một con dấu.</small></button>
    <button class="vv-mode" data-a="food"><span class="big">🍜</span><b>Đặc sản về đúng quê</b><small>Món ăn này thuộc miền nào? Kỷ lục: ${S.best.food}</small></button>
@@ -5075,17 +5026,15 @@ function vnMapBase(){
 /* ===================== HÀNH TRÌNH XUYÊN VIỆT ===================== */
 A.trip=()=>{
   stopTimer();
-  let svg=`<svg class="vv-map" viewBox="${VN_VIEW}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bản đồ Việt Nam">${vnMapBase()}
-  <polyline points="${STOPS.map(s=>s.x+','+s.y).join(' ')}" fill="none" stroke="#0f766e" stroke-width="2.5" stroke-dasharray="6 6" opacity=".7"/>`;
+  let svg=`<svg class="vv-map" viewBox="${VN_VIEW}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bản đồ Việt Nam">${vnMapBase()}`;
   STOPS.forEach((s,i)=>{
-    const dn=S.stamps[s.id]!=null,lx=s.a==='r'?s.x+18:s.a==='l'?s.x-18:s.x,ly=s.a==='b'?s.y+34:s.y+5,an=s.a==='r'?'start':s.a==='l'?'end':'middle';
-    svg+=`<g class="vv-node" data-a="stop" data-i="${i}"><circle class="c" cx="${s.x}" cy="${s.y}" r="13" fill="${dn?'#2e7d32':'#e0a21b'}" stroke="#fff" stroke-width="2.5"/>
-    <text x="${s.x}" y="${s.y+4.5}" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">${dn?'✓':i+1}</text>
-    <text x="${lx}" y="${ly}" font-size="15" font-weight="700" fill="#12302e" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round" text-anchor="${an}">${esc(s.s)}</text></g>`;
+    const dn=S.stamps[s.id]!=null;
+    svg+=`<g class="vv-node" data-a="stop" data-i="${i}"><circle class="c" cx="${s.x}" cy="${s.y}" r="8.5" fill="${dn?'#2e7d32':'#e0a21b'}" stroke="#fff" stroke-width="1.6"/>
+    <text x="${s.x}" y="${s.y+3.6}" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">${i+1}</text></g>`;
   });
   svg+='</svg>';
-  const n=Object.keys(S.stamps).length;
-  draw(`<h2 class="vv-h2">🗺️ Hành trình xuyên Việt</h2><p class="vv-sub">Bấm vào một điểm trên bản đồ (hoặc trong danh sách) để bắt đầu thử thách.</p>
+  const n=STOPS.filter(s=>S.stamps[s.id]!=null).length;
+  draw(`<h2 class="vv-h2">🗺️ Hành trình xuyên Việt</h2><p class="vv-sub">Bản đồ gồm 34 tỉnh, thành phố được đánh số từ 1 đến 34. Bấm vào một số trên bản đồ (hoặc trong danh sách) để xem.</p>
   <div class="vv-mapwrap">${svg}<div class="vv-side">
    <div class="vv-note">Đã thu thập: <b>${n}/${STOPS.length}</b> con dấu.<br><small>Bản đồ chỉ mang tính minh họa.</small></div>`+
   STOPS.map((s,i)=>`<button class="vv-act ${S.stamps[s.id]!=null?'sel':''}" data-a="stop" data-i="${i}"><span class="ic">${s.ic}</span><span class="tx"><b>${i+1}. ${esc(s.n)}</b></span><span class="jy">${S.stamps[s.id]!=null?'✅ '+'★'.repeat(S.stamps[s.id]):''}</span></button>`).join('')+
@@ -5094,6 +5043,7 @@ A.trip=()=>{
 
 let Q=null;
 A.stop=d=>{const s=STOPS[+d.i];
+  if(!s.qs||!s.qs.length){draw(`<div class="vv-center"><div class="vv-big">${s.ic}</div></div><h2 class="vv-h2 vv-center">${+d.i+1}. ${esc(s.n)}</h2><div class="vv-story">Nội dung của nơi này sẽ sớm được cập nhật.</div><div class="vv-row"><button class="vv-btn alt" data-a="trip">← Bản đồ</button></div>`);return}
   draw(`<div class="vv-center"><div class="vv-big">${s.ic}</div></div><h2 class="vv-h2 vv-center">${esc(s.n)}</h2>
   <div class="vv-story">${esc(s.intro)}</div>
   <div class="vv-row"><button class="vv-btn" data-a="startq" data-i="${d.i}">Bắt đầu thử thách ▶</button><button class="vv-btn alt" data-a="trip">← Bản đồ</button></div>`)};
@@ -5462,7 +5412,10 @@ A.next=function(){begin('c',lvl+1)};
 A.resign=function(){if(!over&&!busy&&confirm('Bạn muốn đầu hàng ván này?')){over={w:'b',txt:'Bạn đã đầu hàng'};draw()}};
 A.undo=function(){if(busy||over||mode!=='f'||!stk.length)return;pos=stk.pop();sel=null;hl=[];last=null;draw()};
 function status(){
- if(over)if(over.w)return (over.w==='w'?'🎉 Bạn thắng!':'😔 Bạn thua')+(over.txt?' · '+over.txt:'');return '🤝 '+over.txt;
+ if(over){
+  if(over.w)return (over.w==='w'?'🎉 Bạn thắng!':'😔 Bạn thua')+(over.txt?' · '+over.txt:'');
+  return '🤝 '+over.txt;
+ }
  if(busy)return '🤔 Máy đang suy nghĩ...';
  return inCk(pos)?'⚠️ Bạn đang bị chiếu!':'Đến lượt bạn (quân trắng)';
 }

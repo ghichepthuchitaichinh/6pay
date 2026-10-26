@@ -10,7 +10,18 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.26-9';
+const APP_VERSION='2026.10.26-10';
+// ===================== MẬT KHẨU MỞ KHÓA HỌC VÀ CHƠI =====================
+// CÁCH 1 (đơn giản nhất): gõ mật khẩu vào giữa hai dấu nháy, ví dụ: const MAT_KHAU_MO_KHOA='hoctot2026';
+//   Không phân biệt chữ hoa, chữ thường. Lưu ý: ai mở mã nguồn trang này trên GitHub cũng đọc được mật khẩu.
+// CÁCH 2 (an toàn hơn): để trống MAT_KHAU_MO_KHOA (hai dấu nháy liền nhau ''), rồi dán mã tạo trong app vào MA_MAT_KHAU.
+//   Tạo mã: mở app → ⚙️ Cài đặt → 🔓 Mở khóa Học và Chơi → "Dành cho chủ app: tạo mã mật khẩu".
+// Sau khi sửa: tăng số APP_VERSION ở trên và sửa số trong version.json cho giống hệt.
+const MAT_KHAU_MO_KHOA='';
+const MA_MAT_KHAU='93aeecfc06484448fa98343c3110532aefcf9138de45ee1135a59d665deffea3';
+// true: người đã mở khóa vẫn giữ quyền khi bạn đổi mật khẩu. false: đổi mật khẩu thì mọi người phải nhập mật khẩu mới.
+const GIU_QUYEN_KHI_DOI_MAT_KHAU=true;
+
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -609,6 +620,10 @@ html.fast-start .boot-splash{display:none!important;}
 .ul-err{min-height:18px;margin:6px 0 10px;font-size:var(--fs-xs);}
 .ul-banner{display:block;width:100%;text-align:left;border:1px solid var(--warm-border);background:var(--warm-bg);color:var(--warm-text);border-radius:var(--r-md);padding:10px 14px;margin:0 0 12px;font-size:var(--fs-sm);line-height:1.45;cursor:pointer;}
 #confirmModal{z-index:100006;}
+.ul-admin{display:block;margin:12px auto 0;border:0;background:none;color:var(--text-soft);font-size:12px;text-decoration:underline;cursor:pointer;}
+.ul-gen{display:none;margin-top:10px;text-align:left;}.ul-gen.on{display:block;}
+.ul-gen .btn{margin:8px 0 0;}
+.ul-code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:10px;margin-top:10px;word-break:break-all;}
 /* ---------- Khung chung cho các game mở toàn màn hình ---------- */
 .gm-ov{position:fixed;inset:0;z-index:99998;display:none;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 .gm-ov.show{display:flex}
@@ -1873,16 +1888,22 @@ function toggleSound(){try{localStorage.setItem(SOUND_KEY,soundOn()?'0':'1');}ca
 
 // ===== KHÓA NỘI DUNG HỌC VÀ CHƠI =====
 // Bản miễn phí: mỗi trò chơi chỉ mở 1/3 nội dung đầu. Người chơi nhắn "MK6pay" cho 6Pay để nhận mật khẩu.
-// ĐỔI MẬT KHẨU: mở file tao-mat-khau-mo-khoa.html, gõ mật khẩu mới, chép dòng UNLOCK_HASH mà trang đó tạo ra rồi dán đè dòng bên dưới.
-const UNLOCK_HASH='93aeecfc06484448fa98343c3110532aefcf9138de45ee1135a59d665deffea3'; // mật khẩu mặc định: 6pay2026 (hãy đổi ngay)
+// MẬT KHẨU được đặt ở ĐẦU FILE index.html (mục "MẬT KHẨU MỞ KHÓA HỌC VÀ CHƠI"), không cần sửa ở đây.
+const UNLOCK_PASS=(typeof MAT_KHAU_MO_KHOA==='string'?MAT_KHAU_MO_KHOA:'').trim().toLowerCase();
+const UNLOCK_HASH=(typeof MA_MAT_KHAU==='string'?MA_MAT_KHAU:'').trim().toLowerCase();
 const UNLOCK_SALT='6PAY-UNLOCK';         // không sửa dòng này
-const UNLOCK_KEEP_OLD=true;              // true: người đã mở khóa vẫn giữ quyền khi bạn đổi mật khẩu; false: đổi mật khẩu thì mọi người phải nhập lại
+const UNLOCK_KEEP_OLD=typeof GIU_QUYEN_KHI_DOI_MAT_KHAU==='boolean'?GIU_QUYEN_KHI_DOI_MAT_KHAU:true;
+function unlockId(){
+ if(!UNLOCK_PASS)return UNLOCK_HASH;
+ let h=2166136261;for(let i=0;i<UNLOCK_PASS.length;i++){h^=UNLOCK_PASS.charCodeAt(i);h=Math.imul(h,16777619);}
+ return 'p'+(h>>>0).toString(16);
+}
 const UNLOCK_PHONE='0342190588';         // số điện thoại nhận tin nhắn MK6pay
 const UNLOCK_ZALO='https://zalo.me/0342190588';
 const UNLOCK_KEY='6pay-unlock-v1';
 function lockFree(n){return Math.ceil(n/3);}
 function lockIsOpen(){
- try{const v=localStorage.getItem(UNLOCK_KEY);if(!v)return false;return UNLOCK_KEEP_OLD?true:v===UNLOCK_HASH;}catch(e){return false;}
+ try{const v=localStorage.getItem(UNLOCK_KEY);if(!v)return false;return UNLOCK_KEEP_OLD?true:v===unlockId();}catch(e){return false;}
 }
 let lockCb=null,lockCancel=null,lockFails=0,lockUntil=0;
 function lockModal(){
@@ -1898,6 +1919,12 @@ function lockModal(){
   <input type="text" id="ulPass" class="ul-in" placeholder="Nhập mật khẩu mở khóa" autocomplete="off" autocapitalize="none" spellcheck="false">
   <div class="err-msg ul-err" id="ulErr"></div>
   <div class="modal-actions"><button class="btn cancel" onclick="lockClose(true)">Để sau</button><button class="btn confirm" onclick="lockTry()">🔓 Mở khóa</button></div>
+  <button class="ul-admin" onclick="document.getElementById('ulGen').classList.toggle('on')">🛠 Dành cho chủ app: tạo mã mật khẩu</button>
+  <div class="ul-gen" id="ulGen">
+   <input type="text" id="ulNew" class="ul-in" placeholder="Gõ mật khẩu mới" autocomplete="off" autocapitalize="none" spellcheck="false">
+   <button class="btn primary" onclick="lockGen()">Tạo mã</button>
+   <div id="ulOut"></div>
+  </div>
  </div>`;
  document.body.appendChild(m);
  m.querySelector('#ulPass').addEventListener('keydown',e=>{if(e.key==='Enter')lockTry();});
@@ -1921,9 +1948,9 @@ async function lockTry(){
  if(Date.now()<lockUntil){er.textContent='Bạn nhập sai nhiều lần. Thử lại sau '+Math.ceil((lockUntil-Date.now())/1000)+' giây.';return;}
  const v=(m.querySelector('#ulPass').value||'').trim().toLowerCase();
  if(!v){er.textContent='Vui lòng nhập mật khẩu.';return;}
- const h=await hashPass(v,UNLOCK_SALT);
- if(h===UNLOCK_HASH){
-  try{localStorage.setItem(UNLOCK_KEY,UNLOCK_HASH);}catch(e){}
+ const good=UNLOCK_PASS?v===UNLOCK_PASS:(!!UNLOCK_HASH&&(await hashPass(v,UNLOCK_SALT))===UNLOCK_HASH);
+ if(good){
+  try{localStorage.setItem(UNLOCK_KEY,unlockId());}catch(e){}
   lockFails=0;
   const cb=lockCb;lockCb=null;lockCancel=null;m.classList.remove('open');
   sfx('win');
@@ -1937,6 +1964,14 @@ async function lockTry(){
   const i=m.querySelector('#ulPass');i.classList.add('shake');setTimeout(()=>i.classList.remove('shake'),300);
  }
 }
+async function lockGen(){
+ const v=(document.getElementById('ulNew').value||'').trim().toLowerCase(),o=document.getElementById('ulOut');
+ if(!v){o.innerHTML='<div class="err-msg">Hãy gõ mật khẩu mới.</div>';return;}
+ const h=await hashPass(v,UNLOCK_SALT),line="const MA_MAT_KHAU='"+h+"';";
+ o.innerHTML='<div class="ul-code" id="ulCode"></div><button class="btn cancel wide" onclick="lockCopy()">📋 Chép dòng mã</button><div class="ul-sms">Dán dòng này đè lên dòng <b>const MA_MAT_KHAU</b> ở đầu file index.html trên GitHub, và để trống MAT_KHAU_MO_KHOA.</div>';
+ document.getElementById('ulCode').textContent=line;
+}
+function lockCopy(){const t=document.getElementById('ulCode').textContent;try{navigator.clipboard.writeText(t).then(()=>{const o=document.getElementById('ulOut');o.querySelector('.btn').textContent='✅ Đã chép';});}catch(e){}}
 window.SixLock={isOpen:lockIsOpen,ask:lockAsk,free:lockFree};
 // ===== Tiện ích 6Pay =====
 function utilIt(fn,t,extra){return `<button class="list-item clickable util-item" onclick="${fn}"><span>${t}</span><span class="guide-cta">${extra||''}›</span></button>`;}

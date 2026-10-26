@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.26-2';
+const APP_VERSION='2026.10.26-3';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -1832,12 +1832,15 @@ function scrFinUtil(){
 }
 // ===== Thư mục Học và Chơi =====
 // Các game nằm ở thư mục games/, chỉ tải khi người dùng bấm vào (app mở nhanh hơn)
-const GAME_FILES={runner:'games/runner.js',words:'games/words.js',vnh:'games/history.js',vnv:'games/vietnam.js',chess:'games/chess.js',clock:'games/clock.js'};
+// Các game nằm ở thư mục games/, chỉ tải khi người dùng bấm vào (app mở nhanh hơn).
+// Nếu file được upload thẳng vào thư mục gốc (không có thư mục games/), app vẫn tự tìm thấy.
+const GAME_FILES={runner:'runner.js',words:'words.js',vnh:'history.js',vnv:'vietnam.js',chess:'chess.js',clock:'clock.js'};
+function gamePaths(k){const f=GAME_FILES[k];return ['games/'+f,'./'+f,'Games/'+f];}
 function gameReady(k){
  if(k==='runner')return !!window.open6PayGame;
  if(k==='words')return !!window.SixWordGame;
  if(k==='clock')return !!window.ClockGame;
- return !!document.getElementById(k+'Ov');
+ return !!(document.getElementById(k+'Ov')&&window.GameOv);
 }
 function gameStart(k){
  if(k==='runner')open6PayGame();
@@ -1845,16 +1848,46 @@ function gameStart(k){
  else if(k==='clock')ClockGame.open();
  else GameOv.open(k);
 }
+// Tải 1 file game: thử lần lượt từng đường dẫn, file nào tải được và chạy được thì dùng
+function loadScriptOnce(src){
+ return new Promise((ok,ko)=>{
+  const s=document.createElement('script');
+  s.src=src;s.async=true;
+  s.onload=()=>ok(src);
+  s.onerror=()=>{s.remove();ko(new Error(src));};
+  document.head.appendChild(s);
+ });
+}
+const _gameLoad={};
+function loadGame(k){
+ if(_gameLoad[k])return _gameLoad[k];
+ return _gameLoad[k]=(async()=>{
+  const tried=[];
+  for(const src of gamePaths(k)){
+   try{await loadScriptOnce(src);if(gameReady(k))return src;tried.push(src+' (tải được nhưng không chạy)');}
+   catch(e){tried.push(src);}
+  }
+  delete _gameLoad[k];
+  const err=new Error('notfound');err.tried=tried;throw err;
+ })();
+}
 let gameBusy=false;
 async function playGame(k){
  if(gameBusy)return;
- if(gameReady(k)){gameStart(k);return;}
+ if(gameReady(k)){try{gameStart(k);}catch(e){gameErr(e);}return;}
  gameBusy=true;
  const ld=document.getElementById('gameLoading'); if(ld)ld.classList.add('open');
- try{await lib(GAME_FILES[k]);gameStart(k);}
- catch(e){notify('Không tải được trò chơi. Hãy kiểm tra kết nối mạng rồi thử lại. Sau lần mở đầu tiên có mạng, trò chơi sẽ chơi được cả khi không có mạng.');}
- finally{gameBusy=false;if(ld)ld.classList.remove('open');}
+ try{await loadGame(k);}
+ catch(e){
+  gameBusy=false;if(ld)ld.classList.remove('open');
+  if(location.protocol!=='file:'&&!navigator.onLine)notify('Bạn đang không có mạng. Hãy bật mạng rồi mở trò chơi lại. Sau lần mở đầu tiên có mạng, trò chơi sẽ chơi được cả khi không có mạng.');
+  else notify('Không tìm thấy file trò chơi "'+GAME_FILES[k]+'". Hãy kiểm tra file này đã được đặt trong thư mục games/ (cùng chỗ với index.html) hay chưa.');
+  return;
+ }
+ gameBusy=false;if(ld)ld.classList.remove('open');
+ try{gameStart(k);}catch(e){gameErr(e);}
 }
+function gameErr(e){try{console.error(e);}catch(x){}notify('Trò chơi gặp lỗi khi khởi động: '+(e&&e.message||e)+'. Hãy tải lại app rồi thử lại.');}
 function scrLearnPlay(){
  const it=(fn,t)=>utilIt(fn,t);
  return screenWrap('🎓 Học và Chơi',

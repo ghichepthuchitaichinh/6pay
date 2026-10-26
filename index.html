@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.26-6';
+const APP_VERSION='2026.10.26-7';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -1894,15 +1894,16 @@ function gameErr(e){try{console.error(e);}catch(x){}notify('Trò chơi gặp l�
 function scrLearnPlay(){
  const it=(fn,t)=>utilIt(fn,t);
  return screenWrap('🎓 Học và Chơi',
-  it('openQuiz()','🎯 Đố vui tài chính')+
-  it("playGame('runner')",'🎮 Bước nhảy tài chính')+
+  it("playGame('vnh')",'<svg viewBox="0 0 30 20" width="22" height="15" style="vertical-align:-2px;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.35)" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><polygon fill="#FFFF00" points="15,4.5 16.35,8.65 20.71,8.65 17.18,11.21 18.53,15.35 15,12.79 11.47,15.35 12.82,11.21 9.29,8.65 13.65,8.65"/></svg> Lịch sử Việt Nam')+
+  it("playGame('vnv')",'🧭 Khám phá Việt Nam')+
   it("playGame('words')",'🔤 Game học từ vựng tiếng Anh')+
   it("playGame('zh')",'🀄 Game học từ vựng tiếng Trung')+
-  it("playGame('vnh')",'<svg viewBox="0 0 30 20" width="22" height="15" style="vertical-align:-2px;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.35)" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><polygon fill="#FFFF00" points="15,4.5 16.35,8.65 20.71,8.65 17.18,11.21 18.53,15.35 15,12.79 11.47,15.35 12.82,11.21 9.29,8.65 13.65,8.65"/></svg> Khám phá lịch sử Việt Nam')+
-  it("playGame('vnv')",'🧭 Khám phá Việt Nam')+
+  it('openQuiz()','🎯 Đố vui tài chính')+
+  it("playGame('runner')",'🎮 Bước nhảy tài chính')+
   it("playGame('chess')",'♟️ Cờ vua')+
   it("playGame('clock')",'🕒 Dạy trẻ xem đồng hồ'));
 }
+
 // ===== Đọc sách miễn phí =====
 // Thêm sách: thêm 1 dòng vào BOOKS. f = đường dẫn file (nên để trong thư mục books/ cùng chỗ với index.html)
 const BOOKS=[

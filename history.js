@@ -324,7 +324,7 @@ const ORD=[
 ];
 
 /* ===================== KHUNG GIAO DIỆN ===================== */
-root.innerHTML='<div class="vh-top"><h1 data-a="home"><svg viewBox="0 0 30 20" width="26" height="17" style="vertical-align:-3px;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.35)" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><polygon fill="#FFFF00" points="15,4.5 16.35,8.65 20.71,8.65 17.18,11.21 18.53,15.35 15,12.79 11.47,15.35 12.82,11.21 9.29,8.65 13.65,8.65"/></svg> Khám phá lịch sử Việt Nam</h1><span class="vh-chip" id="vh-pts"></span><span class="vh-chip" id="vh-badge"></span></div><div class="vh-main" id="vh-main"></div>';
+root.innerHTML='<div class="vh-top"><h1 data-a="home"><svg viewBox="0 0 30 20" width="26" height="17" style="vertical-align:-3px;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.35)" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><polygon fill="#FFFF00" points="15,4.5 16.35,8.65 20.71,8.65 17.18,11.21 18.53,15.35 15,12.79 11.47,15.35 12.82,11.21 9.29,8.65 13.65,8.65"/></svg> Lịch sử Việt Nam</h1><span class="vh-chip" id="vh-pts"></span><span class="vh-chip" id="vh-badge"></span></div><div class="vh-main" id="vh-main"></div>';
 const main=document.getElementById('vh-main');
 let timer=null;
 const stopTimer=()=>{if(timer){clearInterval(timer);timer=null}};
@@ -341,8 +341,8 @@ function addPts(n){S.pts+=n;persist();top()}
 const A={};
 /* Điều hướng: mỗi màn đều có nút ← quay lại màn trước đó */
 let cur={a:'home',d:{}},hist=[];
-const NAVS={milestones:1,msd:1,journey:1,era:1,startq:1,who:1,order:1,arena:1,collect:1};
-const SCROLLTOP={milestones:1,msd:1,msgrp:1,back:1,home:1,journey:1,era:1,startq:1,who:1,order:1,arena:1,collect:1,qnext:1,wnext:1,onext:1,anext:1};
+const NAVS={milestones:1,msd:1,msq:1,journey:1,era:1,startq:1,who:1,order:1,arena:1,collect:1};
+const SCROLLTOP={milestones:1,msd:1,msgrp:1,msq:1,back:1,home:1,journey:1,era:1,startq:1,who:1,order:1,arena:1,collect:1,qnext:1,wnext:1,onext:1,anext:1};
 const sameNav=(x,y)=>x.a===y.a&&String(x.d.i)===String(y.d.i);
 root.addEventListener('click',e=>{
   const t=e.target.closest('[data-a]');if(!t||t.disabled)return;
@@ -440,6 +440,7 @@ function msList(){
     h+=`<h3 class="ms-gh">${esc(g)}</h3>`+items.map(o=>`<button class="vh-era ms-item" data-a="msd" data-i="${o.i}"><span class="vh-ico">${o.m.ic}</span><span class="vh-et"><b>${esc(o.m.n)}</b><small>${esc(o.m.y)}</small></span><span class="ms-go">›</span></button>`).join('');
   });
   draw(`<h2 class="vh-h2">🏅 Những mốc son lịch sử</h2><p class="vh-sub">${MS.length} sự kiện, trận đánh tiêu biểu từ thời dựng nước đến ngày nay. Chạm vào từng mốc để đọc thông tin chính.</p>
+  <div class="vh-row" style="margin:0 0 10px"><button class="vh-btn" data-a="msq" data-i="">🎯 Bắt đầu thử thách (10 câu ngẫu nhiên)</button></div>
   <div class="ms-tabs">${tabs}</div>${h}
   <div class="vh-row"><button class="vh-btn alt sm" data-a="home">← Về trang chủ</button></div>`);
 }
@@ -453,7 +454,8 @@ A.msd=d=>{
   <div class="vh-story"><p><b>${esc(m.s)}</b></p></div>
   ${m.p?`<div class="vh-note">👤 <b>Nhân vật tiêu biểu:</b> ${esc(m.p)}</div>`:''}
   <div class="vh-facts ms-detail">${row('📍 Bối cảnh',m.bc)}${row('⚔️ Diễn biến chính',m.dt)}${row('🏁 Kết quả',m.kq)}${row('🌟 Ý nghĩa',m.yn)}</div>
-  <div class="vh-row">${i>0?`<button class="vh-btn alt" data-a="msd" data-i="${i-1}">◀ Mốc trước</button>`:''}${i+1<MS.length?`<button class="vh-btn" data-a="msd" data-i="${i+1}">Mốc tiếp theo ▶</button>`:''}<button class="vh-btn alt" data-a="milestones">☰ Danh sách</button></div>`);
+  <div class="vh-row">${i>0?`<button class="vh-btn alt" data-a="msd" data-i="${i-1}">◀ Mốc trước</button>`:''}${i+1<MS.length?`<button class="vh-btn" data-a="msd" data-i="${i+1}">Mốc tiếp theo ▶</button>`:''}<button class="vh-btn alt" data-a="milestones">☰ Danh sách</button></div>
+  <div class="vh-row"><button class="vh-btn" data-a="msq" data-i="${i}">🎯 Bắt đầu thử thách về mốc này</button></div>`);
 };
 (function(){const st=document.createElement('style');st.textContent=
 '.ms-tabs{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;margin-bottom:6px}'+
@@ -464,6 +466,48 @@ A.msd=d=>{
 '.ms-sec{padding:8px 0;border-top:1px dashed var(--line)}.ms-sec:first-child{border-top:0}'+
 '.ms-sec b{display:block;color:var(--red);margin-bottom:2px}.ms-sec p{margin:0;font-size:15px;line-height:1.6}';
 document.head.appendChild(st);})();
+
+/* ===================== THỬ THÁCH: NHỮNG MỐC SON LỊCH SỬ ===================== */
+function msMake(i){
+  const m=MS[i],others=MS.filter((x,k)=>k!==i);
+  const w=f=>{const pool=[];shuffle(others).forEach(o=>{const v=o[f];if(v&&v!==m[f]&&pool.indexOf(v)<0)pool.push(v)});return pool.slice(0,3)};
+  const qs=[];
+  qs.push({q:'"'+m.n+'" diễn ra vào thời gian nào?',a:m.y,w:w('y'),ex:m.y+': '+m.s});
+  qs.push({q:'Sự kiện nào diễn ra vào thời gian: '+m.y+'?',a:m.n,w:w('n'),ex:m.n+' – '+m.s});
+  if(m.p)qs.push({q:'Nhân vật tiêu biểu gắn với "'+m.n+'" là ai?',a:m.p,w:w('p'),ex:'Nhân vật tiêu biểu: '+m.p+'.'});
+  qs.push({q:'Kết quả của "'+m.n+'" là gì?',a:m.kq,w:w('kq'),ex:m.kq});
+  qs.push({q:'"'+m.n+'" thuộc giai đoạn lịch sử nào?',a:MS_GROUPS[m.c],w:shuffle(MS_GROUPS.filter(g=>g!==MS_GROUPS[m.c])).slice(0,3),ex:m.n+' thuộc giai đoạn: '+MS_GROUPS[m.c]+'.'});
+  return qs.filter(q=>q.w.length===3);
+}
+let MQ=null;
+A.msq=d=>{
+  let qs;
+  if(d&&d.i!==undefined&&d.i!==''){qs=shuffle(msMake(+d.i))}
+  else{qs=shuffle(MS.map((m,i)=>i)).slice(0,10).map(i=>shuffle(msMake(i))[0])}
+  MQ={one:d&&d.i!==undefined&&d.i!==''?+d.i:-1,qs:qs,n:0,ok:0,pick:null,opts:[]};msqDraw();
+};
+function msqDraw(){
+  const tot=MQ.qs.length;
+  if(MQ.n>=tot){
+    const pct=MQ.ok/tot,st=pct>=0.9?3:pct>=0.7?2:pct>=0.5?1:0;
+    draw(`<div class="vh-center"><div class="vh-big">${st?'🏅':'💪'}</div><h2 class="vh-h2">Đúng ${MQ.ok}/${tot} câu</h2>
+    <div style="color:var(--gold);font-size:30px;letter-spacing:3px">${'★'.repeat(st)}${'☆'.repeat(3-st)}</div>
+    <p>${st===3?'Xuất sắc! Bạn nắm rất chắc các mốc son lịch sử.':st?'Khá lắm! Đọc lại các mốc để đạt điểm tuyệt đối nhé.':'Hãy đọc lại thông tin các mốc lịch sử rồi thử lại nhé.'}</p></div>
+    <div class="vh-row" style="justify-content:center"><button class="vh-btn" data-a="msq" data-i="${MQ.one>=0?MQ.one:''}">↻ Làm lại</button>${MQ.one>=0?`<button class="vh-btn alt" data-a="msd" data-i="${MQ.one}">📖 Đọc lại mốc này</button>`:''}<button class="vh-btn alt" data-a="milestones">☰ Danh sách mốc</button></div>`);
+    return;
+  }
+  const q=MQ.qs[MQ.n];if(!MQ.opts.length)MQ.opts=shuffle([q.a].concat(q.w));
+  const p=MQ.pick;
+  draw(`<div class="vh-prog"><i style="width:${(MQ.n+(p!==null?1:0))/tot*100}%"></i></div>
+  <small class="vh-sub">🏅 Thử thách mốc son lịch sử · Câu ${MQ.n+1}/${tot} · Đã đúng: ${MQ.ok}</small>
+  <div class="vh-q">${esc(q.q)}</div>`+
+  MQ.opts.map((o,i)=>{let c='';if(p!==null){if(o===q.a)c='ok';else if(i===p)c='bad'}
+    return `<button class="vh-opt ${c}" data-a="msqa" data-i="${i}" ${p!==null?'disabled':''}>${esc(o)}</button>`}).join('')+
+  (p!==null?`<div class="vh-note">${MQ.opts[p]===q.a?'✅ Chính xác! +10 điểm. ':'❌ Chưa đúng. '}${esc(q.ex)}</div>
+  <button class="vh-btn" data-a="msqn">${MQ.n+1<tot?'Câu tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
+}
+A.msqa=d=>{if(MQ.pick!==null)return;MQ.pick=+d.i;if(MQ.opts[MQ.pick]===MQ.qs[MQ.n].a){MQ.ok++;addPts(10)}msqDraw()};
+A.msqn=()=>{MQ.n++;MQ.pick=null;MQ.opts=[];msqDraw();toTop()};
 
 /* ===================== TRANG CHỦ ===================== */
 function home(){

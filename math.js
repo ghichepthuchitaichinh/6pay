@@ -345,10 +345,12 @@
     stopT(); cur = 'menu'; T.textContent = '🧮 Toán học cấp 1';
     var b = bests();
     B.innerHTML = '<p class="mt-sub">Chọn lớp học để xem tổng hợp kiến thức quan trọng theo chương trình Giáo dục phổ thông 2018 và làm thử thách trắc nghiệm có tính giờ.</p><div class="mt-grades">' +
-      [1, 2, 3, 4, 5].map(function (g) { return '<button class="mt-g" data-a="grade" data-g="' + g + '" style="background:linear-gradient(135deg,' + COL[g] + ',' + COL[g] + 'cc)"><span class="ic">' + ICO[g] + '</span><span><b>Toán học lớp ' + g + '</b><small>' + K[g].length + ' chủ đề kiến thức · ' + NQ + ' câu thử thách' + (b[g] ? ' · Kỷ lục: ' + b[g] + ' điểm' : '') + '</small></span></button>'; }).join('') + '</div>';
+      [1, 2, 3, 4, 5].map(function (g) { return '<button class="mt-g" data-a="grade" data-g="' + g + '" style="background:linear-gradient(135deg,' + COL[g] + ',' + COL[g] + 'cc)"><span class="ic">' + ICO[g] + '</span><span><b>' + (locked(g) ? '🔒 ' : '') + 'Toán học lớp ' + g + '</b><small>' + K[g].length + ' chủ đề kiến thức · ' + NQ + ' câu thử thách' + (b[g] ? ' · Kỷ lục: ' + b[g] + ' điểm' : '') + '</small></span></button>'; }).join('') + '</div>';
     top();
   }
+  function locked(g) { return g > Math.ceil(5 / 3) && window.SixLock && !window.SixLock.isOpen(); }
   function gradeView(g) {
+    if (locked(g)) { window.SixLock.ask(function () { gradeView(g); }); return; }
     stopT(); cur = 'grade'; grade = g; T.textContent = ICO[g] + ' Toán học lớp ' + g;
     B.innerHTML = '<p class="mt-sub">Chạm vào từng chủ đề để xem chi tiết. Ôn xong, bấm <b>Thử thách toán học</b> để kiểm tra (' + NQ + ' câu, mỗi câu ' + SEC[g] + ' giây).</p>' +
       K[g].map(function (s, i) { return '<div class="mt-sec' + (i === 0 ? ' open' : '') + '"><button class="mt-sh" data-a="tog"><span>' + s.ic + '</span><span>' + s.t + '</span><span class="ar">›</span></button><div class="mt-sc">' +

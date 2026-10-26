@@ -239,6 +239,9 @@
       speechSynthesis.speak(u);
     } catch (e) {}
   }
+  function lkOpen() { return !window.SixLock || window.SixLock.isOpen(); }
+  function lkAsk(fn) { if (window.SixLock) window.SixLock.ask(fn); else fn(); }
+  function lkFree(n) { return Math.ceil(n / 3); }
   function sfx(k) { try { if (window.sfx) window.sfx(k); } catch (e) {} }
   function stopSpeak() { pend = 0; try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {} }
 
@@ -333,7 +336,8 @@
   function renderTopics() {
     var grid = $('egGrid'); grid.innerHTML = '';
     var lastG = -1;
-    MENU.forEach(function (t) {
+    MENU.forEach(function (t, ti) {
+      var tl = ti >= lkFree(MENU.length) && !lkOpen();
       if (t.g !== lastG) { lastG = t.g; var hh = document.createElement('div'); hh.className = 'eg-gh'; hh.textContent = t.g < GROUPS.length ? GROUPS[t.g] : '🎲 Ôn tập'; grid.appendChild(hh); }
       var w = document.createElement('div'); w.className = 'eg-tw';
       var n = plays(t.id), bs = best(t.id);
@@ -341,8 +345,8 @@
       if (n > 0) pc.innerHTML = '<span>🔁 Đã chơi ' + n + ' lần</span>';
       var b = document.createElement('button'); b.className = 'eg-topic';
       b.style.background = 'linear-gradient(145deg,' + t.c + ',' + t.c + 'bb)';
-      b.innerHTML = '<span class="ic">' + t.i + '</span><span class="nm">' + t.n + '</span><span class="sub">' + t.w.length + ' từ' + (bs ? ' · Kỷ lục ' + money(bs) : '') + '</span>';
-      b.onclick = function () { openTopicIntro(t); };
+      b.innerHTML = '<span class="ic">' + (tl ? '🔒' : t.i) + '</span><span class="nm">' + t.n + '</span><span class="sub">' + t.w.length + ' từ' + (bs ? ' · Kỷ lục ' + money(bs) : '') + '</span>';
+      b.onclick = function () { if (ti >= lkFree(MENU.length) && !lkOpen()) lkAsk(function () { renderTopics(); openTopicIntro(t); }); else openTopicIntro(t); };
       w.appendChild(pc); w.appendChild(b); grid.appendChild(w);
     });
   }
@@ -358,7 +362,7 @@
       h += '<h3>' + c[0] + '</h3><div class="eg-nodes">';
       for (var i = c[1]; i < c[2]; i++) {
         var lock = i > 0 && !P.s[i - 1], rv = (P.mw[i] || []).length;
-        h += '<button class="eg-node' + (lock ? ' lock' : '') + '" ' + (lock ? '' : 'data-a="lvl" data-i="' + i + '"') + ' style="background:linear-gradient(145deg,' + L[i].c + ',' + L[i].c + 'bb)"><span class="ic">' + (lock ? '🔒' : L[i].i) + '</span><span class="nm">' + (i + 1) + '. ' + L[i].n + '</span><span class="st">' + stars(P.s[i]) + '</span>' + (rv && !lock ? '<span class="rv">📌 ' + rv + ' từ cần ôn</span>' : '') + '</button>';
+        h += '<button class="eg-node' + (lock ? ' lock' : '') + '" ' + (lock ? '' : 'data-a="lvl" data-i="' + i + '"') + ' style="background:linear-gradient(145deg,' + L[i].c + ',' + L[i].c + 'bb)"><span class="ic">' + (lock ? '🔒' : L[i].i) + '</span><span class="nm">' + (i >= lkFree(L.length) && !lkOpen() ? '🔒 ' : '') + (i + 1) + '. ' + L[i].n + '</span><span class="st">' + stars(P.s[i]) + '</span>' + (rv && !lock ? '<span class="rv">📌 ' + rv + ' từ cần ôn</span>' : '') + '</button>';
       }
       h += '</div>';
     });
@@ -604,7 +608,7 @@
   var phG = 0, PQ = null;
   function renderPhr() {
     $('egPhrGrid').innerHTML = PHR.map(function (g, k) {
-      return '<div class="eg-tw"><div class="eg-pc"></div><button class="eg-topic" data-a="phrcat" data-i="' + k + '" style="background:linear-gradient(145deg,' + g.c + ',' + g.c + 'bb)"><span class="ic">' + g.i + '</span><span class="nm">' + g.n + '</span><span class="sub">' + g.p.length + ' câu</span></button></div>';
+      return '<div class="eg-tw"><div class="eg-pc"></div><button class="eg-topic" data-a="phrcat" data-i="' + k + '" style="background:linear-gradient(145deg,' + g.c + ',' + g.c + 'bb)"><span class="ic">' + (k >= lkFree(PHR.length) && !lkOpen() ? '🔒' : g.i) + '</span><span class="nm">' + g.n + '</span><span class="sub">' + g.p.length + ' câu</span></button></div>';
     }).join('');
     show('phr');
   }
@@ -656,7 +660,7 @@
     else if (a === 'topics') toTopics();
     else if (a === 'day') { renderMap(); show('map'); }
     else if (a === 'lv1' || a === 'lv2') { P.lv = a === 'lv1' ? 1 : 2; save(); renderMap(); }
-    else if (a === 'lvl') openIntro(i);
+    else if (a === 'lvl') { if (i >= lkFree(L.length) && !lkOpen()) lkAsk(function () { renderMap(); openIntro(i); }); else openIntro(i); }
     else if (a === 'say') { stopSpeak(); speak(introW[i][0]); }
     else if (a === 'go') { if (introT) startTopic(introT); else startDay(cur); }
     else if (a === 'retry') startDay(cur);
@@ -664,11 +668,11 @@
     else if (a === 'quit') { if (G && G.mode === 'topic') toTopics(); else toMap(); }
     else if (a === 'map') toMap();
     else if (a === 'again') startTopic(G ? G.topic : TOPICS[0]);
-    else if (a === 'next') openIntro(cur + 1);
+    else if (a === 'next') { if (cur + 1 >= lkFree(L.length) && !lkOpen()) lkAsk(function () { openIntro(cur + 1); }); else openIntro(cur + 1); }
     else if (a === 'win') winScreen();
     else if (a === 'endback') { if (G && G.mode === 'topic') toTopics(); else toMap(); }
     else if (a === 'phr') { stopSpeak(); renderPhr(); }
-    else if (a === 'phrcat') renderPhrList(i);
+    else if (a === 'phrcat') { if (i >= lkFree(PHR.length) && !lkOpen()) lkAsk(function () { renderPhr(); renderPhrList(i); }); else renderPhrList(i); }
     else if (a === 'phsay') phSay(PHR[phG].p[i]);
     else if (a === 'phquiz') phQuizStart();
     else if (a === 'phqsay') phSay(PQ.qs[PQ.n]);

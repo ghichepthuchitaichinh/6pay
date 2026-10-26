@@ -11,6 +11,9 @@ const DEF=()=>({stamps:{},pts:0,best:{guess:0,food:0,trip:0}});
 let S=DEF();
 try{const x=JSON.parse(localStorage.getItem(KEY));if(x)S=Object.assign(DEF(),x)}catch(e){}
 const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const LKOPEN=()=>!window.SixLock||window.SixLock.isOpen();
+const LKASK=(ok,no)=>{if(window.SixLock)window.SixLock.ask(ok,no);else if(ok)ok()};
+const LKFREE=n=>Math.ceil(n/3);
 const SFX=k=>{try{if(window.sfx)window.sfx(k)}catch(e){}};
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -529,6 +532,11 @@ function hdDays(h){const x=hdNext(h);return x?Math.round((x-HD_NOW())/86400000):
 function hdLabel(h){return h.d?h.d:h.l+' âm lịch'}
 function hdSortKey(h){const p=(h.d||h.l).split('/').map(Number);return (h.l?0:0)+p[1]*100+p[0]}
 let hdGrp=-1;
+function hdFree(i){
+  if(LKOPEN())return true;
+  const g=HD[i].g,ord=HD.map((x,k)=>k).filter(k=>HD[k].g===g).sort((a,b)=>hdSortKey(HD[a])-hdSortKey(HD[b])||a-b);
+  return ord.indexOf(i)<LKFREE(ord.length);
+}
 function hdCount(n){return n===0?'Hôm nay':n===1?'Ngày mai':'Còn '+n+' ngày'}
 function hdList(){
   stopTimer();
@@ -541,7 +549,7 @@ function hdList(){
     if(hdGrp>=0&&hdGrp!==gi)return;
     const items=HD.map((x,i)=>({x,i})).filter(o=>o.x.g===gi).sort((a,b)=>hdSortKey(a.x)-hdSortKey(b.x));
     h+=`<h3 class="hd-gh">${esc(g)} <small>(${items.length})</small></h3>`+items.map(o=>{const n=hdDays(o.x);
-      return `<button class="hd-item" data-a="hday" data-i="${o.i}"><span class="hd-date ${o.x.l?'lunar':''}"><b>${esc((o.x.d||o.x.l))}</b><small>${o.x.l?'âm lịch':'dương lịch'}</small></span><span class="hd-ic">${o.x.ic}</span><span class="hd-t"><b>${esc(o.x.n)}</b><small>${o.x.off?'🎌 Ngày nghỉ lễ · ':''}${n!==null?hdCount(n):''}</small></span><span class="hd-go">›</span></button>`}).join('');
+      return `<button class="hd-item" data-a="hday" data-i="${o.i}"><span class="hd-date ${o.x.l?'lunar':''}"><b>${esc((o.x.d||o.x.l))}</b><small>${o.x.l?'âm lịch':'dương lịch'}</small></span><span class="hd-ic">${hdFree(o.i)?o.x.ic:'🔒'}</span><span class="hd-t"><b>${esc(o.x.n)}</b><small>${o.x.off?'🎌 Ngày nghỉ lễ · ':''}${n!==null?hdCount(n):''}</small></span><span class="hd-go">›</span></button>`}).join('');
   });
   draw(`<h2 class="vv-h2">📅 Những ngày quan trọng trong năm</h2><p class="vv-sub">${HD.length} ngày lễ, ngày kỷ niệm của đất nước, dân tộc và ngày truyền thống của các ngành, tổ chức. Chạm vào từng ngày để đọc mô tả, lịch sử và ý nghĩa.</p>
   <div class="vv-row" style="margin:0 0 10px"><button class="vv-btn" data-a="hdq" data-i="">🎯 Bắt đầu thử thách (10 câu ngẫu nhiên)</button></div>
@@ -552,6 +560,7 @@ function hdList(){
 A.holidays=hdList;
 A.hdgrp=d=>{hdGrp=+d.g;hdList()};
 A.hday=d=>{
+  if(!hdFree(+d.i))return LKASK(()=>{curScr='hday';A.hday(d)});
   const i=+d.i,h=HD[i],n=hdDays(h),nx=hdNext(h);
   const sec=(t,v)=>v?`<div class="hd-sec"><b>${t}</b><p>${esc(v)}</p></div>`:'';
   const order=HD.map((x,k)=>k).sort((a,b)=>hdSortKey(HD[a])-hdSortKey(HD[b])||a-b);
@@ -605,7 +614,7 @@ A.hdq=d=>{
   const one=d&&d.i!==undefined&&d.i!==''?+d.i:-1;
   let qs;
   if(one>=0)qs=shuffle(hdMake(one));
-  else{qs=shuffle(HD.map((h,i)=>i)).slice(0,9).map(i=>shuffle(hdMake(i))[0]);qs.push(hdOffQ());qs=shuffle(qs)}
+  else{qs=shuffle(HD.map((h,i)=>i).filter(hdFree)).slice(0,9).map(i=>shuffle(hdMake(i))[0]);qs.push(hdOffQ());qs=shuffle(qs)}
   HQ={one:one,qs:qs,n:0,ok:0,pick:null,opts:[]};hdqDraw();
 };
 function hdqDraw(){
@@ -693,7 +702,7 @@ A.trip=()=>{
   let svg=`<svg class="vv-map" viewBox="${VN_VIEW}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bản đồ Việt Nam">${vnMapBase()}`;
   STOPS.forEach((s,i)=>{
     const dn=S.stamps[s.id]!=null;
-    svg+=`<g class="vv-node" data-a="stop" data-i="${i}"><circle class="c" cx="${s.x}" cy="${s.y}" r="8.5" fill="${dn?'#2e7d32':'#e0a21b'}" stroke="#fff" stroke-width="1.6"/>
+    svg+=`<g class="vv-node" data-a="stop" data-i="${i}"><circle class="c" cx="${s.x}" cy="${s.y}" r="8.5" fill="${dn?'#2e7d32':(i>=LKFREE(STOPS.length)&&!LKOPEN()?'#9ca3af':'#e0a21b')}" stroke="#fff" stroke-width="1.6"/>
     <text x="${s.x}" y="${s.y+3.6}" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">${i+1}</text></g>`;
   });
   svg+='</svg>';
@@ -701,12 +710,12 @@ A.trip=()=>{
   draw(`<h2 class="vv-h2">🗺️ Hành trình xuyên Việt</h2><p class="vv-sub">Bản đồ gồm 34 tỉnh, thành phố được đánh số từ 1 đến 34. Bấm vào một số trên bản đồ (hoặc trong danh sách) để xem.</p>
   <div class="vv-mapwrap">${svg}<div class="vv-side">
    <div class="vv-note">Đã thu thập: <b>${n}/${STOPS.length}</b> con dấu.<br><small>Bản đồ chỉ mang tính minh họa.</small></div>`+
-  STOPS.map((s,i)=>`<button class="vv-act ${S.stamps[s.id]!=null?'sel':''}" data-a="stop" data-i="${i}"><span class="ic">${s.ic}</span><span class="tx"><b>${i+1}. ${esc(s.n)}</b></span><span class="jy">${S.stamps[s.id]!=null?'✅ '+'★'.repeat(S.stamps[s.id]):''}</span></button>`).join('')+
+  STOPS.map((s,i)=>`<button class="vv-act ${S.stamps[s.id]!=null?'sel':''}" data-a="stop" data-i="${i}"><span class="ic">${s.ic}</span><span class="tx"><b>${i+1}. ${esc(s.n)}</b></span><span class="jy">${S.stamps[s.id]!=null?'✅ '+'★'.repeat(S.stamps[s.id]):(i>=LKFREE(STOPS.length)&&!LKOPEN()?'🔒':'')}</span></button>`).join('')+
   `<div class="vv-row"><button class="vv-btn alt sm" data-a="home">← Về trang chủ</button></div></div></div>`);
 };
 
 let Q=null;
-A.stop=d=>{const s=STOPS[+d.i];
+A.stop=d=>{if(+d.i>=LKFREE(STOPS.length)&&!LKOPEN())return LKASK(()=>{curScr='stop';A.stop(d)});const s=STOPS[+d.i];
   const hdr=`<div class="vv-center"><div class="vv-big">${s.ic}</div></div><h2 class="vv-h2 vv-center">${+d.i+1}. ${esc(s.n)}</h2>`;
   if(!s.hc){draw(hdr+`<div class="vv-story">Nội dung của nơi này sẽ sớm được cập nhật.</div><div class="vv-row"><button class="vv-btn alt" data-a="trip">← Bản đồ</button></div>`);return}
   const rows=[
@@ -775,7 +784,7 @@ function foodScreen(){
   (p!==null?`<div class="vv-note">${p===f[2]?'✅ Chính xác! ':'❌ Món này thuộc miền '+f[2]+'. '}${esc(f[3])}</div><button class="vv-btn" data-a="fnext">${F.i+1<F.items.length?'Món tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
 }
 A.fans=d=>{if(F.picked!==null)return;F.picked=d.r;const f=F.items[F.i];if(d.r===f[2]){F.ok++;F.streak++;F.pts+=10+(F.streak>=3?5:0);SFX('ok')}else{F.streak=0;SFX('bad')}foodScreen()};
-A.fnext=()=>{F.i++;F.picked=null;foodScreen()};
+A.fnext=()=>{F.i++;F.picked=null;if(F.i<F.items.length&&F.i>=LKFREE(F.items.length)&&!LKOPEN())return LKASK(foodScreen,()=>{F.items=F.items.slice(0,F.i);foodScreen()});foodScreen()};
 function foodEnd(){
   addPts(F.pts);const nb=F.pts>S.best.food;if(nb){S.best.food=F.pts;persist()}
   if(nb)SFX('win');
@@ -820,7 +829,7 @@ A.gans=d=>{
   if(G.opts[G.picked]===c[0]){G.gain=Math.max(10,Math.round(60-e*3));G.pts+=G.gain;SFX('ok')}else SFX('bad');
   guessDraw();
 };
-A.gnext=()=>{G.r++;guessRound()};
+A.gnext=()=>{G.r++;if(G.r<G.rounds.length&&G.r>=LKFREE(G.rounds.length)&&!LKOPEN())return LKASK(guessRound,()=>{G.rounds=G.rounds.slice(0,G.r);guessRound()});guessRound()};
 function guessEnd(){
   stopTimer();addPts(G.pts);const nb=G.pts>S.best.guess;if(nb){S.best.guess=G.pts;persist()}
   if(nb)SFX('win');
@@ -838,7 +847,7 @@ function bestPlan(t){
   return{j:bj,m:bm};
 }
 const tot=(t,sel)=>sel.reduce((a,k)=>({c:a.c+t.it[k][3],d:a.d+t.it[k][2],j:a.j+t.it[k][4]}),{c:0,d:0,j:0});
-A.budget=()=>{stopTimer();B={t:TRIPS[Math.random()*TRIPS.length|0],sel:[],done:false};budgetDraw()};
+A.budget=()=>{stopTimer();const nT=LKOPEN()?TRIPS.length:LKFREE(TRIPS.length);B={t:TRIPS[Math.random()*nT|0],sel:[],done:false};budgetDraw()};
 function budgetDraw(){
   const t=B.t,T=tot(t,B.sel);
   draw(`<h2 class="vv-h2">💰 Chuyến đi có ngân sách: ${esc(t.n)}</h2>

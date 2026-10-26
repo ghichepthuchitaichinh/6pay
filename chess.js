@@ -169,7 +169,7 @@ A.levels=function(){scr='levels';busy=false;
  LV.slice(1).map(function(l,i){return '<button class="ch-btn" data-a="free" data-n="'+(i+1)+'"><span class="ch-lv"><span>'+l.n+'</span>'+stars(i+1)+'</span><small>'+l.d+'</small></button>'}).join('')+
  '<button class="ch-btn sm" data-a="menu">← Quay lại</button>';
 };
-function begin(m,l){scr='game';mode=m;lvl=l;pos=start();stk=[];sel=null;hl=[];last=null;over=null;busy=false;draw()}
+function begin(m,l){if(l>Math.ceil(6/3)&&window.SixLock&&!window.SixLock.isOpen()){window.SixLock.ask(function(){begin(m,l)});return}scr='game';mode=m;lvl=l;pos=start();stk=[];sel=null;hl=[];last=null;over=null;busy=false;draw()}
 A.camp=function(d){begin('c',+d.n)};
 A.free=function(d){begin('f',+d.n)};
 A.again=function(){begin(mode,lvl)};

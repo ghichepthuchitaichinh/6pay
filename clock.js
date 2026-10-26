@@ -15,7 +15,10 @@
  var speakOn=true;
  try{speakOn=localStorage.getItem('6pay_clock_speak')!=='0';}catch(e){}
  var LEN={h:62,m:98,s:118};
- var drag=null, hH, hM, hS;
+ var drag=null, hH, hM, hS, lockHit=false;
+ var FREE_T=43200/3;
+ function lk(){return window.SixLock&&!window.SixLock.isOpen();}
+ function clampT(){if(lk()&&T>=FREE_T){T=T>=FREE_T*2?0:FREE_T-1;return true}return false}
 
  // ----- Vẽ mặt đồng hồ -----
  (function build(){
@@ -124,6 +127,7 @@
   else if(drag==='m')T+=norm(a/360*3600-(T%3600),1800);
   else if(drag==='h')T+=norm(a/360*43200-T,21600);
   T=((T%43200)+43200)%43200;
+  if(clampT())lockHit=true;
   render();
  }
  svg.addEventListener('pointerdown',function(e){
@@ -144,6 +148,7 @@
   drag=null;
   T=Math.round(T)%43200;
   render();
+  if(lockHit){lockHit=false;say.textContent='🔒 Bản miễn phí chỉ xoay được từ 12 giờ đến 4 giờ.';window.SixLock.ask(function(){});return}
   var txt=phrase(parts(T));
   say.textContent=txt;
   speak(txt);
@@ -155,7 +160,9 @@
  // ----- Nút bấm -----
  function now(){var d=new Date();T=d.getHours()*3600+d.getMinutes()*60+d.getSeconds();T%=43200;}
  document.getElementById('ckNow').addEventListener('click',function(){
-  now();render();
+  now();
+  if(clampT()){render();window.SixLock.ask(function(){now();render();var t2=phrase(parts(T));say.textContent=t2;speak(t2);});return}
+  render();
   var txt=phrase(parts(T));say.textContent=txt;speak(txt);
  });
  bOn.addEventListener('click',function(){setSpeak(true);});
@@ -164,7 +171,7 @@
  bNumOff.addEventListener('click',function(){setNum(false);});
 
  function open(){
-  now();render();say.textContent='';paintToggle();
+  now();clampT();render();say.textContent='';paintToggle();
   ov.classList.add('show');
   document.body.style.overflow='hidden';
  }

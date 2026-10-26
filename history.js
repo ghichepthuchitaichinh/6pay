@@ -11,6 +11,9 @@ const DEF=()=>({done:{},pts:0,best:{arena:0,order:0,who:0},unlockAll:false});
 let S=DEF();
 try{const x=JSON.parse(localStorage.getItem(KEY));if(x)S=Object.assign(DEF(),x)}catch(e){}
 const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const LKOPEN=()=>!window.SixLock||window.SixLock.isOpen();
+const LKASK=(ok,no)=>{if(window.SixLock)window.SixLock.ask(ok,no);else if(ok)ok()};
+const LKFREE=n=>Math.ceil(n/3);
 const SFX=k=>{try{if(window.sfx)window.sfx(k)}catch(e){}};
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -438,7 +441,7 @@ function msList(){
   MS_GROUPS.forEach((g,gi)=>{
     if(msGrp>=0&&msGrp!==gi)return;
     const items=MS.map((m,i)=>({m,i})).filter(o=>o.m.c===gi);
-    h+=`<h3 class="ms-gh">${esc(g)}</h3>`+items.map(o=>`<button class="vh-era ms-item" data-a="msd" data-i="${o.i}"><span class="vh-ico">${o.m.ic}</span><span class="vh-et"><b>${esc(o.m.n)}</b><small>${esc(o.m.y)}</small></span><span class="ms-go">›</span></button>`).join('');
+    h+=`<h3 class="ms-gh">${esc(g)}</h3>`+items.map(o=>`<button class="vh-era ms-item" data-a="msd" data-i="${o.i}"><span class="vh-ico">${o.i>=LKFREE(MS.length)&&!LKOPEN()?'🔒':o.m.ic}</span><span class="vh-et"><b>${esc(o.m.n)}</b><small>${esc(o.m.y)}</small></span><span class="ms-go">›</span></button>`).join('');
   });
   draw(`<h2 class="vh-h2">🏅 Những mốc son lịch sử</h2><p class="vh-sub">${MS.length} sự kiện, trận đánh tiêu biểu từ thời dựng nước đến ngày nay. Chạm vào từng mốc để đọc thông tin chính.</p>
   <div class="vh-row" style="margin:0 0 10px"><button class="vh-btn" data-a="msq" data-i="">🎯 Bắt đầu thử thách (10 câu ngẫu nhiên)</button></div>
@@ -448,6 +451,7 @@ function msList(){
 A.milestones=msList;
 A.msgrp=d=>{msGrp=+d.g;msList()};
 A.msd=d=>{
+  if(+d.i>=LKFREE(MS.length)&&!LKOPEN())return LKASK(()=>A.msd(d));
   const i=+d.i,m=MS[i];
   const row=(t,v)=>v?`<div class="ms-sec"><b>${t}</b><p>${esc(v)}</p></div>`:'';
   draw(`<div class="vh-center"><div class="vh-big">${m.ic}</div></div>
@@ -484,7 +488,7 @@ let MQ=null;
 A.msq=d=>{
   let qs;
   if(d&&d.i!==undefined&&d.i!==''){qs=shuffle(msMake(+d.i))}
-  else{qs=shuffle(MS.map((m,i)=>i)).slice(0,10).map(i=>shuffle(msMake(i))[0])}
+  else{qs=shuffle(MS.map((m,i)=>i).filter(i=>LKOPEN()||i<LKFREE(MS.length))).slice(0,10).map(i=>shuffle(msMake(i))[0])}
   MQ={one:d&&d.i!==undefined&&d.i!==''?+d.i:-1,qs:qs,n:0,ok:0,pick:null,opts:[]};msqDraw();
 };
 function msqDraw(){
@@ -536,7 +540,8 @@ function journey(){
   const n=ERAS.filter(e=>S.done[e.id]!=null).length;
   draw(`<h2 class="vh-h2">⏳ Hành trình thời gian</h2><p class="vh-sub">Đi qua ${ERAS.length} giai đoạn của lịch sử Việt Nam, từ thời dựng nước đến công cuộc Đổi mới. Mỗi màn có phần giới thiệu chi tiết và nhiều câu hỏi; trả lời đúng ít nhất 60% số câu để qua màn và mở khóa thẻ di sản. Đã hoàn thành: <b>${n}/${ERAS.length}</b>.</p>`+
   ERAS.map((e,i)=>{const o=isOpen(i),st=S.done[e.id]||0;
-    return `<button class="vh-era ${o?'':'lock'}" data-a="${o?'era':'locked'}" data-i="${i}"><span class="vh-ico">${o?e.ic:'🔒'}</span><span class="vh-et"><b>Màn ${i+1}: ${e.n}</b><small>${e.y} · ${e.qs.length} câu hỏi</small></span><span class="vh-st">${'★'.repeat(st)}${'☆'.repeat(3-st)}</span></button>`}).join('')+
+    const pl=i>=LKFREE(ERAS.length)&&!LKOPEN();
+    return `<button class="vh-era ${o&&!pl?'':'lock'}" data-a="${o||pl?'era':'locked'}" data-i="${i}"><span class="vh-ico">${o&&!pl?e.ic:'🔒'}</span><span class="vh-et"><b>Màn ${i+1}: ${e.n}</b><small>${e.y} · ${e.qs.length} câu hỏi</small></span><span class="vh-st">${'★'.repeat(st)}${'☆'.repeat(3-st)}</span></button>`}).join('')+
   `<div class="vh-row"><button class="vh-btn alt sm" data-a="home">← Về trang chủ</button>${S.unlockAll?'':'<button class="vh-btn alt sm" data-a="unlock">🔓 Mở hết các màn (bản thử)</button>'}</div>`);
 }
 A.journey=journey;
@@ -545,6 +550,7 @@ A.unlock=()=>{S.unlockAll=true;persist();journey()};
 
 let Q=null;
 A.era=d=>{
+  if(+d.i>=LKFREE(ERAS.length)&&!LKOPEN())return LKASK(()=>A.era(d));
   const i=+d.i,e=ERAS[i];
   draw(`<div class="vh-center"><div class="vh-big">${e.ic}</div></div>
   <h2 class="vh-h2 vh-center">Màn ${i+1}: ${esc(e.n)}</h2><p class="vh-sub vh-center">${esc(e.y)}</p>
@@ -614,7 +620,7 @@ function whoScreen(){
 }
 A.whint=()=>{if(W.shown<3){W.shown++;whoScreen()}};
 A.wans=d=>{if(W.picked!==null)return;W.picked=+d.i;const c=W.rounds[W.r];if(W.opts[W.picked]===c[0]){const g=40-W.shown*10;W.pts+=g;addPts(g);SFX('ok')}else SFX('bad');whoScreen()};
-A.wnext=()=>{W.r++;W.shown=1;W.picked=null;W.opts=[];whoScreen()};
+A.wnext=()=>{W.r++;W.shown=1;W.picked=null;W.opts=[];if(W.r<W.rounds.length&&W.r>=LKFREE(W.rounds.length)&&!LKOPEN())return LKASK(whoScreen,()=>{W.rounds=W.rounds.slice(0,W.r);whoScreen()});whoScreen()};
 function whoEnd(){
   const nb=W.pts>S.best.who;if(nb){S.best.who=W.pts;persist()}
   if(nb)SFX('win');
@@ -649,7 +655,7 @@ A.opick=(d,t)=>{
     orderDraw();
   }else{O.mist++;SFX('bad');const m=document.getElementById('vh-mist');if(m)m.textContent=O.mist;t.classList.add('vh-shake');setTimeout(()=>t.classList.remove('vh-shake'),350)}
 };
-A.onext=()=>{O.i++;orderSet()};
+A.onext=()=>{O.i++;if(O.i<O.sets.length&&O.i>=LKFREE(O.sets.length)&&!LKOPEN())return LKASK(orderSet,()=>{O.sets=O.sets.slice(0,O.i);orderSet()});orderSet()};
 function orderEnd(){
   const nb=O.pts>S.best.order;if(nb){S.best.order=O.pts;persist()}
   if(nb)SFX('win');
@@ -664,12 +670,16 @@ A.arena=()=>{stopTimer();
   AR={queue:shuffle(all),k:0,score:0,streak:0,ok:0,bad:0,t0:Date.now(),over:false,lock:false,picked:null,opts:[]};
   AR.opts=shuffle(AR.queue[0].slice(1,5));
   arenaDraw();
-  timer=setInterval(()=>{
-    const left=Math.max(0,60-(Date.now()-AR.t0)/1000);
+  const tick=()=>{
+    const el0=(Date.now()-AR.t0)/1000;
+    if(el0>=20&&!AR.asked&&!LKOPEN()){AR.asked=1;stopTimer();const p0=Date.now();
+      LKASK(()=>{AR.t0+=Date.now()-p0;timer=setInterval(tick,200)},()=>arenaEnd());return}
+    const left=Math.max(0,60-el0);
     const el=document.getElementById('vh-time');if(el)el.textContent=Math.ceil(left)+'s';
     const bar=document.getElementById('vh-bar');if(bar)bar.style.width=(left/60*100)+'%';
     if(left<=0)arenaEnd();
-  },200);
+  };
+  timer=setInterval(tick,200);
 };
 function arenaDraw(){
   const q=AR.queue[AR.k%AR.queue.length],p=AR.picked;

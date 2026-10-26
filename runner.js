@@ -195,6 +195,10 @@ function stopSpeech(){ try{ if(window.speechSynthesis) speechSynthesis.cancel();
   if (state === 'ready') { SND.start(); resetAll(); startDoor(); }
     else if (state === 'door') { setState('run'); }
     else if (state === 'doorEnd') {
+      if (di + 1 < DOORS.length && di + 1 >= Math.ceil(DOORS.length / 3) && window.SixLock && !window.SixLock.isOpen()) {
+        window.SixLock.ask(function () { stateAt = 0; advance(); });
+        return;
+      }
       di++;
       if (di >= DOORS.length) { rankIdx = rankSave(totMoney, totTime); SND.win(); setState('final'); }
       else startDoor();

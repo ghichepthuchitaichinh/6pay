@@ -11,6 +11,7 @@ const DEF=()=>({done:{},pts:0,best:{arena:0,order:0,who:0},unlockAll:false});
 let S=DEF();
 try{const x=JSON.parse(localStorage.getItem(KEY));if(x)S=Object.assign(DEF(),x)}catch(e){}
 const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const SFX=k=>{try{if(window.sfx)window.sfx(k)}catch(e){}};
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -489,7 +490,7 @@ A.msq=d=>{
 function msqDraw(){
   const tot=MQ.qs.length;
   if(MQ.n>=tot){
-    const pct=MQ.ok/tot,st=pct>=0.9?3:pct>=0.7?2:pct>=0.5?1:0;
+    const pct=MQ.ok/tot,st=pct>=0.9?3:pct>=0.7?2:pct>=0.5?1:0;if(MQ.n===tot&&!MQ.done){MQ.done=1;if(st>=2)SFX('win')}
     draw(`<div class="vh-center"><div class="vh-big">${st?'🏅':'💪'}</div><h2 class="vh-h2">Đúng ${MQ.ok}/${tot} câu</h2>
     <div style="color:var(--gold);font-size:30px;letter-spacing:3px">${'★'.repeat(st)}${'☆'.repeat(3-st)}</div>
     <p>${st===3?'Xuất sắc! Bạn nắm rất chắc các mốc son lịch sử.':st?'Khá lắm! Đọc lại các mốc để đạt điểm tuyệt đối nhé.':'Hãy đọc lại thông tin các mốc lịch sử rồi thử lại nhé.'}</p></div>
@@ -506,7 +507,7 @@ function msqDraw(){
   (p!==null?`<div class="vh-note">${MQ.opts[p]===q.a?'✅ Chính xác! +10 điểm. ':'❌ Chưa đúng. '}${esc(q.ex)}</div>
   <button class="vh-btn" data-a="msqn">${MQ.n+1<tot?'Câu tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
 }
-A.msqa=d=>{if(MQ.pick!==null)return;MQ.pick=+d.i;if(MQ.opts[MQ.pick]===MQ.qs[MQ.n].a){MQ.ok++;addPts(10)}msqDraw()};
+A.msqa=d=>{if(MQ.pick!==null)return;MQ.pick=+d.i;if(MQ.opts[MQ.pick]===MQ.qs[MQ.n].a){MQ.ok++;addPts(10);SFX('ok')}else SFX('bad');msqDraw()};
 A.msqn=()=>{MQ.n++;MQ.pick=null;MQ.opts=[];msqDraw();toTop()};
 
 /* ===================== TRANG CHỦ ===================== */
@@ -565,13 +566,14 @@ function qScreen(){
   (p!==null?`<div class="vh-note">${Q.opts[p]===q[1]?'✅ Chính xác! ':'❌ Chưa đúng. Đáp án: <b>'+esc(q[1])+'</b>. '}${esc(q[5])}</div>
   <button class="vh-btn" data-a="qnext">${Q.n+1<tot?'Câu tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
 }
-A.ans=d=>{if(Q.picked!==null)return;Q.picked=+d.i;const q=Q.qs[Q.n];if(Q.opts[Q.picked]===q[1]){Q.right++;addPts(10)}qScreen()};
+A.ans=d=>{if(Q.picked!==null)return;Q.picked=+d.i;const q=Q.qs[Q.n];if(Q.opts[Q.picked]===q[1]){Q.right++;addPts(10);SFX('ok')}else SFX('bad');qScreen()};
 A.qnext=()=>{Q.n++;Q.opts=[];Q.picked=null;if(Q.n>=Q.qs.length)return qEnd();qScreen()};
 function qEnd(){
   const era=ERAS[Q.e],tot=Q.qs.length,need=needOf(era),pass=Q.right>=need,ratio=Q.right/tot;
   const stars=pass?(ratio>=.9?3:ratio>=.75?2:1):0;
   const first=pass&&S.done[era.id]==null;
   if(pass){S.done[era.id]=Math.max(S.done[era.id]||0,stars);if(first)S.pts+=20;persist();top()}
+  SFX(pass?'win':'bad');
   draw(`<div class="vh-center"><div class="vh-big">${pass?'🎉':'💪'}</div>
   <h2 class="vh-h2">${pass?'Vượt ải thành công!':'Gần được rồi, thử lại nhé!'}</h2>
   <div class="vh-st" style="font-size:30px">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div>
@@ -611,10 +613,11 @@ function whoScreen(){
   (p!==null?`<div class="vh-note">${W.opts[p]===c[0]?'✅ Chính xác! +'+(40-W.shown*10)+' điểm.':'❌ Đáp án đúng: <b>'+esc(c[0])+'</b>.'}</div><button class="vh-btn" data-a="wnext">Tiếp ▶</button>`:''));
 }
 A.whint=()=>{if(W.shown<3){W.shown++;whoScreen()}};
-A.wans=d=>{if(W.picked!==null)return;W.picked=+d.i;const c=W.rounds[W.r];if(W.opts[W.picked]===c[0]){const g=40-W.shown*10;W.pts+=g;addPts(g)}whoScreen()};
+A.wans=d=>{if(W.picked!==null)return;W.picked=+d.i;const c=W.rounds[W.r];if(W.opts[W.picked]===c[0]){const g=40-W.shown*10;W.pts+=g;addPts(g);SFX('ok')}else SFX('bad');whoScreen()};
 A.wnext=()=>{W.r++;W.shown=1;W.picked=null;W.opts=[];whoScreen()};
 function whoEnd(){
   const nb=W.pts>S.best.who;if(nb){S.best.who=W.pts;persist()}
+  if(nb)SFX('win');
   draw(`<div class="vh-center"><div class="vh-big">🕵️</div><h2 class="vh-h2">Kết thúc!</h2><p>Bạn được <b>${W.pts}</b> điểm (tối đa 150). ${nb?'🎉 Kỷ lục mới!':'Kỷ lục: '+S.best.who}</p></div>
   <div class="vh-row" style="justify-content:center"><button class="vh-btn" data-a="who">Chơi lại</button><button class="vh-btn alt" data-a="home">Trang chủ</button></div>`);
 }
@@ -642,13 +645,14 @@ function orderDraw(){
 A.opick=(d,t)=>{
   const k=+d.k;if(O.placed[k]!==undefined)return;
   if(O.sorted.indexOf(O.items[k])===O.next){O.placed[k]=O.next;O.next++;
-    if(O.next>=O.items.length){const g=Math.max(5,25-5*O.mist);O.pts+=g;addPts(g)}
+    if(O.next>=O.items.length){const g=Math.max(5,25-5*O.mist);O.pts+=g;addPts(g);SFX('ok')}
     orderDraw();
-  }else{O.mist++;const m=document.getElementById('vh-mist');if(m)m.textContent=O.mist;t.classList.add('vh-shake');setTimeout(()=>t.classList.remove('vh-shake'),350)}
+  }else{O.mist++;SFX('bad');const m=document.getElementById('vh-mist');if(m)m.textContent=O.mist;t.classList.add('vh-shake');setTimeout(()=>t.classList.remove('vh-shake'),350)}
 };
 A.onext=()=>{O.i++;orderSet()};
 function orderEnd(){
   const nb=O.pts>S.best.order;if(nb){S.best.order=O.pts;persist()}
+  if(nb)SFX('win');
   draw(`<div class="vh-center"><div class="vh-big">🧩</div><h2 class="vh-h2">Hoàn thành!</h2><p>Bạn được <b>${O.pts}</b> điểm (tối đa 125). ${nb?'🎉 Kỷ lục mới!':'Kỷ lục: '+S.best.order}</p></div>
   <div class="vh-row" style="justify-content:center"><button class="vh-btn" data-a="order">Chơi lại</button><button class="vh-btn alt" data-a="home">Trang chủ</button></div>`);
 }
@@ -678,7 +682,7 @@ function arenaDraw(){
 A.aans=d=>{
   if(AR.over||AR.lock)return;AR.lock=true;AR.picked=+d.i;
   const q=AR.queue[AR.k%AR.queue.length];
-  if(AR.opts[AR.picked]===q[1]){AR.ok++;AR.streak++;AR.score+=10+(AR.streak>=3?5:0)}else{AR.bad++;AR.streak=0}
+  if(AR.opts[AR.picked]===q[1]){AR.ok++;AR.streak++;AR.score+=10+(AR.streak>=3?5:0);SFX('ok')}else{AR.bad++;AR.streak=0;SFX('bad')}
   arenaDraw();
   setTimeout(()=>{if(AR.over)return;AR.k++;AR.picked=null;AR.lock=false;AR.opts=shuffle(AR.queue[AR.k%AR.queue.length].slice(1,5));arenaDraw()},650);
 };
@@ -686,6 +690,7 @@ function arenaEnd(){
   if(AR.over)return;AR.over=true;stopTimer();
   addPts(AR.score);
   const nb=AR.score>S.best.arena;if(nb){S.best.arena=AR.score;persist()}
+  if(nb)SFX('win');
   draw(`<div class="vh-center"><div class="vh-big">⚡</div><h2 class="vh-h2">Hết giờ!</h2>
   <p>Đúng <b>${AR.ok}</b> câu · Sai <b>${AR.bad}</b> câu</p><p style="font-size:24px">Điểm: <b>${AR.score}</b> ${nb?'🎉 Kỷ lục mới!':'(kỷ lục: '+S.best.arena+')'}</p></div>
   <div class="vh-row" style="justify-content:center"><button class="vh-btn" data-a="arena">Chơi lại</button><button class="vh-btn alt" data-a="home">Trang chủ</button></div>`);

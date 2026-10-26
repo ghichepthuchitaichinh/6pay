@@ -174,7 +174,7 @@ A.camp=function(d){begin('c',+d.n)};
 A.free=function(d){begin('f',+d.n)};
 A.again=function(){begin(mode,lvl)};
 A.next=function(){begin('c',lvl+1)};
-A.resign=function(){if(!over&&!busy&&confirm('Bạn muốn đầu hàng ván này?')){over={w:'b',txt:'Bạn đã đầu hàng'};draw()}};
+A.resign=function(){if(!over&&!busy&&confirm('Bạn muốn đầu hàng ván này?')){over={w:'b',txt:'Bạn đã đầu hàng'};try{if(window.sfx)window.sfx('bad')}catch(e){}draw()}};
 A.undo=function(){if(busy||over||mode!=='f'||!stk.length)return;pos=stk.pop();sel=null;hl=[];last=null;draw()};
 function status(){
  if(over){
@@ -208,6 +208,7 @@ function check(){
  if(!ms.length)over={w:pos.t==='w'?'b':'w',txt:inCk(pos)?'':(pos.t==='w'?'Bạn hết nước đi':'Máy hết nước đi')};
  else if(pos.h>=100)over={txt:'Hòa (luật 50 nước)'};
  else if(insuf(pos))over={txt:'Hòa (không đủ quân chiếu hết)'};
+ if(over){try{if(window.sfx)window.sfx(over.w==='w'?'win':'bad')}catch(e){}}
  if(over&&over.w==='w'){
   S.win[lvl]=1;if(mode==='c'&&lvl>=S.camp)S.camp=Math.min(6,lvl+1);sv();
   try{addStar()}catch(e){}

@@ -11,6 +11,7 @@ const DEF=()=>({stamps:{},pts:0,best:{guess:0,food:0,trip:0}});
 let S=DEF();
 try{const x=JSON.parse(localStorage.getItem(KEY));if(x)S=Object.assign(DEF(),x)}catch(e){}
 const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const SFX=k=>{try{if(window.sfx)window.sfx(k)}catch(e){}};
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const vnd=k=>(k*1000).toLocaleString('vi-VN')+'đ';
@@ -611,7 +612,7 @@ function hdqDraw(){
   const tot=HQ.qs.length;
   const b=document.querySelector('#vnvOv .gm-body');if(b)b.scrollTop=0;
   if(HQ.n>=tot){
-    const pct=HQ.ok/tot,st=pct>=0.9?3:pct>=0.7?2:pct>=0.5?1:0;
+    const pct=HQ.ok/tot,st=pct>=0.9?3:pct>=0.7?2:pct>=0.5?1:0;if(!HQ.done){HQ.done=1;if(st>=2)SFX('win')}
     draw(`<div class="vv-center"><div class="vv-big">${st?'📅':'💪'}</div><h2 class="vv-h2">Đúng ${HQ.ok}/${tot} câu</h2>
     <div style="color:var(--gold);font-size:30px;letter-spacing:3px">${'★'.repeat(st)}${'☆'.repeat(3-st)}</div>
     <p>${st===3?'Tuyệt vời! Bạn nhớ rất rõ những ngày quan trọng.':st?'Khá lắm! Đọc lại để nhớ chắc hơn nhé.':'Hãy đọc lại thông tin các ngày rồi thử lại nhé.'}</p></div>
@@ -628,7 +629,7 @@ function hdqDraw(){
   (p!==null?`<div class="vv-note">${HQ.opts[p]===q.a?'✅ Chính xác! +10 điểm. ':'❌ Chưa đúng. '}${esc(q.ex)}</div>
   <button class="vv-btn" data-a="hdqn">${HQ.n+1<tot?'Câu tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
 }
-A.hdqa=d=>{if(HQ.pick!==null)return;HQ.pick=+d.i;if(HQ.opts[HQ.pick]===HQ.qs[HQ.n].a){HQ.ok++;addPts(10)}hdqDraw()};
+A.hdqa=d=>{if(HQ.pick!==null)return;HQ.pick=+d.i;if(HQ.opts[HQ.pick]===HQ.qs[HQ.n].a){HQ.ok++;addPts(10);SFX('ok')}else SFX('bad');hdqDraw()};
 A.hdqn=()=>{HQ.n++;HQ.pick=null;HQ.opts=[];hdqDraw()};
 
 /* ===================== TRANG CHỦ ===================== */
@@ -735,11 +736,12 @@ function qScreen(){
   (p!==null?`<div class="vv-note">${Q.opts[p]===q[1]?'✅ Chính xác! ':'❌ Chưa đúng. Đáp án: <b>'+esc(q[1])+'</b>. '}${esc(q[5])}</div>
   <button class="vv-btn" data-a="qnext">${Q.n+1<st.qs.length?'Câu tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
 }
-A.ans=d=>{if(Q.picked!==null)return;Q.picked=+d.i;const q=Q.qs[Q.n];if(Q.opts[Q.picked]===q[1]){Q.right++;addPts(10)}qScreen()};
+A.ans=d=>{if(Q.picked!==null)return;Q.picked=+d.i;const q=Q.qs[Q.n];if(Q.opts[Q.picked]===q[1]){Q.right++;addPts(10);SFX('ok')}else SFX('bad');qScreen()};
 A.qnext=()=>{Q.n++;Q.opts=[];Q.picked=null;if(Q.n>=STOPS[Q.s].qs.length)return qEnd();qScreen()};
 function qEnd(){
   const st=STOPS[Q.s],N=Q.qs.length,ratio=Q.right/N,pass=Q.right>=Math.ceil(N*0.6),stars=pass?(ratio>=0.9?3:ratio>=0.75?2:1):0,first=pass&&S.stamps[st.id]==null;
   if(pass){S.stamps[st.id]=Math.max(S.stamps[st.id]||0,stars);if(first)S.pts+=20;persist();top()}
+  SFX(pass?'win':'bad');
   draw(`<div class="vv-center"><div class="vv-big">${pass?'🛂':'💪'}</div>
   <h2 class="vv-h2">${pass?'Đã đóng dấu '+esc(st.s)+'!':'Gần được rồi, thử lại nhé!'}</h2>
   <div style="color:#e0a21b;font-size:30px;letter-spacing:3px">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div>
@@ -772,10 +774,11 @@ function foodScreen(){
     return `<button class="vv-reg ${c}" data-a="fans" data-r="${r}" ${p!==null?'disabled':''}>Miền ${r}</button>`}).join('')+`</div>`+
   (p!==null?`<div class="vv-note">${p===f[2]?'✅ Chính xác! ':'❌ Món này thuộc miền '+f[2]+'. '}${esc(f[3])}</div><button class="vv-btn" data-a="fnext">${F.i+1<F.items.length?'Món tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
 }
-A.fans=d=>{if(F.picked!==null)return;F.picked=d.r;const f=F.items[F.i];if(d.r===f[2]){F.ok++;F.streak++;F.pts+=10+(F.streak>=3?5:0)}else F.streak=0;foodScreen()};
+A.fans=d=>{if(F.picked!==null)return;F.picked=d.r;const f=F.items[F.i];if(d.r===f[2]){F.ok++;F.streak++;F.pts+=10+(F.streak>=3?5:0);SFX('ok')}else{F.streak=0;SFX('bad')}foodScreen()};
 A.fnext=()=>{F.i++;F.picked=null;foodScreen()};
 function foodEnd(){
   addPts(F.pts);const nb=F.pts>S.best.food;if(nb){S.best.food=F.pts;persist()}
+  if(nb)SFX('win');
   draw(`<div class="vv-center"><div class="vv-big">🍜</div><h2 class="vv-h2">Hoàn thành!</h2><p>Đúng <b>${F.ok}/${F.items.length}</b> món · <b>${F.pts}</b> điểm ${nb?'🎉 Kỷ lục mới!':'(kỷ lục: '+S.best.food+')'}</p></div>
   <div class="vv-row" style="justify-content:center"><button class="vv-btn" data-a="food">Chơi lại</button><button class="vv-btn alt" data-a="home">Trang chủ</button></div>`);
 }
@@ -814,12 +817,13 @@ A.gans=d=>{
   if(G.picked!==null)return;
   const c=G.rounds[G.r],e=(Date.now()-G.t0)/1000;stopTimer();
   G.picked=+d.i;
-  if(G.opts[G.picked]===c[0]){G.gain=Math.max(10,Math.round(60-e*3));G.pts+=G.gain}
+  if(G.opts[G.picked]===c[0]){G.gain=Math.max(10,Math.round(60-e*3));G.pts+=G.gain;SFX('ok')}else SFX('bad');
   guessDraw();
 };
 A.gnext=()=>{G.r++;guessRound()};
 function guessEnd(){
   stopTimer();addPts(G.pts);const nb=G.pts>S.best.guess;if(nb){S.best.guess=G.pts;persist()}
+  if(nb)SFX('win');
   draw(`<div class="vv-center"><div class="vv-big">🔍</div><h2 class="vv-h2">Hoàn thành!</h2><p>Bạn được <b>${G.pts}</b> điểm (tối đa 360). ${nb?'🎉 Kỷ lục mới!':'Kỷ lục: '+S.best.guess}</p></div>
   <div class="vv-row" style="justify-content:center"><button class="vv-btn" data-a="guess">Chơi lại</button><button class="vv-btn alt" data-a="home">Trang chủ</button></div>`);
 }

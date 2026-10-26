@@ -239,6 +239,7 @@
       speechSynthesis.speak(u);
     } catch (e) {}
   }
+  function sfx(k) { try { if (window.sfx) window.sfx(k); } catch (e) {} }
   function stopSpeak() { pend = 0; try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {} }
 
   /* ================= CSS ================= */
@@ -485,12 +486,12 @@
       var ox = it.x + it.cw > G.bx - G.bw / 2 + 8 && it.x < G.bx + G.bw / 2 - 8;
       if (ox && it.y + it.ch >= top && it.y < by + bh) {
         if (it.ok) {
-          G.money += REWARD; G.ok++; G.got[it.w[0]] = it.w;
+          G.money += REWARD; G.ok++; sfx('ok'); G.got[it.w[0]] = it.w;
           fl(G.bx, by - 10, money(REWARD, 1), '#4ade80');
           G.flash = 0.25; G.flashC = 'rgba(34,197,94,.30)';
           speak(it.w[0]); G.items = []; G.wait = 0.55; break;
         } else {
-          G.money -= PENALTY; G.bad++;
+          G.money -= PENALTY; G.bad++; sfx('bad');
           if (G.mode === 'day') G.missed[G.target[0]] = G.target;
           fl(G.bx, by - 10, '−' + money(PENALTY), '#f87171');
           G.flash = 0.25; G.flashC = 'rgba(239,68,68,.30)';
@@ -551,7 +552,7 @@
     cancelAnimationFrame(raf); stopSpeak();
     var g = G;
     if (g.mode === 'topic') {
-      var id = g.topic.id, prev = best(id), isNew = g.money > prev && g.money > 0;
+      var id = g.topic.id, prev = best(id), isNew = g.money > prev && g.money > 0; sfx(g.money > 0 ? 'win' : 'bad');
       if (isNew) setBest(id, g.money);
       var total = g.ok + g.bad, acc = total ? Math.round(g.ok * 100 / total) : 0;
       var h = '<div style="font-size:54px">' + (g.money > 0 ? '🎉' : '⏰') + '</div><h2>Hết giờ! – ' + g.topic.n + '</h2>' +
@@ -572,7 +573,7 @@
       var mis2 = Object.keys(g.missed).filter(function (k) { return !g.got[k]; });
       // các từ chưa hứng được (kể cả chưa kịp xuất hiện) cũng cần ôn
       L[g.li].w.forEach(function (w) { if (!g.got[w[0]] && !g.missed[w[0]]) { g.missed[w[0]] = w; mis2.push(w[0]); } });
-      P.m = Math.max(0, P.m + gain); if (sr > P.s[g.li]) P.s[g.li] = sr;
+      P.m = Math.max(0, P.m + gain); sfx(pass ? 'win' : 'bad'); if (sr > P.s[g.li]) P.s[g.li] = sr;
       if (mis2.length) P.mw[g.li] = mis2; else delete P.mw[g.li];
       save();
       var last = g.li === 14;
@@ -626,7 +627,7 @@
     var g = PHR[phG], B = $('egPhrQB');
     $('egPhrQT').textContent = '🎯 Luyện tập: ' + g.n;
     if (PQ.n >= PQ.qs.length) {
-      var all = PQ.ok === PQ.qs.length;
+      var all = PQ.ok === PQ.qs.length; if (!PQ.done) { PQ.done = 1; if (PQ.ok * 4 >= PQ.qs.length * 3) sfx('win'); }
       B.innerHTML = '<div style="font-size:54px">' + (all ? '🏆' : (PQ.ok * 2 >= PQ.qs.length ? '🎉' : '💪')) + '</div><h2 style="margin:6px 0">Đúng ' + PQ.ok + '/' + PQ.qs.length + ' câu</h2>' +
         '<div style="opacity:.85">' + (all ? 'Tuyệt vời! Bạn đã nhớ hết các câu.' : 'Hãy nghe lại các câu và luyện tập thêm nhé.') + '</div>' +
         '<div class="eg-acts"><button class="eg-btn main" data-a="phquiz">↻ Luyện lại</button><button class="eg-btn" data-a="phrback">📖 Xem lại các câu</button><button class="eg-btn" data-a="phr">Chọn tình huống khác</button></div>';
@@ -671,7 +672,7 @@
     else if (a === 'phsay') phSay(PHR[phG].p[i]);
     else if (a === 'phquiz') phQuizStart();
     else if (a === 'phqsay') phSay(PQ.qs[PQ.n]);
-    else if (a === 'phans') { if (PQ.pick < 0) { PQ.pick = i; if (PQ.opts[i] === PQ.qs[PQ.n]) PQ.ok++; phQuizDraw(); } }
+    else if (a === 'phans') { if (PQ.pick < 0) { PQ.pick = i; if (PQ.opts[i] === PQ.qs[PQ.n]) { PQ.ok++; sfx('ok'); } else sfx('bad'); phQuizDraw(); } }
     else if (a === 'phnext') { PQ.n++; PQ.pick = -1; PQ.opts = []; phQuizDraw(); }
     else if (a === 'phrback') { stopSpeak(); renderPhrList(phG); }
   });

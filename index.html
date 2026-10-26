@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.26-7';
+const APP_VERSION='2026.10.26-8';
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
@@ -1174,7 +1174,7 @@ async function changePass(){
   // ===== Sao lưu / khôi phục dữ liệu =====
 // Không sao lưu tài khoản và mật khẩu, nên khôi phục xong mật khẩu hiện tại trên máy vẫn giữ nguyên.
 // Sao lưu theo tiền tố khóa, nên dữ liệu game và tiện ích mới thêm sau này cũng tự được sao lưu.
-const BACKUP_PREFIX=['6pay','wg_','dg_','vnh_','vnv_','zh_'];
+const BACKUP_PREFIX=['6pay','wg_','dg_','vnh_','vnv_','zh_','math_'];
 const LASTBACKUP_KEY='6pay-lastbackup';
 const BACKUP_SKIP=['6pay-account-v1','6pay-session-v1','6pay-guides-cache-v1','6pay-clicks-v1','6pay-lockfail-v1','6pay-lastbackup'];
 const OLD_BACKUP_KEYS=['6pay-state-v1','6pay-stars-v1','6pay-streak-v1','6pay-plan-v1','6pay-plandone-v1','6pay-quiz-v1','6pay-debts-v1','6pay-read-v1','6pay-fs-v1','6pay-notes-v1','6pay-goals-v1','6pay-bills-v1','6pay-pomo-v1','vnh_history_v1','vnv_travel_v1'];
@@ -1250,6 +1250,7 @@ function scrSettings(){
   <input type="file" id="bk-file" accept=".json,application/json" style="display:none" onchange="backupImport(this)">
   <div class="set-group">Khác</div>
   ${setRow("push('login')",'🔐 Khóa app bằng mật khẩu',getAccount()?'Đang bật':'Đang tắt')}
+  ${setRow('toggleSound()','🔊 Âm thanh trò chơi',soundOn()?'Đang bật':'Đang tắt')}
   ${setRow('openInstall()','📲 Hướng dẫn cài app ra màn hình')}
   <div class="guide-desc">Nên sao lưu định kỳ và lưu file vào Google Drive hoặc gửi qua Zalo cho chính mình. Khi app bị gỡ hay đổi điện thoại, bạn chỉ cần mở app và chọn Khôi phục.</div>`);
 }
@@ -1756,7 +1757,8 @@ function qzTick(){
 function qzPick(k){
  if(qz.picked!==null)return;
  clearInterval(qz.timer);qz.timer=0;qz.picked=k;
- if(k>=0&&qz.opts[k].c){qz.streak++;qz.ok++;qz.score+=100+qz.left*4+Math.min(qz.streak-1,4)*20;}else qz.streak=0;
+ if(k>=0&&qz.opts[k].c){qz.streak++;qz.ok++;qz.score+=100+qz.left*4+Math.min(qz.streak-1,4)*20;sfx('ok');}else{qz.streak=0;sfx('bad');}
+ if(qz.i+1>=qz.list.length&&qz.ok>=Math.ceil(qz.list.length*0.8))setTimeout(()=>sfx('win'),700);
  render();
 }
 function qzNext(){
@@ -1805,6 +1807,50 @@ function streakGet(){
 }
 function streakHtml(){const s=streakGet();return `<span class="streak ${s.on?'on':'off'}" title="Số ngày liên tiếp có ghi chép thu chi"><span class="fl">🔥</span> <span class="sn">${s.count} ngày</span></span>`;}
 
+
+// ===== Âm thanh trò chơi: 'ok' (trả lời đúng – chuông reo chúc mừng), 'bad' (trả lời sai), 'win' (hoàn thành xuất sắc) =====
+const SOUND_KEY='6pay-sound-v1';
+function soundOn(){try{return localStorage.getItem(SOUND_KEY)!=='0';}catch(e){return true;}}
+let _ac=null,_noise=null;
+function _acx(){
+ try{
+  if(!_ac){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;_ac=new AC();}
+  if(_ac.state==='suspended')_ac.resume();
+  return _ac;
+ }catch(e){return null;}
+}
+function _tone(ac,f,t,d,type,vol,to){
+ const o=ac.createOscillator(),g=ac.createGain();
+ o.type=type||'triangle';o.frequency.setValueAtTime(f,t);if(to)o.frequency.exponentialRampToValueAtTime(to,t+d);
+ g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol||0.2,t+0.012);g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+ o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d+0.05);
+}
+function _clap(ac,t,vol){
+ if(!_noise){_noise=ac.createBuffer(1,ac.sampleRate*0.2,ac.sampleRate);const d=_noise.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);}
+ const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();
+ s.buffer=_noise;f.type='bandpass';f.frequency.value=1400+Math.random()*600;f.Q.value=0.8;g.gain.value=vol||0.35;
+ s.connect(f);f.connect(g);g.connect(ac.destination);s.start(t);
+}
+function sfx(k){
+ if(!soundOn())return;
+ const ac=_acx();if(!ac)return;
+ try{
+  const t=ac.currentTime+0.02;
+  if(k==='ok'){
+   [523.25,659.25,783.99,1046.5].forEach((f,i)=>_tone(ac,f,t+i*0.075,0.32,'triangle',0.2));
+   [1568,2093,2637].forEach((f,i)=>_tone(ac,f,t+0.3+i*0.05,0.22,'sine',0.06));
+  }else if(k==='bad'){
+   _tone(ac,330,t,0.16,'square',0.09,300);_tone(ac,220,t+0.17,0.34,'square',0.09,170);
+  }else if(k==='win'){
+   [392,523.25,659.25,783.99].forEach((f,i)=>_tone(ac,f,t+i*0.12,0.18,'square',0.08));
+   _tone(ac,1046.5,t+0.5,0.7,'triangle',0.22);_tone(ac,1318.5,t+0.5,0.7,'triangle',0.12);_tone(ac,1568,t+0.5,0.7,'triangle',0.1);
+   for(let i=0;i<12;i++)_clap(ac,t+0.55+i*0.07+Math.random()*0.04,0.25);
+   [2093,2637,3136,2637,3136].forEach((f,i)=>_tone(ac,f,t+0.6+i*0.09,0.15,'sine',0.05));
+  }
+ }catch(e){}
+}
+window.sfx=sfx;
+function toggleSound(){try{localStorage.setItem(SOUND_KEY,soundOn()?'0':'1');}catch(e){}render();if(soundOn())sfx('ok');}
 // ===== Tiện ích 6Pay =====
 function utilIt(fn,t,extra){return `<button class="list-item clickable util-item" onclick="${fn}"><span>${t}</span><span class="guide-cta">${extra||''}›</span></button>`;}
 function scrExtra(){
@@ -1835,12 +1881,13 @@ function scrFinUtil(){
 // Các game nằm ở thư mục games/, chỉ tải khi người dùng bấm vào (app mở nhanh hơn)
 // Các game nằm ở thư mục games/, chỉ tải khi người dùng bấm vào (app mở nhanh hơn).
 // Nếu file được upload thẳng vào thư mục gốc (không có thư mục games/), app vẫn tự tìm thấy.
-const GAME_FILES={runner:'runner.js',words:'words.js',zh:'chinese.js',vnh:'history.js',vnv:'vietnam.js',chess:'chess.js',clock:'clock.js'};
+const GAME_FILES={runner:'runner.js',words:'words.js',zh:'chinese.js',math:'math.js',vnh:'history.js',vnv:'vietnam.js',chess:'chess.js',clock:'clock.js'};
 function gamePaths(k){const f=GAME_FILES[k];return ['games/'+f,'./'+f,'Games/'+f];}
 function gameReady(k){
  if(k==='runner')return !!window.open6PayGame;
  if(k==='words')return !!window.SixWordGame;
  if(k==='zh')return !!window.SixZhGame;
+ if(k==='math')return !!window.MathGame;
  if(k==='clock')return !!window.ClockGame;
  return !!(document.getElementById(k+'Ov')&&window.GameOv);
 }
@@ -1848,6 +1895,7 @@ function gameStart(k){
  if(k==='runner')open6PayGame();
  else if(k==='words')SixWordGame.open();
  else if(k==='zh')SixZhGame.open();
+ else if(k==='math')MathGame.open();
  else if(k==='clock')ClockGame.open();
  else GameOv.open(k);
 }
@@ -1898,6 +1946,7 @@ function scrLearnPlay(){
   it("playGame('vnv')",'🧭 Khám phá Việt Nam')+
   it("playGame('words')",'🔤 Game học từ vựng tiếng Anh')+
   it("playGame('zh')",'🀄 Game học từ vựng tiếng Trung')+
+  it("playGame('math')",'🧮 Toán học cấp 1')+
   it('openQuiz()','🎯 Đố vui tài chính')+
   it("playGame('runner')",'🎮 Bước nhảy tài chính')+
   it("playGame('chess')",'♟️ Cờ vua')+

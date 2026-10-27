@@ -10,17 +10,12 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.26-11';
-// ===================== MẬT KHẨU MỞ KHÓA HỌC VÀ CHƠI =====================
-// CÁCH 1 (đơn giản nhất): gõ mật khẩu vào giữa hai dấu nháy, ví dụ: const MAT_KHAU_MO_KHOA='hoctot2026';
-//   Không phân biệt chữ hoa, chữ thường. Lưu ý: ai mở mã nguồn trang này trên GitHub cũng đọc được mật khẩu.
-// CÁCH 2 (an toàn hơn): để trống MAT_KHAU_MO_KHOA (hai dấu nháy liền nhau ''), rồi dán mã tạo trong app vào MA_MAT_KHAU.
-//   Tạo mã: mở app → ⚙️ Cài đặt → 🔓 Mở khóa Học và Chơi → "Dành cho chủ app: tạo mã mật khẩu".
-// Sau khi sửa: tăng số APP_VERSION ở trên và sửa số trong version.json cho giống hệt.
-const MAT_KHAU_MO_KHOA='6pay26';
-const MA_MAT_KHAU='93aeecfc06484448fa98343c3110532aefcf9138de45ee1135a59d665deffea3';
-// true: người đã mở khóa vẫn giữ quyền khi bạn đổi mật khẩu. false: đổi mật khẩu thì mọi người phải nhập mật khẩu mới.
-const GIU_QUYEN_KHI_DOI_MAT_KHAU=true;
+const APP_VERSION='2026.10.27-1';
+// ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
+// Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
+// thì gõ: const GOATCOUNTER_CODE='6pay';
+// Để trống '' là tắt bộ đếm. Bộ đếm không dùng cookie, không gửi tên, số điện thoại hay bất kỳ số liệu thu chi nào.
+const GOATCOUNTER_CODE='6pay';
 
 </script>
   <script>
@@ -1281,7 +1276,6 @@ function scrSettings(){
   <div class="set-group">Khác</div>
   ${setRow("push('login')",'🔐 Khóa app bằng mật khẩu',getAccount()?'Đang bật':'Đang tắt')}
   ${setRow('toggleSound()','🔊 Âm thanh trò chơi',soundOn()?'Đang bật':'Đang tắt')}
-  ${setRow('lockAsk()','🔓 Mở khóa Học và Chơi',lockIsOpen()?'Đã mở khóa':'Chưa mở khóa')}
   ${setRow('openInstall()','📲 Hướng dẫn cài app ra màn hình')}
   <div class="guide-desc">Nên sao lưu định kỳ và lưu file vào Google Drive hoặc gửi qua Zalo cho chính mình. Khi app bị gỡ hay đổi điện thoại, bạn chỉ cần mở app và chọn Khôi phục.</div>`);
 }
@@ -1886,93 +1880,13 @@ function sfx(k){
 window.sfx=sfx;
 function toggleSound(){try{localStorage.setItem(SOUND_KEY,soundOn()?'0':'1');}catch(e){}render();if(soundOn())sfx('ok');}
 
-// ===== KHÓA NỘI DUNG HỌC VÀ CHƠI =====
-// Bản miễn phí: mỗi trò chơi chỉ mở 1/3 nội dung đầu. Người chơi nhắn "MK6pay" cho 6Pay để nhận mật khẩu.
-// MẬT KHẨU được đặt ở ĐẦU FILE index.html (mục "MẬT KHẨU MỞ KHÓA HỌC VÀ CHƠI"), không cần sửa ở đây.
-const UNLOCK_PASS=(typeof MAT_KHAU_MO_KHOA==='string'?MAT_KHAU_MO_KHOA:'').trim().toLowerCase();
-const UNLOCK_HASH=(typeof MA_MAT_KHAU==='string'?MA_MAT_KHAU:'').trim().toLowerCase();
-const UNLOCK_SALT='6PAY-UNLOCK';         // không sửa dòng này
-const UNLOCK_KEEP_OLD=typeof GIU_QUYEN_KHI_DOI_MAT_KHAU==='boolean'?GIU_QUYEN_KHI_DOI_MAT_KHAU:true;
-function unlockId(){
- if(!UNLOCK_PASS)return UNLOCK_HASH;
- let h=2166136261;for(let i=0;i<UNLOCK_PASS.length;i++){h^=UNLOCK_PASS.charCodeAt(i);h=Math.imul(h,16777619);}
- return 'p'+(h>>>0).toString(16);
-}
-const UNLOCK_PHONE='0342190588';         // số điện thoại nhận tin nhắn MK6pay
-const UNLOCK_ZALO='https://zalo.me/0342190588';
-const UNLOCK_KEY='6pay-unlock-v1';
-function lockFree(n){return Math.ceil(n/3);}
-function lockIsOpen(){
- try{const v=localStorage.getItem(UNLOCK_KEY);if(!v)return false;return UNLOCK_KEEP_OLD?true:v===unlockId();}catch(e){return false;}
-}
-let lockCb=null,lockCancel=null,lockFails=0,lockUntil=0;
-function lockModal(){
- let m=document.getElementById('unlockModal');
- if(m)return m;
- m=document.createElement('div');m.id='unlockModal';m.className='modal-overlay unlock-ov';
- m.innerHTML=`<div class="modal-box unlock-box">
-  <div class="ul-ic">🔒</div>
-  <div class="ul-t">Nội dung tiếp theo đã bị khóa</div>
-  <p class="ul-p">Bạn đã chơi hết phần miễn phí. Hãy gửi tin nhắn cho 6Pay theo cú pháp: <b>MK6pay</b> để lấy mật khẩu mở khóa. Mật khẩu chỉ cần nhập 1 lần và có giá trị cho tất cả các phần chơi.</p>
-  <div class="ul-send"><a class="btn primary" href="sms:${UNLOCK_PHONE}?&body=MK6pay">✉️ Gửi tin nhắn MK6pay</a><a class="btn cancel" href="${UNLOCK_ZALO}" target="_blank" rel="noopener">💬 Nhắn qua Zalo</a></div>
-  <div class="ul-sms">Số nhận tin: <b>${UNLOCK_PHONE.replace(/(\d{4})(\d{2})(\d{2})(\d{2})/,'$1.$2.$3.$4')}</b> · Nội dung: <b>MK6pay</b></div>
-  <input type="text" id="ulPass" class="ul-in" placeholder="Nhập mật khẩu mở khóa" autocomplete="off" autocapitalize="none" spellcheck="false">
-  <div class="err-msg ul-err" id="ulErr"></div>
-  <div class="modal-actions"><button class="btn cancel" onclick="lockClose(true)">Để sau</button><button class="btn confirm" onclick="lockTry()">🔓 Mở khóa</button></div>
-  <button class="ul-admin" onclick="document.getElementById('ulGen').classList.toggle('on')">🛠 Dành cho chủ app: tạo mã mật khẩu</button>
-  <div class="ul-gen" id="ulGen">
-   <input type="text" id="ulNew" class="ul-in" placeholder="Gõ mật khẩu mới" autocomplete="off" autocapitalize="none" spellcheck="false">
-   <button class="btn primary" onclick="lockGen()">Tạo mã</button>
-   <div id="ulOut"></div>
-  </div>
- </div>`;
- document.body.appendChild(m);
- m.querySelector('#ulPass').addEventListener('keydown',e=>{if(e.key==='Enter')lockTry();});
- return m;
-}
-// Gọi khi người chơi muốn vào phần bị khóa: đã mở khóa thì chạy luôn onOk, chưa thì hiện cửa sổ
-function lockAsk(onOk,onCancel){
- if(lockIsOpen()){if(onOk)onOk();return;}
- lockCb=onOk||null;lockCancel=onCancel||null;
- const m=lockModal();m.querySelector('#ulPass').value='';m.querySelector('#ulErr').textContent='';
- m.classList.add('open');
- sfx('bad');
-}
-function lockClose(cancel){
- const m=document.getElementById('unlockModal');if(m)m.classList.remove('open');
- const c=lockCancel;lockCb=null;lockCancel=null;
- if(cancel&&c)c();
-}
-async function lockTry(){
- const m=lockModal(),er=m.querySelector('#ulErr');
- if(Date.now()<lockUntil){er.textContent='Bạn nhập sai nhiều lần. Thử lại sau '+Math.ceil((lockUntil-Date.now())/1000)+' giây.';return;}
- const v=(m.querySelector('#ulPass').value||'').trim().toLowerCase();
- if(!v){er.textContent='Vui lòng nhập mật khẩu.';return;}
- const good=UNLOCK_PASS?v===UNLOCK_PASS:(!!UNLOCK_HASH&&(await hashPass(v,UNLOCK_SALT))===UNLOCK_HASH);
- if(good){
-  try{localStorage.setItem(UNLOCK_KEY,unlockId());}catch(e){}
-  lockFails=0;
-  const cb=lockCb;lockCb=null;lockCancel=null;m.classList.remove('open');
-  sfx('win');
-  notify('🎉 Đã mở khóa toàn bộ nội dung Học và Chơi. Chúc bạn học vui!');
-  if(document.getElementById('app')&&!locked)render();
-  if(cb)setTimeout(cb,50);
- }else{
-  lockFails++;sfx('bad');
-  if(lockFails>=5){lockFails=0;lockUntil=Date.now()+30000;er.textContent='Sai 5 lần. Vui lòng thử lại sau 30 giây.';}
-  else er.textContent='Mật khẩu chưa đúng. Hãy nhắn MK6pay cho 6Pay để nhận mật khẩu.';
-  const i=m.querySelector('#ulPass');i.classList.add('shake');setTimeout(()=>i.classList.remove('shake'),300);
- }
-}
-async function lockGen(){
- const v=(document.getElementById('ulNew').value||'').trim().toLowerCase(),o=document.getElementById('ulOut');
- if(!v){o.innerHTML='<div class="err-msg">Hãy gõ mật khẩu mới.</div>';return;}
- const h=await hashPass(v,UNLOCK_SALT),line="const MA_MAT_KHAU='"+h+"';";
- o.innerHTML='<div class="ul-code" id="ulCode"></div><button class="btn cancel wide" onclick="lockCopy()">📋 Chép dòng mã</button><div class="ul-sms">Dán dòng này đè lên dòng <b>const MA_MAT_KHAU</b> ở đầu file index.html trên GitHub, và để trống MAT_KHAU_MO_KHOA.</div>';
- document.getElementById('ulCode').textContent=line;
-}
-function lockCopy(){const t=document.getElementById('ulCode').textContent;try{navigator.clipboard.writeText(t).then(()=>{const o=document.getElementById('ulOut');o.querySelector('.btn').textContent='✅ Đã chép';});}catch(e){}}
+// ===== HỌC VÀ CHƠI: MỞ 100% MIỄN PHÍ =====
+// Các file game vẫn hỏi SixLock, nên giữ lại phiên bản "luôn mở" để không phải sửa từng game.
+function lockFree(n){return n;}
+function lockIsOpen(){return true;}
+function lockAsk(onOk){if(onOk)onOk();}
 window.SixLock={isOpen:lockIsOpen,ask:lockAsk,free:lockFree};
+try{localStorage.removeItem('6pay-unlock-v1');}catch(e){}
 // ===== Tiện ích 6Pay =====
 function utilIt(fn,t,extra){return `<button class="list-item clickable util-item" onclick="${fn}"><span>${t}</span><span class="guide-cta">${extra||''}›</span></button>`;}
 function scrExtra(){
@@ -2064,7 +1978,6 @@ function gameErr(e){try{console.error(e);}catch(x){}notify('Trò chơi gặp l�
 function scrLearnPlay(){
  const it=(fn,t)=>utilIt(fn,t);
  return screenWrap('🎓 Học và Chơi',
-  (lockIsOpen()?'':`<button class="ul-banner" onclick="lockAsk()">🔒 Bản miễn phí: mỗi trò chơi mở 1/3 nội dung đầu. <b>Mở khóa toàn bộ ›</b></button>`)+
   it("playGame('vnh')",'<svg viewBox="0 0 30 20" width="22" height="15" style="vertical-align:-2px;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.35)" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><polygon fill="#FFFF00" points="15,4.5 16.35,8.65 20.71,8.65 17.18,11.21 18.53,15.35 15,12.79 11.47,15.35 12.82,11.21 9.29,8.65 13.65,8.65"/></svg> Lịch sử Việt Nam')+
   it("playGame('vnv')",'🧭 Khám phá Việt Nam')+
   it("playGame('words')",'🔤 Game học từ vựng tiếng Anh')+
@@ -3610,6 +3523,39 @@ setTimeout(()=>{
  if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),300); }
   if(!fastStart)setTimeout(maybeShowInstall,500);
 },3000);
+// ===== BỘ ĐẾM ẨN DANH (GoatCounter) =====
+// Chỉ gửi: đã mở app, mở bằng app đã cài hay trình duyệt, mở trò chơi nào, và mỗi máy tối đa 1 lần/ngày "có ghi chép".
+// Không gửi tên, số điện thoại, số tiền, ghi chú hay bất kỳ dữ liệu cá nhân nào.
+const GC_DAY_KEY='6pay-gc-day';
+function gcCount(path,title){
+ if(!GOATCOUNTER_CODE)return;
+ const send=()=>{try{window.goatcounter.count({path:path,title:title||path,event:true});}catch(e){}};
+ if(window.goatcounter&&window.goatcounter.count)send();else(window._gcq=window._gcq||[]).push(send);
+}
+(function(){
+ if(!GOATCOUNTER_CODE||!/^[a-z0-9-]+$/i.test(GOATCOUNTER_CODE))return;
+ if(/^(localhost|127\.0\.0\.1)$/.test(location.hostname))return;
+ const sc=document.createElement('script');
+ sc.async=true;sc.src='https://gc.zgo.at/count.js';
+ sc.setAttribute('data-goatcounter','https://'+GOATCOUNTER_CODE+'.goatcounter.com/count');
+ sc.setAttribute('data-goatcounter-settings','{"no_onload":true}');
+ sc.onload=()=>{
+  try{window.goatcounter.count({path:'/app',title:'Mở app 6PAY'});}catch(e){}
+  const q=window._gcq||[];window._gcq=[];q.forEach(f=>f());
+ };
+ document.head.appendChild(sc);
+ const inst=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
+ gcCount(inst?'su-kien/mo-app-da-cai':'su-kien/mo-tren-trinh-duyet',inst?'Mở app đã cài ra màn hình':'Mở app trên trình duyệt');
+ // Đếm "có ghi chép hôm nay": mỗi máy tối đa 1 lần mỗi ngày
+ const _persist=persist;let _n=tx.length;
+ persist=function(){_persist.apply(this,arguments);
+  if(tx.length>_n){const d=new Date().toISOString().slice(0,10);let last='';try{last=localStorage.getItem(GC_DAY_KEY)||'';}catch(e){}
+   if(last!==d){try{localStorage.setItem(GC_DAY_KEY,d);}catch(e){}gcCount('su-kien/ghi-chep-trong-ngay','Có ghi chép trong ngày');}}
+  _n=tx.length;};
+ const GN={runner:'Bước nhảy tài chính',words:'Học từ vựng tiếng Anh',zh:'Học tiếng Trung',math:'Toán',vnh:'Khám phá lịch sử Việt Nam',vnv:'Khám phá Việt Nam',chess:'Cờ vua',clock:'Dạy trẻ xem đồng hồ'};
+ const _play=playGame;
+ playGame=function(k){gcCount('tro-choi/'+k,'Trò chơi: '+(GN[k]||k));return _play.apply(this,arguments);};
+})();
 if('serviceWorker' in navigator){
  window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{r.update().catch(()=>{});}).catch(()=>{});});
 }

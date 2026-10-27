@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.27-3';
+const APP_VERSION='2026.10.27-5';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -849,6 +849,9 @@ const LOCK_MAX_TRY=5, LOCK_WAIT_MS=30000;
 let loggedIn=false;
 function getAccount(){try{const s=localStorage.getItem(ACCOUNT_KEY);return s?JSON.parse(s):null;}catch(e){return null;}}
 function saveAccount(a){try{localStorage.setItem(ACCOUNT_KEY,JSON.stringify(a));}catch(e){}}
+// Tài khoản có thể chỉ có Tên + SĐT (đăng ký thành viên, không mật khẩu) hoặc có thêm khóa app bằng mật khẩu
+function hasLock(a){return !!(a&&(a.h||typeof a.pass==='string'));}
+function signedIn(){const a=getAccount();return !!a&&(loggedIn||!hasLock(a));}
 function randSalt(){
  const a=new Uint8Array(12);
  try{crypto.getRandomValues(a);}catch(e){for(let i=0;i<a.length;i++)a[i]=Math.random()*256|0;}
@@ -867,7 +870,7 @@ async function hashPass(pass,salt){
 }
 async function makeAccount(name,phone,pass){const salt=randSalt();return {name:name,phone:phone,salt:salt,len:pass.length,h:await hashPass(pass,salt)};}
 // Tạo lại tài khoản với mật khẩu mới nhưng giữ thông tin thành viên (mã ID, trạng thái gửi đăng ký)
-async function remakeAccount(acc,pass){const n=await makeAccount(acc.name,acc.phone,pass);if(acc.memberId)n.memberId=acc.memberId;if(acc.memberSync)n.memberSync=acc.memberSync;return n;}
+async function remakeAccount(acc,pass){const n=await makeAccount(acc.name,acc.phone,pass);['memberId','memberSync','rs','rh'].forEach(k=>{if(acc[k])n[k]=acc[k];});return n;}
 // Kiểm tra mật khẩu. Tài khoản cũ (lưu mật khẩu dạng chữ) được tự chuyển sang dạng băm.
 async function checkPass(acc,pass){
  if(!acc||!pass)return false;
@@ -922,35 +925,165 @@ function joinMember(){
   syncMember().then(res=>{const m=memberMsg(res);if(m)notify(m);});
  });
 }
+// ===== Mã khôi phục: dùng khi quên mật khẩu, không mất dữ liệu =====
+// Mã chỉ hiện 1 lần lúc tạo. App chỉ lưu bản băm của mã, không lưu mã gốc.
+const RC_CHARS='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+let pendingRecovery=''; // mã vừa tạo, chỉ giữ trong bộ nhớ để hiện cho người dùng chép
+function rcNorm(c){return String(c||'').toUpperCase().replace(/[^A-Z0-9]/g,'');}
+function rcMake(){
+ const a=new Uint32Array(8);
+ try{crypto.getRandomValues(a);}catch(e){for(let i=0;i<8;i++)a[i]=Math.random()*4294967296>>>0;}
+ const c=Array.from(a,v=>RC_CHARS[v%RC_CHARS.length]).join('');
+ return c.slice(0,4)+'-'+c.slice(4);
+}
+async function rcSet(acc){
+ const code=rcMake();
+ acc.rs=randSalt(); acc.rh=await hashPass(rcNorm(code),acc.rs);
+ pendingRecovery=code;
+ return acc;
+}
+async function rcCheck(acc,code){
+ if(!acc||!acc.rh||!code)return false;
+ return (await hashPass(rcNorm(code),acc.rs||''))===acc.rh;
+}
+async function newRecovery(){
+ const acc=getAccount(); if(!acc)return;
+ const go=async()=>{saveAccount(await rcSet(getAccount()));render();window.scrollTo(0,0);};
+ if(acc.rh)openConfirm('Tạo mã khôi phục mới? Mã cũ sẽ không dùng được nữa.',go);
+ else go();
+}
+function rcCopy(){
+ const done=()=>notify('Đã sao chép mã khôi phục. Hãy dán vào ghi chú hoặc gửi Zalo cho chính mình.');
+ try{navigator.clipboard.writeText(pendingRecovery).then(done,()=>notify('Không sao chép được. Hãy chép tay mã: '+pendingRecovery));}
+ catch(e){notify('Không sao chép được. Hãy chép tay mã: '+pendingRecovery);}
+}
+function rcDone(){pendingRecovery='';render();}
+function rcBox(){
+ if(!pendingRecovery)return '';
+ return `<div class="debt-form" style="margin-top:4px;margin-bottom:14px;border:2px solid #F4A300;background:#FFF8E1;">
+  <div style="font-weight:700;margin-bottom:6px;">🗝️ Mã khôi phục của bạn</div>
+  <div style="font-size:30px;font-weight:800;letter-spacing:4px;text-align:center;margin:8px 0;font-family:ui-monospace,Menlo,Consolas,monospace;user-select:all;">${esc(pendingRecovery)}</div>
+  <div class="guide-desc" style="margin:0 0 10px;">Hãy chép lại hoặc chụp màn hình mã này và cất ở nơi an toàn. Khi quên mật khẩu, nhập mã này để đặt mật khẩu mới mà không mất dữ liệu. Mã chỉ hiện <b>một lần</b>.</div>
+  <button class="btn cancel wide" onclick="rcCopy()">📋 Sao chép mã</button>
+  <button class="btn primary" style="margin-top:8px;" onclick="rcDone()">✓ Tôi đã lưu mã</button>
+ </div>`;
+}
+
+// ===== Hủy thành viên: xóa Tên + Số điện thoại khỏi Google Sheet =====
+let memberCancelOpen=false;
+function toggleCancelMember(){memberCancelOpen=!memberCancelOpen;render();}
+function cancelMember(){
+ const acc=getAccount(); if(!acc)return;
+ const id=((document.getElementById('cm-id')||{}).value||'').replace(/\D/g,'');
+ if(!/^\d{1,6}$/.test(id)){notify('Vui lòng nhập mã ID thành viên (6 chữ số).');return;}
+ const mid=('000000'+id).slice(-6);
+ openConfirm('Hủy thành viên 6PAY? Tên và số điện thoại của bạn sẽ bị xóa khỏi danh sách thành viên. Dữ liệu thu chi trên máy không bị ảnh hưởng.',function(){
+  fetch(MEMBER_API,{method:'POST',body:JSON.stringify({action:'delete',phone:normPhone(acc.phone),id:mid})})
+   .then(r=>r.json())
+   .then(r=>{
+    if(r&&r.ok){const a=getAccount();if(a){delete a.memberId;delete a.memberSync;saveAccount(a);}memberCancelOpen=false;render();notify('Đã hủy thành viên. Tên và số điện thoại của bạn đã được xóa khỏi danh sách 6PAY.');}
+    else notify('Chưa hủy được: '+((r&&r.error)||'Không rõ lý do.'));
+   })
+   .catch(()=>notify('Không kết nối được. Vui lòng kiểm tra mạng và thử lại.'));
+ });
+}
+
+function authToggle(){
+ const on=!!(document.getElementById('auth-lock')||{}).checked;
+ const box=document.getElementById('auth-lockbox'); if(box)box.style.display=on?'block':'none';
+}
 async function loginOrRegister(){
- const name=(document.getElementById('auth-name').value||'').trim();
+ const name=(document.getElementById('auth-name').value||'').trim().replace(/\s+/g,' ');
  const phone=(document.getElementById('auth-phone').value||'').trim();
- const pass=document.getElementById('auth-pass').value||'';
- if(!name||!phone||!pass){notify('Vui lòng nhập đầy đủ tên, số điện thoại và mật khẩu.');return;}
- if(pass.length<4){notify('Mật khẩu cần có ít nhất 4 chữ số.');return;}
+ const passEl=document.getElementById('auth-pass'), pass=passEl?passEl.value||'':'';
  const acc=getAccount();
- if(!acc){
-  const join=!!(document.getElementById('auth-member')||{}).checked;
-  if(join&&!validPhone(phone)){notify('Để đăng ký thành viên 6PAY, số điện thoại cần gồm 10 số, bắt đầu bằng 0.');return;}
-  const a=await makeAccount(name,join?normPhone(phone):phone,pass);
-  if(join&&MEMBER_API)a.memberSync=1;
-  saveAccount(a);
-  loggedIn=true; render();
-  const base='Đã bật khóa app. Từ lần sau, bạn cần nhập mật khẩu này khi mở 6PAY.';
-  if(!a.memberSync){notify(base);return;}
-  const res=await syncMember();
-  notify(base+' '+memberMsg(res));
+ // Đã có khóa app nhưng chưa mở khóa: kiểm tra mật khẩu
+ if(acc&&hasLock(acc)){
+  if((acc.phone===phone||normPhone(acc.phone)===normPhone(phone))&&await checkPass(acc,pass)){
+   const x=getAccount(); x.name=name||x.name; saveAccount(x);
+   loggedIn=true; render();
+  }
+  else notify('Số điện thoại hoặc mật khẩu không đúng.');
   return;
  }
- if((acc.phone===phone||normPhone(acc.phone)===normPhone(phone))&&await checkPass(acc,pass)){
-  const a=getAccount(); a.name=name; saveAccount(a);
-  loggedIn=true; render();
+ const join=!!(document.getElementById('auth-member')||{}).checked;
+ const lock=!!(document.getElementById('auth-lock')||{}).checked;
+ if(!join&&!lock){notify('Hãy chọn Đăng ký thành viên 6PAY, hoặc Khóa app bằng mật khẩu, hoặc cả hai.');return;}
+ if(name.length<2){notify('Vui lòng nhập tên của bạn.');return;}
+ if(!phone){notify('Vui lòng nhập số điện thoại.');return;}
+ if(join&&!validPhone(phone)){notify('Để đăng ký thành viên 6PAY, số điện thoại cần gồm 10 số, bắt đầu bằng 0.');return;}
+ if(lock){
+  const pass2=(document.getElementById('auth-pass2')||{}).value||'';
+  if(pass.length<4){notify('Mật khẩu cần có ít nhất 4 chữ số.');return;}
+  if(pass!==pass2){notify('Mật khẩu nhập lại không khớp.');return;}
  }
- else notify('Số điện thoại hoặc mật khẩu không đúng.');
+ const ph=validPhone(phone)?normPhone(phone):phone;
+ const n=lock?await rcSet(await makeAccount(name,ph,pass)):{name:name,phone:ph};
+ if(join&&MEMBER_API)n.memberSync=1;
+ saveAccount(n);
+ loggedIn=true; render(); window.scrollTo(0,0);
+ const msgs=[];
+ if(lock)msgs.push('Đã bật khóa app. Từ lần sau, bạn cần nhập mật khẩu này khi mở 6PAY. Hãy chép lại Mã khôi phục đang hiện trên màn hình để dùng khi quên mật khẩu.');
+ if(n.memberSync){const res=await syncMember();const m=memberMsg(res);if(m)msgs.push(m);}
+ notify(msgs.join(' '));
 }
-let locked=!!getAccount(); // đã bật khóa thì khóa ngay khi mở app
+// Bật khóa app cho tài khoản đang không có mật khẩu
+async function enableLock(){
+ const acc=getAccount(); if(!acc)return;
+ const p1=(document.getElementById('lk-new')||{}).value||'', p2=(document.getElementById('lk-new2')||{}).value||'';
+ if(p1.length<4){notify('Mật khẩu cần có ít nhất 4 chữ số.');return;}
+ if(p1!==p2){notify('Mật khẩu nhập lại không khớp.');return;}
+ const n=await rcSet(await makeAccount(acc.name,acc.phone,p1));
+ ['memberId','memberSync'].forEach(k=>{if(acc[k])n[k]=acc[k];});
+ saveAccount(n); loggedIn=true; render(); window.scrollTo(0,0);
+ notify('Đã bật khóa app. Hãy chép lại Mã khôi phục đang hiện trên màn hình để dùng khi quên mật khẩu.');
+}
+// Tắt khóa app: bỏ mật khẩu nhưng vẫn giữ tên, số điện thoại và tư cách thành viên
+function disableLock(){
+ openConfirm('Tắt khóa app? Lần sau mở 6PAY sẽ không cần nhập mật khẩu, mã khôi phục hiện tại cũng bị xóa. Tên, số điện thoại và tư cách thành viên vẫn được giữ.',function(){
+  const a=getAccount(); if(!a)return;
+  ['salt','len','h','rs','rh','pass'].forEach(k=>delete a[k]);
+  saveAccount(a); pendingRecovery=''; loggedIn=true; render();
+ });
+}
+// Xóa tên + số điện thoại lưu trên máy (không ảnh hưởng dữ liệu thu chi)
+function forgetAccount(){
+ const a=getAccount();
+ const isMember=a&&(a.memberId||a.memberSync);
+ openConfirm('Xóa tên và số điện thoại lưu trên máy này? Dữ liệu thu chi vẫn giữ nguyên.'+(isMember?' Tư cách thành viên 6PAY vẫn còn; muốn hủy hẳn, hãy bấm Hủy thành viên trước.':''),function(){
+  try{localStorage.removeItem(ACCOUNT_KEY);}catch(e){}
+  pendingRecovery=''; memberCancelOpen=false; loggedIn=false; render();
+ });
+}
+let locked=hasLock(getAccount()); // đã bật khóa thì khóa ngay khi mở app
 function logoutAccount(){loggedIn=false;locked=true;stack=[{id:'home'}];render();}
+let lockRecover=false;
 function forgotPass(){
+ const acc=getAccount();
+ if(acc&&acc.rh){lockRecover=true;document.getElementById('app').innerHTML=scrLock();return;}
+ wipeForForgot();
+}
+function lockRecoverBack(){lockRecover=false;document.getElementById('app').innerHTML=scrLock();lockStartWait();}
+async function recoverPass(){
+ const acc=getAccount(); if(!acc)return;
+ const er=document.getElementById('rc-err'); const say=m=>{if(er)er.textContent=m;};
+ const w=lockWait(); if(w>0){say('Bạn đã nhập sai nhiều lần. Thử lại sau '+w+' giây.');return;}
+ const code=document.getElementById('rc-code').value, n=document.getElementById('rc-new').value||'', c=document.getElementById('rc-new2').value||'';
+ if(rcNorm(code).length!==8){say('Mã khôi phục gồm 8 ký tự, ví dụ 7K3P-9QXD.');return;}
+ if(n.length<4){say('Mật khẩu mới cần có ít nhất 4 chữ số.');return;}
+ if(n!==c){say('Mật khẩu mới nhập lại không khớp.');return;}
+ if(!(await rcCheck(acc,code))){
+  const s=lockState();s.n=(s.n||0)+1;
+  if(s.n>=LOCK_MAX_TRY){s.n=0;s.until=Date.now()+LOCK_WAIT_MS;say('Bạn đã nhập sai '+LOCK_MAX_TRY+' lần. Thử lại sau 30 giây.');}
+  else say('Mã khôi phục không đúng. Bạn còn '+(LOCK_MAX_TRY-s.n)+' lần thử.');
+  lockSave(s);return;
+ }
+ saveAccount(await remakeAccount(acc,n));
+ lockSave({n:0,until:0});lockRecover=false;lockIn='';locked=false;loggedIn=true;
+ stack=[{id:'home'},{id:'login',opts:{}}];render();
+ notify('Đã đặt mật khẩu mới. Dữ liệu của bạn vẫn còn nguyên. Mã khôi phục cũ vẫn dùng được, bạn có thể tạo mã mới ngay tại đây.');
+}
+function wipeForForgot(){
  openConfirm('Quên mật khẩu thì cách duy nhất là xóa toàn bộ dữ liệu trên máy này (thu chi, kế hoạch, ghi chú...). Nếu bạn có file sao lưu, sau khi xóa hãy vào ⚙️ Cài đặt → Khôi phục dữ liệu từ file để lấy lại. Bạn có chắc muốn xóa không?',function(){
   appKeys().forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
   location.reload();
@@ -984,7 +1117,7 @@ async function lockKey(d){
 function lockDel(){lockIn=lockIn.slice(0,-1);lockShow();const er=document.getElementById('lock-err');if(er)er.textContent='';}
 async function unlockApp(){
  const acc=getAccount();
- if(!acc){locked=false;render();return;}
+ if(!hasLock(acc)){locked=false;render();return;}
  if(lockWait()>0)return;
  const tryPass=lockIn;
  if(tryPass&&await checkPass(acc,tryPass)){
@@ -1006,6 +1139,19 @@ async function unlockApp(){
 function scrLock(){
  lockIn='';
  const acc=getAccount()||{};
+ if(lockRecover&&acc.rh)return `<div class="screen-flex lock-screen">
+  <div class="lock-inner" style="max-width:360px;width:100%;">
+   <div class="lock-logo">${BRAND_HTML}</div>
+   <div style="font-weight:700;font-size:18px;margin:6px 0 4px;text-align:center;">🗝️ Đặt lại mật khẩu</div>
+   <div class="guide-desc" style="text-align:center;margin:0 0 12px;">Nhập Mã khôi phục bạn đã lưu khi bật khóa app.</div>
+   <div class="form-row tight"><label>Mã khôi phục</label><input type="text" id="rc-code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="12" placeholder="VD: 7K3P-9QXD" style="text-transform:uppercase;letter-spacing:2px;"></div>
+   <div class="form-row tight"><label>Mật khẩu mới (chỉ nhập số, ít nhất 4 số)</label><input type="password" inputmode="numeric" maxlength="12" id="rc-new" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
+   <div class="form-row tight"><label>Nhập lại mật khẩu mới</label><input type="password" inputmode="numeric" maxlength="12" id="rc-new2" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
+   <div class="err-msg lock-err" id="rc-err"></div>
+   <button class="btn primary" onclick="recoverPass()">✓ Đặt mật khẩu mới</button>
+   <div class="lock-forgot" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"><button class="mini-btn" onclick="lockRecoverBack()">← Quay lại</button><button class="mini-btn" onclick="wipeForForgot()">Tôi không có mã</button></div>
+  </div>
+ </div>`;
  const keys=[1,2,3,4,5,6,7,8,9].map(n=>`<button class="lock-key" onclick="lockKey(${n})">${n}</button>`).join('');
  return `<div class="screen-flex lock-screen">
   <div class="lock-inner">
@@ -1120,7 +1266,7 @@ function scrHome(){
  return `<div class="screen-flex"><div class="home-wrap">
   <div class="home-header">
    <div class="home-topbar">
-    <button class="icon-btn ${loggedIn&&acc?'named':''}" onclick="push('login')" aria-label="Khóa app bằng mật khẩu">${loggedIn&&acc?('👤 '+esc(acc.name||acc.phone)):'🔐'}</button>
+    <button class="icon-btn ${signedIn()?'named':''}" onclick="push('login')" aria-label="Thành viên và khóa app">${signedIn()?('👤 '+esc(acc.name||acc.phone)):'👤'}</button>
     <span class="tb-gap"></span>
     <button class="icon-btn" onclick="openReport()" aria-label="Báo cáo tháng">📊</button>
     <button class="icon-btn" onclick="push('settings')" aria-label="Cài đặt">⚙️</button>
@@ -1130,7 +1276,7 @@ function scrHome(){
    <div class="brand-sub">Quản lý tài chính cá nhân</div>
    <div class="star-line">${streakHtml()} &nbsp;·&nbsp; ⭐ ${fmt(stars)} điểm</div>
   </div>
-  ${backupBanner()}
+  ${inviteCard()||backupBanner()}
   <button class="card balance" onclick="push('wallets')">
    <span class="card-label">💼 Số dư</span>
    <span class="card-amount ${cls}">${fmt(bal)} ₫</span>
@@ -1194,14 +1340,27 @@ function scrShopAll(){
 
 function scrLogin(){
  const acc=getAccount();
- if(loggedIn&&acc){
-  return screenWrap('🔐 Khóa app bằng mật khẩu',`
+ if(acc&&(loggedIn||!hasLock(acc))){
+  const lockOn=hasLock(acc);
+  const knownId=/^\d{6}$/.test(acc.memberId||'')?acc.memberId:'';
+  return screenWrap('👤 Thành viên & khóa app',`
+   ${rcBox()}
    <div class="list-item"><span>Tên người dùng</span><span>${esc(acc.name||'')}</span></div>
    <div class="list-item"><span>Số điện thoại</span><span>${esc(acc.phone)}</span></div>
-   ${MEMBER_API?(acc.memberId?`<div class="list-item"><span>Mã thành viên 6PAY</span><span><b>${esc(acc.memberId)}</b></span></div>`
+   ${MEMBER_API?(acc.memberId?`<div class="list-item"><span>Mã thành viên 6PAY</span><span><b>${esc(acc.memberId)}</b></span></div>
+    ${memberCancelOpen?`<div class="debt-form" style="margin-top:10px;">
+     <div style="font-weight:700;margin-bottom:8px;">Hủy thành viên 6PAY</div>
+     <div class="form-row tight"><label>Mã ID thành viên (6 số)</label><input type="text" inputmode="numeric" maxlength="6" id="cm-id" value="${knownId}" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
+     <div class="guide-desc" style="margin:0 0 10px;">Tên và số điện thoại sẽ bị xóa khỏi danh sách thành viên. Dữ liệu thu chi trên máy vẫn giữ nguyên.</div>
+     <button class="btn primary" onclick="cancelMember()">Xác nhận hủy thành viên</button>
+     <button class="btn cancel wide" style="margin-top:8px;" onclick="toggleCancelMember()">Đóng</button>
+    </div>`:`<div style="text-align:right;margin-top:6px;"><button class="mini-btn" onclick="toggleCancelMember()">Hủy thành viên</button></div>`}`
     :acc.memberSync?`<div class="list-item"><span>Thành viên 6PAY</span><span>Đang chờ gửi (cần có mạng)</span></div>`
     :`<button class="btn primary" style="margin-top:14px;" onclick="joinMember()">🎁 Đăng ký thành viên 6PAY</button>`):''}
-   <div class="debt-form" style="margin-top:14px;">
+   ${!lockOn?'':pendingRecovery?'':(acc.rh
+    ?`<div class="list-item" style="margin-top:14px;"><span>🗝️ Mã khôi phục</span><span>Đã tạo · <button class="mini-btn" onclick="newRecovery()">Tạo mã mới</button></span></div>`
+    :`<button class="btn primary" style="margin-top:14px;" onclick="newRecovery()">🗝️ Tạo mã khôi phục (dùng khi quên mật khẩu)</button>`)}
+   ${lockOn?`<div class="debt-form" style="margin-top:14px;">
     <div style="font-weight:700;margin-bottom:8px;">🔑 Đổi mật khẩu</div>
     <div class="form-row tight"><label>Mật khẩu hiện tại</label><input type="password" inputmode="numeric" maxlength="12" id="pw-old" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
     <div class="form-row tight"><label>Mật khẩu mới (chỉ nhập số)</label><input type="password" inputmode="numeric" maxlength="12" id="pw-new" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
@@ -1209,16 +1368,37 @@ function scrLogin(){
     <button class="btn primary" onclick="changePass()">✓ Đổi mật khẩu</button>
    </div>
    <button class="btn primary" style="margin-top:14px;" onclick="logoutAccount()">🔒 Khóa app ngay</button>
-   <button class="btn cancel wide" style="margin-top:10px;" onclick="openConfirm('Tắt khóa app? Lần sau mở 6PAY sẽ không cần nhập mật khẩu.',function(){try{localStorage.removeItem(ACCOUNT_KEY);}catch(e){}loggedIn=false;render();})">Tắt khóa app</button>
+   <button class="btn cancel wide" style="margin-top:10px;" onclick="disableLock()">Tắt khóa app</button>`
+   :`<div class="debt-form" style="margin-top:14px;">
+    <div style="font-weight:700;margin-bottom:4px;">🔐 Khóa app bằng mật khẩu (tùy chọn)</div>
+    <div class="guide-desc" style="margin:0 0 10px;">Tránh người khác xem nhật ký chi tiêu khi mượn điện thoại của bạn.</div>
+    <div class="form-row tight"><label>Mật khẩu (chỉ nhập số, ít nhất 4 số)</label><input type="password" inputmode="numeric" maxlength="12" id="lk-new" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
+    <div class="form-row tight"><label>Nhập lại mật khẩu</label><input type="password" inputmode="numeric" maxlength="12" id="lk-new2" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
+    <button class="btn primary" onclick="enableLock()">🔐 Bật khóa app</button>
+   </div>`}
+   <button class="btn cancel wide" style="margin-top:10px;" onclick="forgetAccount()">Xóa tên và số điện thoại trên máy này</button>
   `);
  }
- return screenWrap('🔐 Khóa app bằng mật khẩu',`
-  <div class="form-row"><label>Tên người dùng</label><input type="text" id="auth-name" placeholder="Nguyễn Văn A" value="${acc?esc(acc.name||''):''}"></div>
-  <div class="form-row"><label>Số điện thoại</label><input type="tel" id="auth-phone" placeholder="09xxxxxxxx" value="${acc?esc(acc.phone||''):''}"></div>
-  <div class="form-row"><label>Mật khẩu (chỉ nhập số, ít nhất 4 số)</label><input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="12" id="auth-pass" placeholder="Mật khẩu" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
-  ${!acc&&MEMBER_API?`<label style="display:flex;gap:10px;align-items:flex-start;margin:4px 0 14px;font-size:14px;line-height:1.45;cursor:pointer;"><input type="checkbox" id="auth-member" checked style="width:20px;height:20px;margin:1px 0 0;flex:none;"><span><b>Đăng ký thành viên 6PAY</b> (miễn phí): gửi tên và số điện thoại cho 6PAY để nhận mã ID, thông tin sự kiện và quà tặng. Tên và mã ID hiển thị trong bảng Thành viên trên 6pay.vn, số điện thoại không công khai.</span></label>`:''}
-  <button class="btn primary" onclick="loginOrRegister()">${acc?'Mở khóa':'Bật khóa app'}</button>
-  <div class="guide-desc" style="margin-top:16px;">Nội dung này không bắt buộc. Mật khẩu chỉ khóa app trên chính điện thoại này để tránh người lạ xem nhật ký chi tiêu, không gửi đi đâu và không đồng bộ giữa các máy. Nếu đánh dấu Đăng ký thành viên, 6PAY chỉ nhận tên và số điện thoại, không nhận mật khẩu hay bất kỳ số liệu thu chi nào. Hãy dùng Sao lưu trong Cài đặt để giữ an toàn dữ liệu.</div>
+ if(acc&&hasLock(acc))return screenWrap('🔐 Mở khóa app',`
+  <div class="form-row"><label>Tên người dùng</label><input type="text" id="auth-name" value="${esc(acc.name||'')}"></div>
+  <div class="form-row"><label>Số điện thoại</label><input type="tel" id="auth-phone" value="${esc(acc.phone||'')}"></div>
+  <div class="form-row"><label>Mật khẩu</label><input type="password" inputmode="numeric" maxlength="12" id="auth-pass" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
+  <button class="btn primary" onclick="loginOrRegister()">Mở khóa</button>
+ `);
+ const chk='width:20px;height:20px;margin:1px 0 0;flex:none;';
+ const lbl='display:flex;gap:10px;align-items:flex-start;margin:4px 0 12px;font-size:14px;line-height:1.45;cursor:pointer;';
+ return screenWrap('👤 Thành viên & khóa app',`
+  <div class="guide-desc" style="margin:0 0 14px;">Chỉ cần tên và số điện thoại để trở thành thành viên 6PAY. Mật khẩu là tùy chọn.</div>
+  <div class="form-row"><label>Tên của bạn</label><input type="text" id="auth-name" placeholder="Nguyễn Văn A" autocomplete="name"></div>
+  <div class="form-row"><label>Số điện thoại</label><input type="tel" id="auth-phone" placeholder="09xxxxxxxx" autocomplete="tel"></div>
+  ${MEMBER_API?`<label style="${lbl}"><input type="checkbox" id="auth-member" checked style="${chk}"><span><b>🎁 Đăng ký thành viên 6PAY</b> (miễn phí): nhận mã ID, thông tin sự kiện và quà tặng. Tên và mã ID hiển thị trong bảng Thành viên trên 6pay.vn, số điện thoại không công khai.</span></label>`:''}
+  <label style="${lbl}"><input type="checkbox" id="auth-lock" onchange="authToggle()" ${MEMBER_API?'':'checked'} style="${chk}"><span><b>🔐 Khóa app bằng mật khẩu</b> (tùy chọn): cần nhập mật khẩu mỗi lần mở app.</span></label>
+  <div id="auth-lockbox" style="display:${MEMBER_API?'none':'block'};">
+   <div class="form-row"><label>Mật khẩu (chỉ nhập số, ít nhất 4 số)</label><input type="password" inputmode="numeric" maxlength="12" id="auth-pass" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
+   <div class="form-row"><label>Nhập lại mật khẩu</label><input type="password" inputmode="numeric" maxlength="12" id="auth-pass2" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
+  </div>
+  <button class="btn primary" onclick="loginOrRegister()">✓ Xác nhận</button>
+  <div class="guide-desc" style="margin-top:16px;">Mật khẩu chỉ lưu trên chính điện thoại này, không gửi đi đâu. Khi đăng ký thành viên, 6PAY chỉ nhận tên và số điện thoại, không nhận mật khẩu hay bất kỳ số liệu thu chi nào. Bạn có thể hủy thành viên bất cứ lúc nào.</div>
  `);
 }
 async function changePass(){
@@ -1264,6 +1444,19 @@ function downloadFile(file,name){
  setTimeout(()=>URL.revokeObjectURL(a.href),4000);
 }
 function lastBackupDays(){let t=0;try{t=parseInt(localStorage.getItem(LASTBACKUP_KEY),10)||0;}catch(e){}return t?Math.floor((Date.now()-t)/86400000):-1;}
+// ===== Lời mời đăng ký thành viên (nhẹ nhàng, không làm phiền) =====
+// Chỉ hiện khi: chưa là thành viên, đã ghi ít nhất 3 khoản thu chi, chưa bị tắt.
+// Bấm "Để sau" thì ẩn 7 ngày; sau 3 lần "Để sau" thì không hiện nữa.
+const INVITE_KEY='6pay-invite-v1';
+function inviteState(){try{return JSON.parse(localStorage.getItem(INVITE_KEY))||{n:0,until:0};}catch(e){return {n:0,until:0};}}
+function inviteCard(){
+ if(!MEMBER_API||tx.length<3)return '';
+ const a=getAccount(); if(a&&(a.memberId||a.memberSync))return '';
+ const st=inviteState(); if(st.n>=3||Date.now()<st.until)return '';
+ return `<div class="backup-banner" style="cursor:default;">🎁 <b>Tham gia cộng đồng 6PAY</b> để nhận mã thành viên, tham gia sự kiện và nhận quà. Chỉ cần tên và số điện thoại, không cần mật khẩu, miễn phí.
+  <div style="display:flex;gap:8px;margin-top:8px;"><button class="mini-btn" style="font-weight:700;" onclick="push('login')">Đăng ký ngay ›</button><button class="mini-btn" onclick="inviteLater()">Để sau</button></div></div>`;
+}
+function inviteLater(){const st=inviteState();st.n=(st.n||0)+1;st.until=Date.now()+7*864e5;try{localStorage.setItem(INVITE_KEY,JSON.stringify(st));}catch(e){}render();}
 function backupBanner(){
  if(!tx.length)return '';
  const d=lastBackupDays();
@@ -1311,7 +1504,7 @@ function scrSettings(){
   ${setRow('exportCsv()','📄 Xuất thu chi ra Excel (CSV)')}
   <input type="file" id="bk-file" accept=".json,application/json" style="display:none" onchange="backupImport(this)">
   <div class="set-group">Khác</div>
-  ${setRow("push('login')",'🔐 Khóa app bằng mật khẩu',getAccount()?'Đang bật':'Đang tắt')}
+  ${setRow("push('login')",'👤 Thành viên & khóa app',hasLock(getAccount())?'Khóa: đang bật':'Khóa: đang tắt')}
   ${setRow('toggleSound()','🔊 Âm thanh trò chơi',soundOn()?'Đang bật':'Đang tắt')}
   ${setRow('openInstall()','📲 Hướng dẫn cài app ra màn hình')}
   <div class="guide-desc">Nên sao lưu định kỳ và lưu file vào Google Drive hoặc gửi qua Zalo cho chính mình. Khi app bị gỡ hay đổi điện thoại, bạn chỉ cần mở app và chọn Khôi phục.</div>`);
@@ -3330,7 +3523,7 @@ function render(){
  if(qz.timer&&top.id!=='quiz'){clearInterval(qz.timer);qz.timer=0;}
  if(locked){
   document.body.classList.remove('home-white');
-  if(!document.getElementById('lock-pass')){ // không vẽ lại khi đang gõ mật khẩu
+  if(!document.getElementById('lock-pass')&&!document.getElementById('rc-code')){ // không vẽ lại khi đang gõ mật khẩu / mã khôi phục
    document.getElementById('app').innerHTML=scrLock();
    lockStartWait();
   }
@@ -3457,7 +3650,7 @@ document.addEventListener('visibilitychange',()=>{
   // quá 5 phút: khởi động lại về trang chủ (có khóa mật khẩu nếu đã đăng ký)
   hiddenAt=0;
   document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
-  stack=[{id:'home'}];loggedIn=false;locked=!!getAccount();lockIn='';
+  stack=[{id:'home'}];loggedIn=false;locked=hasLock(getAccount());lockIn='';
   render();
  }else{
   hiddenAt=0;

@@ -10,12 +10,17 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.27-1';
+const APP_VERSION='2026.10.27-2';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
 // Để trống '' là tắt bộ đếm. Bộ đếm không dùng cookie, không gửi tên, số điện thoại hay bất kỳ số liệu thu chi nào.
 const GOATCOUNTER_CODE='6pay';
+// ===================== ĐĂNG KÝ THÀNH VIÊN (Google Sheet "6PAY THÀNH VIÊN") =====================
+// Đường dẫn Web app của Google Apps Script (kết thúc bằng /exec). Khi người dùng bật khóa app và đánh dấu
+// "Đăng ký thành viên 6PAY", app gửi Tên + Số điện thoại về Sheet. KHÔNG gửi mật khẩu hay số liệu thu chi.
+// Để trống '' là tắt việc gửi đăng ký.
+const MEMBER_API='https://script.google.com/macros/s/AKfycby9t_vWUEwE0NhzVUID8BED820Pk7HI5fMECFnYNCcoXrzZvFKhuRD1Lyf0j5AL5EdgQw/exec';
 
 </script>
   <script>
@@ -885,17 +890,62 @@ async function hashPass(pass,salt){
  return 'f'+(h>>>0).toString(16);
 }
 async function makeAccount(name,phone,pass){const salt=randSalt();return {name:name,phone:phone,salt:salt,len:pass.length,h:await hashPass(pass,salt)};}
+// Tạo lại tài khoản với mật khẩu mới nhưng giữ thông tin thành viên (mã ID, trạng thái gửi đăng ký)
+async function remakeAccount(acc,pass){const n=await makeAccount(acc.name,acc.phone,pass);if(acc.memberId)n.memberId=acc.memberId;if(acc.memberSync)n.memberSync=acc.memberSync;return n;}
 // Kiểm tra mật khẩu. Tài khoản cũ (lưu mật khẩu dạng chữ) được tự chuyển sang dạng băm.
 async function checkPass(acc,pass){
  if(!acc||!pass)return false;
  if(acc.h)return (await hashPass(pass,acc.salt||''))===acc.h;
- if(typeof acc.pass==='string'&&acc.pass===pass){saveAccount(await makeAccount(acc.name,acc.phone,pass));return true;}
+ if(typeof acc.pass==='string'&&acc.pass===pass){saveAccount(await remakeAccount(acc,pass));return true;}
  return false;
 }
 (async function(){
  const a=getAccount();
- if(a&&typeof a.pass==='string'&&!a.h)saveAccount(await makeAccount(a.name,a.phone,a.pass));
+ if(a&&typeof a.pass==='string'&&!a.h)saveAccount(await remakeAccount(a,a.pass));
+ setTimeout(syncMember,1500); // gửi lại đăng ký thành viên nếu lần trước chưa có mạng
 })();
+
+// ===== Đăng ký thành viên: gửi Tên + Số điện thoại về Google Sheet =====
+function normPhone(p){
+ p=String(p||'').replace(/[\s.\-()]/g,'');
+ if(/^\+84\d{9}$/.test(p))p='0'+p.slice(3);
+ else if(/^84\d{9}$/.test(p))p='0'+p.slice(2);
+ return p;
+}
+function validPhone(p){return /^0\d{9}$/.test(normPhone(p));}
+let memberBusy=false;
+// Trả về: 'ok' (có mã ID), 'exists' (số đã đăng ký trước đó), 'offline' (chưa gửi được, sẽ thử lại), 'error:<lý do>', hoặc null
+function syncMember(){
+ const acc=getAccount();
+ if(!MEMBER_API||!acc||!acc.memberSync||memberBusy)return Promise.resolve(null);
+ memberBusy=true;
+ return fetch(MEMBER_API,{method:'POST',body:JSON.stringify({action:'register',name:acc.name||'',phone:normPhone(acc.phone),consent:true})})
+  .then(r=>r.json())
+  .then(r=>{
+   const a=getAccount(); if(!a)return null;
+   if(r&&r.member&&r.member.id){a.memberId=String(r.member.id);delete a.memberSync;saveAccount(a);return 'ok';}
+   if(r&&r.error&&/đã được đăng ký/i.test(r.error)){a.memberId=a.memberId||'Đã đăng ký';delete a.memberSync;saveAccount(a);return 'exists';}
+   delete a.memberSync;saveAccount(a);
+   return 'error:'+((r&&r.error)||'Không rõ lý do.');
+  })
+  .catch(()=>'offline')
+  .finally(()=>{memberBusy=false;try{if(stack[stack.length-1].id==='login')render();}catch(e){}});
+}
+function memberMsg(res){
+ if(res==='ok'){const a=getAccount();return 'Đăng ký thành viên 6PAY thành công! Mã ID của bạn là '+(a&&a.memberId)+'.';}
+ if(res==='exists')return 'Số điện thoại này đã là thành viên 6PAY từ trước.';
+ if(res==='offline')return 'Chưa gửi được đăng ký thành viên vì mất mạng. 6PAY sẽ tự gửi lại khi bạn mở app có mạng.';
+ if(res&&res.indexOf('error:')===0)return 'Chưa đăng ký được thành viên: '+res.slice(6);
+ return '';
+}
+function joinMember(){
+ const acc=getAccount(); if(!acc)return;
+ if(!validPhone(acc.phone)){notify('Số điện thoại trong app chưa đúng dạng 10 số (bắt đầu bằng 0). Hãy bấm "Tắt khóa app", rồi bật lại với số điện thoại đúng và đánh dấu Đăng ký thành viên 6PAY.');return;}
+ openConfirm('Gửi tên "'+(acc.name||'')+'" và số điện thoại '+normPhone(acc.phone)+' để đăng ký thành viên 6PAY? Tên và mã ID sẽ hiển thị trong bảng Thành viên trên 6pay.vn, số điện thoại không công khai.',function(){
+  const a=getAccount(); a.memberSync=1; saveAccount(a); render();
+  syncMember().then(res=>{const m=memberMsg(res);if(m)notify(m);});
+ });
+}
 async function loginOrRegister(){
  const name=(document.getElementById('auth-name').value||'').trim();
  const phone=(document.getElementById('auth-phone').value||'').trim();
@@ -904,12 +954,19 @@ async function loginOrRegister(){
  if(pass.length<4){notify('Mật khẩu cần có ít nhất 4 chữ số.');return;}
  const acc=getAccount();
  if(!acc){
-  saveAccount(await makeAccount(name,phone,pass));
+  const join=!!(document.getElementById('auth-member')||{}).checked;
+  if(join&&!validPhone(phone)){notify('Để đăng ký thành viên 6PAY, số điện thoại cần gồm 10 số, bắt đầu bằng 0.');return;}
+  const a=await makeAccount(name,join?normPhone(phone):phone,pass);
+  if(join&&MEMBER_API)a.memberSync=1;
+  saveAccount(a);
   loggedIn=true; render();
-  notify('Đã bật khóa app. Từ lần sau, bạn cần nhập mật khẩu này khi mở 6PAY.');
+  const base='Đã bật khóa app. Từ lần sau, bạn cần nhập mật khẩu này khi mở 6PAY.';
+  if(!a.memberSync){notify(base);return;}
+  const res=await syncMember();
+  notify(base+' '+memberMsg(res));
   return;
  }
- if(acc.phone===phone&&await checkPass(acc,pass)){
+ if((acc.phone===phone||normPhone(acc.phone)===normPhone(phone))&&await checkPass(acc,pass)){
   const a=getAccount(); a.name=name; saveAccount(a);
   loggedIn=true; render();
  }
@@ -1165,6 +1222,9 @@ function scrLogin(){
   return screenWrap('🔐 Khóa app bằng mật khẩu',`
    <div class="list-item"><span>Tên người dùng</span><span>${esc(acc.name||'')}</span></div>
    <div class="list-item"><span>Số điện thoại</span><span>${esc(acc.phone)}</span></div>
+   ${MEMBER_API?(acc.memberId?`<div class="list-item"><span>Mã thành viên 6PAY</span><span><b>${esc(acc.memberId)}</b></span></div>`
+    :acc.memberSync?`<div class="list-item"><span>Thành viên 6PAY</span><span>Đang chờ gửi (cần có mạng)</span></div>`
+    :`<button class="btn primary" style="margin-top:14px;" onclick="joinMember()">🎁 Đăng ký thành viên 6PAY</button>`):''}
    <div class="debt-form" style="margin-top:14px;">
     <div style="font-weight:700;margin-bottom:8px;">🔑 Đổi mật khẩu</div>
     <div class="form-row tight"><label>Mật khẩu hiện tại</label><input type="password" inputmode="numeric" maxlength="12" id="pw-old" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
@@ -1180,8 +1240,9 @@ function scrLogin(){
   <div class="form-row"><label>Tên người dùng</label><input type="text" id="auth-name" placeholder="Nguyễn Văn A" value="${acc?esc(acc.name||''):''}"></div>
   <div class="form-row"><label>Số điện thoại</label><input type="tel" id="auth-phone" placeholder="09xxxxxxxx" value="${acc?esc(acc.phone||''):''}"></div>
   <div class="form-row"><label>Mật khẩu (chỉ nhập số, ít nhất 4 số)</label><input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="12" id="auth-pass" placeholder="Mật khẩu" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
+  ${!acc&&MEMBER_API?`<label style="display:flex;gap:10px;align-items:flex-start;margin:4px 0 14px;font-size:14px;line-height:1.45;cursor:pointer;"><input type="checkbox" id="auth-member" checked style="width:20px;height:20px;margin:1px 0 0;flex:none;"><span><b>Đăng ký thành viên 6PAY</b> (miễn phí): gửi tên và số điện thoại cho 6PAY để nhận mã ID, thông tin sự kiện và quà tặng. Tên và mã ID hiển thị trong bảng Thành viên trên 6pay.vn, số điện thoại không công khai.</span></label>`:''}
   <button class="btn primary" onclick="loginOrRegister()">${acc?'Mở khóa':'Bật khóa app'}</button>
-  <div class="guide-desc" style="margin-top:16px;">Nội dung này không bắt buộc. 6PAY không có tài khoản trực tuyến. Mật khẩu chỉ khóa app trên chính điện thoại này để tránh người lạ xem nhật ký chi tiêu, không đồng bộ giữa các máy. Hãy dùng Sao lưu trong Cài đặt để giữ an toàn dữ liệu.</div>
+  <div class="guide-desc" style="margin-top:16px;">Nội dung này không bắt buộc. Mật khẩu chỉ khóa app trên chính điện thoại này để tránh người lạ xem nhật ký chi tiêu, không gửi đi đâu và không đồng bộ giữa các máy. Nếu đánh dấu Đăng ký thành viên, 6PAY chỉ nhận tên và số điện thoại, không nhận mật khẩu hay bất kỳ số liệu thu chi nào. Hãy dùng Sao lưu trong Cài đặt để giữ an toàn dữ liệu.</div>
  `);
 }
 async function changePass(){
@@ -1192,7 +1253,7 @@ async function changePass(){
  if(!(await checkPass(acc,o))){notify('Mật khẩu hiện tại không đúng.');return;}
  if(n.length<4){notify('Mật khẩu mới cần có ít nhất 4 chữ số.');return;}
  if(n!==c){notify('Mật khẩu mới nhập lại không khớp.');return;}
- saveAccount(await makeAccount(acc.name,acc.phone,n));
+ saveAccount(await remakeAccount(acc,n));
  render();
  notify('Đã đổi mật khẩu thành công.');
 }

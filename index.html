@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.27-7';
+const APP_VERSION='2026.10.27-8';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -941,7 +941,7 @@ function syncMember(){
   .then(r=>r.json())
   .then(r=>{
    const a=getAccount(); if(!a)return null;
-   if(r&&r.member&&r.member.id){a.memberId=String(r.member.id);delete a.memberSync;saveAccount(a);return 'ok';}
+   if(r&&r.member&&r.member.id){a.memberId=String(r.member.id);delete a.memberSync;saveAccount(a);return r.member.returning?'back':'ok';}
    if(r&&r.error&&/đã được đăng ký/i.test(r.error)){delete a.memberSync;saveAccount(a);return 'exists';}
    delete a.memberSync;saveAccount(a);
    return 'error:'+((r&&r.error)||'Không rõ lý do.');
@@ -951,6 +951,7 @@ function syncMember(){
 }
 function memberMsg(res){
  if(res==='ok'){const a=getAccount();return 'Đăng ký thành viên 6PAY thành công! Mã ID của bạn là '+(a&&a.memberId)+'.';}
+ if(res==='back'){const a=getAccount();return 'Chào mừng bạn quay lại cộng đồng 6PAY! Bạn được nhận lại mã ID cũ: '+(a&&a.memberId)+'.';}
  if(res==='exists')return 'Số điện thoại này đã được đăng ký thành viên 6PAY. Muốn đăng ký bằng số khác, hãy bấm "Xóa tên và số điện thoại trên máy này" rồi đăng ký lại.';
  if(res==='offline')return 'Chưa gửi được đăng ký thành viên vì mất mạng. 6PAY sẽ tự gửi lại khi bạn mở app có mạng.';
  if(res&&res.indexOf('error:')===0)return 'Chưa đăng ký được thành viên: '+res.slice(6);
@@ -1016,7 +1017,7 @@ function cancelMember(){
  const id=((document.getElementById('cm-id')||{}).value||'').replace(/\D/g,'');
  if(!/^\d{1,6}$/.test(id)){notify('Vui lòng nhập mã ID thành viên (6 chữ số).');return;}
  const mid=('000000'+id).slice(-6);
- openConfirm('Hủy thành viên 6PAY? Tên và số điện thoại của bạn sẽ bị xóa khỏi danh sách thành viên. Dữ liệu thu chi trên máy không bị ảnh hưởng.',function(){
+ openConfirm('Hủy thành viên 6PAY? Tên và số điện thoại của bạn sẽ bị xóa khỏi danh sách thành viên. Mã ID '+mid+' được giữ riêng cho bạn: nếu sau này đăng ký lại bằng đúng số điện thoại này, bạn sẽ nhận lại mã cũ. Dữ liệu thu chi trên máy không bị ảnh hưởng.',function(){
   fetch(MEMBER_API,{method:'POST',body:JSON.stringify({action:'delete',phone:normPhone(acc.phone),id:mid})})
    .then(r=>r.json())
    .then(r=>{
@@ -1081,13 +1082,14 @@ async function loginOrRegister(){
   }
   if(r.error||!(r.member&&r.member.id)){notify('Chưa đăng ký được thành viên: '+(r.error||'Không rõ lý do.'));return;}
   memberId=String(r.member.id);
+  var memberBack=!!r.member.returning;
  }
  const n=lock?await rcSet(await makeAccount(name,ph,pass)):{name:name,phone:ph};
  if(memberId)n.memberId=memberId;
  saveAccount(n);
  loggedIn=true; render(); window.scrollTo(0,0);
  const msgs=[];
- if(memberId)msgs.push('Đăng ký thành viên 6PAY thành công! Mã ID của bạn là '+memberId+'.');
+ if(memberId)msgs.push(memberBack?'Chào mừng bạn quay lại cộng đồng 6PAY! Bạn được nhận lại mã ID cũ: '+memberId+'.':'Đăng ký thành viên 6PAY thành công! Mã ID của bạn là '+memberId+'.');
  if(lock)msgs.push('Đã bật khóa app. Từ lần sau, bạn cần nhập mật khẩu này khi mở 6PAY. Hãy chép lại Mã khôi phục đang hiện trên màn hình để dùng khi quên mật khẩu.');
  notify(msgs.join(' '));
 }
@@ -1415,7 +1417,7 @@ function scrLogin(){
     ${memberCancelOpen?`<div class="debt-form" style="margin-top:10px;">
      <div style="font-weight:700;margin-bottom:8px;">Hủy thành viên 6PAY</div>
      <div class="form-row tight"><label>Mã ID thành viên (6 số)</label><input type="text" inputmode="numeric" maxlength="6" id="cm-id" value="${knownId}" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
-     <div class="guide-desc" style="margin:0 0 10px;">Tên và số điện thoại sẽ bị xóa khỏi danh sách thành viên. Dữ liệu thu chi trên máy vẫn giữ nguyên.</div>
+     <div class="guide-desc" style="margin:0 0 10px;">Tên và số điện thoại sẽ bị xóa khỏi danh sách thành viên. Mã ID được giữ riêng cho bạn, đăng ký lại bằng đúng số này sẽ nhận lại mã cũ. Dữ liệu thu chi trên máy vẫn giữ nguyên.</div>
      <button class="btn primary" onclick="cancelMember()">Xác nhận hủy thành viên</button>
      <button class="btn cancel wide" style="margin-top:8px;" onclick="toggleCancelMember()">Đóng</button>
     </div>`:`<div style="text-align:right;margin-top:6px;"><button class="mini-btn" onclick="toggleCancelMember()">Hủy thành viên</button></div>`}`

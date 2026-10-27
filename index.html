@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.27-2';
+const APP_VERSION='2026.10.27-3';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -571,21 +571,6 @@ a{color:var(--accent);}
 .lc-q:first-of-type{border-top:none;}
 .lc-q div{font-style:italic;color:var(--text-soft);}
 
-/* ---------- Đọc sách ---------- */
-.book-view{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
-.book-view.open{display:flex;}
-.bv-bar{flex:none;display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--surface);}
-.bv-title{flex:1;min-width:0;font-weight:700;font-size:var(--fs-md);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.bv-bar a.mini-btn{text-decoration:none;display:inline-flex;align-items:center;}
-.bv-body{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;position:relative;}
-.bv-body iframe{width:100%;height:100%;border:0;background:#fff;}
-.bv-txt{padding:16px;font-size:17px;line-height:1.7;white-space:pre-wrap;overflow-wrap:break-word;font-family:'Be Vietnam Pro',Georgia,'Times New Roman',serif;}
-.bv-pg{margin:0 auto 8px;background:#fff;}
-.bv-pg canvas{display:block;width:100%;height:auto;}
-.bv-epub{position:absolute;inset:0;background:#fff;}
-.bv-body img{max-width:100%;display:block;margin:0 auto;}
-.bv-msg{padding:30px 16px;text-align:center;color:var(--text-soft);font-size:var(--fs-sm);line-height:1.55;}
-
 /* ---------- Màn hình chào ---------- */
 .boot-splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:min(5vw,28px);padding:0 10vw;text-align:center;background:#FFFFFF;transition:opacity .3s ease;}
 .boot-splash.hide{opacity:0;pointer-events:none;}
@@ -681,15 +666,6 @@ html.fast-start .boot-splash{display:none!important;}
 </div>
 <div class="modal-overlay" id="buyModal" onclick="if(event.target===this)closeBuy()">
  <div class="modal-box" id="buyBox" style="text-align:left;"></div>
-</div>
-  <div class="book-view" id="bookView">
- <div class="bv-bar">
-  <button class="mini-btn" onclick="closeBook()">← Quay lại</button>
-  <div class="bv-title" id="bvTitle"></div>
-  <span id="bvSz" style="display:none;gap:6px;"><button class="mini-btn" onclick="bvSize(-1)">A−</button><button class="mini-btn" onclick="bvSize(1)">A+</button></span>
-  <a class="mini-btn" id="bvOpen" href="#" target="_blank" rel="noopener">↗</a>
- </div>
- <div class="bv-body" id="bvBody"></div>
 </div>
 <div class="modal-overlay game-loading" id="gameLoading"><div class="modal-box"><div class="spin"></div><p style="margin:0;">Đang tải trò chơi...</p></div></div>
 <script>
@@ -1960,7 +1936,6 @@ function scrExtra(){
   ${utilIt("push('stopwatch')",'⏱️ Đồng hồ bấm giờ, Pomodoro')}
   ${utilIt('openNotes()','📝 Sổ ghi chú')}
   ${utilIt('openLunar()','🗓️ Lịch vạn niên')}
-  ${utilIt("push('books')",'📖 Đọc sách Free')}
   ${utilIt("push('learnPlay')",'🎓 Học và Chơi')}`);
 }
 // ===== Thư mục Tiện ích tài chính =====
@@ -2050,167 +2025,6 @@ function scrLearnPlay(){
   it("playGame('clock')",'🕒 Dạy trẻ xem đồng hồ'));
 }
 
-// ===== Đọc sách miễn phí =====
-// Thêm sách: thêm 1 dòng vào BOOKS. f = đường dẫn file (nên để trong thư mục books/ cùng chỗ với index.html)
-const BOOKS=[
- {t:'Bản đồ tư duy trong công việc',a:'Tony Buzan',f:'books/Bản Đồ Tư Duy Trong Công Việc - Tony Buzan.epub'},
- {t:'6 chiếc mũ tư duy',a:'Edward De Bono',f:'books/6 Chiec Mu Tu Duy - Edward De Bono.epub'},
- {t:'50 mô hình kinh điển cho tư duy chiến lược',a:'Mikael Krogerus & Roman Tschappeler',f:'books/50 Mô Hình Kinh Điển Cho Tư Duy Chiến Lược - Mikael Krogerus & Roman Tschappeler.epub'},
- {t:'11 lời khuyên cho thế hệ trẻ của Bill Gates',a:'Nguyễn Gia Linh',f:'books/11 Lời Khuyên Dành Cho Thế Hệ Trẻ Của Bill Gates - Nguyễn Gia Linh.epub'},
- {t:'10 thói quen triệu phú',a:'Dean Graziosi & Nguyễn Chí Chung (dịch)',f:'books/10 Thói Quen Triệu Phú - Dean Graziosi & Nguyễn Chí Chung (dịch).epub'},
- {t:'10 quy tắc của Sam Walton',a:'Michael Bergdahl & Rob Walton',f:'books/10 Quy Tắc Của Sam Walton - Michael Bergdahl & Rob Walton.epub'},
- {t:'Xây dựng thương hiệu qua kênh Youtube',a:'MediaZ',f:'books/Xay dung thuong hieu qua kenh Youtube - MediaZ.epub'},
- {t:'Bán hàng trên Amazon cho người mới bắt đầu',a:'MediaZ',f:'books/Bán Hàng Trên Amazon Cho Người Mới Bắt Đầu - MediaZ.epub'},
-   {t:'Ý tưởng kỳ quặc tạo ra sự đột phá',a:'Robert I. Sutton',f:'books/U Tuong Ky Quac Tao Ra Su Dot Pha - Robert I. Sutton.epub'}
-];
-const PDFJS='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
-const _libs={};
-function lib(srcs){
-  if(!Array.isArray(srcs))srcs=[srcs];
-  const key=srcs[0];
-  if(_libs[key])return _libs[key];
-  const one=src=>new Promise((ok,ko)=>{
-    const s=document.createElement('script');
-    s.src=src;s.onload=ok;
-    s.onerror=()=>{s.remove();ko(new Error('Không tải được '+src));};
-    document.head.appendChild(s);
-  });
-  return _libs[key]=(async()=>{
-    let last;
-    for(const s of srcs){try{return await one(s);}catch(e){last=e;}}
-    delete _libs[key];
-    throw last;
-  })();
-}
-function bookExt(f){return (f.split('?')[0].split('.').pop()||'').toLowerCase();}
-function scrBooks(){
- const list=BOOKS.length?BOOKS.map((b,i)=>`
-  <div class="list-item clickable" onclick="openBook(${i})">
-   <div class="tx-info"><div style="font-weight:600;">📕 ${esc(b.t)}</div>${b.a?`<div class="note">${esc(b.a)}</div>`:''}</div>
-   <span class="guide-cta">Đọc ›</span></div>`).join(''):'<div class="empty">Sách sẽ sớm được cập nhật.</div>';
- return screenWrap('📖 Đọc sách (miễn phí)',list);
-}
-const READ_KEY='6pay-read-v1', FS_KEY='6pay-fs-v1';
-function rdGet(){try{return JSON.parse(localStorage.getItem(READ_KEY))||{};}catch(e){return {};}}
-function rdSave(f,v){try{const d=rdGet();d[f]=v;localStorage.setItem(READ_KEY,JSON.stringify(d));}catch(e){}}
-let bvFs=17;try{bvFs=parseInt(localStorage.getItem(FS_KEY),10)||17;}catch(e){}
-function bvFsStep(d){bvFs=Math.min(40,Math.max(12,bvFs+d*2));try{localStorage.setItem(FS_KEY,String(bvFs));}catch(e){}return bvFs;}
-let bvTok=0,bvIo=null,bvOnSize=null;
-function bvSize(d){if(bvOnSize)bvOnSize(d);}
-function closeBook(){
- bvTok++;bvOnSize=null;
- if(bvIo){bvIo.disconnect();bvIo=null;}
- const body=document.getElementById('bvBody');body.onscroll=null;body.innerHTML='';
- document.getElementById('bookView').classList.remove('open');
-}
-function bvMsg(h){document.getElementById('bvBody').innerHTML='<div class="bv-msg">'+h+'</div>';}
-function openBook(i){
- const b=BOOKS[i]; if(!b)return;
- const tok=++bvTok, body=document.getElementById('bvBody'), key=b.f;
- const url=new URL(encodeURI(b.f),location.href).href, ext=bookExt(b.f);
- const saved=rdGet()[key]||{};
- bvOnSize=null; body.onscroll=null;
- if(bvIo){bvIo.disconnect();bvIo=null;}
- document.getElementById('bvTitle').textContent=b.t;
- document.getElementById('bvOpen').href=url;
- document.getElementById('bvSz').style.display=(ext==='pdf'||ext==='epub'||ext==='txt'||ext==='md')?'flex':'none';
- body.scrollTop=0; body.innerHTML='';
- document.getElementById('bookView').classList.add('open');
- bvMsg('Đang tải sách...');
- const fail=()=>{if(tok===bvTok)bvMsg('Không mở được sách trong app. Hãy bấm nút ↗ ở góc phải phía trên để mở bằng trình duyệt.');};
- if(ext==='pdf'){
-  let zoom=saved.z||1, page=saved.p||1;
-  lib(PDFJS+'pdf.min.js').then(()=>{
-   pdfjsLib.GlobalWorkerOptions.workerSrc=PDFJS+'pdf.worker.min.js';
-   return pdfjsLib.getDocument({url:url,cMapUrl:PDFJS+'cmaps/',cMapPacked:true}).promise;
-  }).then(async pdf=>{
-   if(tok!==bvTok)return;
-   const p1=await pdf.getPage(1), v1=p1.getViewport({scale:1});
-   const draw=()=>{
-    if(bvIo){bvIo.disconnect();bvIo=null;}
-    body.onscroll=null; body.innerHTML='';
-    const w=body.clientWidth||360, W=w*zoom, H=W*v1.height/v1.width;
-    bvIo=new IntersectionObserver(es=>es.forEach(async e=>{
-     const d=e.target;
-     if(!e.isIntersecting){d.dataset.r='';d.innerHTML='';return;}
-     if(d.dataset.r==='1')return;
-     d.dataset.r='1'; const k=(+d.dataset.k||0)+1; d.dataset.k=k;
-     const pg=await pdf.getPage(+d.dataset.n);
-     const sc=W/pg.getViewport({scale:1}).width;
-     const out=Math.min(Math.max(window.devicePixelRatio||1,2),2600/W); // vẽ nét gấp đôi màn hình, tối đa 2600px ngang
-     const vp=pg.getViewport({scale:sc*out});
-     const c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
-     await pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
-     if(tok!==bvTok||d.dataset.k!=k||d.dataset.r!=='1')return;
-     d.innerHTML=''; d.appendChild(c);
-    }),{root:body,rootMargin:'600px 0px'});
-    for(let n=1;n<=pdf.numPages;n++){
-     const d=document.createElement('div'); d.className='bv-pg'; d.dataset.n=n;
-     d.style.width=W+'px'; d.style.minHeight=H+'px'; body.appendChild(d); bvIo.observe(d);
-    }
-    body.scrollLeft=0;
-    if(page>1&&body.children[page-1])body.scrollTop=body.children[page-1].offsetTop;
-    let t=0;
-    body.onscroll=()=>{clearTimeout(t);t=setTimeout(()=>{
-     const y=body.scrollTop+20,c=body.children;let k=0;
-     while(k+1<c.length&&c[k+1].offsetTop<=y)k++;
-     page=k+1; rdSave(key,{p:page,z:zoom});
-    },300);};
-   };
-   bvOnSize=d=>{zoom=Math.min(3,Math.max(1,zoom+d*0.5));rdSave(key,{p:page,z:zoom});draw();};
-   draw();
-  }).catch(fail);
- }else if(ext==='epub'){
-  (async()=>{
-   let st='tải thư viện JSZip / epub.js';
-   try{
-    await lib(['https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js','https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js']);
-    await lib(['https://cdn.jsdelivr.net/npm/epubjs@0.3.93/dist/epub.min.js','https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.3.93/epub.min.js']);
-    if(tok!==bvTok)return;
-    st='tải file sách';
-    const r=await fetch(url);
-    if(!r.ok)throw new Error('HTTP '+r.status);
-    const buf=await r.arrayBuffer();
-    if(tok!==bvTok)return;
-    const h=new Uint8Array(buf.slice(0,2));
-    if(h[0]!==0x50||h[1]!==0x4B)throw new Error('File tải về không phải epub (dung lượng '+buf.byteLength+' byte). Nghi sw.js trả nhầm nội dung.');
-    st='mở sách bằng epub.js';
-    body.innerHTML='<div class="bv-epub" id="bvEpub"></div>';
-    const bk=ePub(buf,{openAs:'binary'});
-    const rd=bk.renderTo('bvEpub',{width:'100%',height:'100%',flow:'scrolled',manager:'continuous'});
-    rd.themes.default({body:{'line-height':'1.7 !important','padding':'0 14px !important'}});
-    const applyFs=()=>rd.themes.override('font-size',bvFs+'px',true);
-    applyFs();
-    rd.on('relocated',loc=>{if(loc&&loc.start&&tok===bvTok)rdSave(key,{c:loc.start.cfi});});
-    bvOnSize=d=>{bvFsStep(d);applyFs();};
-    await rd.display(saved.c||undefined);
-   }catch(e){
-    if(tok===bvTok)bvMsg('Lỗi ở bước: <b>'+st+'</b><br><small>'+esc(String((e&&e.message)||e))+'</small><br><small>'+esc(url)+'</small><br>Bạn có thể bấm nút ↗ để mở bằng trình duyệt.');
-   }
-  })();
- }else if(ext==='txt'||ext==='md'){
-  fetch(url).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer();}).then(buf=>{
-   if(tok!==bvTok)return;
-   let t;
-   try{t=new TextDecoder('utf-8',{fatal:true}).decode(buf);}catch(e){t=new TextDecoder('windows-1258').decode(buf);}
-   body.innerHTML='<div class="bv-txt"></div>'; const el=body.firstChild;
-   el.textContent=t.replace(/^\uFEFF/,''); el.style.fontSize=bvFs+'px';
-   const span=()=>Math.max(1,body.scrollHeight-body.clientHeight);
-   if(saved.r)body.scrollTop=saved.r*span();
-   let tm=0;
-   body.onscroll=()=>{clearTimeout(tm);tm=setTimeout(()=>rdSave(key,{r:body.scrollTop/span()}),300);};
-   bvOnSize=d=>{const r=body.scrollTop/span();el.style.fontSize=bvFsStep(d)+'px';body.scrollTop=r*span();};
-  }).catch(fail);
- }else if(['doc','docx','xls','xlsx','ppt','pptx','odt','rtf'].indexOf(ext)>-1){
-  body.innerHTML='<iframe src="https://docs.google.com/viewer?embedded=true&url='+encodeURIComponent(url)+'"></iframe>';
- }else if(ext==='html'||ext==='htm'){
-  body.innerHTML='<iframe src="'+url+'"></iframe>';
- }else if(['jpg','jpeg','png','webp','gif'].indexOf(ext)>-1){
-  body.innerHTML='<img src="'+url+'" alt="">';
- }else{
-  bvMsg('Định dạng này không xem trực tiếp được. Hãy bấm nút ↗ ở góc phải phía trên để mở.');
- }
-}
   // ===== Quản lý khoản nợ =====
 const DEBT_KEY='6pay-debts-v1';
 let debts=[];
@@ -3508,7 +3322,7 @@ const SCREENS={
  partner:scrPartner, shopAll:scrShopAll, goals:scrGoals, fincalc:scrFincalc, bills:scrBills, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
  incomeCategories:scrIncomeCategories, incomeDetail:scrIncomeDetail,
  expenseOverview:scrExpenseOverview, expenseDetail:scrExpenseDetail, quiz:scrQuiz
- ,extra:scrExtra, planner:scrPlanner, ratios:scrRatios, planSettings:scrPlanSettings,books:scrBooks,debts:scrDebts, todayHistory:scrTodayHistory,
+ ,extra:scrExtra, planner:scrPlanner, ratios:scrRatios, planSettings:scrPlanSettings,debts:scrDebts, todayHistory:scrTodayHistory,
  finUtil:scrFinUtil, learnPlay:scrLearnPlay, report:scrReport, transfer:scrTransfer, limits:scrLimits, notes:scrNotes, noteEdit:scrNoteEdit, lunar:scrLunar, stopwatch:scrStopwatch, calc:scrCalc, units:scrUnits
 };
 function render(){
@@ -3642,7 +3456,6 @@ document.addEventListener('visibilitychange',()=>{
  if(hiddenAt&&Date.now()-hiddenAt>SESS_MS){
   // quá 5 phút: khởi động lại về trang chủ (có khóa mật khẩu nếu đã đăng ký)
   hiddenAt=0;
-  try{closeBook();}catch(e){}
   document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
   stack=[{id:'home'}];loggedIn=false;locked=!!getAccount();lockIn='';
   render();

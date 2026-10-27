@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>6PAY — Quản lý tài chính cá nhân</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.27-6';
+const APP_VERSION='2026.10.27-7';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -167,6 +167,35 @@ a{color:var(--accent);}
 .home-quote span{display:block;white-space:nowrap;}
 .home-ver{flex:none;text-align:center;text-wrap:balance;font-size:12px;line-height:1.45;color:#8A94A6;padding:6px 8px 0;}
 @media (max-height:640px){.home-icon-badge{display:none;}}
+/* Giữ màn hình cố định: không kéo trôi ngang/dọc, không phóng to ngoài ý muốn */
+html,body{overscroll-behavior:none;width:100%;}
+body{touch-action:manipulation;}
+.wrap{overflow-x:hidden;max-width:min(480px,100%);}
+/* Thẻ không bao giờ rộng hơn màn hình, số tiền lớn tự thu nhỏ chữ (xem fitAmounts) */
+.card,.card-label{min-width:0;}
+.card-pair{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+.card.balance .card-label{flex:none;}
+.card.hist .card-label{flex:1 1 0;}
+.card.hist .card-amount{flex:0 1 auto;}
+.card.balance .card-amount,.card.hist .card-amount{min-width:0;overflow:hidden;}
+.card-pair .card-amount{text-overflow:clip;}
+/* Màn hình thấp (trình duyệt có thanh địa chỉ, máy nhỏ): thu gọn để vừa 1 màn hình */
+@media (max-height:600px){
+ .home-brand{font-size:clamp(30px,6.4vh,40px);}
+ .home-header{padding-bottom:6px;}
+ .home-wrap .card{min-height:44px;}
+ .card.balance{min-height:50px;}
+ .card-pair .card{min-height:50px;padding:7px 12px;}
+ .card-pair .card.quiz,.card-pair .card.partner{min-height:44px;}
+ .home-quote{padding-top:3px;}
+ .home-ver{font-size:11px;padding-top:2px;}
+}
+@media (max-height:520px){
+ .home-header .brand-sub{display:none;}
+ .home-quote{display:none;}
+ .star-line{margin-top:2px;}
+ .home-wrap .card,.card-pair{margin-bottom:6px;}
+}
 
 /* ---------- Danh sách ô lớn (Thu, Chi, Số dư) ---------- */
 .fill-rows{flex:1 1 0;min-height:0;display:flex;flex-direction:column;gap:8px;margin-bottom:8px;--fl:clamp(14.5px,2.1vh,17px);--fi:clamp(22px,3.2vh,28px);--fa:clamp(14.5px,2.2vh,18px);--fs:clamp(12px,1.55vh,13px);}
@@ -652,6 +681,16 @@ html.fast-start .boot-splash{display:none!important;}
   <div class="modal-overlay" id="installModal" onclick="if(event.target===this)closeInstall()">
  <div class="modal-box" id="installBox" style="max-height:88vh;overflow-y:auto;"></div>
 </div>
+<div class="modal-overlay" id="inviteModal" onclick="if(event.target===this)inviteLater()">
+ <div class="modal-box" style="text-align:center;">
+  <div style="font-size:46px;line-height:1;margin:2px 0 10px;">🎁</div>
+  <div style="font-weight:800;font-size:19px;margin-bottom:8px;">Tham gia cộng đồng 6PAY</div>
+  <p style="margin:0 0 8px;line-height:1.5;">Nhận mã thành viên để tham gia các sự kiện và nhận quà tặng của 6PAY.</p>
+  <p style="margin:0 0 16px;font-size:14px;color:var(--text-soft);line-height:1.5;">Chỉ cần tên và số điện thoại · Không cần mật khẩu · Miễn phí</p>
+  <button class="btn primary" onclick="inviteJoin()">Đăng ký ngay</button>
+  <button class="btn cancel wide" style="margin-top:8px;" onclick="inviteLater()">Để sau</button>
+ </div>
+</div>
   <div class="modal-overlay" id="jarGuideModal" onclick="closeJarGuide()">
  <div class="modal-box" id="jarGuideBox"></div>
 </div>
@@ -903,7 +942,7 @@ function syncMember(){
   .then(r=>{
    const a=getAccount(); if(!a)return null;
    if(r&&r.member&&r.member.id){a.memberId=String(r.member.id);delete a.memberSync;saveAccount(a);return 'ok';}
-   if(r&&r.error&&/đã được đăng ký/i.test(r.error)){a.memberId=a.memberId||'Đã đăng ký';delete a.memberSync;saveAccount(a);return 'exists';}
+   if(r&&r.error&&/đã được đăng ký/i.test(r.error)){delete a.memberSync;saveAccount(a);return 'exists';}
    delete a.memberSync;saveAccount(a);
    return 'error:'+((r&&r.error)||'Không rõ lý do.');
   })
@@ -912,7 +951,7 @@ function syncMember(){
 }
 function memberMsg(res){
  if(res==='ok'){const a=getAccount();return 'Đăng ký thành viên 6PAY thành công! Mã ID của bạn là '+(a&&a.memberId)+'.';}
- if(res==='exists')return 'Số điện thoại này đã là thành viên 6PAY từ trước.';
+ if(res==='exists')return 'Số điện thoại này đã được đăng ký thành viên 6PAY. Muốn đăng ký bằng số khác, hãy bấm "Xóa tên và số điện thoại trên máy này" rồi đăng ký lại.';
  if(res==='offline')return 'Chưa gửi được đăng ký thành viên vì mất mạng. 6PAY sẽ tự gửi lại khi bạn mở app có mạng.';
  if(res&&res.indexOf('error:')===0)return 'Chưa đăng ký được thành viên: '+res.slice(6);
  return '';
@@ -988,6 +1027,16 @@ function cancelMember(){
  });
 }
 
+// Gửi đăng ký thành viên ngay lúc bấm Xác nhận. Trả về {member}, {error} hoặc {offline:true}
+function memberPost(name,phone){
+ return fetch(MEMBER_API,{method:'POST',body:JSON.stringify({action:'register',name:name,phone:phone,consent:true})})
+  .then(r=>r.json()).catch(()=>({offline:true}));
+}
+function authPhoneErr(msg){
+ const e=document.getElementById('auth-phone-err'), inp=document.getElementById('auth-phone');
+ if(e)e.textContent=msg||'';
+ if(inp){inp.style.borderColor=msg?'#E53935':'';if(msg){inp.focus();inp.select();}}
+}
 function authToggle(){
  const on=!!(document.getElementById('auth-lock')||{}).checked;
  const box=document.getElementById('auth-lockbox'); if(box)box.style.display=on?'block':'none';
@@ -1018,13 +1067,28 @@ async function loginOrRegister(){
   if(pass!==pass2){notify('Mật khẩu nhập lại không khớp.');return;}
  }
  const ph=validPhone(phone)?normPhone(phone):phone;
+ let memberId='';
+ if(join&&MEMBER_API){
+  const btn=document.getElementById('auth-submit');
+  if(btn){btn.disabled=true;btn.textContent='Đang kiểm tra...';}
+  const r=await memberPost(name,ph);
+  if(btn){btn.disabled=false;btn.textContent='✓ Xác nhận';}
+  if(r.offline){notify('Không kết nối được để đăng ký thành viên. Vui lòng kiểm tra mạng và thử lại.');return;}
+  if(r.error&&/đã được đăng ký/i.test(r.error)){
+   authPhoneErr('Số điện thoại này đã được đăng ký. Vui lòng nhập số điện thoại khác.');
+   notify('Số điện thoại '+ph+' đã được đăng ký thành viên 6PAY. Vui lòng nhập số điện thoại khác.');
+   return;
+  }
+  if(r.error||!(r.member&&r.member.id)){notify('Chưa đăng ký được thành viên: '+(r.error||'Không rõ lý do.'));return;}
+  memberId=String(r.member.id);
+ }
  const n=lock?await rcSet(await makeAccount(name,ph,pass)):{name:name,phone:ph};
- if(join&&MEMBER_API)n.memberSync=1;
+ if(memberId)n.memberId=memberId;
  saveAccount(n);
  loggedIn=true; render(); window.scrollTo(0,0);
  const msgs=[];
+ if(memberId)msgs.push('Đăng ký thành viên 6PAY thành công! Mã ID của bạn là '+memberId+'.');
  if(lock)msgs.push('Đã bật khóa app. Từ lần sau, bạn cần nhập mật khẩu này khi mở 6PAY. Hãy chép lại Mã khôi phục đang hiện trên màn hình để dùng khi quên mật khẩu.');
- if(n.memberSync){const res=await syncMember();const m=memberMsg(res);if(m)msgs.push(m);}
  notify(msgs.join(' '));
 }
 // Bật khóa app cho tài khoản đang không có mật khẩu
@@ -1276,7 +1340,7 @@ function scrHome(){
    <div class="brand-sub">Quản lý tài chính cá nhân</div>
    <div class="star-line">${streakHtml()} &nbsp;·&nbsp; ⭐ ${fmt(stars)} điểm</div>
   </div>
-  ${inviteCard()||backupBanner()}
+  ${backupBanner()}
   <button class="card balance" onclick="push('wallets')">
    <span class="card-label">💼 Số dư</span>
    <span class="card-amount ${cls}">${fmt(bal)} ₫</span>
@@ -1390,14 +1454,14 @@ function scrLogin(){
  return screenWrap('👤 Thành viên & khóa app',`
   <div class="guide-desc" style="margin:0 0 14px;">Chỉ cần tên và số điện thoại để trở thành thành viên 6PAY. Mật khẩu là tùy chọn.</div>
   <div class="form-row"><label>Tên của bạn</label><input type="text" id="auth-name" placeholder="Nguyễn Văn A" autocomplete="name"></div>
-  <div class="form-row"><label>Số điện thoại</label><input type="tel" id="auth-phone" placeholder="09xxxxxxxx" autocomplete="tel"></div>
+  <div class="form-row"><label>Số điện thoại</label><input type="tel" id="auth-phone" placeholder="09xxxxxxxx" autocomplete="tel" oninput="authPhoneErr('')"><div class="err-msg" id="auth-phone-err" style="margin-top:4px;"></div></div>
   ${MEMBER_API?`<label style="${lbl}"><input type="checkbox" id="auth-member" checked style="${chk}"><span><b>🎁 Đăng ký thành viên 6PAY</b> (miễn phí): nhận mã ID, thông tin sự kiện và quà tặng. Tên và mã ID hiển thị trong bảng Thành viên trên 6pay.vn, số điện thoại không công khai.</span></label>`:''}
   <label style="${lbl}"><input type="checkbox" id="auth-lock" onchange="authToggle()" ${MEMBER_API?'':'checked'} style="${chk}"><span><b>🔐 Khóa app bằng mật khẩu</b> (tùy chọn): cần nhập mật khẩu mỗi lần mở app.</span></label>
   <div id="auth-lockbox" style="display:${MEMBER_API?'none':'block'};">
    <div class="form-row"><label>Mật khẩu (chỉ nhập số, ít nhất 4 số)</label><input type="password" inputmode="numeric" maxlength="12" id="auth-pass" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
    <div class="form-row"><label>Nhập lại mật khẩu</label><input type="password" inputmode="numeric" maxlength="12" id="auth-pass2" oninput="this.value=this.value.replace(/\\D/g,'')"></div>
   </div>
-  <button class="btn primary" onclick="loginOrRegister()">✓ Xác nhận</button>
+  <button class="btn primary" id="auth-submit" onclick="loginOrRegister()">✓ Xác nhận</button>
   <div class="guide-desc" style="margin-top:16px;">Mật khẩu chỉ lưu trên chính điện thoại này, không gửi đi đâu. Khi đăng ký thành viên, 6PAY chỉ nhận tên và số điện thoại, không nhận mật khẩu hay bất kỳ số liệu thu chi nào. Bạn có thể hủy thành viên bất cứ lúc nào.</div>
  `);
 }
@@ -1445,18 +1509,24 @@ function downloadFile(file,name){
 }
 function lastBackupDays(){let t=0;try{t=parseInt(localStorage.getItem(LASTBACKUP_KEY),10)||0;}catch(e){}return t?Math.floor((Date.now()-t)/86400000):-1;}
 // ===== Lời mời đăng ký thành viên (nhẹ nhàng, không làm phiền) =====
-// Chỉ hiện khi: chưa là thành viên, đã ghi ít nhất 3 khoản thu chi, chưa bị tắt.
-// Bấm "Để sau" thì ẩn 7 ngày; sau 3 lần "Để sau" thì không hiện nữa.
+// Hiện thành cửa sổ riêng, ngay sau khi người dùng đóng thông báo cài app (hoặc cài xong / đã cài sẵn).
+// Chỉ mời người chưa là thành viên. Bấm "Để sau" thì ẩn 7 ngày; sau 3 lần "Để sau" thì không mời nữa.
 const INVITE_KEY='6pay-invite-v1';
 function inviteState(){try{return JSON.parse(localStorage.getItem(INVITE_KEY))||{n:0,until:0};}catch(e){return {n:0,until:0};}}
-function inviteCard(){
- if(!MEMBER_API||tx.length<3)return '';
- const a=getAccount(); if(a&&(a.memberId||a.memberSync))return '';
- const st=inviteState(); if(st.n>=3||Date.now()<st.until)return '';
- return `<div class="backup-banner" style="cursor:default;">🎁 <b>Tham gia cộng đồng 6PAY</b> để nhận mã thành viên, tham gia sự kiện và nhận quà. Chỉ cần tên và số điện thoại, không cần mật khẩu, miễn phí.
-  <div style="display:flex;gap:8px;margin-top:8px;"><button class="mini-btn" style="font-weight:700;" onclick="push('login')">Đăng ký ngay ›</button><button class="mini-btn" onclick="inviteLater()">Để sau</button></div></div>`;
+let inviteShown=false; // mỗi lần mở app chỉ mời tối đa 1 lần
+function inviteDue(){
+ if(!MEMBER_API||locked||inviteShown)return false;
+ const a=getAccount(); if(a&&(a.memberId||a.memberSync))return false;
+ const st=inviteState(); return (st.n||0)<3&&Date.now()>=(st.until||0);
 }
-function inviteLater(){const st=inviteState();st.n=(st.n||0)+1;st.until=Date.now()+7*864e5;try{localStorage.setItem(INVITE_KEY,JSON.stringify(st));}catch(e){}render();}
+function maybeInvite(){
+ if(!inviteDue()||stack[stack.length-1].id!=='home'||document.querySelector('.modal-overlay.open'))return;
+ inviteShown=true;
+ document.getElementById('inviteModal').classList.add('open');
+}
+function closeInvite(){document.getElementById('inviteModal').classList.remove('open');}
+function inviteLater(){const st=inviteState();st.n=(st.n||0)+1;st.until=Date.now()+7*864e5;try{localStorage.setItem(INVITE_KEY,JSON.stringify(st));}catch(e){}closeInvite();}
+function inviteJoin(){closeInvite();push('login');}
 function backupBanner(){
  if(!tx.length)return '';
  const d=lastBackupDays();
@@ -2479,9 +2549,10 @@ function doInstall(){
  deferredInstall.userChoice.finally(()=>{deferredInstall=null;closeInstall();});
 }
 function openInstall(){insTab=detectOS();drawInstall();document.getElementById('installModal').classList.add('open');}
-function closeInstall(){document.getElementById('installModal').classList.remove('open');}
+function closeInstall(){const m=document.getElementById('installModal');const was=m.classList.contains('open');m.classList.remove('open');if(was)setTimeout(maybeInvite,450);}
 function maybeShowInstall(){
- if(isStandalone()||locked)return;
+ if(locked)return;
+ if(isStandalone()){setTimeout(maybeInvite,300);return;} // đã cài ra màn hình chính: mời đăng ký luôn
  openInstall();
 }
   // ===== Lịch sử giao dịch trong ngày (tổng hợp thu + chi của tất cả các ví) =====
@@ -3540,7 +3611,15 @@ function render(){
   html=scrHome();
  }
  document.getElementById('app').innerHTML = html;
- if(top.id==='calc')calcRefresh(); else if(top.id==='units')cvRefresh(); else if(top.id==='home')fitQuote();
+ if(top.id==='calc')calcRefresh(); else if(top.id==='units')cvRefresh(); else if(top.id==='home'){fitQuote();fitAmounts();}
+}
+// Số tiền ở trang chủ luôn hiện đủ: nếu dài hơn chỗ trống thì tự giảm cỡ chữ
+function fitAmounts(){
+ document.querySelectorAll('.home-wrap .card-amount').forEach(el=>{
+  el.style.fontSize='';
+  let fs=parseFloat(getComputedStyle(el).fontSize)||18, i=0;
+  while(el.scrollWidth>el.clientWidth+1&&fs>11&&i++<24){fs-=1;el.style.fontSize=fs+'px';}
+ });
 }
 // Câu châm ngôn ở trang chủ: mỗi dòng luôn nằm gọn trên 1 hàng, cỡ chữ tự co giãn theo bề ngang màn hình
 function fitQuote(){
@@ -3581,6 +3660,14 @@ function setAppH(){
 }
 setAppH();
 window.addEventListener('resize',setAppH);
+window.addEventListener('resize',()=>{if(stack[stack.length-1].id==='home'&&!locked)fitAmounts();});
+// iPhone: chặn phóng to bằng 2 ngón (Safari bỏ qua user-scalable=no)
+document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
+// Sau khi gõ xong và bàn phím đóng lại, đưa màn hình về đúng vị trí (tránh bị trôi xuống)
+document.addEventListener('focusout',()=>setTimeout(()=>{
+ const ae=document.activeElement;
+ if(!ae||!/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)){window.scrollTo(0,0);document.documentElement.scrollLeft=0;setAppH();}
+},150));
 window.addEventListener('orientationchange',()=>{setAppH();setTimeout(setAppH,250);});
 if(window.visualViewport){window.visualViewport.addEventListener('resize',setAppH);}
 render();

@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.29-1';
+const APP_VERSION='2026.10.29-3';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -654,7 +654,8 @@ html.fast-start .boot-splash{display:none!important;}
 .qa-fab:active{transform:scale(.96);}
 body:not(.home-white) .qa-fab{display:none;}
 /* chừa chỗ cho nút nổi để không che chữ cuối trang chủ */
-.home-ver{padding-bottom:66px;}
+/* dòng "Dữ liệu chỉ lưu trên máy..." nằm sát đáy, bên trái nút ＋ Ghi chi */
+.home-ver{margin-top:auto;min-height:56px;display:flex;flex-direction:column;justify-content:flex-end;text-align:left;text-wrap:pretty;padding:6px 150px 0 4px;}
 /* ---------- Bảng ghi chi nhanh (trượt từ dưới lên) ---------- */
 .sheet-ov{position:fixed;inset:0;z-index:120;background:rgba(17,24,39,.42);display:none;align-items:flex-end;justify-content:center;}
 .sheet-ov.open{display:flex;animation:fadeIn .15s ease;}
@@ -2309,7 +2310,9 @@ function scrExtra(){
   ${utilIt("push('finUtil')",'💰 Tiện ích tài chính',billDueCount()?'<span class="neg">● '+billDueCount()+'</span> ':'')}
   ${utilIt('openReport()','📊 Báo cáo tháng')}
   ${utilIt('openPlanner()','📅 Kế hoạch bản thân')}
-  ${utilIt("push('tools')",'🧰 Công cụ hằng ngày','<small style="font-weight:500;color:var(--text-soft)">Máy tính, ghi chú, lịch…</small> ')}
+  ${utilIt('openNotes()','📝 Sổ ghi chú')}
+  ${utilIt('openLunar()','🗓️ Lịch vạn niên')}
+  ${utilIt("push('tools')",'🧰 Công cụ hằng ngày')}
   ${utilIt("push('learnPlay')",'🎓 Học và Chơi')}`);
 }
 // ===== Thư mục Tiện ích tài chính =====
@@ -4086,9 +4089,7 @@ function scrTools(){
  return screenWrap('🧰 Công cụ hằng ngày',
   utilIt("push('calc')",'🧮 Máy tính')+
   utilIt("push('units')",'📐 Đổi đơn vị đo')+
-  utilIt("push('stopwatch')",'⏱️ Đồng hồ bấm giờ, Pomodoro')+
-  utilIt('openNotes()','📝 Sổ ghi chú')+
-  utilIt('openLunar()','🗓️ Lịch vạn niên'));
+  utilIt("push('stopwatch')",'⏱️ Đồng hồ bấm giờ, Pomodoro'));
 }
 
 // ---------- Báo cáo: nhận xét tự động ----------

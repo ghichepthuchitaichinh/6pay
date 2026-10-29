@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.27-8';
+const APP_VERSION='2026.10.28-1';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -732,7 +732,7 @@ const IC_TT='<svg class="lk-ic" viewBox="0 0 48 48" aria-hidden="true"><rect wid
   const LINKS=[
  {t:'🌐 Website 6Pay',link:'http://6pay.vn'},
  {t:IC_FB+' Sự kiện 6Pay',link:'https://www.facebook.com/share/19bKZLWVzq/'},
- {t:IC_ZALO+' Hỗ trợ 6Pay',link:'https://zalo.me/g/z7pzytxzrsitdwprfa1d'},
+ {t:IC_ZALO+' Hỗ trợ 6Pay',link:'https://zalo.me/0389480060'},
  {t:IC_YT+' Youtube',link:'https://youtube.com/@6pay-vn?si=z3junLJI4LAb-o3y'},
  {t:IC_TT+' Tiktok',link:'https://tiktok.com/@6pay.vn'}
 ];
@@ -743,7 +743,7 @@ const INCOME_TYPES=[
  {k:'khac',l:'Thu khác',i:'➕',d:'Đa dạng nguồn thu để có thêm thu nhập'}
 ];
 // Quảng cáo ở trang "Đồng hành cùng 6Pay". Thêm dòng mới theo dạng {html:'...',link:'https://...'} (để link:'' thì hiện chữ mờ, không bấm được)
-const AD_HEAD='Hotline <a href="tel:0342190588">0342.19.05.88</a>';
+const AD_HEAD='Hotline <a href="tel:0389480060">0389.480.060</a>';
 function adItems(list){return list.map(a=>a.link?`<a class="ad-item" href="${a.link}" target="_blank" rel="noopener">${a.html}</a>`:`<div class="ad-item ph">${a.html}</div>`).join('');}
 const ADS=[
  {html:'⚖️ <b>TƯ VẤN THỦ TỤC PHÁP LÝ <br> Luật sư Trần Hường - CT Luật FANCI</b> <br>Zalo, SĐT 098.55.22.892',link:'http://zalo.me/0985522892'}

@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>6PAY — Quản lý tài chính cá nhân</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.28-1';
+const APP_VERSION='2026.10.29-1';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -25,6 +25,7 @@ const MEMBER_API='https://script.google.com/macros/s/AKfycbyORVj1UZPtM9lExh9L5iV
 </script>
   <script>
 try{var _s=JSON.parse(localStorage.getItem('6pay-session-v1'));if(_s&&Date.now()-_s.ts<300000)document.documentElement.classList.add('fast-start');}catch(e){}
+try{if(localStorage.getItem('6pay-fontsize-v1')==='big')document.documentElement.classList.add('fs-big');}catch(e){}
 </script>
 <meta name="theme-color" content="#2C5FA8">
 <meta name="color-scheme" content="light">
@@ -645,6 +646,112 @@ html.fast-start .boot-splash{display:none!important;}
 .gm-bar{flex:none;display:flex;justify-content:space-between;padding:8px 12px}
 .gm-x{font:inherit;font-size:14px;font-weight:700;border:0;border-radius:10px;padding:8px 14px;background:rgba(255,255,255,.18);color:#fff;cursor:pointer}
 .gm-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 10px 20px}
+
+/* ================= CẢI THIỆN TRẢI NGHIỆM (bản 2026.10.29) ================= */
+/* ---------- Nút ＋ Ghi chi nổi ở trang chủ ---------- */
+.qa-fab{position:fixed;z-index:60;right:max(14px,calc(50% - 226px));bottom:calc(max(10px,env(safe-area-inset-bottom,0px)) + 4px);display:flex;align-items:center;gap:6px;height:52px;padding:0 20px 0 16px;border:0;border-radius:26px;background:var(--expense-text);color:#fff;font:inherit;font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 6px 18px rgba(192,68,63,.38),0 2px 4px rgba(0,0,0,.12);}
+.qa-fab b{font-size:26px;line-height:1;font-weight:700;margin-top:-2px;}
+.qa-fab:active{transform:scale(.96);}
+body:not(.home-white) .qa-fab{display:none;}
+/* chừa chỗ cho nút nổi để không che chữ cuối trang chủ */
+.home-ver{padding-bottom:66px;}
+/* ---------- Bảng ghi chi nhanh (trượt từ dưới lên) ---------- */
+.sheet-ov{position:fixed;inset:0;z-index:120;background:rgba(17,24,39,.42);display:none;align-items:flex-end;justify-content:center;}
+.sheet-ov.open{display:flex;animation:fadeIn .15s ease;}
+.sheet{width:100%;max-width:520px;max-height:calc(var(--app-h,100dvh) - 12px);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:var(--surface);border-radius:20px 20px 0 0;padding:8px 16px calc(14px + env(safe-area-inset-bottom,0px));box-shadow:0 -8px 30px rgba(17,24,39,.18);animation:sheetUp .22s cubic-bezier(.2,.9,.3,1);}
+@keyframes sheetUp{from{transform:translateY(40px);opacity:.6;}to{transform:none;opacity:1;}}
+.sheet-grip{width:40px;height:4px;border-radius:2px;background:var(--border);margin:2px auto 8px;}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
+.sheet-title{font-size:var(--fs-lg);font-weight:800;}
+.sheet-x{width:36px;height:36px;border:1px solid var(--border);background:var(--surface-2);border-radius:10px;font-size:16px;cursor:pointer;color:var(--text);}
+.qa-amt{width:100%;font-size:30px;font-weight:800;text-align:center;padding:8px 12px;min-height:58px;border:2px solid var(--expense-border);border-radius:14px;background:var(--expense-bg);color:var(--expense-text);font-variant-numeric:tabular-nums;}
+.qa-amt:focus{outline:none;border-color:var(--expense-text);}
+.qa-amt::placeholder{color:var(--expense-text);opacity:.4;font-size:19px;font-weight:600;}
+.rp-card .rp-bar+.rp-bar{border-top:1px dashed var(--border);margin-top:4px;padding-top:8px;}
+.qa-hint{text-align:center;font-size:var(--fs-sm);font-weight:700;color:var(--expense-text);min-height:20px;margin:3px 0 2px;}
+.chip-row{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px;}
+.chip-row.scroll-x{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;}
+.chip-row.scroll-x::-webkit-scrollbar{display:none;}
+.chip{flex:none;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font:inherit;font-size:var(--fs-sm);font-weight:600;border-radius:18px;padding:6px 12px;min-height:34px;cursor:pointer;white-space:nowrap;}
+.chip:active{background:var(--border);}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-text);}
+.chip-row.amts{flex-wrap:nowrap;}
+.chip-row.amts .chip{flex:1;padding:6px 4px;}
+.chip.amt{font-weight:800;color:var(--expense-text);background:var(--expense-bg);border-color:var(--expense-border);}
+.chip.sug{background:var(--accent-soft);border-color:#D6E3F7;color:var(--newtx-text);}
+.chip.sug small{opacity:.7;font-weight:500;margin-left:2px;}
+.qa-lbl{font-size:var(--fs-xs);font-weight:700;color:var(--text-soft);margin:4px 2px 4px;}
+.qa-note{width:100%;font-size:16px;padding:9px 12px;min-height:44px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);}
+.qa-note:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+.sug-box{min-height:0;}
+.sug-box .chip-row{margin:6px 0 4px;}
+.jar-pick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:8px;}
+.jp{display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 4px 6px;border:1.5px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);cursor:pointer;font:inherit;min-width:0;}
+.jp .i{font-size:22px;line-height:1.1;}
+.jp .n{font-size:12.5px;font-weight:700;line-height:1.25;text-align:center;}
+.jp .b{font-size:11.5px;font-weight:600;color:var(--pos);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;}
+.jp .b.neg{color:var(--neg);}
+.jp.on{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent);}
+.qa-date{display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap;}
+.qa-date input{flex:1;min-width:130px;font-size:15px;padding:6px 8px;min-height:34px;border:1px solid var(--border);border-radius:18px;background:var(--surface);color:var(--text);}
+.qa-save{margin-top:2px;}
+.qa-tip{background:var(--warm-bg);border:1px solid var(--warm-border);color:var(--warm-text);border-radius:12px;padding:8px 12px;font-size:var(--fs-sm);line-height:1.45;margin-bottom:8px;}
+/* ---------- Thông báo nhỏ có nút Hoàn tác ---------- */
+.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 10px);transform:translate(-50%,-20px);opacity:0;pointer-events:none;z-index:200;display:flex;align-items:center;gap:12px;width:max-content;max-width:min(440px,calc(100vw - 24px));background:#1F2937;color:#fff;border-radius:14px;padding:10px 10px 10px 16px;font-size:var(--fs-sm);line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.25);transition:opacity .2s,transform .2s;}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto;}
+.toast button{flex:none;border:0;background:rgba(255,255,255,.14);color:#9CC3FF;font:inherit;font-weight:800;border-radius:10px;padding:7px 12px;cursor:pointer;}
+.toast button:empty{display:none;}
+/* ---------- Lời nhắc trên trang chủ ---------- */
+.nudge{display:flex;align-items:center;gap:8px;width:100%;border:1px solid #D6E3F7;background:var(--accent-soft);color:var(--newtx-text);border-radius:var(--r-md);padding:4px 4px 4px 14px;margin:0 0 clamp(6px,1vh,10px);font-size:var(--fs-sm);line-height:1.4;}
+.nudge .go{flex:1;text-align:left;border:0;background:none;color:inherit;font:inherit;padding:6px 0;cursor:pointer;}
+.nudge .x{flex:none;width:34px;height:34px;border:0;background:none;color:inherit;opacity:.6;font-size:15px;cursor:pointer;}
+/* ---------- Nhãn chi tiêu ---------- */
+.tag-pill{display:inline-block;font-size:11.5px;font-weight:700;color:var(--violet-text);background:var(--violet-bg);border-radius:8px;padding:1px 7px;margin-left:4px;vertical-align:1px;white-space:nowrap;}
+/* ---------- Báo cáo: nhận xét + kế hoạch ---------- */
+.rp-insight{background:linear-gradient(135deg,#FFF8E6,#FFF1D6);border:1px solid var(--warm-border);border-radius:var(--r-lg);padding:10px 14px;margin:10px 0 2px;color:#5C3D00;}
+.rp-insight .h{font-weight:800;font-size:var(--fs-sm);margin-bottom:4px;}
+.rp-insight ul{margin:0;padding-left:18px;font-size:var(--fs-sm);line-height:1.55;}
+.rp-insight li{margin-bottom:3px;}
+.rp-plan{font-size:12px;color:var(--text-soft);margin-top:3px;display:flex;justify-content:space-between;gap:8px;}
+.rp-plan.over{color:var(--neg);font-weight:700;}
+.rp-plan.ok b{color:var(--pos);}
+.rp-track.plan{position:relative;overflow:visible;}
+.rp-track.plan i.ok{background:var(--pos);}
+.rp-track.plan i.warn{background:#E8A33D;}
+.rp-track.plan i.over{background:var(--neg);}
+/* ---------- Màn hình chào mừng ---------- */
+.ob-ov{position:fixed;inset:0;z-index:9000;background:#FFFFFF;display:none;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 10px) 0 calc(env(safe-area-inset-bottom,0px) + 12px);}
+.ob-ov.open{display:flex;}
+.ob-in{flex:1;min-height:0;width:100%;max-width:480px;margin:0 auto;padding:0 18px;display:flex;flex-direction:column;}
+.ob-top{flex:none;display:flex;align-items:center;justify-content:space-between;min-height:40px;}
+.ob-dots{display:flex;gap:6px;}
+.ob-dots i{width:8px;height:8px;border-radius:4px;background:var(--border);transition:width .2s;}
+.ob-dots i.on{width:22px;background:var(--accent);}
+.ob-skip{border:0;background:none;color:var(--text-soft);font:inherit;font-size:var(--fs-sm);font-weight:600;padding:8px 4px;cursor:pointer;}
+.ob-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px 0 10px;}
+.ob-emoji{font-size:52px;text-align:center;line-height:1.1;margin:6px 0 4px;}
+.ob-h{font-size:clamp(21px,5.6vw,25px);font-weight:800;text-align:center;line-height:1.3;margin:4px 0 6px;text-wrap:balance;}
+.ob-p{font-size:var(--fs-md);color:var(--text-soft);text-align:center;line-height:1.55;margin:0 0 14px;text-wrap:pretty;}
+.ob-jars{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+.ob-jar{border:1px solid var(--border);border-radius:14px;padding:9px 10px;background:var(--surface-2);}
+.ob-jar .t{display:flex;align-items:center;justify-content:space-between;gap:6px;font-weight:800;font-size:var(--fs-sm);}
+.ob-jar .t b{color:var(--accent-strong);}
+.ob-jar .d{font-size:12.5px;color:var(--text-soft);line-height:1.4;margin-top:2px;}
+.ob-split{margin-top:10px;border:1px solid var(--border);border-radius:14px;padding:4px 12px;}
+.ob-split .list-item.slim{font-size:var(--fs-sm);}
+.ob-foot{flex:none;display:flex;flex-direction:column;gap:8px;}
+.ob-foot .btn{margin:0;}
+/* ---------- Cỡ chữ lớn (Cài đặt → Cỡ chữ) ---------- */
+html.fs-big{--fs-xs:14.5px;--fs-sm:16px;--fs-md:18px;--fs-lg:20px;--fs-xl:25px;}
+html.fs-big .card-label{font-size:18px;}
+html.fs-big .card-amount{font-size:22px;}
+html.fs-big .card.balance .card-amount{font-size:28px;}
+html.fs-big .fill-rows{--fl:18px;--fa:19px;--fs:14px;}
+html.fs-big .list-item .date,html.fs-big .hist-time{font-size:14px;}
+html.fs-big .mini-btn{font-size:15px;min-height:38px;}
+html.fs-big .jp .n{font-size:14px;}
+html.fs-big .jp .b{font-size:13px;}
+html.fs-big .ob-jar .d,html.fs-big .rp-plan,html.fs-big .rp-lim{font-size:14px;}
 </style>
 </head>
 <body>
@@ -706,6 +813,16 @@ html.fast-start .boot-splash{display:none!important;}
 <div class="modal-overlay" id="buyModal" onclick="if(event.target===this)closeBuy()">
  <div class="modal-box" id="buyBox" style="text-align:left;"></div>
 </div>
+<!-- Nút ＋ Ghi chi nổi (chỉ hiện ở trang chủ) -->
+<button class="qa-fab" id="qaFab" onclick="openQuickAdd()" aria-label="Ghi khoản chi mới"><b>＋</b> Ghi chi</button>
+<!-- Bảng ghi chi nhanh -->
+<div class="sheet-ov" id="qaSheet" onclick="if(event.target===this)closeQuickAdd()">
+ <div class="sheet" id="qaBox" role="dialog" aria-label="Ghi khoản chi"></div>
+</div>
+<!-- Thông báo nhỏ có nút Hoàn tác -->
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toastText"></span><button id="toastBtn" onclick="toastAction()"></button></div>
+<!-- Màn hình chào mừng lần đầu -->
+<div class="ob-ov" id="obOv"><div class="ob-in" id="obIn"></div></div>
 <div class="modal-overlay game-loading" id="gameLoading"><div class="modal-box"><div class="spin"></div><p style="margin:0;">Đang tải trò chơi...</p></div></div>
 <script>
 const JARS=[
@@ -871,6 +988,7 @@ let amtMode='manual'; // 'manual' = tự nhập | 'x1000' = tự động x1.000�
 try{
   const raw=localStorage.getItem(STORE_KEY);
   if(raw){const d=JSON.parse(raw); if(d.pct)pct=d.pct; if(d.tx)tx=d.tx; if(d.amtMode==='x1000')amtMode='x1000';}
+  else amtMode='x1000'; // người dùng mới: gõ 50 là 50.000đ cho nhanh (đổi được trong Cài đặt)
 }catch(e){}
 const STAR_KEY='6pay-stars-v1';
 let stars=0;
@@ -1342,7 +1460,7 @@ function scrHome(){
    <div class="brand-sub">Quản lý tài chính cá nhân</div>
    <div class="star-line">${streakHtml()} &nbsp;·&nbsp; ⭐ ${fmt(stars)} điểm</div>
   </div>
-  ${backupBanner()}
+  ${homeNudge()}
   <button class="card balance" onclick="push('wallets')">
    <span class="card-label">💼 Số dư</span>
    <span class="card-amount ${cls}">${fmt(bal)} ₫</span>
@@ -1490,19 +1608,6 @@ function allLsKeys(){const a=[];try{for(let i=0;i<localStorage.length;i++)a.push
 function isAppKey(k){return !!k&&BACKUP_PREFIX.some(p=>k.indexOf(p)===0);}
 function appKeys(){return allLsKeys().filter(isAppKey);}
 function backupKeys(){const skip=BACKUP_SKIP.concat([typeof GUIDES_CACHE_KEY!=='undefined'?GUIDES_CACHE_KEY:'',typeof CLICK_LOG_KEY!=='undefined'?CLICK_LOG_KEY:'']);return appKeys().filter(k=>skip.indexOf(k)<0);}
-function backupExport(){
- const data={};
- backupKeys().forEach(k=>{try{const v=localStorage.getItem(k);if(v!==null)data[k]=v;}catch(e){}});
- const json=JSON.stringify({app:'6pay',fmt:2,version:APP_VERSION,ts:Date.now(),data:data});
- const name='6pay-sao-luu-'+dayKey()+'.json';
- const file=new File([json],name,{type:'application/json'});
- try{localStorage.setItem(LASTBACKUP_KEY,String(Date.now()));}catch(e){}
- if(detectOS()==='ios'&&navigator.canShare&&navigator.canShare({files:[file]})){
-  navigator.share({files:[file],title:'Sao lưu 6PAY'}).catch(()=>{});
-  return;
- }
- downloadFile(file,name);
-}
 function downloadFile(file,name){
  const a=document.createElement('a');
  a.href=URL.createObjectURL(file);a.download=name;
@@ -1532,8 +1637,10 @@ function inviteJoin(){closeInvite();push('login');}
 function backupBanner(){
  if(!tx.length)return '';
  const d=lastBackupDays();
- if(d>=0&&d<=14)return '';
- return `<button class="backup-banner" onclick="backupExport();setTimeout(render,600)">💾 ${d<0?'Bạn chưa sao lưu dữ liệu lần nào.':'Đã '+d+' ngày bạn chưa sao lưu.'} <b>Sao lưu ngay ›</b></button>`;
+ if(d<0){const n=recDays().size;if(n<7)return '';
+  return `<button class="backup-banner" onclick="backupShare()">💾 Bạn đã ghi chép ${n} ngày nhưng chưa sao lưu lần nào. <b>Gửi bản sao lưu ›</b></button>`;}
+ if(d<7)return '';
+ return `<button class="backup-banner" onclick="backupShare()">💾 Sao lưu lần cuối: ${d} ngày trước. <b>Gửi bản sao lưu ›</b></button>`;
 }
 function backupPick(){document.getElementById('bk-file').click();}
 function backupImport(inp){
@@ -1570,13 +1677,17 @@ function scrSettings(){
   ${setRow("push('ratios')",'🍯 Tỷ lệ phân bổ 6 ví')}
   ${setRow("push('limits')",'🚦 Hạn mức chi mỗi tháng')}
   ${setRow("push('planSettings')",'📅 Cài đặt Kế hoạch trong ngày')}
-  <div class="set-group">Dữ liệu</div>
-  ${setRow('backupExport()','💾 Sao lưu dữ liệu (tải file)',d<0?'Chưa sao lưu':(d===0?'Hôm nay':d+' ngày trước'))}
+  ${setRow("push('reminder')",'⏰ Nhắc ghi chép mỗi ngày',remTime())}
+  ${setRow('obOpen(true)','📖 Xem lại giới thiệu 6 ví')}
+  <div class="set-group">Dữ liệu · sao lưu lần cuối: ${d<0?'chưa sao lưu':(d===0?'hôm nay':d+' ngày trước')}</div>
+  ${setRow('backupShare()','📤 Gửi bản sao lưu (Zalo, Drive...)')}
+  ${setRow('backupDownload()','💾 Tải file sao lưu về máy')}
   ${setRow('backupPick()','♻️ Khôi phục dữ liệu từ file')}
   ${setRow('exportCsv()','📄 Xuất thu chi ra Excel (CSV)')}
   <input type="file" id="bk-file" accept=".json,application/json" style="display:none" onchange="backupImport(this)">
   <div class="set-group">Khác</div>
   ${setRow("push('login')",'👤 Thành viên & khóa app',hasLock(getAccount())?'Khóa: đang bật':'Khóa: đang tắt')}
+  ${setRow('toggleFontSize()','🔠 Cỡ chữ',fontBig()?'Lớn':'Bình thường')}
   ${setRow('toggleSound()','🔊 Âm thanh trò chơi',soundOn()?'Đang bật':'Đang tắt')}
   ${setRow('openInstall()','📲 Hướng dẫn cài app ra màn hình')}
   <div class="guide-desc">Nên sao lưu định kỳ và lưu file vào Google Drive hoặc gửi qua Zalo cho chính mình. Khi app bị gỡ hay đổi điện thoại, bạn chỉ cần mở app và chọn Khôi phục.</div>`);
@@ -1700,7 +1811,7 @@ function scrTransfer(){
   <div class="sec-title">Lần chuyển gần đây</div>
   ${list.length?list.map(t=>`<div class="list-item">
    <div class="tx-info"><div>${jarOf(t.from).i} ${jarOf(t.from).l} → ${jarOf(t.to).i} ${jarOf(t.to).l}</div>${t.note?`<div class="note">${esc(t.note)}</div>`:''}<div class="date">${dateFmt(t.ts)}</div></div>
-   <div class="tx-right"><span class="tr-amt">${fmt(t.amount)} ₫</span><div class="tx-actions"><button class="mini-btn" onclick="openConfirm('Xóa lần chuyển tiền này? Số dư hai ví sẽ trở lại như trước.',function(){deleteTx('${t.id}')})">🗑 Xóa</button></div></div>
+   <div class="tx-right"><span class="tr-amt">${fmt(t.amount)} ₫</span><div class="tx-actions"><button class="mini-btn" onclick="deleteTxUndo('${t.id}')">🗑 Xóa</button></div></div>
   </div>`).join(''):'<div class="empty">Chưa có lần chuyển tiền nào.</div>'}
   <div class="guide-desc">Chuyển tiền giữa các ví chỉ thay đổi số dư từng ví, không tính vào tổng thu hay tổng chi.</div>`);
 }
@@ -1815,7 +1926,7 @@ function scrIncomeDetail(opts){
    <div class="list-item">
     <div class="tx-info">${t.note?`<div>${esc(t.note)}</div>`:'<div class="note">(không ghi chú)</div>'}<div class="date">${dateFmt(t.ts)}</div></div>
     <div class="tx-right"><span class="pos">+${fmt(t.amount)} ₫</span>
-     <div class="tx-actions"><button class="mini-btn" onclick="openConfirm('Bạn có muốn sửa khoản thu này không?',function(){startEditIncome('${t.id}')})">✎ Sửa</button><button class="mini-btn" onclick="openConfirm('Bạn có chắc muốn xóa khoản thu này không?',function(){deleteTx('${t.id}')})">🗑 Xóa</button></div>
+     <div class="tx-actions"><button class="mini-btn" onclick="startEditIncome('${t.id}')">✎ Sửa</button><button class="mini-btn" onclick="deleteTxUndo('${t.id}')">🗑 Xóa</button></div>
     </div>
    </div>`).join(''):'<div class="empty">Chưa có khoản thu nào.</div>'}
   </div>
@@ -1882,11 +1993,11 @@ function scrExpenseOverview(){
 }
 
 // Trang chi tiết ví (dùng chung cho cả 6 ví)
-let expDraft={amount:'',exact:'',note:'',editId:'',date:'',jar:''};
-function openJar(k){expDraft={amount:'',exact:'',note:'',editId:'',date:'',jar:''};push('expenseDetail',{jar:k});}
+let expDraft={amount:'',exact:'',note:'',editId:'',date:'',jar:'',tag:'',tagManual:false};
+function openJar(k){expDraft={amount:'',exact:'',note:'',editId:'',date:'',jar:'',tag:'',tagManual:false};push('expenseDetail',{jar:k});}
 function startEditExpense(id){
  const t=tx.find(x=>x.id===id); if(!t)return;
- expDraft={amount:editVal(t.amount),exact:needExact(t.amount)?String(t.amount):'',note:t.note||'',editId:id,date:dayKey(new Date(t.ts)),jar:t.jar};
+ expDraft={amount:editVal(t.amount),exact:needExact(t.amount)?String(t.amount):'',note:t.note||'',editId:id,date:dayKey(new Date(t.ts)),jar:t.jar,tag:t.tag||'',tagManual:true};
  render();
 }
 // ===== Hạn mức chi mỗi tháng cho từng ví =====
@@ -1935,7 +2046,8 @@ function scrExpenseDetail(opts){
     <div class="form-row tight"><label>Ngày</label>${dateInput('out-date',expDraft.date,'expDraft.date=this.value')}</div>
    </div>
    ${editing?`<div class="form-row tight"><label>Chi từ ví</label><select id="out-jar" onchange="expDraft.jar=this.value">${JARS.map(x=>`<option value="${x.k}" ${(expDraft.jar||opts.jar)===x.k?'selected':''}>${x.i} ${x.l}</option>`).join('')}</select></div>`:''}
-   <div class="form-row tight"><label>Nội dung</label><input type="text" id="out-note" placeholder="Ghi chú (vd. Ăn trưa)" value="${esc(expDraft.note).replace(/"/g,'&quot;')}" oninput="expDraft.note=this.value"></div>
+   <div class="form-row tight"><label>Nội dung</label><input type="text" id="out-note" placeholder="Ghi chú (vd. Ăn trưa)" autocomplete="off" value="${esc(expDraft.note).replace(/"/g,'&quot;')}" oninput="expNoteInput(this.value)"><div id="exp-sug"></div></div>
+   <div class="chip-row scroll-x" id="exp-tags" style="margin:0 0 8px;" aria-label="Nhãn chi tiêu (không bắt buộc)">${tagChips(expDraft.tag||'','expSetTag')}</div>
    <div class="filter-row">
     <select id="exp-filter-mode" onchange="expenseFilter.mode=this.value;render();">
      <option value="all" ${expenseFilter.mode==='all'?'selected':''}>Toàn bộ</option>
@@ -1952,9 +2064,9 @@ function scrExpenseDetail(opts){
   <div class="scroll">
    ${list.length?list.map(t=>`
    <div class="list-item">
-    <div class="tx-info"><div>${esc(t.note||'(không ghi chú)')}</div><div class="date">${dateFmt(t.ts)}</div></div>
+    <div class="tx-info"><div>${esc(t.note||'(không ghi chú)')}</div><div class="date">${dateFmt(t.ts)}${tagPill(t.tag)}</div></div>
     <div class="tx-right"><span class="neg">−${fmt(t.amount)} ₫</span>
-     <div class="tx-actions"><button class="mini-btn" onclick="openConfirm('Bạn có muốn sửa khoản chi này không?',function(){startEditExpense('${t.id}')})">✎ Sửa</button><button class="mini-btn" onclick="openConfirm('Bạn có chắc muốn xóa khoản chi này không?',function(){deleteTx('${t.id}')})">🗑 Xóa</button></div>
+     <div class="tx-actions"><button class="mini-btn" onclick="startEditExpense('${t.id}')">✎ Sửa</button><button class="mini-btn" onclick="deleteTxUndo('${t.id}')">🗑 Xóa</button></div>
     </div>
    </div>`).join(''):'<div class="empty">Chưa có khoản chi nào.</div>'}
   </div>
@@ -1978,10 +2090,11 @@ function confirmExpense(jar){
    const nj=(document.getElementById('out-jar')||{}).value||t.jar;
    if(nj!==t.jar){moved=jarOf(nj).i+' '+jarOf(nj).l;}
    t.amount=amt;t.note=note;t.jar=nj;t.ts=tsFromDate(ds,t.ts);chkJar=nj;
+   if(expDraft.tag)t.tag=expDraft.tag;else delete t.tag;
   }
  }
- else{tx.push({id:uid(),type:'out',jar,amount:amt,note,ts:tsFromDate(ds),st:1});addStar();}
- expDraft={amount:'',exact:'',note:'',editId:'',date:'',jar:''};
+ else{const nt={id:uid(),type:'out',jar,amount:amt,note,ts:tsFromDate(ds),st:1};const tg=expDraft.tag||tagGuess(note);if(tg)nt.tag=tg;tx.push(nt);addStar();try{localStorage.setItem(LASTJAR_KEY,jar);}catch(e){}}
+ expDraft={amount:'',exact:'',note:'',editId:'',date:'',jar:'',tag:'',tagManual:false};
  persist(); render();
  if(moved)notify('Đã chuyển khoản chi sang ví '+moved+'.');
  else limitCheck(chkJar);
@@ -2195,12 +2308,8 @@ function scrExtra(){
  return screenWrap('Tiện ích 6Pay',`
   ${utilIt("push('finUtil')",'💰 Tiện ích tài chính',billDueCount()?'<span class="neg">● '+billDueCount()+'</span> ':'')}
   ${utilIt('openReport()','📊 Báo cáo tháng')}
-  ${utilIt("push('calc')",'🧮 Máy tính')}
-  ${utilIt("push('units')",'📐 Đổi đơn vị đo')}
   ${utilIt('openPlanner()','📅 Kế hoạch bản thân')}
-  ${utilIt("push('stopwatch')",'⏱️ Đồng hồ bấm giờ, Pomodoro')}
-  ${utilIt('openNotes()','📝 Sổ ghi chú')}
-  ${utilIt('openLunar()','🗓️ Lịch vạn niên')}
+  ${utilIt("push('tools')",'🧰 Công cụ hằng ngày','<small style="font-weight:500;color:var(--text-soft)">Máy tính, ghi chú, lịch…</small> ')}
   ${utilIt("push('learnPlay')",'🎓 Học và Chơi')}`);
 }
 // ===== Thư mục Tiện ích tài chính =====
@@ -2576,7 +2685,7 @@ function txLabel(x){
 function histList(){
  const f=histFilter;
  const q=noAccent(histQuery.trim());
- if(q)return tx.filter(x=>noAccent((x.note||'')+' '+txLabel(x)+' '+x.amount).indexOf(q)>-1).sort((a,b)=>b.ts-a.ts);
+ if(q)return tx.filter(x=>noAccent((x.note||'')+' '+txLabel(x)+' '+((tagOf(x.tag)||{}).l||'')+' '+x.amount).indexOf(q)>-1).sort((a,b)=>b.ts-a.ts);
  return tx.filter(x=>{
   const k=dayKey(new Date(x.ts));
   if(f.mode==='month')return k.slice(0,7)===(f.month||dayKey().slice(0,7));
@@ -2596,7 +2705,7 @@ function histBody(){
   const isIn=x.type==='in', isTr=x.type==='tr';
   const time=new Date(x.ts).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
   return `<div class="list-item">
-   <div class="tx-info"><div class="tx-name">${txLabel(x)}</div>
+   <div class="tx-info"><div class="tx-name">${txLabel(x)}${tagPill(x.tag)}</div>
     <div class="note">${esc(x.note||'(không ghi chú)')}</div>
     <div class="hist-time">${isTr?'Chuyển ví':(isIn?'Thu':'Chi')} · ${dateFmt(x.ts)} · ${time}</div></div>
    <span class="${isTr?'tr-amt':(isIn?'pos':'neg')}">${isTr?'':(isIn?'+':'−')}${fmt(x.amount)} ₫</span>
@@ -2658,6 +2767,17 @@ function scrReport(){
  const maxM=Math.max(1,...ms.map(x=>Math.max(x.s.i,x.s.o)));
  const cnt=tx.filter(t=>(t.type==='in'||t.type==='out')&&monthKey(t.ts)===mk).length;
  const isNow=mk>=dayKey().slice(0,7);
+ // Chi theo nhãn (nhãn rỗng = chưa gắn nhãn, luôn để cuối)
+ const tagMap={};tx.forEach(t=>{if(t.type!=='out'||monthKey(t.ts)!==mk)return;const k=tagOf(t.tag)?t.tag:'';tagMap[k]=(tagMap[k]||0)+t.amount;});
+ const byTag=Object.keys(tagMap).map(k=>({t:tagOf(k),v:tagMap[k]})).sort((a,b)=>(a.t?0:1)-(b.t?0:1)||b.v-a.v);
+ const maxT=Math.max(1,...byTag.map(x=>x.v));
+ const ins=rpInsights(mk,cur,prev,byJar,byTag);
+ const planLine=x=>{
+  if(!cur.i)return '';
+  const plan=cur.i*jarPct(x.j.k)/100; if(plan<=0)return '';
+  const r=Math.round(x.v/plan*100);
+  return `<div class="rp-plan ${r>100?'over':'ok'}"><span>Kế hoạch ${fmt(plan)} ₫ (${jarPct(x.j.k)}% thu nhập)</span><span>đã dùng <b>${r}%</b></span></div>`;
+ };
  return screenWrap('📊 Báo cáo tháng',`
   <div class="rp-nav">
    <button class="mini-btn" onclick="rpMonth=mkShift(rpMonth,-1);render()" aria-label="Tháng trước">◀</button>
@@ -2669,12 +2789,17 @@ function scrReport(){
    <div class="rp-box out"><span>Tổng chi</span><b>${fmt(cur.o)} ₫</b>${cmpTxt(cur.o,prev.o,false)}</div>
    <div class="rp-box net"><span>Còn lại</span><b class="${net<0?'neg':'pos'}">${fmt(net)} ₫</b><span class="rp-cmp">${cur.i?'Để dành được '+rate+'% thu nhập':cnt+' giao dịch'}</span></div>
   </div>
-  <div class="sec-title">Chi theo từng ví</div>
+  ${ins.length?`<div class="rp-insight"><div class="h">💡 Nhận xét ${isNow?'tháng này':mkLabel(mk).toLowerCase()}</div><ul>${ins.map(t=>'<li>'+t+'</li>').join('')}</ul></div>`:''}
+  <div class="sec-title">Chi theo từng ví${cur.i?' · so với kế hoạch':''}</div>
   <div class="rp-card">${cur.o?byJar.map(x=>{const lim=+limits[x.j.k]||0;return `<div class="rp-bar">
     <div class="rp-bl"><span>${x.j.i} ${x.j.l}</span><span>${fmt(x.v)} ₫${cur.o?' · '+Math.round(x.v/cur.o*100)+'%':''}</span></div>
     <div class="rp-track"><i style="width:${Math.round(x.v/maxJ*100)}%"></i></div>
+    ${planLine(x)}
     ${lim?`<div class="rp-lim ${x.v>lim?'neg':''}">Hạn mức ${fmt(lim)} ₫${x.v>lim?' · vượt '+fmt(x.v-lim)+' ₫':''}</div>`:''}
    </div>`;}).join(''):'<div class="empty">Tháng này chưa có khoản chi nào.</div>'}</div>
+  ${byTag.some(x=>x.t)?`<div class="sec-title">Chi theo nhãn</div><div class="rp-card">${byTag.map(x=>`<div class="rp-bar">
+    <div class="rp-bl"><span>${x.t?x.t.i+' '+x.t.l:'❔ Chưa gắn nhãn'}</span><span>${fmt(x.v)} ₫ · ${Math.round(x.v/cur.o*100)}%</span></div>
+    <div class="rp-track"><i style="width:${Math.round(x.v/maxT*100)}%"></i></div></div>`).join('')}</div>`:''}
   ${byInc.length?`<div class="sec-title">Nguồn thu</div><div class="rp-card">${byInc.map(x=>`<div class="list-item slim"><span>${x.k.i} ${x.k.l}</span><span class="pos">${fmt(x.v)} ₫</span></div>`).join('')}</div>`:''}
   <div class="sec-title">Thu chi 6 tháng gần nhất</div>
   <div class="rp-card">
@@ -2689,13 +2814,13 @@ function scrReport(){
 function csvCell(v){v=String(v==null?'':v);return /[",\n;]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
 function exportCsv(){
  if(!tx.length){notify('Chưa có giao dịch nào để xuất.');return;}
- const head=['Ngày','Giờ','Loại','Ví / Nguồn thu','Số tiền (VND)','Ghi chú'];
+ const head=['Ngày','Giờ','Loại','Ví / Nguồn thu','Số tiền (VND)','Ghi chú','Nhãn'];
  const rows=tx.slice().sort((a,b)=>a.ts-b.ts).map(t=>{
   const d=new Date(t.ts);
   const type=t.type==='in'?'Thu':(t.type==='out'?'Chi':'Chuyển ví');
   const where=t.type==='in'?((INCOME_TYPES.find(k=>k.k===t.sub)||{}).l||t.sub):(t.type==='out'?jarOf(t.jar).l:jarOf(t.from).l+' → '+jarOf(t.to).l);
   const amt=t.type==='out'?-t.amount:t.amount;
-  return [dateFmt(t.ts),d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}),type,where,amt,t.note||''];
+  return [dateFmt(t.ts),d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}),type,where,amt,t.note||'',(tagOf(t.tag)||{}).l||''];
  });
  const csv='\ufeff'+[head].concat(rows).map(r=>r.map(csvCell).join(',')).join('\r\n');
  const name='6pay-thu-chi-'+dayKey()+'.csv';
@@ -3584,7 +3709,412 @@ function scrStopwatch(){
  return screenWrap('⏱️ Đồng hồ',`<div class="ins-tabs">${tab('sw','Bấm giờ')}${tab('cd','Đếm ngược')}${tab('pm','Pomodoro')}</div>`+body);
 }
 
+// ===================== CẢI THIỆN TRẢI NGHIỆM (bản 2026.10.29) =====================
+// Gồm: ghi chi nhanh, gợi ý nội dung, nhãn chi tiêu, hoàn tác khi xóa, màn hình chào mừng,
+// nhắc ghi bù, nhắc ghi chép qua Lịch điện thoại, sao lưu dễ hơn, cỡ chữ lớn, công cụ hằng ngày.
+
+// ---------- Nhãn chi tiêu (không bắt buộc) ----------
+// w: từ khóa (viết không dấu) để app tự đoán nhãn từ nội dung. Thêm nhãn mới bằng cách thêm 1 dòng, giữ "khac" ở cuối.
+const TAGS=[
+ {k:'an',l:'Ăn uống',i:'🍜',w:['an','an sang','an trua','an toi','com','pho','bun','mi','ca phe','cafe','tra sua','tra da','nuoc uong','do an','banh','che','nhau','lau','buffet','an vat','grabfood','shopeefood']},
+ {k:'cho',l:'Đi chợ',i:'🥬',w:['di cho','cho','sieu thi','rau','thit','ca','gao','trung','thuc pham','bach hoa xanh','winmart','coopmart']},
+ {k:'dilai',l:'Đi lại',i:'⛽',w:['xang','do xang','grab','taxi','xe om','gui xe','ve xe','ve tau','may bay','sua xe','rua xe','xe buyt','bus','phi cau duong','xanh sm']},
+ {k:'hoadon',l:'Hóa đơn',i:'💡',w:['tien dien','dien','tien nuoc','internet','wifi','cuoc mang','dien thoai','the cao','nap tien','gas','truyen hinh','phi chung cu','phi dich vu']},
+ {k:'nha',l:'Nhà cửa',i:'🏠',w:['tien nha','thue nha','tien phong','sua nha','do dung','noi that']},
+ {k:'suckhoe',l:'Sức khỏe',i:'💊',w:['thuoc','kham','kham benh','benh vien','bao hiem','nha khoa','vitamin','gym']},
+ {k:'concai',l:'Con cái',i:'👶',w:['hoc phi','sua bot','bim','do choi']},
+ {k:'hoctap',l:'Học tập',i:'📚',w:['sach','khoa hoc','hoc','lop hoc']},
+ {k:'giaitri',l:'Giải trí',i:'🎬',w:['phim','xem phim','karaoke','du lich','di choi','netflix','spotify']},
+ {k:'hieuhy',l:'Hiếu hỷ, quà',i:'🎁',w:['dam cuoi','an cuoi','sinh nhat','qua','mung','vieng','tham','bieu','li xi','tu thien']},
+ {k:'muasam',l:'Mua sắm',i:'🛍️',w:['quan ao','giay','dep','tui','shopee','lazada','tiki','my pham','mua sam']},
+ {k:'khac',l:'Khác',i:'📌',w:[]}
+];
+function tagOf(k){return k?TAGS.find(t=>t.k===k)||null:null;}
+function tagPill(k){const t=tagOf(k);return t?`<span class="tag-pill">${t.i} ${t.l}</span>`:'';}
+function normNote(s){return noAccent(String(s||'').trim()).replace(/\s+/g,' ');}
+// Đoán nhãn: ưu tiên nhãn đã dùng cho đúng nội dung này trước đây, sau đó mới đoán theo từ khóa
+function tagGuess(note){
+ const n=normNote(note); if(!n)return '';
+ for(let i=tx.length-1;i>=0;i--){const t=tx[i];if(t.type==='out'&&t.tag&&normNote(t.note)===n)return t.tag;}
+ const h=' '+n.replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ')+' ';
+ for(const t of TAGS){for(const w of t.w){if(h.indexOf(' '+w+' ')>-1)return t.k;}}
+ return '';
+}
+function tagChips(sel,fn){
+ return TAGS.map(t=>`<button type="button" class="chip${sel===t.k?' on':''}" onclick="${fn}('${t.k}')">${t.i} ${t.l}</button>`).join('');
+}
+
+// ---------- Gợi ý nội dung từ lịch sử ----------
+const DEFAULT_SUG=[
+ {note:'Ăn sáng',jar:'essential',tag:'an'},{note:'Ăn trưa',jar:'essential',tag:'an'},{note:'Cà phê',jar:'enjoy',tag:'an'},
+ {note:'Đi chợ',jar:'essential',tag:'cho'},{note:'Xăng xe',jar:'essential',tag:'dilai'},{note:'Tiền điện',jar:'essential',tag:'hoadon'}
+];
+function noteStats(){
+ const m=new Map(), now=Date.now();
+ tx.forEach(t=>{
+  if(t.type!=='out'||!t.note)return;
+  const k=normNote(t.note); if(!k)return;
+  let o=m.get(k); if(!o){o={note:t.note.trim(),n:0,last:0,jar:t.jar,tag:t.tag||'',amt:t.amount};m.set(k,o);}
+  o.n++;
+  if(t.ts>=o.last){o.last=t.ts;o.note=t.note.trim();o.jar=t.jar;o.tag=t.tag||o.tag;o.amt=t.amount;}
+ });
+ return [...m.values()].map(o=>{o.score=o.n+Math.max(0,30-(now-o.last)/864e5)/10;return o;}).sort((a,b)=>b.score-a.score);
+}
+function noteSuggest(q,max){
+ const n=normNote(q);
+ let list=noteStats();
+ if(!n){
+  DEFAULT_SUG.forEach(d=>{if(!list.some(o=>normNote(o.note)===normNote(d.note)))list.push(Object.assign({amt:0},d));});
+  return list.slice(0,max);
+ }
+ list=list.concat(DEFAULT_SUG.filter(d=>!list.some(o=>normNote(o.note)===normNote(d.note))).map(d=>Object.assign({amt:0},d)));
+ return list.filter(o=>{const k=normNote(o.note);return k!==n&&(k.indexOf(n)===0||k.indexOf(' '+n)>-1);}).slice(0,max);
+}
+function shortAmt(a){
+ if(!a)return '';
+ if(a>=1e6&&a%1e5===0)return (a/1e6).toLocaleString('vi-VN')+'tr';
+ if(a%1000===0)return (a/1000).toLocaleString('vi-VN')+'k';
+ return fmt(a);
+}
+function shakeEl(el){if(!el)return;el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),300);}
+
+// ---------- Thông báo nhỏ có nút Hoàn tác ----------
+let _toastFn=null,_toastT=0;
+function showToast(msg,btn,fn){
+ const t=document.getElementById('toast'); if(!t)return;
+ document.getElementById('toastText').textContent=msg;
+ document.getElementById('toastBtn').textContent=fn?(btn||'Hoàn tác'):'';
+ _toastFn=fn||null; t.classList.add('show');
+ clearTimeout(_toastT); _toastT=setTimeout(hideToast,fn?6000:3000);
+}
+function hideToast(){const t=document.getElementById('toast');if(t)t.classList.remove('show');_toastFn=null;}
+function toastAction(){const f=_toastFn;hideToast();if(f)f();}
+// Xóa giao dịch không cần hộp xác nhận, có nút Hoàn tác trong 6 giây
+function deleteTxUndo(id){
+ const i=tx.findIndex(x=>x.id===id); if(i<0)return;
+ const t=tx[i];
+ if(expDraft.editId===id)expDraft={amount:'',exact:'',note:'',editId:'',date:'',jar:''};
+ if(incDraft.editId===id)incDraft={amount:'',exact:'',note:'',editId:'',date:'',sub:''};
+ deleteTx(id);
+ const what=t.type==='tr'?'lần chuyển ví':(t.type==='in'?'khoản thu':'khoản chi');
+ showToast('Đã xóa '+what+' '+fmt(t.amount)+' ₫','Hoàn tác',()=>{
+  if(tx.some(x=>x.id===t.id))return;
+  tx.splice(Math.min(i,tx.length),0,t); if(t.st)addStar(); persist(); render();
+  showToast('Đã khôi phục '+what+'.');
+ });
+}
+
+// ---------- Ghi chi nhanh (nút ＋ Ghi chi ở trang chủ) ----------
+const LASTJAR_KEY='6pay-lastjar-v1';
+let qd={note:'',jar:'essential',tag:'',tagAuto:true,date:'',onb:false};
+let _sugList=[];
+function lastJar(){try{const j=localStorage.getItem(LASTJAR_KEY);if(JARS.some(x=>x.k===j))return j;}catch(e){}return 'essential';}
+function openQuickAdd(o){
+ o=o||{};
+ hideToast();
+ qd={note:'',jar:lastJar(),tag:'',tagAuto:true,date:o.date||dayKey(),onb:!!o.onb};
+ drawQuickAdd();
+ document.getElementById('qaSheet').classList.add('open');
+ const e=document.getElementById('qa-amt'); if(e){try{e.focus({preventScroll:true});}catch(x){e.focus();}}
+}
+function closeQuickAdd(){
+ const s=document.getElementById('qaSheet'); const was=s.classList.contains('open');
+ s.classList.remove('open');
+ if(was&&qd.onb){qd.onb=false;setTimeout(maybeShowInstall,600);}
+}
+function qaYesterday(){const d=new Date();d.setDate(d.getDate()-1);return dayKey(d);}
+function qaDateRow(){
+ const t=dayKey(), y=qaYesterday();
+ return `<button type="button" class="chip${qd.date===t?' on':''}" onclick="qaSetDate('${t}')">Hôm nay</button><button type="button" class="chip${qd.date===y?' on':''}" onclick="qaSetDate('${y}')">Hôm qua</button><input type="date" id="qa-date" value="${qd.date}" max="${t}" onchange="qaSetDate(this.value)" aria-label="Chọn ngày khác">`;
+}
+function qaJarGrid(){
+ return JARS.map(j=>{const b=jarRemain(j.k);return `<button type="button" class="jp${qd.jar===j.k?' on':''}" onclick="qaSetJar('${j.k}')"><span class="i">${j.i}</span><span class="n">${j.l}</span><span class="b${b<0?' neg':''}">${fmt(b)} ₫</span></button>`;}).join('');
+}
+function drawQuickAdd(){
+ const amtChips=[20,50,100,200,500].map(k=>`<button type="button" class="chip amt" onclick="qaSetAmt(${k})">${k}k</button>`).join('');
+ document.getElementById('qaBox').innerHTML=`
+  <div class="sheet-grip"></div>
+  <div class="sheet-head"><div class="sheet-title">⬆️ Ghi khoản chi</div><button class="sheet-x" onclick="closeQuickAdd()" aria-label="Đóng">✕</button></div>
+  ${qd.onb?'<div class="qa-tip">👋 Thử ghi một khoản bạn vừa chi, ví dụ <b>ăn trưa 35</b>. Gõ số tiền, chọn nội dung hoặc tự gõ, rồi bấm Lưu.</div>':''}
+  <input class="qa-amt" id="qa-amt" type="text" inputmode="numeric" autocomplete="off" placeholder="${amtMode==='x1000'?'Số tiền (nghìn đồng)':'Số tiền'}" oninput="formatAmountInput(this);qaHint()" onkeydown="if(event.key==='Enter'){event.preventDefault();qaSave();}">
+  <div class="qa-hint" id="qa-hint"></div>
+  <div class="chip-row amts">${amtChips}</div>
+  <div class="qa-lbl">Nội dung</div>
+  <input class="qa-note" id="qa-note" type="text" maxlength="120" placeholder="Gõ hoặc chọn bên dưới (vd. Ăn trưa)" autocomplete="off" oninput="qaNoteInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();qaSave();}">
+  <div class="sug-box" id="qa-sug">${qaSugHtml('')}</div>
+  <div class="qa-lbl">Chi từ ví</div>
+  <div class="jar-pick" id="qa-jars">${qaJarGrid()}</div>
+  <div class="qa-lbl">Nhãn <span style="font-weight:500">(không bắt buộc, giúp báo cáo biết tiền đi đâu)</span></div>
+  <div class="chip-row scroll-x" id="qa-tags">${tagChips(qd.tag,'qaSetTag')}</div>
+  <div class="qa-lbl">Ngày</div>
+  <div class="qa-date" id="qa-dates">${qaDateRow()}</div>
+  <button class="btn primary qa-save" onclick="qaSave()">✓ Lưu khoản chi</button>`;
+}
+function qaHint(){
+ const e=document.getElementById('qa-amt'), h=document.getElementById('qa-hint'); if(!e||!h)return;
+ const a=getAmt(e); h.textContent=a?('= '+fmt(a)+' ₫'):'';
+}
+function qaSetAmt(k){
+ const e=document.getElementById('qa-amt'); if(!e)return;
+ e.value=amtMode==='x1000'?String(k):String(k*1000); formatAmountInput(e); qaHint();
+}
+function qaSugHtml(q){
+ _sugList=noteSuggest(q,8);
+ if(!_sugList.length)return '';
+ return `<div class="chip-row scroll-x">${_sugList.map((o,i)=>`<button type="button" class="chip sug" onclick="qaPickSug(${i})">${esc(o.note)}${o.amt?'<small>· '+shortAmt(o.amt)+'</small>':''}</button>`).join('')}</div>`;
+}
+function qaNoteInput(v){
+ qd.note=v;
+ const s=document.getElementById('qa-sug'); if(s)s.innerHTML=qaSugHtml(v);
+ if(qd.tagAuto){const g=tagGuess(v);if(g!==qd.tag){qd.tag=g;const t=document.getElementById('qa-tags');if(t)t.innerHTML=tagChips(qd.tag,'qaSetTag');}}
+}
+function qaPickSug(i){
+ const o=_sugList[i]; if(!o)return;
+ const n=document.getElementById('qa-note'); if(n)n.value=o.note; qd.note=o.note;
+ if(o.jar&&JARS.some(j=>j.k===o.jar))qd.jar=o.jar;
+ qd.tag=o.tag||tagGuess(o.note); qd.tagAuto=true;
+ const a=document.getElementById('qa-amt');
+ if(a&&!getAmt(a)&&o.amt){a.value=needExact(o.amt)?fmt(o.amt):(amtMode==='x1000'?fmt(o.amt/1000):fmt(o.amt));if(needExact(o.amt))a.dataset.exact=String(o.amt);qaHint();}
+ document.getElementById('qa-jars').innerHTML=qaJarGrid();
+ document.getElementById('qa-tags').innerHTML=tagChips(qd.tag,'qaSetTag');
+ document.getElementById('qa-sug').innerHTML=qaSugHtml(o.note);
+ if(a&&!getAmt(a))a.focus();
+}
+function qaSetJar(k){qd.jar=k;document.getElementById('qa-jars').innerHTML=qaJarGrid();}
+function qaSetTag(k){qd.tag=qd.tag===k?'':k;qd.tagAuto=false;document.getElementById('qa-tags').innerHTML=tagChips(qd.tag,'qaSetTag');}
+function qaSetDate(v){if(!/^\d{4}-\d{2}-\d{2}$/.test(v||''))return;if(v>dayKey())v=dayKey();qd.date=v;document.getElementById('qa-dates').innerHTML=qaDateRow();}
+function qaSave(){
+ const el=document.getElementById('qa-amt'); const amt=el?getAmt(el):0;
+ if(!amt||amt<=0){shakeEl(el);if(el)el.focus();return;}
+ const note=((document.getElementById('qa-note')||{}).value||'').trim();
+ const t={id:uid(),type:'out',jar:qd.jar,amount:amt,note,ts:tsFromDate(qd.date),st:1};
+ if(qd.tag)t.tag=qd.tag;
+ tx.push(t); addStar(); persist();
+ try{localStorage.setItem(LASTJAR_KEY,qd.jar);}catch(e){}
+ const onb=qd.onb; qd.onb=false;
+ closeQuickAdd(); render();
+ const j=jarOf(t.jar);
+ showToast((onb?'🎉 Khoản chi đầu tiên! ':'Đã ghi ')+fmt(amt)+' ₫ vào '+j.i+' '+j.l+(t.ts<new Date(new Date().setHours(0,0,0,0)).getTime()?' ('+dateFmt(t.ts)+')':''),'Hoàn tác',()=>{
+  if(!tx.some(x=>x.id===t.id))return;
+  tx=tx.filter(x=>x.id!==t.id); subStar(); persist(); render(); showToast('Đã hủy khoản chi vừa ghi.');
+ });
+ if(onb)setTimeout(maybeShowInstall,2600); else limitCheck(t.jar);
+}
+
+// ---------- Nhãn và gợi ý trong trang chi tiết ví ----------
+function expNoteInput(v){
+ expDraft.note=v;
+ const s=document.getElementById('exp-sug');
+ if(s){_sugList=v.trim()?noteSuggest(v,6):[];s.innerHTML=_sugList.length?`<div class="chip-row scroll-x">${_sugList.map((o,i)=>`<button type="button" class="chip sug" onclick="expPickSug(${i})">${esc(o.note)}${o.amt?'<small>· '+shortAmt(o.amt)+'</small>':''}</button>`).join('')}</div>`:'';}
+ if(!expDraft.tagManual){const g=tagGuess(v);if(g!==(expDraft.tag||'')){expDraft.tag=g;const t=document.getElementById('exp-tags');if(t)t.innerHTML=tagChips(expDraft.tag,'expSetTag');}}
+}
+function expPickSug(i){
+ const o=_sugList[i]; if(!o)return;
+ const n=document.getElementById('out-note'); if(n)n.value=o.note;
+ expDraft.note=o.note; if(!expDraft.tagManual)expDraft.tag=o.tag||tagGuess(o.note);
+ const a=document.getElementById('out-amount');
+ if(a&&!getAmt(a)&&o.amt){a.value=needExact(o.amt)?fmt(o.amt):(amtMode==='x1000'?fmt(o.amt/1000):fmt(o.amt));if(needExact(o.amt))a.dataset.exact=String(o.amt);expDraft.amount=a.value;expDraft.exact=a.dataset.exact||'';const h=a.parentNode.querySelector('.amt-hint');if(h)h.textContent=hintText(a.value,a.dataset.exact||'');}
+ const s=document.getElementById('exp-sug'); if(s)s.innerHTML='';
+ const t=document.getElementById('exp-tags'); if(t)t.innerHTML=tagChips(expDraft.tag,'expSetTag');
+}
+function expSetTag(k){expDraft.tag=expDraft.tag===k?'':k;expDraft.tagManual=true;const t=document.getElementById('exp-tags');if(t)t.innerHTML=tagChips(expDraft.tag,'expSetTag');}
+
+// ---------- Màn hình chào mừng lần đầu (3 bước, bỏ qua được) ----------
+const OB_KEY='6pay-onboard-v1';
+const JAR_SHORT={essential:'Ăn uống, nhà ở, đi lại, hóa đơn',education:'Sách, khóa học, kỹ năng mới',saving:'Quỹ dự phòng, mục tiêu lớn',invest:'Tạo thêm nguồn thu nhập',share:'Biếu bố mẹ, hiếu hỷ, từ thiện',enjoy:'Vui chơi, tự thưởng cho mình'};
+let obStep=0, obReplay=false, obAmt={v:'',x:''};
+function obDue(){
+ if(locked||tx.length)return false;
+ try{if(localStorage.getItem(OB_KEY)||localStorage.getItem(STORE_KEY))return false;}catch(e){return false;}
+ return true;
+}
+function obOpen(replay){
+ obReplay=!!replay; obStep=0; obAmt={v:'',x:''};
+ inviteShown=true; // không mời đăng ký thành viên ngay trong lần mở đầu tiên
+ obDraw(); document.getElementById('obOv').classList.add('open');
+}
+function obClose(){document.getElementById('obOv').classList.remove('open');try{localStorage.setItem(OB_KEY,'1');}catch(e){}}
+function obDots(){return obReplay?'':`<div class="ob-dots">${[0,1,2].map(i=>`<i class="${i===obStep?'on':''}"></i>`).join('')}</div>`;}
+function obSplitRows(total){
+ return JARS.map(j=>`<div class="list-item slim"><span>${j.i} ${j.l} <small style="color:var(--text-soft)">${jarPct(j.k)}%</small></span><b class="pos">${fmt(total*jarPct(j.k)/100)} ₫</b></div>`).join('');
+}
+function obDraw(){
+ const box=document.getElementById('obIn'); let body='',foot='';
+ if(obStep===0){
+  body=`<div class="ob-emoji">💰</div>
+   <div class="ob-h">Chào mừng bạn đến với <span style="white-space:nowrap">${BRAND_HTML}</span></div>
+   <p class="ob-p">Mỗi khi có thu nhập, 6PAY tự chia tiền vào <b>6 ví</b>. Chi cho việc gì thì ghi vào ví đó, nhìn là biết mình còn bao nhiêu cho từng việc.</p>
+   <div class="ob-jars">${JARS.map(j=>`<div class="ob-jar"><div class="t"><span>${j.i} ${j.l}</span><b>${jarPct(j.k)}%</b></div><div class="d">${JAR_SHORT[j.k]}</div></div>`).join('')}</div>
+   <p class="ob-p" style="margin:12px 0 0;font-size:var(--fs-sm);">Bạn đổi được tỷ lệ bất cứ lúc nào trong ⚙️ Cài đặt.</p>`;
+  foot=obReplay?`<button class="btn primary" onclick="obClose()">Đã hiểu</button>`:`<button class="btn primary" onclick="obStep=1;obDraw()">Tiếp tục ›</button>`;
+ }else if(obStep===1){
+  const a=obAmtVal();
+  body=`<div class="ob-emoji">⬇️</div>
+   <div class="ob-h">Thu nhập tháng này của bạn khoảng bao nhiêu?</div>
+   <p class="ob-p">Nhập con số gần đúng cũng được. 6PAY sẽ chia ngay vào 6 ví để bạn thấy mỗi ví có bao nhiêu.</p>
+   <div class="form-row tight">${amtInput('ob-amt',obAmt.v,obAmt.x,"obAmt.v=this.value;obAmt.x='';obPreview();")}</div>
+   <div class="ob-split" id="ob-split" style="${a?'':'display:none'}">${obSplitRows(a)}</div>
+   <p class="ob-p" style="margin-top:10px;font-size:var(--fs-sm);">Số này được ghi thành một khoản thu <b>Lương</b>. Bạn sửa hoặc xóa được trong mục ⬇️ Thu.</p>`;
+  foot=`<button class="btn primary" onclick="obSaveIncome()">✓ Lưu và tiếp tục</button><button class="btn cancel" onclick="obStep=2;obDraw()">Để sau</button>`;
+ }else{
+  body=`<div class="ob-emoji">✍️</div>
+   <div class="ob-h">Thử ghi khoản chi đầu tiên</div>
+   <p class="ob-p">Ví dụ: ăn trưa 35 nghìn. Gõ số tiền, chọn nội dung, chọn ví rồi bấm Lưu. Chỉ mất vài giây.</p>
+   <p class="ob-p">Từ nay, nút <b style="color:var(--expense-text)">＋ Ghi chi</b> luôn nằm ở góc dưới trang chủ. Ghi mỗi ngày một chút, cuối tháng bạn sẽ biết tiền của mình đi đâu.</p>`;
+  foot=`<button class="btn primary" onclick="obFinish(true)">＋ Ghi khoản chi đầu tiên</button><button class="btn cancel" onclick="obFinish(false)">Vào app</button>`;
+ }
+ box.innerHTML=`<div class="ob-top">${obDots()}<span class="tb-gap"></span>${obReplay?'':'<button class="ob-skip" onclick="obFinish(false)">Bỏ qua</button>'}</div>
+  <div class="ob-body">${body}</div><div class="ob-foot">${foot}</div>`;
+}
+function obAmtVal(){const e=document.getElementById('ob-amt');if(e)return getAmt(e);if(!obAmt.v)return 0;const a=parseAmount(obAmt.v);return amtMode==='x1000'?a*1000:a;}
+function obPreview(){const a=obAmtVal(),s=document.getElementById('ob-split');if(!s)return;s.style.display=a?'':'none';s.innerHTML=obSplitRows(a);}
+function obSaveIncome(){
+ const e=document.getElementById('ob-amt'); const a=e?getAmt(e):0;
+ if(!a||a<=0){shakeEl(e);if(e)e.focus();return;}
+ const mm=new Date().getMonth()+1;
+ tx.push({id:uid(),type:'in',sub:'luong',amount:a,note:'Thu nhập tháng '+mm,ts:Date.now(),st:1}); addStar(); persist(); render();
+ obStep=2; obDraw();
+}
+function obFinish(addFirst){
+ obClose();
+ if(addFirst)openQuickAdd({onb:true});
+ else setTimeout(maybeShowInstall,600);
+}
+
+// ---------- Nhắc ghi bù hôm qua (hiện ở trang chủ) ----------
+const NUDGE_KEY='6pay-nudge-v1';
+function recDays(){return new Set(tx.filter(t=>t.type==='in'||t.type==='out').map(t=>dayKey(new Date(t.ts))));}
+function missedNudge(){
+ const days=recDays(); if(!days.size)return '';
+ const yk=qaYesterday(); if(days.has(yk))return '';
+ // chỉ nhắc người vẫn đang ghi chép: có ghi trong 7 ngày trước hôm qua
+ const d=new Date(); d.setDate(d.getDate()-1); let active=false;
+ for(let i=0;i<7;i++){d.setDate(d.getDate()-1);if(days.has(dayKey(d))){active=true;break;}}
+ if(!active)return '';
+ let off='';try{off=localStorage.getItem(NUDGE_KEY)||'';}catch(e){}
+ if(off===dayKey())return '';
+ return `<div class="nudge"><button class="go" onclick="openQuickAdd({date:'${yk}'})">📝 Hôm qua bạn có chi gì không? <b>Ghi bù ›</b></button><button class="x" onclick="nudgeOff()" aria-label="Ẩn lời nhắc hôm nay">✕</button></div>`;
+}
+function nudgeOff(){try{localStorage.setItem(NUDGE_KEY,dayKey());}catch(e){}render();}
+function homeNudge(){return missedNudge()||backupBanner();}
+
+// ---------- Sao lưu: gửi qua Zalo, Google Drive... ----------
+function backupFile(){
+ const data={};
+ backupKeys().forEach(k=>{try{const v=localStorage.getItem(k);if(v!==null)data[k]=v;}catch(e){}});
+ const json=JSON.stringify({app:'6pay',fmt:2,version:APP_VERSION,ts:Date.now(),data:data});
+ const name='6pay-sao-luu-'+dayKey()+'.json';
+ return {file:new File([json],name,{type:'application/json'}),name};
+}
+function markBackup(){try{localStorage.setItem(LASTBACKUP_KEY,String(Date.now()));}catch(e){}}
+// Mở bảng chia sẻ của điện thoại (Zalo, Drive, Email...). Máy không hỗ trợ thì tải file về.
+function backupShare(){
+ const b=backupFile();
+ let can=false; try{can=!!(navigator.canShare&&navigator.canShare({files:[b.file]}));}catch(e){}
+ if(can){
+  navigator.share({files:[b.file],title:'Sao lưu 6PAY',text:'File sao lưu dữ liệu 6PAY ngày '+dateFmt(Date.now())+'. Giữ file này để khôi phục khi đổi máy.'})
+   .then(()=>{markBackup();render();showToast('✓ Đã gửi bản sao lưu.');})
+   .catch(err=>{if(!err||err.name!=='AbortError'){backupDownload();}});
+  return;
+ }
+ backupDownload();
+}
+function backupDownload(){
+ const b=backupFile();
+ if(detectOS()==='ios'&&navigator.canShare){
+  let can=false;try{can=navigator.canShare({files:[b.file]});}catch(e){}
+  if(can){navigator.share({files:[b.file],title:'Sao lưu 6PAY'}).then(()=>{markBackup();render();showToast('✓ Đã lưu bản sao lưu.');}).catch(()=>{});return;}
+ }
+ downloadFile(b.file,b.name); markBackup(); render();
+ notify('Đã tải file sao lưu "'+b.name+'" về máy (thường nằm trong thư mục Tải xuống / Download). Hãy gửi file này qua Zalo cho chính mình hoặc lưu lên Google Drive để không bị mất khi đổi điện thoại.');
+}
+// Giữ tên cũ để những chỗ khác trong app vẫn gọi được
+function backupExport(){backupShare();}
+
+// ---------- Nhắc ghi chép mỗi ngày qua ứng dụng Lịch của điện thoại ----------
+const REM_KEY='6pay-remind-v1';
+function remTime(){let t='';try{t=localStorage.getItem(REM_KEY)||'';}catch(e){}return /^\d{2}:\d{2}$/.test(t)?t:'21:00';}
+function icsText(time){
+ const p=n=>String(n).padStart(2,'0'), d=new Date(), [hh,mi]=time.split(':');
+ const start=d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'T'+hh+mi+'00';
+ const u=new Date(), stamp=u.getUTCFullYear()+p(u.getUTCMonth()+1)+p(u.getUTCDate())+'T'+p(u.getUTCHours())+p(u.getUTCMinutes())+p(u.getUTCSeconds())+'Z';
+ return ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//6PAY//Nhac ghi chep//VI','CALSCALE:GREGORIAN','METHOD:PUBLISH','BEGIN:VEVENT',
+  'UID:6pay-nhac-ghi-chep-'+Date.now()+'@6pay.vn','DTSTAMP:'+stamp,'DTSTART:'+start,'DURATION:PT5M','RRULE:FREQ=DAILY',
+  'SUMMARY:Ghi chép thu chi 6PAY','DESCRIPTION:Mở 6PAY và ghi lại các khoản thu chi hôm nay. https://app.6pay.vn','URL:https://app.6pay.vn',
+  'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:Ghi chép thu chi 6PAY','TRIGGER:PT0M','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n')+'\r\n';
+}
+function addReminder(){
+ const e=document.getElementById('rem-time'); const t=(e&&/^\d{2}:\d{2}$/.test(e.value))?e.value:remTime();
+ try{localStorage.setItem(REM_KEY,t);}catch(x){}
+ const ics=icsText(t);
+ if(detectOS()==='ios'){
+  // iPhone: mở file lịch để Safari hiện nút "Thêm tất cả" vào ứng dụng Lịch
+  const url='data:text/calendar;charset=utf-8,'+encodeURIComponent(ics);
+  const w=window.open(url,'_blank'); if(!w)location.href=url;
+  return;
+ }
+ downloadFile(new File([ics],'6pay-nhac-ghi-chep.ics',{type:'text/calendar'}),'6pay-nhac-ghi-chep.ics');
+ notify('Đã tải file lời nhắc. Hãy mở file "6pay-nhac-ghi-chep.ics" vừa tải (trong thông báo hoặc thư mục Tải xuống) và chọn Lịch / Google Calendar để thêm. Từ mai, điện thoại sẽ nhắc bạn ghi chép lúc '+t+' mỗi ngày.');
+}
+function scrReminder(){
+ const ios=detectOS()==='ios';
+ return screenWrap('⏰ Nhắc ghi chép mỗi ngày',`
+  <div class="guide-desc">Ghi chép đều đặn mỗi ngày là bí quyết để biết tiền của mình đi đâu. 6PAY sẽ tạo một lời nhắc lặp lại hằng ngày trong ứng dụng <b>Lịch</b> của điện thoại, nên vẫn nhắc được cả khi bạn không mở app.</div>
+  <div class="form-row"><label>Giờ nhắc mỗi ngày</label><input type="time" id="rem-time" value="${remTime()}"></div>
+  <button class="btn primary" onclick="addReminder()">📅 Thêm lời nhắc vào Lịch điện thoại</button>
+  <div class="sec-title">Sau khi bấm nút</div>
+  <ol class="ins-steps">${ios
+   ?'<li>iPhone mở tệp lịch, bấm <b>“Thêm tất cả”</b> (hoặc <b>Thêm vào Lịch</b>).</li><li>Chọn lịch muốn lưu, bấm <b>Xong</b>.</li>'
+   :'<li>Mở tệp <b>6pay-nhac-ghi-chep.ics</b> vừa tải về.</li><li>Chọn <b>Google Calendar</b> hoặc <b>Lịch</b>, bấm <b>Lưu</b> hoặc <b>Thêm</b>.</li>'}
+   <li>Muốn đổi giờ: xóa lời nhắc cũ trong ứng dụng Lịch, rồi chọn giờ mới ở đây và bấm lại nút trên.</li></ol>
+  <div class="guide-desc">Nếu điện thoại không mở được tệp lịch, bạn có thể đặt một <b>Báo thức lặp lại hằng ngày</b> trong ứng dụng Đồng hồ và đặt tên là “Ghi chép 6PAY”.</div>`);
+}
+
+// ---------- Cỡ chữ ----------
+const FONT_KEY='6pay-fontsize-v1';
+function fontBig(){return document.documentElement.classList.contains('fs-big');}
+function toggleFontSize(){
+ const on=!fontBig();
+ document.documentElement.classList.toggle('fs-big',on);
+ try{localStorage.setItem(FONT_KEY,on?'big':'normal');}catch(e){}
+ render();
+ showToast(on?'Đã bật chữ lớn. Bạn vẫn có thể phóng to bằng 2 ngón tay.':'Đã chuyển về cỡ chữ bình thường.');
+}
+
+// ---------- Thư mục Công cụ hằng ngày (gom các tiện ích phụ cho gọn) ----------
+function scrTools(){
+ return screenWrap('🧰 Công cụ hằng ngày',
+  utilIt("push('calc')",'🧮 Máy tính')+
+  utilIt("push('units')",'📐 Đổi đơn vị đo')+
+  utilIt("push('stopwatch')",'⏱️ Đồng hồ bấm giờ, Pomodoro')+
+  utilIt('openNotes()','📝 Sổ ghi chú')+
+  utilIt('openLunar()','🗓️ Lịch vạn niên'));
+}
+
+// ---------- Báo cáo: nhận xét tự động ----------
+function rpInsights(mk,cur,prev,byJar,byTag){
+ const out=[];
+ if(!cur.i&&!cur.o)return out;
+ const pk=mkShift(mk,-1), past=mk<dayKey().slice(0,7);
+ if(cur.i>0&&cur.o>0){
+  const over=byJar.map(x=>({j:x.j,v:x.v,plan:cur.i*jarPct(x.j.k)/100})).filter(x=>x.plan>0&&x.v>x.plan).sort((a,b)=>b.v/b.plan-a.v/a.plan);
+  if(over.length){const o=over[0];out.push(`Ví ${o.j.i} <b>${o.j.l}</b> đã chi ${fmt(o.v)} ₫, vượt kế hoạch ${Math.round((o.v/o.plan-1)*100)}% (kế hoạch ${fmt(o.plan)} ₫).`);}
+  else out.push('Tất cả các ví đều chi trong kế hoạch. Làm tốt lắm! 👏');
+ }else if(cur.o>0&&!cur.i){
+  out.push('Tháng này chưa ghi khoản thu nào, nên chưa so được với kế hoạch 6 ví. Hãy ghi thu nhập ở mục ⬇️ Thu trên trang chủ.');
+ }
+ const prevJar=k=>tx.filter(t=>t.type==='out'&&t.jar===k&&monthKey(t.ts)===pk).reduce((s,t)=>s+t.amount,0);
+ const ups=byJar.map(x=>({j:x.j,v:x.v,p:prevJar(x.j.k)})).filter(x=>x.p>0&&x.v>=x.p*1.2&&x.v-x.p>=50000).sort((a,b)=>(b.v-b.p)-(a.v-a.p));
+ if(ups.length){const u=ups[0];out.push(`Bạn chi ví ${u.j.i} <b>${u.j.l}</b> nhiều hơn tháng trước ${Math.round((u.v/u.p-1)*100)}% (thêm ${fmt(u.v-u.p)} ₫).`);}
+ else if(past&&prev.o>0&&cur.o>0&&cur.o<=prev.o*0.9)out.push(`Tổng chi giảm ${Math.round((1-cur.o/prev.o)*100)}% so với tháng trước. Tuyệt vời! 🎉`);
+ const tagged=byTag.filter(x=>x.t);
+ if(tagged.length&&cur.o>0){const t=tagged[0];out.push(`Bạn chi nhiều nhất cho ${t.t.i} <b>${t.t.l}</b>: ${fmt(t.v)} ₫ (${Math.round(t.v/cur.o*100)}% tổng chi).`);}
+ if(out.length<3&&cur.i>0){const r=Math.round((cur.i-cur.o)/cur.i*100);if(r>=20)out.push(`Bạn để dành được ${r}% thu nhập tháng này. Hãy giữ thói quen tốt này nhé! 💪`);}
+ return out.slice(0,3);
+}
+
 const SCREENS={
+ reminder:scrReminder, tools:scrTools,
  partner:scrPartner, shopAll:scrShopAll, goals:scrGoals, fincalc:scrFincalc, bills:scrBills, settings:scrSettings, wallets:scrWallets, jarGuide:scrJarGuide, login:scrLogin, marketing:scrMarketing,
  incomeCategories:scrIncomeCategories, incomeDetail:scrIncomeDetail,
  expenseOverview:scrExpenseOverview, expenseDetail:scrExpenseDetail, quiz:scrQuiz
@@ -3663,8 +4193,7 @@ function setAppH(){
 setAppH();
 window.addEventListener('resize',setAppH);
 window.addEventListener('resize',()=>{if(stack[stack.length-1].id==='home'&&!locked)fitAmounts();});
-// iPhone: chặn phóng to bằng 2 ngón (Safari bỏ qua user-scalable=no)
-document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
+// Cho phép phóng to bằng 2 ngón để người lớn tuổi, người mắt kém dễ đọc (đã bỏ chặn phóng to)
 // Sau khi gõ xong và bàn phím đóng lại, đưa màn hình về đúng vị trí (tránh bị trôi xuống)
 document.addEventListener('focusout',()=>setTimeout(()=>{
  const ae=document.activeElement;
@@ -3678,7 +4207,7 @@ try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();
 setTimeout(()=>{
  const sp=document.getElementById('bootSplash');
  if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),300); }
-  if(!fastStart)setTimeout(maybeShowInstall,500);
+  if(!fastStart){if(obDue())obOpen();else setTimeout(maybeShowInstall,500);}
 },3000);
 // ===== BỘ ĐẾM ẨN DANH (GoatCounter) =====
 // Chỉ gửi: đã mở app, mở bằng app đã cài hay trình duyệt, mở trò chơi nào, và mỗi máy tối đa 1 lần/ngày "có ghi chép".

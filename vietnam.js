@@ -7,7 +7,7 @@
 'use strict';
 const KEY='vnv_travel_v1';
 const root=document.getElementById('vnv-root');
-const DEF=()=>({stamps:{},pts:0,best:{guess:0,food:0,trip:0}});
+const DEF=()=>({stamps:{},pts:0,best:{guess:0,food:0,trip:0,spot:0}});
 let S=DEF();
 try{const x=JSON.parse(localStorage.getItem(KEY));if(x)S=Object.assign(DEF(),x)}catch(e){}
 const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
@@ -16,6 +16,9 @@ const LKASK=(ok,no)=>{if(window.SixLock)window.SixLock.ask(ok,no);else if(ok)ok(
 const LKFREE=n=>Math.ceil(n/3);
 const SFX=k=>{try{if(window.sfx)window.sfx(k)}catch(e){}};
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+/* Tách đoạn văn thành các gạch đầu dòng (mỗi câu / mỗi vế sau dấu ; là một ý) */
+const bul=t=>{const a=String(t||'').replace(/"[^"]*"|“[^”]*”/g,m=>m.replace(/([.;!?]) /g,'$1\u00a0')).replace(/([.!?…]) +(?=[\p{Lu}"“0-9])/gu,'$1\n').replace(/; +/g,'\n').split('\n').map(x=>x.trim().replace(/[.;]$/,'')).filter(Boolean);
+  return '<ul class="vv-ul">'+a.map(x=>'<li>'+esc(x.charAt(0).toUpperCase()+x.slice(1))+'</li>').join('')+'</ul>'};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const vnd=k=>(k*1000).toLocaleString('vi-VN')+'đ';
 
@@ -309,43 +312,43 @@ function vvCap(t){return t.charAt(0).toUpperCase()+t.slice(1);}
 })();
 
 /* ===== THÔNG TIN DU LỊCH BỔ SUNG CHO 34 TỈNH, THÀNH =====
-   dc: danh lam thắng cảnh · ds: đặc sản nổi tiếng · tq: nơi tham quan, di tích · dd: điểm dừng chân, check-in.
+   dc: danh lam thắng cảnh · ds: đặc sản nổi tiếng · tq: nơi tham quan, di tích · tl: du lịch tâm linh · dd: điểm dừng chân, check-in.
    Muốn sửa: tìm đúng mã tỉnh (p1 … p34) rồi thêm/bớt trong danh sách. */
 const PX={
-p1:{dc:['Đèo Ô Quy Hồ','Cao nguyên Sìn Hồ','Thác Tác Tình','Động Pusamcap','Đỉnh Putaleng'],ds:['Chè Shan tuyết Tam Đường','Thịt trâu gác bếp','Cá suối nướng','Rượu San Thàng','Măng đắng'],tq:['Bản San Thàng','Bản Sin Suối Hồ','Đồi chè Tam Đường','Cầu kính Rồng Mây'],dd:['Cổng trời Ô Quy Hồ','Cầu kính Rồng Mây','Hồ thủy điện Lai Châu']},
-p2:{dc:['Hồ Pá Khoang','Cánh đồng Mường Thanh','Đèo Pha Đin','Ngã ba biên giới A Pa Chải'],ds:['Gạo Điện Biên','Pa pỉnh tộp (cá nướng gập)','Xôi nếp nương','Cà phê Điện Biên','Thịt trâu gác bếp'],tq:['Đồi A1','Hầm Đờ Cát-xtơ-ri','Bảo tàng Chiến thắng Điện Biên Phủ','Tượng đài Chiến thắng Điện Biên Phủ'],dd:['Cột mốc A Pa Chải – điểm cực Tây','Cầu Mường Thanh','Cửa khẩu Tây Trang']},
-p3:{dc:['Đỉnh Fansipan','Ruộng bậc thang Mù Cang Chải','Thung lũng Mường Hoa','Hồ Thác Bà','Đèo Khau Phạ'],ds:['Thắng cố','Cá hồi Sa Pa','Táo mèo','Gạo nếp Tú Lệ','Cốm Tú Lệ'],tq:['Bản Cát Cát','Chợ phiên Bắc Hà','Dinh Hoàng A Tưởng','Nhà thờ đá Sa Pa'],dd:['Thị xã Sa Pa','Đèo Khau Phạ (bay dù lượn)','Cửa khẩu quốc tế Lào Cai','Thung lũng Tú Lệ']},
-p4:{dc:['Cao nguyên đá Đồng Văn','Đèo Mã Pì Lèng','Sông Nho Quế','Hồ Na Hang','Núi đôi Quản Bạ'],ds:['Cam sành Hàm Yên','Bánh tam giác mạch','Mật ong bạc hà','Chè Shan tuyết Hà Giang','Bánh gai Chiêm Hóa'],tq:['Khu di tích Tân Trào','Dinh thự họ Vương','Phố cổ Đồng Văn','Cột cờ Lũng Cú'],dd:['Cổng trời Quản Bạ','Đỉnh đèo Mã Pì Lèng','Làng văn hóa Lô Lô Chải','Lễ hội Thành Tuyên (rước đèn Trung thu)']},
-p5:{dc:['Thác Bản Giốc','Động Ngườm Ngao','Hồ Thang Hen','Núi Mắt Thần','Sông Quây Sơn'],ds:['Hạt dẻ Trùng Khánh','Bánh cuốn canh Cao Bằng','Vịt quay bảy vị','Bánh áp chao','Miến dong'],tq:['Khu di tích Pác Bó (hang Cốc Bó, suối Lê-nin)','Rừng Trần Hưng Đạo','Chùa Phật tích Trúc Lâm Bản Giốc','Làng rèn Phúc Sen'],dd:['Đèo Mã Phục','Làng đá Khuổi Ky','Đèo Khau Cốc Chà']},
-p6:{dc:['Hồ Núi Cốc','Hồ Ba Bể','Động Puông','Thác Đầu Đẳng'],ds:['Chè Tân Cương','Bánh chưng Bờ Đậu','Miến dong Bắc Kạn','Bánh coóc mò','Cam quýt Bắc Kạn'],tq:['ATK Định Hóa','Bảo tàng Văn hóa các dân tộc Việt Nam','ATK Chợ Đồn','Đền Đuổm'],dd:['Đồi chè Tân Cương','Khu du lịch hồ Núi Cốc','Bến thuyền hồ Ba Bể']},
-p7:{dc:['Núi Mẫu Sơn','Động Tam Thanh','Núi Tô Thị (nàng Tô Thị)','Động Nhị Thanh'],ds:['Vịt quay Lạng Sơn','Lợn quay Lạng Sơn','Khâu nhục','Phở chua','Na Chi Lăng','Hồng không hạt Bảo Lâm'],tq:['Ải Chi Lăng','Thành nhà Mạc','Đền Bắc Lệ','Chùa Tam Thanh'],dd:['Chợ Đông Kinh','Chợ Kỳ Lừa','Cửa khẩu Hữu Nghị','Đỉnh Mẫu Sơn']},
-p8:{dc:['Vịnh Hạ Long','Vịnh Bái Tử Long','Đảo Cô Tô','Đảo Quan Lạn','Núi Yên Tử'],ds:['Chả mực Hạ Long','Sá sùng','Ngán','Sam biển','Rượu ba kích'],tq:['Khu di tích Yên Tử','Bảo tàng Quảng Ninh','Đền Cửa Ông','Bãi cọc Bạch Đằng'],dd:['Cầu Bãi Cháy','Đảo Tuần Châu','Bãi biển Trà Cổ','Cửa khẩu Móng Cái']},
-p9:{dc:['Hồ Khuôn Thần','Khu bảo tồn Tây Yên Tử','Khu du lịch Suối Mỡ'],ds:['Bánh phu thê Đình Bảng','Bánh tẻ làng Chờ','Vải thiều Lục Ngạn','Mì Chũ','Bánh đa Kế'],tq:['Đền Đô','Chùa Dâu','Chùa Phật Tích','Chùa Bút Tháp','Chùa Vĩnh Nghiêm'],dd:['Hội Lim (dân ca quan họ)','Làng tranh Đông Hồ','Làng gốm Phù Lãng','Đình Đình Bảng']},
-p10:{dc:['Thị trấn Tam Đảo','Hồ Hòa Bình','Thung lũng Mai Châu','Hồ Đại Lải','Vườn quốc gia Xuân Sơn'],ds:['Thịt chua Thanh Sơn','Quả cọ Phú Thọ','Cam Cao Phong','Cơm lam Hòa Bình','Su su Tam Đảo','Cá thính Lập Thạch'],tq:['Khu di tích Đền Hùng','Thiền viện Trúc Lâm Tây Thiên','Tháp Bình Sơn','Bảo tàng Hùng Vương'],dd:['Bản Lác (Mai Châu)','Đồi chè Long Cốc','Suối khoáng Kim Bôi','Nhà máy thủy điện Hòa Bình']},
-p11:{dc:['Cao nguyên Mộc Châu','Đỉnh Tà Xùa','Thác Dải Yếm','Rừng thông Bản Áng','Hang Dơi'],ds:['Bê chao Mộc Châu','Sữa Mộc Châu','Mận hậu Sơn La','Chẳm chéo','Cá nướng pa pỉnh tộp Sơn La'],tq:['Nhà tù Sơn La','Nhà máy thủy điện Sơn La','Bảo tàng Sơn La','Đồi chè trái tim'],dd:['Cầu kính Bạch Long','Sống lưng khủng long Tà Xùa','Đồi chè Mộc Châu']},
-p12:{dc:['Hồ Hoàn Kiếm','Hồ Tây','Chùa Hương (Hương Sơn)','Núi Ba Vì'],ds:['Phở Hà Nội','Bún chả','Chả cá Lã Vọng','Cốm làng Vòng','Bánh cuốn Thanh Trì','Bún thang'],tq:['Lăng Chủ tịch Hồ Chí Minh','Văn Miếu – Quốc Tử Giám','Hoàng thành Thăng Long','Chùa Một Cột','Nhà hát Lớn Hà Nội','Làng cổ Đường Lâm'],dd:['Phố cổ Hà Nội','Phố đi bộ quanh Hồ Gươm','Cầu Long Biên','Làng gốm Bát Tràng']},
-p13:{dc:['Đảo Cát Bà','Vịnh Lan Hạ','Bán đảo Đồ Sơn','Đảo Bạch Long Vĩ','Côn Sơn – Kiếp Bạc'],ds:['Bánh đa cua','Nem cua bể','Bánh mì que','Bánh đậu xanh Hải Dương','Vải thiều Thanh Hà','Bánh gai Ninh Giang'],tq:['Khu di tích Côn Sơn – Kiếp Bạc','Nhà hát Lớn Hải Phòng','Chùa Dư Hàng','Đền Nghè','Văn miếu Mao Điền'],dd:['Phố hoa phượng đỏ','Thị trấn Cát Bà','Bãi biển Đồ Sơn','Cảng Hải Phòng']},
-p14:{dc:['Biển Đồng Châu','Cồn Vành','Bãi biển Cồn Đen'],ds:['Nhãn lồng Hưng Yên','Tương Bần','Gà Đông Tảo','Bánh cáy làng Nguyễn','Canh cá Quỳnh Côi'],tq:['Phố Hiến','Văn miếu Xích Đằng','Chùa Keo (Thái Bình)','Đền Trần Thái Bình','Đền Chử Đồng Tử'],dd:['Chùa Nôm','Làng chiếu Hới','Đền Mẫu Hưng Yên']},
-p15:{dc:['Quần thể Tràng An','Tam Cốc – Bích Động','Khu bảo tồn Vân Long','Vườn quốc gia Cúc Phương','Biển Thịnh Long'],ds:['Cơm cháy Ninh Bình','Thịt dê núi','Phở bò Nam Định','Kẹo Sìu Châu','Cá kho làng Vũ Đại','Bánh nhãn Hải Hậu'],tq:['Cố đô Hoa Lư','Chùa Bái Đính','Nhà thờ đá Phát Diệm','Đền Trần (Nam Định)','Chùa Tam Chúc','Chùa Phổ Minh'],dd:['Hang Múa','Làng Vũ Đại (làng Chí Phèo)','Nhà thờ đổ Hải Lý']},
-p16:{dc:['Biển Sầm Sơn','Khu bảo tồn Pù Luông','Suối cá thần Cẩm Lương','Động Từ Thức','Biển Hải Tiến'],ds:['Nem chua Thanh Hóa','Chè lam Phủ Quảng','Gỏi cá nhệch','Bánh răng bừa','Bánh gai Tứ Trụ'],tq:['Thành Nhà Hồ','Di tích Lam Kinh','Đền Bà Triệu','Đền Sòng Sơn'],dd:['Cầu Hàm Rồng','Hòn Trống Mái (Sầm Sơn)','Bản Hiêu (Pù Luông)']},
-p17:{dc:['Biển Cửa Lò','Vườn quốc gia Pù Mát','Đảo Lan Châu','Thác Khe Kèm','Biển Quỳnh'],ds:['Cháo lươn Nghệ An','Nhút Thanh Chương','Cam Vinh','Bánh mướt Diễn Châu','Tương Nam Đàn'],tq:['Khu di tích Kim Liên (Làng Sen)','Đền Cuông','Khu di tích Truông Bồn','Đền Ông Hoàng Mười','Quảng trường Hồ Chí Minh (Vinh)'],dd:['Đồi chè Thanh Chương','Thành cổ Vinh','Đảo chè Thanh An']},
-p18:{dc:['Biển Thiên Cầm','Hồ Kẻ Gỗ','Núi Hồng Lĩnh','Biển Xuân Thành','Vườn quốc gia Vũ Quang'],ds:['Kẹo cu đơ','Bưởi Phúc Trạch','Cam bù Hương Sơn','Mực nhảy Vũng Áng'],tq:['Ngã ba Đồng Lộc','Khu lưu niệm Nguyễn Du','Chùa Hương Tích','Khu lưu niệm Trần Phú','Khu di tích Hải Thượng Lãn Ông'],dd:['Cầu Bến Thủy','Đèo Ngang','Biển Xuân Thành']},
-p19:{dc:['Vườn quốc gia Phong Nha – Kẻ Bàng','Động Thiên Đường','Hang Sơn Đoòng','Biển Nhật Lệ','Biển Cửa Tùng','Đảo Cồn Cỏ'],ds:['Cháo canh Quảng Bình','Bánh lọc Quảng Bình','Khoai deo','Bánh ướt Phương Lang','Cà phê Khe Sanh','Hồ tiêu Cùa'],tq:['Thành cổ Quảng Trị','Cầu Hiền Lương – sông Bến Hải','Địa đạo Vịnh Mốc','Nghĩa trang liệt sĩ Trường Sơn','Mộ Đại tướng Võ Nguyên Giáp (Vũng Chùa)','Quảng Bình Quan'],dd:['Vũng Chùa – Đảo Yến','Cửa khẩu Lao Bảo','Đồi cát Quang Phú','Căn cứ Khe Sanh']},
-p20:{dc:['Sông Hương','Núi Ngự Bình','Phá Tam Giang','Biển Lăng Cô','Vườn quốc gia Bạch Mã'],ds:['Bún bò Huế','Cơm hến','Bánh bèo','Bánh khoái','Chè Huế','Mè xửng','Tôm chua Huế'],tq:['Đại Nội Huế','Chùa Thiên Mụ','Lăng Khải Định','Lăng Tự Đức','Lăng Minh Mạng','Điện Hòn Chén'],dd:['Cầu Trường Tiền','Chợ Đông Ba','Cầu ngói Thanh Toàn','Đầm Chuồn']},
-p21:{dc:['Bán đảo Sơn Trà','Bà Nà Hills','Ngũ Hành Sơn','Biển Mỹ Khê','Cù Lao Chàm','Đèo Hải Vân'],ds:['Mì Quảng','Cao lầu Hội An','Bánh tráng cuốn thịt heo','Cơm gà Tam Kỳ','Bê thui Cầu Mống'],tq:['Phố cổ Hội An','Chùa Cầu','Thánh địa Mỹ Sơn','Chùa Linh Ứng','Bảo tàng Điêu khắc Chăm'],dd:['Cầu Vàng (Bà Nà)','Cầu Rồng','Chợ Hàn','Làng rau Trà Quế','Rừng dừa Bảy Mẫu']},
-p22:{dc:['Đảo Lý Sơn','Khu du lịch Măng Đen','Núi Thiên Ấn','Biển Sa Huỳnh','Núi Ngọc Linh'],ds:['Cá bống sông Trà','Tỏi Lý Sơn','Đường phổi','Kẹo gương','Sâm Ngọc Linh','Gỏi lá Kon Tum'],tq:['Khu chứng tích Sơn Mỹ','Nhà thờ gỗ Kon Tum','Cầu treo Kon Klor','Ngục Kon Tum'],dd:['Cổng Tò Vò (Lý Sơn)','Ngã ba Đông Dương (cửa khẩu Bờ Y)','Hồ Đắk Ke (Măng Đen)']},
-p23:{dc:['Biển Hồ (hồ T’Nưng)','Eo Gió','Kỳ Co','Ghềnh Ráng Tiên Sa','Núi lửa Chư Đăng Ya'],ds:['Phở khô Gia Lai','Bánh ít lá gai','Bánh xèo tôm nhảy','Chả cá Quy Nhơn','Rượu Bàu Đá'],tq:['Tháp Đôi','Bảo tàng Quang Trung','Tháp Bánh Ít','Mộ Hàn Mặc Tử','Quảng trường Đại Đoàn Kết (Pleiku)'],dd:['Đồi chè Biển Hồ','Bãi biển Quy Nhơn','Thác Phú Cường']},
-p24:{dc:['Gành Đá Đĩa','Vịnh Xuân Đài','Mũi Điện (Mũi Đại Lãnh)','Hồ Lắk','Thác Dray Nur','Vườn quốc gia Yok Đôn'],ds:['Cà phê Buôn Ma Thuột','Cá ngừ đại dương Phú Yên','Bánh canh hẹ','Gà nướng Bản Đôn','Bơ sáp Đắk Lắk'],tq:['Khu du lịch Buôn Đôn','Bảo tàng Thế giới Cà phê','Tháp Nhạn','Nhà thờ Mằng Lăng','Biệt điện Bảo Đại (Buôn Ma Thuột)'],dd:['Bãi Xép','Hải đăng Đại Lãnh','Buôn Akô Dhông','Đầm Ô Loan']},
-p25:{dc:['Vịnh Nha Trang','Vịnh Vĩnh Hy','Vịnh Cam Ranh','Đảo Bình Ba','Đồi cát Nam Cương','Vườn quốc gia Núi Chúa'],ds:['Yến sào Khánh Hòa','Bún cá Nha Trang','Nem Ninh Hòa','Nho Ninh Thuận','Thịt cừu Ninh Thuận','Bánh căn'],tq:['Tháp Bà Ponagar','Tháp Po Klong Garai','Viện Hải dương học Nha Trang','Chùa Long Sơn','Làng gốm Bàu Trúc'],dd:['Hòn Chồng','Hang Rái','Huyện đảo Trường Sa','Hòn Mun']},
-p26:{dc:['Hồ Xuân Hương','Núi Langbiang','Thác Datanla','Đồi cát Mũi Né','Hồ Tà Đùng','Đảo Phú Quý','Bàu Trắng'],ds:['Dâu tây Đà Lạt','Atiso Đà Lạt','Bánh tráng nướng','Nước mắm Phan Thiết','Thanh long Bình Thuận','Mứt Đà Lạt'],tq:['Thung lũng Tình Yêu','Ga Đà Lạt','Dinh Bảo Đại','Tháp Chăm Pô Sah Inư','Hải đăng Kê Gà','Công viên địa chất Đắk Nông'],dd:['Chợ Đà Lạt','Quảng trường Lâm Viên','Làng chài Mũi Né','Suối Tiên (Mũi Né)']},
-p27:{dc:['Vườn quốc gia Cát Tiên','Núi Bà Rá','Hồ Trị An','Thác Giang Điền','Núi Chứa Chan'],ds:['Bưởi Tân Triều','Hạt điều Bình Phước','Chôm chôm Long Khánh','Sầu riêng Long Khánh'],tq:['Văn miếu Trấn Biên','Khu du lịch Bửu Long','Nhà tù Bà Rá','Di tích Sóc Bom Bo','Khu di tích Chiến khu Đ'],dd:['Cù lao Phố','Làng bưởi Tân Triều','Thủy điện Trị An']},
-p28:{dc:['Côn Đảo','Bãi Sau Vũng Tàu','Rừng Sác Cần Giờ','Núi Tao Phùng (tượng Chúa Kitô)'],ds:['Cơm tấm Sài Gòn','Hủ tiếu Nam Vang','Bánh mì Sài Gòn','Bánh khọt Vũng Tàu','Măng cụt Lái Thiêu'],tq:['Dinh Độc Lập','Nhà thờ Đức Bà','Bưu điện Thành phố','Địa đạo Củ Chi','Bảo tàng Chứng tích Chiến tranh','Nhà tù Côn Đảo','Chùa Bà Thiên Hậu (Thủ Dầu Một)'],dd:['Phố đi bộ Nguyễn Huệ','Chợ Bến Thành','Tòa nhà Landmark 81','Bến Nhà Rồng','Hải đăng Vũng Tàu']},
-p29:{dc:['Núi Bà Đen','Hồ Dầu Tiếng','Vườn quốc gia Lò Gò – Xa Mát','Làng nổi Tân Lập','Đồng Tháp Mười (Long An)'],ds:['Bánh tráng phơi sương Trảng Bàng','Bánh canh Trảng Bàng','Muối tôm Tây Ninh','Mãng cầu Bà Đen','Gạo nàng thơm Chợ Đào','Lạp xưởng Cần Đước'],tq:['Tòa Thánh Cao Đài','Căn cứ Trung ương Cục miền Nam','Nhà trăm cột (Long An)','Khu di tích Vàm Nhựt Tảo'],dd:['Cáp treo núi Bà Đen','Cửa khẩu Mộc Bài','Làng nổi Tân Lập']},
-p30:{dc:['Vườn quốc gia Tràm Chim','Đồng sen Tháp Mười','Cồn Thới Sơn','Biển Tân Thành (Gò Công)'],ds:['Hủ tiếu Mỹ Tho','Hủ tiếu Sa Đéc','Xoài Cao Lãnh','Nem Lai Vung','Vú sữa Lò Rèn'],tq:['Chùa Vĩnh Tràng','Khu di tích Gò Tháp','Nhà cổ Huỳnh Thủy Lê','Khu di tích Nguyễn Sinh Sắc','Di tích Rạch Gầm – Xoài Mút'],dd:['Làng hoa Sa Đéc','Chợ nổi Cái Bè','Cầu Rạch Miễu']},
-p31:{dc:['Đảo Phú Quốc','Núi Sam','Rừng tràm Trà Sư','Núi Cấm','Quần đảo Nam Du','Hồ Tà Pạ'],ds:['Nước mắm Phú Quốc','Hồ tiêu Phú Quốc','Mắm Châu Đốc','Bún cá Châu Đốc','Đường thốt nốt'],tq:['Miếu Bà Chúa Xứ núi Sam','Lăng Thoại Ngọc Hầu','Chùa Tây An','Nhà tù Phú Quốc','Hòn Phụ Tử (Hà Tiên)'],dd:['Cáp treo Hòn Thơm','Chợ đêm Phú Quốc','Cửa khẩu Tịnh Biên','Thị trấn Hà Tiên']},
-p32:{dc:['Cù lao An Bình','Ao Bà Om','Cồn Phụng','Biển Ba Động'],ds:['Kẹo dừa Bến Tre','Bánh tráng Mỹ Lồng','Bưởi Năm Roi','Bún nước lèo Trà Vinh','Sầu riêng Cái Mơn','Cam sành Tam Bình'],tq:['Chùa Âng','Văn Thánh Miếu Vĩnh Long','Khu lưu niệm Nguyễn Đình Chiểu','Chùa Hang (Trà Vinh)','Di tích Đồng Khởi (Bến Tre)'],dd:['Cầu Mỹ Thuận','Cầu Hàm Luông','Chợ nổi Trà Ôn','Làng gạch gốm Mang Thít']},
-p33:{dc:['Sông Hậu','Cồn Sơn','Vườn cò Bằng Lăng','Khu bảo tồn Lung Ngọc Hoàng'],ds:['Bánh pía Sóc Trăng','Bún nước lèo Sóc Trăng','Lẩu mắm','Khóm Cầu Đúc','Bánh cống'],tq:['Nhà cổ Bình Thủy','Chùa Dơi','Chùa Chén Kiểu','Thiền viện Trúc Lâm Phương Nam','Chùa Ông (Cần Thơ)'],dd:['Chợ nổi Cái Răng','Bến Ninh Kiều','Cầu Cần Thơ','Chợ nổi Ngã Bảy']},
-p34:{dc:['Mũi Cà Mau','Vườn quốc gia U Minh Hạ','Hòn Khoai','Rừng đước Năm Căn','Đầm Thị Tường'],ds:['Cua Cà Mau','Ba khía Rạch Gốc','Tôm khô Rạch Gốc','Mật ong rừng U Minh','Muối Bạc Liêu','Bánh tằm Cà Mau'],tq:['Nhà Công tử Bạc Liêu','Khu lưu niệm nhạc sĩ Cao Văn Lầu','Chùa Xiêm Cán','Quán âm Phật đài (Mẹ Nam Hải)'],dd:['Cột mốc tọa độ GPS 0001 (Đất Mũi)','Cánh đồng điện gió Bạc Liêu','Biểu tượng mũi tàu – Mũi Cà Mau']}
+p1:{dc:['Đèo Ô Quy Hồ','Cao nguyên Sìn Hồ','Thác Tác Tình','Động Pusamcap','Đỉnh Putaleng'],ds:['Chè Shan tuyết Tam Đường','Thịt trâu gác bếp','Cá suối nướng','Rượu San Thàng','Măng đắng'],tq:['Bản San Thàng','Bản Sin Suối Hồ','Đồi chè Tam Đường','Cầu kính Rồng Mây'],dd:['Cổng trời Ô Quy Hồ','Cầu kính Rồng Mây','Hồ thủy điện Lai Châu'],tl:[]},
+p2:{dc:['Hồ Pá Khoang','Cánh đồng Mường Thanh','Đèo Pha Đin','Ngã ba biên giới A Pa Chải'],ds:['Gạo Điện Biên','Pa pỉnh tộp (cá nướng gập)','Xôi nếp nương','Cà phê Điện Biên'],tq:['Đồi A1','Hầm Đờ Cát-xtơ-ri','Bảo tàng Chiến thắng Điện Biên Phủ','Tượng đài Chiến thắng Điện Biên Phủ'],dd:['Cột mốc A Pa Chải – điểm cực Tây','Cầu Mường Thanh','Cửa khẩu Tây Trang'],tl:['Đền thờ Hoàng Công Chất (thành Bản Phủ)']},
+p3:{dc:['Đỉnh Fansipan','Ruộng bậc thang Mù Cang Chải','Thung lũng Mường Hoa','Hồ Thác Bà','Đèo Khau Phạ'],ds:['Thắng cố Bắc Hà','Cá hồi Sa Pa','Táo mèo','Gạo nếp Tú Lệ','Cốm Tú Lệ'],tq:['Bản Cát Cát','Chợ phiên Bắc Hà','Dinh Hoàng A Tưởng','Nhà thờ đá Sa Pa'],dd:['Thị xã Sa Pa','Đèo Khau Phạ (bay dù lượn)','Cửa khẩu quốc tế Lào Cai','Thung lũng Tú Lệ'],tl:['Đền Thượng (TP Lào Cai)','Đền Bảo Hà','Đền Đông Cuông']},
+p4:{dc:['Cao nguyên đá Đồng Văn','Đèo Mã Pì Lèng','Sông Nho Quế','Hồ Na Hang','Núi đôi Quản Bạ'],ds:['Cam sành Hàm Yên','Bánh tam giác mạch','Mật ong bạc hà','Chè Shan tuyết Hà Giang','Bánh gai Chiêm Hóa'],tq:['Khu di tích Tân Trào','Dinh thự họ Vương','Phố cổ Đồng Văn','Cột cờ Lũng Cú'],dd:['Cổng trời Quản Bạ','Đỉnh đèo Mã Pì Lèng','Làng văn hóa Lô Lô Chải','Hẻm Tu Sản (sông Nho Quế)'],tl:['Đền Hạ (Tuyên Quang)','Đền Ỷ La','Chùa Sùng Khánh (Hà Giang)']},
+p5:{dc:['Thác Bản Giốc','Động Ngườm Ngao','Hồ Thang Hen','Núi Mắt Thần','Sông Quây Sơn'],ds:['Hạt dẻ Trùng Khánh','Bánh cuốn canh Cao Bằng','Vịt quay bảy vị','Bánh áp chao','Miến dong Nguyên Bình'],tq:['Khu di tích Pác Bó (hang Cốc Bó, suối Lê-nin)','Rừng Trần Hưng Đạo','Làng rèn Phúc Sen'],dd:['Đèo Mã Phục','Làng đá Khuổi Ky','Đèo Khau Cốc Chà'],tl:['Chùa Phật tích Trúc Lâm Bản Giốc','Đền Kỳ Sầm']},
+p6:{dc:['Hồ Núi Cốc','Hồ Ba Bể','Động Puông','Thác Đầu Đẳng'],ds:['Chè Tân Cương','Bánh chưng Bờ Đậu','Miến dong Bắc Kạn','Bánh coóc mò','Cam quýt Bắc Kạn'],tq:['ATK Định Hóa','Bảo tàng Văn hóa các dân tộc Việt Nam','ATK Chợ Đồn'],dd:['Đồi chè Tân Cương','Khu du lịch hồ Núi Cốc','Bến thuyền hồ Ba Bể'],tl:['Đền Đuổm','Chùa Hang (Thái Nguyên)']},
+p7:{dc:['Núi Mẫu Sơn','Động Tam Thanh','Núi Tô Thị (nàng Tô Thị)','Động Nhị Thanh'],ds:['Vịt quay Lạng Sơn','Lợn quay Lạng Sơn','Khâu nhục','Phở chua','Na Chi Lăng','Hồng không hạt Bảo Lâm'],tq:['Ải Chi Lăng','Thành nhà Mạc','Pháo đài Đồng Đăng'],dd:['Chợ Đông Kinh','Chợ Kỳ Lừa','Cửa khẩu Hữu Nghị','Đỉnh Mẫu Sơn'],tl:['Chùa Tam Thanh','Đền Bắc Lệ','Đền Kỳ Cùng','Chùa Thành']},
+p8:{dc:['Vịnh Hạ Long','Vịnh Bái Tử Long','Đảo Cô Tô','Đảo Quan Lạn','Núi Yên Tử'],ds:['Chả mực Hạ Long','Sá sùng','Ngán','Sam biển','Rượu ba kích'],tq:['Bảo tàng Quảng Ninh','Bãi cọc Bạch Đằng','Đình Quan Lạn'],dd:['Cầu Bãi Cháy','Đảo Tuần Châu','Bãi biển Trà Cổ','Cửa khẩu Móng Cái'],tl:['Khu di tích Yên Tử (chùa Đồng)','Đền Cửa Ông','Chùa Ba Vàng','Chùa Long Tiên']},
+p9:{dc:['Hồ Khuôn Thần','Khu bảo tồn Tây Yên Tử','Khu du lịch Suối Mỡ'],ds:['Bánh phu thê Đình Bảng','Bánh tẻ làng Chờ','Vải thiều Lục Ngạn','Mì Chũ','Bánh đa Kế'],tq:['Đền Đô','Văn miếu Bắc Ninh','Đình Thổ Hà','Thành cổ Xương Giang'],dd:['Hội Lim (dân ca quan họ)','Làng tranh Đông Hồ','Làng gốm Phù Lãng','Đình Đình Bảng'],tl:['Chùa Dâu','Chùa Phật Tích','Chùa Bút Tháp','Chùa Vĩnh Nghiêm','Đền Bà Chúa Kho']},
+p10:{dc:['Thị trấn Tam Đảo','Hồ Hòa Bình','Thung lũng Mai Châu','Hồ Đại Lải','Vườn quốc gia Xuân Sơn'],ds:['Thịt chua Thanh Sơn','Quả cọ Phú Thọ','Cam Cao Phong','Cơm lam Hòa Bình','Su su Tam Đảo','Cá thính Lập Thạch'],tq:['Tháp Bình Sơn','Bảo tàng Hùng Vương'],dd:['Bản Lác (Mai Châu)','Đồi chè Long Cốc','Suối khoáng Kim Bôi','Nhà máy thủy điện Hòa Bình'],tl:['Khu di tích Đền Hùng','Thiền viện Trúc Lâm Tây Thiên','Đền Mẫu Âu Cơ','Đền Thác Bờ']},
+p11:{dc:['Cao nguyên Mộc Châu','Đỉnh Tà Xùa','Thác Dải Yếm','Rừng thông Bản Áng','Hang Dơi'],ds:['Bê chao Mộc Châu','Sữa Mộc Châu','Mận hậu Sơn La','Chẳm chéo','Cà phê Sơn La'],tq:['Nhà tù Sơn La','Nhà máy thủy điện Sơn La','Bảo tàng Sơn La','Đồi chè trái tim'],dd:['Cầu kính Bạch Long','Sống lưng khủng long Tà Xùa','Đồi chè Mộc Châu'],tl:[]},
+p12:{dc:['Hồ Hoàn Kiếm','Hồ Tây','Hồ Đồng Mô','Núi Ba Vì'],ds:['Phở Hà Nội','Bún chả','Chả cá Lã Vọng','Cốm làng Vòng','Bánh cuốn Thanh Trì','Bún thang'],tq:['Lăng Chủ tịch Hồ Chí Minh','Văn Miếu – Quốc Tử Giám','Hoàng thành Thăng Long','Nhà hát Lớn Hà Nội','Làng cổ Đường Lâm'],dd:['Phố cổ Hà Nội','Phố đi bộ quanh Hồ Gươm','Cầu Long Biên','Làng gốm Bát Tràng'],tl:['Chùa Hương','Chùa Trấn Quốc','Chùa Một Cột','Đền Quán Thánh','Phủ Tây Hồ']},
+p13:{dc:['Đảo Cát Bà','Vịnh Lan Hạ','Bán đảo Đồ Sơn','Đảo Bạch Long Vĩ'],ds:['Bánh đa cua','Nem cua bể','Bánh mì que','Bánh đậu xanh Hải Dương','Vải thiều Thanh Hà','Bánh gai Ninh Giang'],tq:['Nhà hát Lớn Hải Phòng','Văn miếu Mao Điền','Tượng đài Nữ tướng Lê Chân','Bảo tàng Hải Phòng'],dd:['Phố hoa phượng đỏ','Thị trấn Cát Bà','Bãi biển Đồ Sơn','Cảng Hải Phòng'],tl:['Khu di tích Côn Sơn – Kiếp Bạc','Chùa Dư Hàng','Đền Nghè','Chùa Thanh Mai']},
+p14:{dc:['Biển Đồng Châu','Cồn Vành','Bãi biển Cồn Đen'],ds:['Nhãn lồng Hưng Yên','Tương Bần','Gà Đông Tảo','Bánh cáy làng Nguyễn','Canh cá Quỳnh Côi'],tq:['Phố Hiến','Văn miếu Xích Đằng'],dd:['Làng chiếu Hới','Hồ Bán Nguyệt'],tl:['Chùa Keo (Thái Bình)','Đền Trần Thái Bình','Đền Chử Đồng Tử','Chùa Nôm','Đền Mẫu Hưng Yên']},
+p15:{dc:['Quần thể Tràng An','Tam Cốc – Bích Động','Khu bảo tồn Vân Long','Vườn quốc gia Cúc Phương','Biển Thịnh Long'],ds:['Cơm cháy Ninh Bình','Thịt dê núi','Phở bò Nam Định','Kẹo Sìu Châu','Cá kho làng Vũ Đại','Bánh nhãn Hải Hậu'],tq:['Cố đô Hoa Lư','Nhà thờ đổ Hải Lý'],dd:['Hang Múa','Làng Vũ Đại (làng Chí Phèo)','Biển Quất Lâm'],tl:['Chùa Bái Đính','Chùa Tam Chúc','Nhà thờ đá Phát Diệm','Đền Trần (Nam Định)','Phủ Dầy','Chùa Phổ Minh']},
+p16:{dc:['Biển Sầm Sơn','Khu bảo tồn Pù Luông','Suối cá thần Cẩm Lương','Động Từ Thức','Biển Hải Tiến'],ds:['Nem chua Thanh Hóa','Chè lam Phủ Quảng','Gỏi cá nhệch','Bánh răng bừa','Bánh gai Tứ Trụ'],tq:['Thành Nhà Hồ','Di tích Lam Kinh','Hang Con Moong'],dd:['Cầu Hàm Rồng','Hòn Trống Mái (Sầm Sơn)','Bản Hiêu (Pù Luông)'],tl:['Đền Bà Triệu','Đền Sòng Sơn','Đền Độc Cước','Phủ Na']},
+p17:{dc:['Biển Cửa Lò','Vườn quốc gia Pù Mát','Đảo Lan Châu','Thác Khe Kèm','Biển Quỳnh'],ds:['Cháo lươn Nghệ An','Nhút Thanh Chương','Cam Vinh','Bánh mướt Diễn Châu','Tương Nam Đàn'],tq:['Khu di tích Kim Liên (Làng Sen)','Khu di tích Truông Bồn','Quảng trường Hồ Chí Minh (Vinh)','Thành cổ Vinh'],dd:['Đảo chè Thanh An','Biển Cửa Hội'],tl:['Đền Cuông','Đền Ông Hoàng Mười','Đền Quả Sơn','Đền thờ vua Mai Hắc Đế']},
+p18:{dc:['Biển Thiên Cầm','Hồ Kẻ Gỗ','Núi Hồng Lĩnh','Biển Xuân Thành','Vườn quốc gia Vũ Quang'],ds:['Kẹo cu đơ','Bưởi Phúc Trạch','Cam bù Hương Sơn','Mực nhảy Vũng Áng'],tq:['Ngã ba Đồng Lộc','Khu lưu niệm Nguyễn Du','Khu lưu niệm Trần Phú','Khu di tích Hải Thượng Lãn Ông'],dd:['Biển Xuân Thành','Khu du lịch hồ Kẻ Gỗ'],tl:['Chùa Hương Tích','Đền Chợ Củi','Chùa Địa Tạng Phi Lai']},
+p19:{dc:['Vườn quốc gia Phong Nha – Kẻ Bàng','Động Thiên Đường','Hang Sơn Đoòng','Biển Nhật Lệ','Biển Cửa Tùng','Đảo Cồn Cỏ'],ds:['Cháo canh Quảng Bình','Bánh lọc Quảng Bình','Khoai deo','Bánh ướt Phương Lang','Cà phê Khe Sanh','Hồ tiêu Cùa'],tq:['Thành cổ Quảng Trị','Cầu Hiền Lương – sông Bến Hải','Địa đạo Vịnh Mốc','Nghĩa trang liệt sĩ Trường Sơn','Mộ Đại tướng Võ Nguyên Giáp (Vũng Chùa)','Quảng Bình Quan'],dd:['Vũng Chùa – Đảo Yến','Cửa khẩu Lao Bảo','Đồi cát Quang Phú','Căn cứ Khe Sanh'],tl:['Thánh địa La Vang','Chùa Hoằng Phúc']},
+p20:{dc:['Sông Hương','Núi Ngự Bình','Phá Tam Giang','Biển Lăng Cô','Vườn quốc gia Bạch Mã'],ds:['Bún bò Huế','Cơm hến','Bánh bèo','Bánh khoái','Chè Huế','Mè xửng','Tôm chua Huế'],tq:['Đại Nội Huế','Lăng Khải Định','Lăng Tự Đức','Lăng Minh Mạng'],dd:['Cầu Trường Tiền','Chợ Đông Ba','Cầu ngói Thanh Toàn','Đầm Chuồn'],tl:['Chùa Thiên Mụ','Điện Hòn Chén','Chùa Từ Đàm','Thiền viện Trúc Lâm Bạch Mã']},
+p21:{dc:['Bán đảo Sơn Trà','Bà Nà Hills','Ngũ Hành Sơn','Biển Mỹ Khê','Cù Lao Chàm','Đèo Hải Vân'],ds:['Mì Quảng','Cao lầu Hội An','Bánh tráng cuốn thịt heo','Cơm gà Tam Kỳ','Bê thui Cầu Mống'],tq:['Phố cổ Hội An','Chùa Cầu','Thánh địa Mỹ Sơn','Bảo tàng Điêu khắc Chăm'],dd:['Cầu Vàng (Bà Nà)','Cầu Rồng','Chợ Hàn','Làng rau Trà Quế','Rừng dừa Bảy Mẫu'],tl:['Chùa Linh Ứng (Sơn Trà)','Chùa Quan Thế Âm (Ngũ Hành Sơn)','Hội quán Phúc Kiến (Hội An)']},
+p22:{dc:['Đảo Lý Sơn','Khu du lịch Măng Đen','Núi Thiên Ấn','Biển Sa Huỳnh','Núi Ngọc Linh'],ds:['Cá bống sông Trà','Tỏi Lý Sơn','Đường phổi','Kẹo gương','Sâm Ngọc Linh','Gỏi lá Kon Tum'],tq:['Khu chứng tích Sơn Mỹ','Cầu treo Kon Klor','Ngục Kon Tum'],dd:['Cổng Tò Vò (Lý Sơn)','Ngã ba Đông Dương (cửa khẩu Bờ Y)','Hồ Đắk Ke (Măng Đen)'],tl:['Chùa Thiên Ấn','Chùa Hang (Lý Sơn)','Nhà thờ gỗ Kon Tum']},
+p23:{dc:['Biển Hồ (hồ T’Nưng)','Eo Gió','Kỳ Co','Ghềnh Ráng Tiên Sa','Núi lửa Chư Đăng Ya'],ds:['Phở khô Gia Lai','Bánh ít lá gai','Bánh xèo tôm nhảy','Chả cá Quy Nhơn','Rượu Bàu Đá'],tq:['Tháp Đôi','Bảo tàng Quang Trung','Tháp Bánh Ít','Mộ Hàn Mặc Tử','Quảng trường Đại Đoàn Kết (Pleiku)'],dd:['Đồi chè Biển Hồ','Bãi biển Quy Nhơn','Thác Phú Cường'],tl:['Chùa Minh Thành (Pleiku)','Chùa Ông Núi (Bình Định)']},
+p24:{dc:['Gành Đá Đĩa','Vịnh Xuân Đài','Mũi Điện (Mũi Đại Lãnh)','Hồ Lắk','Thác Dray Nur','Vườn quốc gia Yok Đôn'],ds:['Cà phê Buôn Ma Thuột','Cá ngừ đại dương Phú Yên','Bánh canh hẹ','Gà nướng Bản Đôn','Bơ sáp Đắk Lắk'],tq:['Khu du lịch Buôn Đôn','Bảo tàng Thế giới Cà phê','Tháp Nhạn','Biệt điện Bảo Đại (Buôn Ma Thuột)'],dd:['Bãi Xép','Hải đăng Đại Lãnh','Buôn Akô Dhông','Đầm Ô Loan'],tl:['Nhà thờ Mằng Lăng','Chùa Sắc tứ Khải Đoan','Chùa Đá Trắng']},
+p25:{dc:['Vịnh Nha Trang','Vịnh Vĩnh Hy','Vịnh Cam Ranh','Đảo Bình Ba','Đồi cát Nam Cương','Vườn quốc gia Núi Chúa'],ds:['Yến sào Khánh Hòa','Bún cá Nha Trang','Nem Ninh Hòa','Nho Ninh Thuận','Thịt cừu Ninh Thuận','Bánh căn'],tq:['Tháp Po Klong Garai','Viện Hải dương học Nha Trang','Làng gốm Bàu Trúc'],dd:['Hòn Chồng','Hang Rái','Đảo Hòn Tằm','Hòn Mun'],tl:['Tháp Bà Ponagar','Chùa Long Sơn','Nhà thờ Núi (Nha Trang)']},
+p26:{dc:['Hồ Xuân Hương','Núi Langbiang','Thác Datanla','Đồi cát Mũi Né','Hồ Tà Đùng','Đảo Phú Quý','Bàu Trắng'],ds:['Dâu tây Đà Lạt','Atiso Đà Lạt','Bánh tráng nướng Đà Lạt','Nước mắm Phan Thiết','Thanh long Bình Thuận','Mứt Đà Lạt'],tq:['Thung lũng Tình Yêu','Ga Đà Lạt','Dinh Bảo Đại','Hải đăng Kê Gà','Công viên địa chất Đắk Nông'],dd:['Chợ Đà Lạt','Quảng trường Lâm Viên','Làng chài Mũi Né','Suối Tiên (Mũi Né)'],tl:['Thiền viện Trúc Lâm Đà Lạt','Chùa Linh Phước','Chùa núi Tà Cú','Tháp Chăm Pô Sah Inư']},
+p27:{dc:['Vườn quốc gia Cát Tiên','Núi Bà Rá','Hồ Trị An','Thác Giang Điền','Núi Chứa Chan'],ds:['Bưởi Tân Triều','Hạt điều Bình Phước','Chôm chôm Long Khánh','Sầu riêng Long Khánh'],tq:['Văn miếu Trấn Biên','Khu du lịch Bửu Long','Nhà tù Bà Rá','Di tích Sóc Bom Bo','Khu di tích Chiến khu Đ'],dd:['Cù lao Phố','Làng bưởi Tân Triều','Thủy điện Trị An'],tl:['Chùa Bửu Phong','Chùa Gia Lào (núi Chứa Chan)']},
+p28:{dc:['Côn Đảo','Bãi Sau Vũng Tàu','Rừng Sác Cần Giờ','Núi Tao Phùng (tượng Chúa Kitô)'],ds:['Cơm tấm Sài Gòn','Hủ tiếu Nam Vang','Bánh mì Sài Gòn','Bánh khọt Vũng Tàu','Măng cụt Lái Thiêu'],tq:['Dinh Độc Lập','Nhà thờ Đức Bà','Bưu điện Thành phố','Địa đạo Củ Chi','Bảo tàng Chứng tích Chiến tranh','Nhà tù Côn Đảo'],dd:['Phố đi bộ Nguyễn Huệ','Chợ Bến Thành','Tòa nhà Landmark 81','Bến Nhà Rồng','Hải đăng Vũng Tàu'],tl:['Chùa Bà Thiên Hậu (Thủ Dầu Một)','Chùa Giác Lâm','Thích Ca Phật Đài (Vũng Tàu)']},
+p29:{dc:['Núi Bà Đen','Hồ Dầu Tiếng','Vườn quốc gia Lò Gò – Xa Mát','Làng nổi Tân Lập','Khu bảo tồn Láng Sen'],ds:['Bánh tráng phơi sương Trảng Bàng','Bánh canh Trảng Bàng','Muối tôm Tây Ninh','Mãng cầu Bà Đen','Gạo nàng thơm Chợ Đào','Lạp xưởng Cần Đước'],tq:['Căn cứ Trung ương Cục miền Nam','Nhà trăm cột (Long An)','Khu di tích Vàm Nhựt Tảo'],dd:['Cáp treo núi Bà Đen','Cửa khẩu Mộc Bài','Làng nổi Tân Lập'],tl:['Tòa Thánh Cao Đài','Chùa Bà (núi Bà Đen)']},
+p30:{dc:['Vườn quốc gia Tràm Chim','Đồng sen Tháp Mười','Cồn Thới Sơn','Biển Tân Thành (Gò Công)'],ds:['Hủ tiếu Mỹ Tho','Hủ tiếu Sa Đéc','Xoài Cao Lãnh','Nem Lai Vung','Vú sữa Lò Rèn'],tq:['Khu di tích Gò Tháp','Nhà cổ Huỳnh Thủy Lê','Khu di tích Nguyễn Sinh Sắc','Di tích Rạch Gầm – Xoài Mút'],dd:['Làng hoa Sa Đéc','Chợ nổi Cái Bè','Khu du lịch Xẻo Quýt'],tl:['Chùa Vĩnh Tràng','Chùa Kiến An Cung (Sa Đéc)']},
+p31:{dc:['Đảo Phú Quốc','Núi Sam','Rừng tràm Trà Sư','Núi Cấm','Quần đảo Nam Du','Hồ Tà Pạ'],ds:['Nước mắm Phú Quốc','Hồ tiêu Phú Quốc','Mắm Châu Đốc','Bún cá Châu Đốc','Đường thốt nốt'],tq:['Lăng Thoại Ngọc Hầu','Nhà tù Phú Quốc','Hòn Phụ Tử (Hà Tiên)'],dd:['Cáp treo Hòn Thơm','Chợ đêm Phú Quốc','Cửa khẩu Tịnh Biên','Thị trấn Hà Tiên'],tl:['Miếu Bà Chúa Xứ núi Sam','Chùa Tây An','Chùa Phật Lớn (núi Cấm)','Dinh Cậu (Phú Quốc)']},
+p32:{dc:['Cù lao An Bình','Ao Bà Om','Cồn Phụng','Biển Ba Động'],ds:['Kẹo dừa Bến Tre','Bánh tráng Mỹ Lồng','Bưởi Năm Roi','Bún nước lèo Trà Vinh','Sầu riêng Cái Mơn','Cam sành Tam Bình'],tq:['Văn Thánh Miếu Vĩnh Long','Khu lưu niệm Nguyễn Đình Chiểu','Di tích Đồng Khởi (Bến Tre)'],dd:['Cầu Mỹ Thuận','Cầu Hàm Luông','Chợ nổi Trà Ôn','Làng gạch gốm Mang Thít'],tl:['Chùa Âng','Chùa Hang (Trà Vinh)','Chùa Tiên Châu']},
+p33:{dc:['Sông Hậu','Cồn Sơn','Vườn cò Bằng Lăng','Khu bảo tồn Lung Ngọc Hoàng'],ds:['Bánh pía Sóc Trăng','Bún nước lèo Sóc Trăng','Lẩu mắm','Khóm Cầu Đúc','Bánh cống'],tq:['Nhà cổ Bình Thủy','Bảo tàng Khmer Sóc Trăng','Khu di tích Lộ Vòng Cung'],dd:['Chợ nổi Cái Răng','Bến Ninh Kiều','Cầu Cần Thơ','Chợ nổi Ngã Bảy'],tl:['Chùa Dơi','Chùa Chén Kiểu','Thiền viện Trúc Lâm Phương Nam','Chùa Ông (Cần Thơ)']},
+p34:{dc:['Mũi Cà Mau','Vườn quốc gia U Minh Hạ','Hòn Khoai','Rừng đước Năm Căn','Đầm Thị Tường'],ds:['Cua Cà Mau','Ba khía Rạch Gốc','Tôm khô Rạch Gốc','Mật ong rừng U Minh','Muối Bạc Liêu','Bánh tằm Cà Mau'],tq:['Nhà Công tử Bạc Liêu','Khu lưu niệm nhạc sĩ Cao Văn Lầu','Khu di tích Hòn Đá Bạc'],dd:['Cột mốc tọa độ GPS 0001 (Đất Mũi)','Cánh đồng điện gió Bạc Liêu','Biểu tượng mũi tàu – Mũi Cà Mau'],tl:['Quán âm Phật đài (Mẹ Nam Hải)','Chùa Xiêm Cán']}
 };
 STOPS.forEach(s=>{const x=PX[s.id];if(x)Object.assign(s,x);});
 
@@ -395,7 +398,7 @@ STOPS.forEach(s=>{const x=PX[s.id];if(x)Object.assign(s,x);});
     const far=others.filter(o=>Math.abs(STOPS.indexOf(o)-STOPS.indexOf(s))>=10);
     (s.nb||[]).forEach(t=>{const w=pick(far,3).map(o=>o.s);
       if(w.length===3)core.push(['Điểm nổi bật sau thuộc tỉnh, thành nào: “'+t.replace(/\.$/,'')+'”?',s.s,w[0],w[1],w[2],'Điểm nổi bật của '+s.s+': '+t]);});
-    const mine=new Set([].concat(s.dc,s.ds,s.tq,s.dd,s.pl));
+    const mine=new Set([].concat(s.dc,s.ds,s.tq,s.dd,s.pl,s.tl||[]));
     const wrong=keys=>{const pool=[];others.forEach(o=>keys.forEach(k=>(o[k]||[]).forEach(x=>{if(!mine.has(x)&&pool.indexOf(x)<0)pool.push(x)})));return pick(pool,3)};
     const group=(keys,q,kind)=>{const items=[];keys.forEach(k=>(s[k]||[]).forEach(x=>{if(items.indexOf(x)<0)items.push(x)}));
       return items.map(x=>{const w=wrong(keys);return w.length===3?[q,x,w[0],w[1],w[2],kind+' của '+s.s+': '+items.join(', ')+'.']:null}).filter(Boolean)};
@@ -403,6 +406,7 @@ STOPS.forEach(s=>{const x=PX[s.id];if(x)Object.assign(s,x);});
     s.rot=[group(['dc','pl'],'Danh lam thắng cảnh, địa danh nào sau đây thuộc '+s.s+'?','Danh lam thắng cảnh, địa danh'),
       group(['ds'],'Đặc sản nào sau đây nổi tiếng của '+s.s+'?','Đặc sản nổi tiếng'),
       group(['tq'],'Di tích, nơi tham quan nào sau đây ở '+s.s+'?','Những nơi tham quan nổi bật'),
+      group(['tl'],'Điểm du lịch tâm linh nào sau đây ở '+s.s+'?','Điểm du lịch tâm linh'),
       group(['dd'],'Điểm dừng chân, check-in nào sau đây thuộc '+s.s+'?','Điểm dừng chân nổi bật')].filter(g=>g.length);
     s.qs=core.concat.apply(core,s.rot);   /* toàn bộ ngân hàng câu hỏi */
     s.qn=core.length+s.rot.length;        /* số câu mỗi lượt chơi */
@@ -425,31 +429,18 @@ const PLACES=[
 ['Địa đạo Củ Chi','🕳️','Hệ thống đường hầm dưới lòng đất.','Nằm gần TP. Hồ Chí Minh.']
 ];
 
-/* Đặc sản về đúng quê: [tên món, emoji, miền, ghi chú] */
-const FOODS=[
-['Phở','🍜','Bắc','Phở gắn bó với Hà Nội và Nam Định.'],
-['Bún chả','🥢','Bắc','Món nổi tiếng của Hà Nội.'],
-['Chả cá Lã Vọng','🐟','Bắc','Cá rán nghệ ăn với thì là, đặc sản Hà Nội.'],
-['Cốm làng Vòng','🌾','Bắc','Cốm là thức quà thu của Hà Nội.'],
-['Bánh cuốn Thanh Trì','🥟','Bắc','Bánh cuốn mỏng ăn kèm chả quế.'],
-['Bún bò Huế','🍲','Trung','Đậm đà vị sả và mắm ruốc.'],
-['Mì Quảng','🍜','Trung','Đặc sản của vùng Quảng Nam – Đà Nẵng.'],
-['Cao lầu','🥘','Trung','Chỉ có ở Hội An.'],
-['Bánh bèo chén','🥣','Trung','Món bánh nhỏ xinh của cố đô Huế.'],
-['Nem lụi','🍢','Trung','Thịt nướng quấn bánh tráng, đặc sản Huế.'],
-['Cơm tấm','🍚','Nam','Gạo tấm ăn với sườn nướng, hợp với Sài Gòn.'],
-['Hủ tiếu Mỹ Tho','🍜','Nam','Món đặc trưng của miền Tây Nam Bộ.'],
-['Lẩu mắm','🍲','Nam','Đặc sản vùng sông nước miền Tây.'],
-['Bánh pía','🥮','Nam','Bánh nhân sầu riêng, đậu xanh nổi tiếng ở Sóc Trăng.']
-];
-
+/* Đặc sản địa phương & Khám phá điểm du lịch: lấy đúng dữ liệu trên trang từng tỉnh.
+   Mỗi mục: [tên, emoji, chỉ số tỉnh trong STOPS]. Tên trùng ở 2 tỉnh trở lên sẽ bị bỏ để không gây nhầm. */
+const FOODS=[],SPOTS=[];
 (function(){
-  const reg=i=>i<15?'Bắc':i<26?'Trung':'Nam';
-  const ico=n=>{n=n.toLowerCase();const m=[[/chè|trà/,'🍵'],[/cà phê/,'☕'],[/rượu/,'🍶'],[/mật ong/,'🍯'],[/nước mắm|mắm/,'🫙'],[/kẹo/,'🍬'],[/phở|bún|mì|miến|hủ tiếu|bánh canh|cháo/,'🍜'],[/cơm|gạo|xôi/,'🍚'],[/cua|ghẹ/,'🦀'],[/tôm/,'🦐'],[/mực/,'🦑'],[/cá|lươn/,'🐟'],[/gà/,'🍗'],[/vịt/,'🦆'],[/bò|trâu|thịt|dê|heo|lợn|bê|cừu/,'🥩'],[/nem|chả|giò/,'🍢'],[/bánh/,'🥮'],[/nho/,'🍇'],[/xoài/,'🥭'],[/bưởi|cam|quýt/,'🍊'],[/dừa/,'🥥'],[/sầu riêng|mít/,'🍈'],[/vải|nhãn|chôm chôm|mận|đào|thanh long|trái|quả/,'🍒'],[/hạt|điều|dẻ|lạc|đậu/,'🌰'],[/măng|nấm|rau/,'🥬'],[/muối/,'🧂']];
+  const fico=n=>{n=n.toLowerCase();const m=[[/chè|trà/,'🍵'],[/cà phê/,'☕'],[/rượu/,'🍶'],[/mật ong/,'🍯'],[/nước mắm|mắm/,'🫙'],[/kẹo/,'🍬'],[/phở|bún|mì|miến|hủ tiếu|bánh canh|cháo|cao lầu/,'🍜'],[/cơm|gạo|xôi/,'🍚'],[/cua|ghẹ|ba khía/,'🦀'],[/tôm/,'🦐'],[/mực/,'🦑'],[/cá|lươn|ngán|sá sùng/,'🐟'],[/gà/,'🍗'],[/vịt/,'🦆'],[/bò|trâu|thịt|dê|heo|lợn|bê|cừu|khâu nhục/,'🥩'],[/nem|chả|giò/,'🍢'],[/bánh/,'🥮'],[/nho/,'🍇'],[/xoài/,'🥭'],[/bưởi|cam|quýt/,'🍊'],[/dừa/,'🥥'],[/sầu riêng|mít|khóm/,'🍈'],[/vải|nhãn|chôm chôm|mận|đào|thanh long|vú sữa|măng cụt|táo|hồng|na |dâu|bơ/,'🍒'],[/hạt|điều|dẻ|lạc|đậu|tiêu|tỏi/,'🌰'],[/măng|nấm|rau|nhút|atiso|su su|sâm/,'🥬'],[/muối/,'🧂'],[/sữa/,'🥛'],[/yến/,'🪺']];
     for(const x of m)if(x[0].test(n))return x[1];return '🍽️'};
-  const have=FOODS.map(f=>f[0].toLowerCase());
-  STOPS.forEach((s,i)=>(s.ds||[]).forEach(n=>{const l=n.toLowerCase();if(have.some(h=>l===h||l.indexOf(h+' ')===0))return;have.push(l);
-    FOODS.push([n,ico(n),reg(i),'Đặc sản của '+s.s+' (miền '+reg(i)+').'])}));
+  const SICO={dc:'🏞️',tq:'🏛️',tl:'🛕',dd:'📸'};
+  const build=(keys,ico,out)=>{const cnt={},first={};
+    STOPS.forEach((s,i)=>{const mine=new Set();keys.forEach(k=>(s[k]||[]).forEach(n=>{const l=n.toLowerCase();if(mine.has(l))return;mine.add(l);cnt[l]=(cnt[l]||0)+1;if(!first[l])first[l]=[n,ico(n,k),i]}))});
+    for(const l in first)if(cnt[l]===1)out.push(first[l]);};
+  build(['ds'],fico,FOODS);
+  build(['dc','tq','tl','dd'],(n,k)=>SICO[k],SPOTS);
 })();
 
 /* Chuyến đi có ngân sách: b = ngân sách (nghìn đồng), d = số ngày, it = [tên, emoji, ngày, chi phí(nghìn đồng), điểm hài lòng] */
@@ -483,7 +474,7 @@ function toast(t){const d=document.createElement('div');d.className='vv-toast';d
 function addPts(n){S.pts+=n;persist();top()}
 
 const A={};
-const NAVMAP={home:null,holidays:'home',hday:'holidays',hdq:'holidays',trip:'home',stop:'trip',startq:'trip',pass:'home',food:'home',guess:'home',budget:'home'};
+const NAVMAP={home:null,holidays:'home',hday:'holidays',hdq:'holidays',trip:'home',stop:'trip',startq:'trip',pass:'home',food:'home',spot:'home',guess:'home',budget:'home'};
 let curScr='home';
 root.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||t.disabled)return;const f=A[t.dataset.a];if(f){if(Object.prototype.hasOwnProperty.call(NAVMAP,t.dataset.a))curScr=t.dataset.a;f(t.dataset,t)}});
 window.vnvBack=function(){const p=NAVMAP[curScr];if(!p)return false;curScr=p;A[p]();const b=document.querySelector('#vnvOv .gm-body');if(b)b.scrollTop=0;return true;};
@@ -607,7 +598,7 @@ A.hdgrp=d=>{hdGrp=+d.g;hdList()};
 A.hday=d=>{
   if(!hdFree(+d.i))return LKASK(()=>{curScr='hday';A.hday(d)});
   const i=+d.i,h=HD[i],n=hdDays(h),nx=hdNext(h);
-  const sec=(t,v)=>v?`<div class="hd-sec"><b>${t}</b><p>${esc(v)}</p></div>`:'';
+  const sec=(t,v)=>v?`<div class="hd-sec"><b>${t}</b>${bul(v)}</div>`:'';
   const order=HD.map((x,k)=>k).sort((a,b)=>hdSortKey(HD[a])-hdSortKey(HD[b])||a-b);
   const pos=order.indexOf(i),prev=order[pos-1],next=order[pos+1];
   draw(`<div class="vv-center"><div class="vv-big">${h.ic}</div></div>
@@ -634,6 +625,7 @@ A.hday=d=>{
 '.hd-next b{display:block;font-size:16px;line-height:1.3}.hd-next small{opacity:.9}.hd-nx-ic{font-size:30px}'+
 '.hd-nx-l{flex:none;background:rgba(255,255,255,.2);border-radius:10px;padding:6px 8px;font-weight:800;font-size:13px;text-align:center;max-width:80px}'+
 '.hd-meta{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:4px 0 10px}.hd-meta span{background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-size:13px}.hd-meta .off{background:#fde8e8;border-color:#f5c2c2;color:#b42318}'+
+'.vv-ul{margin:6px 0 0;padding-left:20px}.vv-ul li{margin:0 0 6px;line-height:1.55}.vv-ul li:last-child{margin-bottom:0}.vv-ul li::marker{color:var(--main)}.vv-info{margin:0}'+
 '.hd-sec{padding:8px 0;border-top:1px dashed var(--line)}.hd-sec:first-child{border-top:0;padding-top:0}.hd-sec b{display:block;color:var(--main);margin-bottom:2px}.hd-sec p{margin:0;font-size:15px;line-height:1.6}';
 document.head.appendChild(st);})();
 
@@ -698,7 +690,8 @@ function home(){
   <div class="vv-grid">
    <button class="vv-mode" data-a="trip"><span class="big">🗺️</span><b>Hành trình xuyên Việt</b><small>${STOPS.length} tỉnh, thành trên bản đồ. Mỗi nơi một thử thách và một con dấu.</small></button>
    <button class="vv-mode" data-a="holidays"><span class="big">📅</span><b>Những ngày quan trọng</b><small>${HD.length} ngày lễ, kỷ niệm, truyền thống trong năm: lịch sử và ý nghĩa.</small></button>
-   <button class="vv-mode" data-a="food"><span class="big">🍜</span><b>Đặc sản về đúng quê</b><small>${FOODS.length} món: đoán món thuộc miền nào. Kỷ lục: ${S.best.food}</small></button>
+   <button class="vv-mode" data-a="food"><span class="big">🍜</span><b>Đặc sản địa phương</b><small>${FOODS.length} đặc sản: đoán thuộc tỉnh, thành nào. Kỷ lục: ${S.best.food||0}</small></button>
+   <button class="vv-mode" data-a="spot"><span class="big">🧭</span><b>Khám phá điểm du lịch</b><small>${SPOTS.length} điểm đến: đoán thuộc tỉnh, thành nào. Kỷ lục: ${S.best.spot||0}</small></button>
    <button class="vv-mode" data-a="guess"><span class="big">🔍</span><b>Đoán địa danh qua ảnh mờ</b><small>Hình rõ dần, đoán càng sớm càng nhiều điểm. Kỷ lục: ${S.best.guess}</small></button>
    <button class="vv-mode" data-a="budget"><span class="big">💰</span><b>Chuyến đi có ngân sách</b><small>Chọn hoạt động vừa tiền, vừa ngày mà vui nhất. Kỷ lục: ${S.best.trip}</small></button>
    <button class="vv-mode" data-a="pass"><span class="big">🛂</span><b>Hộ chiếu của tôi</b><small>Các con dấu bạn đã sưu tầm.</small></button>
@@ -788,10 +781,10 @@ A.stop=d=>{if(+d.i>=LKFREE(STOPS.length)&&!LKOPEN())return LKASK(()=>{curScr='st
    ['👥 Dân số',vvPop(s.dn)+' (thứ '+vvRank('dn',s)+'/34, số liệu làm tròn)'],
    ['🛣️ Quốc lộ, cao tốc chính',s.ql],
    ['🌊 Sông, hồ, vịnh',s.song]
-  ].map(r=>`<div style="margin:6px 0"><b>${r[0]}:</b> ${esc(r[1])}</div>`).join('');
-  draw(hdr+`<div class="vv-note">${rows}</div>
-  <div class="vv-story"><b>⭐ Điểm nổi bật</b><br>${s.intro.split('\n').map(x=>'• '+esc(x)).join('<br>')}</div>
-  ${s.dc?`<div class="vv-story px-box">${[['🏞️ Danh lam thắng cảnh',s.dc],['🍲 Đặc sản nổi tiếng',s.ds],['🏛️ Nơi tham quan, di tích nổi bật',s.tq],['📸 Điểm dừng chân, check-in',s.dd]].map(r=>`<div class="px-sec"><b>${r[0]}</b><div class="px-tags">${r[1].map(x=>'<span>'+esc(x)+'</span>').join('')}</div></div>`).join('')}</div>`:''}
+  ].map(r=>`<li><b>${r[0]}:</b> ${esc(r[1])}</li>`).join('');
+  draw(hdr+`<div class="vv-note"><ul class="vv-ul vv-info">${rows}</ul></div>
+  <div class="vv-story"><b>⭐ Điểm nổi bật</b><ul class="vv-ul">${s.intro.split('\n').map(x=>'<li>'+esc(x.replace(/\.$/,''))+'</li>').join('')}</ul></div>
+  ${s.dc?`<div class="vv-story px-box">${[['🏞️ Danh lam thắng cảnh',s.dc],['🍲 Đặc sản nổi tiếng',s.ds],['🏛️ Nơi tham quan, di tích nổi bật',s.tq],['🛕 Du lịch tâm linh',s.tl||[]],['📸 Điểm dừng chân, check-in',s.dd]].filter(r=>r[1].length).map(r=>`<div class="px-sec"><b>${r[0]}</b><div class="px-tags">${r[1].map(x=>'<span>'+esc(x)+'</span>').join('')}</div></div>`).join('')}</div>`:''}
   ${s.qs&&s.qs.length?`<div class="vv-note">🎯 Thử thách gồm <b>${s.qn||s.qs.length}</b> câu hỏi về mọi thông tin ở trên. Trả lời đúng ít nhất <b>${Math.ceil((s.qn||s.qs.length)*0.6)}</b> câu để nhận con dấu.</div>`:''}
   <div class="vv-row">${s.qs&&s.qs.length?`<button class="vv-btn" data-a="startq" data-i="${d.i}">Bắt đầu thử thách ▶</button>`:''}<button class="vv-btn alt" data-a="trip">← Bản đồ</button></div>`)};
 A.startq=d=>{Q={s:+d.i,qs:stopQs(STOPS[+d.i]),n:0,right:0,opts:[],picked:null};qScreen()};
@@ -832,26 +825,40 @@ A.pass=()=>{stopTimer();
    :`<div class="vv-stamp off"><div class="big">❓</div><b>${esc(s.s)}</b><small>Chưa đến</small></div>`).join('')+
   `</div><div class="vv-row"><button class="vv-btn alt" data-a="home">← Về trang chủ</button></div>`)};
 
-/* ===================== ĐẶC SẢN VỀ ĐÚNG QUÊ ===================== */
+/* ===================== ĐẶC SẢN ĐỊA PHƯƠNG & KHÁM PHÁ ĐIỂM DU LỊCH =====================
+   Hỏi: mục này thuộc tỉnh, thành nào? (dữ liệu lấy từ trang từng tỉnh) */
+const PG={
+  food:{items:()=>FOODS,ic:'🍜',name:'Đặc sản địa phương',unit:'Món',q:'Đây là đặc sản thuộc tỉnh, thành nào?',ex:'là đặc sản của'},
+  spot:{items:()=>SPOTS,ic:'🧭',name:'Khám phá điểm du lịch',unit:'Điểm',q:'Địa điểm du lịch này thuộc tỉnh, thành nào?',ex:'thuộc'}
+};
+const PG_N=10;
 let F=null;
-A.food=()=>{stopTimer();F={items:shuffle(FOODS).slice(0,8),i:0,pts:0,ok:0,streak:0,picked:null};foodScreen()};
-function foodScreen(){
-  if(F.i>=F.items.length)return foodEnd();
-  const f=F.items[F.i],p=F.picked,regs=['Bắc','Trung','Nam'];
+function pgStart(k){stopTimer();const it=PG[k].items();F={k:k,items:shuffle(it).slice(0,PG_N),i:0,pts:0,ok:0,streak:0,picked:null,opts:[]};pgScreen()}
+A.food=()=>pgStart('food');
+A.spot=()=>pgStart('spot');
+function pgMerge(s){return s.f&&s.f.length?' (sáp nhập từ '+s.f.join(' + ')+')':''}
+function pgScreen(){
+  if(F.i>=F.items.length)return pgEnd();
+  const g=PG[F.k],f=F.items[F.i],s=STOPS[f[2]],p=F.picked;
+  if(!F.opts.length)F.opts=shuffle([s].concat(shuffle(STOPS.filter(o=>o!==s)).slice(0,3)));
   draw(`<div class="vv-prog"><i style="width:${F.i/F.items.length*100}%"></i></div>
-  <small class="vv-sub">Đặc sản về đúng quê · Món ${F.i+1}/${F.items.length} · Điểm: ${F.pts}${F.streak>=3?' 🔥':''}</small>
-  <div class="vv-food">${f[1]}</div><div class="vv-q vv-center">${esc(f[0])} là đặc sản của miền nào?</div>
-  <div class="vv-regs">`+regs.map(r=>{let c='';if(p!==null){if(r===f[2])c='ok';else if(r===p)c='bad'}
-    return `<button class="vv-reg ${c}" data-a="fans" data-r="${r}" ${p!==null?'disabled':''}>Miền ${r}</button>`}).join('')+`</div>`+
-  (p!==null?`<div class="vv-note">${p===f[2]?'✅ Chính xác! ':'❌ Món này thuộc miền '+f[2]+'. '}${esc(f[3])}</div><button class="vv-btn" data-a="fnext">${F.i+1<F.items.length?'Món tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
+  <small class="vv-sub">${g.name} · ${g.unit} ${F.i+1}/${F.items.length} · Điểm: ${F.pts}${F.streak>=3?' 🔥':''}</small>
+  <div class="vv-food">${f[1]}</div><div class="vv-q vv-center">${esc(f[0])}</div>
+  <div class="vv-sub vv-center" style="margin-top:-6px">${g.q}</div>`+
+  F.opts.map((o,i)=>{let c='';if(p!==null){if(o===s)c='ok';else if(i===p)c='bad'}
+    return `<button class="vv-opt ${c}" data-a="pgans" data-i="${i}" ${p!==null?'disabled':''}>${esc(o.s)}</button>`}).join('')+
+  (p!==null?`<div class="vv-note">${F.opts[p]===s?'✅ Chính xác! ':'❌ Chưa đúng. '}<b>${esc(f[0])}</b> ${g.ex} <b>${esc(s.s)}</b>${esc(pgMerge(s))}.</div>
+  <button class="vv-btn" data-a="pgnext">${F.i+1<F.items.length?'Câu tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
 }
-A.fans=d=>{if(F.picked!==null)return;F.picked=d.r;const f=F.items[F.i];if(d.r===f[2]){F.ok++;F.streak++;F.pts+=10+(F.streak>=3?5:0);SFX('ok')}else{F.streak=0;SFX('bad')}foodScreen()};
-A.fnext=()=>{F.i++;F.picked=null;if(F.i<F.items.length&&F.i>=LKFREE(F.items.length)&&!LKOPEN())return LKASK(foodScreen,()=>{F.items=F.items.slice(0,F.i);foodScreen()});foodScreen()};
-function foodEnd(){
-  addPts(F.pts);const nb=F.pts>S.best.food;if(nb){S.best.food=F.pts;persist()}
+A.pgans=d=>{if(F.picked!==null)return;F.picked=+d.i;const s=STOPS[F.items[F.i][2]];
+  if(F.opts[F.picked]===s){F.ok++;F.streak++;F.pts+=10+(F.streak>=3?5:0);SFX('ok')}else{F.streak=0;SFX('bad')}pgScreen()};
+A.pgnext=()=>{F.i++;F.picked=null;F.opts=[];const b=document.querySelector('#vnvOv .gm-body');if(b)b.scrollTop=0;
+  if(F.i<F.items.length&&F.i>=LKFREE(F.items.length)&&!LKOPEN())return LKASK(pgScreen,()=>{F.items=F.items.slice(0,F.i);pgScreen()});pgScreen()};
+function pgEnd(){
+  const g=PG[F.k];addPts(F.pts);const best=S.best[F.k]||0,nb=F.pts>best;if(nb){S.best[F.k]=F.pts;persist()}
   if(nb)SFX('win');
-  draw(`<div class="vv-center"><div class="vv-big">🍜</div><h2 class="vv-h2">Hoàn thành!</h2><p>Đúng <b>${F.ok}/${F.items.length}</b> món · <b>${F.pts}</b> điểm ${nb?'🎉 Kỷ lục mới!':'(kỷ lục: '+S.best.food+')'}</p></div>
-  <div class="vv-row" style="justify-content:center"><button class="vv-btn" data-a="food">Chơi lại</button><button class="vv-btn alt" data-a="home">Trang chủ</button></div>`);
+  draw(`<div class="vv-center"><div class="vv-big">${g.ic}</div><h2 class="vv-h2">Hoàn thành!</h2><p>Đúng <b>${F.ok}/${F.items.length}</b> câu · <b>${F.pts}</b> điểm ${nb?'🎉 Kỷ lục mới!':'(kỷ lục: '+best+')'}</p></div>
+  <div class="vv-row" style="justify-content:center"><button class="vv-btn" data-a="${F.k}">Chơi lại</button><button class="vv-btn alt" data-a="home">Trang chủ</button></div>`);
 }
 
 /* ===================== ĐOÁN ĐỊA DANH QUA ẢNH MỜ ===================== */

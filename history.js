@@ -16,6 +16,9 @@ const LKASK=(ok,no)=>{if(window.SixLock)window.SixLock.ask(ok,no);else if(ok)ok(
 const LKFREE=n=>Math.ceil(n/3);
 const SFX=k=>{try{if(window.sfx)window.sfx(k)}catch(e){}};
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+/* Tách đoạn văn thành các gạch đầu dòng (mỗi câu / mỗi vế sau dấu ; là một ý) */
+const bul=t=>{const a=String(t||'').replace(/"[^"]*"|“[^”]*”/g,m=>m.replace(/([.;!?]) /g,'$1\u00a0')).replace(/([.!?…]) +(?=[\p{Lu}"“0-9])/gu,'$1\n').replace(/; +/g,'\n').split('\n').map(x=>x.trim().replace(/[.;]$/,'')).filter(Boolean);
+  return '<ul class="vh-ul">'+a.map(x=>'<li>'+esc(x.charAt(0).toUpperCase()+x.slice(1))+'</li>').join('')+'</ul>'};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 /* ===================== DỮ LIỆU ===================== */
@@ -23,9 +26,15 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const ERAS=[
 {id:'hb',ic:'🥁',n:'Thời dựng nước: Hồng Bàng – Văn Lang – Âu Lạc',y:'Đến năm 179 TCN',
  story:[
-  'Người Việt cổ đã sống trên đất này từ hàng chục vạn năm trước, để lại dấu tích ở Núi Đọ, Sơn Vi, Hòa Bình, Bắc Sơn. Nghề trồng lúa nước giúp cư dân định cư thành làng; đỉnh cao là văn hóa Đông Sơn với trống đồng.',
-  'Khoảng thế kỷ VII TCN, nhà nước Văn Lang ra đời: vua Hùng đứng đầu, đóng đô ở Phong Châu (Phú Thọ), chia 15 bộ do lạc tướng cai quản, có lạc hầu giúp việc. Truyền thuyết Sơn Tinh – Thủy Tinh kể chuyện chống lũ, Thánh Gióng kể chuyện chống giặc.',
-  'Năm 208 TCN, Thục Phán hợp nhất người Âu Việt và Lạc Việt, lập nước Âu Lạc, xưng An Dương Vương, xây thành Cổ Loa hình xoắn ốc. Năm 179 TCN, Triệu Đà chiếm Âu Lạc, mở đầu thời Bắc thuộc.'],
+  'Người Việt cổ sống trên đất này từ hàng chục vạn năm trước: dấu tích ở Núi Đọ, Sơn Vi, Hòa Bình, Bắc Sơn',
+  'Nghề trồng lúa nước giúp cư dân định cư thành làng',
+  'Đỉnh cao là văn hóa Đông Sơn, nổi tiếng với trống đồng',
+  'Khoảng thế kỷ VII TCN: nhà nước Văn Lang ra đời, vua Hùng đứng đầu, đóng đô ở Phong Châu (Phú Thọ)',
+  'Văn Lang chia 15 bộ do lạc tướng cai quản; lạc hầu giúp vua việc nước',
+  'Truyền thuyết: Sơn Tinh – Thủy Tinh (chống lũ), Thánh Gióng (chống giặc)',
+  '208 TCN: Thục Phán hợp nhất Âu Việt và Lạc Việt, lập nước Âu Lạc, xưng An Dương Vương',
+  'An Dương Vương xây thành Cổ Loa hình xoắn ốc',
+  '179 TCN: Triệu Đà chiếm Âu Lạc, mở đầu thời Bắc thuộc'],
  facts:[['Thiên niên kỷ I TCN','Văn hóa Đông Sơn rực rỡ, nghề đúc đồng phát triển'],['Khoảng TK VII TCN','Nhà nước Văn Lang ra đời, kinh đô Phong Châu'],['208 TCN','Thục Phán lập nước Âu Lạc, đóng đô Cổ Loa'],['179 TCN','Triệu Đà chiếm Âu Lạc, mở đầu thời Bắc thuộc']],
  qs:[
  ['Nền văn hóa rực rỡ thời các vua Hùng, nổi tiếng với kỹ thuật đúc đồng và trống đồng là?','Văn hóa Đông Sơn','Văn hóa Sa Huỳnh','Văn hóa Óc Eo','Văn hóa Hòa Bình','Văn hóa Đông Sơn phát triển ở lưu vực sông Hồng, sông Mã, sông Cả.'],
@@ -46,9 +55,16 @@ const ERAS=[
 
 {id:'bt',ic:'⚔️',n:'Một nghìn năm Bắc thuộc và đấu tranh giành độc lập',y:'179 TCN – 938',
  story:[
-  'Năm 179 TCN, Triệu Đà sáp nhập Âu Lạc vào nước Nam Việt. Từ đó các triều đại phương Bắc (Hán, Ngô, Lương, Tùy, Đường...) thay nhau đô hộ hơn một nghìn năm, bắt cống nạp, đánh thuế nặng và tìm cách đồng hóa.',
-  'Người Việt vẫn giữ tiếng nói, phong tục và liên tục nổi dậy: Hai Bà Trưng (năm 40) đánh đuổi thái thú Tô Định; Bà Triệu (248); Lý Bí (Lý Nam Đế) lập nước Vạn Xuân (544); Mai Thúc Loan (Mai Hắc Đế); Phùng Hưng (Bố Cái Đại Vương).',
-  'Năm 905, Khúc Thừa Dụ giành quyền tự chủ. Năm 938, Ngô Quyền dùng bãi cọc ngầm đánh tan quân Nam Hán trên sông Bạch Đằng, chấm dứt thời Bắc thuộc.'],
+  '179 TCN: Triệu Đà sáp nhập Âu Lạc vào nước Nam Việt',
+  'Các triều đại phương Bắc (Hán, Ngô, Lương, Tùy, Đường...) đô hộ hơn một nghìn năm',
+  'Chúng bắt cống nạp, đánh thuế nặng, tìm cách đồng hóa',
+  'Người Việt vẫn giữ tiếng nói, phong tục và liên tục nổi dậy',
+  'Năm 40: Hai Bà Trưng khởi nghĩa, đánh đuổi thái thú Tô Định',
+  'Năm 248: Bà Triệu khởi nghĩa',
+  'Năm 544: Lý Bí (Lý Nam Đế) lập nước Vạn Xuân',
+  'Thế kỷ VIII: Mai Thúc Loan (Mai Hắc Đế), Phùng Hưng (Bố Cái Đại Vương) nổi dậy',
+  'Năm 905: Khúc Thừa Dụ giành quyền tự chủ',
+  'Năm 938: Ngô Quyền dùng bãi cọc ngầm đánh tan quân Nam Hán trên sông Bạch Đằng, chấm dứt Bắc thuộc'],
  facts:[['179 TCN','Triệu Đà chiếm Âu Lạc'],['40','Hai Bà Trưng khởi nghĩa ở Mê Linh'],['248','Bà Triệu khởi nghĩa'],['544','Lý Bí lập nước Vạn Xuân'],['905','Khúc Thừa Dụ giành quyền tự chủ'],['938','Ngô Quyền thắng trận Bạch Đằng']],
  qs:[
  ['Cuộc khởi nghĩa Hai Bà Trưng nổ ra vào năm nào?','Năm 40','Năm 248','Năm 544','Năm 938','Khởi nghĩa bắt đầu ở Mê Linh, nhanh chóng giành lại 65 thành.'],
@@ -69,9 +85,14 @@ const ERAS=[
 
 {id:'dl',ic:'🏯',n:'Ngô – Đinh – Tiền Lê: Xây nền độc lập',y:'939 – 1009',
  story:[
-  'Năm 939, Ngô Quyền xưng vương, đóng đô ở Cổ Loa. Ông mất năm 944, đất nước rơi vào loạn 12 sứ quân (944 – 968).',
-  'Đinh Bộ Lĩnh, người Hoa Lư (Ninh Bình), dẹp loạn, thống nhất đất nước. Năm 968, ông lên ngôi (Đinh Tiên Hoàng), đặt quốc hiệu Đại Cồ Việt, đóng đô ở Hoa Lư.',
-  'Năm 979 vua Đinh bị ám hại, con còn nhỏ, quân Tống lăm le xâm lược. Thập đạo tướng quân Lê Hoàn được suy tôn lên ngôi (980), lập nhà Tiền Lê và đánh tan quân Tống năm 981. Năm 1009, Lý Công Uẩn lên ngôi.'],
+  '939: Ngô Quyền xưng vương, đóng đô ở Cổ Loa',
+  '944: Ngô Quyền mất, đất nước rơi vào loạn 12 sứ quân (944 – 968)',
+  'Đinh Bộ Lĩnh, người Hoa Lư (Ninh Bình), dẹp loạn, thống nhất đất nước',
+  '968: Đinh Bộ Lĩnh lên ngôi (Đinh Tiên Hoàng), quốc hiệu Đại Cồ Việt, đóng đô ở Hoa Lư',
+  '979: vua Đinh bị ám hại, con còn nhỏ, quân Tống lăm le xâm lược',
+  '980: Thập đạo tướng quân Lê Hoàn được suy tôn lên ngôi, lập nhà Tiền Lê',
+  '981: Lê Hoàn đánh tan quân Tống',
+  '1009: Lý Công Uẩn lên ngôi, kết thúc nhà Tiền Lê'],
  facts:[['939','Ngô Quyền xưng vương, đóng đô Cổ Loa'],['944 – 968','Loạn 12 sứ quân'],['968','Đinh Bộ Lĩnh lên ngôi, quốc hiệu Đại Cồ Việt, đóng đô Hoa Lư'],['980 – 981','Lê Hoàn lên ngôi và đánh thắng quân Tống'],['1009','Lý Công Uẩn lên ngôi, kết thúc nhà Tiền Lê']],
  qs:[
  ['Năm 939, Ngô Quyền xưng vương và đóng đô ở đâu?','Cổ Loa','Hoa Lư','Thăng Long','Phong Châu','Cổ Loa từng là kinh đô của An Dương Vương.'],
@@ -92,9 +113,15 @@ const ERAS=[
 
 {id:'ly',ic:'🐉',n:'Nhà Lý: Thăng Long ra đời',y:'1009 – 1225',
  story:[
-  'Năm 1009, Lý Công Uẩn lên ngôi, lập nhà Lý. Năm 1010, ông ban Chiếu dời đô từ Hoa Lư ra thành Đại La, đổi tên là Thăng Long (rồng bay lên).',
-  'Nhà Lý xây nền móng quốc gia: ban Hình thư (1042), dựng chùa Một Cột (1049), đặt quốc hiệu Đại Việt (1054), lập Văn Miếu (1070), mở khoa thi đầu tiên (1075), lập Quốc Tử Giám (1076).',
-  'Năm 1075, Lý Thường Kiệt chủ động đánh sang Ung Châu, Khâm Châu, Liêm Châu, rồi lập phòng tuyến sông Như Nguyệt, thắng quân Tống (1077); bài thơ Nam quốc sơn hà vang lên. Năm 1225, Lý Chiêu Hoàng nhường ngôi cho Trần Cảnh.'],
+  '1009: Lý Công Uẩn lên ngôi, lập nhà Lý',
+  '1010: Chiếu dời đô từ Hoa Lư ra thành Đại La, đổi tên là Thăng Long (rồng bay lên)',
+  '1042: ban Hình thư, bộ luật thành văn đầu tiên',
+  '1049: dựng chùa Một Cột',
+  '1054: đặt quốc hiệu Đại Việt',
+  '1070: lập Văn Miếu; 1075: mở khoa thi đầu tiên; 1076: lập Quốc Tử Giám',
+  '1075: Lý Thường Kiệt chủ động đánh sang Ung Châu, Khâm Châu, Liêm Châu',
+  '1077: phòng tuyến sông Như Nguyệt chặn đứng quân Tống; bài thơ Nam quốc sơn hà vang lên',
+  '1225: Lý Chiêu Hoàng nhường ngôi cho Trần Cảnh'],
  facts:[['1009','Lý Công Uẩn lên ngôi, lập nhà Lý'],['1010','Chiếu dời đô, kinh đô Thăng Long'],['1042','Ban hành Hình thư'],['1054','Quốc hiệu Đại Việt'],['1070','Xây dựng Văn Miếu'],['1075 – 1077','Kháng chiến chống Tống do Lý Thường Kiệt chỉ huy'],['1225','Nhà Lý kết thúc, nhà Trần thành lập']],
  qs:[
  ['Chiếu dời đô của Lý Công Uẩn được ban vào năm nào?','Năm 1010','Năm 1009','Năm 1070','Năm 1225','Kinh đô được chuyển từ Hoa Lư ra Đại La.'],
@@ -117,9 +144,16 @@ const ERAS=[
 
 {id:'tr',ic:'🛡️',n:'Nhà Trần: Ba lần đánh thắng quân Mông – Nguyên',y:'1225 – 1400',
  story:[
-  'Năm 1225, Trần Cảnh lên ngôi (Trần Thái Tông) nhờ sự sắp đặt của Trần Thủ Độ, lập nhà Trần. Nhà Trần đắp đê, khai hoang, coi trọng học hành; Lê Văn Hưu soạn Đại Việt sử ký (1272).',
-  'Quân Mông – Nguyên ba lần xâm lược (1258, 1285, 1287 – 1288). Vua tôi đồng lòng: Hội nghị Bình Than (1282), Hội nghị Diên Hồng (1284); Trần Quốc Tuấn viết Hịch tướng sĩ. Kế sách: vườn không nhà trống, rút lui rồi phản công.',
-  'Các trận thắng lớn: Đông Bộ Đầu (1258); Hàm Tử, Chương Dương, Tây Kết (1285); Bạch Đằng (1288) bắt sống Ô Mã Nhi. Vua Trần Nhân Tông lập thiền phái Trúc Lâm. Năm 1400, Hồ Quý Ly lập nhà Hồ.'],
+  '1225: Trần Cảnh lên ngôi (Trần Thái Tông) nhờ sự sắp đặt của Trần Thủ Độ, lập nhà Trần',
+  'Nhà Trần đắp đê, khai hoang, coi trọng học hành',
+  '1272: Lê Văn Hưu soạn Đại Việt sử ký',
+  'Quân Mông – Nguyên ba lần xâm lược: 1258, 1285, 1287 – 1288',
+  'Vua tôi đồng lòng: Hội nghị Bình Than (1282), Hội nghị Diên Hồng (1284)',
+  'Trần Quốc Tuấn (Hưng Đạo Vương) viết Hịch tướng sĩ',
+  'Kế sách: vườn không nhà trống, rút lui rồi phản công',
+  'Trận thắng lớn: Đông Bộ Đầu (1258); Hàm Tử, Chương Dương, Tây Kết (1285); Bạch Đằng (1288) bắt sống Ô Mã Nhi',
+  'Vua Trần Nhân Tông lập thiền phái Trúc Lâm',
+  '1400: Hồ Quý Ly lập nhà Hồ, nhà Trần kết thúc'],
  facts:[['1225','Nhà Trần thành lập'],['1258','Kháng chiến chống Mông Cổ lần thứ nhất (Đông Bộ Đầu)'],['1284','Hội nghị Diên Hồng'],['1285','Chiến thắng Hàm Tử, Chương Dương, Tây Kết'],['1287 – 1288','Chiến thắng Bạch Đằng'],['1400','Hồ Quý Ly lập nhà Hồ']],
  qs:[
  ['Nhà Trần thành lập năm 1225 sau khi ai lên ngôi?','Trần Cảnh','Trần Thủ Độ','Trần Hưng Đạo','Trần Quốc Toản','Trần Cảnh lên ngôi tức Trần Thái Tông.'],
@@ -141,9 +175,15 @@ const ERAS=[
 
 {id:'ho',ic:'🗡️',n:'Nhà Hồ, thuộc Minh và Khởi nghĩa Lam Sơn',y:'1400 – 1427',
  story:[
-  'Năm 1400, Hồ Quý Ly lập nhà Hồ, đặt quốc hiệu Đại Ngu, đóng đô ở Tây Đô (Thanh Hóa). Ông cải cách: hạn điền, hạn nô, phát hành tiền giấy, đề cao chữ Nôm.',
-  'Năm 1406, nhà Minh mượn cớ “phù Trần diệt Hồ” sang xâm lược. Nhà Hồ không đoàn kết được lòng dân nên thất bại (1407); nhà Minh đô hộ tàn bạo.',
-  'Năm 1418, Lê Lợi khởi nghĩa ở Lam Sơn, Nguyễn Trãi làm quân sư (dâng Bình Ngô sách). Nghĩa quân thắng Tốt Động – Chúc Động (1426), Chi Lăng – Xương Giang (1427, diệt viện binh Liễu Thăng); Vương Thông xin hòa ở Đông Quan. Năm 1428, Lê Lợi lên ngôi (niên hiệu Thuận Thiên), Nguyễn Trãi soạn Bình Ngô đại cáo. Tương truyền vua trả gươm thần cho Rùa Vàng ở hồ Hoàn Kiếm.'],
+  '1400: Hồ Quý Ly lập nhà Hồ, quốc hiệu Đại Ngu, đóng đô ở Tây Đô (Thanh Hóa)',
+  'Cải cách: hạn điền, hạn nô, phát hành tiền giấy, đề cao chữ Nôm',
+  '1406: nhà Minh mượn cớ “phù Trần diệt Hồ” sang xâm lược',
+  '1407: nhà Hồ không đoàn kết được lòng dân nên thất bại; nhà Minh đô hộ tàn bạo',
+  '1418: Lê Lợi khởi nghĩa ở Lam Sơn; Nguyễn Trãi làm quân sư, dâng Bình Ngô sách',
+  '1426: thắng Tốt Động – Chúc Động',
+  '1427: thắng Chi Lăng – Xương Giang, diệt viện binh Liễu Thăng; Vương Thông xin hòa ở Đông Quan',
+  '1428: Lê Lợi lên ngôi (niên hiệu Thuận Thiên); Nguyễn Trãi soạn Bình Ngô đại cáo',
+  'Truyền thuyết: vua trả gươm thần cho Rùa Vàng ở hồ Hoàn Kiếm'],
  facts:[['1400','Hồ Quý Ly lập nhà Hồ, quốc hiệu Đại Ngu'],['1407','Nhà Minh chiếm nước ta, bắt đầu thời thuộc Minh'],['1418','Lê Lợi dựng cờ khởi nghĩa ở Lam Sơn'],['1426','Chiến thắng Tốt Động – Chúc Động'],['1427','Chiến thắng Chi Lăng – Xương Giang, Hội thề Đông Quan'],['1428','Lê Lợi lên ngôi, Bình Ngô đại cáo ra đời']],
  qs:[
  ['Quốc hiệu của nước ta thời nhà Hồ là gì?','Đại Ngu','Đại Cồ Việt','Đại Việt','Vạn Xuân','Đại Ngu có nghĩa là sự yên vui lớn.'],
@@ -166,9 +206,15 @@ const ERAS=[
 
 {id:'le',ic:'📖',n:'Hậu Lê sơ: Thời Hồng Đức thịnh trị',y:'1428 – 1527',
  story:[
-  'Năm 1428, Lê Lợi lập nhà Hậu Lê (Lê sơ), quốc hiệu Đại Việt, kinh đô Đông Kinh (Thăng Long). Nhà Lê chia ruộng cho dân, cho binh lính thay phiên về làm ruộng (“ngụ binh ư nông”). Năm 1442, vụ án Lệ Chi Viên khiến Nguyễn Trãi bị hại oan.',
-  'Thời Lê Thánh Tông (1460 – 1497) là đỉnh cao: ban Luật Hồng Đức (bảo vệ quyền lợi phụ nữ), vẽ bản đồ Hồng Đức, mở rộng thi cử, dựng bia tiến sĩ ở Văn Miếu (nay là di sản tư liệu thế giới). Ngô Sĩ Liên soạn Đại Việt sử ký toàn thư (1479).',
-  'Năm 1471, Lê Thánh Tông đánh Chăm Pa, lập thừa tuyên Quảng Nam. Sau đó triều đình suy yếu; năm 1527, Mạc Đăng Dung cướp ngôi, lập nhà Mạc.'],
+  '1428: Lê Lợi lập nhà Hậu Lê (Lê sơ), quốc hiệu Đại Việt, kinh đô Đông Kinh (Thăng Long)',
+  'Chia ruộng cho dân; “ngụ binh ư nông”: binh lính thay phiên về làm ruộng',
+  '1442: vụ án Lệ Chi Viên, Nguyễn Trãi bị hại oan',
+  '1460 – 1497: Lê Thánh Tông trị vì, đất nước cực thịnh',
+  'Ban Luật Hồng Đức, có điều khoản bảo vệ quyền lợi phụ nữ',
+  'Vẽ bản đồ Hồng Đức; mở rộng thi cử; dựng bia tiến sĩ ở Văn Miếu (nay là di sản tư liệu thế giới)',
+  '1471: đánh Chăm Pa, lập thừa tuyên Quảng Nam',
+  '1479: Ngô Sĩ Liên soạn Đại Việt sử ký toàn thư',
+  '1527: Mạc Đăng Dung cướp ngôi, lập nhà Mạc'],
  facts:[['1428','Lê Lợi lên ngôi, lập nhà Hậu Lê'],['1442','Vụ án Lệ Chi Viên'],['1460 – 1497','Lê Thánh Tông trị vì, thời Hồng Đức thịnh trị'],['1471','Đánh Chăm Pa, lập thừa tuyên Quảng Nam'],['1479','Ngô Sĩ Liên hoàn thành Đại Việt sử ký toàn thư'],['1527','Mạc Đăng Dung cướp ngôi nhà Lê']],
  qs:[
  ['Vị vua nào đưa nhà Hậu Lê đến thời cực thịnh?','Lê Thánh Tông','Lê Thái Tổ','Lê Nhân Tông','Lê Chiêu Thống','Thời kỳ này gọi là thời Hồng Đức.'],
@@ -188,9 +234,15 @@ const ERAS=[
 
 {id:'tn',ic:'🗺️',n:'Mạc, Lê Trung hưng và Trịnh – Nguyễn phân tranh',y:'1527 – 1771',
  story:[
-  'Năm 1527, Mạc Đăng Dung lập nhà Mạc. Năm 1533, Nguyễn Kim phò Lê Trang Tông lập triều Lê Trung hưng ở Thanh Hóa, gây ra chiến tranh Nam – Bắc triều. Năm 1592, Trịnh Tùng chiếm Thăng Long, nhà Mạc lui lên Cao Bằng.',
-  'Vua Lê chỉ còn hình thức, chúa Trịnh nắm Đàng Ngoài. Năm 1558, Nguyễn Hoàng vào trấn thủ Thuận Hóa, gây dựng Đàng Trong. Trịnh – Nguyễn đánh nhau 7 lần (1627 – 1672), lấy sông Gianh làm ranh giới.',
-  'Chúa Nguyễn mở cõi về phương Nam; năm 1698, Nguyễn Hữu Cảnh lập phủ Gia Định. Phố Hiến (Đàng Ngoài) và Hội An (Đàng Trong) buôn bán sầm uất. Năm 1651, Alexandre de Rhodes in từ điển Việt – Bồ – La, góp phần hoàn thiện chữ Quốc ngữ.'],
+  '1527: Mạc Đăng Dung lập nhà Mạc',
+  '1533: Nguyễn Kim phò Lê Trang Tông lập triều Lê Trung hưng ở Thanh Hóa → chiến tranh Nam – Bắc triều',
+  '1592: Trịnh Tùng chiếm Thăng Long, nhà Mạc lui lên Cao Bằng',
+  'Vua Lê chỉ còn hình thức; chúa Trịnh nắm Đàng Ngoài',
+  '1558: Nguyễn Hoàng vào trấn thủ Thuận Hóa, gây dựng Đàng Trong',
+  '1627 – 1672: Trịnh – Nguyễn đánh nhau 7 lần, lấy sông Gianh làm ranh giới',
+  '1698: Nguyễn Hữu Cảnh lập phủ Gia Định, mở cõi phương Nam',
+  'Thương cảng sầm uất: Phố Hiến (Đàng Ngoài), Hội An (Đàng Trong)',
+  '1651: Alexandre de Rhodes in từ điển Việt – Bồ – La, góp phần hoàn thiện chữ Quốc ngữ'],
  facts:[['1527','Mạc Đăng Dung lập nhà Mạc'],['1533','Nguyễn Kim lập triều Lê Trung hưng ở Thanh Hóa'],['1558','Nguyễn Hoàng vào trấn thủ Thuận Hóa'],['1592','Trịnh Tùng chiếm Thăng Long, nhà Mạc lui lên Cao Bằng'],['1627 – 1672','Chiến tranh Trịnh – Nguyễn'],['1651','Từ điển Việt – Bồ – La của Alexandre de Rhodes'],['1698','Nguyễn Hữu Cảnh lập phủ Gia Định']],
  qs:[
  ['Nhà Mạc do ai lập ra năm 1527?','Mạc Đăng Dung','Nguyễn Kim','Trịnh Tùng','Lê Lợi','Mạc Đăng Dung cướp ngôi nhà Lê.'],
@@ -211,9 +263,15 @@ const ERAS=[
 
 {id:'ts',ic:'🔥',n:'Phong trào Tây Sơn',y:'1771 – 1802',
  story:[
-  'Năm 1771, ba anh em Nguyễn Nhạc, Nguyễn Huệ, Nguyễn Lữ khởi nghĩa ở ấp Tây Sơn (Bình Định), chống chính quyền chúa Nguyễn mục nát. Năm 1777 lật đổ chúa Nguyễn; năm 1778 Nguyễn Nhạc xưng hoàng đế (niên hiệu Thái Đức).',
-  'Năm 1785, Nguyễn Huệ đánh tan quân Xiêm ở Rạch Gầm – Xoài Mút (sông Tiền). Năm 1786, Tây Sơn ra Bắc lật đổ chúa Trịnh. Cuối năm 1788, quân Thanh do Tôn Sĩ Nghị chỉ huy sang xâm lược; Nguyễn Huệ lên ngôi, niên hiệu Quang Trung.',
-  'Tết Kỷ Dậu 1789, Quang Trung hành quân thần tốc, thắng Ngọc Hồi – Đống Đa, vào Thăng Long mùng 5 Tết. Ông ban Chiếu khuyến nông, dùng chữ Nôm làm chữ viết chính thức; mất năm 1792. Năm 1802, Nguyễn Ánh diệt Tây Sơn.'],
+  '1771: ba anh em Nguyễn Nhạc, Nguyễn Huệ, Nguyễn Lữ khởi nghĩa ở ấp Tây Sơn (Bình Định)',
+  '1777: lật đổ chúa Nguyễn ở Đàng Trong',
+  '1778: Nguyễn Nhạc xưng hoàng đế, niên hiệu Thái Đức',
+  '1785: Nguyễn Huệ đánh tan quân Xiêm ở Rạch Gầm – Xoài Mút (sông Tiền)',
+  '1786: Tây Sơn ra Bắc, lật đổ chúa Trịnh',
+  '1788: quân Thanh do Tôn Sĩ Nghị chỉ huy sang xâm lược; Nguyễn Huệ lên ngôi, niên hiệu Quang Trung',
+  'Tết Kỷ Dậu 1789: hành quân thần tốc, thắng Ngọc Hồi – Đống Đa, vào Thăng Long mùng 5 Tết',
+  'Quang Trung ban Chiếu khuyến nông, dùng chữ Nôm làm chữ viết chính thức',
+  '1792: Quang Trung mất; 1802: Nguyễn Ánh diệt Tây Sơn'],
  facts:[['1771','Anh em Tây Sơn khởi nghĩa ở Bình Định'],['1778','Nguyễn Nhạc xưng hoàng đế, niên hiệu Thái Đức'],['1785','Chiến thắng Rạch Gầm – Xoài Mút'],['1788','Nguyễn Huệ lên ngôi, niên hiệu Quang Trung'],['1789','Đại phá quân Thanh ở Ngọc Hồi – Đống Đa'],['1792','Quang Trung qua đời'],['1802','Nguyễn Ánh lập nhà Nguyễn, Tây Sơn sụp đổ']],
  qs:[
  ['Khởi nghĩa Tây Sơn nổ ra năm 1771 ở vùng đất nào?','Ấp Tây Sơn (Bình Định)','Lam Sơn (Thanh Hóa)','Mê Linh (Hà Nội)','Yên Thế (Bắc Giang)','Phong trào do ba anh em Nguyễn Nhạc, Nguyễn Huệ, Nguyễn Lữ lãnh đạo.'],
@@ -236,9 +294,15 @@ const ERAS=[
 
 {id:'ng',ic:'🏰',n:'Triều Nguyễn thời kỳ độc lập',y:'1802 – 1858',
  story:[
-  'Năm 1802, Nguyễn Ánh lên ngôi (Gia Long), lập nhà Nguyễn, đóng đô Phú Xuân (Huế), thống nhất đất nước từ Bắc chí Nam. Quốc hiệu Việt Nam dùng từ năm 1804; năm 1838, vua Minh Mạng đổi thành Đại Nam.',
-  'Năm 1815 ban Hoàng Việt luật lệ (Luật Gia Long). Vua Minh Mạng chia cả nước thành 30 tỉnh và phủ Thừa Thiên, cử thủy quân ra Hoàng Sa, Trường Sa đo đạc, cắm cờ, dựng bia. Kinh thành Huế với cổng Ngọ Môn được xây từ thời Gia Long.',
-  'Giữa thế kỷ XIX, nhà Nguyễn bế quan tỏa cảng, cấm đạo, kinh tế trì trệ, dân nổi dậy nhiều nơi. Năm 1858, thực dân Pháp nổ súng xâm lược.'],
+  '1802: Nguyễn Ánh lên ngôi (Gia Long), lập nhà Nguyễn, đóng đô Phú Xuân (Huế)',
+  'Đất nước thống nhất từ Bắc chí Nam',
+  '1804: dùng quốc hiệu Việt Nam; 1838: vua Minh Mạng đổi thành Đại Nam',
+  '1815: ban Hoàng Việt luật lệ (Luật Gia Long)',
+  'Minh Mạng chia cả nước thành 30 tỉnh và phủ Thừa Thiên',
+  'Thủy quân ra Hoàng Sa, Trường Sa đo đạc, cắm cờ, dựng bia',
+  'Xây Kinh thành Huế (cổng chính Ngọ Môn) từ thời Gia Long',
+  'Giữa thế kỷ XIX: bế quan tỏa cảng, cấm đạo, kinh tế trì trệ, dân nổi dậy nhiều nơi',
+  '1858: thực dân Pháp nổ súng xâm lược'],
  facts:[['1802','Gia Long lên ngôi, lập nhà Nguyễn, đóng đô Huế'],['1804','Quốc hiệu Việt Nam được sử dụng'],['1815','Ban hành Hoàng Việt luật lệ'],['1831 – 1832','Minh Mạng cải cách hành chính, chia 30 tỉnh'],['1838','Đổi quốc hiệu thành Đại Nam'],['1858','Pháp nổ súng tấn công Đà Nẵng']],
  qs:[
  ['Nhà Nguyễn được thành lập năm nào?','Năm 1802','Năm 1788','Năm 1858','Năm 1945','Nguyễn Ánh lên ngôi, niên hiệu Gia Long.'],
@@ -258,9 +322,16 @@ const ERAS=[
 
 {id:'ph',ic:'⚓',n:'Pháp xâm lược và các phong trào yêu nước',y:'1858 – 1930',
  story:[
-  'Ngày 1/9/1858, Pháp nổ súng ở Đà Nẵng, bị chặn đánh nên chuyển vào Gia Định (1859). Triều Nguyễn nhượng bộ dần: Hiệp ước Nhâm Tuất (1862) mất ba tỉnh Biên Hòa, Gia Định, Định Tường; Hiệp ước Pa-tơ-nốt (1884) đặt cả nước dưới ách bảo hộ của Pháp.',
-  'Nhân dân không khuất phục: Nguyễn Trung Trực đốt tàu Ét-pê-răng (1861); vua Hàm Nghi ra chiếu Cần Vương (1885), tiêu biểu là khởi nghĩa Hương Khê của Phan Đình Phùng; Hoàng Hoa Thám lãnh đạo khởi nghĩa Yên Thế (1884 – 1913).',
-  'Đầu thế kỷ XX: Phan Bội Châu lập phong trào Đông du (1905 – 1908) đưa thanh niên sang Nhật học; Phan Châu Trinh chủ trương cải cách, nâng cao dân trí, dân quyền. Ngày 5/6/1911, Nguyễn Tất Thành rời Bến Nhà Rồng ra đi tìm đường cứu nước.'],
+  '1/9/1858: Pháp nổ súng ở Đà Nẵng, bị chặn đánh',
+  '1859: Pháp chuyển vào đánh Gia Định',
+  '1862: Hiệp ước Nhâm Tuất, mất ba tỉnh Biên Hòa, Gia Định, Định Tường',
+  '1884: Hiệp ước Pa-tơ-nốt, cả nước dưới ách bảo hộ của Pháp',
+  '1861: Nguyễn Trung Trực đốt tàu Ét-pê-răng',
+  '1885: vua Hàm Nghi ra chiếu Cần Vương; tiêu biểu là khởi nghĩa Hương Khê của Phan Đình Phùng',
+  '1884 – 1913: Hoàng Hoa Thám lãnh đạo khởi nghĩa Yên Thế',
+  '1905 – 1908: Phan Bội Châu lập phong trào Đông du, đưa thanh niên sang Nhật học',
+  'Phan Châu Trinh chủ trương cải cách, nâng cao dân trí, dân quyền',
+  '5/6/1911: Nguyễn Tất Thành rời Bến Nhà Rồng ra đi tìm đường cứu nước'],
  facts:[['1858','Pháp nổ súng tấn công Đà Nẵng'],['1862','Hiệp ước Nhâm Tuất'],['1884','Hiệp ước Pa-tơ-nốt, Pháp đặt ách bảo hộ'],['1885 – 1896','Phong trào Cần Vương'],['1884 – 1913','Khởi nghĩa Yên Thế'],['1905 – 1908','Phong trào Đông du'],['1911','Nguyễn Tất Thành ra đi tìm đường cứu nước']],
  qs:[
  ['Ngày 1/9/1858, thực dân Pháp nổ súng xâm lược nước ta lần đầu tại đâu?','Đà Nẵng','Hải Phòng','Hà Nội','Cần Thơ','Quân Pháp và Tây Ban Nha tấn công bán đảo Sơn Trà.'],
@@ -282,9 +353,16 @@ const ERAS=[
 
 {id:'dg',ic:'⭐',n:'Đảng ra đời và Cách mạng tháng Tám',y:'1930 – 1945',
  story:[
-  'Năm 1920, Nguyễn Ái Quốc tìm thấy con đường cứu nước theo chủ nghĩa Mác – Lênin; năm 1925 lập Hội Việt Nam Cách mạng Thanh niên ở Quảng Châu. Ngày 3/2/1930, Người chủ trì hội nghị hợp nhất ở Hương Cảng (Hồng Kông), thành lập Đảng Cộng sản Việt Nam.',
-  'Cao trào 1930 – 1931 lên đỉnh cao với Xô viết Nghệ – Tĩnh. Năm 1940, Nhật vào Đông Dương. Tháng 5/1941, Mặt trận Việt Minh ra đời ở Pác Bó (Cao Bằng); ngày 22/12/1944, Võ Nguyên Giáp chỉ huy Đội Việt Nam Tuyên truyền Giải phóng quân.',
-  'Ngày 9/3/1945, Nhật đảo chính Pháp; nạn đói làm hơn 2 triệu người chết. Tổng khởi nghĩa thắng lợi: Hà Nội 19/8, Huế 23/8, Sài Gòn 25/8; vua Bảo Đại thoái vị 30/8. Ngày 2/9/1945, Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập tại Quảng trường Ba Đình.'],
+  '1920: Nguyễn Ái Quốc tìm thấy con đường cứu nước theo chủ nghĩa Mác – Lênin',
+  '1925: lập Hội Việt Nam Cách mạng Thanh niên ở Quảng Châu',
+  '3/2/1930: Nguyễn Ái Quốc chủ trì hội nghị hợp nhất ở Hương Cảng (Hồng Kông), thành lập Đảng Cộng sản Việt Nam',
+  '1930 – 1931: cao trào cách mạng, đỉnh cao là Xô viết Nghệ – Tĩnh',
+  '1940: Nhật vào Đông Dương',
+  '5/1941: Mặt trận Việt Minh ra đời ở Pác Bó (Cao Bằng)',
+  '22/12/1944: Võ Nguyên Giáp chỉ huy Đội Việt Nam Tuyên truyền Giải phóng quân',
+  '9/3/1945: Nhật đảo chính Pháp; nạn đói làm hơn 2 triệu người chết',
+  'Tổng khởi nghĩa: Hà Nội 19/8, Huế 23/8, Sài Gòn 25/8/1945; vua Bảo Đại thoái vị 30/8',
+  '2/9/1945: Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập tại Quảng trường Ba Đình'],
  facts:[['1920','Nguyễn Ái Quốc tìm thấy con đường cứu nước'],['3/2/1930','Đảng Cộng sản Việt Nam ra đời'],['1930 – 1931','Phong trào Xô viết Nghệ – Tĩnh'],['5/1941','Thành lập Mặt trận Việt Minh ở Pác Bó'],['22/12/1944','Thành lập Đội Việt Nam Tuyên truyền Giải phóng quân'],['9/3/1945','Nhật đảo chính Pháp'],['19/8/1945','Tổng khởi nghĩa giành chính quyền ở Hà Nội'],['2/9/1945','Tuyên ngôn Độc lập, nước VNDCCH ra đời']],
  qs:[
  ['Đảng Cộng sản Việt Nam được thành lập vào ngày nào?','Ngày 3/2/1930','Ngày 19/5/1941','Ngày 2/9/1945','Ngày 7/5/1954','Ngày 3/2 hằng năm là ngày kỷ niệm thành lập Đảng.'],
@@ -308,9 +386,15 @@ const ERAS=[
 
 {id:'kc',ic:'🎖️',n:'Kháng chiến chống thực dân Pháp',y:'1945 – 1954',
  story:[
-  'Sau Cách mạng tháng Tám, nước ta phải chống “giặc đói, giặc dốt, giặc ngoại xâm”. Ngày 6/1/1946, Tổng tuyển cử bầu Quốc hội đầu tiên. Ngày 19/12/1946, Chủ tịch Hồ Chí Minh ra Lời kêu gọi toàn quốc kháng chiến.',
-  'Kháng chiến toàn dân, toàn diện, trường kỳ. Ta thắng Việt Bắc (thu – đông 1947), bảo vệ cơ quan đầu não; chiến dịch Biên giới (thu – đông 1950) giải phóng dải biên giới Việt – Trung.',
-  'Pháp xây tập đoàn cứ điểm Điện Biên Phủ trong kế hoạch Na-va. Chiến dịch Điện Biên Phủ (13/3 – 7/5/1954) do Đại tướng Võ Nguyên Giáp chỉ huy theo phương châm “đánh chắc, tiến chắc”, bắt sống tướng Đờ Cát-xtơ-ri. Hiệp định Giơ-ne-vơ (21/7/1954) lấy vĩ tuyến 17 (sông Bến Hải) làm giới tuyến tạm thời.'],
+  'Sau Cách mạng tháng Tám: phải chống “giặc đói, giặc dốt, giặc ngoại xâm”',
+  '6/1/1946: Tổng tuyển cử bầu Quốc hội đầu tiên',
+  '19/12/1946: Chủ tịch Hồ Chí Minh ra Lời kêu gọi toàn quốc kháng chiến',
+  'Phương châm: toàn dân, toàn diện, trường kỳ',
+  'Thu – đông 1947: thắng Việt Bắc, bảo vệ cơ quan đầu não',
+  'Thu – đông 1950: chiến dịch Biên giới, giải phóng dải biên giới Việt – Trung',
+  'Pháp xây tập đoàn cứ điểm Điện Biên Phủ trong kế hoạch Na-va',
+  '13/3 – 7/5/1954: Đại tướng Võ Nguyên Giáp chỉ huy chiến dịch Điện Biên Phủ, “đánh chắc, tiến chắc”, bắt sống tướng Đờ Cát-xtơ-ri',
+  '21/7/1954: Hiệp định Giơ-ne-vơ, lấy vĩ tuyến 17 (sông Bến Hải) làm giới tuyến tạm thời'],
  facts:[['6/1/1946','Tổng tuyển cử bầu Quốc hội đầu tiên'],['19/12/1946','Lời kêu gọi toàn quốc kháng chiến'],['Thu – đông 1947','Chiến thắng Việt Bắc'],['Thu – đông 1950','Chiến dịch Biên giới'],['13/3 – 7/5/1954','Chiến dịch Điện Biên Phủ'],['21/7/1954','Hiệp định Giơ-ne-vơ']],
  qs:[
  ['Ngày 6/1/1946 diễn ra sự kiện quan trọng nào?','Tổng tuyển cử bầu Quốc hội đầu tiên','Tuyên ngôn Độc lập','Chiến thắng Điện Biên Phủ','Hiệp định Giơ-ne-vơ','Đây là lần đầu tiên nhân dân Việt Nam đi bầu cử tự do.'],
@@ -330,9 +414,16 @@ const ERAS=[
 
 {id:'cm',ic:'🚩',n:'Kháng chiến chống Mỹ, thống nhất đất nước',y:'1954 – 1975',
  story:[
-  'Sau năm 1954, miền Bắc xây dựng chủ nghĩa xã hội; miền Nam dưới chính quyền Ngô Đình Diệm do Mỹ dựng lên. Phong trào Đồng khởi (1960) mạnh nhất ở Bến Tre; ngày 20/12/1960, Mặt trận Dân tộc Giải phóng miền Nam ra đời.',
-  'Mỹ lần lượt tiến hành “chiến tranh đặc biệt” (1961 – 1965), “chiến tranh cục bộ” (1965 – 1968), “Việt Nam hóa chiến tranh” (1969 – 1973). Miền Bắc chi viện qua đường Trường Sơn; Tổng tiến công Tết Mậu Thân 1968 làm Mỹ lung lay ý chí xâm lược.',
-  'Tháng 12/1972, ta thắng “Điện Biên Phủ trên không” trước máy bay B-52. Hiệp định Pa-ri (27/1/1973) buộc Mỹ rút quân. Năm 1975: mở màn ở Buôn Ma Thuột (10/3), Chiến dịch Hồ Chí Minh (26 – 30/4); trưa 30/4, Dương Văn Minh đầu hàng tại Dinh Độc Lập.'],
+  'Sau 1954: miền Bắc xây dựng chủ nghĩa xã hội; miền Nam dưới chính quyền Ngô Đình Diệm do Mỹ dựng lên',
+  '1960: phong trào Đồng khởi, mạnh nhất ở Bến Tre',
+  '20/12/1960: Mặt trận Dân tộc Giải phóng miền Nam ra đời',
+  'Chiến lược của Mỹ: “chiến tranh đặc biệt” (1961 – 1965), “chiến tranh cục bộ” (1965 – 1968), “Việt Nam hóa chiến tranh” (1969 – 1973)',
+  'Miền Bắc chi viện cho miền Nam qua đường Trường Sơn (đường Hồ Chí Minh)',
+  '1968: Tổng tiến công Tết Mậu Thân làm Mỹ lung lay',
+  '12/1972: “Điện Biên Phủ trên không”, đánh bại máy bay B-52',
+  '27/1/1973: Hiệp định Pa-ri, Mỹ rút quân',
+  '10/3/1975: mở màn ở Buôn Ma Thuột; 26 – 30/4: Chiến dịch Hồ Chí Minh',
+  'Trưa 30/4/1975: Dương Văn Minh đầu hàng tại Dinh Độc Lập, đất nước thống nhất'],
  facts:[['1960','Phong trào Đồng khởi; 20/12 thành lập Mặt trận Dân tộc Giải phóng miền Nam'],['1964 – 1965','Mỹ đánh phá miền Bắc, đưa quân vào miền Nam'],['1968','Tổng tiến công và nổi dậy Tết Mậu Thân'],['12/1972','Chiến thắng “Điện Biên Phủ trên không”'],['27/1/1973','Ký Hiệp định Pa-ri'],['10/3/1975','Mở màn chiến dịch Tây Nguyên ở Buôn Ma Thuột'],['30/4/1975','Giải phóng miền Nam, thống nhất đất nước']],
  qs:[
  ['Phong trào Đồng khởi năm 1960 bùng nổ mạnh mẽ ở tỉnh nào?','Bến Tre','Quảng Trị','Nghệ An','Thái Nguyên','Đồng khởi chuyển cách mạng miền Nam từ thế giữ gìn lực lượng sang thế tiến công.'],
@@ -355,9 +446,14 @@ const ERAS=[
 
 {id:'dm',ic:'🌟',n:'Xây dựng, bảo vệ đất nước và Đổi mới',y:'1975 – nay',
  story:[
-  'Ngày 2/7/1976, nước ta mang tên Cộng hòa Xã hội chủ nghĩa Việt Nam; Sài Gòn – Gia Định đổi tên thành Thành phố Hồ Chí Minh. Năm 1979, quân dân ta bảo vệ biên giới Tây Nam và biên giới phía Bắc.',
-  'Tháng 12/1986, Đại hội VI của Đảng mở đường Đổi mới: phát triển kinh tế nhiều thành phần theo cơ chế thị trường định hướng xã hội chủ nghĩa. Từ nước thiếu lương thực, Việt Nam thành nước xuất khẩu gạo hàng đầu thế giới.',
-  'Việt Nam hội nhập: gia nhập ASEAN và bình thường hóa quan hệ với Hoa Kỳ (1995), tham gia APEC (1998), vào WTO (2007). UNESCO ghi danh Cố đô Huế (1993), Vịnh Hạ Long (1994), Phố cổ Hội An và Thánh địa Mỹ Sơn (1999).'],
+  '2/7/1976: tên nước là Cộng hòa Xã hội chủ nghĩa Việt Nam',
+  'Sài Gòn – Gia Định đổi tên thành Thành phố Hồ Chí Minh',
+  '1979: bảo vệ biên giới Tây Nam và biên giới phía Bắc',
+  '12/1986: Đại hội VI của Đảng mở đường Đổi mới',
+  'Kinh tế nhiều thành phần, cơ chế thị trường định hướng xã hội chủ nghĩa',
+  'Từ nước thiếu lương thực thành nước xuất khẩu gạo hàng đầu thế giới',
+  'Hội nhập: ASEAN và bình thường hóa với Hoa Kỳ (1995), APEC (1998), WTO (2007)',
+  'UNESCO ghi danh: Cố đô Huế (1993), Vịnh Hạ Long (1994), Hội An và Mỹ Sơn (1999)'],
  facts:[['2/7/1976','Quốc hội đặt tên nước là Cộng hòa Xã hội chủ nghĩa Việt Nam'],['12/1986','Đại hội VI, bắt đầu công cuộc Đổi mới'],['1993','Cố đô Huế được UNESCO công nhận là Di sản văn hóa thế giới'],['1995','Gia nhập ASEAN và bình thường hóa quan hệ với Hoa Kỳ'],['1998','Tham gia APEC'],['2007','Trở thành thành viên thứ 150 của WTO']],
  qs:[
  ['Từ ngày 2/7/1976, tên nước ta là gì?','Cộng hòa Xã hội chủ nghĩa Việt Nam','Việt Nam Dân chủ Cộng hòa','Việt Nam Cộng hòa','Đại Nam','Quốc hội khóa VI quyết định tên nước và thủ đô Hà Nội.'],
@@ -541,10 +637,10 @@ A.msgrp=d=>{msGrp=+d.g;msList()};
 A.msd=d=>{
   if(+d.i>=LKFREE(MS.length)&&!LKOPEN())return LKASK(()=>A.msd(d));
   const i=+d.i,m=MS[i];
-  const row=(t,v)=>v?`<div class="ms-sec"><b>${t}</b><p>${esc(v)}</p></div>`:'';
+  const row=(t,v)=>v?`<div class="ms-sec"><b>${t}</b>${bul(v)}</div>`:'';
   draw(`<div class="vh-center"><div class="vh-big">${m.ic}</div></div>
   <h2 class="vh-h2 vh-center">${esc(m.n)}</h2><p class="vh-sub vh-center">🗓️ ${esc(m.y)} · ${esc(MS_GROUPS[m.c])}</p>
-  <div class="vh-story"><p><b>${esc(m.s)}</b></p></div>
+  <div class="vh-story"><b>${esc(m.s)}</b></div>
   ${m.p?`<div class="vh-note">👤 <b>Nhân vật tiêu biểu:</b> ${esc(m.p)}</div>`:''}
   <div class="vh-facts ms-detail">${row('📍 Bối cảnh',m.bc)}${row('⚔️ Diễn biến chính',m.dt)}${row('🏁 Kết quả',m.kq)}${row('🌟 Ý nghĩa',m.yn)}</div>
   <div class="vh-row">${i>0?`<button class="vh-btn alt" data-a="msd" data-i="${i-1}">◀ Mốc trước</button>`:''}${i+1<MS.length?`<button class="vh-btn" data-a="msd" data-i="${i+1}">Mốc tiếp theo ▶</button>`:''}<button class="vh-btn alt" data-a="milestones">☰ Danh sách</button></div>
@@ -556,6 +652,7 @@ A.msd=d=>{
 '.ms-tab.on{background:var(--red);border-color:var(--red);color:#fff!important}'+
 '.ms-gh{font-size:15px;color:var(--red);margin:14px 0 8px}'+
 '.ms-item .vh-et b{font-size:15px;line-height:1.35}.ms-go{color:var(--gold);font-size:22px;font-weight:700}'+
+'.vh-ul{margin:0;padding-left:20px}.vh-ul li{margin:0 0 6px;line-height:1.55}.vh-ul li:last-child{margin-bottom:0}.vh-ul li::marker{color:var(--red)}'+
 '.ms-sec{padding:8px 0;border-top:1px dashed var(--line)}.ms-sec:first-child{border-top:0}'+
 '.ms-sec b{display:block;color:var(--red);margin-bottom:2px}.ms-sec p{margin:0;font-size:15px;line-height:1.6}';
 document.head.appendChild(st);})();
@@ -662,7 +759,7 @@ A.era=d=>{
   const i=+d.i,e=ERAS[i];
   draw(`<div class="vh-center"><div class="vh-big">${e.ic}</div></div>
   <h2 class="vh-h2 vh-center">Màn ${i+1}: ${esc(e.n)}</h2><p class="vh-sub vh-center">${esc(e.y)}</p>
-  <div class="vh-story">${e.story.map(p=>'<p>'+esc(p)+'</p>').join('')}</div>
+  <div class="vh-story"><ul class="vh-ul">${e.story.map(p=>'<li>'+esc(p)+'</li>').join('')}</ul></div>
   <div class="vh-facts"><b>📌 Những mốc cần nhớ</b>${e.facts.map(f=>'<div class="vh-fact"><span>'+esc(f[0])+'</span><span>'+esc(f[1])+'</span></div>').join('')}</div>
   <div class="vh-note">🎯 Thử thách gồm <b>${e.qs.length}</b> câu hỏi. Cần trả lời đúng ít nhất <b>${needOf(e)}</b> câu để qua màn.</div>
   <div class="vh-row"><button class="vh-btn" data-a="startq" data-i="${i}">Bắt đầu thử thách ▶</button><button class="vh-btn alt" data-a="journey">← Danh sách màn</button></div>`);

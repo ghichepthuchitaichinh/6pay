@@ -374,6 +374,42 @@ STOPS.forEach(s=>{const x=PX[s.id];if(x)Object.assign(s,x);});
   });
 })();
 
+/* Ngân hàng câu hỏi cho mỗi tỉnh, phủ kín mọi thông tin trên trang giới thiệu:
+   - core: luôn hỏi (hình thành, trung tâm hành chính, số xã phường, diện tích, dân số, giao thông, sông hồ, từng điểm nổi bật)
+   - rot: mỗi nhóm (địa danh, đặc sản, nơi tham quan, điểm dừng chân) có 1 câu cho TỪNG mục; mỗi lượt chơi lấy ngẫu nhiên 1 câu/nhóm */
+(function(){
+  const pick=(a,n)=>shuffle(a).slice(0,n);
+  const ROT=['Địa danh nào','Danh lam thắng cảnh','Đặc sản','Di tích','Điểm dừng chân'];
+  const hcN=s=>String(s.hc||'').split(' (')[0];
+  STOPS.forEach(s=>{
+    if(!s.pl||!s.dc)return;
+    const others=STOPS.filter(o=>o!==s&&o.dc);
+    const core=s.qs.filter(q=>!ROT.some(p=>q[0].indexOf(p)===0));
+    const hw=[];shuffle(others).forEach(o=>{const t=hcN(o);if(t!==hcN(s)&&t.split(' ')[0]!==hcN(s).split(' ')[0]&&hw.indexOf(t)<0&&hw.length<3)hw.push(t)});
+    if(hw.length===3)core.push(['Sau sắp xếp năm 2025, '+s.s+' có bao nhiêu đơn vị hành chính cấp xã?',hcN(s),hw[0],hw[1],hw[2],s.s+' có '+s.hc+'.']);
+    const qw=pick(others.map(o=>o.ql).filter(x=>x&&x!==s.ql),3);
+    if(qw.length===3)core.push(['Các quốc lộ, cao tốc chính đi qua '+s.s+' là?',s.ql,qw[0],qw[1],qw[2],'Giao thông chính của '+s.s+': '+s.ql+'.']);
+    const ow=pick(others.map(o=>o.song).filter(x=>x&&x!==s.song),3);
+    if(ow.length===3)core.push(['Các sông, hồ, vịnh tiêu biểu của '+s.s+' là?',s.song,ow[0],ow[1],ow[2],'Sông, hồ, vịnh của '+s.s+': '+s.song+'.']);
+    /* đáp án sai lấy tỉnh ở xa (cách ≥ 10 số trên bản đồ) để không trùng đặc điểm */
+    const far=others.filter(o=>Math.abs(STOPS.indexOf(o)-STOPS.indexOf(s))>=10);
+    (s.nb||[]).forEach(t=>{const w=pick(far,3).map(o=>o.s);
+      if(w.length===3)core.push(['Điểm nổi bật sau thuộc tỉnh, thành nào: “'+t.replace(/\.$/,'')+'”?',s.s,w[0],w[1],w[2],'Điểm nổi bật của '+s.s+': '+t]);});
+    const mine=new Set([].concat(s.dc,s.ds,s.tq,s.dd,s.pl));
+    const wrong=keys=>{const pool=[];others.forEach(o=>keys.forEach(k=>(o[k]||[]).forEach(x=>{if(!mine.has(x)&&pool.indexOf(x)<0)pool.push(x)})));return pick(pool,3)};
+    const group=(keys,q,kind)=>{const items=[];keys.forEach(k=>(s[k]||[]).forEach(x=>{if(items.indexOf(x)<0)items.push(x)}));
+      return items.map(x=>{const w=wrong(keys);return w.length===3?[q,x,w[0],w[1],w[2],kind+' của '+s.s+': '+items.join(', ')+'.']:null}).filter(Boolean)};
+    s.core=core;
+    s.rot=[group(['dc','pl'],'Danh lam thắng cảnh, địa danh nào sau đây thuộc '+s.s+'?','Danh lam thắng cảnh, địa danh'),
+      group(['ds'],'Đặc sản nào sau đây nổi tiếng của '+s.s+'?','Đặc sản nổi tiếng'),
+      group(['tq'],'Di tích, nơi tham quan nào sau đây ở '+s.s+'?','Những nơi tham quan nổi bật'),
+      group(['dd'],'Điểm dừng chân, check-in nào sau đây thuộc '+s.s+'?','Điểm dừng chân nổi bật')].filter(g=>g.length);
+    s.qs=core.concat.apply(core,s.rot);   /* toàn bộ ngân hàng câu hỏi */
+    s.qn=core.length+s.rot.length;        /* số câu mỗi lượt chơi */
+  });
+})();
+function stopQs(s){return s.core?shuffle(s.core.concat(s.rot.map(g=>shuffle(g)[0]))):shuffle(s.qs)}
+
 /* Đoán địa danh: [tên, emoji, gợi ý 1, gợi ý 2] */
 const PLACES=[
 ['Vịnh Hạ Long','⛰️🚢','Có hàng nghìn đảo đá vôi.','Di sản thiên nhiên thế giới ở miền Bắc.'],
@@ -406,6 +442,15 @@ const FOODS=[
 ['Lẩu mắm','🍲','Nam','Đặc sản vùng sông nước miền Tây.'],
 ['Bánh pía','🥮','Nam','Bánh nhân sầu riêng, đậu xanh nổi tiếng ở Sóc Trăng.']
 ];
+
+(function(){
+  const reg=i=>i<15?'Bắc':i<26?'Trung':'Nam';
+  const ico=n=>{n=n.toLowerCase();const m=[[/chè|trà/,'🍵'],[/cà phê/,'☕'],[/rượu/,'🍶'],[/mật ong/,'🍯'],[/nước mắm|mắm/,'🫙'],[/kẹo/,'🍬'],[/phở|bún|mì|miến|hủ tiếu|bánh canh|cháo/,'🍜'],[/cơm|gạo|xôi/,'🍚'],[/cua|ghẹ/,'🦀'],[/tôm/,'🦐'],[/mực/,'🦑'],[/cá|lươn/,'🐟'],[/gà/,'🍗'],[/vịt/,'🦆'],[/bò|trâu|thịt|dê|heo|lợn|bê|cừu/,'🥩'],[/nem|chả|giò/,'🍢'],[/bánh/,'🥮'],[/nho/,'🍇'],[/xoài/,'🥭'],[/bưởi|cam|quýt/,'🍊'],[/dừa/,'🥥'],[/sầu riêng|mít/,'🍈'],[/vải|nhãn|chôm chôm|mận|đào|thanh long|trái|quả/,'🍒'],[/hạt|điều|dẻ|lạc|đậu/,'🌰'],[/măng|nấm|rau/,'🥬'],[/muối/,'🧂']];
+    for(const x of m)if(x[0].test(n))return x[1];return '🍽️'};
+  const have=FOODS.map(f=>f[0].toLowerCase());
+  STOPS.forEach((s,i)=>(s.ds||[]).forEach(n=>{const l=n.toLowerCase();if(have.some(h=>l===h||l.indexOf(h+' ')===0))return;have.push(l);
+    FOODS.push([n,ico(n),reg(i),'Đặc sản của '+s.s+' (miền '+reg(i)+').'])}));
+})();
 
 /* Chuyến đi có ngân sách: b = ngân sách (nghìn đồng), d = số ngày, it = [tên, emoji, ngày, chi phí(nghìn đồng), điểm hài lòng] */
 const TRIPS=[
@@ -449,30 +494,30 @@ window.vnvBack=function(){const p=NAVMAP[curScr];if(!p)return false;curScr=p;A[p
 const HD_GROUPS=['Lễ, Tết truyền thống','Ngày kỷ niệm của đất nước, dân tộc','Ngày truyền thống các ngành, lực lượng','Ngày của các tổ chức và cộng đồng'];
 const HD=[
 {d:'1/1',g:0,ic:'🎆',n:'Tết Dương lịch',off:1,mt:'Ngày đầu tiên của năm mới theo lịch Dương (lịch Gregory), người lao động được nghỉ 1 ngày hưởng nguyên lương.',ls:'Lịch Gregory được dùng phổ biến trên thế giới; ở Việt Nam, lịch Dương được sử dụng chính thức trong hành chính và đời sống bên cạnh lịch Âm truyền thống.',yn:'Thời khắc khép lại năm cũ, mở đầu năm mới với những kế hoạch và mong ước tốt đẹp; nhiều nơi tổ chức đếm ngược, bắn pháo hoa.'},
-{l:'1/1',g:0,ic:'🧧',n:'Tết Nguyên Đán',off:1,mt:'Tết cổ truyền lớn nhất của dân tộc, bắt đầu từ ngày mùng 1 tháng Giêng âm lịch. Người lao động được nghỉ 5 ngày.',ls:'"Nguyên" là bắt đầu, "Đán" là buổi sáng sớm – Tết Nguyên Đán là buổi sáng đầu tiên của năm mới. Phong tục đón Tết gắn với nền văn minh lúa nước: cúng ông Công ông Táo, gói bánh chưng, bánh tét, cúng tất niên, đón giao thừa, chúc Tết, lì xì.',yn:'Dịp sum họp gia đình, tưởng nhớ tổ tiên, gửi lời chúc phúc và khởi đầu một năm mới an lành, may mắn.'},
+{l:'1/1',g:0,ic:'🧧',n:'Tết Nguyên Đán',off:1,mt:'Tết cổ truyền lớn nhất của dân tộc, bắt đầu từ ngày mùng 1 tháng Giêng âm lịch. Người lao động được nghỉ 5 ngày.',ls:'"Nguyên Đán" là buổi sáng đầu tiên của năm mới. Tết gắn với văn minh lúa nước: cúng ông Công ông Táo, gói bánh chưng, bánh tét, đón giao thừa, chúc Tết, lì xì.',yn:'Dịp sum họp gia đình, tưởng nhớ tổ tiên, gửi lời chúc phúc và khởi đầu một năm mới an lành, may mắn.'},
 {l:'15/1',g:0,ic:'📜',n:'Rằm tháng Giêng – Ngày Thơ Việt Nam',mt:'Tết Nguyên tiêu (Rằm tháng Giêng) đồng thời là Ngày Thơ Việt Nam.',ls:'Từ năm 2003, Hội Nhà văn Việt Nam tổ chức Ngày Thơ Việt Nam vào dịp Rằm tháng Giêng, gợi nhớ bài thơ "Nguyên tiêu" (Rằm tháng Giêng) Bác Hồ viết năm 1948 ở chiến khu Việt Bắc.',yn:'Tôn vinh thơ ca, lan tỏa tình yêu tiếng Việt và văn học đến với mọi người.'},
-{l:'10/3',g:0,ic:'🏺',n:'Giỗ Tổ Hùng Vương',off:1,mt:'Ngày tưởng nhớ các vua Hùng – những người có công dựng nước. Người lao động được nghỉ 1 ngày hưởng nguyên lương.',ls:'Lễ hội Đền Hùng (Phú Thọ) có từ lâu đời. Từ năm 2007, Giỗ Tổ Hùng Vương chính thức là ngày nghỉ lễ. Năm 2012, "Tín ngưỡng thờ cúng Hùng Vương ở Phú Thọ" được UNESCO ghi danh là Di sản văn hóa phi vật thể đại diện của nhân loại.',yn:'"Dù ai đi ngược về xuôi, nhớ ngày Giỗ Tổ mùng mười tháng ba" – ngày cả dân tộc hướng về cội nguồn, thể hiện đạo lý "uống nước nhớ nguồn".'},
+{l:'10/3',g:0,ic:'🏺',n:'Giỗ Tổ Hùng Vương',off:1,mt:'Ngày tưởng nhớ các vua Hùng – những người có công dựng nước. Người lao động được nghỉ 1 ngày hưởng nguyên lương.',ls:'Lễ hội Đền Hùng (Phú Thọ) có từ lâu đời; từ năm 2007 là ngày nghỉ lễ. Năm 2012, Tín ngưỡng thờ cúng Hùng Vương được UNESCO ghi danh là di sản phi vật thể của nhân loại.',yn:'"Dù ai đi ngược về xuôi, nhớ ngày Giỗ Tổ mùng mười tháng ba" – ngày cả dân tộc hướng về cội nguồn, thể hiện đạo lý "uống nước nhớ nguồn".'},
 {l:'5/5',g:0,ic:'🍑',n:'Tết Đoan Ngọ (Tết diệt sâu bọ)',mt:'Tết truyền thống giữa năm vào giữa trưa ngày mùng 5 tháng 5 âm lịch.',ls:'Theo quan niệm dân gian, đây là lúc dương khí mạnh nhất, cũng là thời điểm sâu bọ phát triển. Người dân ăn hoa quả chua, rượu nếp, bánh tro để "diệt sâu bọ", hái lá thuốc vào giờ Ngọ.',yn:'Cầu sức khỏe, mùa màng bội thu; giữ gìn nét đẹp văn hóa nông nghiệp.'},
 {l:'15/7',g:0,ic:'🌹',n:'Lễ Vu Lan báo hiếu',mt:'Ngày lễ Rằm tháng Bảy, dịp con cháu tưởng nhớ, báo đáp công ơn cha mẹ, ông bà.',ls:'Bắt nguồn từ tích Mục Kiền Liên cứu mẹ trong Phật giáo; ở Việt Nam hòa quyện với tín ngưỡng thờ cúng tổ tiên. Tục "bông hồng cài áo": hoa hồng đỏ cho người còn mẹ, hoa trắng cho người đã mất mẹ.',yn:'Đề cao đạo hiếu, lòng biết ơn cha mẹ – một giá trị cốt lõi của người Việt.'},
 {l:'15/8',g:0,ic:'🥮',n:'Tết Trung thu',mt:'Tết của thiếu nhi vào đêm trăng tròn nhất năm, rằm tháng Tám âm lịch.',ls:'Trung thu gắn với mùa thu hoạch và tục ngắm trăng; trẻ em rước đèn ông sao, đèn kéo quân, phá cỗ, múa lân, ăn bánh nướng, bánh dẻo. Hằng năm Bác Hồ đều gửi thư cho thiếu nhi nhân dịp Trung thu.',yn:'Thể hiện tình yêu thương, sự quan tâm của gia đình và xã hội dành cho trẻ em.'},
 {l:'23/12',g:0,ic:'🐟',n:'Tết ông Công ông Táo',mt:'Ngày tiễn ông Táo về trời, mở đầu những ngày chuẩn bị đón Tết Nguyên Đán.',ls:'Theo tín ngưỡng dân gian, Táo quân trông coi việc bếp núc, mỗi năm về trời báo cáo với Ngọc Hoàng. Các gia đình cúng tiễn và thả cá chép làm "phương tiện" cho Táo quân.',yn:'Dịp dọn dẹp nhà cửa, tổng kết năm cũ, mong một năm mới đầm ấm, sung túc.'},
 
 {d:'6/1',g:1,ic:'🗳️',n:'Ngày Tổng tuyển cử bầu Quốc hội đầu tiên',y:'1946',mt:'Kỷ niệm cuộc Tổng tuyển cử đầu tiên của nước Việt Nam Dân chủ Cộng hòa.',ls:'Ngày 6/1/1946, hơn 89% cử tri cả nước đi bầu Quốc hội khóa I, lần đầu tiên mọi công dân từ 18 tuổi, không phân biệt nam nữ, giàu nghèo, đều có quyền bầu cử.',yn:'Khẳng định tính chính danh của Nhà nước cách mạng và quyền làm chủ của nhân dân.'},
-{d:'3/2',g:1,ic:'🚩',n:'Ngày thành lập Đảng Cộng sản Việt Nam',y:'1930',mt:'Kỷ niệm ngày ra đời của Đảng Cộng sản Việt Nam.',ls:'Đầu năm 1930, lãnh tụ Nguyễn Ái Quốc chủ trì Hội nghị hợp nhất các tổ chức cộng sản tại Hương Cảng (Trung Quốc). Đại hội lần thứ III của Đảng (1960) quyết định lấy ngày 3/2 hằng năm làm ngày kỷ niệm thành lập Đảng.',yn:'Đánh dấu bước ngoặt của cách mạng Việt Nam, chấm dứt khủng hoảng về đường lối cứu nước.'},
+{d:'3/2',g:1,ic:'🚩',n:'Ngày thành lập Đảng Cộng sản Việt Nam',y:'1930',mt:'Kỷ niệm ngày ra đời của Đảng Cộng sản Việt Nam.',ls:'Đầu năm 1930, Nguyễn Ái Quốc chủ trì Hội nghị hợp nhất các tổ chức cộng sản tại Hương Cảng (Trung Quốc). Năm 1960, Đại hội III lấy ngày 3/2 làm ngày kỷ niệm thành lập Đảng.',yn:'Đánh dấu bước ngoặt của cách mạng Việt Nam, chấm dứt khủng hoảng về đường lối cứu nước.'},
 {d:'30/4',g:1,ic:'🇻🇳',n:'Ngày Giải phóng miền Nam, thống nhất đất nước',y:'1975',off:1,mt:'Ngày nghỉ lễ, kỷ niệm chiến thắng lịch sử của Chiến dịch Hồ Chí Minh.',ls:'11 giờ 30 phút ngày 30/4/1975, lá cờ cách mạng tung bay trên nóc Dinh Độc Lập, chính quyền Sài Gòn tuyên bố đầu hàng, miền Nam hoàn toàn giải phóng.',yn:'Kết thúc 21 năm kháng chiến chống Mỹ, non sông thu về một mối, mở ra kỷ nguyên độc lập, thống nhất.'},
-{d:'1/5',g:1,ic:'🛠️',n:'Ngày Quốc tế Lao động',y:'1886',off:1,mt:'Ngày của người lao động trên toàn thế giới; ở Việt Nam là ngày nghỉ lễ hưởng nguyên lương.',ls:'Bắt nguồn từ cuộc đấu tranh đòi ngày làm việc 8 giờ của công nhân Chicago (Mỹ) tháng 5/1886. Năm 1889, Quốc tế II lấy ngày 1/5 làm ngày đoàn kết của giai cấp công nhân. Ở Việt Nam, năm 1930 lần đầu có các cuộc mít tinh kỷ niệm ngày 1/5.',yn:'Tôn vinh người lao động, cổ vũ tinh thần đoàn kết vì việc làm, thu nhập và điều kiện làm việc tốt hơn.'},
+{d:'1/5',g:1,ic:'🛠️',n:'Ngày Quốc tế Lao động',y:'1886',off:1,mt:'Ngày của người lao động trên toàn thế giới; ở Việt Nam là ngày nghỉ lễ hưởng nguyên lương.',ls:'Bắt nguồn từ cuộc đấu tranh đòi làm việc 8 giờ/ngày của công nhân Chicago (Mỹ) tháng 5/1886. Năm 1889, Quốc tế II chọn ngày 1/5; ở Việt Nam, ngày này được kỷ niệm từ năm 1930.',yn:'Tôn vinh người lao động, cổ vũ tinh thần đoàn kết vì việc làm, thu nhập và điều kiện làm việc tốt hơn.'},
 {d:'7/5',g:1,ic:'🏆',n:'Ngày Chiến thắng Điện Biên Phủ',y:'1954',mt:'Kỷ niệm chiến thắng "lừng lẫy năm châu, chấn động địa cầu".',ls:'Sau 56 ngày đêm (13/3 – 7/5/1954), quân đội ta do Đại tướng Võ Nguyên Giáp chỉ huy đã tiêu diệt toàn bộ tập đoàn cứ điểm Điện Biên Phủ, bắt sống tướng Đờ Cát-tơ-ri.',yn:'Buộc Pháp ký Hiệp định Giơ-ne-vơ, kết thúc 9 năm kháng chiến; cổ vũ phong trào giải phóng dân tộc trên thế giới.'},
 {d:'19/5',g:1,ic:'🌸',n:'Ngày sinh Chủ tịch Hồ Chí Minh',y:'1890',mt:'Kỷ niệm ngày sinh của Chủ tịch Hồ Chí Minh – lãnh tụ vĩ đại của dân tộc.',ls:'Bác sinh ngày 19/5/1890 tại làng Hoàng Trù (quê ngoại), xã Kim Liên, huyện Nam Đàn, tỉnh Nghệ An. Năm 1987, UNESCO ra nghị quyết tôn vinh Người là "Anh hùng giải phóng dân tộc, nhà văn hóa kiệt xuất".',yn:'Dịp học tập và làm theo tư tưởng, đạo đức, phong cách Hồ Chí Minh.'},
-{d:'27/7',g:1,ic:'🕯️',n:'Ngày Thương binh – Liệt sĩ',y:'1947',mt:'Ngày tri ân các anh hùng liệt sĩ, thương binh, bệnh binh và người có công với cách mạng.',ls:'Ngày 27/7/1947, tại Đại Từ (Thái Nguyên), đại diện các ngành, đoàn thể đã họp và chọn ngày 27/7 làm "Ngày Thương binh toàn quốc". Năm 1955 đổi thành "Ngày Thương binh – Liệt sĩ". Bác Hồ gửi thư và góp chiếc áo lụa, một tháng lương để ủng hộ thương binh.',yn:'Thể hiện đạo lý "uống nước nhớ nguồn", "đền ơn đáp nghĩa" của dân tộc.'},
+{d:'27/7',g:1,ic:'🕯️',n:'Ngày Thương binh – Liệt sĩ',y:'1947',mt:'Ngày tri ân các anh hùng liệt sĩ, thương binh, bệnh binh và người có công với cách mạng.',ls:'Ngày 27/7/1947, tại Đại Từ (Thái Nguyên), ngày 27/7 được chọn làm "Ngày Thương binh toàn quốc"; năm 1955 đổi thành "Ngày Thương binh – Liệt sĩ". Bác Hồ góp áo lụa và một tháng lương ủng hộ thương binh.',yn:'Thể hiện đạo lý "uống nước nhớ nguồn", "đền ơn đáp nghĩa" của dân tộc.'},
 {d:'19/8',g:1,ic:'⭐',n:'Ngày Cách mạng tháng Tám thành công',y:'1945',mt:'Kỷ niệm thắng lợi của cuộc Tổng khởi nghĩa giành chính quyền.',ls:'Ngày 19/8/1945, hàng chục vạn nhân dân Hà Nội khởi nghĩa giành chính quyền; tiếp đó là Huế (23/8) và Sài Gòn (25/8). Chỉ trong khoảng 15 ngày, cách mạng thành công trên cả nước.',yn:'Đập tan ách thống trị của thực dân, phong kiến, đưa nhân dân ta từ thân phận nô lệ thành người làm chủ đất nước.'},
 {d:'2/9',g:1,ic:'🇻🇳',n:'Quốc khánh nước Cộng hòa xã hội chủ nghĩa Việt Nam',y:'1945',off:1,mt:'Ngày Tết Độc lập của dân tộc. Người lao động được nghỉ 2 ngày (ngày 2/9 và một ngày liền kề).',ls:'Ngày 2/9/1945, tại Quảng trường Ba Đình, Chủ tịch Hồ Chí Minh đọc bản Tuyên ngôn Độc lập, khai sinh nước Việt Nam Dân chủ Cộng hòa – nay là nước Cộng hòa xã hội chủ nghĩa Việt Nam.',yn:'Khẳng định quyền độc lập, tự do của dân tộc Việt Nam trước toàn thế giới.'},
-{d:'10/10',g:1,ic:'🏙️',n:'Ngày Giải phóng Thủ đô',y:'1954',mt:'Kỷ niệm ngày bộ đội ta tiếp quản Thủ đô Hà Nội.',ls:'Thi hành Hiệp định Giơ-ne-vơ, sáng 10/10/1954 các đơn vị Quân đội nhân dân Việt Nam tiến vào tiếp quản Hà Nội trong niềm vui của hàng chục vạn người dân. Chiều cùng ngày, lễ chào cờ được tổ chức trọng thể tại Cột cờ Hà Nội.',yn:'Hà Nội trở về với nhân dân, mở ra thời kỳ xây dựng Thủ đô trong hòa bình.'},
-{d:'9/11',g:1,ic:'⚖️',n:'Ngày Pháp luật Việt Nam',y:'1946',mt:'Ngày nâng cao ý thức tôn trọng và chấp hành pháp luật của mọi người dân.',ls:'Ngày 9/11/1946, Quốc hội thông qua bản Hiến pháp đầu tiên của nước Việt Nam Dân chủ Cộng hòa. Luật Phổ biến, giáo dục pháp luật năm 2012 quy định ngày 9/11 hằng năm là Ngày Pháp luật, thực hiện từ năm 2013.',yn:'Đề cao tinh thần thượng tôn pháp luật, xây dựng Nhà nước pháp quyền.'},
+{d:'10/10',g:1,ic:'🏙️',n:'Ngày Giải phóng Thủ đô',y:'1954',mt:'Kỷ niệm ngày bộ đội ta tiếp quản Thủ đô Hà Nội.',ls:'Thi hành Hiệp định Giơ-ne-vơ, sáng 10/10/1954 bộ đội ta tiến vào tiếp quản Hà Nội trong niềm vui của hàng chục vạn người dân; chiều cùng ngày làm lễ chào cờ tại Cột cờ Hà Nội.',yn:'Hà Nội trở về với nhân dân, mở ra thời kỳ xây dựng Thủ đô trong hòa bình.'},
+{d:'9/11',g:1,ic:'⚖️',n:'Ngày Pháp luật Việt Nam',y:'1946',mt:'Ngày nâng cao ý thức tôn trọng và chấp hành pháp luật của mọi người dân.',ls:'Ngày 9/11/1946, Quốc hội thông qua bản Hiến pháp đầu tiên. Luật Phổ biến, giáo dục pháp luật năm 2012 chọn ngày 9/11 làm Ngày Pháp luật, thực hiện từ năm 2013.',yn:'Đề cao tinh thần thượng tôn pháp luật, xây dựng Nhà nước pháp quyền.'},
 {d:'18/11',g:1,ic:'🤝',n:'Ngày Đại đoàn kết toàn dân tộc',y:'1930',mt:'Ngày hội của khối đại đoàn kết, tổ chức tại các khu dân cư trên cả nước.',ls:'Ngày 18/11/1930, Hội Phản đế Đồng minh – tổ chức tiền thân của Mặt trận Tổ quốc Việt Nam – được thành lập. Từ năm 2003, ngày này được tổ chức thành "Ngày hội Đại đoàn kết toàn dân tộc".',yn:'"Đoàn kết, đoàn kết, đại đoàn kết. Thành công, thành công, đại thành công" – sức mạnh làm nên mọi thắng lợi.'},
 {d:'23/11',g:1,ic:'🏯',n:'Ngày Di sản văn hóa Việt Nam',y:'1945',mt:'Ngày tôn vinh, bảo vệ và phát huy giá trị các di sản văn hóa của dân tộc.',ls:'Ngày 23/11/1945, Chủ tịch Hồ Chí Minh ký Sắc lệnh số 65 về bảo tồn cổ tích trên toàn cõi Việt Nam. Năm 2005, Thủ tướng Chính phủ quyết định lấy ngày 23/11 hằng năm là Ngày Di sản văn hóa Việt Nam.',yn:'Nhắc nhở mỗi người giữ gìn di sản – "hồn cốt" của dân tộc – cho các thế hệ mai sau.'},
 {d:'24/11',g:1,ic:'🎭',n:'Ngày Văn hóa Việt Nam',y:'1946',off:1,mt:'Ngày tôn vinh văn hóa Việt Nam. Theo Nghị quyết của Quốc hội về phát triển văn hóa Việt Nam (thông qua năm 2026), người lao động được nghỉ làm việc, hưởng nguyên lương vào ngày này.',ls:'Ngày 24/11/1946, tại Hội nghị Văn hóa toàn quốc lần thứ nhất, Chủ tịch Hồ Chí Minh khẳng định: "Văn hóa phải soi đường cho quốc dân đi". Ngày 24/11 được chọn làm Ngày Văn hóa Việt Nam.',yn:'Khẳng định văn hóa là nền tảng tinh thần, là sức mạnh nội sinh của sự phát triển đất nước.'},
-{d:'19/12',g:1,ic:'📣',n:'Ngày Toàn quốc kháng chiến',y:'1946',mt:'Kỷ niệm ngày cả dân tộc đứng lên kháng chiến chống thực dân Pháp.',ls:'Tối 19/12/1946, Chủ tịch Hồ Chí Minh ra "Lời kêu gọi toàn quốc kháng chiến": "Chúng ta thà hy sinh tất cả, chứ nhất định không chịu mất nước, nhất định không chịu làm nô lệ". Quân dân Hà Nội chiến đấu 60 ngày đêm giam chân địch.',yn:'Biểu tượng của ý chí quyết tâm bảo vệ độc lập, tự do của dân tộc.'},
-{d:'22/12',g:1,ic:'🎖️',n:'Ngày thành lập Quân đội nhân dân Việt Nam – Ngày hội Quốc phòng toàn dân',y:'1944',mt:'Ngày truyền thống của Quân đội nhân dân Việt Nam; từ năm 1989 đồng thời là Ngày hội Quốc phòng toàn dân.',ls:'Ngày 22/12/1944, tại khu rừng Trần Hưng Đạo (Cao Bằng), Đội Việt Nam Tuyên truyền Giải phóng quân gồm 34 chiến sĩ do đồng chí Võ Nguyên Giáp chỉ huy được thành lập, ngay sau đó đánh thắng hai đồn Phai Khắt, Nà Ngần.',yn:'Tôn vinh "Bộ đội Cụ Hồ" – quân đội từ nhân dân mà ra, vì nhân dân mà chiến đấu.'},
+{d:'19/12',g:1,ic:'📣',n:'Ngày Toàn quốc kháng chiến',y:'1946',mt:'Kỷ niệm ngày cả dân tộc đứng lên kháng chiến chống thực dân Pháp.',ls:'Tối 19/12/1946, Chủ tịch Hồ Chí Minh ra Lời kêu gọi toàn quốc kháng chiến: "thà hy sinh tất cả, chứ nhất định không chịu mất nước". Quân dân Hà Nội chiến đấu 60 ngày đêm giam chân địch.',yn:'Biểu tượng của ý chí quyết tâm bảo vệ độc lập, tự do của dân tộc.'},
+{d:'22/12',g:1,ic:'🎖️',n:'Ngày thành lập Quân đội nhân dân Việt Nam – Ngày hội Quốc phòng toàn dân',y:'1944',mt:'Ngày truyền thống của Quân đội nhân dân Việt Nam; từ năm 1989 đồng thời là Ngày hội Quốc phòng toàn dân.',ls:'Ngày 22/12/1944, tại khu rừng Trần Hưng Đạo (Cao Bằng), Đội Việt Nam Tuyên truyền Giải phóng quân gồm 34 chiến sĩ do Võ Nguyên Giáp chỉ huy ra đời, ngay sau đó thắng hai đồn Phai Khắt, Nà Ngần.',yn:'Tôn vinh "Bộ đội Cụ Hồ" – quân đội từ nhân dân mà ra, vì nhân dân mà chiến đấu.'},
 
 {d:'15/1',g:2,ic:'✈️',n:'Ngày truyền thống ngành Hàng không dân dụng Việt Nam',y:'1956',mt:'Ngày truyền thống của những người làm nghề hàng không.',ls:'Ngày 15/1/1956, Cục Hàng không dân dụng Việt Nam được thành lập theo Nghị định của Thủ tướng Chính phủ.',yn:'Ghi nhận sự phát triển của ngành hàng không, cầu nối Việt Nam với thế giới.'},
 {d:'27/2',g:2,ic:'🩺',n:'Ngày Thầy thuốc Việt Nam',y:'1955',mt:'Ngày tôn vinh đội ngũ y, bác sĩ, dược sĩ và cán bộ ngành y tế.',ls:'Ngày 27/2/1955, Chủ tịch Hồ Chí Minh gửi thư cho Hội nghị cán bộ y tế với lời dặn nổi tiếng "Lương y phải như từ mẫu" (người thầy thuốc giỏi đồng thời phải như người mẹ hiền).',yn:'Tôn vinh nghề cao quý cứu người, nhắc nhở y đức của người thầy thuốc.'},
@@ -483,7 +528,7 @@ const HD=[
 {d:'27/4',g:2,ic:'📐',n:'Ngày Kiến trúc sư Việt Nam',y:'1948',mt:'Ngày truyền thống của giới kiến trúc sư.',ls:'Ngày 27/4/1948, tại Việt Bắc, Đoàn Kiến trúc sư Việt Nam (tiền thân của Hội Kiến trúc sư Việt Nam) được thành lập.',yn:'Tôn vinh những người kiến tạo không gian sống, đô thị và công trình của đất nước.'},
 {d:'29/4',g:2,ic:'🏗️',n:'Ngày truyền thống ngành Xây dựng',y:'1958',mt:'Ngày truyền thống của ngành Xây dựng Việt Nam.',ls:'Ngày 29/4/1958, Bộ Kiến trúc (tiền thân của Bộ Xây dựng) được thành lập.',yn:'Ghi nhận những đóng góp của ngành trong việc xây dựng cơ sở hạ tầng, nhà ở, đô thị.'},
 {d:'6/5',g:2,ic:'🏦',n:'Ngày truyền thống ngành Ngân hàng Việt Nam',y:'1951',mt:'Ngày truyền thống của ngành Ngân hàng.',ls:'Ngày 6/5/1951, Chủ tịch Hồ Chí Minh ký Sắc lệnh số 15/SL thành lập Ngân hàng Quốc gia Việt Nam – nay là Ngân hàng Nhà nước Việt Nam.',yn:'Ghi nhận vai trò của ngân hàng trong việc ổn định tiền tệ và phát triển kinh tế.'},
-{d:'7/5',g:2,ic:'⚓',n:'Ngày thành lập Hải quân nhân dân Việt Nam',y:'1955',mt:'Ngày truyền thống của Quân chủng Hải quân.',ls:'Ngày 7/5/1955, Bộ Quốc phòng ra Nghị định thành lập Cục Phòng thủ bờ bể – tiền thân của Hải quân nhân dân Việt Nam. Ngày 5/8/1964, Hải quân ta đánh thắng trận đầu, đánh đuổi tàu khu trục Mỹ khỏi vùng biển miền Bắc.',yn:'Tôn vinh lực lượng nòng cốt bảo vệ chủ quyền biển, đảo thiêng liêng của Tổ quốc.'},
+{d:'7/5',g:2,ic:'⚓',n:'Ngày thành lập Hải quân nhân dân Việt Nam',y:'1955',mt:'Ngày truyền thống của Quân chủng Hải quân.',ls:'Ngày 7/5/1955, Cục Phòng thủ bờ bể – tiền thân của Hải quân nhân dân Việt Nam – được thành lập. Ngày 5/8/1964, Hải quân ta đánh thắng trận đầu, đuổi tàu khu trục Mỹ khỏi vùng biển miền Bắc.',yn:'Tôn vinh lực lượng nòng cốt bảo vệ chủ quyền biển, đảo thiêng liêng của Tổ quốc.'},
 {d:'14/5',g:2,ic:'🏭',n:'Ngày truyền thống ngành Công Thương',y:'1951',mt:'Ngày truyền thống của ngành Công nghiệp và Thương mại.',ls:'Ngày 14/5/1951, Bộ Công Thương được thành lập (theo Sắc lệnh số 21/SL), đánh dấu sự ra đời của cơ quan quản lý nhà nước về công nghiệp và thương mại.',yn:'Ghi nhận vai trò của sản xuất và lưu thông hàng hóa đối với đời sống, kinh tế đất nước.'},
 {d:'18/5',g:2,ic:'🔬',n:'Ngày Khoa học và Công nghệ Việt Nam',y:'1963',mt:'Ngày tôn vinh các nhà khoa học và hoạt động khoa học, công nghệ.',ls:'Ngày 18/5/1963, Chủ tịch Hồ Chí Minh đến dự và nói chuyện tại Đại hội lần thứ II Hội Phổ biến khoa học kỹ thuật Việt Nam. Từ năm 2013, ngày 18/5 hằng năm là Ngày Khoa học và Công nghệ Việt Nam.',yn:'Khẳng định khoa học, công nghệ là động lực quan trọng để phát triển đất nước.'},
 {d:'21/6',g:2,ic:'📰',n:'Ngày Báo chí cách mạng Việt Nam',y:'1925',mt:'Ngày truyền thống của những người làm báo.',ls:'Ngày 21/6/1925, lãnh tụ Nguyễn Ái Quốc sáng lập báo Thanh Niên tại Quảng Châu (Trung Quốc) – tờ báo cách mạng đầu tiên của Việt Nam.',yn:'Tôn vinh báo chí – "vũ khí sắc bén" trên mặt trận tư tưởng, văn hóa.'},
@@ -505,12 +550,12 @@ const HD=[
 {d:'21/12',g:2,ic:'⚡',n:'Ngày truyền thống ngành Điện lực',y:'1954',mt:'Ngày truyền thống của ngành Điện lực Việt Nam.',ls:'Ngày 21/12/1954, Chủ tịch Hồ Chí Minh đến thăm Nhà máy đèn Bờ Hồ (Hà Nội) vừa được tiếp quản; ngày này trở thành Ngày truyền thống ngành Điện.',yn:'Tôn vinh những người mang ánh sáng và năng lượng đến mọi miền đất nước.'},
 
 {d:'9/1',g:3,ic:'🎓',n:'Ngày truyền thống Học sinh, Sinh viên Việt Nam',y:'1950',mt:'Ngày truyền thống của học sinh, sinh viên cả nước.',ls:'Ngày 9/1/1950, hàng nghìn học sinh, sinh viên Sài Gòn – Chợ Lớn xuống đường đấu tranh chống thực dân Pháp; anh Trần Văn Ơn hy sinh, trở thành biểu tượng của tuổi trẻ yêu nước.',yn:'Khơi dậy tinh thần yêu nước, ý chí vươn lên trong học tập của học sinh, sinh viên.'},
-{d:'8/3',g:3,ic:'💐',n:'Ngày Quốc tế Phụ nữ',y:'1910',mt:'Ngày tôn vinh phụ nữ trên toàn thế giới.',ls:'Năm 1910, Hội nghị phụ nữ xã hội chủ nghĩa quốc tế đề xuất lấy một ngày hằng năm làm ngày quốc tế của phụ nữ, gắn với các cuộc đấu tranh của nữ công nhân đòi quyền bình đẳng; sau đó ngày 8/3 được chọn. Năm 1977, Liên Hợp Quốc chính thức công nhận.',yn:'Đề cao bình đẳng giới và những đóng góp của phụ nữ trong gia đình và xã hội.'},
+{d:'8/3',g:3,ic:'💐',n:'Ngày Quốc tế Phụ nữ',y:'1910',mt:'Ngày tôn vinh phụ nữ trên toàn thế giới.',ls:'Năm 1910, Hội nghị phụ nữ xã hội chủ nghĩa quốc tế đề xuất một ngày quốc tế của phụ nữ, gắn với cuộc đấu tranh đòi bình đẳng của nữ công nhân; sau đó chọn ngày 8/3. Năm 1977, Liên Hợp Quốc chính thức công nhận.',yn:'Đề cao bình đẳng giới và những đóng góp của phụ nữ trong gia đình và xã hội.'},
 {d:'26/3',g:3,ic:'🌟',n:'Ngày thành lập Đoàn Thanh niên Cộng sản Hồ Chí Minh',y:'1931',mt:'Ngày truyền thống của Đoàn Thanh niên.',ls:'Tháng 3/1931, Hội nghị Trung ương Đảng quyết định thành lập Đoàn Thanh niên Cộng sản Đông Dương. Đại hội Đoàn lần thứ III (1961) lấy ngày 26/3/1931 làm ngày thành lập Đoàn.',yn:'Đoàn là "đội dự bị tin cậy của Đảng", trường học của thanh niên Việt Nam.'},
 {d:'21/4',g:3,ic:'📚',n:'Ngày Sách và Văn hóa đọc Việt Nam',y:'2014',mt:'Ngày khuyến khích phong trào đọc sách trong cộng đồng.',ls:'Năm 2014, Thủ tướng Chính phủ quyết định lấy ngày 21/4 hằng năm là Ngày Sách Việt Nam; từ năm 2022 đổi tên thành Ngày Sách và Văn hóa đọc Việt Nam.',yn:'Xây dựng thói quen đọc sách, nâng cao tri thức và văn hóa đọc của người Việt.'},
-{d:'15/5',g:3,ic:'🧣',n:'Ngày thành lập Đội Thiếu niên Tiền phong Hồ Chí Minh',y:'1941',mt:'Ngày truyền thống của các bạn đội viên khăn quàng đỏ.',ls:'Ngày 15/5/1941, tại Pác Bó (Cao Bằng), Đội Nhi đồng Cứu vong – tiền thân của Đội Thiếu niên Tiền phong Hồ Chí Minh – được thành lập với 5 đội viên đầu tiên do anh Nông Văn Dền (Kim Đồng) làm đội trưởng.',yn:'Giáo dục thiếu niên theo 5 điều Bác Hồ dạy, trở thành "cháu ngoan Bác Hồ".'},
+{d:'15/5',g:3,ic:'🧣',n:'Ngày thành lập Đội Thiếu niên Tiền phong Hồ Chí Minh',y:'1941',mt:'Ngày truyền thống của các bạn đội viên khăn quàng đỏ.',ls:'Ngày 15/5/1941, tại Pác Bó (Cao Bằng), Đội Nhi đồng Cứu vong – tiền thân của Đội – ra đời với 5 đội viên, đội trưởng là anh Nông Văn Dền (Kim Đồng).',yn:'Giáo dục thiếu niên theo 5 điều Bác Hồ dạy, trở thành "cháu ngoan Bác Hồ".'},
 {d:'1/6',g:3,ic:'🎈',n:'Ngày Quốc tế Thiếu nhi',y:'1950',mt:'Ngày vì quyền lợi và hạnh phúc của trẻ em trên toàn thế giới.',ls:'Năm 1949, Liên đoàn Phụ nữ Dân chủ Quốc tế quyết định lấy ngày 1/6 làm ngày quốc tế bảo vệ thiếu nhi, tổ chức lần đầu năm 1950. Ở Việt Nam, tháng 6 hằng năm là Tháng hành động vì trẻ em.',yn:'Nhắc nhở cả xã hội chăm lo, bảo vệ trẻ em – "trẻ em hôm nay, thế giới ngày mai".'},
-{d:'6/6',g:3,ic:'👴',n:'Ngày truyền thống Người cao tuổi Việt Nam',y:'1941',mt:'Ngày tôn vinh người cao tuổi.',ls:'Gắn với bức thư "Kính cáo đồng bào" lãnh tụ Nguyễn Ái Quốc gửi ngày 6/6/1941, kêu gọi các bậc phụ lão cùng toàn dân đoàn kết đánh đuổi giặc. Ngày 6/6 được chọn là Ngày truyền thống Người cao tuổi Việt Nam.',yn:'Thể hiện truyền thống "kính lão đắc thọ", ghi nhận vai trò "tuổi cao – gương sáng" của người cao tuổi.'},
+{d:'6/6',g:3,ic:'👴',n:'Ngày truyền thống Người cao tuổi Việt Nam',y:'1941',mt:'Ngày tôn vinh người cao tuổi.',ls:'Ngày 6/6/1941, Nguyễn Ái Quốc gửi thư "Kính cáo đồng bào", kêu gọi các bậc phụ lão cùng toàn dân đánh giặc. Ngày 6/6 được chọn là Ngày truyền thống Người cao tuổi Việt Nam.',yn:'Thể hiện truyền thống "kính lão đắc thọ", ghi nhận vai trò "tuổi cao – gương sáng" của người cao tuổi.'},
 {d:'28/6',g:3,ic:'👨‍👩‍👧',n:'Ngày Gia đình Việt Nam',y:'2001',mt:'Ngày tôn vinh giá trị gia đình.',ls:'Năm 2001, Thủ tướng Chính phủ quyết định lấy ngày 28/6 hằng năm là Ngày Gia đình Việt Nam.',yn:'Gia đình là tế bào của xã hội; ngày này nhắc nhở xây dựng gia đình "no ấm, bình đẳng, tiến bộ, hạnh phúc".'},
 {d:'28/7',g:3,ic:'👷',n:'Ngày thành lập Công đoàn Việt Nam',y:'1929',mt:'Ngày truyền thống của tổ chức Công đoàn.',ls:'Ngày 28/7/1929, Tổng Công hội Đỏ Bắc Kỳ – tổ chức tiền thân của Công đoàn Việt Nam – được thành lập tại Hà Nội.',yn:'Công đoàn là tổ chức đại diện, chăm lo, bảo vệ quyền lợi hợp pháp của người lao động.'},
 {d:'14/10',g:3,ic:'🌾',n:'Ngày thành lập Hội Nông dân Việt Nam',y:'1930',mt:'Ngày truyền thống của giai cấp nông dân Việt Nam.',ls:'Ngày 14/10/1930, Hội nghị Trung ương Đảng lần thứ nhất ra quyết định thành lập Nông hội đỏ – tổ chức tiền thân của Hội Nông dân Việt Nam.',yn:'Tôn vinh người nông dân – lực lượng đông đảo, gắn bó với đất nước.'},
@@ -602,6 +647,10 @@ function hdMake(i){
   qs.push({q:'Ngày '+lab+' là ngày gì?',a:h.n,w:wn(),ex:'Ngày '+lab+' là '+h.n+'. '+h.mt});
   if(h.y){const pool=[];shuffle(others).forEach(o=>{if(o.y&&o.y!==h.y&&pool.indexOf(o.y)<0)pool.push(o.y)});
     qs.push({q:'"'+h.n+'" gắn với mốc lịch sử năm nào?',a:h.y,w:pool.slice(0,3),ex:h.ls});}
+  const wf=f=>{const pool=[];shuffle(others).forEach(o=>{if(o[f]&&o[f]!==h[f]&&pool.indexOf(o[f])<0)pool.push(o[f])});return pool.slice(0,3)};
+  if(h.mt)qs.push({q:'Câu nào giới thiệu đúng về "'+h.n+'"?',a:h.mt,w:wf('mt'),ex:h.mt});
+  if(h.ls)qs.push({q:'Lịch sử hình thành của "'+h.n+'" là gì?',a:h.ls,w:wf('ls'),ex:h.ls});
+  if(h.yn)qs.push({q:'Ý nghĩa của "'+h.n+'" là gì?',a:h.yn,w:wf('yn'),ex:h.yn});
   qs.push({q:'"'+h.n+'" thuộc nhóm nào?',a:HD_GROUPS[h.g],w:HD_GROUPS.filter(g=>g!==HD_GROUPS[h.g]),ex:h.n+' thuộc nhóm: '+HD_GROUPS[h.g]+'.'});
   return qs.filter(q=>q.w.length===3);
 }
@@ -645,18 +694,31 @@ A.hdqn=()=>{HQ.n++;HQ.pick=null;HQ.opts=[];hdqDraw()};
 function home(){
   stopTimer();top();
   draw(`<h2 class="vv-h2">Sẵn sàng cho chuyến đi xuyên Việt chưa?</h2>
-  <p class="vv-sub">Thu thập đủ ${STOPS.length} con dấu của ${STOPS.length} tỉnh, thành phố để nhận danh hiệu <b>Người lữ hành</b>.</p>
+  <p class="vv-sub">Thu thập đủ ${STOPS.length} con dấu tỉnh, thành để nhận danh hiệu <b>Người lữ hành</b>.</p>
   <div class="vv-grid">
-   <button class="vv-mode" data-a="trip"><span class="big">🗺️</span><b>Hành trình xuyên Việt</b><small>Bản đồ hình chữ S, ${STOPS.length} điểm dừng, mỗi nơi có thử thách và một con dấu.</small></button>
-   <button class="vv-mode" data-a="holidays"><span class="big">📅</span><b>Những ngày quan trọng trong năm</b><small>${HD.length} ngày lễ, ngày kỷ niệm và ngày truyền thống các ngành: mô tả, lịch sử, ý nghĩa.</small></button>
-   <button class="vv-mode" data-a="food"><span class="big">🍜</span><b>Đặc sản về đúng quê</b><small>Món ăn này thuộc miền nào? Kỷ lục: ${S.best.food}</small></button>
-   <button class="vv-mode" data-a="guess"><span class="big">🔍</span><b>Đoán địa danh qua ảnh mờ</b><small>Hình rõ dần theo thời gian, đoán càng sớm càng nhiều điểm. Kỷ lục: ${S.best.guess}</small></button>
-   <button class="vv-mode" data-a="budget"><span class="big">💰</span><b>Chuyến đi có ngân sách</b><small>Chọn hoạt động trong giới hạn tiền và số ngày để vui nhất. Kỷ lục: ${S.best.trip}</small></button>
-   <button class="vv-mode" data-a="pass"><span class="big">🛂</span><b>Hộ chiếu của tôi</b><small>Xem các con dấu bạn đã sưu tầm.</small></button>
+   <button class="vv-mode" data-a="trip"><span class="big">🗺️</span><b>Hành trình xuyên Việt</b><small>${STOPS.length} tỉnh, thành trên bản đồ. Mỗi nơi một thử thách và một con dấu.</small></button>
+   <button class="vv-mode" data-a="holidays"><span class="big">📅</span><b>Những ngày quan trọng</b><small>${HD.length} ngày lễ, kỷ niệm, truyền thống trong năm: lịch sử và ý nghĩa.</small></button>
+   <button class="vv-mode" data-a="food"><span class="big">🍜</span><b>Đặc sản về đúng quê</b><small>${FOODS.length} món: đoán món thuộc miền nào. Kỷ lục: ${S.best.food}</small></button>
+   <button class="vv-mode" data-a="guess"><span class="big">🔍</span><b>Đoán địa danh qua ảnh mờ</b><small>Hình rõ dần, đoán càng sớm càng nhiều điểm. Kỷ lục: ${S.best.guess}</small></button>
+   <button class="vv-mode" data-a="budget"><span class="big">💰</span><b>Chuyến đi có ngân sách</b><small>Chọn hoạt động vừa tiền, vừa ngày mà vui nhất. Kỷ lục: ${S.best.trip}</small></button>
+   <button class="vv-mode" data-a="pass"><span class="big">🛂</span><b>Hộ chiếu của tôi</b><small>Các con dấu bạn đã sưu tầm.</small></button>
   </div>
   <div class="vv-row"><button class="vv-btn alt sm" data-a="reset">🗑️ Xóa tiến trình</button></div>`);
+  fitModes();
 }
 A.home=home;
+/* Tiêu đề thẻ luôn nằm 1 dòng: thu nhỏ chữ (đều nhau cho mọi thẻ) đến khi vừa */
+function fitModes(){
+  const bs=[].slice.call(main.querySelectorAll('.vv-mode b'));if(!bs.length||!bs[0].clientWidth)return;
+  for(let f=17;f>=11;f-=0.5){bs.forEach(b=>b.style.fontSize=f+'px');if(bs.every(b=>b.scrollWidth<=b.clientWidth+1))break}
+}
+if(window.ResizeObserver)new ResizeObserver(fitModes).observe(main);
+(function(){const st=document.createElement('style');st.textContent=
+'.vv-mode{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:10px;row-gap:6px;padding:14px}'+
+'.vv-mode .big{font-size:30px;line-height:1;width:34px;text-align:center}'+
+'.vv-mode b{margin:0;white-space:nowrap;overflow:hidden;line-height:1.25}'+
+'.vv-mode small{grid-column:1/-1;line-height:1.45}';
+document.head.appendChild(st);})();
 A.reset=()=>{if(confirm('Xóa toàn bộ điểm và tiến trình?')){S=DEF();persist();home()}};
 
 /* ===== Bản đồ Việt Nam: dựng lại theo bản đồ hành chính (toạ độ theo ảnh gốc 600×828) ===== */
@@ -730,23 +792,23 @@ A.stop=d=>{if(+d.i>=LKFREE(STOPS.length)&&!LKOPEN())return LKASK(()=>{curScr='st
   draw(hdr+`<div class="vv-note">${rows}</div>
   <div class="vv-story"><b>⭐ Điểm nổi bật</b><br>${s.intro.split('\n').map(x=>'• '+esc(x)).join('<br>')}</div>
   ${s.dc?`<div class="vv-story px-box">${[['🏞️ Danh lam thắng cảnh',s.dc],['🍲 Đặc sản nổi tiếng',s.ds],['🏛️ Nơi tham quan, di tích nổi bật',s.tq],['📸 Điểm dừng chân, check-in',s.dd]].map(r=>`<div class="px-sec"><b>${r[0]}</b><div class="px-tags">${r[1].map(x=>'<span>'+esc(x)+'</span>').join('')}</div></div>`).join('')}</div>`:''}
-  ${s.qs&&s.qs.length?`<div class="vv-note">🎯 Thử thách gồm <b>${s.qs.length}</b> câu hỏi về tổng quan và điểm nổi bật. Trả lời đúng ít nhất <b>${Math.ceil(s.qs.length*0.6)}</b> câu để nhận con dấu.</div>`:''}
+  ${s.qs&&s.qs.length?`<div class="vv-note">🎯 Thử thách gồm <b>${s.qn||s.qs.length}</b> câu hỏi về mọi thông tin ở trên. Trả lời đúng ít nhất <b>${Math.ceil((s.qn||s.qs.length)*0.6)}</b> câu để nhận con dấu.</div>`:''}
   <div class="vv-row">${s.qs&&s.qs.length?`<button class="vv-btn" data-a="startq" data-i="${d.i}">Bắt đầu thử thách ▶</button>`:''}<button class="vv-btn alt" data-a="trip">← Bản đồ</button></div>`)};
-A.startq=d=>{Q={s:+d.i,qs:shuffle(STOPS[+d.i].qs),n:0,right:0,opts:[],picked:null};qScreen()};
+A.startq=d=>{Q={s:+d.i,qs:stopQs(STOPS[+d.i]),n:0,right:0,opts:[],picked:null};qScreen()};
 function qScreen(){
   const st=STOPS[Q.s],q=Q.qs[Q.n];
   if(!Q.opts.length)Q.opts=shuffle(q.slice(1,5));
   const p=Q.picked;
-  draw(`<div class="vv-prog"><i style="width:${(Q.n+(p!==null?1:0))/st.qs.length*100}%"></i></div>
-  <small class="vv-sub">${esc(st.n)} · Câu ${Q.n+1}/${st.qs.length}</small>
+  draw(`<div class="vv-prog"><i style="width:${(Q.n+(p!==null?1:0))/Q.qs.length*100}%"></i></div>
+  <small class="vv-sub">${esc(st.n)} · Câu ${Q.n+1}/${Q.qs.length}</small>
   <div class="vv-q">${esc(q[0])}</div>`+
   Q.opts.map((o,i)=>{let c='';if(p!==null){if(o===q[1])c='ok';else if(i===p)c='bad'}
     return `<button class="vv-opt ${c}" data-a="ans" data-i="${i}" ${p!==null?'disabled':''}>${esc(o)}</button>`}).join('')+
   (p!==null?`<div class="vv-note">${Q.opts[p]===q[1]?'✅ Chính xác! ':'❌ Chưa đúng. Đáp án: <b>'+esc(q[1])+'</b>. '}${esc(q[5])}</div>
-  <button class="vv-btn" data-a="qnext">${Q.n+1<st.qs.length?'Câu tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
+  <button class="vv-btn" data-a="qnext">${Q.n+1<Q.qs.length?'Câu tiếp theo ▶':'Xem kết quả ▶'}</button>`:''));
 }
 A.ans=d=>{if(Q.picked!==null)return;Q.picked=+d.i;const q=Q.qs[Q.n];if(Q.opts[Q.picked]===q[1]){Q.right++;addPts(10);SFX('ok')}else SFX('bad');qScreen()};
-A.qnext=()=>{Q.n++;Q.opts=[];Q.picked=null;if(Q.n>=STOPS[Q.s].qs.length)return qEnd();qScreen()};
+A.qnext=()=>{Q.n++;Q.opts=[];Q.picked=null;if(Q.n>=Q.qs.length)return qEnd();qScreen()};
 function qEnd(){
   const st=STOPS[Q.s],N=Q.qs.length,ratio=Q.right/N,pass=Q.right>=Math.ceil(N*0.6),stars=pass?(ratio>=0.9?3:ratio>=0.75?2:1):0,first=pass&&S.stamps[st.id]==null;
   if(pass){S.stamps[st.id]=Math.max(S.stamps[st.id]||0,stars);if(first)S.pts+=20;persist();top()}

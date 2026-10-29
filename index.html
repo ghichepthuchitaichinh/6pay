@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.29-3';
+const APP_VERSION='2026.10.29-5';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -655,7 +655,28 @@ html.fast-start .boot-splash{display:none!important;}
 body:not(.home-white) .qa-fab{display:none;}
 /* chừa chỗ cho nút nổi để không che chữ cuối trang chủ */
 /* dòng "Dữ liệu chỉ lưu trên máy..." nằm sát đáy, bên trái nút ＋ Ghi chi */
-.home-ver{margin-top:auto;min-height:56px;display:flex;flex-direction:column;justify-content:flex-end;text-align:left;text-wrap:pretty;padding:6px 150px 0 4px;}
+/* (bản 2026.10.29-4) Nút ＋ Ghi chi kéo dài hết chiều ngang, nằm ngay trên dòng phiên bản */
+.qa-fab{left:max(14px,calc(50% - 226px));right:max(14px,calc(50% - 226px));justify-content:center;bottom:calc(max(8px,calc(env(safe-area-inset-bottom,0px) - 12px)) + 44px);}
+/* Dòng "Dữ liệu chỉ lưu..." + "Phiên bản" trải dài hết chiều ngang ở dưới cùng; phần đệm trên chừa chỗ cho nút ＋ Ghi chi */
+.home-ver{margin-top:auto;min-height:0;display:block;text-align:center;text-wrap:balance;padding:68px 4px 0;}
+/* Thu gọn các ô trên trang chủ để nhường chỗ cho nút ＋ Ghi chi */
+/* (bản 2026.10.29-5) Các ô tự giãn cho cân đối, chừa một khoảng nhỏ phía trên câu trích dẫn */
+.home-wrap>.card,.home-wrap>.card-pair{flex:1 1 auto;}
+.home-wrap .card{min-height:clamp(46px,6.2vh,56px);padding:8px 14px;}
+.home-wrap .card.balance{min-height:clamp(54px,7.6vh,70px);}
+.home-wrap .card-pair .card{min-height:clamp(54px,7.4vh,66px);padding:8px 14px;}
+.home-wrap .card-pair .card.quiz,.home-wrap .card-pair .card.partner{min-height:clamp(46px,6.2vh,54px);}
+.home-wrap>.card.balance{max-height:96px;}
+.home-wrap>.card.hist{max-height:72px;}
+.home-wrap>.card-pair{max-height:92px;}
+.home-wrap>.card-pair:last-of-type{max-height:72px;}
+.home-quote{margin-top:auto;padding-top:clamp(8px,1.6vh,14px);}
+@media (max-height:600px){
+ .home-wrap .card{min-height:42px;padding:6px 12px;}
+ .home-wrap .card.balance{min-height:48px;}
+ .home-wrap .card-pair .card{min-height:46px;padding:6px 12px;}
+ .home-wrap .card-pair .card.quiz,.home-wrap .card-pair .card.partner{min-height:42px;}
+}
 /* ---------- Bảng ghi chi nhanh (trượt từ dưới lên) ---------- */
 .sheet-ov{position:fixed;inset:0;z-index:120;background:rgba(17,24,39,.42);display:none;align-items:flex-end;justify-content:center;}
 .sheet-ov.open{display:flex;animation:fadeIn .15s ease;}

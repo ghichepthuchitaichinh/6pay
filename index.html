@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.30-4';
+const APP_VERSION='2026.10.30-5';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -2354,14 +2354,14 @@ function scrFinUtil(){
 // Lần mở Nông trại tiếp theo, toàn bộ tiền trong hộp thư được cộng vào ví nông trại và tính tiến độ nhiệm vụ.
 const FARM_INBOX='farm6_inbox';
 const FARM_GAMES={en:'words',zh:'zh',math:'math',vnh:'vnh',vnv:'vnv',quiz:'quiz',clock:'clock'};
-window.farmEarn=function(g,amount,ok){
- amount=Math.max(0,Math.round(+amount||0)); ok=Math.max(0,Math.round(+ok||0));
+window.farmEarn=function(g,amount,ok,t){
+ amount=Math.max(0,Math.round(+amount||0)); ok=Math.max(0,Math.round(+ok||0)); t=t?String(t):'';
  if(!FARM_GAMES[g]||(!amount&&!ok))return;
  let box=[];try{box=JSON.parse(localStorage.getItem(FARM_INBOX))||[];}catch(e){}
  if(!Array.isArray(box))box=[];
  const now=Date.now(),last=box[box.length-1];
- if(last&&last.g===g&&now-last.ts<600000){last.a+=amount;last.ok+=ok;last.ts=now;}
- else box.push({g:g,a:amount,ok:ok,ts:now});
+ if(last&&last.g===g&&(last.t||'')===t&&now-last.ts<600000){last.a+=amount;last.ok+=ok;last.ts=now;}
+ else box.push(t?{g:g,t:t,a:amount,ok:ok,ts:now}:{g:g,a:amount,ok:ok,ts:now});
  if(box.length>300)box=box.slice(-300);
  try{localStorage.setItem(FARM_INBOX,JSON.stringify(box));}catch(e){}
  if(amount)farmChip(amount);
@@ -2385,9 +2385,10 @@ function farmGameOpen(){
  if(document.querySelector('#vnhOv.show,#vnvOv.show,#ckOv.show,#mtOv.on,.eg-root.on,.zg-root.on,.mb-root.on'))return true;
  const top=stack[stack.length-1];return !!(top&&top.id==='quiz');
 }
-window.farmPlay=function(k){
+window.farmPlay=function(k,opt){
  const pk=FARM_GAMES[k]; if(!pk)return;
  try{if(window.FarmGame)FarmGame.close();}catch(e){}
+ window._gameOpt=opt||null;
  if(pk==='quiz')openQuiz(); else playGame(pk);
  clearInterval(farmWatch); let miss=0;
  farmWatch=setInterval(()=>{
@@ -2415,8 +2416,8 @@ function gameReady(k){
 }
 function gameStart(k){
  if(k==='runner')open6PayGame();
- else if(k==='words')SixWordGame.open();
- else if(k==='zh')SixZhGame.open();
+ else if(k==='words'){const o=window._gameOpt;window._gameOpt=null;SixWordGame.open(o);}
+ else if(k==='zh'){const o=window._gameOpt;window._gameOpt=null;SixZhGame.open(o);}
  else if(k==='math')MathGame.open();
  else if(k==='clock')ClockGame.open();
  else if(k==='farm')FarmGame.open();

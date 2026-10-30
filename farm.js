@@ -1,4 +1,4 @@
-/* 6PAY - Game Nông trại vui vẻ (bản mở rộng 2026.10.30-4: bản đồ kéo/zoom, cánh đồng và chuồng mới). File này được index.html tải về khi người dùng mở trò chơi.
+/* 6PAY - Game Nông trại vui vẻ (bản 2026.10.30-5: nhiệm vụ 6 ví, bản đồ kéo/zoom, cánh đồng và chuồng mới). File này được index.html tải về khi người dùng mở trò chơi.
    Trồng cây, nuôi gà – bò – cừu – cá – ong, xây công trình, chế biến nông sản, giao đơn hàng và ghi sổ thu chi.
    Nông trại được NỐI với các game học: tiền thưởng kiếm được trong Lịch sử Việt Nam, Khám phá Việt Nam, từ vựng tiếng Anh,
    tiếng Trung, Toán học cấp 1, Đố vui tài chính, Dạy trẻ xem đồng hồ được cộng hết vào ví nông trại (qua hộp thư farm6_inbox).
@@ -95,51 +95,234 @@
     { k: 'quiz', n: 'Đố vui tài chính', e: '🎯', u: 'câu', d: 'Trả lời đúng và nhanh để được nhiều tiền' },
     { k: 'clock', n: 'Dạy trẻ xem đồng hồ', e: '🕒', u: 'giờ', d: 'Bấm “Đố bé xem giờ”: mỗi câu đúng +10.000đ' }
   ];
-  /* Nhiệm vụ mở rộng nông trại: lv = cấp nông trại để nhận, g = game, n = số câu/từ đúng cần đạt, u = phần mở khoá, r = tiền thưởng */
-  var QUESTS = [
-    { id: 'q1', lv: 1, g: 'en', n: 10, u: { t: 'bld', v: 'them' }, r: 30000 },
-    { id: 'q2', lv: 2, g: 'math', n: 10, u: { t: 'row', v: 4 }, r: 30000 },
-    { id: 'q3', lv: 3, g: 'quiz', n: 8, u: { t: 'pen', v: 'bo' }, r: 40000 },
-    { id: 'q4', lv: 3, g: 'clock', n: 8, u: { t: 'bld', v: 'gieng' }, r: 40000 },
-    { id: 'q5', lv: 4, g: 'vnh', n: 10, u: { t: 'bld', v: 'lobanh' }, r: 50000 },
-    { id: 'q6', lv: 4, g: 'zh', n: 15, u: { t: 'row', v: 5 }, r: 50000 },
-    { id: 'q7', lv: 5, g: 'vnv', n: 10, u: { t: 'pen', v: 'ca' }, r: 60000 },
-    { id: 'q8', lv: 5, g: 'math', n: 20, u: { t: 'cap', v: 'bo', k: 2 }, r: 60000 },
-    { id: 'q9', lv: 6, g: 'en', n: 20, u: { t: 'pen', v: 'cuu' }, r: 70000 },
-    { id: 'q10', lv: 6, g: 'vnh', n: 15, u: { t: 'bld', v: 'bosua' }, r: 70000 },
-    { id: 'q11', lv: 7, g: 'quiz', n: 15, u: { t: 'bld', v: 'xetai' }, r: 80000 },
-    { id: 'q12', lv: 7, g: 'vnv', n: 15, u: { t: 'row', v: 6 }, r: 80000 },
-    { id: 'q13', lv: 8, g: 'zh', n: 20, u: { t: 'pen', v: 'ong' }, r: 90000 },
-    { id: 'q14', lv: 8, g: 'math', n: 30, u: { t: 'bld', v: 'maydet' }, r: 90000 },
-    { id: 'q15', lv: 9, g: 'clock', n: 15, u: { t: 'bld', v: 'coixay' }, r: 100000 },
-    { id: 'q16', lv: 10, g: 'en', n: 30, u: { t: 'row', v: 7 }, r: 120000 },
-    { id: 'q17', lv: 10, g: 'vnh', n: 25, u: { t: 'bld', v: 'nha2' }, r: 120000 },
-    { id: 'q18', lv: 11, g: 'vnv', n: 25, u: { t: 'bld', v: 'mut' }, r: 150000 },
-    { id: 'q19', lv: 12, g: 'quiz', n: 25, u: { t: 'cap', v: 'cuu', k: 2 }, r: 150000 },
-    { id: 'q20', lv: 12, g: 'zh', n: 30, u: { t: 'cap', v: 'ga', k: 4 }, r: 150000 },
-    { id: 'q21', lv: 14, g: 'math', n: 40, u: { t: 'bld', v: 'nha3' }, r: 200000 },
-    /* Mở rộng ra bên ngoài: cánh đồng mới, chuồng mới, thêm chỗ nuôi */
-    { id: 'q22', lv: 6, g: 'clock', n: 10, u: { t: 'fld', v: 'dong' }, r: 70000 },
-    { id: 'q23', lv: 8, g: 'en', n: 25, u: { t: 'fld', v: 'tay' }, r: 90000 },
-    { id: 'q24', lv: 9, g: 'math', n: 30, u: { t: 'pen', v: 'vit' }, r: 100000 },
-    { id: 'q25', lv: 9, g: 'vnh', n: 20, u: { t: 'cap', v: 'ca', k: 2 }, r: 100000 },
-    { id: 'q26', lv: 11, g: 'quiz', n: 20, u: { t: 'pen', v: 'de' }, r: 130000 },
-    { id: 'q27', lv: 11, g: 'zh', n: 25, u: { t: 'fld', v: 'nam' }, r: 130000 },
-    { id: 'q28', lv: 12, g: 'vnv', n: 20, u: { t: 'bld', v: 'chan' }, r: 150000 },
-    { id: 'q29', lv: 13, g: 'en', n: 35, u: { t: 'pen', v: 'heo' }, r: 180000 },
-    { id: 'q30', lv: 13, g: 'clock', n: 20, u: { t: 'cap', v: 'ong', k: 2 }, r: 180000 },
-    { id: 'q31', lv: 15, g: 'math', n: 45, u: { t: 'fld', v: 'xa' }, r: 220000 },
-    { id: 'q32', lv: 15, g: 'vnh', n: 30, u: { t: 'cap', v: 'vit', k: 3 }, r: 220000 },
-    { id: 'q33', lv: 16, g: 'quiz', n: 30, u: { t: 'cap', v: 'bo', k: 2 }, r: 250000 },
-    { id: 'q34', lv: 16, g: 'zh', n: 35, u: { t: 'cap', v: 'de', k: 2 }, r: 250000 }
+  /* ================= NHIỆM VỤ THEO 6 VÍ =================
+     Mỗi ví (giống 6 hũ trong app 6PAY) có một danh sách nhiệm vụ. Bấm "Thực hiện" là CHI tiền từ ví nông trại,
+     làm xong việc được giao thì NHẬN tiền + kinh nghiệm. Kinh nghiệm giúp lên cấp → mở thêm đất, chuồng, công trình.
+     Loại việc (k):
+       learn: học đúng c câu/từ trong game học g (t = chủ đề tiếng Anh/Trung)
+       farm : làm việc trên nông trại, ev = loại việc, x = món cụ thể (không có = món nào cũng được), c = số lần
+       wait : chờ s giây (gửi tiết kiệm, đầu tư, đi chơi…), tiền vẫn chạy khi đóng app
+       give : giao các món trong kho (it) */
+  var WALLETS = [
+    { k: 'essential', n: 'Thiết yếu', e: '🏠', c: '#0ea5e9', q: '“Đừng đánh đổi những điều thiết yếu hôm nay để chạy theo những điều xa xỉ ngày mai”',
+      d: 'Những khoản <b>phải chi</b> để gia đình và nông trại hoạt động: ăn uống, điện nước, nông cụ, thức ăn cho vật nuôi. Chi đúng chỗ thì nông trại mới làm ra tiền.' },
+    { k: 'education', n: 'Phát triển bản thân', e: '📚', c: '#8b5cf6', q: '“Học không phải để giỏi hơn người khác, mà để trở thành phiên bản tốt hơn của chính mình”',
+      d: 'Đóng học phí cho các <b>khoá học</b> rồi vào học thật. Kiến thức là khoản đầu tư sinh lời nhiều nhất: học xong nhận lại nhiều hơn số tiền đã bỏ ra.' },
+    { k: 'saving', n: 'Tiết kiệm', e: '🐷', c: '#ec4899', q: '“Đừng tiết kiệm những gì còn lại sau khi chi tiêu, hãy chi tiêu những gì còn lại sau khi tiết kiệm”',
+      d: 'Gửi tiền có <b>kỳ hạn</b>: gửi càng lâu, lãi càng nhiều. Rút trước hạn thì chỉ lấy lại tiền gốc, không có lãi. Kiên nhẫn chính là bí quyết!' },
+    { k: 'invest', n: 'Đầu tư', e: '📈', c: '#16a34a', q: '“Rủi ro đến từ việc bạn không biết mình đang dùng tiền làm gì”',
+      d: 'Bỏ vốn để tiền <b>sinh ra tiền</b>. Có khoản chắc chắn lãi ít, có khoản lãi nhiều nhưng cũng có thể lỗ. Chỉ đầu tư số tiền bạn chấp nhận mất, và nên chia nhỏ ra nhiều nơi.' },
+    { k: 'share', n: 'Chia sẻ', e: '🤝', c: '#f59e0b', q: '“Của cải làm nên sự giàu có, lòng nhân ái làm nên sự vĩ đại”',
+      d: 'Giúp đỡ người khác bằng tiền, nông sản hoặc công sức. Chia sẻ không làm bạn giàu lên về tiền, nhưng mọi người sẽ <b>gửi quà cảm ơn</b> và bạn được rất nhiều kinh nghiệm.' },
+    { k: 'enjoy', n: 'Hưởng thụ', e: '🎉', c: '#ef4444', q: '“Đừng chờ đến khi giàu có mới hạnh phúc, hãy học cách hạnh phúc trên hành trình làm giàu”',
+      d: 'Vui chơi để nạp năng lượng! Hưởng thụ <b>vừa đủ</b> với số tiền mình có: có những niềm vui miễn phí, có chuyến đi phải tiết kiệm lâu mới đi được.' }
   ];
-  var DAILY_N = { en: 8, zh: 8, math: 8, vnh: 6, vnv: 6, quiz: 5, clock: 6 };
+  var WM = {}; WALLETS.forEach(function (w) { WM[w.k] = w; });
+  /* Chủ đề tiếng Anh/Trung dùng cho khoá học (mã giống trong game từ vựng) */
+  var TOPIC = { fruits: '🍎 Trái cây', colors: '🎨 Màu sắc', family: '👪 Gia đình', pets: '🐶 Vật nuôi & nông trại', numbers: '🔢 Số đếm', food: '🍕 Món ăn', school: '📚 Trường học', body: '🧍 Cơ thể',
+    clothes: '👕 Quần áo', vegetables: '🥕 Rau củ', jobs: '👨‍⚕️ Nghề nghiệp', weather: '⛅ Thời tiết & mùa', transport: '🚗 Giao thông', sports: '⚽ Thể thao', money: '💰 Tiền bạc & mua sắm', emotions: '😊 Cảm xúc',
+    places: '🏫 Địa điểm', travel: '🧳 Du lịch', countries: '🌏 Quốc gia', tech: '💻 Công nghệ', space: '🪐 Vũ trụ', nature: '🌈 Thiên nhiên', music: '🎸 Âm nhạc', time: '⏰ Thời gian', days: '📅 Thứ & tháng', toys: '🧸 Đồ chơi', kitchen: '🍴 Nhà bếp' };
+  var EVN = { plant: ['Gieo', 'hạt giống'], water: ['Tưới', 'ô ruộng'], harvest: ['Thu hoạch', 'cây'], feed: ['Cho vật nuôi ăn', 'lần'], collect: ['Thu', 'sản phẩm từ vật nuôi'], make: ['Chế biến', 'món ở xưởng'], order: ['Giao', 'đơn hàng'], sell: ['Bán', 'món ở chợ'], fert: ['Bón phân', 'lần'] };
+
+  function base(lv) { return 10000 + 10000 * lv; }   // mức chi chuẩn theo cấp
+  function r1k(n) { return Math.max(0, Math.round(n / 1000) * 1000); }
+  var MISSIONS = [], MSM = {};
+  /* w = ví, lv = cấp, e = biểu tượng, n = tên, d = bài học, k/p = loại việc, o = tuỳ chỉnh (cost = hệ số chi, pay = hệ số nhận, xp = hệ số KN, req = điều kiện) */
+  function M(w, lv, e, n, d, k, p, o) {
+    o = o || {};
+    var dw = { essential: [1, 1.4, 1], education: [0.8, 1.5, 1], saving: [1, 1, 1], invest: [1, 1.5, 1], share: [0.6, 0.45, 1.5], enjoy: [0.8, 0.6, 1.1] }[w];
+    var m = { id: w.charAt(0) + w.charAt(1) + (MISSIONS.length + 1), w: w, lv: lv, e: e, n: n, d: d, k: k, req: o.req };
+    for (var key in p) m[key] = p[key];
+    var cost = o.c0 ? 0 : r1k(base(lv) * dw[0] * (o.cost || 1));
+    if (o.pct) { m.pct = o.pct; cost = 0; }
+    m.cost = cost;
+    if (w === 'saving') m.rate = o.rate;
+    else if (o.rng) m.rng = o.rng;
+    else m.pay = r1k((cost || base(lv) * 0.6) * dw[1] * (o.pay || 1));
+    m.xp = Math.max(3, Math.round(need(lv) * 0.22 * dw[2] * (o.xp || 1)));
+    if (o.fert) m.fert = o.fert;
+    MISSIONS.push(m); MSM[m.id] = m;
+  }
+  function F(ev, c, x) { return { ev: ev, c: c, x: x }; }
+  function G(it) { return { it: it }; }
+  function T(s) { return { s: s }; }
+  function LN(g, c, t) { return { g: g, c: c, t: t }; }
+
+  /* ---------- 🏠 THIẾT YẾU ---------- */
+  var w = 'essential';
+  M(w, 1, '🧑‍🌾', 'Mua cuốc xẻng cho vụ mùa', 'Nông cụ là thứ phải có để làm ra tiền. Mua xong, hãy gieo 5 hạt giống.', 'farm', F('plant', 5));
+  M(w, 1, '🚿', 'Trả tiền nước tưới ruộng', 'Cây không có nước sẽ héo. Trả tiền nước rồi tưới 6 ô ruộng.', 'farm', F('water', 6));
+  M(w, 1, '🧺', 'Mua giỏ tre đựng nông sản', 'Có giỏ mới để đựng nông sản: hãy thu hoạch 8 cây.', 'farm', F('harvest', 8));
+  M(w, 2, '🍚', 'Đi chợ nấu bữa cơm gia đình', 'Ăn uống là khoản chi thiết yếu nhất. Mua mắm muối ở chợ và góp 3 🌾 lúa, 2 🥕 cà rốt từ kho.', 'give', G([['lua', 3], ['carot', 2]]), { cost: 0.8 });
+  M(w, 2, '🐔', 'Mua cám cho gà', 'Vật nuôi cần ăn đều đặn mới khoẻ. Mua cám rồi cho vật nuôi ăn 4 lần.', 'farm', F('feed', 4), { req: 'a:ga' });
+  M(w, 3, '📦', 'Mua bao bì đóng gói', 'Đóng gói sạch đẹp giúp bán hàng tốt hơn. Bán 10 món ở chợ.', 'farm', F('sell', 10));
+  M(w, 3, '🏚️', 'Sửa mái nhà bị dột', 'Nhà cửa an toàn là nhu cầu thiết yếu. Chờ thợ sửa xong.', 'wait', T(180));
+  M(w, 3, '💉', 'Mua thuốc phòng bệnh cho gà', 'Gà khoẻ mới đẻ nhiều trứng. Thu 4 🥚 trứng gà.', 'farm', F('collect', 4, 'trung'), { req: 'a:ga' });
+  M(w, 4, '⛽', 'Đổ xăng cho xe chở hàng', 'Chi phí đi lại để làm việc là khoản thiết yếu. Giao 2 đơn hàng.', 'farm', F('order', 2));
+  M(w, 4, '🍳', 'Chuẩn bị bữa sáng đủ chất', 'Bữa sáng đủ chất giúp cả nhà khoẻ mạnh. Góp 2 🥚 trứng và 1 🥛 sữa.', 'give', G([['trung', 2], ['sua', 1]]), { req: 'a:bo' });
+  M(w, 5, '🌱', 'Mua hạt giống cho vụ mới', 'Muốn thu thì phải gieo. Gieo 20 hạt giống.', 'farm', F('plant', 20));
+  M(w, 5, '🩺', 'Khám sức khoẻ định kỳ cho cả nhà', 'Sức khoẻ là vốn quý nhất, đừng tiếc tiền cho khoản này.', 'wait', T(300));
+  M(w, 5, '🐄', 'Thuê bác sĩ thú y khám cho bò', 'Bò khoẻ cho nhiều sữa. Thu 3 🥛 sữa bò.', 'farm', F('collect', 3, 'sua'), { req: 'a:bo' });
+  M(w, 6, '👷', 'Trả tiền thuê người làm mùa vụ', 'Vụ mùa bận rộn cần thêm người giúp. Thu hoạch 25 cây.', 'farm', F('harvest', 25));
+  M(w, 6, '🐟', 'Thay nước ao cá', 'Nước sạch thì cá mới lớn. Thu 4 🐟 cá tươi.', 'farm', F('collect', 4, 'catuoi'), { req: 'a:ca' });
+  M(w, 7, '🪵', 'Mua củi cho lò bánh mì', 'Có củi thì lò mới chạy. Nướng 2 🥖 bánh mì.', 'farm', F('make', 2, 'banhmi'), { req: 'b:lobanh' });
+  M(w, 7, '🧂', 'Mua gia vị nấu bữa tối', 'Góp 4 🌽 ngô và 3 🍅 cà chua cho bữa tối của gia đình.', 'give', G([['ngo', 4], ['cachua', 3]]));
+  M(w, 8, '🔧', 'Bảo dưỡng xe chở hàng', 'Xe tốt thì giao hàng đúng hẹn. Giao 4 đơn hàng.', 'farm', F('order', 4));
+  M(w, 8, '🪚', 'Sửa hàng rào bị gió đổ', 'Hàng rào hỏng thì gà chạy mất! Chờ sửa xong.', 'wait', T(600));
+  M(w, 9, '✂️', 'Thuê kéo cắt lông cừu', 'Có dụng cụ tốt mới làm được việc. Thu 3 🧶 len cừu.', 'farm', F('collect', 3, 'len'), { req: 'a:cuu' });
+  M(w, 9, '🧀', 'Mua men làm phô mai', 'Nguyên liệu là chi phí bắt buộc khi sản xuất. Làm 1 🧀 phô mai.', 'farm', F('make', 1, 'phomai'), { req: 'b:bosua' });
+  M(w, 10, '📜', 'Trả tiền thuê đất cánh đồng', 'Thuê đất phải trả tiền đúng hạn. Thu hoạch 40 cây.', 'farm', F('harvest', 40));
+  M(w, 11, '🧵', 'Mua chỉ cho máy dệt', 'Dệt 1 🧥 áo len.', 'farm', F('make', 1, 'aolen'), { req: 'b:maydet' });
+  M(w, 11, '🌧️', 'Trữ lương thực mùa mưa bão', 'Luôn có sẵn đồ dự phòng cho ngày khó khăn. Góp 10 🌾 lúa và 5 🥚 trứng vào kho dự trữ.', 'give', G([['lua', 10], ['trung', 5]]));
+  M(w, 12, '🧤', 'Mua đồ bảo hộ lấy mật ong', 'An toàn lao động là khoản chi không thể bỏ qua. Thu 2 🍯 mật ong.', 'farm', F('collect', 2, 'mat'), { req: 'a:ong' });
+  M(w, 13, '🌽', 'Mua cám dự trữ cho cả trại', 'Cho vật nuôi ăn 10 lần.', 'farm', F('feed', 10));
+  M(w, 14, '🧹', 'Dọn dẹp chuồng vịt', 'Chuồng sạch vịt mới khoẻ. Thu 4 🪶 lông vịt.', 'farm', F('collect', 4, 'longvit'), { req: 'a:vit' });
+  M(w, 15, '🧧', 'Chuẩn bị mâm cơm ngày Tết', 'Góp 3 🥖 bánh mì, 4 🐟 cá tươi và 2 🍉 dưa hấu.', 'give', G([['banhmi', 3], ['catuoi', 4], ['dua', 2]]));
+  M(w, 16, '❄️', 'Thuê kho lạnh bảo quản hàng', 'Hàng tươi lâu, bán được giá. Giao 6 đơn hàng.', 'farm', F('order', 6));
+  M(w, 18, '🚜', 'Mua máy cày cho cánh đồng lớn', 'Máy móc giúp làm nhanh hơn. Thu hoạch 60 cây.', 'farm', F('harvest', 60));
+  M(w, 20, '🏥', 'Mua bảo hiểm y tế cho cả nhà', 'Bảo hiểm giúp gia đình không bị bất ngờ khi ốm đau.', 'wait', T(1800));
+
+  /* ---------- 📚 PHÁT TRIỂN BẢN THÂN ---------- */
+  w = 'education';
+  [[1, 'fruits', 5], [1, 'colors', 5], [2, 'family', 6], [2, 'pets', 6], [3, 'numbers', 7], [3, 'food', 7], [4, 'school', 8], [4, 'body', 8], [5, 'clothes', 8], [5, 'vegetables', 8],
+   [6, 'jobs', 10], [6, 'weather', 10], [7, 'transport', 10], [7, 'sports', 10], [8, 'money', 12], [8, 'toys', 10], [9, 'emotions', 12], [10, 'places', 12], [11, 'travel', 14], [11, 'kitchen', 12],
+   [12, 'countries', 14], [13, 'tech', 14], [14, 'space', 15], [15, 'nature', 15], [16, 'music', 15], [17, 'time', 15], [18, 'days', 15]].forEach(function (x) {
+    M(w, x[0], '🔤', 'Khoá học tiếng Anh: ' + TOPIC[x[1]], 'Đóng học phí rồi vào game Từ vựng tiếng Anh, chủ đề ' + TOPIC[x[1]] + '. Hứng đúng ' + x[2] + ' từ để hoàn thành khoá học.', 'learn', LN('en', x[2], x[1]));
+  });
+  [[3, 'family', 5], [5, 'fruits', 6], [7, 'numbers', 8], [9, 'food', 8], [11, 'colors', 10], [13, 'money', 10], [15, 'school', 12], [17, 'pets', 12], [19, 'transport', 12]].forEach(function (x) {
+    M(w, x[0], '🀄', 'Khoá học tiếng Trung: ' + TOPIC[x[1]], 'Đóng học phí rồi vào game Từ vựng tiếng Trung, chủ đề ' + TOPIC[x[1]] + '. Hứng đúng ' + x[2] + ' từ.', 'learn', LN('zh', x[2], x[1]), { cost: 1.1, pay: 1.05 });
+  });
+  [[1, 5, 'Toán vui nhập môn'], [3, 8, 'Lớp toán cộng trừ'], [6, 12, 'Lớp bảng cửu chương'], [9, 15, 'Lớp toán tư duy'], [12, 20, 'Luyện thi toán'], [16, 25, 'Lớp toán nâng cao']].forEach(function (x) {
+    M(w, x[0], '🧮', x[2], 'Đóng học phí rồi vào game Toán học, trả lời đúng ' + x[1] + ' câu.', 'learn', LN('math', x[1]));
+  });
+  [[2, 5, 'Câu lạc bộ Sử Việt'], [5, 8, 'Lớp lịch sử các triều đại'], [8, 10, 'Tham quan bảo tàng Lịch sử'], [12, 15, 'Khoá học anh hùng dân tộc'], [16, 20, 'Hội thi Sử Việt']].forEach(function (x) {
+    M(w, x[0], '🇻🇳', x[2], 'Vào game Lịch sử Việt Nam, trả lời đúng ' + x[1] + ' câu.', 'learn', LN('vnh', x[1]));
+  });
+  [[2, 5, 'Lớp địa lý quê hương'], [6, 8, 'Khám phá 34 tỉnh thành'], [10, 12, 'Khoá học văn hoá vùng miền'], [14, 15, 'Hành trình đất nước'], [18, 20, 'Thi Hiểu biết Việt Nam']].forEach(function (x) {
+    M(w, x[0], '🧭', x[2], 'Vào game Khám phá Việt Nam, trả lời đúng ' + x[1] + ' câu.', 'learn', LN('vnv', x[1]));
+  });
+  [[1, 3, 'Lớp tài chính cho bé'], [4, 5, 'Khoá học quản lý tiền tiêu vặt'], [7, 8, 'Khoá học 6 chiếc hũ'], [11, 10, 'Khoá học đầu tư thông minh'], [15, 12, 'Hội thảo tự do tài chính'], [19, 15, 'Thi Nhà tài chính nhí']].forEach(function (x) {
+    M(w, x[0], '🎯', x[2], 'Vào Đố vui tài chính, trả lời đúng ' + x[1] + ' câu.', 'learn', LN('quiz', x[1]), { pay: 1.2 });
+  });
+  [[1, 4, 'Bé tập xem đồng hồ'], [5, 6, 'Lớp quản lý thời gian'], [10, 8, 'Khoá học giờ giấc khoa học']].forEach(function (x) {
+    M(w, x[0], '🕒', x[2], 'Vào game Dạy trẻ xem đồng hồ, đọc đúng ' + x[1] + ' giờ.', 'learn', LN('clock', x[1]));
+  });
+  M(w, 3, '🐣', 'Khoá kỹ thuật nuôi gà', 'Học cách chăm gà rồi thực hành: thu 5 🥚 trứng.', 'farm', F('collect', 5, 'trung'), { req: 'a:ga' });
+  M(w, 5, '🍅', 'Khoá trồng cà chua sạch', 'Thực hành: thu hoạch 6 🍅 cà chua.', 'farm', F('harvest', 6, 'cachua'));
+  M(w, 6, '👩‍🍳', 'Lớp học làm bánh mì', 'Thực hành: nướng 2 🥖 bánh mì.', 'farm', F('make', 2, 'banhmi'), { req: 'b:lobanh' });
+  M(w, 8, '🍓', 'Khoá trồng dâu tây', 'Thực hành: thu hoạch 6 🍓 dâu tây.', 'farm', F('harvest', 6, 'dau'));
+  M(w, 10, '🐄', 'Khoá chăn nuôi bò sữa', 'Thực hành: thu 5 🥛 sữa bò.', 'farm', F('collect', 5, 'sua'), { req: 'a:bo' });
+  M(w, 12, '🐝', 'Khoá nuôi ong lấy mật', 'Thực hành: thu 3 🍯 mật ong.', 'farm', F('collect', 3, 'mat'), { req: 'a:ong' });
+  M(w, 14, '🗣️', 'Lớp kỹ năng bán hàng', 'Thực hành: giao 5 đơn hàng.', 'farm', F('order', 5));
+  M(w, 16, '🍇', 'Khoá trồng nho', 'Thực hành: thu hoạch 6 🍇 nho.', 'farm', F('harvest', 6, 'nho'));
+
+  /* ---------- 🐷 TIẾT KIỆM (gửi tiền có kỳ hạn, nhận lại gốc + lãi) ---------- */
+  w = 'saving';
+  M(w, 1, '🐖', 'Bỏ heo đất lần đầu', 'Gửi tiền vào heo đất 2 phút, nhận lại kèm 2% lãi.', 'wait', T(120), { rate: 0.02 });
+  M(w, 1, '💌', 'Trả cho mình trước: cất 10%', 'Có tiền, hãy cất 10% trước rồi mới tiêu. Gửi 10% số tiền đang có trong 3 phút, lãi 3%.', 'wait', T(180), { pct: 0.1, rate: 0.03 });
+  M(w, 2, '📗', 'Sổ tiết kiệm kỳ hạn 5 phút', 'Gửi 5 phút, lãi 3%.', 'wait', T(300), { cost: 1.5, rate: 0.03 });
+  M(w, 2, '👟', 'Tiết kiệm mua đôi giày mới', 'Để dành dần cho món đồ mình thích thay vì xin tiền bố mẹ. Gửi 10 phút, lãi 4%.', 'wait', T(600), { rate: 0.04 });
+  M(w, 3, '📘', 'Sổ tiết kiệm kỳ hạn 15 phút', 'Gửi 15 phút, lãi 5%.', 'wait', T(900), { cost: 2, rate: 0.05 });
+  M(w, 3, '💌', 'Trả cho mình trước (lần 2)', 'Lặp lại thói quen tốt: cất 10% số tiền đang có trong 10 phút, lãi 4%.', 'wait', T(600), { pct: 0.1, rate: 0.04 });
+  M(w, 4, '🆘', 'Lập quỹ dự phòng khẩn cấp', 'Quỹ khẩn cấp giúp bạn không hoảng khi có chuyện bất ngờ. Gửi 30 phút, lãi 6%.', 'wait', T(1800), { cost: 2.5, rate: 0.06 });
+  M(w, 5, '🚲', 'Tiết kiệm mua xe đạp', 'Mục tiêu rõ ràng giúp tiết kiệm dễ hơn. Gửi 30 phút, lãi 6%.', 'wait', T(1800), { cost: 3, rate: 0.06 });
+  M(w, 5, '📙', 'Sổ tiết kiệm kỳ hạn 1 giờ', 'Gửi 1 giờ, lãi 8%.', 'wait', T(3600), { cost: 3, rate: 0.08 });
+  M(w, 6, '💌', 'Cất 15% thu nhập', 'Cất 15% số tiền đang có trong 1 giờ, lãi 8%.', 'wait', T(3600), { pct: 0.15, rate: 0.08 });
+  M(w, 7, '📕', 'Sổ tiết kiệm kỳ hạn 2 giờ', 'Gửi 2 giờ, lãi 10%.', 'wait', T(7200), { cost: 4, rate: 0.1 });
+  M(w, 8, '🎓', 'Tiết kiệm học phí năm sau', 'Lo trước cho việc học. Gửi 1 giờ, lãi 8%.', 'wait', T(3600), { cost: 4, rate: 0.08 });
+  M(w, 9, '🏦', 'Sổ tiết kiệm kỳ hạn 4 giờ', 'Gửi 4 giờ, lãi 12%. Hợp để gửi trước khi đi học.', 'wait', T(14400), { cost: 5, rate: 0.12 });
+  M(w, 10, '🌙', 'Gửi tiết kiệm qua đêm', 'Gửi trước khi đi ngủ, sáng dậy nhận lãi: 8 giờ, lãi 15%.', 'wait', T(28800), { cost: 6, rate: 0.15 });
+  M(w, 11, '🚜', 'Cất 20% để mua máy cày', 'Cất 20% số tiền đang có trong 4 giờ, lãi 12%.', 'wait', T(14400), { pct: 0.2, rate: 0.12 });
+  M(w, 12, '🕛', 'Sổ tiết kiệm kỳ hạn 12 giờ', 'Gửi 12 giờ, lãi 18%.', 'wait', T(43200), { cost: 8, rate: 0.18 });
+  M(w, 13, '📅', 'Sổ tiết kiệm kỳ hạn 1 ngày', 'Gửi 1 ngày, lãi 22%.', 'wait', T(86400), { cost: 8, rate: 0.22 });
+  M(w, 14, '🎁', 'Tiết kiệm mua quà Tết cho ông bà', 'Gửi 6 giờ, lãi 13%.', 'wait', T(21600), { cost: 10, rate: 0.13 });
+  M(w, 15, '🗓️', 'Sổ tiết kiệm kỳ hạn 2 ngày', 'Gửi 2 ngày, lãi 30%.', 'wait', T(172800), { cost: 12, rate: 0.3 });
+  M(w, 16, '🌟', 'Quỹ ước mơ', 'Cất 25% số tiền đang có trong 1 ngày, lãi 22%.', 'wait', T(86400), { pct: 0.25, rate: 0.22 });
+  M(w, 17, '📆', 'Sổ tiết kiệm kỳ hạn 3 ngày', 'Gửi 3 ngày, lãi 40%.', 'wait', T(259200), { cost: 15, rate: 0.4 });
+  M(w, 18, '🏛️', 'Sổ tiết kiệm kỳ hạn 1 tuần', 'Lãi kép: tiền lãi lại sinh ra lãi. Gửi 7 ngày, lãi 70%.', 'wait', T(604800), { cost: 20, rate: 0.7 });
+
+  /* ---------- 📈 ĐẦU TƯ (rng = lãi/lỗ ngẫu nhiên trong khoảng, nhân với vốn) ---------- */
+  w = 'invest';
+  M(w, 2, '🥕', 'Đầu tư vụ cà rốt', 'Bỏ vốn mua giống, chăm sóc rồi thu hoạch: đầu tư vào việc mình hiểu rõ. Thu hoạch 6 🥕 cà rốt.', 'farm', F('harvest', 6, 'carot'));
+  M(w, 2, '🤝', 'Cho bạn mượn tiền mua giống', 'Cho vay có lãi: chắc chắn nhưng lãi ít. 5 phút, lãi 10–25%.', 'wait', T(300), { rng: [1.1, 1.25] });
+  M(w, 3, '🧃', 'Góp vốn quầy nước mía ở chợ', 'Kinh doanh nhỏ có thể lãi hoặc lỗ. 10 phút, nhận lại 90–150% vốn.', 'wait', T(600), { rng: [0.9, 1.5] });
+  M(w, 3, '🐔', 'Mua thêm gà đẻ trứng', 'Tài sản sinh ra thu nhập. Thu 6 🥚 trứng.', 'farm', F('collect', 6, 'trung'), { req: 'a:ga', pay: 1.1 });
+  M(w, 4, '🛡️', 'Quỹ đầu tư an toàn', 'Rủi ro thấp, lãi vừa phải. 15 phút, nhận lại 105–120% vốn.', 'wait', T(900), { cost: 1.5, rng: [1.05, 1.2] });
+  M(w, 4, '🍉', 'Góp vốn vụ dưa của bác hàng xóm', 'Rủi ro cao: trúng mùa lãi to, mất mùa thì lỗ. 15 phút, nhận lại 60–190% vốn.', 'wait', T(900), { rng: [0.6, 1.9] });
+  M(w, 5, '🌽', 'Mở rộng vụ ngô', 'Thu hoạch 10 🌽 ngô.', 'farm', F('harvest', 10, 'ngo'));
+  M(w, 6, '🪙', 'Mua vàng tích trữ', 'Giá vàng lên xuống thất thường. 30 phút, nhận lại 85–145% vốn.', 'wait', T(1800), { cost: 2, rng: [0.85, 1.45] });
+  M(w, 6, '🥖', 'Mở tiệm bánh mì nhỏ', 'Chế biến giúp tăng giá trị nông sản. Nướng 3 🥖 bánh mì.', 'farm', F('make', 3, 'banhmi'), { req: 'b:lobanh', pay: 1.2 });
+  M(w, 7, '🏘️', 'Mua cổ phần hợp tác xã', 'Làm chủ một phần hợp tác xã, nhận lợi nhuận. 1 giờ, nhận lại 108–130% vốn.', 'wait', T(3600), { cost: 3, rng: [1.08, 1.3] });
+  M(w, 8, '📝', 'Ký hợp đồng cung cấp nông sản', 'Có khách hàng ổn định. Giao 4 đơn hàng.', 'farm', F('order', 4), { pay: 1.2 });
+  M(w, 8, '🍜', 'Góp vốn mở quán phở', 'Rủi ro rất cao! 1 giờ, nhận lại 50–220% vốn. Đừng bỏ hết tiền vào một chỗ.', 'wait', T(3600), { cost: 2, rng: [0.5, 2.2] });
+  M(w, 9, '🏠', 'Đầu tư nhà kính trồng dâu', 'Thu hoạch 8 🍓 dâu tây.', 'farm', F('harvest', 8, 'dau'), { cost: 1.5 });
+  M(w, 10, '📊', 'Quỹ chỉ số (đầu tư dài hạn)', 'Chia vốn vào nhiều công ty cùng lúc, giảm rủi ro. 2 giờ, nhận lại 110–135% vốn.', 'wait', T(7200), { cost: 4, rng: [1.1, 1.35] });
+  M(w, 10, '🧀', 'Sản xuất phô mai đóng hộp', 'Làm 2 🧀 phô mai.', 'farm', F('make', 2, 'phomai'), { req: 'b:bosua', cost: 2 });
+  M(w, 11, '🏺', 'Đầu tư xưởng gốm Bát Tràng', '2 giờ, nhận lại 80–160% vốn.', 'wait', T(7200), { cost: 4, rng: [0.8, 1.6] });
+  M(w, 12, '🐝', 'Mở rộng trại ong', 'Thu 4 🍯 mật ong.', 'farm', F('collect', 4, 'mat'), { req: 'a:ong', cost: 2 });
+  M(w, 13, '🏫', 'Mua trái phiếu làng xây trường', 'Cho làng vay tiền xây trường, nhận lãi đều đặn. 4 giờ, nhận lại 112–145% vốn.', 'wait', T(14400), { cost: 6, rng: [1.12, 1.45] });
+  M(w, 14, '🫙', 'Xuất khẩu mứt dâu', 'Làm 2 🫙 mứt dâu.', 'farm', F('make', 2, 'mutdau'), { req: 'b:mut', cost: 3 });
+  M(w, 15, '🌿', 'Khởi nghiệp nông sản sạch', '8 giờ, nhận lại 90–190% vốn.', 'wait', T(28800), { cost: 8, rng: [0.9, 1.9] });
+  M(w, 16, '🛏️', 'Thương hiệu gối lông vịt', 'Làm 2 🛏️ gối lông vịt.', 'farm', F('make', 2, 'goi'), { req: 'b:chan', cost: 4 });
+  M(w, 17, '🗺️', 'Mua đất nông nghiệp lâu dài', '12 giờ, nhận lại 115–160% vốn.', 'wait', T(43200), { cost: 10, rng: [1.15, 1.6] });
+  M(w, 18, '🧺', 'Danh mục đầu tư đa dạng', 'Chia nhỏ vốn vào nhiều nơi: ít khi lỗ. 1 ngày, nhận lại 120–180% vốn.', 'wait', T(86400), { cost: 12, rng: [1.2, 1.8] });
+
+  /* ---------- 🤝 CHIA SẺ ---------- */
+  w = 'share';
+  M(w, 1, '✏️', 'Ủng hộ quỹ khuyến học của trường', 'Góp tiền giúp các bạn nghèo có sách vở.', 'wait', T(60), { fert: 1 });
+  M(w, 1, '🍚', 'Tặng lúa cho bếp ăn tình thương', 'Chia sẻ không nhất thiết là tiền. Tặng 3 🌾 lúa.', 'give', G([['lua', 3]]), { c0: 1, fert: 1 });
+  M(w, 2, '🙌', 'Giúp bác hàng xóm thu hoạch', 'Chia sẻ thời gian và công sức: thu hoạch 6 cây giúp bác.', 'farm', F('harvest', 6), { c0: 1 });
+  M(w, 2, '📚', 'Mua sách tặng thư viện làng', 'Sách giúp nhiều bạn nhỏ được đọc.', 'wait', T(120), { fert: 1 });
+  M(w, 3, '🥚', 'Tặng trứng cho bếp ăn trường học', 'Tặng 4 🥚 trứng gà.', 'give', G([['trung', 4]]), { c0: 1, req: 'a:ga', fert: 1 });
+  M(w, 4, '🌊', 'Ủng hộ đồng bào vùng lũ', 'Một chút của mình là rất nhiều với người đang khó khăn.', 'wait', T(300), { cost: 1.5, fert: 1 });
+  M(w, 4, '🐾', 'Gửi rau củ cho trạm cứu hộ động vật', 'Tặng 5 🥕 cà rốt và 3 🌽 ngô.', 'give', G([['carot', 5], ['ngo', 3]]), { c0: 1, fert: 1 });
+  M(w, 5, '🥛', 'Tặng sữa cho trẻ em mồ côi', 'Tặng 2 🥛 sữa bò.', 'give', G([['sua', 2]]), { c0: 1, req: 'a:bo', fert: 1 });
+  M(w, 5, '🌳', 'Trồng cây xanh cho làng', 'Mua cây giống và gieo 10 hạt.', 'farm', F('plant', 10), { fert: 1 });
+  M(w, 6, '🛣️', 'Góp tiền sửa đường vào bản', 'Con đường tốt giúp các bạn đi học an toàn.', 'wait', T(600), { cost: 1.5, fert: 1 });
+  M(w, 7, '🥖', 'Phát bánh mì miễn phí', 'Tặng 3 🥖 bánh mì cho người lao động nghèo.', 'give', G([['banhmi', 3]]), { c0: 1, req: 'b:lobanh', fert: 2 });
+  M(w, 8, '💧', 'Xây giếng nước sạch cho làng bên', 'Nước sạch giúp cả làng khoẻ mạnh.', 'wait', T(900), { cost: 2, fert: 2 });
+  M(w, 9, '🧥', 'Tặng áo len cho trẻ em vùng cao', 'Tặng 2 🧥 áo len ấm áp.', 'give', G([['aolen', 2]]), { c0: 1, req: 'b:maydet', fert: 2 });
+  M(w, 10, '👵', 'Biếu quà ông bà', 'Tặng 1 🍯 mật ong và 6 🥚 trứng.', 'give', G([['mat', 1], ['trung', 6]]), { c0: 1, req: 'a:ong', fert: 2 });
+  M(w, 11, '🚚', 'Giao hàng giúp cô Lan bị ốm', 'Giao 3 đơn hàng giúp cô.', 'farm', F('order', 3), { c0: 1, fert: 2 });
+  M(w, 12, '🍱', 'Bữa trưa yêu thương', 'Tặng 5 🐟 cá và 1 🧀 phô mai cho người vô gia cư.', 'give', G([['catuoi', 5], ['phomai', 1]]), { c0: 1, req: 'b:bosua', fert: 2 });
+  M(w, 13, '🎓', 'Học bổng cho học sinh vượt khó', 'Tiền của bạn giúp một bạn khác tiếp tục đi học.', 'wait', T(1800), { cost: 3, fert: 3 });
+  M(w, 14, '🛏️', 'Tặng gối cho viện dưỡng lão', 'Tặng 1 🛏️ gối lông vịt.', 'give', G([['goi', 1]]), { c0: 1, req: 'b:chan', fert: 3 });
+  M(w, 15, '🌉', 'Góp tiền xây cầu cho bản làng', 'Cây cầu mới giúp cả bản qua suối mùa lũ.', 'wait', T(3600), { cost: 4, fert: 3 });
+  M(w, 17, '🏮', 'Quà Trung thu cho trẻ em', 'Tặng 2 🫙 mứt dâu và 1 🍉 dưa hấu.', 'give', G([['mutdau', 2], ['dua', 1]]), { c0: 1, req: 'b:mut', fert: 3 });
+  M(w, 19, '❤️', 'Quỹ trái tim cho em', 'Góp tiền phẫu thuật tim cho các bạn nhỏ.', 'wait', T(7200), { cost: 6, fert: 4 });
+
+  /* ---------- 🎉 HƯỞNG THỤ ---------- */
+  w = 'enjoy';
+  M(w, 1, '🍦', 'Ăn kem cùng bạn', 'Một niềm vui nho nhỏ, vừa túi tiền.', 'wait', T(60));
+  M(w, 1, '🪁', 'Thả diều trên đê', 'Niềm vui không tốn đồng nào!', 'wait', T(90), { c0: 1 });
+  M(w, 2, '📖', 'Mua truyện tranh mới', 'Đọc truyện thư giãn sau giờ làm.', 'wait', T(180));
+  M(w, 3, '🎬', 'Đi xem phim hoạt hình', 'Cả nhà cùng xem phim.', 'wait', T(300));
+  M(w, 3, '🏸', 'Chơi cầu lông với bố mẹ', 'Vận động vui khoẻ, không mất tiền.', 'wait', T(120), { c0: 1 });
+  M(w, 4, '🦁', 'Đi tham quan sở thú', 'Ngắm các con vật từ khắp nơi.', 'wait', T(300));
+  M(w, 5, '🍢', 'Tiệc nướng ngoài vườn', 'Mời bạn bè dùng nông sản nhà trồng: 4 🌽 ngô và 3 🍅 cà chua.', 'give', G([['ngo', 4], ['cachua', 3]]), { cost: 0.5 });
+  M(w, 5, '🌊', 'Đi công viên nước', 'Một ngày hè mát lạnh.', 'wait', T(600), { cost: 1.2 });
+  M(w, 6, '🧩', 'Mua đồ chơi lắp ráp', 'Chọn đồ chơi vừa túi tiền, chơi được lâu.', 'wait', T(300));
+  M(w, 7, '🧺', 'Picnic cuối tuần', 'Mang theo 2 🥖 bánh mì và 3 🍓 dâu tây.', 'give', G([['banhmi', 2], ['dau', 3]]), { cost: 0.5, req: 'b:lobanh' });
+  M(w, 7, '🎤', 'Xem ca nhạc thiếu nhi', 'Âm nhạc làm tâm hồn vui vẻ.', 'wait', T(900));
+  M(w, 8, '🍽️', 'Ăn buffet cùng gia đình', 'Thỉnh thoảng thưởng cho cả nhà một bữa ngon.', 'wait', T(600), { cost: 1.2 });
+  M(w, 9, '⛺', 'Cắm trại ở rừng thông', 'Ngủ lều, ngắm sao.', 'wait', T(1800), { cost: 1.5 });
+  M(w, 10, '🎂', 'Tổ chức tiệc sinh nhật', 'Chuẩn bị 2 🍉 dưa hấu, 2 🥖 bánh mì và 4 🥚 trứng.', 'give', G([['dua', 2], ['banhmi', 2], ['trung', 4]]), { cost: 0.6, req: 'b:lobanh' });
+  M(w, 11, '🌲', 'Du lịch Đà Lạt cuối tuần', 'Chuyến đi cần để dành tiền trước.', 'wait', T(3600), { cost: 3 });
+  M(w, 12, '🏊', 'Đi bơi cùng bạn bè', 'Vừa vui vừa khoẻ.', 'wait', T(1200));
+  M(w, 13, '🏖️', 'Nghỉ hè ở biển Nha Trang', 'Một kỳ nghỉ thật đáng nhớ.', 'wait', T(7200), { cost: 4 });
+  M(w, 14, '🫖', 'Tiệc trà chiều', 'Mời bạn bè 1 🫙 mứt dâu và 1 🧀 phô mai.', 'give', G([['mutdau', 1], ['phomai', 1]]), { cost: 0.5, req: 'b:mut' });
+  M(w, 15, '⛵', 'Tham quan Vịnh Hạ Long', 'Kỳ quan thiên nhiên thế giới!', 'wait', T(10800), { cost: 5 });
+  M(w, 17, '🏝️', 'Du lịch Phú Quốc cùng gia đình', 'Cả nhà cùng nghỉ dưỡng.', 'wait', T(21600), { cost: 7 });
+  M(w, 19, '✈️', 'Du lịch nước ngoài', 'Chuyến đi lớn: phải tiết kiệm thật lâu mới đi được.', 'wait', T(43200), { cost: 10 });
+
+  /* Mở rộng nông trại theo cấp (thay cho nhiệm vụ mở khoá cũ): thêm chỗ nuôi khi đạt cấp */
+  var CAPUP = [{ a: 'bo', lv: 5, k: 2 }, { a: 'ca', lv: 9, k: 2 }, { a: 'cuu', lv: 12, k: 2 }, { a: 'ga', lv: 12, k: 4 }, { a: 'ong', lv: 13, k: 2 }, { a: 'vit', lv: 15, k: 3 }, { a: 'bo', lv: 16, k: 2 }, { a: 'de', lv: 16, k: 2 }];
+  var MAX_ACTIVE = 2;   // mỗi ví làm tối đa 2 nhiệm vụ cùng lúc
 
   var CM = {}; CROPS.forEach(function (c) { CM[c.id] = c; });
   var AM = {}; ANIMALS.forEach(function (a) { AM[a.id] = a; });
   var BM = {}; BUILDS.forEach(function (b) { BM[b.id] = b; });
   var GM = {}; GAMES.forEach(function (g) { GM[g.k] = g; });
-  var QM = {}; QUESTS.forEach(function (q) { QM[q.id] = q; });
   function item(id) { return CM[id] || PRODUCTS[id]; }
   function need(lv) { return 10 * lv + 5 * lv * lv; }   // kinh nghiệm cần để lên cấp tiếp
 
@@ -148,7 +331,7 @@
   function fresh() {
     var an = {}; ANIMALS.forEach(function (a) { an[a.id] = []; });
     return { v: 2, m: 150000, start: 150000, xp: 0, lv: 1, rows: 3, plots: emptyPlots(), inv: {}, an: an, fert: 3, orders: [], log: [], tin: 0, tout: 0, sel: 'lua', seen: 0, made: Date.now(),
-      gs: {}, q: {}, bld: {}, fac: {}, fx: {}, dq: null, gift: '', tipCam: 0 };
+      gs: {}, bld: {}, fac: {}, fx: {}, ms: {}, ev: {}, wl: {}, mw: 'essential', gift: '', tipCam: 0 };
   }
   var S = fresh();
   function load() {
@@ -165,8 +348,10 @@
       }
     }
     var F = fresh();
-    ['gs', 'q', 'bld', 'fac', 'fx', 'inv', 'an'].forEach(function (k) { if (!S[k] || typeof S[k] !== 'object') S[k] = F[k]; });
+    ['gs', 'bld', 'fac', 'fx', 'ms', 'ev', 'wl', 'inv', 'an'].forEach(function (k) { if (!S[k] || typeof S[k] !== 'object') S[k] = F[k]; });
     if (!S.start) S.start = 200000;
+    delete S.q; delete S.dq;   // nhiệm vụ kiểu cũ (đã thay bằng nhiệm vụ 6 ví)
+    if (!WM[S.mw]) S.mw = 'essential';
     while (S.plots.length < TOTAL) S.plots.push({ c: null, p: 0, t: 0, w: 0 });
     ANIMALS.forEach(function (a) { if (!S.an[a.id]) S.an[a.id] = []; });
     S.plots.forEach(function (pl) { if (pl.c && !CM[pl.c]) { pl.c = null; pl.p = 0; } });
@@ -198,9 +383,9 @@
     else { S.log.unshift({ ts: now, k: k, a: amt, key: key, n: name, e: e, q: q }); if (S.log.length > 150) S.log.length = 150; }
   }
   function addXP(x) {
-    S.xp += x; var up = false;
+    S.xp += x; var up = false, from = S.lv;
     while (S.xp >= need(S.lv)) { S.xp -= need(S.lv); S.lv++; up = true; }
-    if (up) setTimeout(levelUp, 350);
+    if (up) setTimeout(function () { levelUp(from); }, 350);
   }
 
   /* ================= TIỀN TỪ CÁC GAME HỌC (HỘP THƯ) ================= */
@@ -215,6 +400,7 @@
       var a = Math.max(0, Math.round(+x.a || 0)), ok = Math.max(0, Math.round(+x.ok || 0));
       var gs = S.gs[x.g] || (S.gs[x.g] = { ok: 0, earn: 0 });
       gs.ok += ok; gs.earn += a; okT += ok;
+      if (x.t) { var gt = S.gs[x.g + ':' + x.t] || (S.gs[x.g + ':' + x.t] = { ok: 0, earn: 0 }); gt.ok += ok; gt.earn += a; }
       if (a) { S.m += a; tot += a; sum[x.g] = (sum[x.g] || 0) + a; addLog('in', a, 'earn_' + x.g, 'Tiền học tập: ' + GM[x.g].n, GM[x.g].e); }
     });
     var xp = Math.round(tot / 20000);
@@ -223,41 +409,121 @@
     return tot || okT ? { tot: tot, sum: sum, xp: xp } : null;
   }
 
-  /* ================= NHIỆM VỤ ================= */
+  /* ================= NHIỆM VỤ (logic) ================= */
   function stat(g) { var x = S.gs[g]; return x ? x.ok : 0; }
-  function qClaimed(id) { var e = S.q[id]; return !!(e && e.c); }
-  function qProg(Q) { var e = S.q[Q.id]; if (!e) return 0; return Math.max(0, Math.min(Q.n, stat(Q.g) - e.b)); }
-  function qReady(Q) { return !!S.q[Q.id] && !qClaimed(Q.id) && qProg(Q) >= Q.n; }
-  function qTitle(g, n) { var G = GM[g]; return g === 'clock' ? 'Đọc đúng ' + n + ' giờ ở ' + G.n : g === 'en' || g === 'zh' ? 'Học đúng ' + n + ' từ ở ' + G.n : 'Trả lời đúng ' + n + ' câu ' + G.n; }
-  function uText(u) {
-    if (u.t === 'row') return '🪧 Mở rộng ruộng hàng ' + u.v;
-    if (u.t === 'fld') return '🌾 Mở ' + FLM[u.v].n.toLowerCase() + ' (' + FLM[u.v].c * FLM[u.v].r + ' ô đất)';
-    if (u.t === 'pen') return AM[u.v].e + ' Mở ' + AM[u.v].pen.toLowerCase();
-    if (u.t === 'cap') return AM[u.v].e + ' Thêm ' + u.k + ' chỗ ' + AM[u.v].pen.toLowerCase();
-    var b = BM[u.v]; return b.e + ' Được xây ' + b.n.toLowerCase();
+  function evc(k) { return S.ev[k] || 0; }
+  function ev(k, x, n) { n = n || 1; S.ev[k] = evc(k) + n; if (x) S.ev[k + ':' + x] = evc(k + ':' + x) + n; }
+  function mKey(m) { return m.k === 'learn' ? (m.t ? m.g + ':' + m.t : m.g) : m.x ? m.ev + ':' + m.x : m.ev; }
+  function mCur(m) { return m.k === 'learn' ? stat(mKey(m)) : evc(mKey(m)); }
+  function mSt(m) { return S.ms[m.id] || null; }   // {s:1 đang làm, b: mốc, t: lúc bắt đầu, c: tiền đã chi} | {s:2 xong}
+  function reqOk(m) {
+    if (!m.req) return true;
+    var p = m.req.split(':');
+    return p[0] === 'b' ? built(p[1]) : (S.an[p[1]] || []).length > 0;
   }
-  function capQuest(v) { for (var i = 0; i < QUESTS.length; i++) { var u = QUESTS[i].u; if (u.t === 'cap' && u.v === v && !qClaimed(QUESTS[i].id)) return QUESTS[i]; } return null; }
-  function penOpen(a) { return !a.q || qClaimed(a.q) || S.an[a.id].length > 0; }
-  function capOf(a) { var c = a.cap; QUESTS.forEach(function (Q) { if (Q.u.t === 'cap' && Q.u.v === a.id && qClaimed(Q.id)) c += Q.u.k; }); return c; }
-  function syncQuests() {
-    QUESTS.forEach(function (Q) { if (S.lv >= Q.lv && !S.q[Q.id]) S.q[Q.id] = { b: stat(Q.g) }; });
-    var d = dayKey();
-    if (!S.dq || S.dq.d !== d) {
-      var R = mulberry(+d.replace(/-/g, '')), ks = GAMES.map(function (g) { return g.k; }), pick = [];
-      while (pick.length < 3) { var k = ks.splice(Math.floor(R() * ks.length), 1)[0]; pick.push(k); }
-      S.dq = { d: d, l: pick.map(function (k) { return { g: k, n: DAILY_N[k], b: stat(k), c: 0 }; }) };
-    }
+  function reqText(m) {
+    var p = m.req.split(':');
+    return p[0] === 'b' ? 'Cần xây ' + BM[p[1]].e + ' ' + BM[p[1]].n : 'Cần nuôi ít nhất 1 con ' + AM[p[1]].e + ' ' + AM[p[1]].n.toLowerCase();
   }
-  function dProg(x) { return Math.max(0, Math.min(x.n, stat(x.g) - x.b)); }
+  function mCost(m) { return m.pct ? Math.max(20000, r1k(S.m * m.pct)) : m.cost; }
+  function mProg(m) {   // 0..1
+    var e = mSt(m); if (!e || e.s !== 1) return e && e.s === 2 ? 1 : 0;
+    if (m.k === 'wait') return Math.min(1, (Date.now() - e.t) / (m.s * 1000));
+    if (m.k === 'give') return m.it.every(function (x) { return (S.inv[x[0]] || 0) >= x[1]; }) ? 1 : 0;
+    return Math.min(1, (mCur(m) - e.b) / m.c);
+  }
+  function mDone(m) { var e = mSt(m); return !!e && e.s === 1 && m.k !== 'give' && mProg(m) >= 1; }
+  function mActive(wk) { return MISSIONS.filter(function (m) { var e = mSt(m); return m.w === wk && e && e.s === 1; }); }
+  function mPayText(m, c) {
+    if (m.w === 'saving') return money(r1k(c * (1 + m.rate)));
+    if (m.rng) return short(r1k(c * m.rng[0])) + ' – ' + short(r1k(c * m.rng[1]));
+    return money(m.pay);
+  }
+  function mTask(m) {
+    if (m.k === 'learn') return (m.g === 'clock' ? 'Đọc đúng ' + m.c + ' giờ' : m.g === 'en' || m.g === 'zh' ? 'Hứng đúng ' + m.c + ' từ' : 'Trả lời đúng ' + m.c + ' câu') + ' · ' + GM[m.g].e + ' ' + GM[m.g].n + (m.t ? ' – ' + TOPIC[m.t] : '');
+    if (m.k === 'farm') { var E = EVN[m.ev], I = m.x && item(m.x); return E[0] + ' ' + m.c + ' ' + (I ? I.e + ' ' + I.n.toLowerCase() : E[1]); }
+    if (m.k === 'wait') return '⏱ ' + durL(m.s);
+    return 'Giao: ' + m.it.map(function (x) { return x[1] + ' ' + item(x[0]).e; }).join(', ');
+  }
+  function walletReady(wk) { var n = 0; MISSIONS.forEach(function (m) { if (m.w === wk && (mDone(m) || (mSt(m) && mSt(m).s === 1 && m.k === 'give' && mProg(m) >= 1))) n++; }); return n; }
   function giftAmt() { return (20000 + S.lv * 5000) * (built('nha3') ? 3 : built('nha2') ? 2 : 1); }
   function giftReady() { return built('them') && S.gift !== dayKey(); }
-  function claimable() {
-    var n = 0; QUESTS.forEach(function (Q) { if (qReady(Q)) n++; });
-    if (S.dq) S.dq.l.forEach(function (x) { if (!x.c && dProg(x) >= x.n) n++; });
-    if (giftReady()) n++;
-    return n;
+  function claimable() { var n = 0; WALLETS.forEach(function (W0) { n += walletReady(W0.k); }); if (giftReady()) n++; return n; }
+  function wlog(wk, k, a) { var x = S.wl[wk] || (S.wl[wk] = { o: 0, i: 0, n: 0 }); x[k] += a; }
+
+  /* Bắt đầu: chi tiền từ ví nông trại */
+  function mStart(id) {
+    var m = MSM[id]; if (!m || mSt(m) || S.lv < m.lv || !reqOk(m)) return;
+    if (mActive(m.w).length >= MAX_ACTIVE) { toast('Ví ' + WM[m.w].n + ' đang có ' + MAX_ACTIVE + ' nhiệm vụ. Hoàn thành bớt rồi nhận thêm nhé!'); return; }
+    var c = mCost(m);
+    if (S.m < c) { noMoney(c); return; }
+    S.m -= c;
+    if (c) { addLog('out', c, 'm_' + m.id, WM[m.w].e + ' ' + m.n, m.e); wlog(m.w, 'o', c); }
+    S.ms[m.id] = { s: 1, b: m.k === 'wait' || m.k === 'give' ? 0 : mCur(m), t: Date.now(), c: c };
+    sfx('ok'); save(); hud(); renderQuest();
+    toast(m.e + ' Đã nhận nhiệm vụ' + (c ? ', chi ' + money(c) : '') + '. ' + (m.k === 'wait' ? 'Quay lại sau ' + durL(m.s) + ' nhé!' : m.k === 'learn' ? 'Bấm “Vào học” để bắt đầu.' : m.k === 'give' ? 'Gom đủ hàng rồi bấm “Giao”.' : 'Ra nông trại làm việc thôi!'));
   }
-  function dailyReward() { return 25000 + S.lv * 5000; }
+  /* Hoàn thành: nhận tiền + KN */
+  function mClaim(id) {
+    var m = MSM[id], e = mSt(m); if (!m || !e || e.s !== 1) return;
+    if (m.k === 'give') {
+      if (mProg(m) < 1) { toast('Chưa đủ hàng trong kho'); return; }
+      m.it.forEach(function (x) { S.inv[x[0]] -= x[1]; });
+    } else if (mProg(m) < 1) return;
+    var c = e.c || 0, pay, note = '';
+    if (m.w === 'saving') { pay = r1k(c * (1 + m.rate)); note = 'Tiền gốc ' + money(c) + ' + lãi ' + money(pay - c) + '. Kiên nhẫn đã được đền đáp!'; }
+    else if (m.rng) {
+      var R = m.rng[0] + Math.random() * (m.rng[1] - m.rng[0]); pay = r1k(c * R);
+      note = pay >= c ? 'Lãi <b>' + money(pay - c) + '</b> (' + Math.round((pay / c - 1) * 100) + '%). Khoản đầu tư thành công!' : 'Lỗ <b>' + money(c - pay) + '</b>. Đầu tư luôn có rủi ro: lần sau hãy chia nhỏ vốn và chọn khoản phù hợp nhé.';
+    } else pay = m.pay;
+    S.m += pay; if (pay) { addLog('in', pay, 'mr_' + m.id, 'Hoàn thành: ' + m.n, m.e); wlog(m.w, 'i', pay); }
+    wlog(m.w, 'n', 1);
+    if (m.fert) S.fert += m.fert;
+    S.ms[m.id] = { s: 2, p: pay, c: c, d: Date.now() };
+    addXP(m.xp); sfx('win'); save(); hud(); renderQuest();
+    var W0 = WM[m.w];
+    sheet('<div class="fm-modal"><div class="big">' + m.e + '</div><h2>Hoàn thành!</h2><p><b>' + esc(m.n) + '</b></p>' +
+      '<div class="fm-ul">' + (c ? '<span>Đã chi ' + money(c) + '</span>' : '') + '<span>Nhận <b style="color:#15803d">' + money(pay) + '</b></span><span>+' + m.xp + ' KN</span>' + (m.fert ? '<span><i>🧪</i>+' + m.fert + '</span>' : '') + '</div>' +
+      (note ? '<p>' + note + '</p>' : '') + '<p style="font-size:13px">' + W0.e + ' ' + W0.q + '</p>' +
+      '<div class="fm-row" style="justify-content:center"><button class="fm-btn" data-a="sheetClose">Tuyệt vời!</button></div></div>');
+  }
+  /* Huỷ: tiết kiệm = rút trước hạn (lấy lại gốc, không lãi); việc khác = bỏ nhiệm vụ (mất tiền đã chi) */
+  function mCancel(id) {
+    var m = MSM[id], e = mSt(m); if (!m || !e || e.s !== 1) return;
+    var sv = m.w === 'saving';
+    confirmBox(sv ? '🐷' : '↩️', sv ? 'Rút tiền trước hạn?' : 'Bỏ nhiệm vụ này?', sv ? 'Bạn chỉ nhận lại tiền gốc <b>' + money(e.c) + '</b>, không có lãi và không có kinh nghiệm.' : 'Số tiền đã chi <b>' + money(e.c || 0) + '</b> sẽ không được trả lại. Bạn có thể nhận lại nhiệm vụ sau.', sv ? 'Rút tiền' : 'Bỏ nhiệm vụ', function () {
+      if (sv && e.c) { S.m += e.c; addLog('in', e.c, 'mc_' + m.id, 'Rút trước hạn: ' + m.n, '🐷'); wlog(m.w, 'i', e.c); }
+      delete S.ms[m.id]; save(); hud(); renderQuest();
+    });
+  }
+  /* Đi làm nhiệm vụ */
+  function mGo(id) {
+    var m = MSM[id]; if (!m) return;
+    if (m.k === 'learn') { play(m.g, m.t); return; }
+    if (m.k === 'farm') {
+      if (m.ev === 'feed' || m.ev === 'collect') setTab('barn');
+      else if (m.ev === 'make') setTab('build');
+      else if (m.ev === 'order' || m.ev === 'sell') { mSub = m.ev === 'sell' ? 'inv' : 'ord'; setTab('market'); }
+      else { setTab('field'); if (m.ev === 'water') tool = 'water'; else if (m.ev === 'plant') tool = 'seed'; else if (m.ev === 'fert') tool = 'fert'; if (m.x && CM[m.x] && CM[m.x].lv <= S.lv) S.sel = m.x; toolsUI(); }
+      toast(m.e + ' ' + mTask(m));
+    }
+  }
+  /* Thêm chỗ nuôi theo cấp */
+  function penOpen(a) { return S.lv >= a.lv || S.an[a.id].length > 0; }
+  function capOf(a) { var c = a.cap; CAPUP.forEach(function (u) { if (u.a === a.id && S.lv >= u.lv) c += u.k; }); return c; }
+  function nextCap(a) { for (var i = 0; i < CAPUP.length; i++) if (CAPUP[i].a === a.id && S.lv < CAPUP[i].lv) return CAPUP[i]; return null; }
+  /* Lộ trình mở khoá theo cấp */
+  function unlocksAt(lv) {
+    var u = [];
+    for (var r in LAND) if (LAND[r].lv === lv) u.push({ e: '🪧', t: 'Mở rộng ruộng hàng ' + r, go: 'field' });
+    FIELDS.forEach(function (f) { if (f.lv === lv) u.push({ e: '🌾', t: f.n + ' (' + f.c * f.r + ' ô đất)', go: 'field' }); });
+    ANIMALS.forEach(function (a) { if (a.lv === lv) u.push({ e: a.e, t: a.pen, go: 'barn' }); });
+    CAPUP.forEach(function (c) { if (c.lv === lv) u.push({ e: AM[c.a].e, t: 'Thêm ' + c.k + ' chỗ ' + AM[c.a].pen.toLowerCase(), go: 'barn' }); });
+    BUILDS.forEach(function (b) { if (b.lv === lv) u.push({ e: b.e, t: 'Được xây ' + b.n.toLowerCase(), go: 'build' }); });
+    CROPS.forEach(function (c) { if (c.lv === lv && lv > 1) u.push({ e: c.e, t: 'Hạt giống ' + c.n.toLowerCase(), go: 'field' }); });
+    return u;
+  }
+  function nextUnlock() { for (var l = S.lv + 1; l <= 30; l++) { var u = unlocksAt(l); if (u.length) return { lv: l, u: u }; } return null; }
 
   /* ================= MÔ PHỎNG THỜI GIAN ================= */
   function gmul(pl) { return (pl.w ? (built('gieng') ? 1.7 : 1.5) : 1) * (built('coixay') ? 1.15 : 1); }
@@ -319,7 +585,7 @@
   '.fm-navs{display:flex;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-snap-type:x proximity;padding:5px 8px 4px;touch-action:pan-x;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 12px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 12px),transparent 100%)}.fm-navs::-webkit-scrollbar{display:none}' +
   '.fm-nav button{flex:1 0 auto;min-width:68px;scroll-snap-align:center;border:0;background:none;padding:5px 12px 4px;border-radius:12px;display:flex;flex-direction:column;align-items:center;font-size:12px;font-weight:800;color:#6b5a3a!important;position:relative;white-space:nowrap}' +
   '.fm-nav button .e{font-size:22px;line-height:1.2;font-family:' + EF + '}.fm-nav button.on{background:#ffeeba;color:#7a4a00!important}' +
-  '.fm-navs{gap:2px}.fm-nav button.earn{color:#9a3412!important;background:#fff3c4}.fm-nav button.earn.on{background:#fde68a}.fm-nav button.earn .e{animation:fmPulse 2.4s ease-in-out infinite}' +
+  '.fm-navs{gap:2px}.fm-nav button.earn{color:#9a3412!important}.fm-nav button.earn.on{background:#fde68a}.fm-nav button.earn .e{animation:fmPulse 2.4s ease-in-out infinite}' +
   '@keyframes fmPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}' +
   '.fm-nav .dot{position:absolute;top:0;right:4px;min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:#fff;font-size:11px;line-height:18px;padding:0 5px}' +
   '.fm-h{font-size:18px;font-weight:900;margin:2px 0 4px;color:#5b3a12}.fm-sub{font-size:13px;color:#7a6440;margin:0 0 10px;line-height:1.5}' +
@@ -358,6 +624,14 @@
   '.fm-card.done{background:#f0fdf4;box-shadow:0 0 0 2px #86efac}.fm-card.lock{opacity:.6}.fm-card.hot{box-shadow:0 0 0 2px #f59e0b,0 2px 8px rgba(120,80,0,.12)}' +
   '.fm-tag{display:inline-block;background:#fef3c7;color:#92400e;border-radius:8px;padding:2px 7px;font-size:11.5px;font-weight:800;margin:4px 4px 0 0}.fm-tag.g{background:#dcfce7;color:#166534}.fm-tag.b{background:#dbeafe;color:#1e40af}' +
   '.fm-hero{background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff;border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:0 4px 14px rgba(234,88,12,.3)}.fm-hero b{font-size:17px}.fm-hero p{margin:6px 0 0;font-size:13.5px;line-height:1.5;opacity:.95}' +
+  '.fm-wtabs{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:4px -12px 10px;padding:4px 12px 6px;position:sticky;top:-12px;z-index:2;background:linear-gradient(180deg,#fef9e7 80%,rgba(254,249,231,0))}.fm-wtabs::-webkit-scrollbar{display:none}' +
+  '.fm-wtabs button{flex:none;position:relative;display:flex;flex-direction:column;align-items:center;gap:0;min-width:72px;border:2px solid #eadfc0;background:#fff;border-radius:14px;padding:4px 10px;font-weight:800;font-size:11.5px;color:#5b3a12!important;white-space:nowrap}' +
+  '.fm-wtabs button .e{font-size:21px;line-height:1.15;font-family:' + EF + '}.fm-wtabs button.on{border-color:var(--wc);background:var(--wc);color:#fff!important;box-shadow:0 3px 10px rgba(0,0,0,.18)}' +
+  '.fm-wtabs .dot{position:absolute;top:-6px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:#fff;font-size:11px;line-height:18px;padding:0 5px;border:2px solid #fff}' +
+  '.fm-whead{background:#fff;border-radius:14px;padding:9px 12px;margin-bottom:6px;border-left:6px solid var(--wc);box-shadow:0 2px 8px rgba(120,80,0,.12)}.fm-whead summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}.fm-whead summary::-webkit-details-marker{display:none}.fm-whead summary>b{font-size:16px;color:#4a3416}.fm-whead summary:after{content:"ⓘ";margin-left:auto;color:#9a8660}.fm-whead p{margin:6px 0 0;font-size:13px;line-height:1.5;color:#6b5a3a}.fm-whead p.q{font-style:italic;color:#9a8660;font-size:12.5px}' +
+  '.fm-wst{font-size:12px;color:#7a6440}.fm-wst b{font-variant-numeric:tabular-nums}' +
+  '.fm-h2{font-size:15px;font-weight:900;color:#5b3a12;margin:12px 2px 8px}.fm-goal{display:block;width:100%;text-align:left;border:0;border-radius:14px;padding:8px 12px;margin-bottom:8px;background:linear-gradient(135deg,#fffbeb,#fef3c7);box-shadow:0 0 0 2px #fcd34d}.fm-goal .t{display:block;font-weight:800;font-size:13px;color:#5b3a12;line-height:1.35}.fm-goal .fm-pb{display:block;margin:5px 0 3px;height:8px}.fm-goal .s{font-size:11.5px;color:#7a6440}' +
+  '.fm-done{background:#fff;border-radius:14px;padding:8px 12px;margin-top:10px}.fm-done summary{font-weight:800;color:#166534;cursor:pointer;padding:4px 0}' +
   '.fm-earnlist{text-align:left;margin:10px 0;padding:0;list-style:none}.fm-earnlist li{display:flex;justify-content:space-between;gap:8px;padding:7px 4px;border-bottom:1px dashed #eadfc0;font-weight:700;color:#4a3a20}.fm-earnlist li b{color:#15803d}';
   document.head.appendChild(st);
 
@@ -718,13 +992,11 @@
   function landState(row) {   // row: số thứ tự hàng (1..7)
     var Ld = LAND[row]; if (!Ld) return null;
     if (S.lv < Ld.lv) return { k: 'lv', Ld: Ld };
-    if (!qClaimed(Ld.q)) return { k: 'q', Ld: Ld };
     return { k: 'buy', Ld: Ld };
   }
   function fieldState(f) {
     if (fieldOpen(f)) return 'open';
     if (S.lv < f.lv) return 'lv';
-    if (!qClaimed(f.q)) return 'q';
     return 'buy';
   }
   function drawPlot(i) {
@@ -769,7 +1041,6 @@
       if (r === S.rows) {
         var ls = landState(r + 1);
         if (ls.k === 'lv') sign(x, y, w, h, '🔒', 'Mở ở cấp ' + ls.Ld.lv, 'Thêm 5 ô đất trồng');
-        else if (ls.k === 'q') sign(x, y, w, h, '🎯', 'Cần làm nhiệm vụ để mở', qTitle(QM[ls.Ld.q].g, QM[ls.Ld.q].n));
         else sign(x, y, w, h, '🪧', 'Mở rộng ruộng: ' + money(ls.Ld.c), 'Chạm để mua thêm 5 ô đất');
       } else { emo(ctx, ['🌿', '🍀', '🌼'][r % 3], x + w / 2, y + h / 2, h * 0.32); }
     }
@@ -783,9 +1054,8 @@
       var bh = 64, bw = Math.min(f.w - 16, 300), bx = f.x + (f.w - bw) / 2, by = f.y + (f.h - bh) / 2;
       ctx.fillStyle = 'rgba(0,0,0,.2)'; rr(ctx, bx + 2, by + 4, bw, bh, 14); ctx.fill();
       ctx.fillStyle = st === 'buy' ? '#b45309' : 'rgba(36,54,26,.88)'; rr(ctx, bx, by, bw, bh, 14); ctx.fill();
-      var Q = QM[f.q], n = f.c * f.r;
+      var n = f.c * f.r;
       if (st === 'lv') sign(bx + 4, by, bw - 8, bh, '🔒', f.n + ' · ' + n + ' ô', 'Mở ở cấp ' + f.lv);
-      else if (st === 'q') sign(bx + 4, by, bw - 8, bh, '🎯', f.n + ' · ' + n + ' ô', 'Nhiệm vụ: ' + qTitle(Q.g, Q.n));
       else sign(bx + 4, by, bw - 8, bh, '🪧', 'Mua ' + f.n.toLowerCase(), money(f.cost) + ' · chạm để mua ' + n + ' ô đất');
     });
     // Tên các cánh đồng đã mở
@@ -828,7 +1098,7 @@
     var v = view();
     L.pens.forEach(function (p) {
       if (!vis(v, p.x, p.y, p.w, p.h)) return;
-      var a = p.a, list = S.an[a.id], lockLv = S.lv < a.lv, lockQ = !lockLv && !penOpen(a), cap = capOf(a);
+      var a = p.a, list = S.an[a.id], lockLv = !penOpen(a), lockQ = false, cap = capOf(a);
       ctx.font = '800 14px ' + TF; var lt = a.pen + ' ' + list.length + '/' + cap, lw = ctx.measureText(lt).width + 44;
       ctx.fillStyle = 'rgba(255,255,255,.9)'; rr(ctx, p.x + 10, p.y + 8, lw, 28, 14); ctx.fill();
       ctx.fillStyle = '#4a3416'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.font = '800 14px ' + TF;
@@ -845,7 +1115,7 @@
       var bx = p.x + 12, by = p.y + p.h - 38;
       if (list.length) bx += pillL(ctx, bx, by, '⚡ Chăm tất cả', '#16a34a', '#fff', function () { careAll(a); }) + 8;
       if (list.length < cap) pillL(ctx, bx, by, '＋ Mua ' + a.n.toLowerCase() + ' ' + short(a.cost), '#f59e0b', '#fff', function () { buyAnimal(a); });
-      else if (capQuest(a.id)) pillL(ctx, bx, by, '🎯 Mở thêm chỗ', 'rgba(255,255,255,.92)', '#92400e', function () { setTab('quest'); });
+      else if (nextCap(a)) pillL(ctx, bx, by, '🔒 Thêm chỗ ở cấp ' + nextCap(a).lv, 'rgba(255,255,255,.92)', '#92400e', function () { toast('Tích kinh nghiệm từ 🎯 Nhiệm vụ để lên cấp ' + nextCap(a).lv + ' và nuôi thêm ' + a.n.toLowerCase()); });
       if (!list.length) {
         ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.textAlign = 'center'; ctx.font = '700 14px ' + TF;
         ctx.fillText((a.water ? 'Ao trống' : 'Chuồng trống') + ' – hãy mua ' + a.n.toLowerCase() + ' đầu tiên!', p.x + p.w / 2, p.y + p.h * 0.42, p.w - 16);
@@ -917,6 +1187,7 @@
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       if (tab === 'field') drawTip();
     } else if (tab === 'build' && t - lastPanel > 1000) { lastPanel = t; tickBuild(); }
+    else if (tab === 'quest' && t - lastPanel > 1000) { lastPanel = t; tickQuest(); }
     raf = requestAnimationFrame(loop);
   }
 
@@ -943,7 +1214,7 @@
     if (cr.lv > S.lv) { toast('🔒 ' + cr.n + ' mở ở cấp ' + cr.lv); return false; }
     if (S.m < cr.cost) { noMoney(cr.cost); return false; }
     S.m -= cr.cost; addLog('out', cr.cost, 'seed_' + cr.id, 'Mua hạt giống ' + cr.n, cr.e);
-    pl.c = cr.id; pl.p = 0; pl.t = Date.now(); pl.w = 0;
+    pl.c = cr.id; pl.p = 0; pl.t = Date.now(); pl.w = 0; ev('plant', cr.id);
     burst(R.x + R.s / 2, R.y + R.s * 0.8, ['#8d5a2b', '#6b4423', '#c08a55'], 7);
     floatTxt(R.x + R.s / 2, R.y + R.s * 0.4, '−' + short(cr.cost), '#fecaca');
     return true;
@@ -951,7 +1222,7 @@
   function harvest(i, quiet) {
     var pl = S.plots[i], cr = CM[pl.c], R = plotRect(i);
     S.inv[cr.id] = (S.inv[cr.id] || 0) + 1;
-    pl.c = null; pl.p = 0; pl.w = 0;
+    pl.c = null; pl.p = 0; pl.w = 0; ev('harvest', cr.id);
     burst(R.x + R.s / 2, R.y + R.s * 0.5, ['#fde047', '#86efac', '#fff'], 10);
     floatTxt(R.x + R.s / 2, R.y + R.s * 0.35, '+1 ' + cr.e, '#fef08a');
     if (!quiet) sfx('ok');
@@ -960,7 +1231,7 @@
   function water(i) {
     var pl = S.plots[i], R = plotRect(i);
     if (!pl.c || pl.p >= 1 || pl.w) return false;
-    update(Date.now()); pl.w = 1;
+    update(Date.now()); pl.w = 1; ev('water');
     burst(R.x + R.s / 2, R.y + R.s * 0.3, ['#7dd3fc', '#38bdf8', '#e0f2fe'], 9);
     return true;
   }
@@ -968,7 +1239,7 @@
     var pl = S.plots[i], R = plotRect(i);
     if (!pl.c || pl.p >= 1) return false;
     if (S.fert <= 0) { toast('🧪 Hết phân bón. Mua thêm ở 🏪 Chợ, hoặc làm nhiệm vụ hằng ngày để được tặng.'); return false; }
-    update(Date.now()); S.fert--; pl.p = Math.min(1, pl.p + (1 - pl.p) * 0.5);
+    update(Date.now()); S.fert--; ev('fert'); pl.p = Math.min(1, pl.p + (1 - pl.p) * 0.5);
     burst(R.x + R.s / 2, R.y + R.s * 0.4, ['#c4b5fd', '#a78bfa', '#fff'], 10);
     floatTxt(R.x + R.s / 2, R.y + R.s * 0.3, '⚡ Nhanh gấp đôi', '#ddd6fe');
     toolsUI(); return true;
@@ -992,17 +1263,15 @@
   function buyLand() {
     var r = S.rows; if (r >= MAXROWS) return;
     var ls = landState(r + 1);
-    if (ls.k === 'lv') { toast('🔒 Đạt cấp ' + ls.Ld.lv + ' để mở rộng ruộng'); return; }
-    if (ls.k === 'q') { toast('🎯 Hoàn thành nhiệm vụ “' + qTitle(QM[ls.Ld.q].g, QM[ls.Ld.q].n) + '” để mở rộng ruộng'); setTab('quest'); return; }
+    if (ls.k === 'lv') { toast('🔒 Đạt cấp ' + ls.Ld.lv + ' để mở rộng ruộng. Làm 🎯 Nhiệm vụ để tích kinh nghiệm nhé!'); return; }
     confirmBox('🪧', 'Mở rộng ruộng?', 'Mua thêm 5 ô đất với giá <b>' + money(ls.Ld.c) + '</b>. Đây là khoản <b>đầu tư</b>: tốn tiền một lần nhưng giúp nông trại thu được nhiều hơn mỗi ngày.', 'Mua đất', function () {
       if (S.m < ls.Ld.c) { noMoney(ls.Ld.c); return; }
       S.m -= ls.Ld.c; S.rows++; addLog('out', ls.Ld.c, 'land' + S.rows, 'Mua thêm đất (hàng ' + S.rows + ')', '🪧'); sfx('win'); save(); hud(); toast('🎉 Ruộng đã rộng hơn!');
     });
   }
   function buyField(f) {
-    var st = fieldState(f), Q = QM[f.q], n = f.c * f.r;
-    if (st === 'lv') { toast('🔒 ' + f.n + ' mở ở cấp ' + f.lv + '. Lên cấp rồi làm nhiệm vụ để mở nhé!'); return; }
-    if (st === 'q') { toast('🎯 Hoàn thành nhiệm vụ “' + qTitle(Q.g, Q.n) + '” để mở ' + f.n.toLowerCase()); setTab('quest'); return; }
+    var st = fieldState(f), n = f.c * f.r;
+    if (st === 'lv') { toast('🔒 ' + f.n + ' mở ở cấp ' + f.lv + '. Làm 🎯 Nhiệm vụ để tích kinh nghiệm nhé!'); return; }
     if (st !== 'buy') return;
     confirmBox('🌾', 'Mua ' + f.n.toLowerCase() + '?', 'Thêm <b>' + n + ' ô đất</b> bên ngoài hàng rào với giá <b>' + money(f.cost) + '</b>. Đây là khoản <b>đầu tư</b>: trả một lần, trồng được mãi mãi.', 'Mua đất', function () {
       if (S.m < f.cost) { noMoney(f.cost); return; }
@@ -1023,10 +1292,10 @@
   }
   function feedOne(a, x) {
     if ((S.inv[a.feed] || 0) < 1) return false;
-    S.inv[a.feed]--; x.s = 1; x.p = 0; x.t = Date.now(); return true;
+    S.inv[a.feed]--; x.s = 1; x.p = 0; x.t = Date.now(); ev('feed', a.id); return true;
   }
   function collectOne(a, x) {
-    S.inv[a.p] = (S.inv[a.p] || 0) + 1; x.s = 0; x.p = 0; addXP(PRODUCTS[a.p].xp);
+    S.inv[a.p] = (S.inv[a.p] || 0) + 1; x.s = 0; x.p = 0; ev('collect', a.p); addXP(PRODUCTS[a.p].xp);
     if (x._x) { burst(x._x, x._y - 20, ['#fde047', '#fff', '#fdba74'], 9); floatTxt(x._x, x._y - 30, '+1 ' + PRODUCTS[a.p].e + ' +' + PRODUCTS[a.p].xp + ' KN', '#fef08a'); }
   }
   function careAll(a) {
@@ -1073,7 +1342,7 @@
   }
   function dot(id, n) { var d = $(id); d.style.display = n ? '' : 'none'; d.textContent = n; }
   function badges() {
-    fillOrders(); syncQuests();
+    fillOrders();
     dot('fmDotO', S.orders.filter(canDeliver).length);
     var b = 0; ANIMALS.forEach(function (a) { S.an[a.id].forEach(function (x) { if (x.s === 2) b++; }); });
     dot('fmDotB', b);
@@ -1102,18 +1371,22 @@
     });
     sheet(h);
   }
-  function levelUp() {
+  function levelUp(from) {
+    from = Math.min(from || S.lv - 1, S.lv - 1);
     sfx('win'); try { if (window.addStar) window.addStar(); } catch (e) {}
-    var un = [];
-    CROPS.forEach(function (c) { if (c.lv === S.lv) un.push('<span><i>' + c.e + '</i>' + c.n + '</span>'); });
-    ANIMALS.forEach(function (a) { if (a.lv === S.lv && !a.q) un.push('<span><i>' + a.e + '</i>Nuôi ' + a.n.toLowerCase() + '</span>'); });
-    var nq = QUESTS.filter(function (Q) { return Q.lv === S.lv; }).length;
-    if (nq) un.push('<span><i>🎯</i>' + nq + ' nhiệm vụ mới</span>');
-    var bonus = S.lv * 10000; S.m += bonus; S.fert += 2; addLog('in', bonus, 'lv' + S.lv, 'Thưởng lên cấp ' + S.lv, '🎁');
-    syncQuests();
+    var un = [], bonus = 0, go = '', nm = 0;
+    for (var l = from + 1; l <= S.lv; l++) {
+      unlocksAt(l).forEach(function (u) { un.push('<span><i>' + u.e + '</i>' + u.t + '</span>'); if (!go) go = u.go; });
+      bonus += l * 10000;
+      nm += MISSIONS.filter(function (m) { return m.lv === l; }).length;
+    }
+    S.m += bonus; S.fert += 2; addLog('in', bonus, 'lv' + S.lv, 'Thưởng lên cấp ' + S.lv, '🎁');
+    if (nm) un.push('<span><i>🎯</i>' + nm + ' nhiệm vụ mới</span>');
+    var nx = nextUnlock();
     sheetLater('<div class="fm-modal"><div class="big">🎉</div><h2>Lên cấp ' + S.lv + '!</h2><p>Thưởng <b>' + money(bonus) + '</b> + 🧪 2 túi phân bón. Con được cộng 1 điểm ⭐ vào app.</p>' +
       (un.length ? '<p><b>Mở khoá mới:</b></p><div class="fm-ul">' + un.join('') + '</div>' : '') +
-      '<div class="fm-row" style="justify-content:center">' + (nq ? '<button class="fm-btn org" data-a="tab" data-t="quest">🎯 Xem nhiệm vụ</button>' : '') + '<button class="fm-btn" data-a="sheetClose">Tuyệt vời!</button></div></div>');
+      (nx ? '<p style="font-size:13px">Tiếp theo ở cấp ' + nx.lv + ': ' + nx.u.map(function (u) { return u.e + ' ' + u.t; }).join(', ') + '</p>' : '') +
+      '<div class="fm-row" style="justify-content:center">' + (go ? '<button class="fm-btn org" data-a="tab" data-t="' + go + '">Đi xem ngay</button>' : '') + '<button class="fm-btn" data-a="sheetClose">Tuyệt vời!</button></div></div>');
     hud(); save();
   }
   function guide() {
@@ -1123,7 +1396,7 @@
       '<li><i>🐔</i><span>Nuôi gà, bò, cừu, cá, ong, vịt, dê, heo: cho ăn nông sản để lấy trứng, sữa, len, mật ong, nấm quý…</span></li>' +
       '<li><i>🏗️</i><span>Xây thềm nhà, giếng nước, lò bánh mì, xưởng phô mai… để nông trại ngày càng to đẹp.</span></li>' +
       '<li><i>💰</i><span><b>Kiếm tiền:</b> chơi các game học (tiếng Anh, Toán, Lịch sử…). Toàn bộ tiền thưởng được chuyển vào nông trại. Đây là cách kiếm tiền <b>nhanh nhất</b>!</span></li>' +
-      '<li><i>🎯</i><span><b>Nhiệm vụ:</b> học đủ số câu, số từ để mở thêm đất, các cánh đồng bên ngoài hàng rào, chuồng trại và công trình.</span></li>' +
+      '<li><i>🎯</i><span><b>Nhiệm vụ 6 ví:</b> Thiết yếu, Phát triển bản thân, Tiết kiệm, Đầu tư, Chia sẻ, Hưởng thụ. Bỏ tiền ra làm nhiệm vụ, hoàn thành thì nhận lại tiền và <b>kinh nghiệm</b>. Đủ kinh nghiệm thì lên cấp, mở thêm đất, chuồng, vật nuôi, công trình.</span></li>' +
       '<li><i>📒</i><span>Chạm vào số tiền ở góc trên để xem <b>Sổ thu chi</b>: tiền vào, tiền ra, lãi lỗ.</span></li>' +
       '</ul><button class="fm-btn" data-a="sheetClose" style="width:100%">Bắt đầu thôi!</button></div>');
   }
@@ -1169,12 +1442,12 @@
     var pay = orderPay(o);
     o.it.forEach(function (x) { S.inv[x[0]] -= x[1]; });
     S.m += pay; addLog('in', pay, 'ord' + Date.now(), 'Giao đơn hàng cho ' + o.who, o.tr);
-    addXP(o.xp); S.orders.splice(k, 1); fillOrders(); sfx('win'); toast('🎉 Đã giao hàng, nhận ' + money(pay)); hud(); save(); renderMarket();
+    ev('order'); addXP(o.xp); S.orders.splice(k, 1); fillOrders(); sfx('win'); toast('🎉 Đã giao hàng, nhận ' + money(pay)); hud(); save(); renderMarket();
   }
   function sell(id, q) {
     q = Math.min(q, S.inv[id] || 0); if (q <= 0) return;
     var I = item(id), amt = sp(id) * q;
-    S.inv[id] -= q; S.m += amt; addLog('in', amt, 'sell_' + id, 'Bán ' + I.n, I.e, q);
+    S.inv[id] -= q; S.m += amt; ev('sell', id, q); addLog('in', amt, 'sell_' + id, 'Bán ' + I.n, I.e, q);
     sfx('ok'); toast('💰 Bán ' + q + ' ' + I.e + ' được ' + money(amt)); hud(); save(); renderMarket();
   }
 
@@ -1182,7 +1455,6 @@
   function bState(b) {
     if (built(b.id)) return 'done';
     if (S.lv < b.lv) return 'lv';
-    if (!qClaimed(b.q)) return 'q';
     if (b.req && !built(b.req)) return 'req';
     return 'buy';
   }
@@ -1198,14 +1470,13 @@
     return h;
   }
   function renderBuild() {
-    var h = '<div class="fm-h">🏗️ Xây dựng nông trại</div><p class="fm-sub">Mỗi công trình cần <b>hoàn thành nhiệm vụ học tập</b> để được phép xây, rồi trả tiền để xây. Xưởng chế biến biến nông sản thành hàng có giá trị cao hơn.</p>';
-    var order = BUILDS.slice().sort(function (a, b) { var o = { done: 0, buy: 1, q: 2, req: 3, lv: 4 }; return o[bState(a)] - o[bState(b)] || a.lv - b.lv; });
+    var h = '<div class="fm-h">🏗️ Xây dựng nông trại</div><p class="fm-sub">Công trình mở khoá khi nông trại <b>đạt đủ cấp</b> (làm 🎯 Nhiệm vụ để tích kinh nghiệm), rồi trả tiền để xây. Xưởng chế biến biến nông sản thành hàng có giá trị cao hơn.</p>';
+    var order = BUILDS.slice().sort(function (a, b) { var o = { done: 0, buy: 1, req: 3, lv: 4 }; return o[bState(a)] - o[bState(b)] || a.lv - b.lv; });
     order.forEach(function (b) {
-      var s = bState(b), Q = QM[b.q];
+      var s = bState(b);
       h += '<div class="fm-card' + (s === 'done' ? ' done' : s === 'buy' ? ' hot' : s === 'lv' ? ' lock' : '') + '"><div class="fm-li"><span class="fm-ic">' + b.e + '</span><div class="bd"><b class="t">' + b.n + (s === 'done' ? ' ✅' : '') + '</b><small>' + b.d + '</small>';
       if (s === 'done') { if (b.r) h += facHtml(b); }
       else if (s === 'buy') h += '<div class="fm-row"><button class="fm-btn org" data-a="build" data-b="' + b.id + '">🔨 Xây · ' + money(b.cost) + '</button></div>';
-      else if (s === 'q') h += '<div style="margin-top:6px"><span class="fm-tag">🎯 ' + qTitle(Q.g, Q.n) + '</span></div><div class="fm-row"><button class="fm-btn alt" data-a="tab" data-t="quest">Xem nhiệm vụ</button><span class="fm-sub" style="margin:8px 0 0">Giá xây: ' + money(b.cost) + '</span></div>';
       else if (s === 'req') h += '<div style="margin-top:6px"><span class="fm-tag">Cần xây ' + BM[b.req].e + ' ' + BM[b.req].n + ' trước</span></div>';
       else h += '<div style="margin-top:6px"><span class="fm-tag">🔒 Mở ở cấp ' + b.lv + '</span><span class="fm-tag">Giá xây: ' + short(b.cost) + '</span></div>';
       h += '</div></div></div>';
@@ -1240,67 +1511,97 @@
   }
   function facGet(id) {
     var b = BM[id], f = S.fac[id]; if (!f || f.s !== 2) return;
-    var O = PRODUCTS[b.r.o]; S.inv[O.id] = (S.inv[O.id] || 0) + 1; f.s = 0; addXP(O.xp);
+    var O = PRODUCTS[b.r.o]; S.inv[O.id] = (S.inv[O.id] || 0) + 1; f.s = 0; ev('make', O.id); addXP(O.xp);
     sfx('win'); toast('+1 ' + O.e + ' ' + O.n + ' · +' + O.xp + ' KN'); save(); hud(); renderBuild();
   }
 
   /* --- Nhiệm vụ --- */
   function playBtn(g, lbl) { return '<button class="fm-btn blu" data-a="play" data-g="' + g + '">▶ ' + (lbl || 'Chơi ngay') + '</button>'; }
   function renderQuest() {
-    syncQuests();
-    var h = '';
-    // Quà mỗi ngày
-    if (built('them')) {
-      var gr = giftReady();
-      h += '<div class="fm-card' + (gr ? ' hot' : '') + '"><div class="fm-li"><span class="fm-ic">🎁</span><div class="bd"><b class="t">Quà mỗi ngày</b><small>' + money(giftAmt()) + ' + 🧪 1 túi phân bón' + (built('nha3') ? ' (biệt thự: gấp 3)' : built('nha2') ? ' (nhà gạch: gấp đôi)' : '') + '</small>' +
-        '<div class="fm-row">' + (gr ? '<button class="fm-btn org" data-a="gift">🎁 Nhận quà</button>' : '<span class="fm-tag g">✅ Đã nhận hôm nay, mai quay lại nhé!</span>') + '</div></div></div></div>';
-    } else h += '<div class="fm-card lock"><div class="fm-li"><span class="fm-ic">🎁</span><div class="bd"><b class="t">Quà mỗi ngày</b><small>Xây 🪵 Thềm nhà để nhận quà mỗi ngày.</small></div></div></div>';
-    // Nhiệm vụ hằng ngày
-    h += '<div class="fm-h" style="margin-top:6px">📅 Nhiệm vụ hôm nay</div><p class="fm-sub">Mỗi nhiệm vụ thưởng <b>' + money(dailyReward()) + '</b> + 🧪 1 túi phân bón. Nhiệm vụ mới mỗi ngày.</p>';
-    S.dq.l.forEach(function (x, i) {
-      var p = dProg(x), ok = p >= x.n, G = GM[x.g];
-      h += '<div class="fm-card' + (x.c ? ' done' : ok ? ' hot' : '') + '"><div class="fm-li"><span class="fm-ic">' + G.e + '</span><div class="bd"><b class="t">' + qTitle(x.g, x.n) + '</b>' +
-        '<div class="fm-pb"><i style="width:' + Math.round(p / x.n * 100) + '%"></i></div><div class="fm-pt">' + p + '/' + x.n + ' ' + G.u + '</div><div class="fm-row">' +
-        (x.c ? '<span class="fm-tag g">✅ Đã nhận thưởng</span>' : ok ? '<button class="fm-btn org" data-a="dclaim" data-i="' + i + '">🎁 Nhận ' + short(dailyReward()) + '</button>' : playBtn(x.g)) + '</div></div></div></div>';
-    });
-    // Nhiệm vụ mở rộng
-    h += '<div class="fm-h" style="margin-top:10px">🗺️ Nhiệm vụ mở rộng nông trại</div><p class="fm-sub">Học đủ số câu, số từ trong các game để mở thêm đất, chuồng trại và công trình. Chỉ tính các câu đúng <b>sau khi</b> nhận nhiệm vụ.</p>';
-    var act = QUESTS.filter(function (Q) { return S.lv >= Q.lv && !qClaimed(Q.id); });
-    act.sort(function (a, b) { return (qReady(b) ? 1 : 0) - (qReady(a) ? 1 : 0); });
-    if (!act.length) h += '<div class="fm-card" style="text-align:center;color:#7a6440">Con đã làm hết nhiệm vụ ở cấp này. Lên cấp để nhận nhiệm vụ mới nhé! 🌟</div>';
-    act.forEach(function (Q) {
-      var p = qProg(Q), ok = p >= Q.n, G = GM[Q.g];
-      h += '<div class="fm-card' + (ok ? ' hot' : '') + '"><div class="fm-li"><span class="fm-ic">' + G.e + '</span><div class="bd"><b class="t">' + qTitle(Q.g, Q.n) + '</b>' +
-        '<div><span class="fm-tag b">Mở khoá: ' + uText(Q.u) + '</span><span class="fm-tag">Thưởng ' + short(Q.r) + '</span></div>' +
-        '<div class="fm-pb"><i style="width:' + Math.round(p / Q.n * 100) + '%"></i></div><div class="fm-pt">' + p + '/' + Q.n + ' ' + G.u + '</div>' +
-        '<div class="fm-row">' + (ok ? '<button class="fm-btn org" data-a="qclaim" data-q="' + Q.id + '">🎁 Nhận thưởng</button>' : playBtn(Q.g)) + '</div></div></div></div>';
-    });
-    var next = QUESTS.filter(function (Q) { return S.lv < Q.lv; }).slice(0, 3);
-    if (next.length) {
-      h += '<div class="fm-sub" style="margin-top:12px;font-weight:800">Sắp mở:</div>';
-      next.forEach(function (Q) { h += '<div class="fm-card lock"><div class="fm-li"><span class="fm-ic">🔒</span><div class="bd"><b class="t">' + uText(Q.u) + '</b><small>Nhận nhiệm vụ ở cấp ' + Q.lv + ': ' + qTitle(Q.g, Q.n) + '</small></div></div></div>'; });
+    var wk = S.mw, W0 = WM[wk], h = '';
+    // 6 ví
+    h += '<div class="fm-wtabs" id="fmWT">' + WALLETS.map(function (x) {
+      var n = walletReady(x.k);
+      return '<button class="' + (x.k === wk ? 'on' : '') + '" data-a="wtab" data-w="' + x.k + '" style="--wc:' + x.c + '"><span class="e">' + x.e + '</span>' + x.n + (n ? '<span class="dot">' + n + '</span>' : '') + '</button>';
+    }).join('') + '</div>';
+    // Mục tiêu tiếp theo (mở khoá bằng kinh nghiệm)
+    var nx = nextUnlock(), nd = need(S.lv);
+    if (nx) {
+      h += '<button class="fm-goal" data-a="roadmap"><span class="t">🏆 Cấp ' + nx.lv + ' mở: ' + nx.u.map(function (u) { return u.e + ' ' + u.t; }).join(', ') + '</span>' +
+        '<span class="fm-pb"><i style="width:' + Math.round(S.xp / nd * 100) + '%"></i></span><span class="s">Cấp ' + S.lv + ' · ' + S.xp + '/' + nd + ' KN · <u>Xem lộ trình ›</u></span></button>';
     }
-    var doneN = QUESTS.filter(function (Q) { return qClaimed(Q.id); }).length;
-    h += '<p class="fm-sub" style="text-align:center;margin-top:10px">Đã hoàn thành ' + doneN + '/' + QUESTS.length + ' nhiệm vụ mở rộng</p>';
-    $('fmP_quest').innerHTML = h;
+    if (giftReady()) h += '<div class="fm-card hot" style="padding:9px 12px;display:flex;align-items:center;gap:10px"><span style="font-size:26px;font-family:' + EF + '">🎁</span><b style="flex:1;font-size:14px">Quà mỗi ngày: ' + money(giftAmt()) + ' + 🧪1</b><button class="fm-btn org" data-a="gift">Nhận</button></div>';
+    var list = MISSIONS.filter(function (m) { return m.w === wk; }), st = S.wl[wk] || { o: 0, i: 0, n: 0 };
+    var done = list.filter(function (m) { var e = mSt(m); return e && e.s === 2; });
+    h += '<details class="fm-whead" style="--wc:' + W0.c + '"' + (S.wseen && S.wseen[wk] ? '' : ' open') + ' data-w="' + wk + '"><summary><b>' + W0.e + ' Ví ' + W0.n + '</b><span class="fm-wst">Chi <b style="color:#dc2626">' + short(st.o) + '</b> · Nhận <b style="color:#15803d">' + short(st.i) + '</b> · Xong <b>' + done.length + '/' + list.length + '</b></span></summary><p>' + W0.d + '</p><p class="q">' + W0.q + '</p></details>';
+    var act = list.filter(function (m) { var e = mSt(m); return e && e.s === 1; });
+    var avail = list.filter(function (m) { return !mSt(m) && S.lv >= m.lv; }).sort(function (a, b) { return (reqOk(b) ? 1 : 0) - (reqOk(a) ? 1 : 0) || b.lv - a.lv; });
+    var lock = list.filter(function (m) { return !mSt(m) && S.lv < m.lv; }).sort(function (a, b) { return a.lv - b.lv; });
+    if (act.length) { h += '<div class="fm-h2">⏳ Đang làm (' + act.length + '/' + MAX_ACTIVE + ')</div>'; act.forEach(function (m) { h += mCard(m, 'act'); }); }
+    var full = act.length >= MAX_ACTIVE;
+    h += '<div class="fm-h2">📋 Nhiệm vụ có thể nhận (' + avail.length + ')</div>';
+    if (full) h += '<p class="fm-sub">Ví này đang làm ' + MAX_ACTIVE + ' nhiệm vụ. Hoàn thành bớt rồi nhận thêm nhé!</p>';
+    if (!avail.length) h += '<div class="fm-card" style="text-align:center;color:#7a6440">Đã nhận hết nhiệm vụ ở cấp này. Lên cấp để có nhiệm vụ mới! 🌟</div>';
+    var showN = qMore[wk] ? avail.length : 6;
+    avail.slice(0, showN).forEach(function (m) { h += mCard(m, full ? 'full' : 'new'); });
+    if (avail.length > showN) h += '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="qmore">Xem thêm ' + (avail.length - showN) + ' nhiệm vụ ▾</button></div>';
+    if (lock.length) { h += '<div class="fm-h2">🔒 Sắp mở</div>'; lock.slice(0, 3).forEach(function (m) { h += mCard(m, 'lock'); }); }
+    if (done.length) {
+      h += '<details class="fm-done"><summary>✅ Đã hoàn thành ' + done.length + ' nhiệm vụ</summary>' + done.map(function (m) { var e = mSt(m); return '<div class="fm-log"><span class="e">' + m.e + '</span><span class="t">' + esc(m.n) + '</span><span class="a in">+' + short(e.p || 0) + '</span></div>'; }).join('') + '</details>';
+    }
+    var tot = MISSIONS.filter(function (m) { var e = mSt(m); return e && e.s === 2; }).length;
+    h += '<p class="fm-sub" style="text-align:center;margin-top:10px">Tổng cộng đã hoàn thành ' + tot + '/' + MISSIONS.length + ' nhiệm vụ ở 6 ví</p>';
+    var pn = $('fmP_quest'), sl = $('fmWT') ? $('fmWT').scrollLeft : 0;
+    pn.innerHTML = h;
+    var wt = $('fmWT'); if (wt) { wt.scrollLeft = sl; var on = wt.querySelector('.on'); if (on && (on.offsetLeft < wt.scrollLeft || on.offsetLeft + on.offsetWidth > wt.scrollLeft + wt.clientWidth)) wt.scrollLeft = on.offsetLeft - 20; }
+    qSig = questSig();
   }
-  function qClaim(id) {
-    var Q = QM[id]; if (!Q || !qReady(Q)) return;
-    S.q[id].c = 1; S.m += Q.r; addLog('in', Q.r, 'q_' + id, 'Thưởng nhiệm vụ', '🎯'); addXP(5);
-    sfx('win'); save(); hud(); renderQuest();
-    sheet('<div class="fm-modal"><div class="big">🏆</div><h2>Hoàn thành nhiệm vụ!</h2><p>Nhận <b>' + money(Q.r) + '</b> và mở khoá:</p><div class="fm-ul"><span>' + uText(Q.u) + '</span></div>' +
-      '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="sheetClose">Để sau</button><button class="fm-btn org" data-a="goSee" data-q="' + id + '">Đi xem ngay</button></div></div>');
+  var qMore = {}, qSig = '';
+  function mCard(m, mode) {
+    var e = mSt(m), p = mProg(m), c = e && e.c != null ? e.c : mCost(m), rq = !reqOk(m);
+    var cls = mode === 'lock' ? ' lock' : mode === 'act' && p >= 1 ? ' hot' : '';
+    var h = '<div class="fm-card' + cls + '"><div class="fm-li"><span class="fm-ic">' + (mode === 'lock' ? '🔒' : m.e) + '</span><div class="bd"><b class="t">' + esc(m.n) + '</b><small>' + m.d + '</small>' +
+      '<div><span class="fm-tag b">' + mTask(m) + '</span></div><div>' +
+      (m.pct && !e ? '<span class="fm-tag">Chi: ' + Math.round(m.pct * 100) + '% số tiền (≈' + short(c) + ')</span>' : c ? '<span class="fm-tag">Chi: −' + short(c) + '</span>' : '<span class="fm-tag g">Miễn phí</span>') +
+      '<span class="fm-tag g">Nhận: ' + (m.w === 'saving' ? mPayText(m, c) + ' (lãi ' + Math.round(m.rate * 100) + '%)' : m.rng ? mPayText(m, c) + ' (có rủi ro)' : '+' + short(m.pay)) + '</span>' +
+      '<span class="fm-tag">+' + m.xp + ' KN</span>' + (m.fert ? '<span class="fm-tag">🧪 +' + m.fert + '</span>' : '') + '</div>';
+    if (mode === 'lock') h += '<div style="margin-top:6px"><span class="fm-tag">🔒 Mở ở cấp ' + m.lv + '</span></div>';
+    else if (mode === 'act') {
+      var wt = m.k === 'wait', left = wt ? Math.max(0, m.s - (Date.now() - e.t) / 1000) : 0;
+      h += '<div class="fm-pb"><i id="mp_' + m.id + '" style="width:' + Math.round(p * 100) + '%"></i></div><div class="fm-pt" id="mt_' + m.id + '">' + mProgText(m) + '</div><div class="fm-row">';
+      if (m.k === 'give') h += '<button class="fm-btn org" data-a="mclaim" data-m="' + m.id + '"' + (p >= 1 ? '' : ' disabled') + '>🎁 Giao hàng</button>';
+      else if (p >= 1) h += '<button class="fm-btn org" data-a="mclaim" data-m="' + m.id + '">🎁 Nhận ' + (m.rng ? 'kết quả' : 'thưởng') + '</button>';
+      else if (m.k === 'learn') h += '<button class="fm-btn blu" data-a="mgo" data-m="' + m.id + '">▶ Vào học</button>';
+      else if (m.k === 'farm') h += '<button class="fm-btn blu" data-a="mgo" data-m="' + m.id + '">🌱 Đi làm</button>';
+      if (p < 1 || m.k === 'give') h += '<button class="fm-btn alt" data-a="mcancel" data-m="' + m.id + '">' + (m.w === 'saving' ? '🐷 Rút trước hạn' : 'Bỏ') + '</button>';
+      h += '</div>';
+    } else {
+      h += '<div class="fm-row">' + (rq ? '<span class="fm-tag">' + reqText(m) + '</span>' : '<button class="fm-btn' + (m.w === 'share' || m.w === 'saving' ? ' org' : '') + '" data-a="mstart" data-m="' + m.id + '"' + (mode === 'full' ? ' disabled' : '') + '>' + (c ? '💸 Thực hiện · −' + short(c) : '✋ Thực hiện') + '</button>') + '</div>';
+    }
+    return h + '</div></div></div>';
   }
-
-  /* Sau khi mở khoá: chuyển tới đúng chỗ trên bản đồ */
-  function goSee(Q) {
-    if (!Q) return; var u = Q.u;
-    if (u.t === 'bld') { setTab('build'); return; }
-    if (u.t === 'row') { setTab('field'); flyTo('field', MX + CW * COLS / 2, MY + (u.v - 0.5) * CW, 1.1); return; }
-    if (u.t === 'fld') { var f = FLM[u.v]; setTab('field'); flyTo('field', f.x + f.w / 2, f.y + f.h / 2, Math.min(1.3, (W - 30) / (f.w + 40))); return; }
-    setTab('barn');
-    var pn = L.pens.filter(function (p) { return p.a.id === u.v; })[0];
-    if (pn) flyTo('barn', pn.x + pn.w / 2, pn.y + pn.h / 2, Math.min(1.4, (W - 16) / (PW + 30)));
+  function mProgText(m) {
+    var e = mSt(m); if (!e) return '';
+    if (m.k === 'wait') { var left = m.s - (Date.now() - e.t) / 1000; return left > 0 ? '⏱ Còn ' + dur(left) : '✅ Đã xong, bấm nhận!'; }
+    if (m.k === 'give') return m.it.map(function (x) { var hv = S.inv[x[0]] || 0; return item(x[0]).e + ' ' + Math.min(hv, x[1]) + '/' + x[1]; }).join(' · ');
+    var n = Math.min(m.c, mCur(m) - e.b); return n + '/' + m.c + (m.k === 'learn' ? (m.g === 'en' || m.g === 'zh' ? ' từ' : m.g === 'clock' ? ' giờ' : ' câu') : '');
+  }
+  function questSig() { return MISSIONS.filter(function (m) { var e = mSt(m); return e && e.s === 1; }).map(function (m) { return m.id + (mProg(m) >= 1 ? 1 : 0); }).join(',') + '|' + S.lv + giftReady(); }
+  function tickQuest() {
+    if (questSig() !== qSig) { renderQuest(); badges(); return; }
+    MISSIONS.forEach(function (m) {
+      var e = mSt(m); if (!e || e.s !== 1 || m.k !== 'wait') return;
+      var b = $('mp_' + m.id), t = $('mt_' + m.id);
+      if (b) b.style.width = Math.round(mProg(m) * 100) + '%'; if (t) t.textContent = mProgText(m);
+    });
+  }
+  function roadmap() {
+    var h = '<div class="fm-h">🗺️ Lộ trình mở khoá</div><p class="fm-sub">Làm nhiệm vụ ở 6 ví để tích kinh nghiệm (KN). Đủ KN thì lên cấp và mở thêm đất, chuồng, vật nuôi, công trình.</p>';
+    for (var l = 2; l <= 20; l++) {
+      var u = unlocksAt(l); if (!u.length) continue;
+      h += '<div class="fm-card' + (S.lv >= l ? ' done' : '') + '" style="padding:10px"><b>' + (S.lv >= l ? '✅' : '🔒') + ' Cấp ' + l + '</b><div class="fm-ul" style="justify-content:flex-start;margin:6px 0 0">' + u.map(function (x) { return '<span><i>' + x.e + '</i>' + x.t + '</span>'; }).join('') + '</div></div>';
+    }
+    sheet(h + '<button class="fm-btn" data-a="sheetClose" style="width:100%">Đóng</button>');
   }
   function navScroll() {
     var nv = $('fmNavS'), b = nv.querySelector('button.on'); if (!b) return;
@@ -1311,24 +1612,22 @@
 
   /* --- Kiếm tiền --- */
   function renderEarn() {
-    syncQuests();
     var tot = 0; GAMES.forEach(function (g) { tot += (S.gs[g.k] || {}).earn || 0; });
     var h = '<div class="fm-hero"><b>💰 Kiếm thêm tiền cho nông trại</b><p>Học mà chơi, chơi mà học! <b>Toàn bộ tiền thưởng</b> trong các trò chơi dưới đây được chuyển vào ví nông trại, kèm điểm kinh nghiệm. Một lượt chơi tốt có thể mang về 100.000đ – 300.000đ.</p><p>Đã mang về tổng cộng: <b>' + money(tot) + '</b></p></div>';
     var need = {};
-    QUESTS.forEach(function (Q) { if (S.lv >= Q.lv && !qClaimed(Q.id) && !qReady(Q)) need[Q.g] = 1; });
-    S.dq.l.forEach(function (x) { if (!x.c && dProg(x) < x.n) need[x.g] = 1; });
+    MISSIONS.forEach(function (m) { if (m.k === 'learn' && mSt(m) && mSt(m).s === 1 && !mDone(m)) need[m.g] = 1; });
     GAMES.forEach(function (g) {
       var gs = S.gs[g.k] || { ok: 0, earn: 0 };
       h += '<div class="fm-card' + (need[g.k] ? ' hot' : '') + '"><div class="fm-li"><span class="fm-ic">' + g.e + '</span><div class="bd"><b class="t">' + g.n + '</b><small>' + g.d + '</small>' +
-        '<div>' + (need[g.k] ? '<span class="fm-tag">🎯 Có nhiệm vụ</span>' : '') + '<span class="fm-tag g">Đã mang về ' + short(gs.earn) + '</span><span class="fm-tag b">Đúng ' + gs.ok + ' ' + g.u + '</span></div>' +
+        '<div>' + (need[g.k] ? '<span class="fm-tag">📚 Đang có khoá học</span>' : '') + '<span class="fm-tag g">Đã mang về ' + short(gs.earn) + '</span><span class="fm-tag b">Đúng ' + gs.ok + ' ' + g.u + '</span></div>' +
         '<div class="fm-row">' + playBtn(g.k, 'Chơi') + '</div></div></div></div>';
     });
     h += '<p class="fm-sub" style="text-align:center">Chơi xong, bấm ← hoặc ✕ để thoát game là tự quay về nông trại.</p>';
     $('fmP_earn').innerHTML = h;
   }
-  function play(g) {
+  function play(g, t) {
     if (!window.farmPlay) { toast('Hãy mở Nông trại từ app 6PAY để chơi các game học.'); return; }
-    retTab = tab === 'quest' ? 'quest' : 'earn'; save(); window.farmPlay(g);
+    retTab = tab === 'quest' ? 'quest' : 'earn'; save(); window.farmPlay(g, t ? { topic: t } : null);
   }
 
   /* --- Sổ thu chi --- */
@@ -1340,6 +1639,11 @@
       '<div class="fm-sum"><div>Tổng thu<b style="color:#15803d">' + short(S.tin) + '</b></div><div>Tổng chi<b style="color:#dc2626">' + short(S.tout) + '</b></div><div>' + (prof >= 0 ? 'Lãi' : 'Lỗ') + '<b style="color:' + (prof >= 0 ? '#15803d' : '#dc2626') + '">' + short(prof) + '</b></div></div>' +
       '<div class="fm-card" style="font-size:14px">📅 Hôm nay: thu <b style="color:#15803d">' + money(ti) + '</b>, chi <b style="color:#dc2626">' + money(to) + '</b> → ' + (ti - to >= 0 ? 'lãi' : 'lỗ') + ' <b>' + money(Math.abs(ti - to)) + '</b></div>' +
       '<div class="fm-card" style="font-size:14px">🎓 Tiền kiếm được từ học tập: <b style="color:#15803d">' + money(learn) + '</b>' + (S.tin ? ' (' + Math.round(learn / S.tin * 100) + '% tổng thu)' : '') + '</div>' +
+      (function () {
+        var to = 0; WALLETS.forEach(function (x) { to += (S.wl[x.k] || {}).o || 0; });
+        return '<div class="fm-card"><b>👛 Chi tiêu theo 6 ví</b><div class="fm-sub" style="margin:4px 0 6px">Bạn đã chia tiền vào các ví như thế nào? Người quản lý giỏi chi cho cả 6 ví, không dồn hết vào một chỗ.</div><table class="fm-tb"><tr><th></th><th>Ví</th><th>Đã chi</th><th>Tỉ lệ</th><th>Đã nhận</th></tr>' +
+          WALLETS.map(function (x) { var q = S.wl[x.k] || { o: 0, i: 0, n: 0 }; return '<tr><td class="e">' + x.e + '</td><td>' + x.n + '<br><small style="color:#9a8660">' + q.n + ' nhiệm vụ</small></td><td style="color:#dc2626">' + short(q.o) + '</td><td>' + (to ? Math.round(q.o / to * 100) : 0) + '%</td><td class="g">' + short(q.i) + '</td></tr>'; }).join('') + '</table></div>';
+      })() +
       '<div class="fm-card"><b>📊 Bảng tính lãi từng loại cây</b><div class="fm-sub" style="margin:4px 0 6px">Lãi mỗi phút = lãi ÷ số phút cây lớn (chưa tưới). Dùng để chọn cây có lợi nhất.</div><table class="fm-tb"><tr><th></th><th>Cây</th><th>Lãi/cây</th><th>Thời gian</th><th>Lãi/phút</th></tr>' +
       CROPS.map(function (c) { var pr = c.sell - c.cost; return '<tr' + (c.lv > S.lv ? ' style="opacity:.45"' : '') + '><td class="e">' + c.e + '</td><td>' + c.n + '</td><td class="g">+' + short(pr) + '</td><td>' + durL(c.t) + '</td><td class="g">' + short(Math.round(pr / (c.t / 60))) + '</td></tr>'; }).join('') + '</table></div>' +
       '<div class="fm-card"><b>🧾 Ghi chép gần đây</b>';
@@ -1479,14 +1783,18 @@
     else if (a === 'facGo') facGo(el.getAttribute('data-b'));
     else if (a === 'facGet') facGet(el.getAttribute('data-b'));
     else if (a === 'play') play(el.getAttribute('data-g'));
-    else if (a === 'qclaim') qClaim(el.getAttribute('data-q'));
-    else if (a === 'goSee') goSee(QM[el.getAttribute('data-q')]);
+    else if (a === 'wtab') { S.wseen = S.wseen || {}; S.wseen[S.mw] = 1; S.mw = el.getAttribute('data-w'); save(); renderQuest(); $('fmP_quest').scrollTop = 0; }
+    else if (a === 'mstart') mStart(el.getAttribute('data-m'));
+    else if (a === 'mclaim') mClaim(el.getAttribute('data-m'));
+    else if (a === 'mcancel') mCancel(el.getAttribute('data-m'));
+    else if (a === 'mgo') mGo(el.getAttribute('data-m'));
+    else if (a === 'qmore') { qMore[S.mw] = 1; renderQuest(); }
+    else if (a === 'roadmap') roadmap();
     else if (a === 'zin') zoomAt(W / 2, (H - bottomPad(tab)) / 2, 1.3);
     else if (a === 'zout') zoomAt(W / 2, (H - bottomPad(tab)) / 2, 1 / 1.3);
     else if (a === 'zhome') { INERT = null; var hc = homeCam(tab); CANIM = { k: tab, from: { x: cam.x, y: cam.y, z: cam.z }, to: hc, t: 0 }; }
-    else if (a === 'dclaim') { var x = S.dq.l[+el.getAttribute('data-i')]; if (x && !x.c && dProg(x) >= x.n) { x.c = 1; var rw = dailyReward(); S.m += rw; S.fert++; addLog('in', rw, 'daily', 'Thưởng nhiệm vụ hằng ngày', '📅'); sfx('win'); toast('🎁 +' + money(rw) + ' và 1 túi phân bón'); save(); hud(); renderQuest(); } }
     else if (a === 'gift') { if (giftReady()) { var gm = giftAmt(); S.gift = dayKey(); S.m += gm; S.fert++; addLog('in', gm, 'gift', 'Quà mỗi ngày', '🎁'); sfx('win'); toast('🎁 Nhận ' + money(gm) + ' và 1 túi phân bón'); save(); hud(); renderQuest(); } }
-    else if (a === 'reset') confirmBox('↺', 'Chơi lại từ đầu?', 'Toàn bộ ruộng, vật nuôi, công trình, kho và sổ thu chi sẽ bị xoá.', 'Xoá và chơi lại', function () { S = fresh(); POS = {}; CAMS = { field: null, barn: null }; syncQuests(); save(); hud(); setTab('field'); guide(); });
+    else if (a === 'reset') confirmBox('↺', 'Chơi lại từ đầu?', 'Toàn bộ ruộng, vật nuôi, công trình, kho và sổ thu chi sẽ bị xoá.', 'Xoá và chơi lại', function () { S = fresh(); POS = {}; CAMS = { field: null, barn: null }; save(); hud(); setTab('field'); guide(); });
   });
   window.addEventListener('resize', function () { if (running) resize(); });
   document.addEventListener('visibilitychange', function () { if (document.hidden && running) save(); });
@@ -1494,7 +1802,7 @@
   /* ================= API CÔNG KHAI ================= */
   var api = {
     open: function (o) {
-      load(); var got = drain(); update(Date.now()); syncQuests(); fillOrders();
+      load(); var got = drain(); update(Date.now()); fillOrders();
       ov.classList.add('on'); document.body.style.overflow = 'hidden';
       tool = 'seed';
       setTab(o && o.back ? retTab : 'field');

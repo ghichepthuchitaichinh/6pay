@@ -571,14 +571,14 @@
     return keysArr.map(function (k) { var w = map[k];
       return '<div class="zg-row ' + cls + '"><span class="e">' + ic(w, 28) + '</span><span><b>' + w[0] + '<i>' + w[3] + '</i></b><span>' + w[1] + '</span></span></div>'; }).join('');
   }
-  function fe(a, ok) { try { if (window.farmEarn) window.farmEarn('zh', a, ok); } catch (e) {} }
+  function fe(a, ok, t) { try { if (window.farmEarn) window.farmEarn('zh', a, ok, t); } catch (e) {} }   // t = mã chủ đề (khoá học trong Nông trại)
   function finish() {
     cancelAnimationFrame(raf); stopSpeak();
     var g = G;
     if (g.mode === 'topic') {
       var id = g.topic.id, prev = best(id), isNew = g.money > prev && g.money > 0; sfx(g.money > 0 ? 'win' : 'bad');
       if (isNew) setBest(id, g.money);
-      fe(g.money, g.ok);
+      fe(g.money, g.ok, g.topic.id);
       var total = g.ok + g.bad, acc = total ? Math.round(g.ok * 100 / total) : 0;
       var h = '<div style="font-size:54px">' + (g.money > 0 ? '🎉' : '⏰') + '</div><h2>Hết giờ! – ' + g.topic.n + '</h2>' +
         '<div class="zg-mny" style="color:' + (g.money >= 0 ? '#4ade80' : '#f87171') + '">' + money(g.money, 1) + '</div>' +
@@ -712,7 +712,11 @@
 
   /* ================= API CÔNG KHAI ================= */
   var api = {
-    open: function () { show('menu'); root.classList.add('on'); document.body.style.overflow = 'hidden'; },
+    open: function (o) {
+      show('menu'); root.classList.add('on'); document.body.style.overflow = 'hidden';
+      // Mở thẳng một chủ đề (khi bấm "Vào học" từ nhiệm vụ Nông trại)
+      if (o && o.topic) { for (var i = 0; i < TOPICS.length; i++) if (TOPICS[i].id === o.topic) { openTopicIntro(TOPICS[i]); break; } }
+    },
     close: function () { cancelAnimationFrame(raf); stopSpeak(); G = null; root.classList.remove('on'); document.body.style.overflow = ''; }
   };
   window.SixZhGame = api;

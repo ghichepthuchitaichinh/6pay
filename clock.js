@@ -1,7 +1,7 @@
 /* 6PAY - Dạy trẻ xem đồng hồ. File này được index.html tải về khi người dùng mở trò chơi. */
 (function(){
- var st=document.createElement("style");st.textContent="#ckOv{background:linear-gradient(180deg,#0b1d3a,#1d4e89);color:#fff;font-family:'Be Vietnam Pro',system-ui,sans-serif;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}\n#ckOv *{box-sizing:border-box}\n.ck-bar{flex:none;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px}\n.ck-title{flex:1;text-align:center;font-weight:800;font-size:17px;line-height:1.25}\n.ck-ib{width:44px;height:44px;flex:none;border:0;border-radius:12px;background:rgba(255,255,255,.18);color:#fff;font-size:22px;font-weight:700;cursor:pointer;font-family:inherit}\n.ck-ib:active{transform:scale(.96)}\n.ck-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;align-items:center;padding:0 14px 18px}\n.ck-svg{width:min(92vw,50vh,440px);height:auto;aspect-ratio:1;touch-action:none;flex:none;display:block;cursor:grab}\n.ck-digital{margin-top:8px;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:1px}\n.ck-say{min-height:44px;margin-top:2px;text-align:center;font-size:16px;font-weight:700;color:#fde68a;line-height:1.4;padding:0 6px}\n.ck-legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;font-size:13px;color:#cfe0ff;margin:4px 0 10px}\n.ck-legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px}\n.ck-seg{display:flex;gap:8px;width:100%;max-width:440px;margin-bottom:8px}\n.ck-seg button,.ck-now{flex:1;font:inherit;font-size:15px;font-weight:700;color:#fff;background:rgba(255,255,255,.16);border:2px solid transparent;border-radius:14px;padding:11px 8px;cursor:pointer}\n.ck-seg button.on{background:#16a34a;border-color:#86efac}\n.ck-now{flex:none;width:100%;max-width:440px}\n/* Vừa khít 1 màn hình: mặt đồng hồ tự co theo phần còn trống */\n#ckOv{overflow:hidden}\n.ck-bar{padding:6px 12px}\n.ck-body{overflow:hidden;justify-content:space-between;padding:0 14px max(10px,env(safe-area-inset-bottom,0px));gap:clamp(4px,1vh,10px)}\n.ck-face{flex:1 1 0;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;container-type:size}\n.ck-svg{width:min(92vw,38vh,440px);max-width:100%;max-height:100%}\n@supports (width:1cqh){.ck-svg{width:min(100cqw,100cqh,460px)}}\n.ck-digital{margin-top:0;font-size:clamp(24px,4.4vh,34px);line-height:1.1;flex:none}\n.ck-say{flex:none;margin:0;min-height:0;height:2.8em;font-size:clamp(13px,2vh,16px);display:flex;align-items:center;justify-content:center;overflow:hidden}\n.ck-legend{flex:none;margin:0;gap:4px 12px;font-size:clamp(12px,1.7vh,13px)}\n.ck-seg{flex:none;margin:0}\n.ck-seg button,.ck-now{font-size:clamp(13px,2vh,15px);padding:clamp(7px,1.3vh,11px) 6px;line-height:1.2}\n.ck-now{flex:none}\n.ck-tip{flex:none;font-size:12px;color:#9fc0ff;text-align:center;max-width:440px;line-height:1.4}\n@media (max-height:600px){.ck-tip{display:none}.ck-legend{display:none}}\n";document.head.appendChild(st);
- var d=document.createElement("div");d.innerHTML="<div class=\"gm-ov\" id=\"ckOv\">\n <div class=\"ck-bar\">\n  <button class=\"ck-ib\" id=\"ckBack\" type=\"button\" aria-label=\"Quay lại\">←</button>\n  <div class=\"ck-title\">🕒 Dạy trẻ xem đồng hồ</div>\n  <button class=\"ck-ib\" id=\"ckX\" type=\"button\" aria-label=\"Đóng\">✕</button>\n </div>\n <div class=\"ck-body\">\n  <div class=\"ck-face\"><svg class=\"ck-svg\" id=\"ckSvg\" viewBox=\"0 0 300 300\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Đồng hồ 3 kim\"></svg></div>\n  <div class=\"ck-digital\" id=\"ckDig\">12:00:00</div>\n  <div class=\"ck-say\" id=\"ckSay\"></div>\n  <div class=\"ck-legend\">\n   <span><i style=\"background:#d8453d\"></i>Kim giờ (ngắn, to)</span>\n   <span><i style=\"background:#2c5fa8\"></i>Kim phút (dài)</span>\n   <span><i style=\"background:#f59e0b\"></i>Kim giây (mảnh)</span>\n  </div>\n  <div class=\"ck-seg\">\n   <button type=\"button\" id=\"ckOn\">🔊 Đọc thời gian</button>\n   <button type=\"button\" id=\"ckOff\">🔇 Không đọc</button>\n  </div>\n  <div class=\"ck-seg\">\n   <button type=\"button\" id=\"ckNumOn\">🔢 Hiện giờ bằng số</button>\n   <button type=\"button\" id=\"ckNumOff\">🙈 Ẩn giờ bằng số</button>\n  </div>\n  <button class=\"ck-now\" type=\"button\" id=\"ckNow\">🕒 Đặt theo giờ hiện tại</button>\n  <div class=\"ck-tip\">Hãy dùng ngón tay xoay một kim bất kỳ. Các kim còn lại sẽ quay theo đúng như đồng hồ thật. Thả tay ra để nghe đọc giờ.</div>\n </div>\n</div>";while(d.firstChild)document.body.appendChild(d.firstChild);
+ var st=document.createElement("style");st.textContent="#ckOv{background:linear-gradient(180deg,#0b1d3a,#1d4e89);color:#fff;font-family:'Be Vietnam Pro',system-ui,sans-serif;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}\n#ckOv *{box-sizing:border-box}\n.ck-bar{flex:none;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px}\n.ck-title{flex:1;text-align:center;font-weight:800;font-size:17px;line-height:1.25}\n.ck-ib{width:44px;height:44px;flex:none;border:0;border-radius:12px;background:rgba(255,255,255,.18);color:#fff;font-size:22px;font-weight:700;cursor:pointer;font-family:inherit}\n.ck-ib:active{transform:scale(.96)}\n.ck-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;align-items:center;padding:0 14px 18px}\n.ck-svg{width:min(92vw,50vh,440px);height:auto;aspect-ratio:1;touch-action:none;flex:none;display:block;cursor:grab}\n.ck-digital{margin-top:8px;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:1px}\n.ck-say{min-height:44px;margin-top:2px;text-align:center;font-size:16px;font-weight:700;color:#fde68a;line-height:1.4;padding:0 6px}\n.ck-legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;font-size:13px;color:#cfe0ff;margin:4px 0 10px}\n.ck-legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px}\n.ck-seg{display:flex;gap:8px;width:100%;max-width:440px;margin-bottom:8px}\n.ck-seg button,.ck-now{flex:1;font:inherit;font-size:15px;font-weight:700;color:#fff;background:rgba(255,255,255,.16);border:2px solid transparent;border-radius:14px;padding:11px 8px;cursor:pointer}\n.ck-seg button.on{background:#16a34a;border-color:#86efac}\n.ck-now{flex:none;width:100%;max-width:440px}\n/* Vừa khít 1 màn hình: mặt đồng hồ tự co theo phần còn trống */\n#ckOv{overflow:hidden}\n.ck-bar{padding:6px 12px}\n.ck-body{overflow:hidden;justify-content:space-between;padding:0 14px max(10px,env(safe-area-inset-bottom,0px));gap:clamp(4px,1vh,10px)}\n.ck-face{flex:1 1 0;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;container-type:size}\n.ck-svg{width:min(92vw,38vh,440px);max-width:100%;max-height:100%}\n@supports (width:1cqh){.ck-svg{width:min(100cqw,100cqh,460px)}}\n.ck-digital{margin-top:0;font-size:clamp(24px,4.4vh,34px);line-height:1.1;flex:none}\n.ck-say{flex:none;margin:0;min-height:0;height:2.8em;font-size:clamp(13px,2vh,16px);display:flex;align-items:center;justify-content:center;overflow:hidden}\n.ck-legend{flex:none;margin:0;gap:4px 12px;font-size:clamp(12px,1.7vh,13px)}\n.ck-seg{flex:none;margin:0}\n.ck-seg button,.ck-now{font-size:clamp(13px,2vh,15px);padding:clamp(7px,1.3vh,11px) 6px;line-height:1.2}\n.ck-now{flex:none}\n.ck-tip{flex:none;font-size:12px;color:#9fc0ff;text-align:center;max-width:440px;line-height:1.4}\n@media (max-height:600px){.ck-tip{display:none}.ck-legend{display:none}}\n\n#ckOv.quiz .ck-legend,#ckOv.quiz .ck-seg,#ckOv.quiz .ck-now,#ckOv.quiz .ck-tip,#ckOv.quiz .ck-digital,#ckOv.quiz .ck-say{display:none}\n.ck-qz{display:none;width:100%;max-width:440px;margin-top:8px}\n#ckOv.quiz .ck-qz{display:block}\n.ck-qh{display:flex;justify-content:space-between;font-size:14px;font-weight:700;color:#cfe0ff;margin-bottom:6px}\n.ck-qq{text-align:center;font-size:19px;font-weight:800;margin:2px 0 10px}\n.ck-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}\n.ck-opt{border:0;border-radius:14px;padding:14px 8px;font:800 17px 'Be Vietnam Pro',system-ui,sans-serif;background:#fff;color:#1d3557;cursor:pointer}\n.ck-opt.ok{background:#22c55e;color:#fff}.ck-opt.bad{background:#ef4444;color:#fff}.ck-opt:disabled{cursor:default}\n.ck-res{text-align:center;padding:6px 0}.ck-res .big{font-size:56px}.ck-res h3{margin:4px 0;font-size:22px}.ck-res p{margin:6px 0;color:#cfe0ff}.ck-res .m{font-size:26px;font-weight:900;color:#4ade80}\n.ck-go{display:block;width:100%;margin-top:10px;border:0;border-radius:14px;padding:13px;font:800 16px 'Be Vietnam Pro',system-ui,sans-serif;background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff;cursor:pointer}\n.ck-go.alt{background:rgba(255,255,255,.18)}\n";document.head.appendChild(st);
+ var d=document.createElement("div");d.innerHTML="<div class=\"gm-ov\" id=\"ckOv\">\n <div class=\"ck-bar\">\n  <button class=\"ck-ib\" id=\"ckBack\" type=\"button\" aria-label=\"Quay lại\">←</button>\n  <div class=\"ck-title\">🕒 Dạy trẻ xem đồng hồ</div>\n  <button class=\"ck-ib\" id=\"ckX\" type=\"button\" aria-label=\"Đóng\">✕</button>\n </div>\n <div class=\"ck-body\">\n  <div class=\"ck-face\"><svg class=\"ck-svg\" id=\"ckSvg\" viewBox=\"0 0 300 300\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Đồng hồ 3 kim\"></svg></div>\n  <div class=\"ck-digital\" id=\"ckDig\">12:00:00</div>\n  <div class=\"ck-say\" id=\"ckSay\"></div>\n  <div class=\"ck-legend\">\n   <span><i style=\"background:#d8453d\"></i>Kim giờ (ngắn, to)</span>\n   <span><i style=\"background:#2c5fa8\"></i>Kim phút (dài)</span>\n   <span><i style=\"background:#f59e0b\"></i>Kim giây (mảnh)</span>\n  </div>\n  <div class=\"ck-seg\">\n   <button type=\"button\" id=\"ckOn\">🔊 Đọc thời gian</button>\n   <button type=\"button\" id=\"ckOff\">🔇 Không đọc</button>\n  </div>\n  <div class=\"ck-seg\">\n   <button type=\"button\" id=\"ckNumOn\">🔢 Hiện giờ bằng số</button>\n   <button type=\"button\" id=\"ckNumOff\">🙈 Ẩn giờ bằng số</button>\n  </div>\n  <button class=\"ck-now\" type=\"button\" id=\"ckNow\">🕒 Đặt theo giờ hiện tại</button>\n  <button class=\"ck-now\" type=\"button\" id=\"ckQuizBtn\" style=\"background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff\">🎯 Đố bé xem giờ (kiếm tiền cho Nông trại)</button>\n  <div class=\"ck-qz\" id=\"ckQz\"></div>\n  <div class=\"ck-tip\">Hãy dùng ngón tay xoay một kim bất kỳ. Các kim còn lại sẽ quay theo đúng như đồng hồ thật. Thả tay ra để nghe đọc giờ.</div>\n </div>\n</div>";while(d.firstChild)document.body.appendChild(d.firstChild);
 })();
 (function(){
  if(window.ClockGame)return;
@@ -132,6 +132,7 @@
  }
  svg.addEventListener('pointerdown',function(e){
   e.preventDefault();
+  if(QZ)return;
   var p=pt(e), k=pickHand(p);
   if(!k)return;
   drag=k; stopSpeech(); say.textContent='';
@@ -170,17 +171,81 @@
  bNumOn.addEventListener('click',function(){setNum(true);});
  bNumOff.addEventListener('click',function(){setNum(false);});
 
+
+ // ----- Đố bé xem giờ: 10 câu, mỗi câu đúng +10.000đ cho Nông trại -----
+ var QZ=null, qzBox=document.getElementById('ckQz');
+ function ri(n){return Math.floor(Math.random()*n);}
+ function lbl(p){return p.h+' giờ'+(p.m?' '+p.m+' phút':' đúng');}
+ function key(p){return p.h*100+p.m;}
+ function qzTime(i){
+  var h=1+ri(12), m;
+  if(i<3)m=[0,30][ri(2)]; else if(i<6)m=15*ri(4); else m=5*ri(12);
+  return {h:h,m:m};
+ }
+ function qzOpts(p){
+  var o=[p], seen={}; seen[key(p)]=1;
+  var cand=[
+   {h:p.m?(p.m/5||12):(p.h%12+1),m:p.m?(p.h*5)%60:p.m},
+   {h:p.h%12+1,m:p.m},
+   {h:(p.h+10)%12+1,m:p.m},
+   {h:p.h,m:(p.m+30)%60},
+   {h:p.h,m:(p.m+15)%60},
+   {h:p.h,m:(p.m+45)%60}
+  ];
+  for(var i=0;i<cand.length&&o.length<4;i++){var c=cand[i];if(c.h<1||c.h>12)continue;if(!seen[key(c)]){seen[key(c)]=1;o.push(c);}}
+  while(o.length<4){var r={h:1+ri(12),m:5*ri(12)};if(!seen[key(r)]){seen[key(r)]=1;o.push(r);}}
+  for(var j=o.length-1;j>0;j--){var k=ri(j+1),t=o[j];o[j]=o[k];o[k]=t;}
+  return o;
+ }
+ function qzStart(){
+  stopSpeech();QZ={i:0,ok:0,n:10,lock:false};ov.classList.add('quiz');qzAsk();
+ }
+ function qzAsk(){
+  var p=qzTime(QZ.i);QZ.p=p;QZ.o=qzOpts(p);QZ.lock=false;
+  T=(p.h%12)*3600+p.m*60;render();
+  qzBox.innerHTML='<div class="ck-qh"><span>Câu '+(QZ.i+1)+'/'+QZ.n+'</span><span>✅ '+QZ.ok+' · 🧑‍🌾 +'+(QZ.ok*10000).toLocaleString('vi-VN')+'đ</span></div>'+
+   '<div class="ck-qq">Đồng hồ đang chỉ mấy giờ?</div><div class="ck-opts">'+
+   QZ.o.map(function(x,k){return '<button type="button" class="ck-opt" data-k="'+k+'">'+lbl(x)+'</button>';}).join('')+'</div>'+
+   '<button type="button" class="ck-go alt" data-q="quit">Dừng đố</button>';
+ }
+ function qzPick(k){
+  if(!QZ||QZ.lock)return;QZ.lock=true;
+  var right=key(QZ.o[k])===key(QZ.p), bs=qzBox.querySelectorAll('.ck-opt');
+  for(var i=0;i<bs.length;i++){bs[i].disabled=true;if(key(QZ.o[i])===key(QZ.p))bs[i].classList.add('ok');}
+  if(right){QZ.ok++;try{if(window.sfx)window.sfx('ok');}catch(e){}}
+  else{bs[k].classList.add('bad');try{if(window.sfx)window.sfx('bad');}catch(e){}}
+  speak((right?'Đúng rồi! ':'Chưa đúng. ')+lbl(QZ.p));
+  setTimeout(function(){if(!QZ)return;QZ.i++;if(QZ.i>=QZ.n)qzEnd();else qzAsk();},right?1100:1900);
+ }
+ function qzEnd(){
+  var ok=QZ.ok, bonus=ok>=8?30000:0, earn=ok*10000+bonus;
+  try{if(window.farmEarn)window.farmEarn('clock',earn,ok);}catch(e){}
+  if(ok>=8){try{if(window.addStar)window.addStar();}catch(e){}}
+  try{if(window.sfx)window.sfx(ok>=5?'win':'bad');}catch(e){}
+  qzBox.innerHTML='<div class="ck-res"><div class="big">'+(ok>=8?'🏆':ok>=5?'🎉':'💪')+'</div><h3>Đúng '+ok+'/'+QZ.n+' câu</h3>'+
+   '<div class="m">+'+earn.toLocaleString('vi-VN')+'đ</div><p>đã chuyển vào Nông trại'+(bonus?' (gồm thưởng '+bonus.toLocaleString('vi-VN')+'đ vì đúng từ 8 câu)':'')+'</p>'+
+   (ok>=8?'<p>⭐ Giỏi lắm! Con được cộng 1 điểm ⭐ vào app.</p>':'<p>Đúng từ 8 câu để nhận thêm thưởng nhé!</p>')+
+   '<button type="button" class="ck-go" data-q="again">↻ Đố lượt mới</button><button type="button" class="ck-go alt" data-q="quit">Về đồng hồ</button></div>';
+ }
+ function qzQuit(){QZ=null;ov.classList.remove('quiz');qzBox.innerHTML='';say.textContent='';}
+ document.getElementById('ckQuizBtn').addEventListener('click',qzStart);
+ qzBox.addEventListener('click',function(e){
+  var b=e.target.closest?e.target.closest('button'):null;if(!b)return;
+  if(b.hasAttribute('data-k'))qzPick(+b.getAttribute('data-k'));
+  else if(b.getAttribute('data-q')==='again')qzStart();
+  else if(b.getAttribute('data-q')==='quit')qzQuit();
+ });
  function open(){
   now();clampT();render();say.textContent='';paintToggle();
   ov.classList.add('show');
   document.body.style.overflow='hidden';
  }
  function close(){
-  drag=null;stopSpeech();
+  drag=null;stopSpeech();qzQuit();
   ov.classList.remove('show');
   document.body.style.overflow='';
  }
- document.getElementById('ckBack').addEventListener('click',close);
+ document.getElementById('ckBack').addEventListener('click',function(){if(QZ){qzQuit();return;}close();});
  document.getElementById('ckX').addEventListener('click',close);
  document.addEventListener('visibilitychange',function(){if(document.hidden)stopSpeech();});
  paintToggle();

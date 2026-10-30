@@ -571,12 +571,14 @@
     return keysArr.map(function (k) { var w = map[k];
       return '<div class="zg-row ' + cls + '"><span class="e">' + ic(w, 28) + '</span><span><b>' + w[0] + '<i>' + w[3] + '</i></b><span>' + w[1] + '</span></span></div>'; }).join('');
   }
+  function fe(a, ok) { try { if (window.farmEarn) window.farmEarn('zh', a, ok); } catch (e) {} }
   function finish() {
     cancelAnimationFrame(raf); stopSpeak();
     var g = G;
     if (g.mode === 'topic') {
       var id = g.topic.id, prev = best(id), isNew = g.money > prev && g.money > 0; sfx(g.money > 0 ? 'win' : 'bad');
       if (isNew) setBest(id, g.money);
+      fe(g.money, g.ok);
       var total = g.ok + g.bad, acc = total ? Math.round(g.ok * 100 / total) : 0;
       var h = '<div style="font-size:54px">' + (g.money > 0 ? '🎉' : '⏰') + '</div><h2>Hết giờ! – ' + g.topic.n + '</h2>' +
         '<div class="zg-mny" style="color:' + (g.money >= 0 ? '#4ade80' : '#f87171') + '">' + money(g.money, 1) + '</div>' +
@@ -596,6 +598,7 @@
       var mis2 = Object.keys(g.missed).filter(function (k) { return !g.got[k]; });
       // các từ chưa hứng được (kể cả chưa kịp xuất hiện) cũng cần ôn
       L[g.li].w.forEach(function (w) { if (!g.got[w[0]] && !g.missed[w[0]]) { g.missed[w[0]] = w; mis2.push(w[0]); } });
+      fe(gain, n);
       P.m = Math.max(0, P.m + gain); sfx(pass ? 'win' : 'bad'); if (sr > P.s[g.li]) P.s[g.li] = sr;
       if (mis2.length) P.mw[g.li] = mis2; else delete P.mw[g.li];
       save();

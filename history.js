@@ -524,7 +524,7 @@ function top(){
   document.getElementById('vh-badge').textContent=n>=ERAS.length?'🏅 Nhà sử học':'📚 '+n+'/'+ERAS.length+' thời kỳ';
 }
 function toast(t){const d=document.createElement('div');d.className='vh-toast';d.textContent=t;root.appendChild(d);setTimeout(()=>d.remove(),1800)}
-function addPts(n){S.pts+=n;persist();top()}
+function FE(a,ok){try{if(window.farmEarn)window.farmEarn('vnh',a,ok)}catch(e){}} function addPts(n){S.pts+=n;persist();top();FE(n*1000,Math.max(1,Math.round(n/10)))}
 
 const A={};
 /* Điều hướng: mỗi màn đều có nút ← quay lại màn trước đó */
@@ -783,7 +783,7 @@ function qEnd(){
   const era=ERAS[Q.e],tot=Q.qs.length,need=needOf(era),pass=Q.right>=need,ratio=Q.right/tot;
   const stars=pass?(ratio>=.9?3:ratio>=.75?2:1):0;
   const first=pass&&S.done[era.id]==null;
-  if(pass){S.done[era.id]=Math.max(S.done[era.id]||0,stars);if(first)S.pts+=20;persist();top()}
+  if(pass){S.done[era.id]=Math.max(S.done[era.id]||0,stars);if(first){S.pts+=20;FE(20000,0)}persist();top()}
   SFX(pass?'win':'bad');
   draw(`<div class="vh-center"><div class="vh-big">${pass?'🎉':'💪'}</div>
   <h2 class="vh-h2">${pass?'Vượt ải thành công!':'Gần được rồi, thử lại nhé!'}</h2>

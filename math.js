@@ -400,6 +400,7 @@
   function result() {
     stopT(); cur = 'result';
     var r = Q.ok / Q.qs.length, s = r >= 0.9 ? 3 : r >= 0.7 ? 2 : r >= 0.5 ? 1 : 0, nb = setBest(grade, Q.score);
+    try { if (window.farmEarn) window.farmEarn('math', Q.score * 1000, Q.ok); } catch (e) {}
     sfx(s >= 2 ? 'win' : (s ? 'ok' : 'bad'));
     if (s >= 2) { try { if (window.addStar) window.addStar(); } catch (e) {} }
     B.innerHTML = '<div class="mt-res"><div class="big">' + (s === 3 ? '🏆' : s ? '🎉' : '💪') + '</div><h2>Đúng ' + Q.ok + '/' + Q.qs.length + ' câu</h2>' +
@@ -714,6 +715,7 @@
     var g = G, id = g.t.id, prev = best(id), isNew = g.money > prev && g.money > 0;
     sfx(g.money > 0 ? 'win' : 'bad');
     if (isNew) setBest(id, g.money);
+    try { if (window.farmEarn) window.farmEarn('math', g.money, g.ok); } catch (e) {}
     var total = g.ok + g.bad, acc = total ? Math.round(g.ok * 100 / total) : 0;
     var star = g.ok >= 10 && acc >= 80;
     if (star) { try { if (window.addStar) window.addStar(); } catch (e) {} }

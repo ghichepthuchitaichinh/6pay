@@ -471,7 +471,7 @@ function top(){
   document.getElementById('vv-badge').textContent=n>=STOPS.length?'🏅 Người lữ hành':'🛂 '+n+'/'+STOPS.length+' con dấu';
 }
 function toast(t){const d=document.createElement('div');d.className='vv-toast';d.textContent=t;root.appendChild(d);setTimeout(()=>d.remove(),1800)}
-function addPts(n){S.pts+=n;persist();top()}
+function FE(a,ok){try{if(window.farmEarn)window.farmEarn('vnv',a,ok)}catch(e){}} function addPts(n){S.pts+=n;persist();top();FE(n*1000,Math.max(1,Math.round(n/10)))}
 
 const A={};
 const NAVMAP={home:null,holidays:'home',hday:'holidays',hdq:'holidays',trip:'home',stop:'trip',startq:'trip',pass:'home',food:'home',spot:'home',guess:'home',budget:'home'};
@@ -804,7 +804,7 @@ A.ans=d=>{if(Q.picked!==null)return;Q.picked=+d.i;const q=Q.qs[Q.n];if(Q.opts[Q.
 A.qnext=()=>{Q.n++;Q.opts=[];Q.picked=null;if(Q.n>=Q.qs.length)return qEnd();qScreen()};
 function qEnd(){
   const st=STOPS[Q.s],N=Q.qs.length,ratio=Q.right/N,pass=Q.right>=Math.ceil(N*0.6),stars=pass?(ratio>=0.9?3:ratio>=0.75?2:1):0,first=pass&&S.stamps[st.id]==null;
-  if(pass){S.stamps[st.id]=Math.max(S.stamps[st.id]||0,stars);if(first)S.pts+=20;persist();top()}
+  if(pass){S.stamps[st.id]=Math.max(S.stamps[st.id]||0,stars);if(first){S.pts+=20;FE(20000,0)}persist();top()}
   SFX(pass?'win':'bad');
   draw(`<div class="vv-center"><div class="vv-big">${pass?'🛂':'💪'}</div>
   <h2 class="vv-h2">${pass?'Đã đóng dấu '+esc(st.s)+'!':'Gần được rồi, thử lại nhé!'}</h2>

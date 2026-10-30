@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.30-2';
+const APP_VERSION='2026.10.30-3';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -2229,6 +2229,7 @@ function qzNext(){
  }
  if(qz.i<qz.list.length-1){qz.i++;qzAsk();return;}
  const st=qzStore();st.plays++;qz.newBest=qz.score>st.best;if(qz.newBest)st.best=qz.score;
+ qz.farm=Math.round(qz.score*60/1000)*1000; if(window.farmEarn)farmEarn('quiz',qz.farm,qz.ok);
  try{localStorage.setItem(QZ_KEY,JSON.stringify(st));}catch(e){}
  qz.phase='done';render();
 }
@@ -2248,6 +2249,7 @@ function scrQuiz(){
    <div class="qz-big">${fmt(qz.score)}</div>
    <div class="guide-desc" style="text-align:center;">điểm${qz.newBest?' · 🎉 Kỷ lục mới!':''}</div>
    <div class="list-item"><span>Trả lời đúng</span><b>${n}/${qz.list.length}</b></div>
+   ${qz.farm?`<div class="list-item"><span>🧑‍🌾 Chuyển vào Nông trại</span><b class="pos">+${fmt(qz.farm)} ₫</b></div>`:''}
    <div class="guide-desc" style="text-align:center;">${msg}</div>
    <button class="btn primary" onclick="qzStart()">↻ Chơi lại</button>`);
  }
@@ -2347,6 +2349,55 @@ function scrFinUtil(){
   it("fc.tab='loan';push('fincalc')",'🏦 Tính lãi vay và tiết kiệm')+
   it("push('bills')",'🔔 Nhắc hóa đơn, chi định kỳ',billDueCount()?'<span class="neg">● '+billDueCount()+'</span> ':''));
 }
+// ===== Nối các game học với Nông trại vui vẻ =====
+// Tiền thưởng kiếm được ở các game học (trừ Cờ vua và Bước nhảy tài chính) được gửi vào "hộp thư" farm6_inbox.
+// Lần mở Nông trại tiếp theo, toàn bộ tiền trong hộp thư được cộng vào ví nông trại và tính tiến độ nhiệm vụ.
+const FARM_INBOX='farm6_inbox';
+const FARM_GAMES={en:'words',zh:'zh',math:'math',vnh:'vnh',vnv:'vnv',quiz:'quiz',clock:'clock'};
+window.farmEarn=function(g,amount,ok){
+ amount=Math.max(0,Math.round(+amount||0)); ok=Math.max(0,Math.round(+ok||0));
+ if(!FARM_GAMES[g]||(!amount&&!ok))return;
+ let box=[];try{box=JSON.parse(localStorage.getItem(FARM_INBOX))||[];}catch(e){}
+ if(!Array.isArray(box))box=[];
+ const now=Date.now(),last=box[box.length-1];
+ if(last&&last.g===g&&now-last.ts<600000){last.a+=amount;last.ok+=ok;last.ts=now;}
+ else box.push({g:g,a:amount,ok:ok,ts:now});
+ if(box.length>300)box=box.slice(-300);
+ try{localStorage.setItem(FARM_INBOX,JSON.stringify(box));}catch(e){}
+ if(amount)farmChip(amount);
+};
+let farmChipSum=0,farmChipT=0;
+function farmChip(a){
+ let el=document.getElementById('farmChip');
+ if(!el){el=document.createElement('div');el.id='farmChip';el.setAttribute('role','status');
+  el.style.cssText='position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 58px);transform:translateX(-50%) translateY(-8px);z-index:100002;background:rgba(22,101,52,.95);color:#fff;font:800 14px "Be Vietnam Pro",system-ui,sans-serif;padding:8px 14px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.3);pointer-events:none;opacity:0;transition:opacity .25s,transform .25s;white-space:nowrap';
+  document.body.appendChild(el);}
+ farmChipSum+=a;
+ el.textContent='🧑‍🌾 +'+farmChipSum.toLocaleString('vi-VN')+'đ đã chuyển vào Nông trại';
+ el.style.opacity='1';el.style.transform='translateX(-50%) translateY(0)';
+ clearTimeout(farmChipT);
+ farmChipT=setTimeout(()=>{el.style.opacity='0';el.style.transform='translateX(-50%) translateY(-8px)';farmChipSum=0;},2600);
+}
+// Mở 1 game học từ mục "Kiếm thêm tiền" trong Nông trại; chơi xong (đóng game) sẽ tự quay lại Nông trại
+let farmWatch=0;
+function farmGameOpen(){
+ if(gameBusy)return true;
+ if(document.querySelector('#vnhOv.show,#vnvOv.show,#ckOv.show,#mtOv.on,.eg-root.on,.zg-root.on,.mb-root.on'))return true;
+ const top=stack[stack.length-1];return !!(top&&top.id==='quiz');
+}
+window.farmPlay=function(k){
+ const pk=FARM_GAMES[k]; if(!pk)return;
+ try{if(window.FarmGame)FarmGame.close();}catch(e){}
+ if(pk==='quiz')openQuiz(); else playGame(pk);
+ clearInterval(farmWatch); let miss=0;
+ farmWatch=setInterval(()=>{
+  if(farmGameOpen()){miss=0;return;}
+  if(++miss<2)return;
+  clearInterval(farmWatch);farmWatch=0;
+  if(stack[stack.length-1].id==='quiz')back();
+  try{if(window.FarmGame)FarmGame.open({back:true});}catch(e){}
+ },400);
+};
 // ===== Thư mục Học và Chơi =====
 // Các game nằm ở thư mục games/, chỉ tải khi người dùng bấm vào (app mở nhanh hơn)
 // Các game nằm ở thư mục games/, chỉ tải khi người dùng bấm vào (app mở nhanh hơn).

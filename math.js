@@ -519,7 +519,7 @@
   '.mb-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 16px max(20px,env(safe-area-inset-bottom))}' +
   '.mb-txt{font-size:14px;color:#e0e7ff;line-height:1.55}' +
   '.mb-facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:12px 0 16px}' +
-  '.mb-fc{background:rgba(255,255,255,.13);border-radius:14px;padding:12px 6px;text-align:center;cursor:pointer;font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.5px}' +
+  '.mb-fc{background:rgba(255,255,255,.13);border-radius:14px;padding:12px 6px;text-align:center;font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.5px}' +
   '.mb-fc b{color:#fde68a}.mb-fc:active{transform:scale(.97)}' +
   '.mb-th{grid-column:1/-1;font-size:15px;font-weight:800;color:#fde68a;margin:8px 0 -2px;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,.2)}' +
   '.mb-go{text-align:center;position:sticky;bottom:0;padding:12px 0 4px}' +
@@ -586,13 +586,13 @@
   }
 
   /* ================= MÀN TỔNG QUAN BẢNG ================= */
-  function factHtml(f, i) { var p = f.q.split(' '); return '<div class="mb-fc" data-a="say" data-i="' + i + '">' + p[0] + ' ' + p[1] + ' ' + p[2] + ' = <b>' + f.a + '</b></div>'; }
+  function factHtml(f, i) { var p = f.q.split(' '); return '<div class="mb-fc">' + p[0] + ' ' + p[1] + ' ' + p[2] + ' = <b>' + f.a + '</b></div>'; }
   function openIntro(t) {
     stopSpeak(); introT = t;
     var bs = best(t.id);
     $('mbIT').textContent = (t.t ? '🧮 ' : '🎲 ') + t.n;
     $('mbITxt').innerHTML = (t.t ? 'Bảng có <b>10</b> phép tính. ' : 'Ôn lại toàn bộ <b>' + t.f.length + '</b> phép tính của các bảng 2 đến 9. ') +
-      'Chạm vào từng thẻ để nghe đọc, học thuộc rồi bấm <b>Bắt đầu</b>. Trong 2 phút, phép tính hiện ở dưới màn hình; hãy di chuyển giỏ để hứng đúng thẻ kết quả đang rơi. Hứng đúng <b>+10.000đ</b>, hứng sai <b>−5.000đ</b>.' +
+      'Học thuộc các phép tính bên dưới rồi bấm <b>Bắt đầu</b>. Trong 2 phút, phép tính hiện ở dưới màn hình; hãy di chuyển giỏ để hứng đúng thẻ kết quả đang rơi. Hứng đúng <b>+10.000đ</b>, hứng sai <b>−5.000đ</b>.' +
       (bs ? '<br>🏆 Kỷ lục của bạn: <b>' + money(bs) + '</b>' : '');
     var h = '';
     if (t.t) h = t.f.map(factHtml).join('');
@@ -632,7 +632,6 @@
     if (!G.bag.length) G.bag = shuffle(G.t.f.slice());
     var f = G.bag.pop(), n = W > 560 ? 4 : 3;
     G.target = f; qEl.textContent = f.q + ' = ?';
-    speak(f.q.replace('×', 'nhân').replace(':', 'chia').replace(/\d+/g, function (d) { return readN(+d); }) + ' bằng mấy');
     var opts = shuffle([f.a].concat(wrongs(f, n - 1)));
     var lane = W / n, cw = Math.min(96, lane - 14), ch = cw * 0.9;
     var base = H * (0.30 + 0.10 * (1 - G.left / G.secs));
@@ -666,7 +665,7 @@
         if (it.ok) {
           G.money += REWARD; G.ok++; sfx('ok'); G.got[f.k] = f;
           fl(G.bx, by - 10, money(REWARD, 1), '#4ade80'); G.flash = 0.25; G.flashC = 'rgba(34,197,94,.30)';
-          qEl.textContent = f.q + ' = ' + f.a; speak(f.say); G.items = []; G.wait = 0.6; break;
+          qEl.textContent = f.q + ' = ' + f.a; G.items = []; G.wait = 0.6; break;
         } else {
           G.money -= PENALTY; G.bad++; sfx('bad'); G.missed[f.k] = f;
           fl(G.bx, by - 10, '−' + money(PENALTY), '#f87171'); G.flash = 0.25; G.flashC = 'rgba(239,68,68,.30)';
@@ -738,7 +737,6 @@
     var a = el.getAttribute('data-a'), i = parseInt(el.getAttribute('data-i'), 10);
     if (a === 'close') api.close();
     else if (a === 'topics') { cancelAnimationFrame(raf); G = null; stopSpeak(); renderTopics(); }
-    else if (a === 'say') { stopSpeak(); if (introT) speak(introT.f[i].say); }
     else if (a === 'go') { if (introT) start(introT); }
     else if (a === 'again') { if (introT) start(introT); }
     else if (a === 'review') { if (introT) openIntro(introT); }

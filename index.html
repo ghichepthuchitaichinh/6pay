@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.30-1';
+const APP_VERSION='2026.10.30-2';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -2351,7 +2351,7 @@ function scrFinUtil(){
 // Các game nằm ở thư mục games/, chỉ tải khi người dùng bấm vào (app mở nhanh hơn)
 // Các game nằm ở thư mục games/, chỉ tải khi người dùng bấm vào (app mở nhanh hơn).
 // Nếu file được upload thẳng vào thư mục gốc (không có thư mục games/), app vẫn tự tìm thấy.
-const GAME_FILES={runner:'runner.js',words:'words.js',zh:'chinese.js',math:'math.js',vnh:'history.js',vnv:'vietnam.js',chess:'chess.js',clock:'clock.js'};
+const GAME_FILES={runner:'runner.js',words:'words.js',zh:'chinese.js',math:'math.js',vnh:'history.js',vnv:'vietnam.js',chess:'chess.js',clock:'clock.js',farm:'farm.js'};
 function gamePaths(k){const f=GAME_FILES[k];return ['games/'+f,'./'+f,'Games/'+f];}
 function gameReady(k){
  if(k==='runner')return !!window.open6PayGame;
@@ -2359,6 +2359,7 @@ function gameReady(k){
  if(k==='zh')return !!window.SixZhGame;
  if(k==='math')return !!window.MathGame;
  if(k==='clock')return !!window.ClockGame;
+ if(k==='farm')return !!window.FarmGame;
  return !!(document.getElementById(k+'Ov')&&window.GameOv);
 }
 function gameStart(k){
@@ -2367,6 +2368,7 @@ function gameStart(k){
  else if(k==='zh')SixZhGame.open();
  else if(k==='math')MathGame.open();
  else if(k==='clock')ClockGame.open();
+ else if(k==='farm')FarmGame.open();
  else GameOv.open(k);
 }
 // Tải 1 file game: thử lần lượt từng đường dẫn, file nào tải được và chạy được thì dùng
@@ -2412,6 +2414,7 @@ function gameErr(e){try{console.error(e);}catch(x){}notify('Trò chơi gặp l�
 function scrLearnPlay(){
  const it=(fn,t)=>utilIt(fn,t);
  return screenWrap('🎓 Học và Chơi',
+  it("playGame('farm')",'🧑‍🌾 Nông trại vui vẻ')+
   it("playGame('vnh')",'<svg viewBox="0 0 30 20" width="22" height="15" style="vertical-align:-2px;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.35)" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><polygon fill="#FFFF00" points="15,4.5 16.35,8.65 20.71,8.65 17.18,11.21 18.53,15.35 15,12.79 11.47,15.35 12.82,11.21 9.29,8.65 13.65,8.65"/></svg> Lịch sử Việt Nam')+
   it("playGame('vnv')",'🧭 Khám phá Việt Nam')+
   it("playGame('words')",'🔤 Game học từ vựng tiếng Anh')+
@@ -4260,7 +4263,7 @@ function gcCount(path,title){
   if(tx.length>_n){const d=new Date().toISOString().slice(0,10);let last='';try{last=localStorage.getItem(GC_DAY_KEY)||'';}catch(e){}
    if(last!==d){try{localStorage.setItem(GC_DAY_KEY,d);}catch(e){}gcCount('su-kien/ghi-chep-trong-ngay','Có ghi chép trong ngày');}}
   _n=tx.length;};
- const GN={runner:'Bước nhảy tài chính',words:'Học từ vựng tiếng Anh',zh:'Học tiếng Trung',math:'Toán',vnh:'Khám phá lịch sử Việt Nam',vnv:'Khám phá Việt Nam',chess:'Cờ vua',clock:'Dạy trẻ xem đồng hồ'};
+ const GN={runner:'Bước nhảy tài chính',words:'Học từ vựng tiếng Anh',zh:'Học tiếng Trung',math:'Toán',vnh:'Khám phá lịch sử Việt Nam',vnv:'Khám phá Việt Nam',chess:'Cờ vua',clock:'Dạy trẻ xem đồng hồ',farm:'Nông trại vui vẻ'};
  const _play=playGame;
  playGame=function(k){gcCount('tro-choi/'+k,'Trò chơi: '+(GN[k]||k));return _play.apply(this,arguments);};
 })();

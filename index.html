@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.30-5';
+const APP_VERSION='2026.10.30-6';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -2365,6 +2365,7 @@ window.farmEarn=function(g,amount,ok,t){
  if(box.length>300)box=box.slice(-300);
  try{localStorage.setItem(FARM_INBOX,JSON.stringify(box));}catch(e){}
  if(amount)farmChip(amount);
+ farmBackBtn(true);
 };
 let farmChipSum=0,farmChipT=0;
 function farmChip(a){
@@ -2385,6 +2386,31 @@ function farmGameOpen(){
  if(document.querySelector('#vnhOv.show,#vnvOv.show,#ckOv.show,#mtOv.on,.eg-root.on,.zg-root.on,.mb-root.on'))return true;
  const top=stack[stack.length-1];return !!(top&&top.id==='quiz');
 }
+// Nút "Về Nông trại" nổi trên mọi game học khi game được mở từ Nông trại: chơi xong bấm 1 lần là về ngay, không cần bấm ← nhiều lần
+function farmBackBtn(done){
+ let b=document.getElementById('farmBack');
+ if(done===null){if(b)b.style.display='none';return;}
+ if(!b){b=document.createElement('button');b.id='farmBack';b.type='button';
+  b.style.cssText='position:fixed;right:10px;top:calc(env(safe-area-inset-top,0px) + 104px);z-index:100003;border:0;border-radius:999px;padding:9px 14px;font:800 14px "Be Vietnam Pro",system-ui,sans-serif;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.35);cursor:pointer;display:none';
+  b.onclick=farmExit;document.body.appendChild(b);
+  const st=document.createElement('style');st.textContent='@keyframes fbPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}#farmBack.done{animation:fbPulse 1.2s ease-in-out infinite}';document.head.appendChild(st);}
+ if(!farmWatch&&done)return;
+ b.style.display='block';
+ b.classList.toggle('done',!!done);
+ b.style.background=done?'linear-gradient(135deg,#22c55e,#15803d)':'linear-gradient(135deg,#f59e0b,#ea580c)';
+ b.textContent=done?'✅ Về Nông trại nhận thưởng':'🧑‍🌾 Về Nông trại';
+}
+window.farmExit=function(){
+ try{if(window.SixWordGame)SixWordGame.close();}catch(e){}
+ try{if(window.SixZhGame)SixZhGame.close();}catch(e){}
+ try{if(window.MathGame)MathGame.close();}catch(e){}
+ try{if(window.MathTableGame)MathTableGame.close();}catch(e){}
+ try{if(window.ClockGame)ClockGame.close();}catch(e){}
+ ['vnh','vnv'].forEach(k=>{try{const o=document.getElementById(k+'Ov');if(o&&o.classList.contains('show'))GameOv.close(k);}catch(e){}});
+ try{if(stack[stack.length-1].id==='quiz')back();}catch(e){}
+ clearInterval(farmWatch);farmWatch=0;farmBackBtn(null);
+ try{if(window.FarmGame)FarmGame.open({back:true});}catch(e){}
+};
 window.farmPlay=function(k,opt){
  const pk=FARM_GAMES[k]; if(!pk)return;
  try{if(window.FarmGame)FarmGame.close();}catch(e){}
@@ -2394,10 +2420,11 @@ window.farmPlay=function(k,opt){
  farmWatch=setInterval(()=>{
   if(farmGameOpen()){miss=0;return;}
   if(++miss<2)return;
-  clearInterval(farmWatch);farmWatch=0;
+  clearInterval(farmWatch);farmWatch=0;farmBackBtn(null);
   if(stack[stack.length-1].id==='quiz')back();
   try{if(window.FarmGame)FarmGame.open({back:true});}catch(e){}
  },400);
+ farmBackBtn(false);
 };
 // ===== Thư mục Học và Chơi =====
 // Các game nằm ở thư mục games/, chỉ tải khi người dùng bấm vào (app mở nhanh hơn)

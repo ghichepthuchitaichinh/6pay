@@ -1,8 +1,9 @@
-/* 6PAY - Game Nông trại vui vẻ (bản mở rộng 2026.10.30). File này được index.html tải về khi người dùng mở trò chơi.
+/* 6PAY - Game Nông trại vui vẻ (bản mở rộng 2026.10.30-4: bản đồ kéo/zoom, cánh đồng và chuồng mới). File này được index.html tải về khi người dùng mở trò chơi.
    Trồng cây, nuôi gà – bò – cừu – cá – ong, xây công trình, chế biến nông sản, giao đơn hàng và ghi sổ thu chi.
    Nông trại được NỐI với các game học: tiền thưởng kiếm được trong Lịch sử Việt Nam, Khám phá Việt Nam, từ vựng tiếng Anh,
    tiếng Trung, Toán học cấp 1, Đố vui tài chính, Dạy trẻ xem đồng hồ được cộng hết vào ví nông trại (qua hộp thư farm6_inbox).
    Mục "Nhiệm vụ" yêu cầu chơi các game học để mở thêm đất, chuồng trại và công trình.
+   Bản đồ Ruộng/Chuồng kéo được bằng 1 ngón, phóng to/thu nhỏ bằng 2 ngón; các cánh đồng mới và chuồng vịt, dê, heo nằm bên ngoài, mở bằng nhiệm vụ.
    Cây và vật nuôi vẫn lớn khi đóng app (tính theo đồng hồ của máy). Tiến độ lưu trên máy (localStorage). */
 (function () {
   if (window.FarmGame) return;
@@ -34,9 +35,11 @@
     { id: 'bo', n: 'Bò', e: '🐄', pen: 'Chuồng bò', lv: 3, q: 'q3', cost: 200000, feed: 'ngo', p: 'sua', t: 360, cap: 2, grass: '#8bc34a' },
     { id: 'cuu', n: 'Cừu', e: '🐑', pen: 'Chuồng cừu', lv: 6, q: 'q9', cost: 320000, feed: 'carot', p: 'len', t: 480, cap: 2, grass: '#aed581' },
     { id: 'ca', n: 'Cá', e: '🐠', pen: 'Ao cá', lv: 5, q: 'q7', cost: 150000, feed: 'lua', p: 'catuoi', t: 300, cap: 4, grass: '#4fc3f7', water: 1 },
-    { id: 'ong', n: 'Ong', e: '🐝', pen: 'Trại ong', lv: 8, q: 'q13', cost: 450000, feed: 'huongduong', p: 'mat', t: 900, cap: 3, grass: '#c5e1a5' }
+    { id: 'ong', n: 'Ong', e: '🐝', pen: 'Trại ong', lv: 8, q: 'q13', cost: 450000, feed: 'huongduong', p: 'mat', t: 900, cap: 3, grass: '#c5e1a5' },
+    { id: 'vit', n: 'Vịt', e: '🦆', pen: 'Chuồng vịt', lv: 9, q: 'q24', cost: 380000, feed: 'ngo', p: 'longvit', t: 420, cap: 3, grass: '#80deea', water: 1 },
+    { id: 'de', n: 'Dê', e: '🐐', pen: 'Chuồng dê', lv: 11, q: 'q26', cost: 520000, feed: 'bapcai', p: 'suade', t: 600, cap: 2, grass: '#c5e1a5' },
+    { id: 'heo', n: 'Heo', e: '🐖', pen: 'Chuồng heo', lv: 13, q: 'q29', cost: 700000, feed: 'khoai', p: 'nam', t: 1200, cap: 2, grass: '#d7ccc8' }
   ];
-  var PAGES = [['ga', 'bo', 'cuu'], ['ca', 'ong']];
   var PRODUCTS = {
     trung: { id: 'trung', n: 'Trứng gà', e: '🥚', sell: 12000, xp: 2 },
     sua: { id: 'sua', n: 'Sữa bò', e: '🥛', sell: 30000, xp: 4 },
@@ -46,7 +49,11 @@
     banhmi: { id: 'banhmi', n: 'Bánh mì', e: '🥖', sell: 26000, xp: 4 },
     phomai: { id: 'phomai', n: 'Phô mai', e: '🧀', sell: 78000, xp: 8 },
     aolen: { id: 'aolen', n: 'Áo len', e: '🧥', sell: 72000, xp: 9 },
-    mutdau: { id: 'mutdau', n: 'Mứt dâu', e: '🫙', sell: 165000, xp: 14 }
+    mutdau: { id: 'mutdau', n: 'Mứt dâu', e: '🫙', sell: 165000, xp: 14 },
+    longvit: { id: 'longvit', n: 'Lông vịt', e: '🪶', sell: 22000, xp: 4 },
+    suade: { id: 'suade', n: 'Sữa dê', e: '🍼', sell: 45000, xp: 6 },
+    nam: { id: 'nam', n: 'Nấm quý', e: '🍄', sell: 140000, xp: 14 },
+    goi: { id: 'goi', n: 'Gối lông vịt', e: '🛏️', sell: 120000, xp: 12 }
   };
   /* Công trình: q = nhiệm vụ mở khoá, req = phải xây công trình khác trước, r = công thức chế biến (xưởng) */
   var BUILDS = [
@@ -59,11 +66,23 @@
     { id: 'coixay', n: 'Cối xay gió', e: '🌀', lv: 9, q: 'q15', cost: 1500000, d: 'Gió mát giúp mọi cây trồng lớn nhanh hơn 15%.' },
     { id: 'nha2', n: 'Nhà gạch', e: '🏡', lv: 10, q: 'q17', req: 'them', cost: 2000000, d: 'Xây lại nhà bằng gạch đỏ. Quà mỗi ngày nhiều gấp đôi.' },
     { id: 'mut', n: 'Xưởng làm mứt', e: '🍓', lv: 11, q: 'q18', cost: 1800000, r: { i: [['dau', 3]], o: 'mutdau', t: 720 }, d: 'Sên 3 🍓 dâu tây thành 1 🫙 hũ mứt dâu.' },
+    { id: 'chan', n: 'Xưởng chăn gối', e: '🪡', lv: 12, q: 'q28', cost: 2500000, r: { i: [['longvit', 3]], o: 'goi', t: 900 }, d: 'May 3 🪶 lông vịt thành 1 🛏️ gối lông vịt.' },
     { id: 'nha3', n: 'Biệt thự', e: '🏰', lv: 14, q: 'q21', req: 'nha2', cost: 5000000, d: 'Ngôi nhà mơ ước! Quà mỗi ngày gấp 3 và bán hàng ở chợ được giá hơn 10%.' }
   ];
   /* Hàng ruộng: cấp cần, nhiệm vụ cần, giá */
   var LAND = { 4: { lv: 2, q: 'q2', c: 250000 }, 5: { lv: 4, q: 'q6', c: 600000 }, 6: { lv: 7, q: 'q12', c: 1500000 }, 7: { lv: 10, q: 'q16', c: 3000000 } };
-  var COLS = 5, MAXROWS = 7;
+  var COLS = 5, MAXROWS = 7, MAIN = COLS * MAXROWS;
+  /* BẢN ĐỒ RUỘNG (đơn vị thế giới, kéo/zoom được). Ruộng chính ở giữa, các cánh đồng mở rộng ở bên ngoài hàng rào. */
+  var CW = 64, HD = 150, MX = 356, MY = 180, FW = 1032, FH = 1200;
+  var FIELDS = [
+    { id: 'dong', n: 'Vườn phía Đông', x: 746, y: 230, c: 4, r: 4, lv: 6, q: 'q22', cost: 1200000 },
+    { id: 'tay', n: 'Vườn phía Tây', x: 30, y: 230, c: 4, r: 4, lv: 8, q: 'q23', cost: 2000000 },
+    { id: 'nam', n: 'Cánh đồng phía Nam', x: 292, y: 700, c: 7, r: 3, lv: 11, q: 'q27', cost: 3500000 },
+    { id: 'xa', n: 'Cánh đồng lớn', x: 228, y: 960, c: 9, r: 3, lv: 15, q: 'q31', cost: 6000000 }
+  ];
+  var TOTAL = MAIN;
+  FIELDS.forEach(function (f) { f.i0 = TOTAL; TOTAL += f.c * f.r; f.w = f.c * CW; f.h = f.r * CW; });
+  var FLM = {}; FIELDS.forEach(function (f) { FLM[f.id] = f; });
   var FERT_PRICE = 20000;
 
   /* Các game học nối với nông trại (không gồm Cờ vua và Bước nhảy tài chính) */
@@ -98,7 +117,21 @@
     { id: 'q18', lv: 11, g: 'vnv', n: 25, u: { t: 'bld', v: 'mut' }, r: 150000 },
     { id: 'q19', lv: 12, g: 'quiz', n: 25, u: { t: 'cap', v: 'cuu', k: 2 }, r: 150000 },
     { id: 'q20', lv: 12, g: 'zh', n: 30, u: { t: 'cap', v: 'ga', k: 4 }, r: 150000 },
-    { id: 'q21', lv: 14, g: 'math', n: 40, u: { t: 'bld', v: 'nha3' }, r: 200000 }
+    { id: 'q21', lv: 14, g: 'math', n: 40, u: { t: 'bld', v: 'nha3' }, r: 200000 },
+    /* Mở rộng ra bên ngoài: cánh đồng mới, chuồng mới, thêm chỗ nuôi */
+    { id: 'q22', lv: 6, g: 'clock', n: 10, u: { t: 'fld', v: 'dong' }, r: 70000 },
+    { id: 'q23', lv: 8, g: 'en', n: 25, u: { t: 'fld', v: 'tay' }, r: 90000 },
+    { id: 'q24', lv: 9, g: 'math', n: 30, u: { t: 'pen', v: 'vit' }, r: 100000 },
+    { id: 'q25', lv: 9, g: 'vnh', n: 20, u: { t: 'cap', v: 'ca', k: 2 }, r: 100000 },
+    { id: 'q26', lv: 11, g: 'quiz', n: 20, u: { t: 'pen', v: 'de' }, r: 130000 },
+    { id: 'q27', lv: 11, g: 'zh', n: 25, u: { t: 'fld', v: 'nam' }, r: 130000 },
+    { id: 'q28', lv: 12, g: 'vnv', n: 20, u: { t: 'bld', v: 'chan' }, r: 150000 },
+    { id: 'q29', lv: 13, g: 'en', n: 35, u: { t: 'pen', v: 'heo' }, r: 180000 },
+    { id: 'q30', lv: 13, g: 'clock', n: 20, u: { t: 'cap', v: 'ong', k: 2 }, r: 180000 },
+    { id: 'q31', lv: 15, g: 'math', n: 45, u: { t: 'fld', v: 'xa' }, r: 220000 },
+    { id: 'q32', lv: 15, g: 'vnh', n: 30, u: { t: 'cap', v: 'vit', k: 3 }, r: 220000 },
+    { id: 'q33', lv: 16, g: 'quiz', n: 30, u: { t: 'cap', v: 'bo', k: 2 }, r: 250000 },
+    { id: 'q34', lv: 16, g: 'zh', n: 35, u: { t: 'cap', v: 'de', k: 2 }, r: 250000 }
   ];
   var DAILY_N = { en: 8, zh: 8, math: 8, vnh: 6, vnv: 6, quiz: 5, clock: 6 };
 
@@ -111,11 +144,11 @@
   function need(lv) { return 10 * lv + 5 * lv * lv; }   // kinh nghiệm cần để lên cấp tiếp
 
   /* ================= TRẠNG THÁI & LƯU TRỮ ================= */
-  function emptyPlots() { var p = []; for (var i = 0; i < COLS * MAXROWS; i++) p.push({ c: null, p: 0, t: 0, w: 0 }); return p; }
+  function emptyPlots() { var p = []; for (var i = 0; i < TOTAL; i++) p.push({ c: null, p: 0, t: 0, w: 0 }); return p; }
   function fresh() {
     var an = {}; ANIMALS.forEach(function (a) { an[a.id] = []; });
     return { v: 2, m: 150000, start: 150000, xp: 0, lv: 1, rows: 3, plots: emptyPlots(), inv: {}, an: an, fert: 3, orders: [], log: [], tin: 0, tout: 0, sel: 'lua', seen: 0, made: Date.now(),
-      gs: {}, q: {}, bld: {}, fac: {}, dq: null, gift: '' };
+      gs: {}, q: {}, bld: {}, fac: {}, fx: {}, dq: null, gift: '', tipCam: 0 };
   }
   var S = fresh();
   function load() {
@@ -132,9 +165,9 @@
       }
     }
     var F = fresh();
-    ['gs', 'q', 'bld', 'fac', 'inv', 'an'].forEach(function (k) { if (!S[k] || typeof S[k] !== 'object') S[k] = F[k]; });
+    ['gs', 'q', 'bld', 'fac', 'fx', 'inv', 'an'].forEach(function (k) { if (!S[k] || typeof S[k] !== 'object') S[k] = F[k]; });
     if (!S.start) S.start = 200000;
-    while (S.plots.length < COLS * MAXROWS) S.plots.push({ c: null, p: 0, t: 0, w: 0 });
+    while (S.plots.length < TOTAL) S.plots.push({ c: null, p: 0, t: 0, w: 0 });
     ANIMALS.forEach(function (a) { if (!S.an[a.id]) S.an[a.id] = []; });
     S.plots.forEach(function (pl) { if (pl.c && !CM[pl.c]) { pl.c = null; pl.p = 0; } });
     if (!CM[S.sel]) S.sel = 'lua';
@@ -198,11 +231,12 @@
   function qTitle(g, n) { var G = GM[g]; return g === 'clock' ? 'Đọc đúng ' + n + ' giờ ở ' + G.n : g === 'en' || g === 'zh' ? 'Học đúng ' + n + ' từ ở ' + G.n : 'Trả lời đúng ' + n + ' câu ' + G.n; }
   function uText(u) {
     if (u.t === 'row') return '🪧 Mở rộng ruộng hàng ' + u.v;
+    if (u.t === 'fld') return '🌾 Mở ' + FLM[u.v].n.toLowerCase() + ' (' + FLM[u.v].c * FLM[u.v].r + ' ô đất)';
     if (u.t === 'pen') return AM[u.v].e + ' Mở ' + AM[u.v].pen.toLowerCase();
     if (u.t === 'cap') return AM[u.v].e + ' Thêm ' + u.k + ' chỗ ' + AM[u.v].pen.toLowerCase();
     var b = BM[u.v]; return b.e + ' Được xây ' + b.n.toLowerCase();
   }
-  function questFor(t, v) { for (var i = 0; i < QUESTS.length; i++) { var u = QUESTS[i].u; if (u.t === t && u.v === v) return QUESTS[i]; } return null; }
+  function capQuest(v) { for (var i = 0; i < QUESTS.length; i++) { var u = QUESTS[i].u; if (u.t === 'cap' && u.v === v && !qClaimed(QUESTS[i].id)) return QUESTS[i]; } return null; }
   function penOpen(a) { return !a.q || qClaimed(a.q) || S.an[a.id].length > 0; }
   function capOf(a) { var c = a.cap; QUESTS.forEach(function (Q) { if (Q.u.t === 'cap' && Q.u.v === a.id && qClaimed(Q.id)) c += Q.u.k; }); return c; }
   function syncQuests() {
@@ -275,18 +309,19 @@
   '.fm-money{flex:none;border:0;background:rgba(0,0,0,.22);color:#fff!important;border-radius:999px;padding:8px 12px;font-weight:900;font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap}' +
   '.fm-main{flex:1;min-height:0;position:relative}' +
   '.fm-stage{position:absolute;inset:0;touch-action:none}.fm-stage canvas{position:absolute;left:0;top:0;width:100%;height:100%;display:block;touch-action:none}' +
-  '.fm-tools{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:6px;padding:0 6px;pointer-events:none;z-index:1}' +
-  '.fm-tool{pointer-events:auto;border:0;border-radius:16px;background:rgba(255,255,255,.94);box-shadow:0 4px 12px rgba(0,0,0,.25);padding:6px 6px;display:flex;flex-direction:column;align-items:center;min-width:58px;font-size:11px;font-weight:800;color:#3b2a14!important;position:relative}' +
+  '.fm-tools{position:absolute;left:50%;transform:translateX(-50%);bottom:8px;width:max-content;max-width:100%;display:flex;gap:6px;padding:8px 6px 2px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-x;z-index:1}.fm-tools::-webkit-scrollbar{display:none}' +
+  '.fm-zoom{position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:6px;z-index:1}.fm-zoom button{width:36px;height:36px;border:0;border-radius:11px;background:rgba(255,255,255,.85);box-shadow:0 3px 10px rgba(0,0,0,.22);font-size:20px;font-weight:900;color:#3b2a14!important;line-height:1;font-family:' + EF + '}.fm-zoom button:active{transform:scale(.92)}' +
+  '.fm-tool{flex:none;white-space:nowrap;pointer-events:auto;border:0;border-radius:16px;background:rgba(255,255,255,.94);box-shadow:0 4px 12px rgba(0,0,0,.25);padding:6px 6px;display:flex;flex-direction:column;align-items:center;min-width:58px;font-size:11px;font-weight:800;color:#3b2a14!important;position:relative}' +
   '.fm-tool .e{font-size:25px;line-height:1.15;font-family:' + EF + '}.fm-tool.on{background:#fff7d1;box-shadow:0 0 0 3px #f59e0b,0 4px 12px rgba(0,0,0,.25)}' +
   '.fm-tool .n{position:absolute;top:-6px;right:-4px;background:#ef4444;color:#fff;border-radius:999px;font-size:11px;padding:1px 6px}' +
   '.fm-panel{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 12px 24px;background:linear-gradient(180deg,#fef9e7,#f3e7c4);display:none}.fm-panel.on{display:block}' +
-  '.fm-nav{flex:none;display:flex;background:#fffdf5;border-top:1px solid #e5d9b6;padding:4px 3px max(4px,env(safe-area-inset-bottom));box-shadow:0 -2px 10px rgba(0,0,0,.1);z-index:2}' +
-  '.fm-nav button{flex:1 1 0;min-width:0;border:0;background:none;padding:5px 0;border-radius:12px;display:flex;flex-direction:column;align-items:center;font-size:10px;letter-spacing:-.2px;font-weight:800;color:#6b5a3a!important;position:relative;white-space:nowrap;overflow:hidden}' +
+  '.fm-nav{flex:none;background:#fffdf5;border-top:1px solid #e5d9b6;padding:0 0 env(safe-area-inset-bottom);box-shadow:0 -2px 10px rgba(0,0,0,.1);z-index:2}' +
+  '.fm-navs{display:flex;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-snap-type:x proximity;padding:5px 8px 4px;touch-action:pan-x;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 12px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 12px),transparent 100%)}.fm-navs::-webkit-scrollbar{display:none}' +
+  '.fm-nav button{flex:1 0 auto;min-width:68px;scroll-snap-align:center;border:0;background:none;padding:5px 12px 4px;border-radius:12px;display:flex;flex-direction:column;align-items:center;font-size:12px;font-weight:800;color:#6b5a3a!important;position:relative;white-space:nowrap}' +
   '.fm-nav button .e{font-size:22px;line-height:1.2;font-family:' + EF + '}.fm-nav button.on{background:#ffeeba;color:#7a4a00!important}' +
-  '.fm-nav{gap:2px}.fm-nav button.earn{color:#9a3412!important;background:#fff3c4}.fm-nav button.earn.on{background:#fde68a}.fm-nav button.earn .e{animation:fmPulse 2.4s ease-in-out infinite}' +
-  '@media (max-width:380px){.fm-nav button{font-size:9.5px;letter-spacing:-.3px}}' +
+  '.fm-navs{gap:2px}.fm-nav button.earn{color:#9a3412!important;background:#fff3c4}.fm-nav button.earn.on{background:#fde68a}.fm-nav button.earn .e{animation:fmPulse 2.4s ease-in-out infinite}' +
   '@keyframes fmPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}' +
-  '.fm-nav .dot{position:absolute;top:1px;right:calc(50% - 22px);min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:#fff;font-size:11px;line-height:18px;padding:0 5px}' +
+  '.fm-nav .dot{position:absolute;top:0;right:4px;min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:#fff;font-size:11px;line-height:18px;padding:0 5px}' +
   '.fm-h{font-size:18px;font-weight:900;margin:2px 0 4px;color:#5b3a12}.fm-sub{font-size:13px;color:#7a6440;margin:0 0 10px;line-height:1.5}' +
   '.fm-card{background:#fff;border-radius:16px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px rgba(120,80,0,.12)}' +
   '.fm-ord{display:flex;gap:10px;align-items:flex-start}.fm-ord .tr{font-size:40px;font-family:' + EF + ';line-height:1}.fm-ord .bd{flex:1;min-width:0}' +
@@ -334,6 +369,7 @@
       '<button class="fm-money" id="fmM" data-a="book" aria-label="Sổ thu chi">💰 0đ</button><button class="fm-ib" data-a="close" aria-label="Đóng">✕</button></div>' +
     '<div class="fm-main" id="fmMain">' +
       '<div class="fm-stage" id="fmStage"><canvas id="fmCv"></canvas>' +
+        '<div class="fm-zoom" id="fmZoom"><button data-a="zin" aria-label="Phóng to">＋</button><button data-a="zout" aria-label="Thu nhỏ">－</button><button data-a="zhome" aria-label="Về giữa nông trại">🏠</button></div>' +
         '<div class="fm-tools" id="fmTools">' +
           '<button class="fm-tool on" data-a="tool" data-t="seed"><span class="e" id="fmSeedE">🌾</span><span id="fmSeedN">Gieo hạt</span></button>' +
           '<button class="fm-tool" data-a="tool" data-t="water"><span class="e">🚿</span>Tưới</button>' +
@@ -345,50 +381,107 @@
       '<div class="fm-sheet" id="fmSheet"><div class="fm-sb" id="fmSB"></div></div>' +
       '<div class="fm-toast" id="fmToast"></div>' +
     '</div>' +
-    '<div class="fm-nav" id="fmNav">' +
+    '<div class="fm-nav" id="fmNav"><div class="fm-navs" id="fmNavS">' +
       '<button class="on" data-a="tab" data-t="field"><span class="e">🌱</span>Ruộng</button>' +
       '<button data-a="tab" data-t="barn"><span class="e">🐔</span>Chuồng<span class="dot" id="fmDotB" style="display:none"></span></button>' +
       '<button data-a="tab" data-t="build"><span class="e">🏗️</span>Xây<span class="dot" id="fmDotK" style="display:none"></span></button>' +
       '<button data-a="tab" data-t="market"><span class="e">🏪</span>Chợ<span class="dot" id="fmDotO" style="display:none"></span></button>' +
       '<button data-a="tab" data-t="quest"><span class="e">🎯</span>Nhiệm vụ<span class="dot" id="fmDotQ" style="display:none"></span></button>' +
       '<button class="earn" data-a="tab" data-t="earn"><span class="e">💰</span>Kiếm tiền</button>' +
-    '</div>';
+      '<button data-a="book"><span class="e">📒</span>Sổ thu chi</button>' +
+    '</div></div>';
   document.body.appendChild(ov);
 
   var $ = function (id) { return document.getElementById(id); };
   var cv = $('fmCv'), ctx = cv.getContext('2d'), stage = $('fmStage');
   var tab = 'field', tool = 'seed', W = 0, H = 0, DPR = 2, raf = 0, running = false, tm = 0, lastSave = 0, lastPanel = 0;
-  var FX = [], FL = [], TIP = null, HITS = [], POS = {}, page = 0, mSub = 'ord', retTab = 'earn', facSig = '';
-  var bgC = document.createElement('canvas'), bgKey = '';
+  var FX = [], FL = [], TIP = null, HITS = [], POS = {}, mSub = 'ord', retTab = 'earn', facSig = '';
 
-  /* ================= BỐ CỤC ================= */
-  var L = {};
+  /* ================= BỐ CỤC & CAMERA =================
+     Ruộng và Chuồng là 2 "bản đồ" lớn hơn màn hình. Camera (x, y = góc trên-trái, z = độ phóng) quyết định phần nào hiện ra.
+     Kéo 1 ngón để di chuyển, chụm/mở 2 ngón (hoặc lăn chuột) để thu nhỏ/phóng to. */
+  var L = { hd: HD, gap: 5, pens: [] };
+  var WORLD = { field: { w: FW, h: FH }, barn: { w: 400, h: 600 } };
+  var CAMS = { field: null, barn: null }, cam = null, CANIM = null, INERT = null, barnCols = 0;
+  var PW = 340, PH = 210, PG = 22;
   function resize() {
     var r = stage.getBoundingClientRect();
     W = Math.max(240, r.width); H = Math.max(300, r.height);
     DPR = Math.min(3, Math.max(2, window.devicePixelRatio || 1));
     cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
-    var hd = Math.round(Math.min(112, Math.max(72, H * 0.15)));
-    var toolsH = 72, pad = 10;
-    var aw = W - pad * 2, ah = H - hd - toolsH - pad;
-    var cell = Math.floor(Math.min(aw / COLS, ah / MAXROWS, 108));
-    L = { hd: hd, cell: cell, fw: cell * COLS, fh: cell * MAXROWS, toolsH: toolsH };
-    L.fx = Math.round((W - L.fw) / 2); L.fy = Math.round(hd + Math.max(6, (ah - L.fh) / 2 + 2));
-    L.gap = Math.max(4, Math.round(cell * 0.07));
-    penLayout();
-    bgKey = '';
+    var bc = barnCols; penLayout();
+    if (bc && bc !== barnCols) CAMS.barn = null;
+    ['field', 'barn'].forEach(function (k) { if (CAMS[k]) clampCam(CAMS[k], k); });
+    useCam();
   }
-  function pageAnimals() { return PAGES[page].map(function (id) { return AM[id]; }); }
   function penLayout() {
-    var list = pageAnimals(), n = list.length;
-    var bh = H - L.hd - 14, ph = Math.floor((bh - 8 * n) / n);
-    var pw = Math.min(W - 20, 680);
-    L.pens = list.map(function (a, i) { return { a: a, x: Math.round((W - pw) / 2), y: L.hd + 6 + i * (ph + 8), w: pw, h: ph }; });
+    barnCols = W >= 640 ? 2 : 1;
+    L.pens = ANIMALS.map(function (a, i) { var c = i % barnCols, r = Math.floor(i / barnCols); return { a: a, x: 20 + c * (PW + PG), y: HD + 10 + r * (PH + PG), w: PW, h: PH }; });
+    WORLD.barn = { w: 40 + barnCols * PW + (barnCols - 1) * PG, h: HD + 10 + Math.ceil(ANIMALS.length / barnCols) * (PH + PG) + 10 };
   }
+  function bottomPad(k) { return k === 'field' ? 84 : 12; }
+  function minZ(k) { var Wd = WORLD[k]; return Math.max(0.3, Math.min(W / (Wd.w + 40), (H - bottomPad(k)) / (Wd.h + 20))); }
+  var MAXZ = 2.6;
+  function clampCam(c, k) {
+    var Wd = WORLD[k], m = 30;
+    c.z = Math.max(minZ(k), Math.min(MAXZ, c.z));
+    var vw = W / c.z, vh = H / c.z, bp = bottomPad(k) / c.z;
+    if (vw >= Wd.w + 2 * m) c.x = (Wd.w - vw) / 2; else c.x = Math.max(-m, Math.min(Wd.w + m - vw, c.x));
+    if (vh >= Wd.h + m + bp) c.y = (Wd.h + m + bp - vh) / 2 - 0; else c.y = Math.max(0, Math.min(Wd.h + m + bp - vh, c.y));
+    return c;
+  }
+  function homeCam(k) {
+    var c;
+    if (k === 'field') {
+      // Khung nhìn ban đầu: ngôi nhà + ruộng chính vừa khít màn hình (giống bản cũ)
+      var rx0 = MX - 24, rw = CW * COLS + 48, ry0 = 40, rh = MY + CW * MAXROWS + 16 - ry0;
+      var z = Math.min(1.9, (W - 12) / rw, (H - bottomPad(k) - 4) / rh);
+      c = { z: z, x: rx0 + rw / 2 - W / z / 2, y: ry0 + rh / 2 - (H - bottomPad(k)) / z / 2 };
+    } else {
+      var z2 = Math.min(1.2, (W - 12) / WORLD.barn.w);
+      c = { z: z2, x: WORLD.barn.w / 2 - W / z2 / 2, y: 0 };
+    }
+    return clampCam(c, k);
+  }
+  function useCam() { if (!W || (tab !== 'field' && tab !== 'barn')) return; if (!CAMS[tab]) CAMS[tab] = homeCam(tab); cam = CAMS[tab]; }
+  function toWorld(p) { return { x: cam.x + p.x / cam.z, y: cam.y + p.y / cam.z }; }
+  function zoomAt(sx, sy, f) {
+    if (!cam) return; INERT = null; CANIM = null;
+    var w = toWorld({ x: sx, y: sy }); cam.z = Math.max(minZ(tab), Math.min(MAXZ, cam.z * f));
+    cam.x = w.x - sx / cam.z; cam.y = w.y - sy / cam.z; clampCam(cam, tab);
+  }
+  /* Bay camera tới một điểm (dùng khi vừa mở khoá đất/chuồng mới) */
+  function flyTo(k, wx, wy, z) {
+    if (!CAMS[k]) CAMS[k] = homeCam(k);
+    var c = CAMS[k], tz = Math.max(minZ(k), Math.min(MAXZ, z || c.z));
+    var to = clampCam({ z: tz, x: wx - W / tz / 2, y: wy - (H - bottomPad(k)) / tz / 2 }, k);
+    CANIM = { k: k, from: { x: c.x, y: c.y, z: c.z }, to: to, t: 0 };
+  }
+  function stepCam(dt) {
+    if (CANIM) {
+      var c = CAMS[CANIM.k]; CANIM.t = Math.min(1, CANIM.t + dt / 0.6); var e = 1 - Math.pow(1 - CANIM.t, 3);
+      c.x = CANIM.from.x + (CANIM.to.x - CANIM.from.x) * e; c.y = CANIM.from.y + (CANIM.to.y - CANIM.from.y) * e; c.z = CANIM.from.z + (CANIM.to.z - CANIM.from.z) * e;
+      if (CANIM.t >= 1) CANIM = null;
+    } else if (INERT && cam) {
+      cam.x -= INERT.vx * dt / cam.z; cam.y -= INERT.vy * dt / cam.z;
+      var k = Math.exp(-dt * 5); INERT.vx *= k; INERT.vy *= k;
+      var ox = cam.x, oy = cam.y; clampCam(cam, tab);
+      if (ox !== cam.x) INERT.vx = 0; if (oy !== cam.y) INERT.vy = 0;
+      if (Math.abs(INERT.vx) + Math.abs(INERT.vy) < 8) INERT = null;
+    }
+  }
+  function view() { return { x0: cam.x, y0: cam.y, x1: cam.x + W / cam.z, y1: cam.y + H / cam.z }; }
+  function vis(v, x, y, w, h) { return x + w >= v.x0 && x <= v.x1 && y + h >= v.y0 && y <= v.y1; }
+
+  /* Ô đất: 0..34 là ruộng chính (5 cột × 7 hàng), sau đó lần lượt là các cánh đồng mở rộng */
+  function fieldOf(i) { for (var k = FIELDS.length - 1; k >= 0; k--) if (i >= FIELDS[k].i0) return FIELDS[k]; return null; }
   function plotRect(i) {
-    var c = i % COLS, r = Math.floor(i / COLS), g = L.gap;
-    return { x: L.fx + c * L.cell + g / 2, y: L.fy + r * L.cell + g / 2, s: L.cell - g };
+    var g = L.gap, f = i >= MAIN ? fieldOf(i) : null, x0 = f ? f.x : MX, y0 = f ? f.y : MY, cols = f ? f.c : COLS, j = f ? i - f.i0 : i;
+    var c = j % cols, r = Math.floor(j / cols);
+    return { x: x0 + c * CW + g / 2, y: y0 + r * CW + g / 2, s: CW - g };
   }
+  function fieldOpen(f) { return !!S.fx[f.id]; }
+  function plotOpen(i) { if (i < 0 || i >= TOTAL) return false; if (i < MAIN) return Math.floor(i / COLS) < S.rows; return fieldOpen(fieldOf(i)); }
 
   /* ================= VẼ NỀN (lưu sẵn để nhẹ máy) ================= */
   function rr(c, x, y, w, h, r) {
@@ -396,24 +489,25 @@
     c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath();
   }
   function emo(c, ch, x, y, s) { c.font = Math.round(s) + 'px ' + EF; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = '#000'; c.fillText(ch, x, y); }
-  function drawSky(c, kind) {
-    var hd = L.hd;
+  function drawSky(c, kind, v) {
+    var hd = HD, W = WORLD[kind].w, X0 = Math.min(0, v.x0) - 2, X1 = Math.max(W, v.x1) + 2, Y0 = Math.min(0, v.y0) - 2;
     var g = c.createLinearGradient(0, 0, 0, hd); g.addColorStop(0, '#7cc8f5'); g.addColorStop(1, '#d6f0ff');
-    c.fillStyle = g; c.fillRect(0, 0, W, hd + 2);
+    c.fillStyle = '#7cc8f5'; c.fillRect(X0, Y0, X1 - X0, -Y0 + 1);
+    c.fillStyle = g; c.fillRect(X0, 0, X1 - X0, hd + 2);
     var sx = W - 40, sy = hd * 0.32, sg = c.createRadialGradient(sx, sy, 4, sx, sy, 42);
     sg.addColorStop(0, 'rgba(255,240,150,1)'); sg.addColorStop(0.4, 'rgba(255,214,90,.85)'); sg.addColorStop(1, 'rgba(255,214,90,0)');
     c.fillStyle = sg; c.beginPath(); c.arc(sx, sy, 42, 0, 7); c.fill();
     c.fillStyle = '#ffd54a'; c.beginPath(); c.arc(sx, sy, 15, 0, 7); c.fill();
-    c.fillStyle = '#9ed27a'; c.beginPath(); c.moveTo(0, hd); c.quadraticCurveTo(W * 0.18, hd * 0.45, W * 0.42, hd * 0.8); c.quadraticCurveTo(W * 0.62, hd * 0.5, W * 0.85, hd * 0.75); c.quadraticCurveTo(W * 0.95, hd * 0.6, W, hd * 0.7); c.lineTo(W, hd); c.fill();
-    c.fillStyle = '#86c35f'; c.beginPath(); c.moveTo(0, hd); c.quadraticCurveTo(W * 0.3, hd * 0.7, W * 0.6, hd * 0.92); c.quadraticCurveTo(W * 0.8, hd * 0.75, W, hd * 0.88); c.lineTo(W, hd + 2); c.lineTo(0, hd + 2); c.fill();
-    var R = mulberry(7);
-    for (var i = 0; i < 7; i++) { var tx = R() * W, ty = hd * (0.62 + R() * 0.22), ts = 6 + R() * 6; c.fillStyle = '#5d8f3a'; c.fillRect(tx - 1.5, ty, 3, ts * 0.9); c.fillStyle = i % 2 ? '#4f9a35' : '#5fae3f'; c.beginPath(); c.arc(tx, ty, ts, 0, 7); c.fill(); }
+    c.fillStyle = '#9ed27a'; c.beginPath(); c.moveTo(X0, hd); c.lineTo(X0, hd * 0.7); c.lineTo(0, hd * 0.7); c.quadraticCurveTo(W * 0.18, hd * 0.45, W * 0.42, hd * 0.8); c.quadraticCurveTo(W * 0.62, hd * 0.5, W * 0.85, hd * 0.75); c.quadraticCurveTo(W * 0.95, hd * 0.6, W, hd * 0.7); c.lineTo(X1, hd * 0.7); c.lineTo(X1, hd); c.fill();
+    c.fillStyle = '#86c35f'; c.beginPath(); c.moveTo(X0, hd + 2); c.lineTo(X0, hd * 0.88); c.lineTo(0, hd * 0.88); c.quadraticCurveTo(W * 0.3, hd * 0.7, W * 0.6, hd * 0.92); c.quadraticCurveTo(W * 0.8, hd * 0.75, W, hd * 0.88); c.lineTo(X1, hd * 0.88); c.lineTo(X1, hd + 2); c.fill();
+    var R = mulberry(7), nt = Math.round(W / 60);
+    for (var i = 0; i < nt; i++) { var tx = R() * W, ty = hd * (0.62 + R() * 0.22), ts = 6 + R() * 6; c.fillStyle = '#5d8f3a'; c.fillRect(tx - 1.5, ty, 3, ts * 0.9); c.fillStyle = i % 2 ? '#4f9a35' : '#5fae3f'; c.beginPath(); c.arc(tx, ty, ts, 0, 7); c.fill(); }
     if (kind === 'field') {
-      var hs = Math.min(66, hd * 0.6), hx = Math.max(52, W * 0.15);
+      var hs = 66, hx = MX + 60;
       house(c, hx, hd - 4, hs);
       if (built('gieng')) well(c, hx + hs * 0.95, hd - 3, hs * 0.42);
-      if (built('coixay')) { L.mill = { x: Math.min(W - 96, W * 0.62), y: hd - 3, s: hs * 0.9 }; millBase(c, L.mill.x, L.mill.y, L.mill.s); } else L.mill = null;
-    } else barn(c, W * 0.74, hd - 4, Math.min(84, hd * 0.75));
+      if (built('coixay')) { L.mill = { x: MX + 250, y: hd - 3, s: hs * 0.9 }; millBase(c, L.mill.x, L.mill.y, L.mill.s); } else L.mill = null;
+    } else barn(c, W / 2, hd - 4, 84);
   }
   function house(c, x, by, s) {
     c.save(); c.translate(x, by);
@@ -481,17 +575,26 @@
     c.fillStyle = '#b0bec5'; rr(c, s * 0.62, -s * 0.78, s * 0.24, s * 0.78, 6); c.fill(); c.fillStyle = '#90a4ae'; c.beginPath(); c.arc(s * 0.74, -s * 0.78, s * 0.12, Math.PI, 0); c.fill();
     c.restore();
   }
-  function grass(c, y0, h0, seed) {
-    var g = c.createLinearGradient(0, y0, 0, H); g.addColorStop(0, '#7cc35a'); g.addColorStop(1, '#5aa83a');
-    c.fillStyle = g; c.fillRect(0, y0, W, h0);
-    var R = mulberry(seed);
-    var n = Math.round(W * h0 / 260);
-    for (var i = 0; i < n; i++) {
-      var x = R() * W, y = y0 + R() * h0, s = 3 + R() * 4;
+  /* Cỏ: vẽ 1 viên gạch cỏ rồi lát kín bản đồ (nhẹ máy khi kéo/zoom) */
+  var grassPat = null;
+  function grassTile() {
+    var T = 160, k = 2, t = document.createElement('canvas'); t.width = T * k; t.height = T * k;
+    var c = t.getContext('2d'); c.scale(k, k);
+    c.fillStyle = '#6fb84c'; c.fillRect(0, 0, T, T);
+    var R = mulberry(11);
+    for (var i = 0; i < 120; i++) {
+      var x = R() * T, y = R() * T, s = 3 + R() * 4;
       c.strokeStyle = R() < 0.5 ? 'rgba(46,110,30,.45)' : 'rgba(190,240,140,.5)'; c.lineWidth = 1.2;
       c.beginPath(); c.moveTo(x - s * 0.5, y - s); c.lineTo(x, y); c.lineTo(x + s * 0.5, y - s); c.stroke();
     }
-    for (i = 0; i < n / 14; i++) { x = R() * W; y = y0 + R() * h0; c.fillStyle = ['#fff', '#ffe066', '#ffb3c7', '#c7a6ff'][Math.floor(R() * 4)]; c.beginPath(); c.arc(x, y, 1.8 + R(), 0, 7); c.fill(); c.fillStyle = '#ffcc33'; c.beginPath(); c.arc(x, y, 0.8, 0, 7); c.fill(); }
+    for (i = 0; i < 9; i++) { x = 4 + R() * (T - 8); y = 4 + R() * (T - 8); c.fillStyle = ['#fff', '#ffe066', '#ffb3c7', '#c7a6ff'][Math.floor(R() * 4)]; c.beginPath(); c.arc(x, y, 1.8 + R(), 0, 7); c.fill(); c.fillStyle = '#ffcc33'; c.beginPath(); c.arc(x, y, 0.8, 0, 7); c.fill(); }
+    var p = ctx.createPattern(t, 'repeat');
+    try { p.setTransform(new DOMMatrix([1 / k, 0, 0, 1 / k, 0, 0])); } catch (e) { p = ctx.createPattern((function () { var u = document.createElement('canvas'); u.width = T; u.height = T; u.getContext('2d').drawImage(t, 0, 0, T, T); return u; })(), 'repeat'); }
+    return p;
+  }
+  function ground(v) {
+    if (!grassPat) grassPat = grassTile();
+    ctx.fillStyle = grassPat; ctx.fillRect(v.x0 - 2, Math.max(HD, v.y0 - 2), v.x1 - v.x0 + 4, v.y1 - Math.max(HD, v.y0) + 4);
   }
   function fence(c, x, y, w, h) {
     var post = function (px, py) { c.fillStyle = '#9b6a3c'; rr(c, px - 3, py - 10, 6, 14, 2); c.fill(); c.fillStyle = '#c08a55'; c.fillRect(px - 3, py - 10, 2, 12); };
@@ -500,35 +603,71 @@
     for (var px = x; px <= x + w + 0.5; px += Math.max(22, w / Math.round(w / 28))) { post(px, y - 2); post(px, y + h + 2); }
     for (var py = y + 28; py < y + h - 10; py += 28) { post(x, py); post(x + w, py); }
   }
-  function buildBg() {
-    var key = tab + page + W + 'x' + H + DPR + Object.keys(S.bld).join(',');
-    if (key === bgKey) return; bgKey = key;
-    bgC.width = cv.width; bgC.height = cv.height;
-    var c = bgC.getContext('2d'); c.setTransform(DPR, 0, 0, DPR, 0, 0);
-    grass(c, L.hd, H - L.hd, tab === 'field' ? 11 : 23);
-    drawSky(c, tab);
-    if (tab === 'field') {
-      c.fillStyle = 'rgba(160,120,70,.35)'; rr(c, L.fx - 10, L.fy - 10, L.fw + 20, L.fh + 20, 16); c.fill();
-      c.fillStyle = 'rgba(120,85,45,.22)'; rr(c, L.fx - 5, L.fy - 5, L.fw + 10, L.fh + 10, 12); c.fill();
-      fence(c, L.fx - 13, L.fy - 10, L.fw + 26, L.fh + 18);
-    } else {
-      L.pens.forEach(function (p, i) {
-        var a = p.a;
-        c.fillStyle = 'rgba(0,0,0,.10)'; rr(c, p.x + 2, p.y + 4, p.w, p.h, 16); c.fill();
-        var g = c.createLinearGradient(0, p.y, 0, p.y + p.h);
-        if (a.water) { g.addColorStop(0, '#7dd3fc'); g.addColorStop(1, '#0284c7'); } else { g.addColorStop(0, a.grass); g.addColorStop(1, '#7cb342'); }
-        c.fillStyle = g; rr(c, p.x, p.y, p.w, p.h, 16); c.fill();
-        var R = mulberry(31 + i + page * 7);
-        for (var k = 0; k < p.w * p.h / 300; k++) {
-          var x = p.x + 8 + R() * (p.w - 16), y = p.y + 30 + R() * (p.h - 36);
-          if (a.water) { c.strokeStyle = 'rgba(255,255,255,.35)'; c.lineWidth = 1.2; c.beginPath(); c.moveTo(x - 5, y); c.quadraticCurveTo(x, y - 3, x + 5, y); c.stroke(); }
-          else { c.strokeStyle = 'rgba(50,110,30,.35)'; c.lineWidth = 1.1; c.beginPath(); c.moveTo(x - 2, y - 4); c.lineTo(x, y); c.lineTo(x + 2, y - 4); c.stroke(); }
-        }
-        if (!a.water) { c.fillStyle = '#8d5a2b'; rr(c, p.x + p.w - 64, p.y + p.h - 22, 52, 14, 5); c.fill(); c.fillStyle = '#e6c56a'; rr(c, p.x + p.w - 60, p.y + p.h - 20, 44, 6, 3); c.fill(); }
-        c.strokeStyle = a.water ? '#a8a29e' : '#a8743f'; c.lineWidth = 4; rr(c, p.x + 2, p.y + 2, p.w - 4, p.h - 4, 15); c.stroke();
-        c.strokeStyle = a.water ? '#d6d3d1' : '#c99a62'; c.lineWidth = 1.5; rr(c, p.x + 6, p.y + 6, p.w - 12, p.h - 12, 12); c.stroke();
-      });
+  /* Cây xanh trang trí và đường đất nối các cánh đồng (tính 1 lần) */
+  var TREES = (function () {
+    var R = mulberry(5), out = [], boxes = [[MX - 30, MY - 30, CW * COLS + 60, CW * MAXROWS + 50], [MX - 40, 60, 360, 120]];
+    FIELDS.forEach(function (f) { boxes.push([f.x - 34, f.y - 50, f.w + 68, f.h + 84]); });
+    for (var n = 0; n < 400 && out.length < 46; n++) {
+      var x = 10 + R() * (FW - 20), y = HD + 20 + R() * (FH - HD - 30), s = 10 + R() * 9, ok = true;
+      boxes.forEach(function (b) { if (x > b[0] - s && x < b[0] + b[2] + s && y > b[1] - s && y < b[1] + b[3] + s) ok = false; });
+      out.forEach(function (t) { if (Math.abs(t.x - x) < 30 && Math.abs(t.y - y) < 30) ok = false; });
+      if (ok) out.push({ x: x, y: y, s: s, k: R() < 0.25 ? 1 : 0 });
     }
+    return out.sort(function (a, b) { return a.y - b.y; });
+  })();
+  var PATHS = [[MX - 12, MY + 260, 286, 358], [MX + CW * COLS + 12, MY + 260, 746, 358], [MX + 160, MY + CW * MAXROWS + 8, MX + 160, 700], [MX + 160, 892, MX + 160, 960]];
+  function drawFieldWorld(v) {
+    ground(v); drawSky(ctx, 'field', v);
+    ctx.lineCap = 'round';
+    PATHS.forEach(function (p) { ctx.strokeStyle = '#c9a46a'; ctx.lineWidth = 22; ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(p[2], p[3]); ctx.stroke(); ctx.strokeStyle = '#dcbd85'; ctx.lineWidth = 12; ctx.stroke(); });
+    ctx.lineCap = 'butt';
+    TREES.forEach(function (t) {
+      if (!vis(v, t.x - 30, t.y - 40, 60, 60)) return;
+      ctx.fillStyle = 'rgba(0,0,0,.15)'; ctx.beginPath(); ctx.ellipse(t.x, t.y + t.s * 0.9, t.s * 0.9, t.s * 0.25, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#7a5032'; ctx.fillRect(t.x - 2.5, t.y, 5, t.s * 0.9);
+      if (t.k) { ctx.fillStyle = '#2f7d32'; ctx.beginPath(); ctx.moveTo(t.x, t.y - t.s * 2); ctx.lineTo(t.x + t.s * 0.9, t.y + t.s * 0.2); ctx.lineTo(t.x - t.s * 0.9, t.y + t.s * 0.2); ctx.fill(); }
+      else { ctx.fillStyle = '#3f9a35'; ctx.beginPath(); ctx.arc(t.x, t.y - t.s * 0.5, t.s, 0, 7); ctx.fill(); ctx.fillStyle = '#5fbf46'; ctx.beginPath(); ctx.arc(t.x - t.s * 0.3, t.y - t.s * 0.8, t.s * 0.5, 0, 7); ctx.fill(); }
+    });
+    var fw = CW * COLS, fh = CW * MAXROWS;
+    ctx.fillStyle = 'rgba(160,120,70,.35)'; rr(ctx, MX - 10, MY - 10, fw + 20, fh + 20, 16); ctx.fill();
+    ctx.fillStyle = 'rgba(120,85,45,.22)'; rr(ctx, MX - 5, MY - 5, fw + 10, fh + 10, 12); ctx.fill();
+    fence(ctx, MX - 13, MY - 10, fw + 26, fh + 18);
+    FIELDS.forEach(function (f) {
+      if (!fieldOpen(f) || !vis(v, f.x - 20, f.y - 20, f.w + 40, f.h + 40)) return;
+      ctx.fillStyle = 'rgba(160,120,70,.35)'; rr(ctx, f.x - 10, f.y - 10, f.w + 20, f.h + 20, 16); ctx.fill();
+      fence(ctx, f.x - 13, f.y - 10, f.w + 26, f.h + 18);
+    });
+  }
+  /* Nền mỗi chuồng (cỏ/nước) vẽ sẵn 1 lần */
+  var penTex = {};
+  function penTexture(a) {
+    if (penTex[a.id]) return penTex[a.id];
+    var k = 2, t = document.createElement('canvas'); t.width = PW * k; t.height = PH * k;
+    var c = t.getContext('2d'); c.scale(k, k);
+    var g = c.createLinearGradient(0, 0, 0, PH);
+    if (a.water) { g.addColorStop(0, a.id === 'vit' ? '#9be7a0' : '#7dd3fc'); g.addColorStop(1, a.id === 'vit' ? '#66bb6a' : '#0284c7'); } else { g.addColorStop(0, a.grass); g.addColorStop(1, '#7cb342'); }
+    c.fillStyle = g; rr(c, 0, 0, PW, PH, 16); c.fill();
+    if (a.id === 'vit') { c.fillStyle = '#4fc3f7'; c.beginPath(); c.ellipse(PW * 0.62, PH * 0.62, PW * 0.3, PH * 0.24, 0, 0, 7); c.fill(); c.strokeStyle = 'rgba(255,255,255,.5)'; c.lineWidth = 2; c.stroke(); }
+    var R = mulberry(31 + ANIMALS.indexOf(a));
+    for (var n = 0; n < PW * PH / 300; n++) {
+      var x = 8 + R() * (PW - 16), y = 30 + R() * (PH - 36);
+      if (a.id === 'vit' && Math.pow((x - PW * 0.62) / (PW * 0.31), 2) + Math.pow((y - PH * 0.62) / (PH * 0.25), 2) < 1) continue;
+      if (a.water && a.id !== 'vit') { c.strokeStyle = 'rgba(255,255,255,.35)'; c.lineWidth = 1.2; c.beginPath(); c.moveTo(x - 5, y); c.quadraticCurveTo(x, y - 3, x + 5, y); c.stroke(); }
+      else { c.strokeStyle = 'rgba(50,110,30,.35)'; c.lineWidth = 1.1; c.beginPath(); c.moveTo(x - 2, y - 4); c.lineTo(x, y); c.lineTo(x + 2, y - 4); c.stroke(); }
+    }
+    if (!a.water || a.id === 'vit') { c.fillStyle = '#8d5a2b'; rr(c, PW - 64, PH - 22, 52, 14, 5); c.fill(); c.fillStyle = '#e6c56a'; rr(c, PW - 60, PH - 20, 44, 6, 3); c.fill(); }
+    var stone = a.water && a.id !== 'vit';
+    c.strokeStyle = stone ? '#a8a29e' : '#a8743f'; c.lineWidth = 4; rr(c, 2, 2, PW - 4, PH - 4, 15); c.stroke();
+    c.strokeStyle = stone ? '#d6d3d1' : '#c99a62'; c.lineWidth = 1.5; rr(c, 6, 6, PW - 12, PH - 12, 12); c.stroke();
+    return (penTex[a.id] = t);
+  }
+  function drawBarnWorld(v) {
+    ground(v); drawSky(ctx, 'barn', v);
+    L.pens.forEach(function (p) {
+      if (!vis(v, p.x, p.y, p.w + 4, p.h + 4)) return;
+      ctx.fillStyle = 'rgba(0,0,0,.10)'; rr(ctx, p.x + 2, p.y + 4, p.w, p.h, 16); ctx.fill();
+      ctx.drawImage(penTexture(p.a), p.x, p.y, p.w, p.h);
+    });
   }
 
   /* ================= VẼ CÂY TRỒNG ================= */
@@ -582,54 +721,92 @@
     if (!qClaimed(Ld.q)) return { k: 'q', Ld: Ld };
     return { k: 'buy', Ld: Ld };
   }
-  function drawField() {
-    var now = Date.now();
-    for (var i = 0; i < COLS * MAXROWS; i++) {
-      var R = plotRect(i), row = Math.floor(i / COLS), pl = S.plots[i];
-      if (row >= S.rows) continue;
-      ctx.fillStyle = 'rgba(0,0,0,.18)'; rr(ctx, R.x + 1, R.y + 3, R.s, R.s, 10); ctx.fill();
-      var wet = pl.c && pl.w && pl.p < 1;
-      var g = ctx.createLinearGradient(0, R.y, 0, R.y + R.s);
-      g.addColorStop(0, wet ? '#7a5032' : '#b07a4c'); g.addColorStop(1, wet ? '#5c3920' : '#8e5d36');
-      ctx.fillStyle = g; rr(ctx, R.x, R.y, R.s, R.s, 10); ctx.fill();
-      ctx.strokeStyle = wet ? 'rgba(40,20,5,.5)' : 'rgba(90,55,25,.45)'; ctx.lineWidth = Math.max(1.5, R.s * 0.03);
-      for (var f = 1; f <= 3; f++) { var fy = R.y + R.s * f / 4; ctx.beginPath(); ctx.moveTo(R.x + R.s * 0.12, fy); ctx.quadraticCurveTo(R.x + R.s / 2, fy + R.s * 0.04, R.x + R.s * 0.88, fy); ctx.stroke(); }
-      ctx.strokeStyle = wet ? 'rgba(255,255,255,.12)' : 'rgba(255,230,190,.35)'; ctx.lineWidth = 1.5; rr(ctx, R.x + 1, R.y + 1, R.s - 2, R.s - 2, 9); ctx.stroke();
-      if (wet) { ctx.fillStyle = 'rgba(160,215,255,.55)'; for (var d = 0; d < 3; d++) { ctx.beginPath(); ctx.ellipse(R.x + R.s * (0.2 + d * 0.3), R.y + R.s * (0.84 - (d % 2) * 0.5), R.s * 0.035, R.s * 0.02, 0, 0, 7); ctx.fill(); } }
-      if (pl.c) {
-        var cr = CM[pl.c];
-        drawPlant(ctx, R.x + R.s / 2, R.y + R.s * 0.8, R.s, cr, pl.p, i);
-        if (pl.p < 1) ring(ctx, R.x + R.s - R.s * 0.14, R.y + R.s * 0.14, Math.max(7, R.s * 0.11), pl.p, pl.w ? '#38bdf8' : '#22c55e');
-        else { star(ctx, R.x + R.s * 0.18, R.y + R.s * 0.2, R.s * 0.07, tm * 2 + i); star(ctx, R.x + R.s * 0.84, R.y + R.s * 0.3, R.s * 0.05, -tm * 2 + i); }
-      }
+  function fieldState(f) {
+    if (fieldOpen(f)) return 'open';
+    if (S.lv < f.lv) return 'lv';
+    if (!qClaimed(f.q)) return 'q';
+    return 'buy';
+  }
+  function drawPlot(i) {
+    var R = plotRect(i), pl = S.plots[i];
+    ctx.fillStyle = 'rgba(0,0,0,.18)'; rr(ctx, R.x + 1, R.y + 3, R.s, R.s, 10); ctx.fill();
+    var wet = pl.c && pl.w && pl.p < 1;
+    var g = ctx.createLinearGradient(0, R.y, 0, R.y + R.s);
+    g.addColorStop(0, wet ? '#7a5032' : '#b07a4c'); g.addColorStop(1, wet ? '#5c3920' : '#8e5d36');
+    ctx.fillStyle = g; rr(ctx, R.x, R.y, R.s, R.s, 10); ctx.fill();
+    ctx.strokeStyle = wet ? 'rgba(40,20,5,.5)' : 'rgba(90,55,25,.45)'; ctx.lineWidth = Math.max(1.5, R.s * 0.03);
+    for (var f = 1; f <= 3; f++) { var fy = R.y + R.s * f / 4; ctx.beginPath(); ctx.moveTo(R.x + R.s * 0.12, fy); ctx.quadraticCurveTo(R.x + R.s / 2, fy + R.s * 0.04, R.x + R.s * 0.88, fy); ctx.stroke(); }
+    ctx.strokeStyle = wet ? 'rgba(255,255,255,.12)' : 'rgba(255,230,190,.35)'; ctx.lineWidth = 1.5; rr(ctx, R.x + 1, R.y + 1, R.s - 2, R.s - 2, 9); ctx.stroke();
+    if (wet) { ctx.fillStyle = 'rgba(160,215,255,.55)'; for (var d = 0; d < 3; d++) { ctx.beginPath(); ctx.ellipse(R.x + R.s * (0.2 + d * 0.3), R.y + R.s * (0.84 - (d % 2) * 0.5), R.s * 0.035, R.s * 0.02, 0, 0, 7); ctx.fill(); } }
+    if (pl.c) {
+      var cr = CM[pl.c];
+      drawPlant(ctx, R.x + R.s / 2, R.y + R.s * 0.8, R.s, cr, pl.p, i);
+      if (pl.p < 1) ring(ctx, R.x + R.s - R.s * 0.14, R.y + R.s * 0.14, Math.max(7, R.s * 0.11), pl.p, pl.w ? '#38bdf8' : '#22c55e');
+      else { star(ctx, R.x + R.s * 0.18, R.y + R.s * 0.2, R.s * 0.07, tm * 2 + i); star(ctx, R.x + R.s * 0.84, R.y + R.s * 0.3, R.s * 0.05, -tm * 2 + i); }
     }
+  }
+  /* Bảng gỗ ghi điều kiện mở khoá */
+  function sign(x, y, w, h, ic, t1, t2) {
+    emo(ctx, ic, x + h * 0.42, y + h / 2, h * 0.42);
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.font = '800 ' + Math.round(Math.max(12, Math.min(16, h * 0.2))) + 'px ' + TF;
+    ctx.fillText(t1, x + h * 0.8, y + h * 0.38, w - h * 0.9);
+    ctx.font = '600 ' + Math.round(Math.max(10.5, Math.min(13, h * 0.16))) + 'px ' + TF; ctx.fillStyle = 'rgba(255,255,255,.9)';
+    ctx.fillText(t2, x + h * 0.8, y + h * 0.66, w - h * 0.9);
+  }
+  function drawField() {
+    var now = Date.now(), v = view();
+    for (var i = 0; i < TOTAL; i++) {
+      if (!plotOpen(i)) continue;
+      var R = plotRect(i); if (!vis(v, R.x - 4, R.y - 30, R.s + 8, R.s + 34)) continue;
+      drawPlot(i);
+    }
+    var fw = CW * COLS - L.gap, ch = CW - L.gap;
     for (var r = S.rows; r < MAXROWS; r++) {
-      var a = plotRect(r * COLS), y = a.y, x = a.x, w = L.fw - L.gap, h = L.cell - L.gap;
+      var a = plotRect(r * COLS), y = a.y, x = a.x, w = fw, h = ch;
       ctx.fillStyle = 'rgba(70,120,40,.55)'; rr(ctx, x, y, w, h, 10); ctx.fill();
       ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.setLineDash([6, 5]); ctx.lineWidth = 2; rr(ctx, x + 2, y + 2, w - 4, h - 4, 9); ctx.stroke(); ctx.setLineDash([]);
       if (r === S.rows) {
-        var ls = landState(r + 1), t1, t2, ic;
-        if (ls.k === 'lv') { ic = '🔒'; t1 = 'Mở ở cấp ' + ls.Ld.lv; t2 = 'Thêm 5 ô đất trồng'; }
-        else if (ls.k === 'q') { ic = '🎯'; t1 = 'Cần làm nhiệm vụ để mở'; t2 = qTitle(QM[ls.Ld.q].g, QM[ls.Ld.q].n); }
-        else { ic = '🪧'; t1 = 'Mở rộng ruộng: ' + money(ls.Ld.c); t2 = 'Chạm để mua thêm 5 ô đất'; }
-        emo(ctx, ic, x + h * 0.42, y + h / 2, h * 0.42);
-        ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-        ctx.font = '800 ' + Math.round(Math.max(12, Math.min(16, h * 0.2))) + 'px ' + TF;
-        ctx.fillText(t1, x + h * 0.8, y + h * 0.38, w - h * 0.9);
-        ctx.font = '600 ' + Math.round(Math.max(10.5, Math.min(13, h * 0.16))) + 'px ' + TF; ctx.fillStyle = 'rgba(255,255,255,.88)';
-        ctx.fillText(t2, x + h * 0.8, y + h * 0.66, w - h * 0.9);
+        var ls = landState(r + 1);
+        if (ls.k === 'lv') sign(x, y, w, h, '🔒', 'Mở ở cấp ' + ls.Ld.lv, 'Thêm 5 ô đất trồng');
+        else if (ls.k === 'q') sign(x, y, w, h, '🎯', 'Cần làm nhiệm vụ để mở', qTitle(QM[ls.Ld.q].g, QM[ls.Ld.q].n));
+        else sign(x, y, w, h, '🪧', 'Mở rộng ruộng: ' + money(ls.Ld.c), 'Chạm để mua thêm 5 ô đất');
       } else { emo(ctx, ['🌿', '🍀', '🌼'][r % 3], x + w / 2, y + h / 2, h * 0.32); }
     }
+    // Các cánh đồng bên ngoài chưa mở: bãi cỏ hoang có bảng chỉ dẫn
+    FIELDS.forEach(function (f) {
+      var st = fieldState(f); if (st === 'open' || !vis(v, f.x, f.y, f.w, f.h)) return;
+      ctx.fillStyle = st === 'buy' ? 'rgba(150,105,55,.55)' : 'rgba(55,100,30,.5)'; rr(ctx, f.x, f.y, f.w, f.h, 14); ctx.fill();
+      ctx.strokeStyle = st === 'buy' ? '#fde68a' : 'rgba(255,255,255,.45)'; ctx.setLineDash([8, 6]); ctx.lineWidth = st === 'buy' ? 3 : 2; rr(ctx, f.x + 2, f.y + 2, f.w - 4, f.h - 4, 12); ctx.stroke(); ctx.setLineDash([]);
+      var R0 = mulberry(f.i0);
+      for (var k = 0; k < f.c * f.r * 0.7; k++) emo(ctx, ['🌿', '🍀', '🌼', '🪨', '🌾'][Math.floor(R0() * 5)], f.x + 14 + R0() * (f.w - 28), f.y + 14 + R0() * (f.h - 28), 13 + R0() * 6);
+      var bh = 64, bw = Math.min(f.w - 16, 300), bx = f.x + (f.w - bw) / 2, by = f.y + (f.h - bh) / 2;
+      ctx.fillStyle = 'rgba(0,0,0,.2)'; rr(ctx, bx + 2, by + 4, bw, bh, 14); ctx.fill();
+      ctx.fillStyle = st === 'buy' ? '#b45309' : 'rgba(36,54,26,.88)'; rr(ctx, bx, by, bw, bh, 14); ctx.fill();
+      var Q = QM[f.q], n = f.c * f.r;
+      if (st === 'lv') sign(bx + 4, by, bw - 8, bh, '🔒', f.n + ' · ' + n + ' ô', 'Mở ở cấp ' + f.lv);
+      else if (st === 'q') sign(bx + 4, by, bw - 8, bh, '🎯', f.n + ' · ' + n + ' ô', 'Nhiệm vụ: ' + qTitle(Q.g, Q.n));
+      else sign(bx + 4, by, bw - 8, bh, '🪧', 'Mua ' + f.n.toLowerCase(), money(f.cost) + ' · chạm để mua ' + n + ' ô đất');
+    });
+    // Tên các cánh đồng đã mở
+    FIELDS.forEach(function (f) {
+      if (!fieldOpen(f) || !vis(v, f.x, f.y - 40, f.w, 40)) return;
+      ctx.font = '800 13px ' + TF; var tw = ctx.measureText(f.n).width + 20, tx = f.x + f.w / 2 - tw / 2, ty = f.y - 38;
+      ctx.fillStyle = 'rgba(255,255,255,.9)'; rr(ctx, tx, ty, tw, 22, 11); ctx.fill();
+      ctx.fillStyle = '#5b3a12'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(f.n, tx + tw / 2, ty + 11.5);
+    });
     millBlades();
-    if (TIP && now < TIP.until) {
-      var P = S.plots[TIP.i]; if (P.c && P.p < 1) {
-        var R2 = plotRect(TIP.i), txt = CM[P.c].n + ' · còn ' + dur(left(P)) + (P.w ? ' 💧' : '');
-        ctx.font = '800 14px ' + TF; var tw = ctx.measureText(txt).width + 22, tx = Math.min(W - tw - 6, Math.max(6, R2.x + R2.s / 2 - tw / 2)), ty = R2.y - 36;
-        if (ty < L.hd) ty = R2.y + R2.s + 6;
-        ctx.fillStyle = 'rgba(36,54,26,.92)'; rr(ctx, tx, ty, tw, 30, 15); ctx.fill();
-        ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(txt, tx + tw / 2, ty + 15);
-      }
-    } else TIP = null;
+  }
+  /* Bong bóng thông tin cây: vẽ theo toạ độ màn hình để luôn dễ đọc dù đang thu nhỏ */
+  function drawTip() {
+    if (!TIP || Date.now() >= TIP.until) { TIP = null; return; }
+    var P = S.plots[TIP.i]; if (!P.c || P.p >= 1) return;
+    var R2 = plotRect(TIP.i), txt = CM[P.c].n + ' · còn ' + dur(left(P)) + (P.w ? ' 💧' : '');
+    var sx = (R2.x + R2.s / 2 - cam.x) * cam.z, sy = (R2.y - cam.y) * cam.z, sb = (R2.y + R2.s - cam.y) * cam.z;
+    ctx.font = '800 14px ' + TF; var tw = ctx.measureText(txt).width + 22, tx = Math.min(W - tw - 6, Math.max(6, sx - tw / 2)), ty = sy - 36;
+    if (ty < 4) ty = sb + 6;
+    ctx.fillStyle = 'rgba(36,54,26,.92)'; rr(ctx, tx, ty, tw, 30, 15); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(txt, tx + tw / 2, ty + 15);
   }
 
   /* ================= VẼ CHUỒNG TRẠI ================= */
@@ -648,15 +825,9 @@
   }
   function pillL(c, x, y, txt, bg, fg, fn) { c.font = '800 13px ' + TF; var w = c.measureText(txt).width + 22; pill(c, x + w, y, txt, bg, fg, fn); return w; }
   function drawBarn(dt) {
-    // nút chuyển khu chuồng
-    var bx0 = 10;
-    PAGES.forEach(function (pg, k) {
-      var lab = AM[pg[0]].e + ' Khu ' + (k + 1);
-      bx0 += pillL(ctx, bx0, 10, lab, k === page ? '#f59e0b' : 'rgba(255,255,255,.92)', k === page ? '#fff' : '#5b3a12', function () { page = k; penLayout(); bgKey = ''; }) + 6;
-    });
-    var ready2 = 0; PAGES[1 - page].forEach(function (id) { S.an[id].forEach(function (x) { if (x.s === 2) ready2++; }); });
-    if (ready2) { ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(bx0 - 8, 12, 9, 0, 7); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = '800 11px ' + TF; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(ready2, bx0 - 8, 12.5); }
+    var v = view();
     L.pens.forEach(function (p) {
+      if (!vis(v, p.x, p.y, p.w, p.h)) return;
       var a = p.a, list = S.an[a.id], lockLv = S.lv < a.lv, lockQ = !lockLv && !penOpen(a), cap = capOf(a);
       ctx.font = '800 14px ' + TF; var lt = a.pen + ' ' + list.length + '/' + cap, lw = ctx.measureText(lt).width + 44;
       ctx.fillStyle = 'rgba(255,255,255,.9)'; rr(ctx, p.x + 10, p.y + 8, lw, 28, 14); ctx.fill();
@@ -674,7 +845,7 @@
       var bx = p.x + 12, by = p.y + p.h - 38;
       if (list.length) bx += pillL(ctx, bx, by, '⚡ Chăm tất cả', '#16a34a', '#fff', function () { careAll(a); }) + 8;
       if (list.length < cap) pillL(ctx, bx, by, '＋ Mua ' + a.n.toLowerCase() + ' ' + short(a.cost), '#f59e0b', '#fff', function () { buyAnimal(a); });
-      else if (questFor('cap', a.id) && !qClaimed(questFor('cap', a.id).id)) pillL(ctx, bx, by, '🎯 Mở thêm chỗ', 'rgba(255,255,255,.92)', '#92400e', function () { setTab('quest'); });
+      else if (capQuest(a.id)) pillL(ctx, bx, by, '🎯 Mở thêm chỗ', 'rgba(255,255,255,.92)', '#92400e', function () { setTab('quest'); });
       if (!list.length) {
         ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.textAlign = 'center'; ctx.font = '700 14px ' + TF;
         ctx.fillText((a.water ? 'Ao trống' : 'Chuồng trống') + ' – hãy mua ' + a.n.toLowerCase() + ' đầu tiên!', p.x + p.w / 2, p.y + p.h * 0.42, p.w - 16);
@@ -721,7 +892,7 @@
   function drawClouds(dt) {
     clouds.forEach(function (c) {
       c.x += dt * 0.008 * c.s; if (c.x > 1.2) c.x = -0.25;
-      var x = c.x * W, y = c.y * L.hd, s = 16 * c.s;
+      var x = c.x * WORLD[tab].w, y = c.y * HD, s = 16 * c.s;
       ctx.fillStyle = 'rgba(255,255,255,.92)';
       ctx.beginPath(); ctx.arc(x, y, s, 0, 7); ctx.arc(x + s * 1.1, y - s * 0.4, s * 1.2, 0, 7); ctx.arc(x + s * 2.3, y, s * 0.95, 0, 7); ctx.fill();
       ctx.fillRect(x, y - 2, s * 2.3, s * 0.9);
@@ -736,22 +907,35 @@
     var t = Date.now(); update(t);
     if (t - lastSave > 5000) { lastSave = t; save(); badges(); }
     if (tab === 'field' || tab === 'barn') {
-      buildBg(); HITS = [];
-      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height); ctx.drawImage(bgC, 0, 0);
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      drawClouds(dt);
+      useCam(); stepCam(dt); HITS = [];
+      var z = cam.z * DPR, v = view();
+      ctx.setTransform(z, 0, 0, z, -cam.x * z, -cam.y * z);
+      if (tab === 'field') drawFieldWorld(v); else drawBarnWorld(v);
+      if (v.y0 < HD) drawClouds(dt);
       if (tab === 'field') drawField(); else drawBarn(dt);
       drawFX(dt);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      if (tab === 'field') drawTip();
     } else if (tab === 'build' && t - lastPanel > 1000) { lastPanel = t; tickBuild(); }
     raf = requestAnimationFrame(loop);
   }
 
   /* ================= HÀNH ĐỘNG TRÊN RUỘNG ================= */
   var drag = null;
-  function plotAt(x, y) {
-    if (x < L.fx || y < L.fy || x >= L.fx + L.fw || y >= L.fy + L.fh) return -1;
-    var c = Math.floor((x - L.fx) / L.cell), r = Math.floor((y - L.fy) / L.cell);
-    return r * COLS + c;
+  function plotAt(x, y) {   // toạ độ thế giới → số ô (-1 nếu không trúng ô nào)
+    if (x >= MX && y >= MY && x < MX + CW * COLS && y < MY + CW * MAXROWS) return Math.floor((y - MY) / CW) * COLS + Math.floor((x - MX) / CW);
+    for (var k = 0; k < FIELDS.length; k++) { var f = FIELDS[k]; if (x >= f.x && y >= f.y && x < f.x + f.w && y < f.y + f.h) return f.i0 + Math.floor((y - f.y) / CW) * f.c + Math.floor((x - f.x) / CW); }
+    return -1;
+  }
+  /* Chạm/vuốt vào ô này có làm gì không? (để phân biệt "vuốt gieo hạt" với "kéo bản đồ") */
+  function actionable(i) {
+    if (!plotOpen(i)) return false;
+    var pl = S.plots[i];
+    if (pl.c && pl.p >= 1) return true;
+    if (tool === 'seed') return !pl.c;
+    if (tool === 'water') return !!pl.c && !pl.w;
+    if (tool === 'fert') return !!pl.c && S.fert > 0;
+    return false;
   }
   function noMoney(need) { toast('💸 Chưa đủ tiền' + (need ? ' (cần ' + money(need) + ')' : '') + '. Vào 💰 Kiếm tiền để vừa học vừa kiếm thêm nhé!'); sfx('bad'); }
   function plant(i) {
@@ -790,9 +974,13 @@
     toolsUI(); return true;
   }
   function act(i, first) {
-    if (i < 0 || i >= COLS * MAXROWS) return;
-    var row = Math.floor(i / COLS);
-    if (row >= S.rows) { if (first && row === S.rows) buyLand(); return; }
+    if (i < 0 || i >= TOTAL) return;
+    if (!plotOpen(i)) {
+      if (!first) return;
+      if (i < MAIN) { if (Math.floor(i / COLS) === S.rows) buyLand(); }
+      else buyField(fieldOf(i));
+      return;
+    }
     var pl = S.plots[i];
     if (pl.c && pl.p >= 1) { harvest(i); hud(); return; }
     if (tool === 'seed') {
@@ -809,6 +997,19 @@
     confirmBox('🪧', 'Mở rộng ruộng?', 'Mua thêm 5 ô đất với giá <b>' + money(ls.Ld.c) + '</b>. Đây là khoản <b>đầu tư</b>: tốn tiền một lần nhưng giúp nông trại thu được nhiều hơn mỗi ngày.', 'Mua đất', function () {
       if (S.m < ls.Ld.c) { noMoney(ls.Ld.c); return; }
       S.m -= ls.Ld.c; S.rows++; addLog('out', ls.Ld.c, 'land' + S.rows, 'Mua thêm đất (hàng ' + S.rows + ')', '🪧'); sfx('win'); save(); hud(); toast('🎉 Ruộng đã rộng hơn!');
+    });
+  }
+  function buyField(f) {
+    var st = fieldState(f), Q = QM[f.q], n = f.c * f.r;
+    if (st === 'lv') { toast('🔒 ' + f.n + ' mở ở cấp ' + f.lv + '. Lên cấp rồi làm nhiệm vụ để mở nhé!'); return; }
+    if (st === 'q') { toast('🎯 Hoàn thành nhiệm vụ “' + qTitle(Q.g, Q.n) + '” để mở ' + f.n.toLowerCase()); setTab('quest'); return; }
+    if (st !== 'buy') return;
+    confirmBox('🌾', 'Mua ' + f.n.toLowerCase() + '?', 'Thêm <b>' + n + ' ô đất</b> bên ngoài hàng rào với giá <b>' + money(f.cost) + '</b>. Đây là khoản <b>đầu tư</b>: trả một lần, trồng được mãi mãi.', 'Mua đất', function () {
+      if (S.m < f.cost) { noMoney(f.cost); return; }
+      S.m -= f.cost; S.fx[f.id] = Date.now(); addLog('out', f.cost, 'fld_' + f.id, 'Mua ' + f.n.toLowerCase(), '🌾');
+      addXP(Math.max(5, Math.round(f.cost / 100000)));
+      sfx('win'); save(); hud(); toast('🎉 Đã mở ' + f.n + '! Chạm hoặc vuốt để gieo hạt.');
+      burst(f.x + f.w / 2, f.y + f.h / 2, ['#fde047', '#86efac', '#fff', '#f59e0b'], 24);
     });
   }
 
@@ -918,10 +1119,11 @@
   function guide() {
     sheet('<div class="fm-modal"><div class="big">👩‍🌾</div><h2>Chào mừng đến Nông trại 6PAY!</h2><ul class="fm-guide">' +
       '<li><i>🌱</i><span>Chọn hạt giống, rồi <b>chạm hoặc vuốt</b> lên ô đất trống để gieo. Tưới 🚿 và bón phân 🧪 để cây lớn nhanh hơn.</span></li>' +
-      '<li><i>🐔</i><span>Nuôi gà, bò, cừu, cá, ong: cho ăn nông sản để lấy trứng, sữa, len, cá, mật ong.</span></li>' +
+      '<li><i>✋</i><span><b>Kéo 1 ngón</b> để di chuyển bản đồ, <b>chụm hoặc mở 2 ngón</b> để thu nhỏ, phóng to. Bấm 🏠 để quay về giữa nông trại.</span></li>' +
+      '<li><i>🐔</i><span>Nuôi gà, bò, cừu, cá, ong, vịt, dê, heo: cho ăn nông sản để lấy trứng, sữa, len, mật ong, nấm quý…</span></li>' +
       '<li><i>🏗️</i><span>Xây thềm nhà, giếng nước, lò bánh mì, xưởng phô mai… để nông trại ngày càng to đẹp.</span></li>' +
       '<li><i>💰</i><span><b>Kiếm tiền:</b> chơi các game học (tiếng Anh, Toán, Lịch sử…). Toàn bộ tiền thưởng được chuyển vào nông trại. Đây là cách kiếm tiền <b>nhanh nhất</b>!</span></li>' +
-      '<li><i>🎯</i><span><b>Nhiệm vụ:</b> học đủ số câu, số từ để mở thêm đất, chuồng trại và công trình.</span></li>' +
+      '<li><i>🎯</i><span><b>Nhiệm vụ:</b> học đủ số câu, số từ để mở thêm đất, các cánh đồng bên ngoài hàng rào, chuồng trại và công trình.</span></li>' +
       '<li><i>📒</i><span>Chạm vào số tiền ở góc trên để xem <b>Sổ thu chi</b>: tiền vào, tiền ra, lãi lỗ.</span></li>' +
       '</ul><button class="fm-btn" data-a="sheetClose" style="width:100%">Bắt đầu thôi!</button></div>');
   }
@@ -1027,7 +1229,7 @@
       if (S.m < b.cost) { noMoney(b.cost); return; }
       S.m -= b.cost; S.bld[id] = Date.now(); addLog('out', b.cost, 'bld_' + id, 'Xây ' + b.n.toLowerCase(), b.e);
       addXP(Math.max(5, Math.round(b.cost / 50000)));
-      sfx('win'); save(); hud(); bgKey = ''; renderBuild(); toast('🎉 Đã xây xong ' + b.n + '!');
+      sfx('win'); save(); hud(); renderBuild(); toast('🎉 Đã xây xong ' + b.n + '!');
     });
   }
   function facGo(id) {
@@ -1085,11 +1287,26 @@
   function qClaim(id) {
     var Q = QM[id]; if (!Q || !qReady(Q)) return;
     S.q[id].c = 1; S.m += Q.r; addLog('in', Q.r, 'q_' + id, 'Thưởng nhiệm vụ', '🎯'); addXP(5);
-    sfx('win'); save(); hud(); renderQuest(); bgKey = '';
-    var go = Q.u.t === 'bld' ? 'build' : Q.u.t === 'row' ? 'field' : 'barn';
-    if (Q.u.t === 'pen' || Q.u.t === 'cap') page = PAGES[0].indexOf(Q.u.v) >= 0 ? 0 : 1;
+    sfx('win'); save(); hud(); renderQuest();
     sheet('<div class="fm-modal"><div class="big">🏆</div><h2>Hoàn thành nhiệm vụ!</h2><p>Nhận <b>' + money(Q.r) + '</b> và mở khoá:</p><div class="fm-ul"><span>' + uText(Q.u) + '</span></div>' +
-      '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="sheetClose">Để sau</button><button class="fm-btn org" data-a="tab" data-t="' + go + '">Đi xem ngay</button></div></div>');
+      '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="sheetClose">Để sau</button><button class="fm-btn org" data-a="goSee" data-q="' + id + '">Đi xem ngay</button></div></div>');
+  }
+
+  /* Sau khi mở khoá: chuyển tới đúng chỗ trên bản đồ */
+  function goSee(Q) {
+    if (!Q) return; var u = Q.u;
+    if (u.t === 'bld') { setTab('build'); return; }
+    if (u.t === 'row') { setTab('field'); flyTo('field', MX + CW * COLS / 2, MY + (u.v - 0.5) * CW, 1.1); return; }
+    if (u.t === 'fld') { var f = FLM[u.v]; setTab('field'); flyTo('field', f.x + f.w / 2, f.y + f.h / 2, Math.min(1.3, (W - 30) / (f.w + 40))); return; }
+    setTab('barn');
+    var pn = L.pens.filter(function (p) { return p.a.id === u.v; })[0];
+    if (pn) flyTo('barn', pn.x + pn.w / 2, pn.y + pn.h / 2, Math.min(1.4, (W - 16) / (PW + 30)));
+  }
+  function navScroll() {
+    var nv = $('fmNavS'), b = nv.querySelector('button.on'); if (!b) return;
+    var l = b.offsetLeft, r = l + b.offsetWidth;
+    if (l < nv.scrollLeft + 24) nv.scrollTo({ left: Math.max(0, l - 24), behavior: 'smooth' });
+    else if (r > nv.scrollLeft + nv.clientWidth - 24) nv.scrollTo({ left: r - nv.clientWidth + 24, behavior: 'smooth' });
   }
 
   /* --- Kiếm tiền --- */
@@ -1138,32 +1355,105 @@
   var PANELS = ['build', 'market', 'quest', 'earn', 'book'];
   function setTab(t) {
     tab = t; closeSheet();
-    var nb = $('fmNav').querySelectorAll('button'); for (var i = 0; i < nb.length; i++) nb[i].classList.toggle('on', nb[i].getAttribute('data-t') === t || (t === 'book' && nb[i].getAttribute('data-t') === 'market'));
+    var nb = $('fmNav').querySelectorAll('button'); for (var i = 0; i < nb.length; i++) nb[i].classList.toggle('on', nb[i].getAttribute('data-t') === t || (t === 'book' && nb[i].getAttribute('data-a') === 'book'));
     PANELS.forEach(function (p) { $('fmP_' + p).classList.toggle('on', p === t); });
     stage.style.visibility = (t === 'field' || t === 'barn') ? 'visible' : 'hidden';
     $('fmTools').style.display = t === 'field' ? '' : 'none';
     if (t === 'build') renderBuild(); else if (t === 'market') renderMarket(); else if (t === 'quest') renderQuest(); else if (t === 'earn') renderEarn(); else if (t === 'book') renderBook();
-    if (t === 'barn') penLayout();
     var pn = $('fmP_' + t); if (pn) pn.scrollTop = 0;
-    bgKey = ''; badges();
+    useCam(); badges(); navScroll();
   }
 
-  /* ================= SỰ KIỆN ================= */
+  /* ================= SỰ KIỆN: CHẠM, KÉO, CHỤM 2 NGÓN ================= */
   function pt(e) { var r = stage.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+  var PTR = {}, G = null, SLOP = 8;
+  function nPtr() { return Object.keys(PTR).length; }
+  function twoPts() { var k = Object.keys(PTR); return [PTR[k[0]], PTR[k[1]]]; }
+  function startPinch() {
+    var q = twoPts(), mx = (q[0].x + q[1].x) / 2, my = (q[0].y + q[1].y) / 2;
+    G = { mode: 'pinch', d0: Math.max(20, Math.hypot(q[0].x - q[1].x, q[0].y - q[1].y)), z0: cam.z, wm: toWorld({ x: mx, y: my }) };
+  }
+  function startPan(p) { G = { mode: 'pan', sx: p.x, sy: p.y, cx: cam.x, cy: cam.y, hist: [{ x: p.x, y: p.y, t: performance.now() }] }; }
+  function endPaint() { if (drag) { drag = null; save(); } }
   stage.addEventListener('pointerdown', function (e) {
-    if (e.target !== cv) return;
-    var p = pt(e);
-    if (tab === 'barn') { tapBarn(p.x, p.y); return; }
+    if (e.target !== cv || !cam) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    var p = pt(e); PTR[e.pointerId] = p;
     try { cv.setPointerCapture(e.pointerId); } catch (x) {}
-    var i = plotAt(p.x, p.y); drag = { last: i }; act(i, true);
+    INERT = null; CANIM = null;
+    var n = nPtr();
+    if (n === 1) {
+      G = { mode: 'tap', sx: p.x, sy: p.y, cx: cam.x, cy: cam.y, hist: [{ x: p.x, y: p.y, t: performance.now() }] };
+      if (tab === 'field') {
+        var w = toWorld(p), i = plotAt(w.x, w.y);
+        if (i >= 0 && actionable(i)) {
+          // Bắt đầu trên ô có việc để làm: giữ/vuốt để gieo, tưới, bón, thu hoạch hàng loạt
+          G.mode = 'paintWait'; G.i = i;
+          G.timer = setTimeout(function () { if (G && G.mode === 'paintWait') { G.mode = 'paint'; drag = { last: G.i }; act(G.i, true); } }, 170);
+        }
+      }
+    } else if (n === 2) {
+      if (G && G.timer) clearTimeout(G.timer);
+      endPaint(); startPinch();
+    }
   });
   stage.addEventListener('pointermove', function (e) {
-    if (!drag || tab !== 'field') return;
-    var p = pt(e), i = plotAt(p.x, p.y);
-    if (i !== drag.last) { drag.last = i; if (i >= 0 && Math.floor(i / COLS) < S.rows) act(i, false); }
+    if (!PTR[e.pointerId] || !G) return;
+    var p = pt(e); PTR[e.pointerId] = p;
+    if (G.mode === 'pinch') {
+      if (nPtr() < 2) return;
+      var q = twoPts(), mx = (q[0].x + q[1].x) / 2, my = (q[0].y + q[1].y) / 2, d = Math.hypot(q[0].x - q[1].x, q[0].y - q[1].y);
+      cam.z = Math.max(minZ(tab), Math.min(MAXZ, G.z0 * d / G.d0));
+      cam.x = G.wm.x - mx / cam.z; cam.y = G.wm.y - my / cam.z; clampCam(cam, tab);
+      return;
+    }
+    var moved = Math.hypot(p.x - G.sx, p.y - G.sy) > SLOP;
+    if (G.mode === 'paintWait' && moved) { clearTimeout(G.timer); G.mode = 'paint'; drag = { last: G.i }; act(G.i, true); }
+    else if (G.mode === 'tap' && moved) { G.mode = 'pan'; }
+    if (G.mode === 'paint') {
+      var w = toWorld(p), i = plotAt(w.x, w.y);
+      if (i !== drag.last) { drag.last = i; if (plotOpen(i)) act(i, false); }
+    } else if (G.mode === 'pan') {
+      cam.x = G.cx - (p.x - G.sx) / cam.z; cam.y = G.cy - (p.y - G.sy) / cam.z; clampCam(cam, tab);
+      var now = performance.now(); G.hist.push({ x: p.x, y: p.y, t: now }); while (G.hist.length > 2 && now - G.hist[0].t > 100) G.hist.shift();
+    }
   });
-  function endDrag() { if (drag) { drag = null; save(); } }
-  stage.addEventListener('pointerup', endDrag); stage.addEventListener('pointercancel', endDrag);
+  function ptrEnd(e, cancel) {
+    if (!PTR[e.pointerId]) return;
+    delete PTR[e.pointerId];
+    if (!G) return;
+    var n = nPtr();
+    if (G.mode === 'pinch') {
+      if (n === 1) { var k = Object.keys(PTR)[0]; startPan(PTR[k]); }
+      else if (n === 0) G = null;
+      return;
+    }
+    if (n > 0) return;
+    var g = G; G = null;
+    if (g.timer) clearTimeout(g.timer);
+    if (cancel) { endPaint(); return; }
+    if (g.mode === 'paintWait') { act(g.i, true); save(); }
+    else if (g.mode === 'paint') endPaint();
+    else if (g.mode === 'tap') {
+      var w = toWorld({ x: g.sx, y: g.sy });
+      if (tab === 'barn') tapBarn(w.x, w.y); else { act(plotAt(w.x, w.y), true); save(); }
+    } else if (g.mode === 'pan') {
+      // Thả tay khi đang vuốt nhanh: bản đồ trôi thêm một chút (quán tính)
+      var h = g.hist, a = h[0], b = h[h.length - 1], dt = (b.t - a.t) / 1000;
+      if (dt > 0.01 && performance.now() - b.t < 80) { var vx = (b.x - a.x) / dt, vy = (b.y - a.y) / dt, sp = Math.hypot(vx, vy); if (sp > 150) { var mx = 2600 / Math.max(sp, 2600); INERT = { vx: vx * mx, vy: vy * mx }; } }
+    }
+  }
+  stage.addEventListener('pointerup', function (e) { ptrEnd(e, false); });
+  stage.addEventListener('pointercancel', function (e) { ptrEnd(e, true); });
+  stage.addEventListener('wheel', function (e) {
+    if (!cam || (tab !== 'field' && tab !== 'barn')) return;
+    e.preventDefault();
+    var p = pt(e);
+    if (e.ctrlKey || Math.abs(e.deltaY) >= Math.abs(e.deltaX)) zoomAt(p.x, p.y, Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0018)));
+    else { INERT = null; cam.x += e.deltaX / cam.z; clampCam(cam, tab); }
+  }, { passive: false });
+  // Safari trên iPhone/iPad: chặn cử chỉ phóng to cả trang khi đang chụm 2 ngón trong game
+  ['gesturestart', 'gesturechange'].forEach(function (t) { stage.addEventListener(t, function (e) { e.preventDefault(); }); });
 
   ov.addEventListener('click', function (e) {
     var el = e.target.closest ? e.target.closest('[data-a]') : null;
@@ -1171,14 +1461,14 @@
     if (el.disabled) return;
     var a = el.getAttribute('data-a');
     if (a === 'close') api.close();
-    else if (a === 'back') { if ($('fmSheet').classList.contains('on')) closeSheet(); else if (tab === 'book') setTab('market'); else if (tab !== 'field') setTab('field'); else api.close(); }
+    else if (a === 'back') { if ($('fmSheet').classList.contains('on')) closeSheet(); else if (tab !== 'field') setTab('field'); else api.close(); }
     else if (a === 'tab') setTab(el.getAttribute('data-t'));
     else if (a === 'book') setTab('book');
     else if (a === 'msub') { mSub = el.getAttribute('data-t'); renderMarket(); }
     else if (a === 'tool') { var t = el.getAttribute('data-t'); if (t === 'seed' && tool === 'seed') seedSheet(); tool = t; toolsUI(); if (t === 'water') toast('🚿 Chạm hoặc vuốt qua các ô đang trồng để tưới'); else if (t === 'fert') toast('🧪 Chạm vào cây đang lớn để bón phân (còn ' + S.fert + ' túi)'); }
     else if (a === 'pick') { S.sel = el.getAttribute('data-c'); tool = 'seed'; toolsUI(); closeSheet(); save(); toast(CM[S.sel].e + ' Chạm hoặc vuốt lên ô đất trống để gieo ' + CM[S.sel].n); }
-    else if (a === 'harvestAll') { var n = 0; for (var i = 0; i < S.rows * COLS; i++) { var pl = S.plots[i]; if (pl.c && pl.p >= 1) { harvest(i, true); n++; } } if (n) { sfx('ok'); toast('🧺 Thu hoạch ' + n + ' ô'); } else toast('Chưa có cây nào chín ✨'); hud(); save(); }
-    else if (a === 'waterAll') { var w = 0; for (var j = 0; j < S.rows * COLS; j++) if (water(j)) w++; if (w) { sfx('ok'); toast('🪣 Đã tưới ' + w + ' ô'); } else toast('Không có ô nào cần tưới'); save(); }
+    else if (a === 'harvestAll') { var n = 0; for (var i = 0; i < TOTAL; i++) { var pl = S.plots[i]; if (plotOpen(i) && pl.c && pl.p >= 1) { harvest(i, true); n++; } } if (n) { sfx('ok'); toast('🧺 Thu hoạch ' + n + ' ô'); } else toast('Chưa có cây nào chín ✨'); hud(); save(); }
+    else if (a === 'waterAll') { var w = 0; for (var j = 0; j < TOTAL; j++) if (plotOpen(j) && water(j)) w++; if (w) { sfx('ok'); toast('🪣 Đã tưới ' + w + ' ô'); } else toast('Không có ô nào cần tưới'); save(); }
     else if (a === 'sheetClose') closeSheet();
     else if (a === 'confirm') { closeSheet(); if (confirmFn) confirmFn(); confirmFn = null; }
     else if (a === 'deliver') deliver(+el.getAttribute('data-i'));
@@ -1190,9 +1480,13 @@
     else if (a === 'facGet') facGet(el.getAttribute('data-b'));
     else if (a === 'play') play(el.getAttribute('data-g'));
     else if (a === 'qclaim') qClaim(el.getAttribute('data-q'));
+    else if (a === 'goSee') goSee(QM[el.getAttribute('data-q')]);
+    else if (a === 'zin') zoomAt(W / 2, (H - bottomPad(tab)) / 2, 1.3);
+    else if (a === 'zout') zoomAt(W / 2, (H - bottomPad(tab)) / 2, 1 / 1.3);
+    else if (a === 'zhome') { INERT = null; var hc = homeCam(tab); CANIM = { k: tab, from: { x: cam.x, y: cam.y, z: cam.z }, to: hc, t: 0 }; }
     else if (a === 'dclaim') { var x = S.dq.l[+el.getAttribute('data-i')]; if (x && !x.c && dProg(x) >= x.n) { x.c = 1; var rw = dailyReward(); S.m += rw; S.fert++; addLog('in', rw, 'daily', 'Thưởng nhiệm vụ hằng ngày', '📅'); sfx('win'); toast('🎁 +' + money(rw) + ' và 1 túi phân bón'); save(); hud(); renderQuest(); } }
     else if (a === 'gift') { if (giftReady()) { var gm = giftAmt(); S.gift = dayKey(); S.m += gm; S.fert++; addLog('in', gm, 'gift', 'Quà mỗi ngày', '🎁'); sfx('win'); toast('🎁 Nhận ' + money(gm) + ' và 1 túi phân bón'); save(); hud(); renderQuest(); } }
-    else if (a === 'reset') confirmBox('↺', 'Chơi lại từ đầu?', 'Toàn bộ ruộng, vật nuôi, công trình, kho và sổ thu chi sẽ bị xoá.', 'Xoá và chơi lại', function () { S = fresh(); POS = {}; page = 0; syncQuests(); save(); hud(); setTab('field'); guide(); });
+    else if (a === 'reset') confirmBox('↺', 'Chơi lại từ đầu?', 'Toàn bộ ruộng, vật nuôi, công trình, kho và sổ thu chi sẽ bị xoá.', 'Xoá và chơi lại', function () { S = fresh(); POS = {}; CAMS = { field: null, barn: null }; syncQuests(); save(); hud(); setTab('field'); guide(); });
   });
   window.addEventListener('resize', function () { if (running) resize(); });
   document.addEventListener('visibilitychange', function () { if (document.hidden && running) save(); });
@@ -1206,8 +1500,9 @@
       setTab(o && o.back ? retTab : 'field');
       requestAnimationFrame(function () {
         resize(); hud(); running = true; lastT = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
-        if (!S.seen) { S.seen = 1; save(); guide(); }
+        if (!S.seen) { S.seen = 1; S.tipCam = 1; save(); guide(); }
         else if (got) backSheet(got);
+        if (!S.tipCam) { S.tipCam = 1; save(); setTimeout(function () { toast('✋ Mới: kéo 1 ngón để đi quanh nông trại, chụm 2 ngón để phóng to/thu nhỏ'); }, got ? 0 : 600); }
       });
     },
     close: function () { sheetQ = []; running = false; cancelAnimationFrame(raf); save(); closeSheet(); ov.classList.remove('on'); document.body.style.overflow = ''; }

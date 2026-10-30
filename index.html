@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.30-8';
+const APP_VERSION='2026.10.30-9';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -1411,6 +1411,14 @@ function jarSpent(k){return tx.filter(t=>t.type==='out'&&t.jar===k).reduce((s,t)
 function jarTrIn(k){return tx.filter(t=>t.type==='tr'&&t.to===k).reduce((s,t)=>s+t.amount,0);}
 function jarTrOut(k){return tx.filter(t=>t.type==='tr'&&t.from===k).reduce((s,t)=>s+t.amount,0);}
 function jarRemain(k){return jarAllocated(k)-jarSpent(k)+jarTrIn(k)-jarTrOut(k);}
+// Mỗi ví chỉ được tiêu số tiền đang có. Không đủ thì không cho ghi khoản chi (không có chuyển tiền giữa các ví).
+function jarBlocked(k,amt,refund){
+ const bal=jarRemain(k)+(refund||0);
+ if(amt<=bal)return false;
+ const j=jarOf(k);
+ notify(bal>0?'Ví '+j.i+' '+j.l+' chỉ còn '+fmt(bal)+' ₫, không đủ để chi '+fmt(amt)+' ₫. Mỗi ví chỉ được tiêu số tiền đang có trong ví.':'Ví '+j.i+' '+j.l+' đang không có tiền. Hãy ghi khoản thu (⬇️ Thu) trước, tiền sẽ được chia vào các ví theo tỷ lệ của bạn.');
+ return true;
+}
 function deleteTx(id){
  const t=tx.find(x=>x.id===id);
  if(t&&t.st)subStar();
@@ -1808,7 +1816,6 @@ function scrWallets(){
   <div class="center-sub">Tổng: <b class="${balance()<0?'neg':'pos'}">${fmt(balance())} ₫</b></div>
   <div class="fill-rows big natural">${rows}</div>
   <div style="flex:1 1 0;min-height:0;"></div>
-  <button class="btn primary" onclick="trDraft={from:'enjoy',to:'saving',amount:'',exact:'',note:''};push('transfer')">🔁 Chuyển tiền giữa các ví</button>
   <button class="btn back" onclick="back()">◀ Quay lại</button>
  </div>`;
 }
@@ -1819,25 +1826,18 @@ function trRefresh(){
  if(a)a.textContent='Số dư: '+fmt(jarRemain(trDraft.from))+' ₫';
  if(b)b.textContent='Số dư: '+fmt(jarRemain(trDraft.to))+' ₫';
 }
+// Tính năng chuyển tiền giữa các ví đã bỏ: mỗi ví chỉ tiêu số tiền của chính nó. Màn hình này chỉ còn để xem các lần chuyển cũ.
 function scrTransfer(){
  const list=tx.filter(t=>t.type==='tr').sort((a,b)=>b.ts-a.ts).slice(0,30);
- return screenWrap('🔁 Chuyển tiền giữa các ví',`
-  <div class="tr-box">
-   <div class="form-row tight"><label>Từ ví</label>${jarSelect('tr-from',trDraft.from,'from')}<div class="amt-hint" id="tr-from-bal">Số dư: ${fmt(jarRemain(trDraft.from))} ₫</div></div>
-   <div class="tr-arrow">⬇</div>
-   <div class="form-row tight"><label>Sang ví</label>${jarSelect('tr-to',trDraft.to,'to')}<div class="amt-hint" id="tr-to-bal">Số dư: ${fmt(jarRemain(trDraft.to))} ₫</div></div>
-   <div class="form-row tight"><label>Số tiền</label>${amtInput('tr-amount',trDraft.amount,trDraft.exact,"trDraft.amount=this.value;trDraft.exact='';")}</div>
-   <div class="form-row tight"><label>Ghi chú</label><input type="text" id="tr-note" placeholder="vd. Dồn tiền hưởng thụ sang tiết kiệm" value="${qa(trDraft.note)}" oninput="trDraft.note=this.value"></div>
-   <button class="btn primary" onclick="confirmTransfer()">✓ Chuyển tiền</button>
-  </div>
-  <div class="sec-title">Lần chuyển gần đây</div>
+ return screenWrap('🔁 Các lần chuyển tiền cũ',`
+  <div class="guide-desc">6PAY không còn cho chuyển tiền giữa các ví. Mỗi ví chỉ được tiêu số tiền đang có trong ví đó. Dưới đây là các lần chuyển trước đây (vẫn được tính vào số dư).</div>
   ${list.length?list.map(t=>`<div class="list-item">
    <div class="tx-info"><div>${jarOf(t.from).i} ${jarOf(t.from).l} → ${jarOf(t.to).i} ${jarOf(t.to).l}</div>${t.note?`<div class="note">${esc(t.note)}</div>`:''}<div class="date">${dateFmt(t.ts)}</div></div>
-   <div class="tx-right"><span class="tr-amt">${fmt(t.amount)} ₫</span><div class="tx-actions"><button class="mini-btn" onclick="deleteTxUndo('${t.id}')">🗑 Xóa</button></div></div>
-  </div>`).join(''):'<div class="empty">Chưa có lần chuyển tiền nào.</div>'}
-  <div class="guide-desc">Chuyển tiền giữa các ví chỉ thay đổi số dư từng ví, không tính vào tổng thu hay tổng chi.</div>`);
+   <div class="tx-right"><span class="tr-amt">${fmt(t.amount)} ₫</span></div>
+  </div>`).join(''):'<div class="empty">Chưa có lần chuyển tiền nào.</div>'}`);
 }
-function confirmTransfer(){
+function confirmTransfer(){notify('Tính năng chuyển tiền giữa các ví đã được bỏ.');}
+function confirmTransferOld(){
  const from=document.getElementById('tr-from').value, to=document.getElementById('tr-to').value;
  const el=document.getElementById('tr-amount'); const amt=getAmt(el);
  if(from===to){notify('Hãy chọn hai ví khác nhau.');return;}
@@ -2110,12 +2110,13 @@ function confirmExpense(jar){
   const t=tx.find(x=>x.id===expDraft.editId);
   if(t){
    const nj=(document.getElementById('out-jar')||{}).value||t.jar;
+   if(jarBlocked(nj,amt,nj===t.jar?t.amount:0))return;
    if(nj!==t.jar){moved=jarOf(nj).i+' '+jarOf(nj).l;}
    t.amount=amt;t.note=note;t.jar=nj;t.ts=tsFromDate(ds,t.ts);chkJar=nj;
    if(expDraft.tag)t.tag=expDraft.tag;else delete t.tag;
   }
  }
- else{const nt={id:uid(),type:'out',jar,amount:amt,note,ts:tsFromDate(ds),st:1};const tg=expDraft.tag||tagGuess(note);if(tg)nt.tag=tg;tx.push(nt);addStar();try{localStorage.setItem(LASTJAR_KEY,jar);}catch(e){}}
+ else{if(jarBlocked(jar,amt))return;const nt={id:uid(),type:'out',jar,amount:amt,note,ts:tsFromDate(ds),st:1};const tg=expDraft.tag||tagGuess(note);if(tg)nt.tag=tg;tx.push(nt);addStar();try{localStorage.setItem(LASTJAR_KEY,jar);}catch(e){}}
  expDraft={amount:'',exact:'',note:'',editId:'',date:'',jar:'',tag:'',tagManual:false};
  persist(); render();
  if(moved)notify('Đã chuyển khoản chi sang ví '+moved+'.');
@@ -2342,7 +2343,6 @@ function scrExtra(){
 function scrFinUtil(){
  const it=utilIt;
  return screenWrap('💰 Tiện ích tài chính',
-  it("push('transfer')",'🔁 Chuyển tiền giữa các ví')+
   it("push('limits')",'🚦 Hạn mức chi mỗi tháng')+
   it("push('debts')",'💳 Quản lý khoản nợ')+
   it("push('goals')",'🐷 Mục tiêu tiết kiệm')+
@@ -3689,6 +3689,7 @@ function confirmBillPay(){
  const el=document.getElementById('bp-amount'), amt=getAmt(el);
  const b=bills.find(x=>x.id===billPayId);if(!b)return;
  if(b.jar&&(!amt||amt<=0)){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),300);return;}
+ if(b.jar&&jarBlocked(b.jar,amt))return;
  b.paid=b.paid||{};
  let tid='1';
  if(b.jar){tid=uid();tx.push({id:tid,type:'out',jar:b.jar,amount:amt,note:b.name,ts:Date.now(),st:1});addStar();persist();}
@@ -3993,6 +3994,7 @@ function qaSave(){
  const el=document.getElementById('qa-amt'); const amt=el?getAmt(el):0;
  if(!amt||amt<=0){shakeEl(el);if(el)el.focus();return;}
  const note=((document.getElementById('qa-note')||{}).value||'').trim();
+ if(jarBlocked(qd.jar,amt))return;
  const t={id:uid(),type:'out',jar:qd.jar,amount:amt,note,ts:tsFromDate(qd.date),st:1};
  if(qd.tag)t.tag=qd.tag;
  tx.push(t); addStar(); persist();

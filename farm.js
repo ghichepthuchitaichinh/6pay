@@ -1,4 +1,4 @@
-/* 6PAY - Game Nông trại vui vẻ (bản 2026.10.30-8: thú hoang & nhiệm vụ bảo vệ, tự động tưới, tiền chia 6 ví, thiên tai 5 giờ/lần, công trình có thu nhập thụ động, nhiệm vụ 6 ví, bản đồ kéo/zoom, cánh đồng và chuồng mới). File này được index.html tải về khi người dùng mở trò chơi.
+/* 6PAY - Game Nông trại vui vẻ (bản 2026.10.30-9: bỏ chuyển tiền giữa các ví, thú hoang & nhiệm vụ bảo vệ, tự động tưới, tiền chia 6 ví, thiên tai 5 giờ/lần, công trình có thu nhập thụ động, nhiệm vụ 6 ví, bản đồ kéo/zoom, cánh đồng và chuồng mới). File này được index.html tải về khi người dùng mở trò chơi.
    Trồng cây, nuôi gà – bò – cừu – cá – ong, xây công trình, chế biến nông sản, giao đơn hàng và ghi sổ thu chi.
    Nông trại được NỐI với các game học: tiền thưởng kiếm được trong Lịch sử Việt Nam, Khám phá Việt Nam, từ vựng tiếng Anh,
    tiếng Trung, Toán học cấp 1, Đố vui tài chính, Dạy trẻ xem đồng hồ được cộng hết vào ví nông trại (qua hộp thư farm6_inbox).
@@ -882,7 +882,7 @@
   '.fm-hero{background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff;border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:0 4px 14px rgba(234,88,12,.3)}.fm-hero b{font-size:17px}.fm-hero p{margin:6px 0 0;font-size:13.5px;line-height:1.5;opacity:.95}' +
   '.fm-wtabs{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:4px -12px 10px;padding:4px 12px 6px;position:sticky;top:-12px;z-index:2;background:linear-gradient(180deg,#fef9e7 80%,rgba(254,249,231,0))}.fm-wtabs::-webkit-scrollbar{display:none}' +
   '.fm-wtabs button{flex:none;position:relative;display:flex;flex-direction:column;align-items:center;gap:0;min-width:72px;border:2px solid #eadfc0;background:#fff;border-radius:14px;padding:4px 10px;font-weight:800;font-size:11.5px;color:#5b3a12!important;white-space:nowrap}' +
-  '.fm-wtabs button .e{font-size:21px;line-height:1.15;font-family:' + EF + '}.fm-wtabs button.on{border-color:var(--wc);background:var(--wc);color:#fff!important;box-shadow:0 3px 10px rgba(0,0,0,.18)}' +
+  '.fm-wtabs .wb{display:block;margin-top:2px;font-size:11px;font-weight:700;opacity:.85;font-variant-numeric:tabular-nums}.fm-wtabs .wb b{font-size:12.5px;font-weight:900}.fm-wtabs button .e{font-size:21px;line-height:1.15;font-family:' + EF + '}.fm-wtabs button.on{border-color:var(--wc);background:var(--wc);color:#fff!important;box-shadow:0 3px 10px rgba(0,0,0,.18)}' +
   '.fm-wtabs .dot{position:absolute;top:-6px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:#fff;font-size:11px;line-height:18px;padding:0 5px;border:2px solid #fff}' +
   '.fm-whead{background:#fff;border-radius:14px;padding:9px 12px;margin-bottom:6px;border-left:6px solid var(--wc);box-shadow:0 2px 8px rgba(120,80,0,.12)}.fm-whead summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}.fm-whead summary::-webkit-details-marker{display:none}.fm-whead summary>b{font-size:16px;color:#4a3416}.fm-whead summary:after{content:"ⓘ";margin-left:auto;color:#9a8660}.fm-whead p{margin:6px 0 0;font-size:13px;line-height:1.5;color:#6b5a3a}.fm-whead p.q{font-style:italic;color:#9a8660;font-size:12.5px}' +
   '.fm-wst{font-size:12px;color:#7a6440}.fm-wst b{font-variant-numeric:tabular-nums}' +
@@ -1646,15 +1646,12 @@
     if (tool === 'fert') return !!pl.c && S.fert > 0;
     return false;
   }
-  function noMoney(need, w) {
+  function noMoney(need, w) {   // mỗi ví chỉ tiêu số tiền đang có, không đủ thì không được tiêu
     w = w || 'essential'; var W0 = WM[w];
     sfx('bad');
-    var lack = Math.ceil((need - S.jar[w]) / 1000) * 1000, from = null;
-    JK.forEach(function (k) { if (k !== w && k !== 'saving' && S.jar[k] >= 1000 && (!from || S.jar[k] > S.jar[from])) from = k; });
-    if (!from || $('fmSheet').classList.contains('on')) { toast('💸 Ví ' + W0.e + ' ' + W0.n + ' chỉ còn ' + money(S.jar[w]) + ', cần ' + money(need) + '. Vào 💰 Kiếm tiền để kiếm thêm nhé!'); return; }
-    var can = Math.min(lack, Math.floor(S.jar[from] / 1000) * 1000);
-    trSheet(from, w, can, '💸 Ví ' + W0.e + ' ' + W0.n + ' chỉ còn <b>' + money(S.jar[w]) + '</b>, cần <b>' + money(need) + '</b>. ' + (can >= lack ? 'Bạn có muốn chuyển <b>' + money(lack) + '</b> từ ví ' + WM[from].e + ' ' + WM[from].n + ' sang không?' : 'Các ví khác chưa đủ để bù. Bạn có thể chuyển bớt rồi vào <b>💰 Kiếm tiền</b> để kiếm thêm, hoặc chờ thu nhập từ bán hàng.'));
+    toast('💸 Ví ' + W0.e + ' ' + W0.n + ' chỉ còn ' + money(S.jar[w]) + ', không đủ ' + money(need) + '. Hãy kiếm thêm tiền (bán hàng, 💰 Kiếm tiền) để ví này đầy lên nhé!');
   }
+
   function plant(i) {
     var pl = S.plots[i], cr = CM[S.sel], R = plotRect(i);
     if (cr.lv > S.lv) { toast('🔒 ' + cr.n + ' mở ở cấp ' + cr.lv); return false; }
@@ -1850,7 +1847,7 @@
       '<li><i>🏗️</i><span>Xây thềm nhà, giếng nước, lò bánh mì, xưởng phô mai… để nông trại ngày càng to đẹp.</span></li>' +
       '<li><i>💰</i><span><b>Kiếm tiền:</b> chơi các game học (tiếng Anh, Toán, Lịch sử…). Toàn bộ tiền thưởng được chuyển vào nông trại. Đây là cách kiếm tiền <b>nhanh nhất</b>!</span></li>' +
       '<li><i>🎯</i><span><b>Nhiệm vụ 6 ví:</b> Thiết yếu, Phát triển bản thân, Tiết kiệm, Đầu tư, Chia sẻ, Hưởng thụ. Bỏ tiền ra làm nhiệm vụ, hoàn thành thì nhận lại tiền và <b>kinh nghiệm</b>. Đủ kinh nghiệm thì lên cấp, mở thêm đất, chuồng, vật nuôi, công trình.</span></li>' +
-      '<li><i>💰</i><span>Tiền kiếm được tự chia vào <b>6 ví</b> theo tỷ lệ (chạm vào số tiền ở góc trên để xem, đổi tỷ lệ, chuyển tiền giữa các ví). Chi tiêu ở ví nào thì trừ tiền ví đó.</span></li>' +
+      '<li><i>💰</i><span>Tiền kiếm được tự chia vào <b>6 ví</b> theo tỷ lệ (chạm vào số tiền ở góc trên để xem và đổi tỷ lệ). Chi tiêu ở ví nào thì trừ tiền ví đó, ví nào hết tiền thì không tiêu được.</span></li>' +
       '<li><i>🦊</i><span>Thú hoang (cáo, sói, gấu) có thể mò vào bắt vật nuôi. Làm nhiệm vụ <b>xây hàng rào, chòi canh, chòi bắn cung</b> để bảo vệ nông trại.</span></li>' +
       '<li><i>🌧️</i><span>Khoảng 5 giờ lại có một trận mưa bão hoặc gió lốc làm hỏng hoa màu, dột nhà, hỏng chuồng, vật nuôi bị ốm. Hãy để dành <b>quỹ dự phòng</b> để sửa chữa!</span></li>' +
       '</ul><button class="fm-btn" data-a="sheetClose" style="width:100%">Bắt đầu thôi!</button></div>');
@@ -1988,7 +1985,7 @@
     // 6 ví
     h += '<div class="fm-wtabs" id="fmWT">' + WALLETS.map(function (x) {
       var n = walletReady(x.k);
-      return '<button class="' + (x.k === wk ? 'on' : '') + '" data-a="wtab" data-w="' + x.k + '" style="--wc:' + x.c + '"><span class="e">' + x.e + '</span>' + x.n + (n ? '<span class="dot">' + n + '</span>' : '') + '</button>';
+      return '<button class="' + (x.k === wk ? 'on' : '') + '" data-a="wtab" data-w="' + x.k + '" style="--wc:' + x.c + '"><span class="e">' + x.e + '</span>' + x.n + '<span class="wb"><b>' + short(S.jar[x.k]) + '</b> · ' + pctOf(x.k) + '%</span>' + (n ? '<span class="dot">' + n + '</span>' : '') + '</button>';
     }).join('') + '</div>';
     // Mục tiêu tiếp theo (mở khoá bằng kinh nghiệm)
     var nx = nextUnlock(), nd = need(S.lv);
@@ -2106,13 +2103,13 @@
 
   /* --- 6 ví: số dư, cài đặt tỷ lệ, chuyển tiền --- */
   function jarSheet() {
-    var h = '<div class="fm-h">💰 6 ví của nông trại</div><p class="fm-sub">Mọi khoản thu (bán hàng, đơn hàng, học tập, thưởng…) được <b>tự chia vào 6 ví</b> theo tỷ lệ bên dưới. Chi tiêu ở đâu thì trừ tiền ở ví đó: hạt giống, phân bón, sửa chữa trừ ví Thiết yếu; mua đất, vật nuôi, xây công trình trừ ví Đầu tư.</p>' +
+    var h = '<div class="fm-h">💰 6 ví của nông trại</div><p class="fm-sub">Mọi khoản thu (bán hàng, đơn hàng, học tập, thưởng…) được <b>tự chia vào 6 ví</b> theo tỷ lệ bên dưới. Chi tiêu ở đâu thì trừ tiền ở ví đó: hạt giống, phân bón, sửa chữa trừ ví Thiết yếu; mua đất, vật nuôi, xây công trình trừ ví Đầu tư. <b>Ví nào có bao nhiêu thì chỉ được tiêu bấy nhiêu</b>, không chuyển tiền qua lại giữa các ví.</p>' +
       '<div class="fm-card" style="text-align:center;padding:10px">Tổng tiền: <b style="font-size:20px">' + money(S.m) + '</b></div>';
     WALLETS.forEach(function (W0) {
       var v = S.jar[W0.k], tot = S.m || 1;
-      h += '<div class="fm-jar" style="--wc:' + W0.c + '"><span class="e">' + W0.e + '</span><span class="t"><b>' + W0.n + '</b><small>Nhận ' + pctOf(W0.k) + '% mỗi khoản thu</small><span class="bar"><i style="width:' + Math.max(0, Math.min(100, Math.round(v / tot * 100))) + '%"></i></span></span><span class="v">' + money(v) + '</span><button class="fm-btn alt" data-a="trSet" data-w="' + W0.k + '" aria-label="Chuyển tiền">🔄</button></div>';
+      h += '<div class="fm-jar" style="--wc:' + W0.c + '"><span class="e">' + W0.e + '</span><span class="t"><b>' + W0.n + '</b><small>Nhận ' + pctOf(W0.k) + '% mỗi khoản thu</small><span class="bar"><i style="width:' + Math.max(0, Math.min(100, Math.round(v / tot * 100))) + '%"></i></span></span><span class="v">' + money(v) + '</span></div>';
     });
-    h += '<div class="fm-row" style="justify-content:center;margin-top:10px"><button class="fm-btn org" data-a="pctSet">⚙️ Cài đặt tỷ lệ</button><button class="fm-btn blu" data-a="trSet">🔄 Chuyển tiền giữa các ví</button></div>' +
+    h += '<div class="fm-row" style="justify-content:center;margin-top:10px"><button class="fm-btn org" data-a="pctSet">⚙️ Cài đặt tỷ lệ</button></div>' +
       '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="book">📒 Sổ thu chi</button><button class="fm-btn alt" data-a="sheetClose">Đóng</button></div>';
     sheet(h);
   }
@@ -2128,15 +2125,7 @@
     var sm = 0; JK.slice(0, 5).forEach(function (k) { sm += Math.max(0, parseInt($('fpc_' + k).value, 10) || 0); });
     $('fpcE').textContent = (100 - sm) + '%'; $('fpcOk').disabled = sm > 100; $('fpcErr').textContent = sm > 100 ? 'Tổng tỷ lệ vượt quá 100%. Hãy giảm bớt.' : '';
   }
-  function trSheet(from, to, amt, msg) {
-    from = from || 'essential'; to = to || (from === 'essential' ? 'invest' : 'essential');
-    var opt = function (sel) { return WALLETS.map(function (W0) { return '<option value="' + W0.k + '"' + (W0.k === sel ? ' selected' : '') + '>' + W0.e + ' ' + W0.n + ' (' + short(S.jar[W0.k]) + ')</option>'; }).join(''); };
-    sheet('<div class="fm-h">🔄 Chuyển tiền giữa các ví</div><p class="fm-sub">' + (msg || 'Ví này thiếu, ví kia thừa thì chuyển bớt. Nhưng đừng lấy hết tiền Tiết kiệm để tiêu nhé!') + '</p>' +
-      '<div class="fm-card"><label class="fm-lb">Từ ví</label><select class="fm-in" id="ftrF">' + opt(from) + '</select><label class="fm-lb">Sang ví</label><select class="fm-in" id="ftrT">' + opt(to) + '</select>' +
-      '<label class="fm-lb">Số tiền (đ)</label><input class="fm-in" id="ftrA" type="number" inputmode="numeric" min="0" step="1000" placeholder="0" value="' + (amt || '') + '">' +
-      '<div class="fm-row"><button class="fm-btn alt" data-a="trAmt" data-f="0.25">25%</button><button class="fm-btn alt" data-a="trAmt" data-f="0.5">50%</button><button class="fm-btn alt" data-a="trAmt" data-f="1">Tất cả</button></div></div>' +
-      '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="jars">Huỷ</button><button class="fm-btn blu" data-a="trOk">🔄 Chuyển tiền</button></div>');
-  }
+
 
   /* --- Sổ thu chi --- */
   function renderBook() {
@@ -2306,9 +2295,6 @@
     else if (a === 'pctSet') pctSheet();
     else if (a === 'pctPre') { var pp = PCT_PRESETS[+el.getAttribute('data-i')].p; JK.slice(0, 5).forEach(function (k) { $('fpc_' + k).value = pp[k]; }); pctLive(); }
     else if (a === 'pctOk') { var sm = 0, np = {}; JK.slice(0, 5).forEach(function (k) { np[k] = Math.max(0, Math.min(100, parseInt($('fpc_' + k).value, 10) || 0)); sm += np[k]; }); if (sm > 100) return; S.pct = np; save(); toast('✓ Đã lưu tỷ lệ chia tiền vào 6 ví'); jarSheet(); }
-    else if (a === 'trSet') trSheet(el.getAttribute('data-w'));
-    else if (a === 'trAmt') { var fw = $('ftrF').value, fr = +el.getAttribute('data-f'); $('ftrA').value = Math.floor(S.jar[fw] * fr / 1000) * 1000; }
-    else if (a === 'trOk') { var f0 = $('ftrF').value, t0 = $('ftrT').value, am = Math.round(+$('ftrA').value || 0); if (f0 === t0) { toast('Hãy chọn 2 ví khác nhau'); return; } if (am <= 0) { toast('Nhập số tiền cần chuyển'); return; } if (am > S.jar[f0]) { toast('Ví ' + WM[f0].n + ' chỉ còn ' + money(S.jar[f0])); return; } S.jar[f0] -= am; S.jar[t0] += am; syncM(); save(); hud(); sfx('ok'); toast('🔄 Đã chuyển ' + money(am) + ' từ ' + WM[f0].n + ' sang ' + WM[t0].n + '. Hãy thử lại nhé!'); closeSheet(); if (tab === 'quest') renderQuest(); }
     else if (a === 'bsee') { var P = BPOS[el.getAttribute('data-b')]; setTab('field'); flyTo('field', P.x, P.y - (P.h ? 20 : 50), 1.35); toast('Chạm vào công trình để thu tiền và lấy hàng'); }
     else if (a === 'zin') zoomAt(W / 2, (H - bottomPad(tab)) / 2, 1.3);
     else if (a === 'zout') zoomAt(W / 2, (H - bottomPad(tab)) / 2, 1 / 1.3);

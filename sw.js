@@ -1,6 +1,6 @@
 // Service Worker cho 6PAY — chạy offline, luôn ưu tiên bản mới nhất từ mạng.
 // Mỗi lần thay đổi danh sách ASSETS hoặc logic, hãy đổi số phiên bản CACHE_NAME.
-const CACHE_NAME='6pay-cache-v17';
+const CACHE_NAME='6pay-cache-v18';
 const FONT_CACHE='6pay-fonts-v1';
 const ASSETS=['./','./index.html','./manifest.json','./version.json',
  './runner.js','./words.js','./chinese.js','./math.js','./history.js','./vietnam.js','./chess.js','./clock.js','./farm.js',

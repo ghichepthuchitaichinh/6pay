@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.31-2';
+const APP_VERSION='2026.10.31-3';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -2354,6 +2354,11 @@ function scrFinUtil(){
 // Lần mở Nông trại tiếp theo, toàn bộ tiền trong hộp thư được cộng vào ví nông trại và tính tiến độ nhiệm vụ.
 const FARM_INBOX='farm6_inbox';
 const FARM_GAMES={en:'words',zh:'zh',math:'math',vnh:'vnh',vnv:'vnv',quiz:'quiz',clock:'clock'};
+// Tỷ lệ chia 6 ví dùng CHUNG giữa app và game Nông trại: đổi ở đâu cũng áp dụng cho cả hai
+window.sixPct={
+ get:function(){return {essential:pct.essential,education:pct.education,saving:pct.saving,invest:pct.invest,share:pct.share};},
+ set:function(p){['essential','education','saving','invest','share'].forEach(function(k){pct[k]=Math.max(0,Math.min(100,Math.round(+p[k]||0)));});persist();try{render();}catch(e){}}
+};
 window.farmEarn=function(g,amount,ok,t){
  amount=Math.max(0,Math.round(+amount||0)); ok=Math.max(0,Math.round(+ok||0)); t=t?String(t):'';
  if(!FARM_GAMES[g]||(!amount&&!ok))return;

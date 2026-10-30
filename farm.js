@@ -1,4 +1,4 @@
-/* 6PAY - Game Nông trại vui vẻ (bản 2026.10.31-2: mỗi chuồng nuôi 5–12 con, thanh 6 ví, cây lâu năm, 3 loại phân, chuồng tự chọn, mua hàng ở chợ, bỏ chuyển tiền giữa các ví, thú hoang & nhiệm vụ bảo vệ, tự động tưới, tiền chia 6 ví, thiên tai 5 giờ/lần, công trình có thu nhập thụ động, nhiệm vụ 6 ví, bản đồ kéo/zoom, cánh đồng và chuồng mới). File này được index.html tải về khi người dùng mở trò chơi.
+/* 6PAY - Game Nông trại vui vẻ (bản 2026.10.31-3: tỷ lệ 6 ví dùng chung với app, mỗi chuồng nuôi 5–12 con, thanh 6 ví, cây lâu năm, 3 loại phân, chuồng tự chọn, mua hàng ở chợ, bỏ chuyển tiền giữa các ví, thú hoang & nhiệm vụ bảo vệ, tự động tưới, tiền chia 6 ví, thiên tai 5 giờ/lần, công trình có thu nhập thụ động, nhiệm vụ 6 ví, bản đồ kéo/zoom, cánh đồng và chuồng mới). File này được index.html tải về khi người dùng mở trò chơi.
    Trồng cây, nuôi gà – bò – cừu – cá – ong, xây công trình, chế biến nông sản, giao đơn hàng và ghi sổ thu chi.
    Nông trại được NỐI với các game học: tiền thưởng kiếm được trong Lịch sử Việt Nam, Khám phá Việt Nam, từ vựng tiếng Anh,
    tiếng Trung, Toán học cấp 1, Đố vui tài chính, Dạy trẻ xem đồng hồ được cộng hết vào ví nông trại (qua hộp thư farm6_inbox).
@@ -445,7 +445,9 @@
   var JK = ['essential', 'education', 'saving', 'invest', 'share', 'enjoy'];
   var PCT_DEF = { essential: 50, education: 10, saving: 5, invest: 15, share: 5 };
   var PCT_PRESETS = [{ n: '6PAY mặc định', p: { essential: 50, education: 10, saving: 5, invest: 15, share: 5 } }, { n: '6 chiếc lọ chuẩn', p: { essential: 55, education: 10, saving: 10, invest: 10, share: 5 } }, { n: 'Tiết kiệm mạnh', p: { essential: 50, education: 10, saving: 15, invest: 15, share: 5 } }];
-  function pctOf(k) { var p = S.pct || PCT_DEF; return k === 'enjoy' ? Math.max(0, 100 - p.essential - p.education - p.saving - p.invest - p.share) : p[k]; }
+  /* Tỷ lệ dùng chung với trang chủ app 6PAY (window.sixPct do index.html cung cấp); mở game riêng lẻ thì dùng bản lưu trong game */
+  function curPct() { try { if (window.sixPct) { var a = window.sixPct.get(); if (a && typeof a.essential === 'number') return a; } } catch (e) {} return S.pct || PCT_DEF; }
+  function pctOf(k) { var p = curPct(); return k === 'enjoy' ? Math.max(0, 100 - p.essential - p.education - p.saving - p.invest - p.share) : p[k]; }
   function syncM() { S.m = JK.reduce(function (a, k) { return a + (S.jar[k] || 0); }, 0); }
   function addMoney(a, to) {
     if (!a) return;
@@ -873,7 +875,7 @@
   '.fm-wbar{flex:none;display:flex;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 6px 5px;background:#2f6b1f;box-shadow:0 2px 8px rgba(0,0,0,.2);z-index:2;touch-action:pan-x}.fm-wbar::-webkit-scrollbar{display:none}' +
   '.fm-wbar button{flex:1 0 auto;min-width:0;position:relative;border:0;border-radius:10px;background:#fffdf5;padding:3px 6px 4px;text-align:center;color:#4a3416!important;border-bottom:3px solid var(--wc);line-height:1.2}' +
   '.fm-wbar .n{display:block;font-size:10.5px;font-weight:800;white-space:nowrap;letter-spacing:-.2px}.fm-wbar .n i{font-style:normal;color:#9a8660;font-weight:700}.fm-wbar .b{display:block;font-size:13.5px;font-weight:900;font-variant-numeric:tabular-nums;color:#1e3a8a}' +
-  '.fm-wbar button.on{background:var(--wc);color:#fff!important}.fm-wbar button.on .n i,.fm-wbar button.on .b{color:#fff}.fm-wbar .dot{position:absolute;top:-3px;right:-2px;min-width:16px;height:16px;border-radius:8px;background:#ef4444;color:#fff;font-size:10px;line-height:16px;padding:0 4px}' +
+  '.fm-wbar button.set{flex:0 0 auto;background:#fef3c7}.fm-wbar button.set .b{color:#92400e}.fm-wbar button.on{background:var(--wc);color:#fff!important}.fm-wbar button.on .n i,.fm-wbar button.on .b{color:#fff}.fm-wbar .dot{position:absolute;top:-3px;right:-2px;min-width:16px;height:16px;border-radius:8px;background:#ef4444;color:#fff;font-size:10px;line-height:16px;padding:0 4px}' +
   '.fm-stage{position:absolute;inset:0;touch-action:none}.fm-stage canvas{position:absolute;left:0;top:0;width:100%;height:100%;display:block;touch-action:none}' +
   '.fm-tools{position:absolute;left:50%;transform:translateX(-50%);bottom:8px;width:max-content;max-width:100%;display:flex;gap:6px;padding:8px 6px 2px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-x;z-index:1}.fm-tools::-webkit-scrollbar{display:none}' +
   '.fm-zoom{position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:6px;z-index:1}.fm-zoom button{width:36px;height:36px;border:0;border-radius:11px;background:rgba(255,255,255,.85);box-shadow:0 3px 10px rgba(0,0,0,.22);font-size:20px;font-weight:900;color:#3b2a14!important;line-height:1;font-family:' + EF + '}.fm-zoom button:active{transform:scale(.92)}' +
@@ -1879,7 +1881,7 @@
     el.innerHTML = WALLETS.map(function (x) {
       var n = walletReady(x.k);
       return '<button class="' + (tab === 'quest' && S.mw === x.k ? 'on' : '') + '" data-a="wtab" data-w="' + x.k + '" style="--wc:' + x.c + '" title="' + x.n + '"><span class="n">' + x.e + ' ' + (x.k === 'education' ? 'Phát triển' : x.n) + ' <i>' + pctOf(x.k) + '%</i></span><span class="b">' + jarAmt(S.jar[x.k]) + '</span>' + (n ? '<span class="dot">' + n + '</span>' : '') + '</button>';
-    }).join('');
+    }).join('') + '<button class="set" data-a="pctSet" aria-label="Cài đặt tỷ lệ 6 ví" style="--wc:#fde68a"><span class="n">⚙️ Tỷ lệ</span><span class="b" style="font-size:12px">Cài đặt</span></button>';
     el.scrollLeft = sl;
   }
   function toolsUI() {
@@ -2253,9 +2255,9 @@
     sheet(h);
   }
   function pctSheet() {
-    var h = '<div class="fm-h">⚙️ Tỷ lệ chia tiền vào 6 ví</div><p class="fm-sub">Giống như ở trang chủ app 6PAY. Ví Hưởng thụ nhận phần còn lại. Tỷ lệ mới áp dụng cho các khoản thu từ bây giờ.</p><div class="fm-row" style="margin-bottom:8px">' +
+    var h = '<div class="fm-h">⚙️ Tỷ lệ chia tiền vào 6 ví</div><p class="fm-sub"><b>Dùng chung với tỷ lệ ở trang chủ app 6PAY</b>: đổi ở đây thì app cũng đổi theo, và ngược lại. Ví Hưởng thụ nhận phần còn lại. Tỷ lệ mới áp dụng cho các khoản thu từ bây giờ.</p><div class="fm-row" style="margin-bottom:8px">' +
       PCT_PRESETS.map(function (x, i) { return '<button class="fm-btn alt" data-a="pctPre" data-i="' + i + '" style="flex:1;padding:8px 6px;font-size:12.5px"><b>' + x.n + '</b><br><small>' + [x.p.essential, x.p.education, x.p.saving, x.p.invest, x.p.share, 100 - x.p.essential - x.p.education - x.p.saving - x.p.invest - x.p.share].join('/') + '</small></button>'; }).join('') + '</div>';
-    WALLETS.slice(0, 5).forEach(function (W0) { h += '<div class="fm-jar" style="--wc:' + W0.c + '"><span class="e">' + W0.e + '</span><span class="t"><b>' + W0.n + '</b></span><span class="v"><input class="fm-in" id="fpc_' + W0.k + '" type="number" inputmode="numeric" min="0" max="100" value="' + S.pct[W0.k] + '"> %</span></div>'; });
+    WALLETS.slice(0, 5).forEach(function (W0) { h += '<div class="fm-jar" style="--wc:' + W0.c + '"><span class="e">' + W0.e + '</span><span class="t"><b>' + W0.n + '</b></span><span class="v"><input class="fm-in" id="fpc_' + W0.k + '" type="number" inputmode="numeric" min="0" max="100" value="' + curPct()[W0.k] + '"> %</span></div>'; });
     h += '<div class="fm-jar" style="--wc:' + WM.enjoy.c + '"><span class="e">🎉</span><span class="t"><b>Hưởng thụ (còn lại)</b></span><span class="v" id="fpcE">' + pctOf('enjoy') + '%</span></div><div id="fpcErr" class="fm-sub" style="color:#dc2626;text-align:center"></div>' +
       '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="jars">Huỷ</button><button class="fm-btn" id="fpcOk" data-a="pctOk">✓ Xác nhận</button></div>';
     sheet(h);
@@ -2436,7 +2438,7 @@
     else if (a === 'jars') jarSheet();
     else if (a === 'pctSet') pctSheet();
     else if (a === 'pctPre') { var pp = PCT_PRESETS[+el.getAttribute('data-i')].p; JK.slice(0, 5).forEach(function (k) { $('fpc_' + k).value = pp[k]; }); pctLive(); }
-    else if (a === 'pctOk') { var sm = 0, np = {}; JK.slice(0, 5).forEach(function (k) { np[k] = Math.max(0, Math.min(100, parseInt($('fpc_' + k).value, 10) || 0)); sm += np[k]; }); if (sm > 100) return; S.pct = np; save(); toast('✓ Đã lưu tỷ lệ chia tiền vào 6 ví'); jarSheet(); }
+    else if (a === 'pctOk') { var sm = 0, np = {}; JK.slice(0, 5).forEach(function (k) { np[k] = Math.max(0, Math.min(100, parseInt($('fpc_' + k).value, 10) || 0)); sm += np[k]; }); if (sm > 100) return; S.pct = np; try { if (window.sixPct) window.sixPct.set(np); } catch (e) {} save(); hud(); toast('✓ Đã lưu tỷ lệ. App 6PAY cũng dùng tỷ lệ này.'); jarSheet(); }
     else if (a === 'bsee') { var P = BPOS[el.getAttribute('data-b')]; setTab('field'); flyTo('field', P.x, P.y - (P.h ? 20 : 50), 1.35); toast('Chạm vào công trình để thu tiền và lấy hàng'); }
     else if (a === 'zin') zoomAt(W / 2, (H - bottomPad(tab)) / 2, 1.3);
     else if (a === 'zout') zoomAt(W / 2, (H - bottomPad(tab)) / 2, 1 / 1.3);

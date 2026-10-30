@@ -1,4 +1,4 @@
-/* 6PAY - Game Nông trại vui vẻ (bản 2026.10.31-1: thanh 6 ví, cây lâu năm, 3 loại phân, chuồng tự chọn, mua hàng ở chợ, bỏ chuyển tiền giữa các ví, thú hoang & nhiệm vụ bảo vệ, tự động tưới, tiền chia 6 ví, thiên tai 5 giờ/lần, công trình có thu nhập thụ động, nhiệm vụ 6 ví, bản đồ kéo/zoom, cánh đồng và chuồng mới). File này được index.html tải về khi người dùng mở trò chơi.
+/* 6PAY - Game Nông trại vui vẻ (bản 2026.10.31-2: mỗi chuồng nuôi 5–12 con, thanh 6 ví, cây lâu năm, 3 loại phân, chuồng tự chọn, mua hàng ở chợ, bỏ chuyển tiền giữa các ví, thú hoang & nhiệm vụ bảo vệ, tự động tưới, tiền chia 6 ví, thiên tai 5 giờ/lần, công trình có thu nhập thụ động, nhiệm vụ 6 ví, bản đồ kéo/zoom, cánh đồng và chuồng mới). File này được index.html tải về khi người dùng mở trò chơi.
    Trồng cây, nuôi gà – bò – cừu – cá – ong, xây công trình, chế biến nông sản, giao đơn hàng và ghi sổ thu chi.
    Nông trại được NỐI với các game học: tiền thưởng kiếm được trong Lịch sử Việt Nam, Khám phá Việt Nam, từ vựng tiếng Anh,
    tiếng Trung, Toán học cấp 1, Đố vui tài chính, Dạy trẻ xem đồng hồ được cộng hết vào ví nông trại (qua hộp thư farm6_inbox).
@@ -44,16 +44,16 @@
     { id: 'f3', n: 'Phân kích thích siêu tốc', e: '⚗️', p: 150000, cut: 1, d: 'Cây chín ngay lập tức!' }
   ];
   var FZM = {}; FERTS.forEach(function (f) { FZM[f.id] = f; });
-  /* Vật nuôi: ăn 1 nông sản (feed) rồi sau t giây cho 1 sản phẩm (p). cap = số chỗ ban đầu, q = nhiệm vụ cần làm để mở chuồng */
+  /* Vật nuôi: ăn 1 nông sản (feed) rồi sau t giây cho 1 sản phẩm (p). cap = số con mỗi chuồng/ao (ít nhất 5), q = nhiệm vụ cần làm để mở chuồng */
   var ANIMALS = [
-    { id: 'ga', n: 'Gà', e: '🐔', pen: 'Chuồng gà', lv: 2, cost: 60000, feed: 'lua', p: 'trung', t: 180, cap: 4, grass: '#9ccc65' },
-    { id: 'bo', n: 'Bò', e: '🐄', pen: 'Chuồng bò', lv: 3, q: 'q3', cost: 200000, feed: 'ngo', p: 'sua', t: 360, cap: 2, grass: '#8bc34a' },
-    { id: 'cuu', n: 'Cừu', e: '🐑', pen: 'Chuồng cừu', lv: 6, q: 'q9', cost: 320000, feed: 'carot', p: 'len', t: 480, cap: 2, grass: '#aed581' },
-    { id: 'ca', n: 'Cá', e: '🐠', pen: 'Ao cá', lv: 5, q: 'q7', cost: 150000, feed: 'lua', p: 'catuoi', t: 300, cap: 4, grass: '#4fc3f7', water: 1 },
-    { id: 'ong', n: 'Ong', e: '🐝', pen: 'Trại ong', lv: 8, q: 'q13', cost: 450000, feed: 'huongduong', p: 'mat', t: 900, cap: 3, grass: '#c5e1a5' },
-    { id: 'vit', n: 'Vịt', e: '🦆', pen: 'Chuồng vịt', lv: 9, q: 'q24', cost: 380000, feed: 'ngo', p: 'longvit', t: 420, cap: 3, grass: '#80deea', water: 1 },
-    { id: 'de', n: 'Dê', e: '🐐', pen: 'Chuồng dê', lv: 11, q: 'q26', cost: 520000, feed: 'bapcai', p: 'suade', t: 600, cap: 2, grass: '#c5e1a5' },
-    { id: 'heo', n: 'Heo', e: '🐖', pen: 'Chuồng heo', lv: 13, q: 'q29', cost: 700000, feed: 'khoai', p: 'nam', t: 1200, cap: 2, grass: '#d7ccc8' }
+    { id: 'ga', n: 'Gà', e: '🐔', pen: 'Chuồng gà', lv: 2, cost: 60000, feed: 'lua', p: 'trung', t: 180, cap: 8, grass: '#9ccc65' },
+    { id: 'bo', n: 'Bò', e: '🐄', pen: 'Chuồng bò', lv: 3, q: 'q3', cost: 200000, feed: 'ngo', p: 'sua', t: 360, cap: 5, grass: '#8bc34a' },
+    { id: 'cuu', n: 'Cừu', e: '🐑', pen: 'Chuồng cừu', lv: 6, q: 'q9', cost: 320000, feed: 'carot', p: 'len', t: 480, cap: 6, grass: '#aed581' },
+    { id: 'ca', n: 'Cá', e: '🐠', pen: 'Ao cá', lv: 5, q: 'q7', cost: 150000, feed: 'lua', p: 'catuoi', t: 300, cap: 10, grass: '#4fc3f7', water: 1 },
+    { id: 'ong', n: 'Ong', e: '🐝', pen: 'Trại ong', lv: 8, q: 'q13', cost: 450000, feed: 'huongduong', p: 'mat', t: 900, cap: 6, grass: '#c5e1a5' },
+    { id: 'vit', n: 'Vịt', e: '🦆', pen: 'Chuồng vịt', lv: 9, q: 'q24', cost: 380000, feed: 'ngo', p: 'longvit', t: 420, cap: 8, grass: '#80deea', water: 1 },
+    { id: 'de', n: 'Dê', e: '🐐', pen: 'Chuồng dê', lv: 11, q: 'q26', cost: 520000, feed: 'bapcai', p: 'suade', t: 600, cap: 5, grass: '#c5e1a5' },
+    { id: 'heo', n: 'Heo', e: '🐖', pen: 'Chuồng heo', lv: 13, q: 'q29', cost: 700000, feed: 'khoai', p: 'nam', t: 1200, cap: 5, grass: '#d7ccc8' }
   ];
   var PRODUCTS = {
     trung: { id: 'trung', n: 'Trứng gà', e: '🥚', sell: 12000, xp: 2 },

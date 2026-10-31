@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.31-8';
+const APP_VERSION='2026.10.31-9';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -302,6 +302,26 @@ body{touch-action:manipulation;}
 .set-group{font-size:var(--fs-xs);font-weight:800;color:var(--text-soft);text-transform:uppercase;letter-spacing:.05em;margin:14px 4px 6px;}
 .set-group:first-child{margin-top:2px;}
 .set-go{color:var(--accent);font-weight:600;font-size:var(--fs-sm);white-space:nowrap;}
+.set-danger span:first-child{color:#c0392b;font-weight:700;}
+.hist-r{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none;}
+.old-tr{display:block;width:100%;text-align:left;border:1px dashed #e0a100;background:#fff8e1;color:#7a5200;border-radius:12px;padding:9px 12px;margin:4px 0 10px;font-size:var(--fs-sm);line-height:1.45;cursor:pointer;}
+.old-tr b{color:var(--accent-strong);white-space:nowrap;}
+/* Hộp nhắc nhở Đặt lại app: hiện sát phía trên màn hình */
+#resetModal{align-items:flex-start;padding:max(14px,env(safe-area-inset-top)) 14px 14px;z-index:100007;}
+#resetModal.open .modal-box{animation:rsDrop .25s ease;}
+@keyframes rsDrop{from{transform:translateY(-40px);opacity:0;}to{transform:none;opacity:1;}}
+#resetModal .modal-box{text-align:left;max-width:420px;border:2px solid #f3b4ad;}
+.rs-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.rs-head .ic{font-size:30px;line-height:1;}
+.rs-head b{font-size:var(--fs-lg);color:#b42318;}
+.rs-box p{font-size:var(--fs-sm)!important;margin:0 0 8px!important;line-height:1.5;}
+.rs-box ul{margin:0 0 10px;padding-left:20px;font-size:var(--fs-sm);line-height:1.55;color:var(--text);}
+.rs-tip{background:#eef6ff;border-radius:10px;padding:8px 10px;font-size:var(--fs-sm);margin-bottom:10px;line-height:1.45;}
+.rs-tip button{margin-top:6px;}
+.rs-chk{display:flex;gap:8px;align-items:flex-start;font-size:var(--fs-sm);font-weight:600;margin:4px 0 12px;cursor:pointer;}
+.rs-chk input{width:20px;height:20px;flex:none;margin:1px 0 0;}
+#rs-go{background:#c0392b!important;color:#fff!important;}
+#rs-go:disabled{opacity:.45;}
 .pct-row{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:var(--fs-md);min-height:var(--tap);}
 .pct-row.enjoy{background:var(--newtx-bg);color:var(--newtx-text);font-weight:600;border-color:#D6E3F7;}
 .mode-row{cursor:pointer;}
@@ -788,6 +808,24 @@ html.fs-big .ob-jar .d,html.fs-big .rp-plan,html.fs-big .rp-lim{font-size:14px;}
 </div>
 <div class="modal-overlay" id="debtPayModal" onclick="if(event.target===this)this.classList.remove('open')">
  <div class="modal-box" id="debtPayBox"></div>
+</div>
+<div class="modal-overlay" id="resetModal" onclick="if(event.target===this)closeReset()">
+ <div class="modal-box rs-box" role="alertdialog" aria-labelledby="rs-title">
+  <div class="rs-head"><span class="ic">⚠️</span><b id="rs-title">Đặt lại toàn bộ app?</b></div>
+  <p>App sẽ trở về trạng thái như lúc mới cài. <b>Toàn bộ dữ liệu trên máy này sẽ bị xóa vĩnh viễn</b>, gồm:</p>
+  <ul>
+   <li>Thu chi, số dư 6 ví, tỷ lệ phân bổ, hạn mức</li>
+   <li>Kế hoạch, ghi chú, mục tiêu tiết kiệm, khoản nợ, hóa đơn</li>
+   <li>Điểm ⭐, chuỗi ngày, tiến độ các game và Nông trại Sixpay</li>
+   <li>Tên, số điện thoại và mật khẩu khóa app lưu trên máy</li>
+  </ul>
+  <div class="rs-tip">💾 Nên tải file sao lưu trước. Nếu đổi ý, bạn có thể khôi phục lại từ file này.<br><button class="mini-btn" onclick="backupDownload()">💾 Tải file sao lưu</button></div>
+  <label class="rs-chk"><input type="checkbox" id="rs-ok" onchange="document.getElementById('rs-go').disabled=!this.checked">Tôi hiểu dữ liệu sẽ bị xóa và không lấy lại được (trừ khi có file sao lưu).</label>
+  <div class="modal-actions">
+   <button class="btn cancel" onclick="closeReset()">Hủy</button>
+   <button class="btn confirm" id="rs-go" disabled onclick="doReset()">🧹 Xóa và đặt lại</button>
+  </div>
+ </div>
 </div>
 <div class="modal-overlay" id="confirmModal">
  <div class="modal-box">
@@ -1630,9 +1668,9 @@ async function changePass(){
   // ===== Sao lưu / khôi phục dữ liệu =====
 // Không sao lưu tài khoản và mật khẩu, nên khôi phục xong mật khẩu hiện tại trên máy vẫn giữ nguyên.
 // Sao lưu theo tiền tố khóa, nên dữ liệu game và tiện ích mới thêm sau này cũng tự được sao lưu.
-const BACKUP_PREFIX=['6pay','wg_','dg_','vnh_','vnv_','zh_','math_'];
+const BACKUP_PREFIX=['6pay','wg_','dg_','vnh_','vnv_','zh_','math_','mtb_','farm6_'];
 const LASTBACKUP_KEY='6pay-lastbackup';
-const BACKUP_SKIP=['6pay-account-v1','6pay-session-v1','6pay-guides-cache-v1','6pay-clicks-v1','6pay-lockfail-v1','6pay-lastbackup'];
+const BACKUP_SKIP=['farm6_day','6pay-account-v1','6pay-session-v1','6pay-guides-cache-v1','6pay-clicks-v1','6pay-lockfail-v1','6pay-lastbackup'];
 const OLD_BACKUP_KEYS=['6pay-state-v1','6pay-stars-v1','6pay-streak-v1','6pay-plan-v1','6pay-plandone-v1','6pay-quiz-v1','6pay-debts-v1','6pay-read-v1','6pay-fs-v1','6pay-notes-v1','6pay-goals-v1','6pay-bills-v1','6pay-pomo-v1','vnh_history_v1','vnv_travel_v1'];
 function allLsKeys(){const a=[];try{for(let i=0;i<localStorage.length;i++)a.push(localStorage.key(i));}catch(e){}return a;}
 function isAppKey(k){return !!k&&BACKUP_PREFIX.some(p=>k.indexOf(p)===0);}
@@ -1698,6 +1736,19 @@ function backupImport(inp){
  };
  r.readAsText(f);
 }
+// ===== Đặt lại toàn bộ app (Reset) =====
+function openReset(){
+ const c=document.getElementById('rs-ok'),g=document.getElementById('rs-go');
+ if(c)c.checked=false; if(g)g.disabled=true;
+ document.getElementById('resetModal').classList.add('open');
+}
+function closeReset(){document.getElementById('resetModal').classList.remove('open');}
+function doReset(){
+ const c=document.getElementById('rs-ok'); if(!c||!c.checked)return;
+ try{localStorage.clear();}catch(e){}
+ try{sessionStorage.clear();}catch(e){}
+ location.replace(location.pathname+'?reset='+Date.now());
+}
 function setRow(fn,label,right,id){return `<button class="pct-row mode-row" onclick="${fn}"><span>${label}</span><span class="set-go"${id?' id="'+id+'"':''}>${right||''} ›</span></button>`;}
 function scrSettings(){
  const d=lastBackupDays();
@@ -1720,6 +1771,8 @@ function scrSettings(){
   ${setRow('toggleFontSize()','🔠 Cỡ chữ',fontBig()?'Lớn':'Bình thường')}
   ${setRow('toggleSound()','🔊 Âm thanh trò chơi',soundOn()?'Đang bật':'Đang tắt')}
   ${setRow('openInstall()','📲 Hướng dẫn cài app ra màn hình')}
+  <div class="set-group">Đặt lại</div>
+  <button class="pct-row mode-row set-danger" onclick="openReset()"><span>🧹 Đặt lại app (xóa toàn bộ dữ liệu)</span><span class="set-go" style="color:#c0392b">Reset ›</span></button>
   <div class="guide-desc">Nên sao lưu định kỳ và lưu file vào Google Drive hoặc gửi qua Zalo cho chính mình. Khi app bị gỡ hay đổi điện thoại, bạn chỉ cần mở app và chọn Khôi phục.</div>`);
 }
 function ratioAmt(k,p){return totalIncome()*p/100-jarSpent(k)+jarTrIn(k)-jarTrOut(k);}
@@ -1814,6 +1867,7 @@ function scrWallets(){
  return `<div class="screen-flex">
   <div class="center-title">Số dư các ví</div>
   <div class="center-sub">Tổng: <b class="${balance()<0?'neg':'pos'}">${fmt(balance())} ₫</b></div>
+  ${oldTrNotice()}
   <div class="fill-rows big natural">${rows}</div>
   <div style="flex:1 1 0;min-height:0;"></div>
   <button class="btn back" onclick="back()">◀ Quay lại</button>
@@ -1828,13 +1882,28 @@ function trRefresh(){
 }
 // Tính năng chuyển tiền giữa các ví đã bỏ: mỗi ví chỉ tiêu số tiền của chính nó. Màn hình này chỉ còn để xem các lần chuyển cũ.
 function scrTransfer(){
- const list=tx.filter(t=>t.type==='tr').sort((a,b)=>b.ts-a.ts).slice(0,30);
- return screenWrap('🔁 Các lần chuyển tiền cũ',`
-  <div class="guide-desc">6PAY không còn cho chuyển tiền giữa các ví. Mỗi ví chỉ được tiêu số tiền đang có trong ví đó. Dưới đây là các lần chuyển trước đây (vẫn được tính vào số dư).</div>
+ const all=tx.filter(t=>t.type==='tr').sort((a,b)=>b.ts-a.ts), list=all.slice(0,100);
+ return screenWrap('🔁 Các lần chuyển ví cũ',`
+  <div class="guide-desc">6PAY không còn cho chuyển tiền giữa các ví. Các lần chuyển dưới đây được tạo từ phiên bản cũ và <b>vẫn đang cộng/trừ vào số dư từng ví</b> (không tính vào tổng Thu/Chi). Xóa một lần chuyển thì số dư hai ví liên quan trở lại như chưa chuyển.</div>
+  ${all.length>1?`<button class="btn cancel wide" style="margin:0 0 10px;" onclick="deleteAllTransfers()">🗑 Xóa tất cả ${all.length} lần chuyển cũ</button>`:''}
   ${list.length?list.map(t=>`<div class="list-item">
    <div class="tx-info"><div>${jarOf(t.from).i} ${jarOf(t.from).l} → ${jarOf(t.to).i} ${jarOf(t.to).l}</div>${t.note?`<div class="note">${esc(t.note)}</div>`:''}<div class="date">${dateFmt(t.ts)}</div></div>
-   <div class="tx-right"><span class="tr-amt">${fmt(t.amount)} ₫</span></div>
-  </div>`).join(''):'<div class="empty">Chưa có lần chuyển tiền nào.</div>'}`);
+   <div class="tx-right"><span class="tr-amt">${fmt(t.amount)} ₫</span><div class="tx-actions"><button class="mini-btn" onclick="deleteTxUndo('${t.id}')">🗑 Xóa</button></div></div>
+  </div>`).join(''):'<div class="empty">Không còn lần chuyển ví cũ nào. Số dư các ví đã được tính lại.</div>'}`);
+}
+// Xóa hết các lần chuyển ví cũ (có Hoàn tác)
+function deleteAllTransfers(){
+ const old=tx.filter(t=>t.type==='tr'); if(!old.length)return;
+ openConfirm('Xóa tất cả '+old.length+' lần chuyển ví cũ? Số dư từng ví sẽ được tính lại như chưa từng chuyển. Tổng số dư không thay đổi.',function(){
+  const keep=tx.slice();
+  tx=tx.filter(t=>t.type!=='tr'); persist(); render();
+  showToast('Đã xóa '+old.length+' lần chuyển ví cũ','Hoàn tác',()=>{tx=keep;persist();render();showToast('Đã khôi phục.');});
+ });
+}
+// Dòng nhắc ở màn hình ví khi còn lần chuyển ví cũ (dữ liệu từ phiên bản trước)
+function oldTrNotice(){
+ const n=tx.filter(t=>t.type==='tr').length; if(!n)return '';
+ return `<button class="old-tr" onclick="push('transfer')">🔁 Có ${n} lần chuyển ví cũ đang cộng/trừ vào số dư các ví. <b>Xem / xóa ›</b></button>`;
 }
 function confirmTransfer(){notify('Tính năng chuyển tiền giữa các ví đã được bỏ.');}
 function confirmTransferOld(){
@@ -2011,7 +2080,7 @@ function scrExpenseOverview(){
    ${limitBar(j.k)}
    <button class="jar-guide" onclick="openJarGuide('${j.k}')">💡 Hướng dẫn chi tiêu ›</button>
   </div>`;}).join('');
- return fillScreen('Hãy cân nhắc trước khi chi','',rows,'','jarblocks');
+ return fillScreen('Hãy cân nhắc trước khi chi',oldTrNotice(),rows,'','jarblocks');
 }
 
 // Trang chi tiết ví (dùng chung cho cả 6 ví)
@@ -2819,7 +2888,7 @@ function histBody(){
    <div class="tx-info"><div class="tx-name">${txLabel(x)}${tagPill(x.tag)}</div>
     <div class="note">${esc(x.note||'(không ghi chú)')}</div>
     <div class="hist-time">${isTr?'Chuyển ví':(isIn?'Thu':'Chi')} · ${dateFmt(x.ts)} · ${time}</div></div>
-   <span class="${isTr?'tr-amt':(isIn?'pos':'neg')}">${isTr?'':(isIn?'+':'−')}${fmt(x.amount)} ₫</span>
+   <span class="hist-r"><span class="${isTr?'tr-amt':(isIn?'pos':'neg')}">${isTr?'':(isIn?'+':'−')}${fmt(x.amount)} ₫</span>${isTr?`<button class="mini-btn" onclick="deleteTxUndo('${x.id}')">🗑 Xóa</button>`:''}</span>
   </div>`;}).join('');
  return `<div class="hist-sum"><div class="i">Tổng thu<b>${fmt(inc)} ₫</b></div><div class="o">Tổng chi<b>${fmt(out)} ₫</b></div></div>
   ${histQuery.trim()?`<div class="guide-desc" style="margin:0 0 8px;">Tìm thấy ${list.length} giao dịch trong toàn bộ lịch sử${list.length>300?' (hiện 300 giao dịch mới nhất)':''}.</div>`:''}

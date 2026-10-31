@@ -1,9 +1,10 @@
-/* 6PAY - Game Nông trại vui vẻ (bản 2026.10.31-4: đổi tỷ lệ là số dư 6 ví tự tính lại như app, tỷ lệ 6 ví dùng chung với app, mỗi chuồng nuôi 5–12 con, thanh 6 ví, cây lâu năm, 3 loại phân, chuồng tự chọn, mua hàng ở chợ, bỏ chuyển tiền giữa các ví, thú hoang & nhiệm vụ bảo vệ, tự động tưới, tiền chia 6 ví, thiên tai 5 giờ/lần, công trình có thu nhập thụ động, nhiệm vụ 6 ví, bản đồ kéo/zoom, cánh đồng và chuồng mới). File này được index.html tải về khi người dùng mở trò chơi.
-   Trồng cây, nuôi gà – bò – cừu – cá – ong, xây công trình, chế biến nông sản, giao đơn hàng và ghi sổ thu chi.
+/* 6PAY - Game NÔNG TRẠI SIXPAY (bản 2026.10.31-5: quy hoạch 4 khu Trồng trọt – Chăn nuôi – Sản xuất – Vui chơi, nhiệm vụ xếp theo hướng dẫn chi tiêu của từng ví,
+   mọi khoản chi đều ghi rõ trừ ví nào, chuồng nuôi hiện trạng thái rõ ràng (có sản phẩm / chưa cho ăn / đang nuôi), nút 🔔 Thông báo: lịch sử thiên tai, thú hoang,
+   thiệt hại và nông sản còn thiếu cho đơn hàng). File này được index.html tải về khi người dùng mở trò chơi.
+   Trồng cây, nuôi gà – bò – cừu – cá – ong, xây xưởng chế biến, khu vui chơi, giao đơn hàng và ghi sổ thu chi.
    Nông trại được NỐI với các game học: tiền thưởng kiếm được trong Lịch sử Việt Nam, Khám phá Việt Nam, từ vựng tiếng Anh,
    tiếng Trung, Toán học cấp 1, Đố vui tài chính, Dạy trẻ xem đồng hồ được cộng hết vào ví nông trại (qua hộp thư farm6_inbox).
-   Mục "Nhiệm vụ" yêu cầu chơi các game học để mở thêm đất, chuồng trại và công trình.
-   Bản đồ Ruộng/Chuồng kéo được bằng 1 ngón, phóng to/thu nhỏ bằng 2 ngón; các cánh đồng mới và chuồng vịt, dê, heo nằm bên ngoài, mở bằng nhiệm vụ.
+   Bản đồ Trồng trọt/Chăn nuôi kéo được bằng 1 ngón, phóng to/thu nhỏ bằng 2 ngón.
    Cây và vật nuôi vẫn lớn khi đóng app (tính theo đồng hồ của máy). Tiến độ lưu trên máy (localStorage). */
 (function () {
   if (window.FarmGame) return;
@@ -133,11 +134,37 @@
       d: 'Vui chơi để nạp năng lượng! Tiền hưởng thụ đã tiêu là <b>không lấy lại được</b>, chỉ nhận về kinh nghiệm và niềm vui. Hãy hưởng thụ <b>vừa đủ</b> với số tiền trong ví này.' }
   ];
   var WM = {}; WALLETS.forEach(function (w) { WM[w.k] = w; });
+  /* HƯỚNG DẪN CHI TIÊU CỦA TỪNG VÍ: nên chi cho gì, không dùng cho gì, và các nhóm nhiệm vụ (g = [mã, biểu tượng, tên nhóm]) */
+  var WGUIDE = {
+    essential: { use: 'Ăn uống, nhà cửa, điện nước, sức khoẻ, đi lại và các chi phí để làm ra tiền: hạt giống, phân bón, sửa chữa, bảo vệ nông trại, mua hàng còn thiếu ở chợ.', no: 'Đồ chơi, đi chơi, du lịch (→ 🎉 Hưởng thụ). Mua đất, vật nuôi, xây xưởng (→ 📈 Đầu tư).',
+      g: [['an', '🍚', 'Ăn uống hằng ngày'], ['sx', '🧑‍🌾', 'Chi phí sản xuất'], ['nha', '🏠', 'Nhà cửa & an toàn'], ['yte', '🩺', 'Sức khoẻ'], ['dilai', '⛽', 'Đi lại & giao hàng']] },
+    education: { use: 'Học phí các khoá học: ngoại ngữ, kiến thức, kiến thức tài chính, kỹ năng làm nông.', no: 'Truyện, đồ chơi giải trí (→ 🎉 Hưởng thụ).',
+      g: [['nn', '🔤', 'Ngoại ngữ'], ['kt', '🧠', 'Kiến thức & tư duy'], ['tc', '🎯', 'Kiến thức tài chính'], ['nghe', '🧑‍🏫', 'Kỹ năng nghề nông']] },
+    saving: { use: 'Gửi tiền có kỳ hạn, để dành cho mục tiêu lớn, lập quỹ dự phòng cho lúc gặp chuyện bất ngờ.', no: 'Tiêu xài hằng ngày. Rút trước hạn thì mất lãi.',
+      g: [['tt', '💌', 'Trả cho mình trước'], ['mt', '🎯', 'Để dành cho mục tiêu'], ['dp', '🆘', 'Quỹ dự phòng'], ['ky', '🏦', 'Sổ tiết kiệm có kỳ hạn']] },
+    invest: { use: 'Mua tài sản sinh ra tiền: đất, cây ăn quả lâu năm, vật nuôi, chuồng trại, xưởng, công trình; góp vốn kinh doanh.', no: 'Chi tiêu hằng ngày. Chỉ đầu tư số tiền chấp nhận mất và nên chia nhỏ ra nhiều nơi.',
+      g: [['kd', '🌾', 'Kinh doanh nông trại (việc mình hiểu rõ)'], ['at', '🛡️', 'Đầu tư an toàn, lãi vừa phải'], ['rr', '⚠️', 'Rủi ro cao: lãi to hoặc lỗ']] },
+    share: { use: 'Giúp đỡ gia đình, hàng xóm, cộng đồng, quyên góp từ thiện bằng tiền, nông sản hoặc công sức.', no: 'Mua đồ cho bản thân.',
+      g: [['gd', '👵', 'Gia đình & hàng xóm'], ['cd', '🏫', 'Cộng đồng & trường học'], ['tth', '❤️', 'Từ thiện & cứu trợ']] },
+    enjoy: { use: 'Vui chơi, giải trí, tiệc tùng, du lịch, xây và chơi ở 🎡 Khu vui chơi của nông trại.', no: 'Lấy tiền ví khác để chơi. Ví này hết tiền thì tạm nghỉ chơi, chờ thu nhập mới.',
+      g: [['free', '🪁', 'Vui chơi miễn phí'], ['gt', '🎬', 'Giải trí'], ['tiec', '🍢', 'Ăn uống, tiệc tùng'], ['dl', '✈️', 'Du lịch']] }
+  };
+  /* Khoản chi nào trừ ví nào (hiện trong mục 💰 6 ví) */
+  var SPEND_RULES = [
+    ['essential', '🌱 Hạt giống, 🧪 phân bón, 🛒 mua hàng ở chợ, 🔧 sửa chữa sau thiên tai, 🛡️ hàng rào và chòi canh'],
+    ['education', '🎓 Học phí các khoá học (nhiệm vụ Phát triển bản thân)'],
+    ['saving', '🏦 Gửi tiết kiệm có kỳ hạn (nhận lại gốc + lãi)'],
+    ['invest', '🪧 Mua đất, 🌳 cây ăn quả lâu năm, 🐔 vật nuôi, 🏗️ chuồng trại, 🏭 xưởng chế biến, 🏡 công trình'],
+    ['share', '🤝 Quyên góp, tặng quà, giúp đỡ người khác'],
+    ['enjoy', '🎡 Xây khu vui chơi, 🎟️ vé vào chơi, 🍦 đi chơi, du lịch']
+  ];
+  function wch(w, a) { var W0 = WM[w]; return '<span class="fm-wch" style="--wc:' + W0.c + '">' + (a != null ? '−' + short(a) + ' · ' : '') + W0.e + ' ' + W0.n + '</span>'; }
+  function wpay(w, a) { return '<span class="fm-wpay">💳 Trả bằng ví ' + WM[w].e + ' <b>' + WM[w].n + '</b> (đang có ' + money(S.jar[w]) + ')' + (a != null && S.jar[w] < a ? ' · <b style="color:#dc2626">chưa đủ</b>' : '') + '</span>'; }
   /* Chủ đề tiếng Anh/Trung dùng cho khoá học (mã giống trong game từ vựng) */
   var TOPIC = { fruits: '🍎 Trái cây', colors: '🎨 Màu sắc', family: '👪 Gia đình', pets: '🐶 Vật nuôi & nông trại', numbers: '🔢 Số đếm', food: '🍕 Món ăn', school: '📚 Trường học', body: '🧍 Cơ thể',
     clothes: '👕 Quần áo', vegetables: '🥕 Rau củ', jobs: '👨‍⚕️ Nghề nghiệp', weather: '⛅ Thời tiết & mùa', transport: '🚗 Giao thông', sports: '⚽ Thể thao', money: '💰 Tiền bạc & mua sắm', emotions: '😊 Cảm xúc',
     places: '🏫 Địa điểm', travel: '🧳 Du lịch', countries: '🌏 Quốc gia', tech: '💻 Công nghệ', space: '🪐 Vũ trụ', nature: '🌈 Thiên nhiên', music: '🎸 Âm nhạc', time: '⏰ Thời gian', days: '📅 Thứ & tháng', toys: '🧸 Đồ chơi', kitchen: '🍴 Nhà bếp' };
-  var EVN = { plant: ['Gieo', 'hạt giống'], water: ['Tưới', 'ô ruộng'], harvest: ['Thu hoạch', 'cây'], feed: ['Cho vật nuôi ăn', 'lần'], collect: ['Thu', 'sản phẩm từ vật nuôi'], make: ['Chế biến', 'món ở xưởng'], order: ['Giao', 'đơn hàng'], sell: ['Bán', 'món ở chợ'], fert: ['Bón phân', 'lần'] };
+  var EVN = { plant: ['Gieo', 'hạt giống'], water: ['Tưới', 'ô ruộng'], harvest: ['Thu hoạch', 'cây'], feed: ['Cho vật nuôi ăn', 'lần'], collect: ['Thu', 'sản phẩm từ vật nuôi'], make: ['Chế biến', 'món ở xưởng'], order: ['Giao', 'đơn hàng'], sell: ['Bán', 'món ở chợ'], fert: ['Bón phân', 'lần'], fun: ['Chơi', 'lượt ở 🎡 Khu vui chơi'] };
 
   function base(lv) { return 10000 + 10000 * lv; }   // mức chi chuẩn theo cấp
   function r1k(n) { return Math.max(0, Math.round(n / 1000) * 1000); }
@@ -195,7 +222,7 @@
   M(w, 14, '🧹', 'Dọn dẹp chuồng vịt', 'Chuồng sạch vịt mới khoẻ. Thu 4 🪶 lông vịt.', 'farm', F('collect', 4, 'longvit'), { req: 'a:vit' });
   M(w, 15, '🧧', 'Chuẩn bị mâm cơm ngày Tết', 'Góp 3 🥖 bánh mì, 4 🐟 cá tươi và 2 🍉 dưa hấu.', 'give', G([['banhmi', 3], ['catuoi', 4], ['dua', 2]]));
   M(w, 16, '❄️', 'Thuê kho lạnh bảo quản hàng', 'Hàng tươi lâu, bán được giá. Giao 6 đơn hàng.', 'farm', F('order', 6));
-  M(w, 18, '🚜', 'Mua máy cày cho cánh đồng lớn', 'Máy móc giúp làm nhanh hơn. Thu hoạch 60 cây.', 'farm', F('harvest', 60));
+  M('invest', 18, '🚜', 'Đầu tư máy cày cho cánh đồng lớn', 'Máy cày là tài sản giúp làm nhanh hơn, thu nhiều hơn (mua máy móc là khoản đầu tư, không phải chi thiết yếu). Thu hoạch 60 cây.', 'farm', F('harvest', 60));
   M(w, 20, '🏥', 'Mua bảo hiểm y tế cho cả nhà', 'Bảo hiểm giúp gia đình không bị bất ngờ khi ốm đau.', 'wait', T(1800));
 
   /* ---------- 📚 PHÁT TRIỂN BẢN THÂN ---------- */
@@ -331,6 +358,39 @@
   M(w, 17, '🏝️', 'Du lịch Phú Quốc cùng gia đình', 'Cả nhà cùng nghỉ dưỡng.', 'wait', T(21600), { cost: 7 });
   M(w, 19, '✈️', 'Du lịch nước ngoài', 'Chuyến đi lớn: phải tiết kiệm thật lâu mới đi được.', 'wait', T(43200), { cost: 10 });
 
+  /* ---------- Nhiệm vụ bổ sung (thêm ở cuối để không làm đổi mã các nhiệm vụ cũ) ---------- */
+  M('essential', 2, '💡', 'Trả tiền điện nước tháng này', 'Điện nước là khoản phải trả đúng hạn mỗi tháng, trả trước rồi mới tính chuyện khác.', 'wait', T(120));
+  M('essential', 4, '🚌', 'Mua vé xe đi chợ huyện bán hàng', 'Chi phí đi lại để bán hàng là khoản thiết yếu. Bán 8 món ở chợ.', 'farm', F('sell', 8));
+  M('share', 3, '👨‍👩‍👧', 'Nấu bữa cơm mời ông bà', 'Chia sẻ với gia đình bằng chính nông sản nhà làm ra. Góp 4 🌾 lúa và 2 🥚 trứng.', 'give', G([['lua', 4], ['trung', 2]]), { c0: 1, req: 'a:ga', fert: 1 });
+  M('enjoy', 2, '🎠', 'Dạo chơi khu vui chơi nông trại', 'Ghé 🎡 Khu vui chơi, chơi một lượt ở bất kỳ khu nào (chi vé từ ví Hưởng thụ).', 'farm', F('fun', 1), { c0: 1 });
+
+  /* Xếp nhiệm vụ vào nhóm theo hướng dẫn chi tiêu của từng ví */
+  (function () {
+    var N = {
+      'Đi chợ nấu bữa cơm gia đình': 'an', 'Chuẩn bị bữa sáng đủ chất': 'an', 'Mua gia vị nấu bữa tối': 'an', 'Trữ lương thực mùa mưa bão': 'an', 'Chuẩn bị mâm cơm ngày Tết': 'an',
+      'Sửa mái nhà bị dột': 'nha', 'Sửa hàng rào bị gió đổ': 'nha', 'Mua đồ bảo hộ lấy mật ong': 'nha', 'Trả tiền điện nước tháng này': 'nha',
+      'Khám sức khoẻ định kỳ cho cả nhà': 'yte', 'Mua bảo hiểm y tế cho cả nhà': 'yte',
+      'Đổ xăng cho xe chở hàng': 'dilai', 'Bảo dưỡng xe chở hàng': 'dilai', 'Mua vé xe đi chợ huyện bán hàng': 'dilai', 'Thuê kho lạnh bảo quản hàng': 'dilai',
+      'Trả cho mình trước': 'tt', 'Trả cho mình trước (lần 2)': 'tt', 'Gửi 60% ví Tiết kiệm': 'tt',
+      'Tiết kiệm mua đôi giày mới': 'mt', 'Tiết kiệm mua xe đạp': 'mt', 'Tiết kiệm học phí năm sau': 'mt', 'Gửi 70% ví Tiết kiệm để mua máy cày': 'mt', 'Tiết kiệm mua quà Tết cho ông bà': 'mt', 'Quỹ ước mơ': 'mt',
+      'Lập quỹ dự phòng khẩn cấp': 'dp',
+      'Cho bạn mượn tiền mua giống': 'at', 'Quỹ đầu tư an toàn': 'at', 'Mua cổ phần hợp tác xã': 'at', 'Quỹ chỉ số (đầu tư dài hạn)': 'at', 'Mua trái phiếu làng xây trường': 'at', 'Danh mục đầu tư đa dạng': 'at', 'Mua đất nông nghiệp lâu dài': 'at',
+      'Giúp bác hàng xóm thu hoạch': 'gd', 'Biếu quà ông bà': 'gd', 'Giao hàng giúp cô Lan bị ốm': 'gd', 'Nấu bữa cơm mời ông bà': 'gd',
+      'Ủng hộ quỹ khuyến học của trường': 'cd', 'Mua sách tặng thư viện làng': 'cd', 'Tặng trứng cho bếp ăn trường học': 'cd', 'Trồng cây xanh cho làng': 'cd', 'Góp tiền sửa đường vào bản': 'cd', 'Xây giếng nước sạch cho làng bên': 'cd', 'Học bổng cho học sinh vượt khó': 'cd', 'Góp tiền xây cầu cho bản làng': 'cd',
+      'Thả diều trên đê': 'free', 'Chơi cầu lông với bố mẹ': 'free', 'Dạo chơi khu vui chơi nông trại': 'free',
+      'Ăn kem cùng bạn': 'tiec', 'Tiệc nướng ngoài vườn': 'tiec', 'Picnic cuối tuần': 'tiec', 'Ăn buffet cùng gia đình': 'tiec', 'Tổ chức tiệc sinh nhật': 'tiec', 'Tiệc trà chiều': 'tiec',
+      'Cắm trại ở rừng thông': 'dl', 'Du lịch Đà Lạt cuối tuần': 'dl', 'Nghỉ hè ở biển Nha Trang': 'dl', 'Tham quan Vịnh Hạ Long': 'dl', 'Du lịch Phú Quốc cùng gia đình': 'dl', 'Du lịch nước ngoài': 'dl'
+    };
+    var DEF = { essential: 'sx', saving: 'ky', share: 'tth', enjoy: 'gt' };
+    MISSIONS.forEach(function (m) {
+      // m.grp = nhóm (không dùng m.g vì m.g là mã game học của nhiệm vụ học tập)
+      if (N[m.n]) m.grp = N[m.n];
+      else if (m.w === 'education') m.grp = m.k === 'farm' ? 'nghe' : m.g === 'en' || m.g === 'zh' ? 'nn' : m.g === 'quiz' ? 'tc' : 'kt';
+      else if (m.w === 'invest') m.grp = m.k === 'wait' ? 'rr' : 'kd';
+      else m.grp = DEF[m.w];
+    });
+  })();
+
   /* Mở rộng nông trại theo cấp (thay cho nhiệm vụ mở khoá cũ): thêm chỗ nuôi khi đạt cấp */
   var CAPUP = [{ a: 'bo', lv: 5, k: 2 }, { a: 'ca', lv: 9, k: 2 }, { a: 'cuu', lv: 12, k: 2 }, { a: 'ga', lv: 12, k: 4 }, { a: 'ong', lv: 13, k: 2 }, { a: 'vit', lv: 15, k: 3 }, { a: 'bo', lv: 16, k: 2 }, { a: 'de', lv: 16, k: 2 }];
   var MAX_ACTIVE = 2;
@@ -361,6 +421,21 @@
   };
   var LOTS = ['lobanh', 'bosua', 'maydet', 'mut', 'chan', 'xetai'];
   var GM = {}; GAMES.forEach(function (g) { GM[g.k] = g; });
+  /* ================= 🎡 KHU VUI CHƠI (ví 🎉 Hưởng thụ) =================
+     Xây khu chơi và mua vé đều trừ ví Hưởng thụ. Chơi xong nhận kinh nghiệm + niềm vui, KHÔNG sinh ra tiền (đúng tinh thần ví Hưởng thụ).
+     Mỗi khu chơi tối đa FUN_DAY lượt mỗi ngày: hưởng thụ vừa đủ. tk = hệ số giá vé theo cấp, t = thời gian chơi (giây), k = hệ số kinh nghiệm. */
+  var FUN_DAY = 3;
+  var FUN = [
+    { id: 'dieu', n: 'Bãi thả diều', e: '🪁', lv: 1, cost: 0, tk: 0, t: 90, k: 0.6, d: 'Niềm vui không tốn đồng nào: xây miễn phí, chơi miễn phí!' },
+    { id: 'cautruot', n: 'Sân chơi cầu trượt', e: '🛝', lv: 2, cost: 60000, tk: 0.25, t: 120, k: 1, d: 'Cầu trượt, xích đu cho cả nhà vui chơi sau giờ làm.' },
+    { id: 'cauca', n: 'Hồ câu cá thư giãn', e: '🎣', lv: 3, cost: 150000, tk: 0.35, t: 300, k: 1.3, d: 'Ngồi câu cá, ngắm hoàng hôn bên hồ.' },
+    { id: 'ngua', n: 'Vòng quay ngựa gỗ', e: '🎠', lv: 5, cost: 300000, tk: 0.45, t: 420, k: 1.6, d: 'Ngựa gỗ quay vòng theo tiếng nhạc vui tai.' },
+    { id: 'camtrai', n: 'Khu cắm trại', e: '⛺', lv: 7, cost: 500000, tk: 0.55, t: 900, k: 2, d: 'Dựng lều, nướng ngô, ngắm sao đêm.' },
+    { id: 'hoboi', n: 'Hồ bơi', e: '🏊', lv: 9, cost: 800000, tk: 0.65, t: 1200, k: 2.4, d: 'Bơi lội mát lạnh, vừa vui vừa khoẻ.' },
+    { id: 'duquay', n: 'Đu quay khổng lồ', e: '🎡', lv: 12, cost: 1500000, tk: 0.8, t: 1800, k: 3, d: 'Ngắm toàn cảnh nông trại từ trên cao.' },
+    { id: 'xiec', n: 'Rạp xiếc', e: '🎪', lv: 15, cost: 2500000, tk: 1, t: 3600, k: 3.6, d: 'Xem xiếc thú, ảo thuật cùng cả gia đình.' }
+  ];
+  var FUNM = {}; FUN.forEach(function (f) { FUNM[f.id] = f; });
   function item(id) { return CM[id] || PRODUCTS[id]; }
   function need(lv) { return 10 * lv + 5 * lv * lv; }   // kinh nghiệm cần để lên cấp tiếp
 
@@ -369,7 +444,7 @@
   function fresh() {
     var an = {}; ANIMALS.forEach(function (a) { an[a.id] = []; });
     return { v: 2, m: 300000, start: 300000, xp: 0, lv: 1, rows: 3, plots: emptyPlots(), inv: {}, an: an, fert: 3, orders: [], log: [], tin: 0, tout: 0, sel: 'lua', seen: 0, made: Date.now(),
-      gs: {}, bld: {}, fac: {}, fx: {}, ms: {}, ev: {}, wl: {}, inc: {}, jar: null, si: null, jx: null, pct: null, fix: [], dis: null, dmg: null, def: {}, raid: null, pens: null, fz: null, selF: 'f1', bday: null, mw: 'essential', gift: '', tipCam: 0 };
+      gs: {}, bld: {}, fac: {}, fx: {}, ms: {}, ev: {}, wl: {}, inc: {}, jar: null, si: null, jx: null, pct: null, fix: [], dis: null, dmg: null, def: {}, raid: null, pens: null, fz: null, selF: 'f1', bday: null, mw: 'essential', gift: '', tipCam: 0, fun: {}, nt: [], mg: {} };
   }
   var S = fresh();
   function load() {
@@ -386,7 +461,8 @@
       }
     }
     var F = fresh();
-    ['gs', 'bld', 'fac', 'fx', 'ms', 'ev', 'wl', 'inc', 'inv', 'an'].forEach(function (k) { if (!S[k] || typeof S[k] !== 'object') S[k] = F[k]; });
+    ['gs', 'bld', 'fac', 'fx', 'ms', 'ev', 'wl', 'inc', 'inv', 'an', 'fun', 'mg'].forEach(function (k) { if (!S[k] || typeof S[k] !== 'object') S[k] = F[k]; });
+    if (!Array.isArray(S.nt)) S.nt = [];
     if (!S.start) S.start = 200000;
     delete S.q; delete S.dq;   // nhiệm vụ kiểu cũ (đã thay bằng nhiệm vụ 6 ví)
     if (!WM[S.mw]) S.mw = 'essential';
@@ -436,12 +512,25 @@
   function sp(id) { return Math.round(item(id).sell * (built('nha3') ? 1.1 : 1) / 100) * 100; }   // giá bán ở chợ
 
   /* Sổ thu chi: gộp các khoản giống nhau phát sinh liên tiếp trong 2 phút */
-  function addLog(k, amt, key, name, e, q) {
+  function addLog(k, amt, key, name, e, q, w) {
     q = q || 1;
     if (k === 'in') S.tin += amt; else S.tout += amt;
     var L = S.log[0], now = Date.now();
-    if (L && L.key === key && L.k === k && now - L.ts < 120000) { L.a += amt; L.q += q; L.ts = now; }
-    else { S.log.unshift({ ts: now, k: k, a: amt, key: key, n: name, e: e, q: q }); if (S.log.length > 150) S.log.length = 150; }
+    if (L && L.key === key && L.k === k && L.w === w && now - L.ts < 120000) { L.a += amt; L.q += q; L.ts = now; }
+    else { var o = { ts: now, k: k, a: amt, key: key, n: name, e: e, q: q }; if (w) o.w = w; S.log.unshift(o); if (S.log.length > 150) S.log.length = 150; }
+  }
+  /* CHI TIỀN: luôn ghi rõ trừ ví nào (w) vào sổ thu chi */
+  function spend(w, c, key, name, e, q) { takeMoney(w, c); addLog('out', c, key, name, e, q, w); wlog(w, 'o', c); }
+  /* Ví của một dòng chi trong sổ (dòng cũ chưa lưu ví thì suy ra từ loại khoản chi) */
+  function logW(l) {
+    if (l.k !== 'out') return null; if (l.w) return l.w;
+    var k = l.key || '';
+    if (k.indexOf('m_') === 0) { var m = MSM[k.slice(2)]; return m ? m.w : null; }
+    if (k.indexOf('seed_') === 0) { var c = CM[k.slice(5)]; return c && c.per ? 'invest' : 'essential'; }
+    if (/^(fert_|fix_|def_|mbuy_)/.test(k)) return 'essential';
+    if (/^(land|fld_|buy_|pen_|bld_)/.test(k)) return 'invest';
+    if (k.indexOf('fun') === 0) return 'enjoy';
+    return null;
   }
   /* ================= 6 VÍ (giống 6 hũ trong app) =================
      Mọi khoản THU được tự chia vào 6 ví theo tỷ lệ cài đặt. Mọi khoản CHI lấy từ đúng ví của nó:
@@ -542,11 +631,10 @@
     if (mActive(m.w).length >= MAX_ACTIVE) { toast('Ví ' + WM[m.w].n + ' đang có ' + MAX_ACTIVE + ' nhiệm vụ. Hoàn thành bớt rồi nhận thêm nhé!'); return; }
     var c = mCost(m);
     if (!has(m.w, c)) { noMoney(c, m.w); return; }
-    takeMoney(m.w, c);
-    if (c) { addLog('out', c, 'm_' + m.id, WM[m.w].e + ' ' + m.n, m.e); wlog(m.w, 'o', c); }
+    if (c) spend(m.w, c, 'm_' + m.id, m.n, m.e);
     S.ms[m.id] = { s: 1, b: m.k === 'wait' || m.k === 'give' ? 0 : mCur(m), t: Date.now(), c: c };
     sfx('ok'); save(); hud(); renderQuest();
-    toast(m.e + ' Đã nhận nhiệm vụ' + (c ? ', chi ' + money(c) : '') + '. ' + (m.k === 'wait' ? 'Quay lại sau ' + durL(m.s) + ' nhé!' : m.k === 'learn' ? 'Bấm “Vào học” để bắt đầu.' : m.k === 'give' ? 'Gom đủ hàng rồi bấm “Giao”.' : 'Ra nông trại làm việc thôi!'));
+    toast(m.e + ' Đã nhận nhiệm vụ' + (c ? ', chi ' + money(c) + ' từ ví ' + WM[m.w].e + ' ' + WM[m.w].n : '') + '. ' + (m.k === 'wait' ? 'Quay lại sau ' + durL(m.s) + ' nhé!' : m.k === 'learn' ? 'Bấm “Vào học” để bắt đầu.' : m.k === 'give' ? 'Gom đủ hàng rồi bấm “Giao”.' : 'Ra nông trại làm việc thôi!'));
   }
   /* Hoàn thành: nhận tiền + KN */
   function mClaim(id) {
@@ -561,7 +649,7 @@
       var R = m.rng[0] + Math.random() * (m.rng[1] - m.rng[0]); pay = r1k(c * R);
       note = pay >= c ? 'Lãi <b>' + money(pay - c) + '</b> (' + Math.round((pay / c - 1) * 100) + '%). Khoản đầu tư thành công!' : 'Lỗ <b>' + money(c - pay) + '</b>. Đầu tư luôn có rủi ro: lần sau hãy chia nhỏ vốn và chọn khoản phù hợp nhé.';
     } else pay = m.pay;
-    addMoney(pay, m.w === 'saving' || m.w === 'invest' ? m.w : null); if (pay) { addLog('in', pay, 'mr_' + m.id, 'Hoàn thành: ' + m.n, m.e); wlog(m.w, 'i', pay); }
+    addMoney(pay, m.w === 'saving' || m.w === 'invest' ? m.w : null); if (pay) { addLog('in', pay, 'mr_' + m.id, 'Hoàn thành: ' + m.n, m.e, 1, m.w === 'saving' || m.w === 'invest' ? m.w : null); wlog(m.w, 'i', pay); }
     wlog(m.w, 'n', 1);
     if (m.fert) S.fz.f1 += m.fert;
     S.ms[m.id] = { s: 2, p: pay, c: c, d: Date.now() };
@@ -578,7 +666,7 @@
     var m = MSM[id], e = mSt(m); if (!m || !e || e.s !== 1) return;
     var sv = m.w === 'saving';
     confirmBox(sv ? '🐷' : '↩️', sv ? 'Rút tiền trước hạn?' : 'Bỏ nhiệm vụ này?', sv ? 'Bạn chỉ nhận lại tiền gốc <b>' + money(e.c) + '</b>, không có lãi và không có kinh nghiệm.' : 'Số tiền đã chi <b>' + money(e.c || 0) + '</b> sẽ không được trả lại. Bạn có thể nhận lại nhiệm vụ sau.', sv ? 'Rút tiền' : 'Bỏ nhiệm vụ', function () {
-      if (sv && e.c) { addMoney(e.c, 'saving'); addLog('in', e.c, 'mc_' + m.id, 'Rút trước hạn: ' + m.n, '🐷'); wlog(m.w, 'i', e.c); }
+      if (sv && e.c) { addMoney(e.c, 'saving'); addLog('in', e.c, 'mc_' + m.id, 'Rút trước hạn: ' + m.n, '🐷', 1, 'saving'); wlog(m.w, 'i', e.c); }
       delete S.ms[m.id]; save(); hud(); renderQuest();
     });
   }
@@ -588,7 +676,8 @@
     if (m.k === 'learn') { play(m.g, m.t); return; }
     if (m.k === 'farm') {
       if (m.ev === 'feed' || m.ev === 'collect') setTab('barn');
-      else if (m.ev === 'make') setTab('build');
+      else if (m.ev === 'make') setTab('prod');
+      else if (m.ev === 'fun') setTab('fun');
       else if (m.ev === 'order' || m.ev === 'sell') { mSub = m.ev === 'sell' ? 'inv' : 'ord'; setTab('market'); }
       else { setTab('field'); if (m.ev === 'water') toast('🪣 Bấm nút Tưới hết để tưới cả ruộng'); else if (m.ev === 'plant') tool = 'seed'; else if (m.ev === 'fert') tool = 'fert'; if (m.x && CM[m.x] && CM[m.x].lv <= S.lv) S.sel = m.x; toolsUI(); }
       toast(m.e + ' ' + mTask(m));
@@ -607,7 +696,8 @@
     ANIMALS.forEach(function (a) { if (a.lv === lv) u.push({ e: a.e, t: 'Được nuôi ' + a.n.toLowerCase(), go: 'barn' }); });
     CAPUP.forEach(function (c) { if (c.lv === lv) u.push({ e: AM[c.a].e, t: 'Thêm ' + c.k + ' chỗ mỗi ' + AM[c.a].pen.toLowerCase(), go: 'barn' }); });
     var nl = LOTLV.filter(function (l) { return l === lv; }).length; if (nl) u.push({ e: '🟫', t: 'Thêm ' + nl + ' ô đất xây chuồng', go: 'barn' });
-    BUILDS.forEach(function (b) { if (b.lv === lv) u.push({ e: b.e, t: 'Được xây ' + b.n.toLowerCase(), go: 'build' }); });
+    BUILDS.forEach(function (b) { if (b.lv === lv) u.push({ e: b.e, t: 'Được xây ' + b.n.toLowerCase(), go: 'prod' }); });
+    FUN.forEach(function (f) { if (f.lv === lv && lv > 1) u.push({ e: f.e, t: 'Khu vui chơi: ' + f.n.toLowerCase(), go: 'fun' }); });
     CROPS.forEach(function (c) { if (c.lv === lv && lv > 1) u.push({ e: c.e, t: 'Hạt giống ' + c.n.toLowerCase(), go: 'field' }); });
     return u;
   }
@@ -623,7 +713,7 @@
   function checkDisaster(now) {
     if (S.lv < DIS_LV) return;
     if (!S.dis) { S.dis = { next: now + DIS_EVERY, n: 0 }; return; }
-    if (now >= S.dis.next) { S.dis.next = now + DIS_EVERY; disaster(now); }
+    if (now >= S.dis.next) { var at = S.dis.next; S.dis.next = now + DIS_EVERY; disaster(now, at); }
   }
   function fixTitle(f) {
     if (f.t === 'crop') return 'Dọn ' + f.n + ' ô ruộng bị hỏng';
@@ -641,8 +731,9 @@
     if (f.t === 'pen') return 'Chuồng hỏng, ' + AM[f.a].n.toLowerCase() + ' không ăn và không cho sản phẩm.';
     return AM[f.a].n + ' bị ốm sau trận ' + (f.w === 'rain' ? 'mưa lạnh' : 'gió lốc') + ', không ăn và không cho sản phẩm.';
   }
-  function disaster(now) {
-    var w = Math.random() < 0.5 ? 'rain' : 'wind', R = Math.random, fx = [], lv = S.lv;
+  function disaster(now, at) {
+    var w = Math.random() < 0.5 ? 'rain' : 'wind', R = Math.random, fx = [], lv = S.lv, WN = w === 'rain' ? 'Mưa bão' : 'Gió lốc', away = at && now - at > 120000 ? '<p style="font-size:13px">🕒 Xảy ra lúc <b>' + when(at) + '</b>, khi bạn đang vắng nhà.</p>' : '';
+    at = at && at < now ? at : now;
     var planted = []; for (var i = 0; i < TOTAL; i++) { var pl = S.plots[i]; if (plotOpen(i) && pl.c && !pl.dmg) planted.push(i); }
     var hit = planted.filter(function () { return R() < 0.35; });
     if (planted.length && !hit.length && R() < 0.7) hit.push(planted[Math.floor(R() * planted.length)]);
@@ -656,14 +747,15 @@
     var own = ANIMALS.filter(function (a) { return S.an[a.id].length && !animPaused(a.id); });
     if (own.length && R() < (w === 'wind' ? 0.6 : 0.3)) { var a1 = own.splice(Math.floor(R() * own.length), 1)[0]; S.dmg.pen[a1.id] = 1; fx.push({ t: 'pen', a: a1.id, c: r1k(a1.cost * 0.35) }); }
     if (own.length && R() < (w === 'rain' ? 0.6 : 0.3)) { var a2 = own[Math.floor(R() * own.length)]; S.dmg.sick[a2.id] = 1; fx.push({ t: 'sick', a: a2.id, c: r1k(a2.cost * 0.12 * Math.min(4, S.an[a2.id].length)) }); }
-    if (!fx.length && trees.length) { S.dis.last = now; WX = { w: w, until: Date.now() + 14000, p: [] }; save(); sheetLater('<div class="fm-modal"><div class="big">' + (w === 'rain' ? '🌧️' : '🌪️') + '</div><h2>' + (w === 'rain' ? 'Mưa bão vừa đi qua!' : 'Gió lốc vừa đi qua!') + '</h2><p>' + trees.length + ' cây ăn quả bị rụng hết quả, phải chờ lứa sau. May là cây lâu năm rất khoẻ, không bị hỏng!</p><div class="fm-row" style="justify-content:center"><button class="fm-btn" data-a="sheetClose">Đóng</button></div></div>'); return; }
+    if (!fx.length && trees.length) { S.dis.last = now; WX = { w: w, until: Date.now() + 14000, p: [] }; notify('dis', w === 'rain' ? '🌧️' : '🌪️', WN + ' đi qua nông trại', '🌳 ' + trees.length + ' cây ăn quả bị rụng hết quả (cây vẫn khoẻ, chờ lứa sau). Không có thiệt hại khác.', at); save(); badges(); sheetLater('<div class="fm-modal"><div class="big">' + (w === 'rain' ? '🌧️' : '🌪️') + '</div><h2>' + (w === 'rain' ? 'Mưa bão vừa đi qua!' : 'Gió lốc vừa đi qua!') + '</h2>' + away + '<p>' + trees.length + ' cây ăn quả bị rụng hết quả, phải chờ lứa sau. May là cây lâu năm rất khoẻ, không bị hỏng!</p><div class="fm-row" style="justify-content:center"><button class="fm-btn" data-a="sheetClose">Đóng</button></div></div>'); return; }
     if (!fx.length) { if (!S.dmg.house) { S.dmg.house = 1; fx.push({ t: 'house', c: r1k(base(lv) * 1.2) }); } else return; }
     fx.forEach(function (f, k) { f.id = 'f' + now + k; f.w = w; f.s = 0; S.fix.push(f); });
     S.dis.last = now; S.dis.n = (S.dis.n || 0) + 1;
     WX = { w: w, until: Date.now() + 14000, p: [] };
     var tot = fx.reduce(function (a, f) { return a + f.c; }, 0);
+    notify('dis', w === 'rain' ? '🌧️' : '🌪️', WN + ' gây thiệt hại ' + money(tot), (trees.length ? '🌳 ' + trees.length + ' cây ăn quả bị rụng quả. ' : '') + fx.map(function (f) { return FIXD[f.t][1] + ' ' + fixTitle(f) + ': ' + money(f.c); }).join(' · ') + '. Chi phí sửa chữa trừ ví 🏠 Thiết yếu.', at, fx.map(function (f) { return f.id; }));
     save(); badges();
-    sheetLater('<div class="fm-modal"><div class="big">' + (w === 'rain' ? '🌧️' : '🌪️') + '</div><h2>' + (w === 'rain' ? 'Một trận mưa bão vừa đi qua!' : 'Gió lốc vừa quét qua nông trại!') + '</h2>' +
+    sheetLater('<div class="fm-modal"><div class="big">' + (w === 'rain' ? '🌧️' : '🌪️') + '</div><h2>' + (w === 'rain' ? 'Một trận mưa bão vừa đi qua!' : 'Gió lốc vừa quét qua nông trại!') + '</h2>' + away +
       (trees.length ? '<p style="font-size:13.5px">🌳 ' + trees.length + ' cây ăn quả bị rụng quả (cây vẫn khoẻ, chờ lứa sau).</p>' : '') +
       '<ul class="fm-earnlist">' + fx.map(function (f) { return '<li><span>' + FIXD[f.t][1] + ' ' + fixTitle(f) + '</span><b style="color:#dc2626">−' + short(f.c) + '</b></li>'; }).join('') + '</ul>' +
       '<p>Tổng chi phí sửa chữa: <b>' + money(tot) + '</b>, trừ vào ví 🏠 Thiết yếu' + (S.jar.essential < tot ? ' (ví này đang chỉ có ' + money(S.jar.essential) + ')' : '') + '.</p>' +
@@ -673,9 +765,9 @@
   function fixStart(id) {
     var f = S.fix.filter(function (x) { return x.id === id; })[0]; if (!f || f.s) return;
     if (!has('essential', f.c)) { noMoney(f.c, 'essential'); return; }
-    takeMoney('essential', f.c); addLog('out', f.c, 'fix_' + f.t, 'Sửa chữa: ' + fixTitle(f), FIXD[f.t][1]);
+    spend('essential', f.c, 'fix_' + f.t, 'Sửa chữa: ' + fixTitle(f), FIXD[f.t][1]);
     f.s = 1; f.st = Date.now(); sfx('ok'); save(); hud(); renderQuest();
-    toast(FIXD[f.t][1] + ' Thợ đang sửa, xong sau ' + durL(FIXD[f.t][0]) + '.');
+    toast(FIXD[f.t][1] + ' Đã trả ' + money(f.c) + ' từ ví 🏠 Thiết yếu. Thợ đang sửa, xong sau ' + durL(FIXD[f.t][0]) + '.');
   }
   function fixTick(now) {
     var done = [];
@@ -691,20 +783,104 @@
     });
     if (done.length) {
       var xp = 0; done.forEach(function (f) { xp += Math.max(3, Math.round(need(S.lv) * 0.06)); });
+      notify('fix', '✅', 'Đã sửa xong ' + done.length + ' hư hỏng', done.map(function (f) { return FIXD[f.t][1] + ' ' + fixTitle(f); }).join(' · ') + '. Mọi thứ đã hoạt động lại.', now);
       addXP(xp); save(); hud(); toast('✅ Đã sửa xong: ' + done.map(fixTitle).join(', ') + ' · +' + xp + ' KN'); sfx('win');
       if (tab === 'quest') renderQuest();
     }
   }
   function fixHtml() {
     if (!S.fix.length) return '';
-    var h = '<div class="fm-fix"><b>🚨 Sự cố cần xử lý (' + S.fix.length + ')</b><small>Chi phí sửa chữa trừ ví 🏠 Thiết yếu (đang có ' + short(S.jar.essential) + ')</small>';
+    var h = '<details class="fm-fix" open><summary><b>🚨 Hư hỏng cần sửa (' + S.fix.length + ')</b><small>Chi phí sửa trừ ví 🏠 Thiết yếu · đang có ' + short(S.jar.essential) + '</small></summary>';
     S.fix.forEach(function (f) {
-      h += '<div class="fm-card"><div class="fm-li"><span class="fm-ic">' + FIXD[f.t][1] + '</span><div class="bd"><b class="t">' + fixTitle(f) + '</b><small>' + fixDesc(f) + '</small>';
-      if (f.s === 1) { var p = Math.min(1, (Date.now() - f.st) / (FIXD[f.t][0] * 1000)); h += '<div class="fm-pb"><i id="xp_' + f.id + '" style="width:' + Math.round(p * 100) + '%"></i></div><div class="fm-pt" id="xt_' + f.id + '">🔧 Đang sửa · còn ' + dur((1 - p) * FIXD[f.t][0]) + '</div>'; }
-      else h += '<div class="fm-row"><button class="fm-btn org" data-a="fixGo" data-f="' + f.id + '">🔧 Sửa ngay · −' + short(f.c) + '</button></div>';
-      h += '</div></div></div>';
+      h += '<div class="fm-fx"><span class="e">' + FIXD[f.t][1] + '</span><span class="t"><b>' + fixTitle(f) + '</b><small>' + fixDesc(f) + '</small>';
+      if (f.s === 1) { var p = Math.min(1, (Date.now() - f.st) / (FIXD[f.t][0] * 1000)); h += '<span class="fm-pb"><i id="xp_' + f.id + '" style="width:' + Math.round(p * 100) + '%"></i></span><span class="fm-pt" id="xt_' + f.id + '">🔧 Đang sửa · còn ' + dur((1 - p) * FIXD[f.t][0]) + '</span></span>'; }
+      else h += '</span><button class="fm-btn org" data-a="fixGo" data-f="' + f.id + '">🔧 −' + short(f.c) + ' 🏠</button>';
+      h += '</div>';
     });
-    return h + '</div>';
+    return h + '</details>';
+  }
+
+
+  /* ================= 🔔 THÔNG BÁO =================
+     Lưu lại các sự kiện (thiên tai, thú hoang, sửa chữa xong) kèm thời gian và thiệt hại, và tính nông sản còn thiếu cho đơn hàng. */
+  function when(ts) {
+    var d = new Date(ts), t0 = new Date(); t0.setHours(0, 0, 0, 0);
+    var hm = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    return hm + ' ' + (ts >= t0.getTime() ? 'hôm nay' : ts >= t0.getTime() - 86400000 ? 'hôm qua' : 'ngày ' + d.getDate() + '/' + (d.getMonth() + 1));
+  }
+  function notify(k, e, t, d, ts, fids) {
+    if (!Array.isArray(S.nt)) S.nt = [];
+    var o = { ts: ts || Date.now(), k: k, e: e, t: t, d: d, u: 1 }; if (fids) o.f = fids;
+    S.nt.push(o); S.nt.sort(function (a, b) { return b.ts - a.ts; });
+    if (S.nt.length > 60) S.nt.length = 60;
+  }
+  function unreadN() { return (S.nt || []).filter(function (x) { return x.u; }).length; }
+  /* Nơi làm ra một món hàng (để biết thiếu thì đi đâu lấy) */
+  function srcOf(id) {
+    if (CM[id]) return CM[id].lv > S.lv ? '🔒 Hạt giống mở ở cấp ' + CM[id].lv : '🌾 Trồng ở Khu trồng trọt (' + (CM[id].per ? 'cây lâu năm, lần đầu ' + durL(CM[id].t) + ', sau đó ' + durL(CM[id].re) + '/lứa' : durL(CM[id].t)) + ')';
+    for (var i = 0; i < ANIMALS.length; i++) if (ANIMALS[i].p === id) { var a = ANIMALS[i]; return (S.lv < a.lv ? '🔒 ' : '🐄 ') + 'Nuôi ' + a.n.toLowerCase() + ' ' + a.e + ' ở Khu chăn nuôi' + (S.lv < a.lv ? ' (mở ở cấp ' + a.lv + ')' : S.an[a.id].length ? '' : ' (chưa nuôi con nào)'); }
+    for (i = 0; i < BUILDS.length; i++) if (BUILDS[i].r && BUILDS[i].r.o === id) { var b = BUILDS[i]; return '🏭 Làm ở ' + b.n.toLowerCase() + ' (Khu sản xuất)' + (built(b.id) ? '' : ' · chưa xây'); }
+    return '';
+  }
+  /* Nông sản còn thiếu: cộng nhu cầu của tất cả đơn hàng + nhiệm vụ giao hàng đang làm, so với kho */
+  function shortages() {
+    fillOrders();
+    var needQ = {}, per = [];
+    S.orders.forEach(function (o) {
+      var miss = [];
+      o.it.forEach(function (x) { needQ[x[0]] = (needQ[x[0]] || 0) + x[1]; var hv = S.inv[x[0]] || 0; if (hv < x[1]) miss.push([x[0], x[1] - hv]); });
+      per.push({ e: o.tr, n: 'Đơn ' + o.who, miss: miss });
+    });
+    MISSIONS.forEach(function (m) {
+      var e = mSt(m); if (!e || e.s !== 1 || m.k !== 'give') return;
+      var miss = []; m.it.forEach(function (x) { var hv = S.inv[x[0]] || 0; if (hv < x[1]) miss.push([x[0], x[1] - hv]); });
+      per.push({ e: m.e, n: 'Nhiệm vụ ' + m.n, miss: miss, m: 1 });
+    });
+    var rows = Object.keys(needQ).map(function (id) { var hv = S.inv[id] || 0; return { id: id, need: needQ[id], have: hv, lack: Math.max(0, needQ[id] - hv) }; })
+      .filter(function (r) { return r.lack > 0; }).sort(function (a, b) { return b.lack - a.lack; });
+    return { rows: rows, per: per };
+  }
+  function notifBadge() { var n = unreadN(); dot('fmDotN', n > 9 ? '9+' : n); }
+  function notifSheet() {
+    var sh = shortages(), nt = S.nt || [], h = '<div class="fm-h">🔔 Thông báo nông trại</div>';
+    // 1) Nông sản còn thiếu
+    h += '<div class="fm-card"><b>📦 Nông sản còn thiếu để đủ đơn hàng</b>';
+    if (!sh.rows.length) h += '<div class="fm-sub" style="margin:6px 0 0">✅ Kho đã đủ hàng cho tất cả ' + S.orders.length + ' đơn hàng. Ra 🏪 Chợ giao hàng thôi!</div>';
+    else {
+      h += '<div class="fm-sub" style="margin:4px 0 6px">Cộng tất cả ' + S.orders.length + ' đơn hàng đang chờ, so với số hàng đang có trong kho:</div>';
+      sh.rows.forEach(function (r) {
+        var I = item(r.id);
+        h += '<div class="fm-short"><span class="e">' + I.e + '</span><span class="t"><b>' + I.n + '</b><small>Có ' + r.have + ' / cần ' + r.need + ' · ' + srcOf(r.id) + '</small></span><span class="q">Thiếu ' + r.lack + '</span></div>';
+      });
+      var lines = sh.per.filter(function (p) { return !p.m && p.miss.length; });
+      if (lines.length) h += '<details class="fm-det"><summary>Xem từng đơn hàng còn thiếu gì</summary>' + lines.map(function (p) { return '<div class="fm-log"><span class="e">' + p.e + '</span><span class="t">' + esc(p.n) + '<small>Thiếu ' + p.miss.map(function (x) { return x[1] + ' ' + item(x[0]).e + ' ' + item(x[0]).n.toLowerCase(); }).join(', ') + '</small></span></div>'; }).join('') + '</details>';
+      h += '<div class="fm-row"><button class="fm-btn" data-a="tab" data-t="market">🏪 Xem đơn hàng</button><button class="fm-btn alt" data-a="mbuyGo">🛒 Mua bù ở chợ</button></div>';
+    }
+    var gm = sh.per.filter(function (p) { return p.m && p.miss.length; });
+    if (gm.length) h += '<div class="fm-sub" style="margin:10px 0 0"><b>🎯 Nhiệm vụ giao hàng còn thiếu:</b><br>' + gm.map(function (p) { return p.e + ' ' + esc(p.n.replace('Nhiệm vụ ', '')) + ': thiếu ' + p.miss.map(function (x) { return x[1] + ' ' + item(x[0]).e; }).join(', '); }).join('<br>') + '</div>';
+    h += '</div>';
+    // 2) Sự cố chưa sửa
+    var open = S.fix.filter(function (f) { return !f.s; }), fixing = S.fix.filter(function (f) { return f.s === 1; });
+    if (open.length || fixing.length) h += '<div class="fm-card" style="box-shadow:0 0 0 2px #f87171"><b>🚨 Hư hỏng đang chờ xử lý</b><div class="fm-sub" style="margin:4px 0 0">' +
+      open.map(function (f) { return FIXD[f.t][1] + ' ' + fixTitle(f) + ': <b style="color:#dc2626">' + money(f.c) + '</b>'; }).concat(fixing.map(function (f) { return FIXD[f.t][1] + ' ' + fixTitle(f) + ': 🔧 đang sửa'; })).join('<br>') +
+      '</div>' + (open.length ? '<div class="fm-row"><button class="fm-btn org" data-a="tab" data-t="quest">🔧 Đi sửa chữa (ví 🏠 Thiết yếu)</button></div>' : '') + '</div>';
+    // 3) Dự báo
+    var fc = [];
+    if (S.lv >= DIS_LV && S.dis) fc.push('🌦️ Trận mưa bão / gió lốc tiếp theo có thể đến sau khoảng <b>' + durL(Math.max(60, Math.round((S.dis.next - Date.now()) / 60000) * 60)) + '</b>. Hãy để dành tiền ví 🏠 Thiết yếu để sửa chữa.');
+    else if (S.lv < DIS_LV) fc.push('🌦️ Từ cấp ' + DIS_LV + ', khoảng 5 giờ lại có một trận mưa bão hoặc gió lốc.');
+    if (S.lv >= RAID_LV && S.raid) fc.push('🐾 Thú hoang có thể mò đến sau khoảng <b>' + durL(Math.max(60, Math.round((S.raid.next - Date.now()) / 60000) * 60)) + '</b>' + (hasDef('rao') ? '' : '. Nông trại chưa có hàng rào!'));
+    if (fc.length) h += '<div class="fm-card" style="font-size:13.5px;line-height:1.55;color:#4a3a20">' + fc.join('<br>') + '</div>';
+    // 4) Lịch sử sự kiện
+    h += '<div class="fm-card"><b>🕒 Sự kiện đã xảy ra</b>';
+    if (!nt.length) h += '<div class="fm-sub" style="margin:6px 0 0">Chưa có sự kiện nào. Nông trại đang bình yên! 🌤️</div>';
+    nt.forEach(function (x) {
+      var st = '';
+      if (x.f) { var left = x.f.filter(function (id) { return S.fix.some(function (f) { return f.id === id; }); }).length; st = left ? '<span class="fm-tag" style="background:#fee2e2;color:#991b1b">Còn ' + left + ' hư hỏng chưa sửa xong</span>' : '<span class="fm-tag g">Đã khắc phục</span>'; }
+      h += '<div class="fm-nt' + (x.u ? ' new' : '') + '"><span class="e">' + x.e + '</span><span class="t"><b>' + esc(x.t) + '</b><small class="tm">🕒 ' + when(x.ts) + '</small><small>' + x.d + '</small>' + st + '</span></div>';
+    });
+    h += '</div><button class="fm-btn alt" data-a="sheetClose" style="width:100%">Đóng</button>';
+    sheet(h);
+    nt.forEach(function (x) { x.u = 0; }); save(); notifBadge();
   }
 
   /* ================= THÚ HOANG & BẢO VỆ NÔNG TRẠI =================
@@ -730,9 +906,10 @@
   function checkRaid(now) {
     if (S.lv < RAID_LV) return;
     if (!S.raid) { S.raid = { next: now + RAID_EVERY / 2, n: 0 }; return; }   // lần đầu: sau 2 giờ
-    if (now >= S.raid.next) { S.raid.next = now + RAID_EVERY; raid(now); }
+    if (now >= S.raid.next) { var at = S.raid.next; S.raid.next = now + RAID_EVERY; raid(now, at < now ? at : now); }
   }
-  function raid(now) {
+  function raid(now, at) {
+    at = at || now;
     var ks = Object.keys(PRED).filter(function (k) { return S.lv >= PRED[k].lv; }), k = ks[Math.floor(Math.random() * ks.length)], P = PRED[k];
     var own = P.tg.filter(function (a) { return S.an[a] && S.an[a].length; });
     if (!own.length) return;   // không có con mồi: thú bỏ đi
@@ -757,6 +934,7 @@
     S.raid.n = (S.raid.n || 0) + 1; S.raid.last = { k: k, t: now, lost: lost.length, blocked: blocked };
     var val = lost.reduce(function (s0, a) { return s0 + AM[a].cost; }, 0), cnt = {};
     lost.forEach(function (a) { cnt[a] = (cnt[a] || 0) + 1; });
+    notify('raid', blocked ? '🛡️' : P.e, blocked ? P.n + ' bị chặn lại, vật nuôi an toàn' : P.n + ' vào bắt mất ' + lost.length + ' con vật nuôi', blocked ? why : (broke ? 'Gấu phá hàng rào (cần sửa). ' : '') + 'Mất: ' + Object.keys(cnt).map(function (a) { return cnt[a] + ' ' + AM[a].e + ' ' + AM[a].n.toLowerCase(); }).join(', ') + ' · thiệt hại khoảng ' + money(val) + '.', at);
     save(); badges();
     var tips = [];
     if (!hasDef('rao') && S.lv >= DFM.rao.lv && !S.def.rao) tips.push('🪵 Xây hàng rào để chặn cáo');
@@ -772,9 +950,9 @@
   function defStart(id) {
     var D = DFM[id]; if (defState(D) !== 'buy') return;
     if (!has('essential', D.c)) { noMoney(D.c, 'essential'); return; }
-    takeMoney('essential', D.c); addLog('out', D.c, 'def_' + id, D.n, D.e);
+    spend('essential', D.c, 'def_' + id, D.n, D.e);
     S.def[id] = { s: 1, st: Date.now() }; sfx('ok'); save(); hud(); renderQuest();
-    toast(D.e + ' Thợ đang xây, xong sau ' + durL(D.t) + '.');
+    toast(D.e + ' Đã trả ' + money(D.c) + ' từ ví 🏠 Thiết yếu. Thợ đang xây, xong sau ' + durL(D.t) + '.');
   }
   function defTick(now) {
     DEFS.forEach(function (D) {
@@ -788,17 +966,18 @@
     if (S.lv < RAID_LV) return '';
     var all = DEFS.every(function (D) { return defState(D) === 'done'; });
     if (all) return '<div class="fm-card done" style="padding:9px 12px;font-size:13.5px">🛡️ Nông trại đã được bảo vệ đầy đủ: 🪵 hàng rào, 🛖 chòi canh, 🏹 chòi bắn cung.</div>';
-    var h = '<div class="fm-def"><b>🛡️ Nhiệm vụ bảo vệ nông trại</b><small>Thú hoang (🦊 cáo, 🐺 sói, 🐻 gấu) thỉnh thoảng mò đến bắt vật nuôi. Chi phí xây trừ ví 🏠 Thiết yếu.</small>';
+    var nd = DEFS.filter(function (D) { return defState(D) === 'done'; }).length;
+    var h = '<details class="fm-def"><summary><b>🛡️ Bảo vệ nông trại · đã xây ' + nd + '/' + DEFS.length + ' ▾</b>' + (hasDef('rao') ? '' : '<small style="display:block;color:#b45309;margin:2px 0 0">⚠️ Chưa có hàng rào: cáo có thể vào bắt gà</small>') + '</summary><small>Thú hoang (🦊 cáo, 🐺 sói, 🐻 gấu) thỉnh thoảng mò đến bắt vật nuôi. Chi phí xây trừ ví 🏠 Thiết yếu (an toàn là nhu cầu thiết yếu).</small>';
     DEFS.forEach(function (D) {
       var st = defState(D), d = S.def[D.id];
       h += '<div class="fm-card' + (st === 'done' ? ' done' : st === 'lv' || st === 'req' ? ' lock' : '') + '"><div class="fm-li"><span class="fm-ic">' + D.e + '</span><div class="bd"><b class="t">' + D.n + (st === 'done' ? ' ✅' : '') + '</b><small>' + D.d + '</small>';
       if (st === 'build') { var p = Math.min(1, (Date.now() - d.st) / (D.t * 1000)); h += '<div class="fm-pb"><i id="dp_' + D.id + '" style="width:' + Math.round(p * 100) + '%"></i></div><div class="fm-pt" id="dt_' + D.id + '">🔨 Đang xây · còn ' + dur((1 - p) * D.t) + '</div>'; }
-      else if (st === 'buy') h += '<div class="fm-row"><button class="fm-btn org" data-a="defGo" data-d="' + D.id + '">🔨 Xây · −' + short(D.c) + '</button><span class="fm-tag">+' + Math.max(10, Math.round(need(S.lv) * 0.3)) + ' KN</span></div>';
+      else if (st === 'buy') h += '<div class="fm-row"><button class="fm-btn org" data-a="defGo" data-d="' + D.id + '">🔨 Xây · −' + short(D.c) + ' 🏠</button><span class="fm-tag">+' + Math.max(10, Math.round(need(S.lv) * 0.3)) + ' KN</span></div>';
       else if (st === 'lv') h += '<div><span class="fm-tag">🔒 Mở ở cấp ' + D.lv + '</span><span class="fm-tag">Giá ' + short(D.c) + '</span></div>';
       else if (st === 'req') h += '<div><span class="fm-tag">Cần ' + DFM[D.req].n.replace('Xây ', '').toLowerCase() + ' trước</span></div>';
       h += '</div></div></div>';
     });
-    return h + '</div>';
+    return h + '</details>';
   }
   /* Vẽ hàng rào quanh nông trại + chòi canh, chòi bắn cung */
   var TOWER = { choi: { x: 60, y: 1175 }, cung: { x: 975, y: 1175 } };
@@ -949,6 +1128,36 @@
   '.fm-in{font:inherit;font-size:16px;border:2px solid #eadfc0;border-radius:10px;padding:7px 9px;background:#fffdf5;color:#3b2a14;width:100%}.fm-jar .fm-in{width:68px;text-align:right;padding:5px 7px}.fm-lb{display:block;font-size:12.5px;font-weight:800;color:#7a6440;margin:8px 0 4px}' +
   '.fm-def{background:#ecfccb;border:2px solid #84cc16;border-radius:16px;padding:10px 10px 2px;margin-bottom:10px}.fm-def>b{display:block;color:#365314;font-size:15px}.fm-def>small{display:block;color:#4d7c0f;font-size:12px;margin:2px 0 8px}' +
   '.fm-fix{background:#fee2e2;border:2px solid #f87171;border-radius:16px;padding:10px 10px 2px;margin-bottom:10px}.fm-fix>b{display:block;color:#991b1b;font-size:15px}.fm-fix>small{display:block;color:#b91c1c;font-size:12px;margin:2px 0 8px}' +
+  /* ---- bản 31.10-5: khu, ví, thông báo ---- */
+  '.fm-bell{position:relative;font-family:' + EF + '}.fm-bell .dot{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:#fff;font-size:11px;line-height:18px;padding:0 5px;border:2px solid #3f8a29;font-family:' + TF + '}' +
+  '.fm-top .fm-ib{min-width:38px;height:40px;padding:0 8px}.fm-money{padding:8px 10px;font-size:14px}' +
+  '.fm-nav button{min-width:64px;padding:5px 6px 4px;font-size:11.5px}' +
+  '.fm-zbar{flex:none;display:flex;gap:5px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:5px 8px;background:#e9f5d8;border-bottom:1px solid #c5dca8;z-index:2;touch-action:pan-x}.fm-zbar::-webkit-scrollbar{display:none}.fm-zbar>*{flex:none;border:0;border-radius:999px;padding:6px 11px;font-size:12.5px;font-weight:800;line-height:1.2;box-shadow:0 1px 4px rgba(0,0,0,.18);background:#fff;color:#3b2a14!important;white-space:nowrap}' +
+  '.fm-zbar .zn{background:rgba(36,54,26,.88);color:#fff!important}.fm-zbar .ok{background:#16a34a;color:#fff!important}.fm-zbar .warn{background:#ea580c;color:#fff!important}.fm-zbar .bad{background:#dc2626;color:#fff!important}.fm-zbar .work{background:#2563eb;color:#fff!important}.fm-zbar .can{background:#fff7d1}.fm-zbar .go{background:linear-gradient(135deg,#facc15,#f59e0b);color:#5b3300!important}' +
+  '.fm-wch{display:inline-block;border-radius:8px;padding:2px 8px;font-size:11.5px;font-weight:800;background:#fff;color:#3b2a14;box-shadow:inset 0 0 0 2px var(--wc);margin:4px 4px 0 0;white-space:nowrap}' +
+  '.fm-wpay{display:block;background:#fffbeb;border:1.5px dashed #f59e0b;border-radius:10px;padding:6px 10px;margin:8px 0;font-size:12.5px;color:#7a4a00;line-height:1.45;text-align:left}' +
+  '.fm-tag.r{background:#fee2e2;color:#991b1b}.fm-wl{margin-top:2px}' +
+  '.fm-zhead{display:flex;gap:10px;align-items:center;background:#fff;border-radius:16px;padding:9px 12px;margin-bottom:8px;border-left:7px solid var(--zc);box-shadow:0 2px 8px rgba(120,80,0,.12)}.fm-zhead .e{font-size:34px;font-family:' + EF + ';line-height:1}.fm-zhead>div>b{display:block;font-size:16px;color:#4a3416}.fm-zhead small{display:block;font-size:12.5px;color:#7a6440;line-height:1.45;margin-top:2px}' +
+  '.fm-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.fm-chips span{border-radius:999px;padding:5px 10px;font-size:12.5px;font-weight:800;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1)}.fm-chips .ok{background:#dcfce7;color:#166534}.fm-chips .work{background:#dbeafe;color:#1e40af}.fm-chips .can{background:#fef9c3;color:#854d0e}.fm-chips .warn{background:#ffedd5;color:#9a3412}.fm-chips .bad{background:#fee2e2;color:#991b1b}' +
+  '.fm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px}' +
+  '.fm-tile{background:#fff;border-radius:18px;padding:10px;text-align:center;box-shadow:0 2px 8px rgba(120,80,0,.12);border-top:5px solid #e5d9b6;display:flex;flex-direction:column;align-items:center;gap:4px}' +
+  '.fm-tile .ic{position:relative;font-size:44px;line-height:1.1;font-family:' + EF + '}.fm-tile .ic i{position:absolute;right:-14px;bottom:-2px;font-style:normal;font-size:20px;background:#fff;border-radius:50%;width:28px;height:28px;line-height:28px;box-shadow:0 1px 4px rgba(0,0,0,.2)}' +
+  '.fm-tile .nm{font-size:14.5px;color:#4a3416;line-height:1.25}.fm-tile .d{display:block;font-size:11.5px;color:#7a6440;line-height:1.4}.fm-tile .fm-btn{width:100%;padding:8px 8px;font-size:13px}.fm-tile .fm-pb{width:100%;margin:2px 0}' +
+  '.fm-tile.st-ready,.fm-tile.st-ok{border-top-color:#22c55e}.fm-tile.st-work,.fm-tile.st-play{border-top-color:#3b82f6}.fm-tile.st-can,.fm-tile.st-open{border-top-color:#facc15}.fm-tile.st-need{border-top-color:#f97316}.fm-tile.st-leak{border-top-color:#ef4444}.fm-tile.st-buy{border-top-color:#f59e0b}.fm-tile.st-lv,.fm-tile.st-req,.fm-tile.st-rest{opacity:.62}' +
+  '.fm-st{border-radius:999px;padding:3px 10px;font-size:12px;font-weight:900;background:#f1e7cc;color:#6b4a14}.fm-st.ok{background:#dcfce7;color:#166534}.fm-st.work{background:#dbeafe;color:#1e40af}.fm-st.can{background:#fef9c3;color:#854d0e}.fm-st.warn{background:#ffedd5;color:#9a3412}.fm-st.bad{background:#fee2e2;color:#991b1b}.fm-st.buy{background:#fef3c7;color:#92400e}' +
+  '.fm-tile .rc{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;font-size:12px;font-weight:800}.fm-tile .rc span{border-radius:8px;padding:2px 6px;background:#f6f0de}.fm-tile .rc .g{background:#dcfce7;color:#166534}.fm-tile .rc .r{background:#fee2e2;color:#991b1b}.fm-tile .rc .o{background:#dbeafe;color:#1e40af}' +
+  '.fm-tile .inc{font-size:11.5px;font-weight:800;color:#15803d}.fm-btn.mini{width:auto!important;padding:3px 8px!important;font-size:11.5px!important;border-radius:9px;margin-left:4px}' +
+  '.fm-arcade{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-radius:16px;padding:10px 12px;margin-bottom:10px;background:linear-gradient(135deg,#1e3a8a,#7c3aed);color:#fff!important;box-shadow:0 4px 12px rgba(76,29,149,.35)}.fm-arcade .e{font-size:34px;font-family:' + EF + '}.fm-arcade b{display:block;font-size:15px}.fm-arcade small{display:block;font-size:12px;opacity:.9;line-height:1.4}.fm-arcade .go{margin-left:auto;font-size:26px;font-weight:900}' +
+  '.fm-wguide{background:#fff;border-radius:14px;padding:8px 12px;margin-bottom:8px;font-size:12.5px;line-height:1.5;color:#4a3a20;box-shadow:inset 4px 0 0 var(--wc),0 2px 6px rgba(120,80,0,.1)}.fm-wguide div+div{margin-top:3px}' +
+  '.fm-gchips{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -12px 8px;padding:2px 12px 4px;touch-action:pan-x}.fm-gchips::-webkit-scrollbar{display:none}.fm-gchips button{flex:none;border:2px solid #eadfc0;background:#fff;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:800;color:#5b3a12!important;white-space:nowrap}.fm-gchips button.on{background:var(--wc);border-color:var(--wc);color:#fff!important}' +
+  '.fm-gh{font-size:12.5px;font-weight:900;color:#7a6440;margin:10px 2px 6px;text-transform:uppercase;letter-spacing:.3px}' +
+  '.fm-short{display:flex;align-items:center;gap:10px;padding:8px 2px;border-bottom:1px dashed #eadfc0}.fm-short .e{font-size:28px;font-family:' + EF + ';width:34px;text-align:center}.fm-short .t{flex:1;min-width:0}.fm-short b{font-size:14.5px}.fm-short small{display:block;font-size:12px;color:#7a6440;line-height:1.4}.fm-short .q{font-weight:900;color:#dc2626;white-space:nowrap;font-size:14px}' +
+  '.fm-det{margin-top:8px}.fm-det summary{cursor:pointer;font-weight:800;font-size:13px;color:#92400e;padding:4px 0}' +
+  '.fm-nt{display:flex;gap:10px;padding:9px 2px;border-bottom:1px dashed #eadfc0}.fm-nt .e{font-size:28px;font-family:' + EF + ';width:34px;text-align:center}.fm-nt .t{flex:1;min-width:0}.fm-nt b{display:block;font-size:14px;color:#4a3416}.fm-nt small{display:block;font-size:12.5px;color:#6b5a3a;line-height:1.45;margin-top:2px}.fm-nt small.tm{color:#9a8660;font-weight:700}.fm-nt.new{background:#fff7ed;border-radius:10px}' +
+  '.fm-rule{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed #eadfc0;font-size:12.5px;line-height:1.45;color:#4a3a20}.fm-rule .w{flex:none;width:118px;font-weight:900;border-left:4px solid var(--wc);padding-left:6px}' +
+  '.fm-fix summary{cursor:pointer;list-style:none}.fm-fix summary::-webkit-details-marker{display:none}.fm-fix summary b{display:block;color:#991b1b;font-size:15px}.fm-fix summary small{display:block;color:#b91c1c;font-size:12px;margin:2px 0 6px}.fm-fx{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:8px;margin-bottom:8px}.fm-fx .e{font-size:26px;font-family:' + EF + '}.fm-fx .t{flex:1;min-width:0}.fm-fx b{display:block;font-size:14px;color:#4a3416}.fm-fx small{display:block;font-size:12px;color:#7a6440;line-height:1.4}.fm-fx .fm-pb{display:block}.fm-fx .fm-btn{flex:none;padding:8px 10px;font-size:13px}' +
+  '.fm-acts{margin:0 0 10px;flex-wrap:nowrap}.fm-acts .fm-btn{flex:1;padding:8px 6px;font-size:13px}' +
+  '.fm-def summary{cursor:pointer;list-style:none}.fm-def summary::-webkit-details-marker{display:none}.fm-def summary b{color:#365314;font-size:15px}.fm-def>small{display:block;color:#4d7c0f;font-size:12px;margin:4px 0 8px}' +
   '.fm-earnlist{text-align:left;margin:10px 0;padding:0;list-style:none}.fm-earnlist li{display:flex;justify-content:space-between;gap:8px;padding:7px 4px;border-bottom:1px dashed #eadfc0;font-weight:700;color:#4a3a20}.fm-earnlist li b{color:#15803d}';
   document.head.appendChild(st);
 
@@ -957,8 +1166,8 @@
   ov.innerHTML = '' +
     '<div class="fm-top"><button class="fm-ib" data-a="back" aria-label="Quay lại">←</button>' +
       '<div class="fm-lv"><div class="fm-badge" id="fmLv">1</div><div class="fm-xp"><small id="fmXpT"></small><div class="fm-xpb"><i id="fmXp"></i></div></div></div>' +
-      '<button class="fm-money" id="fmM" data-a="jars" aria-label="6 ví của nông trại">💰 0đ</button><button class="fm-ib" data-a="close" aria-label="Đóng">✕</button></div>' +
-    '<div class="fm-wbar" id="fmWB"></div>' +
+      '<button class="fm-money" id="fmM" data-a="jars" aria-label="6 ví của nông trại">💰 0đ</button><button class="fm-ib fm-bell" data-a="notif" aria-label="Thông báo">🔔<span class="dot" id="fmDotN" style="display:none"></span></button><button class="fm-ib" data-a="close" aria-label="Đóng">✕</button></div>' +
+    '<div class="fm-wbar" id="fmWB"></div><div class="fm-zbar" id="fmZB"></div>' +
     '<div class="fm-main" id="fmMain">' +
       '<div class="fm-stage" id="fmStage"><canvas id="fmCv"></canvas>' +
         '<div class="fm-zoom" id="fmZoom"><button data-a="zin" aria-label="Phóng to">＋</button><button data-a="zout" aria-label="Thu nhỏ">－</button><button data-a="zhome" aria-label="Về giữa nông trại">🏠</button></div>' +
@@ -968,18 +1177,18 @@
           '<button class="fm-tool" data-a="tool" data-t="fert"><span class="e" id="fmFertE">🧪</span>Phân bón ▾<span class="n" id="fmFert">0</span></button>' +
           '<button class="fm-tool" data-a="harvestAll"><span class="e">🧺</span>Thu hết</button>' +
         '</div></div>' +
-      '<div class="fm-panel" id="fmP_build"></div><div class="fm-panel" id="fmP_market"></div><div class="fm-panel" id="fmP_quest"></div><div class="fm-panel" id="fmP_earn"></div><div class="fm-panel" id="fmP_book"></div>' +
+      '<div class="fm-panel" id="fmP_prod"></div><div class="fm-panel" id="fmP_fun"></div><div class="fm-panel" id="fmP_market"></div><div class="fm-panel" id="fmP_quest"></div><div class="fm-panel" id="fmP_earn"></div><div class="fm-panel" id="fmP_book"></div>' +
       '<div class="fm-sheet" id="fmSheet"><div class="fm-sb" id="fmSB"></div></div>' +
       '<div class="fm-toast" id="fmToast"></div>' +
     '</div>' +
     '<div class="fm-nav" id="fmNav"><div class="fm-navs" id="fmNavS">' +
-      '<button class="on" data-a="tab" data-t="field"><span class="e">🌱</span>Ruộng</button>' +
-      '<button data-a="tab" data-t="barn"><span class="e">🐔</span>Chuồng<span class="dot" id="fmDotB" style="display:none"></span></button>' +
-      '<button data-a="tab" data-t="build"><span class="e">🏗️</span>Xây<span class="dot" id="fmDotK" style="display:none"></span></button>' +
+      '<button class="on" data-a="tab" data-t="field"><span class="e">🌾</span>Trồng trọt<span class="dot" id="fmDotF" style="display:none"></span></button>' +
+      '<button data-a="tab" data-t="barn"><span class="e">🐄</span>Chăn nuôi<span class="dot" id="fmDotB" style="display:none"></span></button>' +
+      '<button data-a="tab" data-t="prod"><span class="e">🏭</span>Sản xuất<span class="dot" id="fmDotK" style="display:none"></span></button>' +
+      '<button data-a="tab" data-t="fun"><span class="e">🎡</span>Vui chơi<span class="dot" id="fmDotV" style="display:none"></span></button>' +
       '<button data-a="tab" data-t="market"><span class="e">🏪</span>Chợ<span class="dot" id="fmDotO" style="display:none"></span></button>' +
       '<button data-a="tab" data-t="quest"><span class="e">🎯</span>Nhiệm vụ<span class="dot" id="fmDotQ" style="display:none"></span></button>' +
       '<button class="earn" data-a="tab" data-t="earn"><span class="e">🎮</span>Phụ bản</button>' +
-      '<button data-a="book"><span class="e">📒</span>Sổ thu chi</button>' +
     '</div></div>';
   document.body.appendChild(ov);
 
@@ -1199,7 +1408,6 @@
   var TREES = (function () {
     var R = mulberry(5), out = [], boxes = [[MX - 30, MY - 30, CW * COLS + 60, CW * MAXROWS + 50], [MX - 40, 60, 360, 120]];
     FIELDS.forEach(function (f) { boxes.push([f.x - 34, f.y - 50, f.w + 68, f.h + 84]); });
-    LOTS.forEach(function (id) { var P = BPOS[id]; boxes.push([P.x - 85, P.y - 150, 170, 185]); });
     boxes.push([10, 1050, 110, 150], [915, 1050, 110, 150]);
     for (var n = 0; n < 400 && out.length < 46; n++) {
       var x = 10 + R() * (FW - 20), y = HD + 20 + R() * (FH - HD - 30), s = 10 + R() * 9, ok = true;
@@ -1337,59 +1545,9 @@
     addMoney(a); S.inc[id] = Date.now(); addLog('in', a, 'inc_' + id, 'Thu nhập: ' + b.n, b.e); return a;
   }
   function canMake(b) { return b.r.i.every(function (x) { return (S.inv[x[0]] || 0) >= x[1]; }); }
-  function workshop(c, P, b, done) {
-    var x = P.x, by = P.y;
-    c.fillStyle = 'rgba(0,0,0,.16)'; c.beginPath(); c.ellipse(x, by + 2, 72, 12, 0, 0, 7); c.fill();
-    if (!done) {
-      var st = bState(b);
-      c.fillStyle = st === 'buy' ? 'rgba(180,120,50,.45)' : 'rgba(120,90,50,.28)'; rr(c, x - 70, by - 100, 140, 108, 14); c.fill();
-      c.strokeStyle = st === 'buy' ? '#fde68a' : 'rgba(255,255,255,.55)'; c.setLineDash([7, 5]); c.lineWidth = st === 'buy' ? 3 : 2; rr(c, x - 68, by - 98, 136, 104, 12); c.stroke(); c.setLineDash([]);
-      emo(c, st === 'buy' ? '🏗️' : '🔒', x, by - 66, 30);
-      emo(c, b.e, x + 40, by - 80, 18);
-      c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = '#fff'; c.font = '800 13px ' + TF; c.fillText(b.n, x, by - 34, 130);
-      c.font = '700 11.5px ' + TF; c.fillStyle = st === 'buy' ? '#fef3c7' : 'rgba(255,255,255,.85)';
-      c.fillText(st === 'buy' ? 'Chạm để xây · ' + short(b.cost) : st === 'req' ? 'Cần ' + BM[b.req].n.toLowerCase() : 'Mở ở cấp ' + b.lv, x, by - 16, 130);
-      return;
-    }
-    // tường + mái + cửa
-    c.fillStyle = P.wall; rr(c, x - 56, by - 62, 112, 62, 4); c.fill();
-    c.strokeStyle = 'rgba(0,0,0,.18)'; c.lineWidth = 1.5; rr(c, x - 56, by - 62, 112, 62, 4); c.stroke();
-    c.fillStyle = P.roof; c.beginPath(); c.moveTo(x - 66, by - 58); c.lineTo(x - 44, by - 98); c.lineTo(x + 44, by - 98); c.lineTo(x + 66, by - 58); c.closePath(); c.fill();
-    c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(x - 66, by - 60, 132, 5);
-    if (!P.gar) { c.fillStyle = '#7a5032'; c.fillRect(x + 26, by - 112, 12, 26); }
-    if (P.gar) { c.fillStyle = '#94a3b8'; rr(c, x - 44, by - 46, 88, 46, 3); c.fill(); c.strokeStyle = '#64748b'; for (var k = 1; k < 5; k++) { c.beginPath(); c.moveTo(x - 44, by - 46 + k * 9); c.lineTo(x + 44, by - 46 + k * 9); c.stroke(); } }
-    else {
-      c.fillStyle = '#8d5a2b'; rr(c, x - 12, by - 36, 24, 36, 3); c.fill();
-      c.fillStyle = '#7fd3ff'; c.fillRect(x - 46, by - 46, 24, 18); c.fillRect(x + 22, by - 46, 24, 18);
-      c.strokeStyle = '#fff'; c.lineWidth = 1.5; c.strokeRect(x - 46, by - 46, 24, 18); c.strokeRect(x + 22, by - 46, 24, 18);
-    }
-    // biển hiệu
-    c.fillStyle = '#fff'; c.beginPath(); c.arc(x - 8, by - 78, 15, 0, 7); c.fill(); c.strokeStyle = P.roof; c.lineWidth = 2; c.stroke();
-    emo(c, b.e, x - 8, by - 77, 19);
-    if (P.gar) emo(c, '🛻', x + 44, by - 12, 34);
-    c.font = '800 12px ' + TF; var tw = c.measureText(b.n).width + 16;
-    c.fillStyle = 'rgba(255,255,255,.92)'; rr(c, x - tw / 2, by + 6, tw, 20, 10); c.fill();
-    c.fillStyle = '#4a3416'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(b.n, x, by + 16.5);
-  }
   var BHITS = [];
   function drawBuildings(v) {
-    BHITS = [];
-    LOTS.forEach(function (id) {
-      var P = BPOS[id], b = BM[id]; if (!vis(v, P.x - 90, P.y - 160, 180, 200)) { BHITS.push({ id: id, x: P.x - 72, y: P.y - 112, w: 144, h: 140 }); return; }
-      var done = built(id); workshop(ctx, P, b, done);
-      BHITS.push({ id: id, x: P.x - 72, y: P.y - 112, w: 144, h: 140 });
-      if (!done) return;
-      var f = S.fac[id];
-      if (b.r && f && f.s === 1) {
-        var p = Math.min(1, (Date.now() - f.t) / (b.r.t * 1000));
-        for (var k = 0; k < 3; k++) { var ph = (tm * 0.6 + k / 3) % 1; ctx.globalAlpha = 0.55 * (1 - ph); ctx.fillStyle = '#e5e7eb'; ctx.beginPath(); ctx.arc(P.x + 32 + Math.sin(ph * 6 + k) * 4, P.y - 114 - ph * 34, 5 + ph * 8, 0, 7); ctx.fill(); }
-        ctx.globalAlpha = 1; ring(ctx, P.x + 50, P.y - 84, 12, p, '#f59e0b');
-      } else if (b.r && f && f.s === 2) {
-        bubble(P.x - 8, P.y - 126 + Math.sin(tm * 5) * 3, 34, PRODUCTS[b.r.o].e, '#fff7d1'); star(ctx, P.x + 14, P.y - 140, 5, tm * 2);
-      } else if (b.r && canMake(b)) bubble(P.x - 8, P.y - 124, 26, '▶️', '#dcfce7');
-      if (S.dmg.bld[id]) leak(P.x - 8, P.y - 104);
-      else coinPill(id, P.x - 46, P.y - 120);
-    });
+    BHITS = [];   // xưởng chế biến đã chuyển sang 🏭 Khu sản xuất, ở đây chỉ còn nhà, giếng, cối xay gió
     // nhà, giếng, cối xay gió (vẽ trên đường chân trời, ở drawSky) → chỉ thêm túi tiền và vùng chạm
     var hx = BPOS.them.x, hy = BPOS.them.y;
     if (S.dmg.house) leak(hx, hy - (built('nha3') ? 92 : 76));
@@ -1425,7 +1583,7 @@
         ['them', 'nha2', 'nha3'].forEach(function (k) { got += collectInc(k); });
         if (giftReady()) { var gm = giftAmt(); S.gift = dayKey(); addMoney(gm); S.fz.f1++; addLog('in', gm, 'gift', 'Quà mỗi ngày', '🎁'); got += gm; msg.push('🎁 Quà mỗi ngày'); }
         if (!got && S.dmg.house) { toast('💧 Nhà bị dột: tạm dừng thu nhập và quà mỗi ngày. Vào 🎯 Nhiệm vụ → Sự cố để sửa mái.'); return true; }
-        if (!got) { toast(built('them') ? '🏠 Nhà của bạn. Thu nhập: +' + short(['them', 'nha2', 'nha3'].reduce(function (a, k) { return a + (built(k) ? BM[k].inc : 0); }, 0)) + '/giờ, ghé lại sau nhé!' : '🏠 Xây 🪵 Thềm nhà (mục Xây) để nhà có thu nhập và quà mỗi ngày.'); return true; }
+        if (!got) { toast(built('them') ? '🏠 Nhà của bạn. Thu nhập: +' + short(['them', 'nha2', 'nha3'].reduce(function (a, k) { return a + (built(k) ? BM[k].inc : 0); }, 0)) + '/giờ, ghé lại sau nhé!' : '🏠 Xây 🪵 Thềm nhà (🏭 Sản xuất → 🏡 Công trình) để nhà có thu nhập và quà mỗi ngày.'); return true; }
       } else {
         var b = BM[id];
         if (!built(id)) {
@@ -1512,7 +1670,7 @@
       if (r === S.rows) {
         var ls = landState(r + 1);
         if (ls.k === 'lv') sign(x, y, w, h, '🔒', 'Mở ở cấp ' + ls.Ld.lv, 'Thêm 5 ô đất trồng');
-        else sign(x, y, w, h, '🪧', 'Mở rộng ruộng: ' + money(ls.Ld.c), 'Chạm để mua thêm 5 ô đất');
+        else sign(x, y, w, h, '🪧', 'Mở rộng ruộng: ' + money(ls.Ld.c), 'Trừ ví 📈 Đầu tư · chạm để mua 5 ô đất');
       } else { emo(ctx, ['🌿', '🍀', '🌼'][r % 3], x + w / 2, y + h / 2, h * 0.32); }
     }
     // Các cánh đồng bên ngoài chưa mở: bãi cỏ hoang có bảng chỉ dẫn
@@ -1527,7 +1685,7 @@
       ctx.fillStyle = st === 'buy' ? '#b45309' : 'rgba(36,54,26,.88)'; rr(ctx, bx, by, bw, bh, 14); ctx.fill();
       var n = f.c * f.r;
       if (st === 'lv') sign(bx + 4, by, bw - 8, bh, '🔒', f.n + ' · ' + n + ' ô', 'Mở ở cấp ' + f.lv);
-      else sign(bx + 4, by, bw - 8, bh, '🪧', 'Mua ' + f.n.toLowerCase(), money(f.cost) + ' · chạm để mua ' + n + ' ô đất');
+      else sign(bx + 4, by, bw - 8, bh, '🪧', 'Mua ' + f.n.toLowerCase(), money(f.cost) + ' · ví 📈 Đầu tư · chạm để mua ' + n + ' ô');
     });
     // Tên các cánh đồng đã mở
     FIELDS.forEach(function (f) {
@@ -1563,6 +1721,87 @@
     return w;
   }
   function pillL(c, x, y, txt, bg, fg, fn) { c.font = '800 13px ' + TF; var w = c.measureText(txt).width + 22; pill(c, x + w, y, txt, bg, fg, fn); return w; }
+  /* Trạng thái 1 chuồng: bao nhiêu con có sản phẩm, đói (chưa cho ăn), đang lớn */
+  function penStat(i) {
+    var P = S.pens[i], r = { ready: 0, hungry: 0, grow: 0, left: 1e9, n: 0, a: P ? AM[P.a] : null, pz: false };
+    if (!P) return r;
+    var a = AM[P.a]; r.pz = animPaused(a.id);
+    penList(i).forEach(function (x) { r.n++; if (x.s === 2) r.ready++; else if (x.s === 0) r.hungry++; else { r.grow++; r.left = Math.min(r.left, (1 - x.p) * a.t); } });
+    r.noFeed = r.hungry > 0 && (S.inv[a.feed] || 0) < 1;
+    return r;
+  }
+  /* Viền màu + nhãn trạng thái của chuồng: nhìn qua là biết chuồng nào có sản phẩm, chuồng nào chưa cho ăn */
+  function penBadges(p, a, st) {
+    var col = st.ready ? '#22c55e' : st.hungry ? (st.noFeed ? '#ef4444' : '#f97316') : '#3b82f6';
+    ctx.save(); ctx.strokeStyle = col; ctx.lineWidth = 7; if (!st.ready && !st.hungry) ctx.setLineDash([14, 9]);
+    rr(ctx, p.x - 4, p.y - 4, p.w + 8, p.h + 8, 19); ctx.stroke(); ctx.restore();
+    var items = [];
+    if (st.ready) items.push(['🧺 ' + st.ready + ' ' + PRODUCTS[a.p].e + ' chờ thu', '#16a34a']);
+    if (st.hungry) items.push([st.noFeed ? '🍽️ ' + st.hungry + ' con đói · hết ' + CM[a.feed].e : '🍽️ ' + st.hungry + ' con chưa cho ăn', st.noFeed ? '#dc2626' : '#ea580c']);
+    if (!items.length) items.push(['⏳ Có ' + PRODUCTS[a.p].e + ' sau ' + dur(st.left), '#2563eb']);
+    var k = Math.min(2.4, Math.max(1, 0.85 / cam.z)), fs = Math.round(13 * k), hh = Math.round(28 * k);
+    ctx.font = '900 ' + fs + 'px ' + TF;
+    if (k > 1.25) {   // đang thu nhỏ: nhãn to ở giữa chuồng
+      var y0 = p.y + p.h / 2 - (items.length * (hh + 6)) / 2;
+      items.forEach(function (it, n) {
+        var w = Math.min(p.w - 12, ctx.measureText(it[0]).width + 24 * k), x = p.x + p.w / 2 - w / 2, y = y0 + n * (hh + 6);
+        ctx.fillStyle = 'rgba(0,0,0,.25)'; rr(ctx, x + 2, y + 3, w, hh, hh / 2); ctx.fill();
+        ctx.fillStyle = it[1]; rr(ctx, x, y, w, hh, hh / 2); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(it[0], x + w / 2, y + hh / 2 + 1, w - 10);
+        HITS.push({ x: x, y: y, w: w, h: hh, fn: function () { careAll(a, p.i); } });
+      });
+      return;
+    }
+    var y = p.y + 8;
+    items.forEach(function (it) {
+      var w = ctx.measureText(it[0]).width + 20, x = p.x + p.w - 10 - w;
+      ctx.fillStyle = it[1]; rr(ctx, x, y, w, 26, 13); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 2; rr(ctx, x, y, w, 26, 13); ctx.stroke();
+      ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(it[0], x + w / 2, y + 13.5);
+      HITS.push({ x: x, y: y, w: w, h: 26, fn: function () { careAll(a, p.i); } });
+      y += 31;
+    });
+  }
+  /* Thanh tóm tắt trên bản đồ: tên khu + việc cần làm (chạm để làm ngay hoặc bay tới chỗ đó) */
+  var zbSig = '';
+  function fieldStat() {
+    var r = { ripe: 0, empty: 0, dmg: 0, grow: 0 }, fe = -1;
+    for (var i = 0; i < TOTAL; i++) { if (!plotOpen(i)) continue; var pl = S.plots[i]; if (pl.dmg) r.dmg++; else if (!pl.c) { r.empty++; if (fe < 0) fe = i; } else if (pl.p >= 1) r.ripe++; else r.grow++; }
+    r.fe = fe; return r;
+  }
+  function zoneBar(force) {
+    var el = $('fmZB'), h = '';
+    if (tab === 'field') {
+      var f = fieldStat();
+      h = '<span class="zn">🌾 Khu trồng trọt</span>' + (f.ripe ? '<button class="ok" data-a="harvestAll">🧺 ' + f.ripe + ' cây chín · thu</button>' : '') + (f.empty ? '<button class="can" data-a="zgoF">🌱 ' + f.empty + ' ô trống</button>' : '') + (f.dmg ? '<button class="bad" data-a="tab" data-t="quest">🥀 ' + f.dmg + ' ô bị hỏng</button>' : '') + (!f.ripe && !f.empty && !f.dmg && f.grow ? '<span class="work">⏳ ' + f.grow + ' cây đang lớn</span>' : '');
+    } else if (tab === 'barn') {
+      var c = { ready: 0, hungry: 0, grow: 0, bad: 0 }, nf = false;
+      for (var i = 0; i < NLOT; i++) { var st = penStat(i); if (!st.n) continue; if (st.pz) { c.bad++; continue; } if (st.ready) c.ready++; if (st.hungry) { c.hungry++; if (st.noFeed) nf = true; } if (!st.ready && !st.hungry) c.grow++; }
+      h = '<span class="zn">🐄 Khu chăn nuôi</span>' + (c.ready ? '<button class="ok" data-a="zgo" data-k="ready">🧺 ' + c.ready + ' chuồng có sản phẩm</button>' : '') + (c.hungry ? '<button class="' + (nf ? 'bad' : 'warn') + '" data-a="zgo" data-k="hungry">🍽️ ' + c.hungry + ' chuồng chưa cho ăn</button>' : '') + (c.grow ? '<button class="work" data-a="zgo" data-k="grow">⏳ ' + c.grow + ' chuồng đang nuôi</button>' : '') + (c.bad ? '<button class="bad" data-a="tab" data-t="quest">🔧 ' + c.bad + ' chuồng hỏng/ốm</button>' : '') + (c.ready || c.hungry ? '<button class="go" data-a="careAllB">⚡ Chăm hết</button>' : '');
+    }
+    if (force || h !== zbSig) { el.innerHTML = h; zbSig = h; if (force) el.scrollLeft = 0; }
+    var dsp = h ? '' : 'none'; if (el.style.display !== dsp) { el.style.display = dsp; if (running) resize(); }
+  }
+  function zoneGo(k) {
+    for (var i = 0; i < NLOT; i++) {
+      var st = penStat(i); if (!st.n || st.pz) continue;
+      if ((k === 'ready' && st.ready) || (k === 'hungry' && st.hungry) || (k === 'grow' && !st.ready && !st.hungry)) { var p = L.pens[i]; flyTo('barn', p.x + p.w / 2, p.y + p.h / 2, Math.max(cam.z, Math.min(1.1, (W - 16) / (p.w + 40)))); return; }
+    }
+  }
+  /* Chăm cả khu chăn nuôi: thu hết sản phẩm, cho ăn hết các con đói */
+  function careEverything() {
+    var got = 0, fed = 0, miss = {}, sick = 0;
+    for (var i = 0; i < NLOT; i++) {
+      var P = S.pens[i]; if (!P) continue; var a = AM[P.a];
+      if (animPaused(a.id)) { if (penList(i).length) sick++; continue; }
+      penList(i).forEach(function (x) { if (x.s === 2) { collectOne(a, x); got++; } });
+      penList(i).forEach(function (x) { if (x.s === 0) { if (feedOne(a, x)) fed++; else miss[a.feed] = (miss[a.feed] || 0) + 1; } });
+    }
+    var mk = Object.keys(miss);
+    if (got || fed) sfx('ok'); else sfx('bad');
+    toast(((got ? 'Thu ' + got + ' sản phẩm. ' : '') + (fed ? 'Cho ăn ' + fed + ' con. ' : '') + (mk.length ? 'Thiếu ' + mk.map(function (k) { return miss[k] + ' ' + CM[k].e; }).join(', ') + ' để cho ăn (trồng thêm ở Khu trồng trọt). ' : '') + (sick ? sick + ' chuồng đang hỏng/ốm, vào 🎯 Nhiệm vụ để sửa.' : '')) || 'Các con đang no, chờ chút nhé!');
+    hud(); save(); zoneBar(true);
+  }
   function drawBarn(dt) {
     var v = view();
     L.pens.forEach(function (p) {
@@ -1582,10 +1821,9 @@
       ctx.fillStyle = 'rgba(255,255,255,.9)'; rr(ctx, p.x + 10, p.y + 8, lw, 28, 14); ctx.fill();
       ctx.fillStyle = '#4a3416'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.font = '800 14px ' + TF;
       ctx.fillText(lt, p.x + 38, p.y + 22); emo(ctx, a.e, p.x + 24, p.y + 22, 18);
-      if (list.length && p.w - lw > 170) { ctx.font = '700 12px ' + TF; ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.textAlign = 'left'; ctx.fillText('Ăn ' + CM[a.feed].e + ' → ' + PRODUCTS[a.p].e + ' sau ' + durL(a.t), p.x + lw + 18, p.y + 22); }
       var bx = p.x + 12, by = p.y + p.h - 38;
       if (list.length) bx += pillL(ctx, bx, by, '⚡ Chăm tất cả', '#16a34a', '#fff', function () { careAll(a, p.i); }) + 8;
-      if (list.length < cap) bx += pillL(ctx, bx, by, '＋ Mua ' + a.n.toLowerCase() + ' ' + short(a.cost), '#f59e0b', '#fff', function () { buyAnimal(a, p.i); }) + 8;
+      if (list.length < cap) bx += pillL(ctx, bx, by, '＋ Mua ' + a.n.toLowerCase() + ' −' + short(a.cost) + ' 📈', '#f59e0b', '#fff', function () { buyAnimal(a, p.i); }) + 8;
       else if (nextCap(a)) bx += pillL(ctx, bx, by, '🔒 Thêm chỗ ở cấp ' + nextCap(a).lv, 'rgba(255,255,255,.92)', '#92400e', function () { toast('Lên cấp ' + nextCap(a).lv + ' thì mỗi ' + a.pen.toLowerCase() + ' nuôi được nhiều hơn. Hoặc xây thêm chuồng ở ô đất trống!'); }) + 8;
       if (!list.length) pillL(ctx, bx, by, '🔄 Đổi', 'rgba(255,255,255,.92)', '#92400e', function () { penDemolish(p.i); });
       if (!list.length) {
@@ -1607,13 +1845,16 @@
         else if (x.s === 1) ring(ctx, ax + sz * 0.4, ay - sz * 0.55, Math.max(8, sz * 0.2), x.p, '#f59e0b');
         else { var bb = Math.sin(tm * 5 + k) * 3; bubble(ax, bubY + bb, sz * 0.55, PRODUCTS[a.p].e, '#fff7d1'); star(ctx, ax + sz * 0.45, bubY - sz * 0.25, sz * 0.12, tm * 2); }
       });
+      if (list.length && !animPaused(a.id)) penBadges(p, a, penStat(p.i));
       if (animPaused(a.id)) {
         var pen = S.dmg.pen[a.id], txt = pen ? '🔨 Chuồng bị gió lốc làm hỏng' : '🤒 ' + a.n + ' bị ốm, cần chữa bệnh';
         ctx.fillStyle = pen ? 'rgba(120,53,15,.45)' : 'rgba(30,64,175,.28)'; rr(ctx, p.x, p.y, p.w, p.h, 16); ctx.fill();
         if (pen) { ctx.strokeStyle = '#78350f'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(p.x + 30, p.y + 50); ctx.lineTo(p.x + 70, p.y + 90); ctx.moveTo(p.x + p.w - 40, p.y + 60); ctx.lineTo(p.x + p.w - 80, p.y + 110); ctx.stroke(); }
-        ctx.font = '800 14px ' + TF; var tw2 = ctx.measureText(txt).width + 24;
-        ctx.fillStyle = '#dc2626'; rr(ctx, p.x + p.w / 2 - tw2 / 2, p.y + p.h / 2 - 34, tw2, 30, 15); ctx.fill();
-        ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(txt, p.x + p.w / 2, p.y + p.h / 2 - 18.5);
+        var kz = Math.min(2.4, Math.max(1, 0.85 / cam.z)), hz = 30 * kz;
+        ctx.save(); ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 7; rr(ctx, p.x - 4, p.y - 4, p.w + 8, p.h + 8, 19); ctx.stroke(); ctx.restore();
+        ctx.font = '800 ' + Math.round(14 * kz) + 'px ' + TF; var tw2 = Math.min(p.w - 8, ctx.measureText(txt).width + 24 * kz);
+        ctx.fillStyle = '#dc2626'; rr(ctx, p.x + p.w / 2 - tw2 / 2, p.y + p.h / 2 - 4 - hz, tw2, hz, hz / 2); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(txt, p.x + p.w / 2, p.y + p.h / 2 - 4 - hz / 2 + 1, tw2 - 10);
         ctx.font = '800 13px ' + TF; var tw3 = ctx.measureText('🔧 Đi sửa chữa').width + 22;
         pill(ctx, p.x + p.w / 2 + tw3 / 2, p.y + p.h / 2 + 4, '🔧 Đi sửa chữa', '#f59e0b', '#fff', function () { setTab('quest'); });
       }
@@ -1671,7 +1912,7 @@
   }
 
   /* ================= VÒNG LẶP ================= */
-  var lastT = 0;
+  var lastT = 0, lastZB = 0;
   function loop(now) {
     if (!running) return;
     var dt = Math.min(0.05, (now - lastT) / 1000 || 0.016); lastT = now; tm += dt;
@@ -1680,6 +1921,7 @@
     if (S.fix.length) fixTick(t);
     defTick(t);
     if (tab === 'field' || tab === 'barn') {
+      if (t - lastZB > 600) { lastZB = t; zoneBar(); }
       useCam(); stepCam(dt); HITS = [];
       var z = cam.z * DPR, v = view();
       ctx.setTransform(z, 0, 0, z, -cam.x * z, -cam.y * z);
@@ -1690,7 +1932,8 @@
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       if (tab === 'field') drawTip();
       if (WX && Date.now() < WX.until) drawWeather(dt); else WX = null;
-    } else if (tab === 'build' && t - lastPanel > 1000) { lastPanel = t; tickBuild(); }
+    } else if (tab === 'prod' && t - lastPanel > 1000) { lastPanel = t; tickProd(); }
+    else if (tab === 'fun' && t - lastPanel > 1000) { lastPanel = t; tickFun(); }
     else if (tab === 'quest' && t - lastPanel > 1000) { lastPanel = t; tickQuest(); }
     raf = requestAnimationFrame(loop);
   }
@@ -1723,10 +1966,10 @@
     if (cr.lv > S.lv) { toast('🔒 ' + cr.n + ' mở ở cấp ' + cr.lv); return false; }
     var sw = cr.per ? 'invest' : 'essential';   // cây ăn quả lâu năm là khoản đầu tư dài hạn
     if (!has(sw, cr.cost)) { noMoney(cr.cost, sw); return false; }
-    takeMoney(sw, cr.cost); addLog('out', cr.cost, 'seed_' + cr.id, (cr.per ? 'Mua cây giống ' : 'Mua hạt giống ') + cr.n, cr.e);
+    spend(sw, cr.cost, 'seed_' + cr.id, (cr.per ? 'Mua cây giống ' : 'Mua hạt giống ') + cr.n, cr.e);
     pl.c = cr.id; pl.p = 0; pl.t = Date.now(); pl.w = 0; pl.n = 0; ev('plant', cr.id);
     burst(R.x + R.s / 2, R.y + R.s * 0.8, ['#8d5a2b', '#6b4423', '#c08a55'], 7);
-    floatTxt(R.x + R.s / 2, R.y + R.s * 0.4, '−' + short(cr.cost), '#fecaca');
+    floatTxt(R.x + R.s / 2, R.y + R.s * 0.4, '−' + short(cr.cost) + ' ' + WM[sw].e, '#fecaca');
     return true;
   }
   function harvest(i, quiet) {
@@ -1779,20 +2022,20 @@
     var r = S.rows; if (r >= MAXROWS) return;
     var ls = landState(r + 1);
     if (ls.k === 'lv') { toast('🔒 Đạt cấp ' + ls.Ld.lv + ' để mở rộng ruộng. Làm 🎯 Nhiệm vụ để tích kinh nghiệm nhé!'); return; }
-    confirmBox('🪧', 'Mở rộng ruộng?', 'Mua thêm 5 ô đất với giá <b>' + money(ls.Ld.c) + '</b>. Đây là khoản <b>đầu tư</b>: tốn tiền một lần nhưng giúp nông trại thu được nhiều hơn mỗi ngày.', 'Mua đất', function () {
+    confirmBox('🪧', 'Mở rộng ruộng?', 'Mua thêm 5 ô đất với giá <b>' + money(ls.Ld.c) + '</b>. Đây là khoản <b>đầu tư</b>: tốn tiền một lần nhưng giúp nông trại thu được nhiều hơn mỗi ngày.<br>' + wpay('invest', ls.Ld.c), 'Mua đất', function () {
       if (!has('invest', ls.Ld.c)) { noMoney(ls.Ld.c, 'invest'); return; }
-      takeMoney('invest', ls.Ld.c); S.rows++; addLog('out', ls.Ld.c, 'land' + S.rows, 'Mua thêm đất (hàng ' + S.rows + ')', '🪧'); sfx('win'); save(); hud(); toast('🎉 Ruộng đã rộng hơn!');
+      S.rows++; spend('invest', ls.Ld.c, 'land' + S.rows, 'Mua thêm đất (hàng ' + S.rows + ')', '🪧'); sfx('win'); save(); hud(); toast('🎉 Ruộng đã rộng hơn! −' + money(ls.Ld.c) + ' từ ví 📈 Đầu tư');
     });
   }
   function buyField(f) {
     var st = fieldState(f), n = f.c * f.r;
     if (st === 'lv') { toast('🔒 ' + f.n + ' mở ở cấp ' + f.lv + '. Làm 🎯 Nhiệm vụ để tích kinh nghiệm nhé!'); return; }
     if (st !== 'buy') return;
-    confirmBox('🌾', 'Mua ' + f.n.toLowerCase() + '?', 'Thêm <b>' + n + ' ô đất</b> bên ngoài hàng rào với giá <b>' + money(f.cost) + '</b>. Đây là khoản <b>đầu tư</b>: trả một lần, trồng được mãi mãi.', 'Mua đất', function () {
+    confirmBox('🌾', 'Mua ' + f.n.toLowerCase() + '?', 'Thêm <b>' + n + ' ô đất</b> bên ngoài hàng rào với giá <b>' + money(f.cost) + '</b>. Đây là khoản <b>đầu tư</b>: trả một lần, trồng được mãi mãi.<br>' + wpay('invest', f.cost), 'Mua đất', function () {
       if (!has('invest', f.cost)) { noMoney(f.cost, 'invest'); return; }
-      takeMoney('invest', f.cost); S.fx[f.id] = Date.now(); addLog('out', f.cost, 'fld_' + f.id, 'Mua ' + f.n.toLowerCase(), '🌾');
+      S.fx[f.id] = Date.now(); spend('invest', f.cost, 'fld_' + f.id, 'Mua ' + f.n.toLowerCase(), '🌾');
       addXP(Math.max(5, Math.round(f.cost / 100000)));
-      sfx('win'); save(); hud(); toast('🎉 Đã mở ' + f.n + '! Chạm hoặc vuốt để gieo hạt.');
+      sfx('win'); save(); hud(); toast('🎉 Đã mở ' + f.n + ' (−' + short(f.cost) + ' ví 📈 Đầu tư)! Chạm hoặc vuốt để gieo hạt.');
       burst(f.x + f.w / 2, f.y + f.h / 2, ['#fde047', '#86efac', '#fff', '#f59e0b'], 24);
     });
   }
@@ -1801,8 +2044,8 @@
   function buyAnimal(a, i) {
     if (penList(i).length >= capPen(a)) { toast('Chuồng đã đầy. Xây thêm chuồng ở ô đất trống để nuôi thêm!'); return; }
     if (!has('invest', a.cost)) { noMoney(a.cost, 'invest'); return; }
-    takeMoney('invest', a.cost); S.an[a.id].push({ s: 0, p: 0, t: Date.now(), pen: i }); addLog('out', a.cost, 'buy_' + a.id, 'Mua ' + a.n.toLowerCase(), a.e);
-    sfx('win'); hud(); save(); toast(a.e + ' Đã mua thêm 1 con ' + a.n.toLowerCase() + '. Chạm vào để cho ăn ' + CM[a.feed].e);
+    S.an[a.id].push({ s: 0, p: 0, t: Date.now(), pen: i }); spend('invest', a.cost, 'buy_' + a.id, 'Mua ' + a.n.toLowerCase(), a.e);
+    sfx('win'); hud(); save(); toast(a.e + ' Mua 1 con ' + a.n.toLowerCase() + ': −' + money(a.cost) + ' từ ví 📈 Đầu tư. Chạm vào để cho ăn ' + CM[a.feed].e);
   }
   function feedOne(a, x) {
     if ((S.inv[a.feed] || 0) < 1) return false;
@@ -1853,8 +2096,8 @@
     ANIMALS.forEach(function (a) {
       var lk = S.lv < a.lv, pc = penCost(a), cnt = S.pens.filter(function (P) { return P && P.a === a.id; }).length;
       h += '<div class="fm-seed' + (lk ? '' : '') + '" style="cursor:default' + (lk ? ';opacity:.5' : '') + '"><span class="e">' + (lk ? '🔒' : a.e) + '</span><span class="tx"><b>' + a.pen + (cnt ? ' <small style="display:inline;color:#15803d">(đang có ' + cnt + ')</small>' : '') + '</b>' +
-        '<small>' + (lk ? 'Mở ở cấp ' + a.lv : 'Chuồng ' + money(pc) + ' · mỗi con ' + money(a.cost) + ' · nuôi ' + capPen(a) + ' con<br>Ăn ' + CM[a.feed].e + ' ' + CM[a.feed].n.toLowerCase() + ' → ' + PRODUCTS[a.p].e + ' ' + PRODUCTS[a.p].n.toLowerCase() + ' (bán ' + short(PRODUCTS[a.p].sell) + ') mỗi ' + durL(a.t)) + '</small>' +
-        (lk ? '' : '<span class="fm-row" style="margin-top:6px"><button class="fm-btn org" data-a="penBuild" data-i="' + i + '" data-k="' + a.id + '"' + (S.jar.invest < pc ? ' disabled' : '') + '>🔨 Xây · ' + short(pc) + '</button>' + (S.jar.invest < pc ? '<span class="fm-tag">Ví Đầu tư chưa đủ</span>' : '') + '</span>') + '</span></div>';
+        '<small>' + (lk ? 'Mở ở cấp ' + a.lv : 'Chuồng ' + money(pc) + ' · mỗi con ' + money(a.cost) + ' (ví 📈 Đầu tư) · nuôi ' + capPen(a) + ' con<br>Ăn ' + CM[a.feed].e + ' ' + CM[a.feed].n.toLowerCase() + ' → ' + PRODUCTS[a.p].e + ' ' + PRODUCTS[a.p].n.toLowerCase() + ' (bán ' + short(PRODUCTS[a.p].sell) + ') mỗi ' + durL(a.t)) + '</small>' +
+        (lk ? '' : '<span class="fm-row" style="margin-top:6px"><button class="fm-btn org" data-a="penBuild" data-i="' + i + '" data-k="' + a.id + '"' + (S.jar.invest < pc ? ' disabled' : '') + '>🔨 Xây · −' + short(pc) + ' 📈</button>' + (S.jar.invest < pc ? '<span class="fm-tag">Ví Đầu tư chưa đủ</span>' : '') + '</span>') + '</span></div>';
     });
     sheet(h + '<button class="fm-btn alt" data-a="sheetClose" style="width:100%">Để sau</button>');
   }
@@ -1862,17 +2105,17 @@
     var a = AM[k], pc = penCost(a);
     if (S.pens[i] || S.lv < LOTLV[i] || S.lv < a.lv) return;
     if (!has('invest', pc)) { noMoney(pc, 'invest'); return; }
-    takeMoney('invest', pc); addLog('out', pc, 'pen_' + k, 'Xây ' + a.pen.toLowerCase(), a.e);
+    spend('invest', pc, 'pen_' + k, 'Xây ' + a.pen.toLowerCase(), a.e);
     S.pens[i] = { a: k }; addXP(Math.max(3, Math.round(pc / 50000)));
     closeSheet(); sfx('win'); save(); hud();
     var p = L.pens[i]; burst(p.x + p.w / 2, p.y + p.h / 2, ['#fde047', '#86efac', '#fff'], 24);
-    toast('🎉 Đã xây ' + a.pen.toLowerCase() + '! Bấm “＋ Mua ' + a.n.toLowerCase() + '” để nuôi con đầu tiên.');
+    toast('🎉 Đã xây ' + a.pen.toLowerCase() + ' (−' + short(pc) + ' ví 📈 Đầu tư)! Bấm “＋ Mua ' + a.n.toLowerCase() + '” để nuôi con đầu tiên.');
   }
   function penDemolish(i) {
     var P = S.pens[i]; if (!P || penList(i).length) return;
     var a = AM[P.a], back = Math.round(penCost(a) * 0.5 / 1000) * 1000;
     confirmBox('🔄', 'Dỡ ' + a.pen.toLowerCase() + '?', 'Dỡ chuồng để xây chuồng khác ở ô này. Bán lại vật liệu được <b>' + money(back) + '</b> (một nửa giá xây) vào ví Đầu tư.', 'Dỡ chuồng', function () {
-      S.pens[i] = null; addMoney(back, 'invest'); addLog('in', back, 'pen_sell', 'Bán vật liệu ' + a.pen.toLowerCase(), '🔄'); save(); hud(); penPick(i);
+      S.pens[i] = null; addMoney(back, 'invest'); addLog('in', back, 'pen_sell', 'Bán vật liệu ' + a.pen.toLowerCase(), '🔄', 1, 'invest'); save(); hud(); penPick(i);
     });
   }
 
@@ -1880,7 +2123,7 @@
   function hud() {
     $('fmLv').textContent = S.lv;
     var nd = need(S.lv); $('fmXp').style.width = Math.min(100, S.xp / nd * 100) + '%';
-    $('fmXpT').textContent = 'Cấp ' + S.lv + ' · ' + S.xp + '/' + nd + ' KN';
+    $('fmXpT').textContent = S.xp + '/' + nd + ' KN';
     syncM(); $('fmM').textContent = '💰 ' + money(S.m); walletBar();
     toolsUI(); badges();
   }
@@ -1892,7 +2135,7 @@
     el.innerHTML = WALLETS.map(function (x) {
       var n = walletReady(x.k);
       return '<button class="' + (tab === 'quest' && S.mw === x.k ? 'on' : '') + '" data-a="wtab" data-w="' + x.k + '" style="--wc:' + x.c + '" title="' + x.n + '"><span class="n">' + x.e + ' ' + (x.k === 'education' ? 'Phát triển' : x.n) + ' <i>' + pctOf(x.k) + '%</i></span><span class="b">' + jarAmt(S.jar[x.k]) + '</span>' + (n ? '<span class="dot">' + n + '</span>' : '') + '</button>';
-    }).join('') + '<button class="set" data-a="pctSet" aria-label="Cài đặt tỷ lệ 6 ví" style="--wc:#fde68a"><span class="n">⚙️ Tỷ lệ</span><span class="b" style="font-size:12px">Cài đặt</span></button>';
+    }).join('') + '<button class="set" data-a="pctSet" aria-label="Cài đặt tỷ lệ 6 ví" style="--wc:#fde68a"><span class="n">⚙️ Tỷ lệ</span><span class="b" style="font-size:12px">Cài đặt</span></button><button class="set" data-a="book" aria-label="Sổ thu chi" style="--wc:#fde68a"><span class="n">📒 Sổ</span><span class="b" style="font-size:12px">Thu chi</span></button>';
     el.scrollLeft = sl;
   }
   function toolsUI() {
@@ -1906,11 +2149,15 @@
   function badges() {
     fillOrders();
     dot('fmDotO', S.orders.filter(canDeliver).length);
-    var b = 0; ANIMALS.forEach(function (a) { S.an[a.id].forEach(function (x) { if (x.s === 2) b++; }); });
-    dot('fmDotB', b);
-    var f = 0; BUILDS.forEach(function (x) { var s = S.fac[x.id]; if (s && s.s === 2) f++; });
+    var b = 0; for (var pi = 0; pi < NLOT; pi++) { var ps = penStat(pi); if (ps.n && !ps.pz && (ps.ready || ps.hungry)) b++; }
+    dot('fmDotB', b);   // số chuồng cần chăm (có sản phẩm hoặc chưa cho ăn)
+    var f = 0; BUILDS.forEach(function (x) { var s = wsState(x); if (s === 'ready' || s === 'can') f++; });
     dot('fmDotK', f);
     dot('fmDotQ', claimable());
+    dot('fmDotV', funReady());
+    var fr = 0; for (var i = 0; i < TOTAL; i++) { var pl = S.plots[i]; if (pl.c && pl.p >= 1 && !pl.dmg && plotOpen(i)) fr++; }
+    dot('fmDotF', fr > 99 ? '99+' : fr);
+    notifBadge();
   }
   var toastT = 0;
   function toast(t) { var el = $('fmToast'); el.textContent = t; el.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function () { el.classList.remove('on'); }, 2800); }
@@ -1924,13 +2171,13 @@
     sheet('<div class="fm-modal"><div class="big">' + e + '</div><h2>' + t + '</h2><p>' + body + '</p><div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="sheetClose">Để sau</button><button class="fm-btn org" data-a="confirm">' + ok + '</button></div></div>');
   }
   function seedSheet() {
-    var h = '<div class="fm-h">🌱 Chọn hạt giống</div><p class="fm-sub">Chọn xong, chạm (hoặc vuốt) lên các ô đất trống để gieo. <b>Lãi</b> = giá bán − tiền hạt giống. Cây lâu lớn thích hợp trồng trước khi đi học, đi ngủ.</p>';
+    var h = '<div class="fm-h">🌱 Chọn hạt giống</div>' + wpay('essential') + '<p class="fm-sub">Hạt giống là chi phí sản xuất nên trừ ví 🏠 Thiết yếu. Chọn xong, chạm (hoặc vuốt) lên các ô đất trống để gieo. <b>Lãi</b> = giá bán − tiền hạt giống. Cây lâu lớn thích hợp trồng trước khi đi học, đi ngủ.</p>';
     CROPS.forEach(function (c, ci) {
       var lk = c.lv > S.lv, pr = c.sell - c.cost;
       if (c.per && !CROPS[ci - 1].per) h += '<div class="fm-h" style="margin-top:12px">🌳 Cây ăn quả lâu năm</div><p class="fm-sub">Cây giống đắt (trừ ví 📈 Đầu tư) và lần đầu lớn lâu, nhưng <b>trồng 1 lần, thu hoạch mãi mãi</b>, không tốn tiền giống nữa. Đúng là một khoản đầu tư dài hạn!</p>';
-      if (c.per) { h += '<button class="fm-seed' + (S.sel === c.id ? ' on' : '') + '" data-a="pick" data-c="' + c.id + '"' + (lk ? ' disabled' : '') + '><span class="e">' + (lk ? '🔒' : c.e) + '</span><span class="tx"><b>' + c.n + '</b><small>' + (lk ? 'Mở ở cấp ' + c.lv : 'Cây giống ' + money(c.cost) + ' · lần đầu ' + durL(c.t) + ' · sau đó cứ ' + durL(c.re) + ' ra 1 lứa · bán ' + money(c.sell)) + '</small></span>' + (lk ? '' : '<span class="pr">+' + short(c.sell) + '<small>mỗi lứa</small></span>') + '</button>'; return; }
+      if (c.per) { h += '<button class="fm-seed' + (S.sel === c.id ? ' on' : '') + '" data-a="pick" data-c="' + c.id + '"' + (lk ? ' disabled' : '') + '><span class="e">' + (lk ? '🔒' : c.e) + '</span><span class="tx"><b>' + c.n + '</b><small>' + (lk ? 'Mở ở cấp ' + c.lv : 'Cây giống ' + money(c.cost) + ' 📈 · lần đầu ' + durL(c.t) + ' · sau đó cứ ' + durL(c.re) + ' ra 1 lứa · bán ' + money(c.sell)) + '</small></span>' + (lk ? '' : '<span class="pr">+' + short(c.sell) + '<small>mỗi lứa</small></span>') + '</button>'; return; }
       h += '<button class="fm-seed' + (S.sel === c.id ? ' on' : '') + '" data-a="pick" data-c="' + c.id + '"' + (lk ? ' disabled' : '') + '><span class="e">' + (lk ? '🔒' : c.e) + '</span><span class="tx"><b>' + c.n + '</b>' +
-        '<small>' + (lk ? 'Mở ở cấp ' + c.lv : 'Hạt ' + money(c.cost) + ' · ⏱ ' + durL(c.t) + ' · bán ' + money(c.sell)) + '</small></span>' +
+        '<small>' + (lk ? 'Mở ở cấp ' + c.lv : 'Hạt ' + money(c.cost) + ' 🏠 · ⏱ ' + durL(c.t) + ' · bán ' + money(c.sell)) + '</small></span>' +
         (lk ? '' : '<span class="pr">+' + short(pr) + '<small>lãi/cây</small></span>') + '</button>';
     });
     sheet(h);
@@ -1942,10 +2189,10 @@
       '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="sheetClose">Để cây lại</button><button class="fm-btn" style="background:#b91c1c" data-a="chop" data-i="' + i + '">🪓 Chặt cây</button></div></div>');
   }
   function fertSheet() {
-    var h = '<div class="fm-h">🧪 Chọn loại phân bón</div><p class="fm-sub">Bón vào cây đang lớn. <b>Phân càng đắt càng rút ngắn nhiều thời gian.</b> Mua bằng tiền ví 🏠 Thiết yếu.</p>';
+    var h = '<div class="fm-h">🧪 Chọn loại phân bón</div>' + wpay('essential') + '<p class="fm-sub">Bón vào cây đang lớn. <b>Phân càng đắt càng rút ngắn nhiều thời gian.</b> Phân bón là chi phí sản xuất nên trừ ví 🏠 Thiết yếu.</p>';
     FERTS.forEach(function (f) {
       h += '<div class="fm-seed' + (S.selF === f.id ? ' on' : '') + '" style="cursor:default"><span class="e">' + f.e + '</span><span class="tx"><b>' + f.n + '</b><small>' + f.d + ' · ' + money(f.p) + '/túi · đang có <b>' + (S.fz[f.id] || 0) + '</b> túi</small>' +
-        '<span class="fm-row" style="margin-top:6px"><button class="fm-btn" data-a="pickF" data-f="' + f.id + '"' + (S.fz[f.id] ? '' : ' disabled') + '>Dùng loại này</button><button class="fm-btn org" data-a="buyFert" data-f="' + f.id + '" data-q="1">Mua 1 · ' + short(f.p) + '</button></span></span></div>';
+        '<span class="fm-row" style="margin-top:6px"><button class="fm-btn" data-a="pickF" data-f="' + f.id + '"' + (S.fz[f.id] ? '' : ' disabled') + '>Dùng loại này</button><button class="fm-btn org" data-a="buyFert" data-f="' + f.id + '" data-q="1">Mua 1 · −' + short(f.p) + ' 🏠</button></span></span></div>';
     });
     sheet(h + '<button class="fm-btn alt" data-a="sheetClose" style="width:100%">Đóng</button>');
   }
@@ -1968,16 +2215,15 @@
     hud(); save();
   }
   function guide() {
-    sheet('<div class="fm-modal"><div class="big">👩‍🌾</div><h2>Chào mừng đến Nông trại 6PAY!</h2><ul class="fm-guide">' +
-      '<li><i>🌱</i><span>Chọn hạt giống, rồi <b>chạm hoặc vuốt</b> lên ô đất trống để gieo. Bấm 🪣 <b>Tưới hết</b> và bón phân để cây lớn nhanh hơn (phân càng đắt càng nhanh). Cây ăn quả 🌳 trồng 1 lần, thu hoạch mãi.</span></li>' +
-      '<li><i>✋</i><span><b>Kéo 1 ngón</b> để di chuyển bản đồ, <b>chụm hoặc mở 2 ngón</b> để thu nhỏ, phóng to. Bấm 🏠 để quay về giữa nông trại.</span></li>' +
-      '<li><i>🐔</i><span>Ở <b>Chuồng</b>, tự chọn ô đất để xây chuồng nuôi gà, bò, cừu, cá, ong, vịt, dê, heo… tuỳ ý thích và số tiền trong ví Đầu tư.</span></li>' +
-      '<li><i>🏗️</i><span>Xây thềm nhà, giếng nước, lò bánh mì, xưởng phô mai… để nông trại ngày càng to đẹp.</span></li>' +
-      '<li><i>🎮</i><span><b>Phụ bản:</b> chơi các game học (tiếng Anh, Toán, Lịch sử…). Toàn bộ tiền thưởng được chuyển vào nông trại. Đây là cách kiếm tiền <b>nhanh nhất</b>!</span></li>' +
-      '<li><i>🎯</i><span><b>Nhiệm vụ 6 ví:</b> Thiết yếu, Phát triển bản thân, Tiết kiệm, Đầu tư, Chia sẻ, Hưởng thụ. Bỏ tiền ra làm nhiệm vụ, hoàn thành thì nhận lại tiền và <b>kinh nghiệm</b>. Đủ kinh nghiệm thì lên cấp, mở thêm đất, chuồng, vật nuôi, công trình.</span></li>' +
-      '<li><i>💰</i><span>Tiền kiếm được tự chia vào <b>6 ví</b> theo tỷ lệ (chạm vào số tiền ở góc trên để xem và đổi tỷ lệ). Chi tiêu ở ví nào thì trừ tiền ví đó, ví nào hết tiền thì không tiêu được.</span></li>' +
-      '<li><i>🦊</i><span>Thú hoang (cáo, sói, gấu) có thể mò vào bắt vật nuôi. Làm nhiệm vụ <b>xây hàng rào, chòi canh, chòi bắn cung</b> để bảo vệ nông trại.</span></li>' +
-      '<li><i>🌧️</i><span>Khoảng 5 giờ lại có một trận mưa bão hoặc gió lốc làm hỏng hoa màu, dột nhà, hỏng chuồng, vật nuôi bị ốm. Hãy để dành <b>quỹ dự phòng</b> để sửa chữa!</span></li>' +
+    sheetLater('<div class="fm-modal"><div class="big">👩‍🌾</div><h2>Chào mừng đến Nông trại Sixpay!</h2><p style="font-size:13.5px">Nông trại có <b>4 khu</b>, chọn ở thanh dưới cùng:</p><ul class="fm-guide">' +
+      '<li><i>🌾</i><span><b>Khu trồng trọt:</b> chọn hạt giống rồi <b>chạm hoặc vuốt</b> lên ô đất trống để gieo, bấm 🪣 Tưới hết, bón phân cho cây lớn nhanh. Cây ăn quả 🌳 trồng 1 lần, thu hoạch mãi. Kéo 1 ngón để đi quanh, chụm 2 ngón để phóng to/thu nhỏ.</span></li>' +
+      '<li><i>🐄</i><span><b>Khu chăn nuôi:</b> tự chọn ô đất để xây chuồng. Viền <b style="color:#16a34a">xanh lá</b> = có sản phẩm chờ thu, viền <b style="color:#ea580c">cam</b> = có con chưa cho ăn, viền <b style="color:#dc2626">đỏ</b> = hết thức ăn, viền <b style="color:#2563eb">xanh dương</b> = đang nuôi. Bấm ⚡ Chăm hết để thu và cho ăn cả khu.</span></li>' +
+      '<li><i>🏭</i><span><b>Khu sản xuất:</b> xưởng chế biến (lò bánh mì, xưởng phô mai, máy dệt…) và công trình có thu nhập mỗi giờ.</span></li>' +
+      '<li><i>🎡</i><span><b>Khu vui chơi:</b> xây khu chơi, mua vé bằng ví Hưởng thụ để nhận kinh nghiệm. Hưởng thụ vừa đủ: mỗi khu 3 lượt/ngày.</span></li>' +
+      '<li><i>💰</i><span>Tiền kiếm được tự chia vào <b>6 ví</b>. Mỗi nút chi tiền đều ghi rõ <b>trừ ví nào</b> (ví dụ “−5k 🏠” là ví Thiết yếu). Ví nào hết tiền thì không tiêu được, không chuyển tiền giữa các ví.</span></li>' +
+      '<li><i>🎯</i><span><b>Nhiệm vụ 6 ví</b> được xếp theo hướng dẫn chi tiêu của từng ví. Hoàn thành để nhận tiền và kinh nghiệm, lên cấp để mở thêm đất, chuồng, xưởng.</span></li>' +
+      '<li><i>🎮</i><span><b>Phụ bản:</b> chơi game học (tiếng Anh, Toán, Lịch sử…), tiền thưởng chuyển hết vào nông trại. Đây là cách kiếm tiền <b>nhanh nhất</b>!</span></li>' +
+      '<li><i>🔔</i><span><b>Thông báo</b> (góc trên): xem lúc nào có mưa bão, gió lốc, thú hoang, thiệt hại bao nhiêu, và <b>nông sản nào còn thiếu</b> bao nhiêu để đủ đơn hàng.</span></li>' +
       '</ul><button class="fm-btn" data-a="sheetClose" style="width:100%">Bắt đầu thôi!</button></div>');
   }
   function backSheet(got) {
@@ -2011,8 +2257,8 @@
       if (!ids.length) h += '<div class="fm-card" style="text-align:center;color:#7a6440">Kho đang trống. Hãy ra Ruộng thu hoạch nhé! 🌾</div>';
       else h += '<div class="fm-inv">' + ids.map(function (id) { var I = item(id), q = S.inv[id];
         return '<div class="fm-it"><div class="e">' + I.e + '</div><b>' + I.n + '</b><small>Giá chợ ' + money(sp(id)) + '</small><div class="q">× ' + q + '</div><div class="fm-row"><button class="fm-btn alt" data-a="sell" data-c="' + id + '" data-q="1">Bán 1</button><button class="fm-btn" data-a="sell" data-c="' + id + '" data-q="' + q + '">Bán hết</button></div></div>'; }).join('') + '</div>';
-      h += '<div class="fm-h" style="margin-top:16px">🏪 Cửa hàng vật tư</div>' +
-        FERTS.map(function (f) { return '<div class="fm-card" style="display:flex;align-items:center;gap:10px"><span style="font-size:36px;font-family:' + EF + '">' + f.e + '</span><div style="flex:1"><b>' + f.n + '</b><div class="fm-sub" style="margin:2px 0 6px">' + f.d + '. Đang có ' + (S.fz[f.id] || 0) + ' túi · ' + money(f.p) + '/túi.</div><div class="fm-row" style="margin:0"><button class="fm-btn org" data-a="buyFert" data-f="' + f.id + '" data-q="1">Mua 1 túi</button><button class="fm-btn org" data-a="buyFert" data-f="' + f.id + '" data-q="5">Mua 5 (' + short(f.p * 5) + ')</button></div></div></div>'; }).join('');
+      h += '<div class="fm-h" style="margin-top:16px">🏪 Cửa hàng vật tư</div>' + wpay('essential') +
+        FERTS.map(function (f) { return '<div class="fm-card" style="display:flex;align-items:center;gap:10px"><span style="font-size:36px;font-family:' + EF + '">' + f.e + '</span><div style="flex:1"><b>' + f.n + '</b><div class="fm-sub" style="margin:2px 0 6px">' + f.d + '. Đang có ' + (S.fz[f.id] || 0) + ' túi · ' + money(f.p) + '/túi.</div><div class="fm-row" style="margin:0"><button class="fm-btn org" data-a="buyFert" data-f="' + f.id + '" data-q="1">Mua 1 túi · −' + short(f.p) + ' 🏠</button><button class="fm-btn org" data-a="buyFert" data-f="' + f.id + '" data-q="5">Mua 5 · −' + short(f.p * 5) + ' 🏠</button></div></div></div>'; }).join('');
     }
     h += '<div class="fm-row" style="justify-content:center;margin-top:14px"><button class="fm-btn alt" data-a="book">📒 Xem sổ thu chi</button></div>';
     $('fmP_market').innerHTML = h;
@@ -2029,12 +2275,12 @@
   }
   function buyHtml() {
     var D = buyDay(), left = BUY_TYPES - D.ids.length;
-    var h = '<p class="fm-sub">Thiếu hàng để giao đơn, cho vật nuôi ăn hay làm nhiệm vụ? Mua ở chợ được, nhưng <b>đắt hơn giá bán ' + Math.round((BUY_MUL - 1) * 100) + '%</b>, nên tự trồng, tự nuôi vẫn lời hơn. Mua bằng ví 🏠 Thiết yếu (đang có ' + money(S.jar.essential) + ').</p>' +
+    var h = '<p class="fm-sub">Thiếu hàng để giao đơn, cho vật nuôi ăn hay làm nhiệm vụ? Mua ở chợ được, nhưng <b>đắt hơn giá bán ' + Math.round((BUY_MUL - 1) * 100) + '%</b>, nên tự trồng, tự nuôi vẫn lời hơn. </p>' + wpay('essential') +
       '<div class="fm-card" style="padding:10px 12px;font-size:14px">🛒 Hôm nay đã chọn <b>' + D.ids.length + '/' + BUY_TYPES + '</b> loại' + (D.ids.length ? ': ' + D.ids.map(function (id) { return item(id).e; }).join(' ') : '') + (left ? '. Còn được chọn ' + left + ' loại nữa.' : '. Hết lượt chọn loại mới, mai quay lại nhé! (Vẫn mua thêm được các loại đã chọn.)') + '</div>';
     h += '<div class="fm-inv">' + buyable().map(function (id) {
       var I = item(id), pr = bp(id), mine = D.ids.indexOf(id) >= 0, can = mine || left > 0;
       return '<div class="fm-it"' + (can ? '' : ' style="opacity:.5"') + '><div class="e">' + I.e + '</div><b>' + I.n + '</b><small>Giá mua <b style="color:#dc2626">' + money(pr) + '</b><br>(bán được ' + money(sp(id)) + ') · có ' + (S.inv[id] || 0) + '</small>' +
-        (can ? '<div class="fm-row"><button class="fm-btn org" data-a="mbuy" data-c="' + id + '" data-q="1">Mua 1</button><button class="fm-btn org" data-a="mbuy" data-c="' + id + '" data-q="5">Mua 5</button></div>' : '<span class="fm-tag">Hết lượt hôm nay</span>') + '</div>';
+        (can ? '<div class="fm-row"><button class="fm-btn org" data-a="mbuy" data-c="' + id + '" data-q="1">Mua 1 · −' + short(pr) + ' 🏠</button><button class="fm-btn org" data-a="mbuy" data-c="' + id + '" data-q="5">Mua 5</button></div>' : '<span class="fm-tag">Hết lượt hôm nay</span>') + '</div>';
     }).join('') + '</div>';
     return h;
   }
@@ -2043,8 +2289,8 @@
     if (D.ids.indexOf(id) < 0) { if (D.ids.length >= BUY_TYPES) { toast('Mỗi ngày chỉ được mua ' + BUY_TYPES + ' loại sản phẩm. Mai quay lại nhé!'); return; } }
     if (!has('essential', c)) { noMoney(c, 'essential'); return; }
     if (D.ids.indexOf(id) < 0) D.ids.push(id);
-    takeMoney('essential', c); S.inv[id] = (S.inv[id] || 0) + q; addLog('out', c, 'mbuy_' + id, 'Mua ở chợ: ' + I.n, I.e, q);
-    sfx('ok'); toast('🛒 Đã mua ' + q + ' ' + I.e + ' ' + I.n.toLowerCase() + ', trả ' + money(c)); save(); hud(); renderMarket();
+    S.inv[id] = (S.inv[id] || 0) + q; spend('essential', c, 'mbuy_' + id, 'Mua ở chợ: ' + I.n, I.e, q);
+    sfx('ok'); toast('🛒 Đã mua ' + q + ' ' + I.e + ' ' + I.n.toLowerCase() + ': −' + money(c) + ' từ ví 🏠 Thiết yếu'); save(); hud(); renderMarket();
   }
   function deliver(k) {
     var o = S.orders[k]; if (!o || !canDeliver(o)) return;
@@ -2078,46 +2324,165 @@
     else { var can = r.i.every(function (x) { return (S.inv[x[0]] || 0) >= x[1]; }); h += '<div class="fm-row"><button class="fm-btn" data-a="facGo" data-b="' + b.id + '"' + (can ? '' : ' disabled') + '>▶ Bắt đầu làm</button>' + (can ? '' : '<span class="fm-sub" style="margin:8px 0 0">Chưa đủ nguyên liệu</span>') + '</div>'; }
     return h;
   }
-  function renderBuild() {
-    var h = '<div class="fm-h">🏗️ Xây dựng nông trại</div><p class="fm-sub">Công trình mở khoá khi nông trại <b>đạt đủ cấp</b> (làm 🎯 Nhiệm vụ để tích kinh nghiệm), rồi trả tiền để xây. Xây xong, công trình <b>hiện trên nông trại</b> và tạo <b>thu nhập thụ động</b> mỗi giờ: chạm vào để thu tiền. Xưởng chế biến biến nông sản thành hàng có giá trị cao hơn.</p>';
-    var order = BUILDS.slice().sort(function (a, b) { var o = { done: 0, buy: 1, req: 3, lv: 4 }; return o[bState(a)] - o[bState(b)] || a.lv - b.lv; });
-    order.forEach(function (b) {
-      var s = bState(b);
-      h += '<div class="fm-card' + (s === 'done' ? ' done' : s === 'buy' ? ' hot' : s === 'lv' ? ' lock' : '') + '"><div class="fm-li"><span class="fm-ic">' + b.e + '</span><div class="bd"><b class="t">' + b.n + (s === 'done' ? ' ✅' : '') + '</b><small>' + b.d + '</small>';
-      h += '<div style="margin-top:4px"><span class="fm-tag g">💰 Thu nhập +' + short(b.inc) + '/giờ</span><span class="fm-tag">' + b.src + '</span></div>';
-      if (s === 'done') { if (incOf(b.id) >= 1000) h += '<div class="fm-row"><button class="fm-btn org" data-a="bsee" data-b="' + b.id + '">🪙 Ra nông trại thu ' + short(incOf(b.id)) + '</button></div>'; else h += '<div class="fm-row"><button class="fm-btn alt" data-a="bsee" data-b="' + b.id + '">📍 Xem trên nông trại</button></div>'; if (b.r) h += facHtml(b); }
-      else if (s === 'buy') h += '<div class="fm-row"><button class="fm-btn org" data-a="build" data-b="' + b.id + '">🔨 Xây · ' + money(b.cost) + '</button></div>';
-      else if (s === 'req') h += '<div style="margin-top:6px"><span class="fm-tag">Cần xây ' + BM[b.req].e + ' ' + BM[b.req].n + ' trước</span></div>';
-      else h += '<div style="margin-top:6px"><span class="fm-tag">🔒 Mở ở cấp ' + b.lv + '</span><span class="fm-tag">Giá xây: ' + short(b.cost) + '</span></div>';
-      h += '</div></div></div>';
-    });
-    $('fmP_build').innerHTML = h;
-    facSig = BUILDS.map(function (b) { return (S.fac[b.id] || {}).s || 0; }).join('');
+  /* --- 🏭 KHU SẢN XUẤT: xưởng chế biến + công trình nông trại --- */
+  var FARM_B = ['them', 'nha2', 'nha3', 'gieng', 'coixay'], pSub = 'fac', prodSig = '';
+  function wsState(b) {
+    if (!built(b.id)) return bState(b);   // lv | req | buy
+    if (S.dmg.bld[b.id] || (S.dmg.house && (b.id === 'them' || b.id === 'nha2' || b.id === 'nha3'))) return 'leak';
+    if (!b.r) return 'idle';
+    var f = S.fac[b.id];
+    if (f && f.s === 2) return 'ready';
+    if (f && f.s === 1) return 'work';
+    return canMake(b) ? 'can' : 'need';
   }
-  function tickBuild() {
-    var sig = BUILDS.map(function (b) { return (S.fac[b.id] || {}).s || 0; }).join('');
-    if (sig !== facSig) { renderBuild(); badges(); return; }
+  function fixFor(b) { return S.fix.filter(function (f) { return (f.t === 'bld' && f.a === b.id) || (f.t === 'house' && (b.id === 'them' || b.id === 'nha2' || b.id === 'nha3')); })[0]; }
+  function prodCounts() {
+    var c = { ready: 0, work: 0, can: 0, need: 0, leak: 0, inc: 0 };
+    BUILDS.forEach(function (b) { var s = wsState(b); if (c[s] != null) c[s]++; if (built(b.id)) c.inc += incOf(b.id); });
+    return c;
+  }
+  function tile(cls, ic, sub, name, st, stc, body) {
+    return '<div class="fm-tile ' + cls + '"><div class="ic">' + ic + (sub ? '<i>' + sub + '</i>' : '') + '</div><b class="nm">' + name + '</b>' + (st ? '<div class="fm-st ' + stc + '">' + st + '</div>' : '') + body + '</div>';
+  }
+  function buildTile(b) {
+    var s = wsState(b), O = b.r && PRODUCTS[b.r.o], f = S.fac[b.id], body = '', st = '', stc = '';
+    if (s === 'lv') { st = '🔒 Mở ở cấp ' + b.lv; stc = 'lock'; body = '<small class="d">' + b.d + '</small><div class="fm-wl">' + wch('invest', b.cost) + '</div>'; }
+    else if (s === 'req') { st = '🔒 Cần xây ' + BM[b.req].n.toLowerCase() + ' trước'; stc = 'lock'; body = '<small class="d">' + b.d + '</small><div class="fm-wl">' + wch('invest', b.cost) + '</div>'; }
+    else if (s === 'buy') { st = '🏗️ Có thể xây'; stc = 'buy'; body = '<small class="d">' + b.d + '</small><button class="fm-btn org" data-a="build" data-b="' + b.id + '"' + (S.jar.invest < b.cost ? ' disabled' : '') + '>🔨 Xây · −' + short(b.cost) + ' 📈</button><div class="fm-wl">' + wch('invest') + (S.jar.invest < b.cost ? ' <span class="fm-tag" style="background:#fee2e2;color:#991b1b">Ví chưa đủ</span>' : '') + '</div>'; }
+    else {
+      if (s === 'leak') {
+        var fx = fixFor(b); st = '💧 Bị dột, tạm dừng hoạt động'; stc = 'bad';
+        if (fx && fx.s === 1) body += '<div class="fm-pt">🔧 Thợ đang sửa · còn ' + dur(FIXD[fx.t][0] - (Date.now() - fx.st) / 1000) + '</div>';
+        else if (fx) body += '<button class="fm-btn org" data-a="fixGo" data-f="' + fx.id + '">🔧 Sửa · −' + short(fx.c) + ' 🏠</button>';
+      } else if (s === 'ready') { st = '✅ Xong 1 ' + O.e + ' ' + O.n.toLowerCase(); stc = 'ok'; body += '<button class="fm-btn org" data-a="facGet" data-b="' + b.id + '">' + O.e + ' Lấy hàng</button>'; }
+      else if (s === 'work') { var p = Math.min(1, (Date.now() - f.t) / (b.r.t * 1000)); st = '⏳ Đang làm ' + O.e; stc = 'work'; body += '<div class="fm-pb"><i id="fp_' + b.id + '" style="width:' + Math.round(p * 100) + '%"></i></div><div class="fm-pt" id="ft_' + b.id + '">còn ' + dur((1 - p) * b.r.t) + '</div>'; }
+      else if (s === 'can') { st = '▶ Đủ nguyên liệu'; stc = 'can'; body += '<button class="fm-btn" data-a="facGo" data-b="' + b.id + '">▶ Bắt đầu làm ' + O.e + '</button>'; }
+      else if (s === 'need') { st = '⚠️ Thiếu nguyên liệu'; stc = 'warn'; }
+      else { st = '✅ Đang hoạt động'; stc = 'ok'; body += '<small class="d">' + b.d + '</small>'; }
+      if (b.r) body += '<div class="rc">' + b.r.i.map(function (x) { var hv = S.inv[x[0]] || 0; return '<span class="' + (hv >= x[1] ? 'g' : 'r') + '">' + item(x[0]).e + ' ' + Math.min(hv, x[1]) + '/' + x[1] + '</span>'; }).join('') + '<span class="o">→ ' + O.e + ' · ' + durL(b.r.t) + '</span></div>';
+      var ia = incOf(b.id);
+      body += '<div class="inc">🪙 +' + short(b.inc) + '/giờ' + (ia >= 1000 ? ' <button class="fm-btn mini" data-a="incGet" data-b="' + b.id + '">Thu +' + short(ia) + '</button>' : '') + '</div>';
+    }
+    return tile('st-' + s, s === 'lv' || s === 'req' ? '🔒' : b.e, O ? O.e : '', b.n, st, stc, body);
+  }
+  function renderProd() {
+    var c = prodCounts();
+    var h = '<div class="fm-zhead" style="--zc:#7c3aed"><span class="e">🏭</span><div><b>Khu sản xuất</b><small>Chế biến nông sản thành hàng giá cao, công trình có thu nhập mỗi giờ. Xây dựng trừ ví 📈 Đầu tư (đang có ' + short(S.jar.invest) + ').</small></div></div>';
+    h += '<div class="fm-chips">' + (c.ready ? '<span class="ok">✅ ' + c.ready + ' mẻ xong</span>' : '') + (c.work ? '<span class="work">⏳ ' + c.work + ' đang làm</span>' : '') + (c.can ? '<span class="can">▶ ' + c.can + ' đủ nguyên liệu</span>' : '') + (c.need ? '<span class="warn">⚠️ ' + c.need + ' thiếu nguyên liệu</span>' : '') + (c.leak ? '<span class="bad">💧 ' + c.leak + ' bị dột</span>' : '') + (c.inc >= 1000 ? '<span class="ok">🪙 ' + short(c.inc) + ' chờ thu</span>' : '') + '</div>';
+    if (c.ready || c.can || c.inc >= 1000) h += '<div class="fm-row fm-acts">' + (c.ready || c.can ? '<button class="fm-btn org" data-a="prodAll">⚡ Lấy hàng & làm mẻ mới</button>' : '') + (c.inc >= 1000 ? '<button class="fm-btn" data-a="incAll">🪙 Thu tiền tất cả +' + short(c.inc) + '</button>' : '') + '</div>';
+    h += '<div class="fm-seg"><button class="' + (pSub === 'fac' ? 'on' : '') + '" data-a="psub" data-t="fac">🏭 Xưởng chế biến</button><button class="' + (pSub === 'bld' ? 'on' : '') + '" data-a="psub" data-t="bld">🏡 Công trình</button></div>';
+    var list = BUILDS.filter(function (b) { return pSub === 'fac' ? FARM_B.indexOf(b.id) < 0 : FARM_B.indexOf(b.id) >= 0; });
+    var ord = { ready: 0, leak: 1, can: 2, work: 3, need: 4, idle: 5, buy: 6, req: 7, lv: 8 };
+    list.sort(function (a, b) { return ord[wsState(a)] - ord[wsState(b)] || a.lv - b.lv; });
+    h += '<div class="fm-grid">' + list.map(buildTile).join('') + '</div>';
+    if (pSub === 'bld') h += '<p class="fm-sub" style="margin-top:10px">🏠 Nhà, giếng nước và cối xay gió nằm ở <b>Khu trồng trọt</b>: chạm vào nhà để thu tiền và nhận 🎁 quà mỗi ngày.</p>';
+    else h += '<p class="fm-sub" style="margin-top:10px">Mẹo: hàng chế biến bán được giá cao hơn nông sản thô và hay có trong đơn hàng. Thiếu nguyên liệu thì xem 🔔 Thông báo để biết cần trồng, nuôi thêm gì.</p>';
+    $('fmP_prod').innerHTML = h; prodSig = prodSigOf();
+  }
+  function prodSigOf() { return BUILDS.map(function (b) { return wsState(b) + (incOf(b.id) >= 1000 ? 1 : 0); }).join(',') + pSub + S.fix.map(function (f) { return f.s; }).join(''); }
+  function tickProd() {
+    if (prodSigOf() !== prodSig) { renderProd(); badges(); return; }
     BUILDS.forEach(function (b) {
       var f = S.fac[b.id]; if (!b.r || !f || f.s !== 1) return;
       var p = Math.min(1, (Date.now() - f.t) / (b.r.t * 1000)), bar = $('fp_' + b.id), tx = $('ft_' + b.id);
-      if (bar) bar.style.width = Math.round(p * 100) + '%';
-      if (tx) tx.textContent = 'Đang làm ' + PRODUCTS[b.r.o].e + ' · còn ' + dur((1 - p) * b.r.t);
+      if (bar) bar.style.width = Math.round(p * 100) + '%'; if (tx) tx.textContent = 'còn ' + dur((1 - p) * b.r.t);
+    });
+  }
+  function prodAll() {
+    var got = [], go = 0;
+    BUILDS.forEach(function (b) { if (!b.r || !built(b.id) || S.dmg.bld[b.id]) return; var f = S.fac[b.id]; if (f && f.s === 2) { facGet(b.id, true); got.push(PRODUCTS[b.r.o].e); } });
+    BUILDS.forEach(function (b) { if (!b.r || !built(b.id) || S.dmg.bld[b.id]) return; var f = S.fac[b.id]; if ((!f || f.s === 0) && canMake(b)) { facGo(b.id, true); go++; } });
+    sfx(got.length || go ? 'win' : 'bad');
+    toast((got.length ? 'Lấy ' + got.join(' ') + '. ' : '') + (go ? 'Bắt đầu ' + go + ' mẻ mới.' : got.length ? '' : 'Chưa có xưởng nào xong hoặc đủ nguyên liệu.'));
+    save(); hud(); renderProd();
+  }
+  function incAll() {
+    var t = 0; BUILDS.forEach(function (b) { if (built(b.id)) t += collectInc(b.id); });
+    if (t) { sfx('win'); toast('🪙 Thu ' + money(t) + ' từ các công trình. Tiền được chia vào 6 ví theo tỷ lệ.'); } else toast('Chưa có tiền để thu, ghé lại sau nhé!');
+    save(); hud(); if (tab === 'prod') renderProd();
+  }
+
+  /* --- 🎡 KHU VUI CHƠI --- */
+  var funSig = '';
+  function funTicket(F0) { return F0.tk ? Math.max(5000, r1k(base(S.lv) * F0.tk)) : 0; }
+  function funXP(F0) { return Math.max(2, Math.round(need(S.lv) * 0.035 * F0.k)); }
+  function funDay(x) { if (x.d !== dayKey()) { x.d = dayKey(); x.n = 0; } return x; }
+  function funState(F0) {
+    var x = S.fun[F0.id];
+    if (!x) return S.lv < F0.lv ? 'lv' : 'buy';
+    if (x.s === 1) return Date.now() - x.t >= F0.t * 1000 ? 'ready' : 'play';
+    return funDay(x).n >= FUN_DAY ? 'rest' : 'open';
+  }
+  function funReady() { return FUN.filter(function (F0) { return funState(F0) === 'ready'; }).length; }
+  function funBuild(id) {
+    var F0 = FUNM[id]; if (funState(F0) !== 'buy') return;
+    var go = function () {
+      if (F0.cost && !has('enjoy', F0.cost)) { noMoney(F0.cost, 'enjoy'); return; }
+      if (F0.cost) spend('enjoy', F0.cost, 'funb_' + id, 'Xây ' + F0.n.toLowerCase(), F0.e);
+      S.fun[id] = { b: Date.now(), s: 0, d: dayKey(), n: 0 };
+      var xp = Math.max(5, Math.round(F0.cost / 40000)); addXP(xp);
+      sfx('win'); save(); hud(); renderFun(); toast('🎉 Đã xây ' + F0.n.toLowerCase() + (F0.cost ? ' (−' + short(F0.cost) + ' ví 🎉 Hưởng thụ)' : '') + ' · +' + xp + ' KN');
+    };
+    if (!F0.cost) { go(); return; }
+    confirmBox(F0.e, 'Xây ' + F0.n.toLowerCase() + '?', F0.d + '<br>Chi phí: <b>' + money(F0.cost) + '</b>. Tiền hưởng thụ đã tiêu thì không lấy lại, đổi lại cả nhà có chỗ vui chơi.<br>' + wpay('enjoy', F0.cost), 'Xây ngay', go);
+  }
+  function funPlay(id) {
+    var F0 = FUNM[id], st = funState(F0); if (st !== 'open') { if (st === 'rest') toast('Hôm nay đã chơi ' + F0.n.toLowerCase() + ' ' + FUN_DAY + ' lượt rồi. Hưởng thụ vừa đủ thôi, mai chơi tiếp nhé!'); return; }
+    var c = funTicket(F0);
+    if (c && !has('enjoy', c)) { noMoney(c, 'enjoy'); return; }
+    if (c) spend('enjoy', c, 'fun_' + id, 'Vé ' + F0.n.toLowerCase(), F0.e);
+    var x = funDay(S.fun[id]); x.s = 1; x.t = Date.now(); x.n++;
+    sfx('ok'); save(); hud(); renderFun();
+    toast(F0.e + (c ? ' Mua vé ' + money(c) + ' từ ví 🎉 Hưởng thụ. ' : ' Miễn phí! ') + 'Chơi xong sau ' + durL(F0.t) + '.');
+  }
+  function funClaim(id) {
+    var F0 = FUNM[id]; if (funState(F0) !== 'ready') return;
+    var x = S.fun[id], xp = funXP(F0); x.s = 0; ev('fun', id); addXP(xp);
+    sfx('win'); save(); hud(); renderFun(); badges();
+    toast('😊 Vui quá! Chơi ' + F0.n.toLowerCase() + ' xong · +' + xp + ' KN');
+  }
+  function renderFun() {
+    var nB = FUN.filter(function (F0) { return S.fun[F0.id]; }).length;
+    var h = '<div class="fm-zhead" style="--zc:#ef4444"><span class="e">🎡</span><div><b>Khu vui chơi</b><small>Xây khu chơi và mua vé đều trừ ví 🎉 Hưởng thụ (đang có ' + short(S.jar.enjoy) + '). Chơi xong nhận kinh nghiệm, không sinh ra tiền. Tối đa ' + FUN_DAY + ' lượt/khu/ngày: hưởng thụ vừa đủ!</small></div></div>';
+    h += '<button class="fm-arcade" data-a="tab" data-t="earn"><span class="e">🕹️</span><span><b>Nhà trò chơi Phụ bản</b><small>Chơi game học (tiếng Anh, Toán, Lịch sử…) để kiếm tiền cho nông trại. Miễn phí!</small></span><span class="go">›</span></button>';
+    h += '<div class="fm-grid">' + FUN.map(function (F0) {
+      var st = funState(F0), x = S.fun[F0.id], c = funTicket(F0), body = '', s1 = '', sc = '';
+      if (st === 'lv') { s1 = '🔒 Mở ở cấp ' + F0.lv; sc = 'lock'; body = '<small class="d">' + F0.d + '</small><div class="fm-wl">' + wch('enjoy', F0.cost || null) + '</div>'; }
+      else if (st === 'buy') { s1 = '🏗️ Có thể xây'; sc = 'buy'; body = '<small class="d">' + F0.d + '</small><button class="fm-btn org" data-a="funBuild" data-f="' + F0.id + '"' + (F0.cost && S.jar.enjoy < F0.cost ? ' disabled' : '') + '>' + (F0.cost ? '🔨 Xây · −' + short(F0.cost) + ' 🎉' : '🔨 Xây miễn phí') + '</button><div class="fm-wl">' + wch('enjoy') + (F0.cost && S.jar.enjoy < F0.cost ? ' <span class="fm-tag" style="background:#fee2e2;color:#991b1b">Ví chưa đủ</span>' : '') + '</div>'; }
+      else if (st === 'play') { var p = Math.min(1, (Date.now() - x.t) / (F0.t * 1000)); s1 = '😄 Đang vui chơi'; sc = 'work'; body = '<div class="fm-pb"><i id="vp_' + F0.id + '" style="width:' + Math.round(p * 100) + '%"></i></div><div class="fm-pt" id="vt_' + F0.id + '">còn ' + dur((1 - p) * F0.t) + '</div>'; }
+      else if (st === 'ready') { s1 = '✅ Chơi xong!'; sc = 'ok'; body = '<button class="fm-btn org" data-a="funGet" data-f="' + F0.id + '">😊 Nhận niềm vui +' + funXP(F0) + ' KN</button>'; }
+      else if (st === 'rest') { s1 = '🌙 Đã chơi đủ ' + FUN_DAY + ' lượt hôm nay'; sc = 'lock'; body = '<small class="d">Mai quay lại chơi tiếp nhé!</small>'; }
+      else { s1 = '🎟️ Còn ' + (FUN_DAY - x.n) + '/' + FUN_DAY + ' lượt hôm nay'; sc = 'can'; body = '<button class="fm-btn" data-a="funPlay" data-f="' + F0.id + '"' + (c && S.jar.enjoy < c ? ' disabled' : '') + '>' + (c ? '🎟️ Vào chơi · −' + short(c) + ' 🎉' : '🎟️ Vào chơi miễn phí') + '</button><small class="d">⏱ ' + durL(F0.t) + ' · +' + funXP(F0) + ' KN' + (c && S.jar.enjoy < c ? ' · ví Hưởng thụ chưa đủ' : '') + '</small>'; }
+      return tile('st-' + st, st === 'lv' ? '🔒' : F0.e, '', F0.n, s1, sc, body);
+    }).join('') + '</div>';
+    h += '<p class="fm-sub" style="margin-top:10px">' + (nB ? 'Đã xây ' + nB + '/' + FUN.length + ' khu chơi. ' : '') + '“Đừng chờ đến khi giàu có mới hạnh phúc, hãy học cách hạnh phúc trên hành trình làm giàu.”</p>';
+    $('fmP_fun').innerHTML = h; funSig = funSigOf();
+  }
+  function funSigOf() { return FUN.map(function (F0) { return funState(F0); }).join(',') + S.lv + (S.jar.enjoy > 0 ? Math.floor(Math.log10(S.jar.enjoy + 1) * 4) : 0); }
+  function tickFun() {
+    if (funSigOf() !== funSig) { renderFun(); badges(); return; }
+    FUN.forEach(function (F0) {
+      var x = S.fun[F0.id]; if (!x || x.s !== 1) return;
+      var p = Math.min(1, (Date.now() - x.t) / (F0.t * 1000)), bar = $('vp_' + F0.id), tx = $('vt_' + F0.id);
+      if (bar) bar.style.width = Math.round(p * 100) + '%'; if (tx) tx.textContent = 'còn ' + dur((1 - p) * F0.t);
     });
   }
   function doBuild(id) {
     var b = BM[id]; if (bState(b) !== 'buy') return;
-    confirmBox(b.e, 'Xây ' + b.n + '?', b.d + '<br>Chi phí: <b>' + money(b.cost) + '</b>', 'Xây ngay', function () {
+    confirmBox(b.e, 'Xây ' + b.n + '?', b.d + '<br>Chi phí: <b>' + money(b.cost) + '</b><br>' + wpay('invest', b.cost), 'Xây ngay', function () {
       if (!has('invest', b.cost)) { noMoney(b.cost, 'invest'); return; }
-      takeMoney('invest', b.cost); S.bld[id] = Date.now(); addLog('out', b.cost, 'bld_' + id, 'Xây ' + b.n.toLowerCase(), b.e);
+      S.bld[id] = Date.now(); spend('invest', b.cost, 'bld_' + id, 'Xây ' + b.n.toLowerCase(), b.e);
       S.inc[id] = Date.now();
       addXP(Math.max(5, Math.round(b.cost / 50000)));
       sfx('win'); save(); hud();
       // Đưa người chơi ra nông trại, bay tới công trình mới để thấy nông trại đã thay đổi
-      var P = BPOS[id];
-      setTab('field'); flyTo('field', P.x, P.y - (P.h ? 20 : 50), 1.35);
-      setTimeout(function () { burst(P.x, P.y - 60, ['#fde047', '#86efac', '#fff', '#f59e0b'], 30); floatTxt(P.x, P.y - 110, '🎉 ' + b.n, '#fef08a'); }, 600);
-      sheetLater('<div class="fm-modal"><div class="big">' + b.e + '</div><h2>Đã xây xong ' + b.n + '!</h2><p>Công trình đã xuất hiện trên nông trại của bạn.</p>' +
-        '<div class="fm-ul"><span><i>💰</i>Thu nhập thụ động +' + short(b.inc) + '/giờ</span></div><p style="font-size:13.5px">' + b.src + '. Chạm vào công trình để thu tiền (tích tối đa ' + INC_CAP + ' giờ, nên ghé thu thường xuyên).</p>' +
+      var P = BPOS[id], onMap = FARM_B.indexOf(id) >= 0;
+      if (onMap) {
+        setTab('field'); flyTo('field', P.x, P.y - (P.h ? 20 : 50), 1.35);
+        setTimeout(function () { burst(P.x, P.y - 60, ['#fde047', '#86efac', '#fff', '#f59e0b'], 30); floatTxt(P.x, P.y - 110, '🎉 ' + b.n, '#fef08a'); }, 600);
+      } else if (tab === 'prod') renderProd();
+      sheetLater('<div class="fm-modal"><div class="big">' + b.e + '</div><h2>Đã xây xong ' + b.n + '!</h2><p>' + (onMap ? 'Công trình đã xuất hiện ở Khu trồng trọt.' : 'Công trình đã có ở 🏭 Khu sản xuất.') + ' Đã trả ' + money(b.cost) + ' từ ví 📈 Đầu tư.</p>' +
+        '<div class="fm-ul"><span><i>💰</i>Thu nhập thụ động +' + short(b.inc) + '/giờ</span></div><p style="font-size:13.5px">' + b.src + '. Chạm vào công trình (hoặc nút Thu ở Khu sản xuất) để thu tiền (tích tối đa ' + INC_CAP + ' giờ, nên ghé thu thường xuyên).</p>' +
         '<p style="font-size:13.5px"><b>Tác dụng:</b> ' + b.d + '</p><p style="font-size:12.5px;color:#9a8660">Bỏ ' + money(b.cost) + ' xây công trình, mỗi ngày thu về đến ' + money(b.inc * INC_CAP * 3) + ' nếu ghé thu 3 lần. Đây là <b>tài sản tạo ra thu nhập</b>!</p>' +
         '<div class="fm-row" style="justify-content:center"><button class="fm-btn" data-a="sheetClose">Tuyệt vời!</button></div></div>');
     });
@@ -2127,12 +2492,12 @@
     if (S.dmg.bld[id]) { toast('💧 ' + b.n + ' bị dột, phải sửa xong mới làm được. Vào 🎯 Nhiệm vụ → Sự cố.'); return; }
     if (!r.i.every(function (x) { return (S.inv[x[0]] || 0) >= x[1]; })) { toast('Chưa đủ nguyên liệu'); return; }
     r.i.forEach(function (x) { S.inv[x[0]] -= x[1]; });
-    S.fac[id] = { s: 1, t: Date.now() }; if (!q) sfx('ok'); save(); if (tab === 'build') renderBuild();
+    S.fac[id] = { s: 1, t: Date.now() }; if (!q) { sfx('ok'); toast('▶ ' + b.n + ' bắt đầu làm ' + PRODUCTS[r.o].e + ', xong sau ' + durL(r.t)); } save(); if (tab === 'prod' && !q) renderProd();
   }
   function facGet(id, q) {
     var b = BM[id], f = S.fac[id]; if (!f || f.s !== 2) return;
     var O = PRODUCTS[b.r.o]; S.inv[O.id] = (S.inv[O.id] || 0) + 1; f.s = 0; ev('make', O.id); addXP(O.xp);
-    if (!q) { sfx('win'); toast('+1 ' + O.e + ' ' + O.n + ' · +' + O.xp + ' KN'); } save(); hud(); if (tab === 'build') renderBuild();
+    if (!q) { sfx('win'); toast('+1 ' + O.e + ' ' + O.n + ' · +' + O.xp + ' KN'); } save(); hud(); if (tab === 'prod' && !q) renderProd();
   }
 
   /* --- Nhiệm vụ --- */
@@ -2148,17 +2513,28 @@
     if (giftReady()) h += '<div class="fm-card hot" style="padding:9px 12px;display:flex;align-items:center;gap:10px"><span style="font-size:26px;font-family:' + EF + '">🎁</span><b style="flex:1;font-size:14px">Quà mỗi ngày: ' + money(giftAmt()) + ' + 🧪1</b><button class="fm-btn org" data-a="gift">Nhận</button></div>';
     var list = MISSIONS.filter(function (m) { return m.w === wk; }), st = S.wl[wk] || { o: 0, i: 0, n: 0 };
     var done = list.filter(function (m) { var e = mSt(m); return e && e.s === 2; });
-    h += '<details class="fm-whead" style="--wc:' + W0.c + '"' + (S.wseen && S.wseen[wk] ? '' : ' open') + ' data-w="' + wk + '"><summary><b>' + W0.e + ' Ví ' + W0.n + '</b><span class="fm-wst">Số dư <b style="color:#1d4ed8">' + short(S.jar[wk]) + '</b> · Chi <b style="color:#dc2626">' + short(st.o) + '</b> · Nhận <b style="color:#15803d">' + short(st.i) + '</b> · Xong <b>' + done.length + '/' + list.length + '</b></span></summary><p>' + W0.d + '</p><p class="q">' + W0.q + '</p></details>';
+    h += '<details class="fm-whead" style="--wc:' + W0.c + '" data-w="' + wk + '"><summary><b>' + W0.e + ' Ví ' + W0.n + '</b><span class="fm-wst">Số dư <b style="color:#1d4ed8">' + short(S.jar[wk]) + '</b> · Chi <b style="color:#dc2626">' + short(st.o) + '</b> · Nhận <b style="color:#15803d">' + short(st.i) + '</b> · Xong <b>' + done.length + '/' + list.length + '</b></span></summary><p>' + W0.d + '</p><p class="q">' + W0.q + '</p></details>';
+    var G0 = WGUIDE[wk];
+    h += '<div class="fm-wguide" style="--wc:' + W0.c + '"><div><b>✅ Ví này dùng cho:</b> ' + G0.use + '</div><div><b>🚫 Không dùng cho:</b> ' + G0.no + '</div></div>';
     var act = list.filter(function (m) { var e = mSt(m); return e && e.s === 1; });
-    var avail = list.filter(function (m) { return !mSt(m) && S.lv >= m.lv; }).sort(function (a, b) { return (reqOk(b) ? 1 : 0) - (reqOk(a) ? 1 : 0) || b.lv - a.lv; });
+    var gOrd = {}; G0.g.forEach(function (g, k) { gOrd[g[0]] = k; });
+    var avail = list.filter(function (m) { return !mSt(m) && S.lv >= m.lv; }).sort(function (a, b) { return gOrd[a.grp] - gOrd[b.grp] || (reqOk(b) ? 1 : 0) - (reqOk(a) ? 1 : 0) || b.lv - a.lv; });
+    var gsel = S.mg[wk] || '';
+    if (gsel && gOrd[gsel] == null) gsel = '';
+    var cnt = {}; avail.forEach(function (m) { cnt[m.grp] = (cnt[m.grp] || 0) + 1; });
+    var gchips = '<div class="fm-gchips"><button class="' + (gsel ? '' : 'on') + '" data-a="mgrp" data-g="" style="--wc:' + W0.c + '">Tất cả · ' + avail.length + '</button>' + G0.g.map(function (g) { return '<button class="' + (gsel === g[0] ? 'on' : '') + '" data-a="mgrp" data-g="' + g[0] + '" style="--wc:' + W0.c + '">' + g[1] + ' ' + g[2] + ' · ' + (cnt[g[0]] || 0) + '</button>'; }).join('') + '</div>';
+    if (gsel) avail = avail.filter(function (m) { return m.grp === gsel; });
     var lock = list.filter(function (m) { return !mSt(m) && S.lv < m.lv; }).sort(function (a, b) { return a.lv - b.lv; });
     if (act.length) { h += '<div class="fm-h2">⏳ Đang làm (' + act.length + '/' + MAX_ACTIVE + ')</div>'; act.forEach(function (m) { h += mCard(m, 'act'); }); }
     var full = act.length >= MAX_ACTIVE;
-    h += '<div class="fm-h2">📋 Nhiệm vụ có thể nhận (' + avail.length + ')</div>';
+    h += '<div class="fm-h2">📋 Nhiệm vụ có thể nhận (' + avail.length + ')</div>' + gchips;
     if (full) h += '<p class="fm-sub">Ví này đang làm ' + MAX_ACTIVE + ' nhiệm vụ. Hoàn thành bớt rồi nhận thêm nhé!</p>';
     if (!avail.length) h += '<div class="fm-card" style="text-align:center;color:#7a6440">Đã nhận hết nhiệm vụ ở cấp này. Lên cấp để có nhiệm vụ mới! 🌟</div>';
-    var showN = qMore[wk] ? avail.length : 6;
-    avail.slice(0, showN).forEach(function (m) { h += mCard(m, full ? 'full' : 'new'); });
+    var showN = qMore[wk] || gsel ? avail.length : 8, lastG = '';
+    avail.slice(0, showN).forEach(function (m) {
+      if (!gsel && m.grp !== lastG) { lastG = m.grp; var gg = G0.g[gOrd[m.grp]]; h += '<div class="fm-gh">' + gg[1] + ' ' + gg[2] + '</div>'; }
+      h += mCard(m, full ? 'full' : 'new');
+    });
     if (avail.length > showN) h += '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="qmore">Xem thêm ' + (avail.length - showN) + ' nhiệm vụ ▾</button></div>';
     if (lock.length) { h += '<div class="fm-h2">🔒 Sắp mở</div>'; lock.slice(0, 3).forEach(function (m) { h += mCard(m, 'lock'); }); }
     if (done.length) {
@@ -2177,7 +2553,7 @@
     var cls = mode === 'lock' ? ' lock' : mode === 'act' && p >= 1 ? ' hot' : '';
     var h = '<div class="fm-card' + cls + '"><div class="fm-li"><span class="fm-ic">' + (mode === 'lock' ? '🔒' : m.e) + '</span><div class="bd"><b class="t">' + esc(m.n) + '</b><small>' + m.d + '</small>' +
       '<div><span class="fm-tag b">' + mTask(m) + '</span></div><div>' +
-      (m.pct && !e ? '<span class="fm-tag">Chi: ' + Math.round(m.pct * 100) + '% số tiền (≈' + short(c) + ')</span>' : c ? '<span class="fm-tag">Chi: −' + short(c) + '</span>' : '<span class="fm-tag g">Miễn phí</span>') +
+      (m.pct && !e ? '<span class="fm-tag r">Chi: ' + Math.round(m.pct * 100) + '% ví ' + WM[m.w].e + ' ' + WM[m.w].n + ' (≈' + short(c) + ')</span>' : c ? '<span class="fm-tag r">Chi: −' + short(c) + ' từ ví ' + WM[m.w].e + ' ' + WM[m.w].n + '</span>' : '<span class="fm-tag g">Miễn phí</span>') +
       (m.w === 'saving' ? '<span class="fm-tag g">Nhận: ' + mPayText(m, c) + ' (lãi ' + Math.round(m.rate * 100) + '%)</span>' : m.rng ? '<span class="fm-tag g">Nhận: ' + mPayText(m, c) + ' (lãi hoặc lỗ)</span>' : m.pay ? '<span class="fm-tag g">Nhận: +' + short(m.pay) + '</span>' : '<span class="fm-tag">Không hoàn tiền</span>') +
       '<span class="fm-tag">+' + m.xp + ' KN</span>' + (m.fert ? '<span class="fm-tag">🧪 +' + m.fert + '</span>' : '') + '</div>';
     if (mode === 'lock') h += '<div style="margin-top:6px"><span class="fm-tag">🔒 Mở ở cấp ' + m.lv + '</span></div>';
@@ -2191,7 +2567,7 @@
       if (p < 1 || m.k === 'give') h += '<button class="fm-btn alt" data-a="mcancel" data-m="' + m.id + '">' + (m.w === 'saving' ? '🐷 Rút trước hạn' : 'Bỏ') + '</button>';
       h += '</div>';
     } else {
-      h += '<div class="fm-row">' + (rq ? '<span class="fm-tag">' + reqText(m) + '</span>' : '<button class="fm-btn' + (m.w === 'share' || m.w === 'saving' ? ' org' : '') + '" data-a="mstart" data-m="' + m.id + '"' + (mode === 'full' ? ' disabled' : '') + '>' + (c ? '💸 Thực hiện · −' + short(c) : '✋ Thực hiện') + '</button>') + '</div>';
+      h += '<div class="fm-row">' + (rq ? '<span class="fm-tag">' + reqText(m) + '</span>' : '<button class="fm-btn' + (m.w === 'share' || m.w === 'saving' ? ' org' : '') + '" data-a="mstart" data-m="' + m.id + '"' + (mode === 'full' ? ' disabled' : '') + '>' + (c ? '💸 Thực hiện · −' + short(c) + ' ' + WM[m.w].e : '✋ Thực hiện') + '</button>') + '</div>';
     }
     return h + '</div></div></div>';
   }
@@ -2261,7 +2637,8 @@
       var v = S.jar[W0.k], tot = S.m || 1;
       h += '<div class="fm-jar" style="--wc:' + W0.c + '"><span class="e">' + W0.e + '</span><span class="t"><b>' + W0.n + '</b><small>Nhận ' + pctOf(W0.k) + '% mỗi khoản thu</small><span class="bar"><i style="width:' + Math.max(0, Math.min(100, Math.round(v / tot * 100))) + '%"></i></span></span><span class="v">' + money(v) + '</span></div>';
     });
-    h += '<div class="fm-row" style="justify-content:center;margin-top:10px"><button class="fm-btn org" data-a="pctSet">⚙️ Cài đặt tỷ lệ</button></div>' +
+    h += '<div class="fm-card" style="margin-top:10px"><b>💳 Khoản chi nào trừ ví nào?</b>' + SPEND_RULES.map(function (r) { return '<div class="fm-rule" style="--wc:' + WM[r[0]].c + '"><span class="w">' + WM[r[0]].e + ' ' + WM[r[0]].n + '</span><span>' + r[1] + '</span></div>'; }).join('') + '<div class="fm-sub" style="margin:6px 0 0">Mỗi nút chi tiền trong game đều ghi kèm biểu tượng ví (ví dụ “−5k 🏠”), sổ thu chi cũng ghi rõ từng khoản trừ ví nào.</div></div>' +
+      '<div class="fm-row" style="justify-content:center;margin-top:10px"><button class="fm-btn org" data-a="pctSet">⚙️ Cài đặt tỷ lệ</button></div>' +
       '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="book">📒 Sổ thu chi</button><button class="fm-btn alt" data-a="sheetClose">Đóng</button></div>';
     sheet(h);
   }
@@ -2290,7 +2667,7 @@
       '<div class="fm-card" style="font-size:14px">🎓 Tiền kiếm được từ học tập: <b style="color:#15803d">' + money(learn) + '</b>' + (S.tin ? ' (' + Math.round(learn / S.tin * 100) + '% tổng thu)' : '') + '</div>' +
       (function () {
         var to = 0; WALLETS.forEach(function (x) { to += (S.wl[x.k] || {}).o || 0; });
-        return '<div class="fm-card"><b>👛 Chi tiêu theo 6 ví</b><div class="fm-sub" style="margin:4px 0 6px">Bạn đã chia tiền vào các ví như thế nào? Người quản lý giỏi chi cho cả 6 ví, không dồn hết vào một chỗ.</div><table class="fm-tb"><tr><th></th><th>Ví</th><th>Đã chi</th><th>Tỉ lệ</th><th>Đã nhận</th></tr>' +
+        return '<div class="fm-card"><b>👛 Chi tiêu theo 6 ví</b><div class="fm-sub" style="margin:4px 0 6px">Mọi khoản chi (hạt giống, vật nuôi, xây dựng, nhiệm vụ, vé vui chơi…) đều trừ đúng ví của nó. Người quản lý giỏi chi cho cả 6 ví, không dồn hết vào một chỗ.</div><table class="fm-tb"><tr><th></th><th>Ví</th><th>Đã chi</th><th>Tỉ lệ</th><th>Đã nhận</th></tr>' +
           WALLETS.map(function (x) { var q = S.wl[x.k] || { o: 0, i: 0, n: 0 }; return '<tr><td class="e">' + x.e + '</td><td>' + x.n + '<br><small style="color:#9a8660">' + q.n + ' nhiệm vụ</small></td><td style="color:#dc2626">' + short(q.o) + '</td><td>' + (to ? Math.round(q.o / to * 100) : 0) + '%</td><td class="g">' + short(q.i) + '</td></tr>'; }).join('') + '</table></div>';
       })() +
       '<div class="fm-card"><b>📊 Bảng tính lãi từng loại cây</b><div class="fm-sub" style="margin:4px 0 6px">Lãi mỗi phút = lãi ÷ số phút cây lớn (chưa tưới). Dùng để chọn cây có lợi nhất.</div><table class="fm-tb"><tr><th></th><th>Cây</th><th>Lãi/cây</th><th>Thời gian</th><th>Lãi/phút</th></tr>' +
@@ -2299,20 +2676,23 @@
     if (!S.log.length) h += '<div class="fm-sub" style="margin-top:6px">Chưa có khoản nào. Gieo hạt đầu tiên nhé!</div>';
     S.log.slice(0, 60).forEach(function (l) {
       var d = new Date(l.ts);
-      h += '<div class="fm-log"><span class="e">' + l.e + '</span><span class="t">' + esc(l.n) + (l.q > 1 ? ' × ' + l.q : '') + '<small>' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2) + ' · ' + d.getDate() + '/' + (d.getMonth() + 1) + '</small></span><span class="a ' + l.k + '">' + (l.k === 'in' ? '+' : '−') + money(l.a) + '</span></div>';
+      var lw = logW(l);
+      h += '<div class="fm-log"><span class="e">' + l.e + '</span><span class="t">' + esc(l.n) + (l.q > 1 ? ' × ' + l.q : '') + '<small>' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2) + ' · ' + d.getDate() + '/' + (d.getMonth() + 1) + (lw ? ' · trừ ví ' + WM[lw].e + ' ' + WM[lw].n : l.k === 'in' ? (l.w ? ' · về ví ' + WM[l.w].e + ' ' + WM[l.w].n : ' · chia vào 6 ví') : '') + '</small></span><span class="a ' + l.k + '">' + (l.k === 'in' ? '+' : '−') + money(l.a) + '</span></div>';
     });
     $('fmP_book').innerHTML = h + '</div><div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="reset">↺ Chơi lại từ đầu</button></div>';
   }
 
   /* ================= CHUYỂN TAB ================= */
-  var PANELS = ['build', 'market', 'quest', 'earn', 'book'];
+  var PANELS = ['prod', 'fun', 'market', 'quest', 'earn', 'book'];
   function setTab(t) {
+    if (t === 'build') t = 'prod';
     tab = t; closeSheet();
     var nb = $('fmNav').querySelectorAll('button'); for (var i = 0; i < nb.length; i++) nb[i].classList.toggle('on', nb[i].getAttribute('data-t') === t || (t === 'book' && nb[i].getAttribute('data-a') === 'book'));
     PANELS.forEach(function (p) { $('fmP_' + p).classList.toggle('on', p === t); });
     stage.style.visibility = (t === 'field' || t === 'barn') ? 'visible' : 'hidden';
     $('fmTools').style.display = t === 'field' ? '' : 'none';
-    if (t === 'build') renderBuild(); else if (t === 'market') renderMarket(); else if (t === 'quest') renderQuest(); else if (t === 'earn') renderEarn(); else if (t === 'book') renderBook();
+    zbSig = ''; zoneBar(true);
+    if (t === 'prod') renderProd(); else if (t === 'fun') renderFun(); else if (t === 'market') renderMarket(); else if (t === 'quest') renderQuest(); else if (t === 'earn') renderEarn(); else if (t === 'book') renderBook();
     var pn = $('fmP_' + t); if (pn) pn.scrollTop = 0;
     useCam(); badges(); navScroll(); walletBar();
   }
@@ -2428,10 +2808,23 @@
     else if (a === 'deliver') deliver(+el.getAttribute('data-i'));
     else if (a === 'skip') { S.orders.splice(+el.getAttribute('data-i'), 1); fillOrders(); save(); renderMarket(); badges(); }
     else if (a === 'sell') sell(el.getAttribute('data-c'), +el.getAttribute('data-q'));
-    else if (a === 'buyFert') { var q = +el.getAttribute('data-q'), FF = FZM[el.getAttribute('data-f') || 'f1'], c = q * FF.p; if (!has('essential', c)) { noMoney(c, 'essential'); return; } takeMoney('essential', c); S.fz[FF.id] += q; addLog('out', c, 'fert_' + FF.id, 'Mua ' + FF.n.toLowerCase(), FF.e, q); sfx('ok'); hud(); save(); if ($('fmSheet').classList.contains('on')) fertSheet(); else renderMarket(); }
+    else if (a === 'buyFert') { var q = +el.getAttribute('data-q'), FF = FZM[el.getAttribute('data-f') || 'f1'], c = q * FF.p; if (!has('essential', c)) { noMoney(c, 'essential'); return; } S.fz[FF.id] += q; spend('essential', c, 'fert_' + FF.id, 'Mua ' + FF.n.toLowerCase(), FF.e, q); sfx('ok'); toast(FF.e + ' Mua ' + q + ' túi ' + FF.n.toLowerCase() + ': −' + money(c) + ' từ ví 🏠 Thiết yếu'); hud(); save(); if ($('fmSheet').classList.contains('on')) fertSheet(); else renderMarket(); }
     else if (a === 'pickF') { S.selF = el.getAttribute('data-f'); tool = 'fert'; toolsUI(); closeSheet(); save(); toast(FZM[S.selF].e + ' Chạm vào cây đang lớn để bón ' + FZM[S.selF].n.toLowerCase()); }
     else if (a === 'chop') { var ci = +el.getAttribute('data-i'), cp = S.plots[ci]; cp.c = null; cp.p = 0; cp.w = 0; cp.n = 0; closeSheet(); save(); sfx('ok'); toast('🪓 Đã chặt cây. Ô đất trống, có thể gieo cây khác.'); }
     else if (a === 'build') doBuild(el.getAttribute('data-b'));
+    else if (a === 'notif') notifSheet();
+    else if (a === 'psub') { pSub = el.getAttribute('data-t'); renderProd(); }
+    else if (a === 'prodAll') prodAll();
+    else if (a === 'incAll') incAll();
+    else if (a === 'incGet') { var ig = collectInc(el.getAttribute('data-b')); if (ig) { sfx('win'); toast('🪙 +' + money(ig) + ', chia vào 6 ví theo tỷ lệ'); } save(); hud(); renderProd(); }
+    else if (a === 'funBuild') funBuild(el.getAttribute('data-f'));
+    else if (a === 'funPlay') funPlay(el.getAttribute('data-f'));
+    else if (a === 'funGet') funClaim(el.getAttribute('data-f'));
+    else if (a === 'zgo') zoneGo(el.getAttribute('data-k'));
+    else if (a === 'zgoF') { var fs = fieldStat(); if (fs.fe >= 0) { var FR = plotRect(fs.fe); flyTo('field', FR.x + FR.s / 2, FR.y + FR.s / 2, Math.max(cam.z, 1)); } tool = 'seed'; toolsUI(); toast(CM[S.sel].e + ' Chạm hoặc vuốt lên ô đất trống để gieo ' + CM[S.sel].n.toLowerCase() + ' (hạt giống trừ ví ' + (CM[S.sel].per ? '📈 Đầu tư' : '🏠 Thiết yếu') + ')'); }
+    else if (a === 'careAllB') careEverything();
+    else if (a === 'mbuyGo') { mSub = 'buy'; setTab('market'); }
+    else if (a === 'mgrp') { S.mg[S.mw] = el.getAttribute('data-g'); save(); renderQuest(); }
     else if (a === 'facGo') facGo(el.getAttribute('data-b'));
     else if (a === 'facGet') facGet(el.getAttribute('data-b'));
     else if (a === 'play') play(el.getAttribute('data-g'));
@@ -2469,8 +2862,8 @@
       setTab(o && o.back ? retTab : 'field');
       requestAnimationFrame(function () {
         resize(); hud(); running = true; lastT = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
-        if (!S.seen) { S.seen = 1; S.tipCam = 1; save(); guide(); }
-        else if (got) backSheet(got);
+        if (!S.seen) { S.seen = 1; S.tipCam = 1; S.news5 = 1; save(); guide(); }
+        else { if (got) backSheet(got); if (!S.news5) { S.news5 = 1; save(); guide(); } }
         if (checkDisasterLater) { checkDisasterLater = false; checkDisaster(Date.now()); checkRaid(Date.now()); }
         if (!S.tipCam) { S.tipCam = 1; save(); setTimeout(function () { toast('✋ Mới: kéo 1 ngón để đi quanh nông trại, chụm 2 ngón để phóng to/thu nhỏ'); }, got ? 0 : 600); }
       });

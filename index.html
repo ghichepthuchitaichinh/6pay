@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.31-4';
+const APP_VERSION='2026.10.31-5';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -2349,7 +2349,7 @@ function scrFinUtil(){
   it("fc.tab='loan';push('fincalc')",'🏦 Tính lãi vay và tiết kiệm')+
   it("push('bills')",'🔔 Nhắc hóa đơn, chi định kỳ',billDueCount()?'<span class="neg">● '+billDueCount()+'</span> ':''));
 }
-// ===== Nối các game học với Nông trại vui vẻ =====
+// ===== Nối các game học với Nông trại Sixpay =====
 // Tiền thưởng kiếm được ở các game học (trừ Cờ vua và Bước nhảy tài chính) được gửi vào "hộp thư" farm6_inbox.
 // Lần mở Nông trại tiếp theo, toàn bộ tiền trong hộp thư được cộng vào ví nông trại và tính tiến độ nhiệm vụ.
 const FARM_INBOX='farm6_inbox';
@@ -2498,7 +2498,7 @@ function gameErr(e){try{console.error(e);}catch(x){}notify('Trò chơi gặp l�
 function scrLearnPlay(){
  const it=(fn,t)=>utilIt(fn,t);
  return screenWrap('🎓 Học và Chơi',
-  it("playGame('farm')",'🧑‍🌾 Nông trại vui vẻ')+
+  it("playGame('farm')",'🧑‍🌾 Nông trại Sixpay')+
   it("playGame('vnh')",'<svg viewBox="0 0 30 20" width="22" height="15" style="vertical-align:-2px;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.35)" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><polygon fill="#FFFF00" points="15,4.5 16.35,8.65 20.71,8.65 17.18,11.21 18.53,15.35 15,12.79 11.47,15.35 12.82,11.21 9.29,8.65 13.65,8.65"/></svg> Lịch sử Việt Nam')+
   it("playGame('vnv')",'🧭 Khám phá Việt Nam')+
   it("playGame('words')",'🔤 Game học từ vựng tiếng Anh')+
@@ -4349,7 +4349,7 @@ function gcCount(path,title){
   if(tx.length>_n){const d=new Date().toISOString().slice(0,10);let last='';try{last=localStorage.getItem(GC_DAY_KEY)||'';}catch(e){}
    if(last!==d){try{localStorage.setItem(GC_DAY_KEY,d);}catch(e){}gcCount('su-kien/ghi-chep-trong-ngay','Có ghi chép trong ngày');}}
   _n=tx.length;};
- const GN={runner:'Bước nhảy tài chính',words:'Học từ vựng tiếng Anh',zh:'Học tiếng Trung',math:'Toán',vnh:'Khám phá lịch sử Việt Nam',vnv:'Khám phá Việt Nam',chess:'Cờ vua',clock:'Dạy trẻ xem đồng hồ',farm:'Nông trại vui vẻ'};
+ const GN={runner:'Bước nhảy tài chính',words:'Học từ vựng tiếng Anh',zh:'Học tiếng Trung',math:'Toán',vnh:'Khám phá lịch sử Việt Nam',vnv:'Khám phá Việt Nam',chess:'Cờ vua',clock:'Dạy trẻ xem đồng hồ',farm:'Nông trại Sixpay'};
  const _play=playGame;
  playGame=function(k){gcCount('tro-choi/'+k,'Trò chơi: '+(GN[k]||k));return _play.apply(this,arguments);};
 })();

@@ -69,22 +69,47 @@
     longvit: { id: 'longvit', n: 'Lông vịt', e: '🪶', sell: 22000, xp: 4 },
     suade: { id: 'suade', n: 'Sữa dê', e: '🍼', sell: 45000, xp: 6 },
     nam: { id: 'nam', n: 'Nấm quý', e: '🍄', sell: 140000, xp: 14 },
-    goi: { id: 'goi', n: 'Gối lông vịt', e: '🛏️', sell: 120000, xp: 12 }
+    goi: { id: 'goi', n: 'Gối lông vịt', e: '🛏️', sell: 120000, xp: 12 },
+    /* Hàng chế biến mới ở 🏭 Khu sản xuất */
+    nuocep: { id: 'nuocep', n: 'Nước ép rau củ', e: '🧃', sell: 55000, xp: 5 },
+    tuongot: { id: 'tuongot', n: 'Tương ớt', e: '🍶', sell: 60000, xp: 6 },
+    kimchi: { id: 'kimchi', n: 'Kim chi', e: '🥗', sell: 99000, xp: 9 },
+    banhngot: { id: 'banhngot', n: 'Bánh ngọt', e: '🍰', sell: 62000, xp: 6 },
+    dauan: { id: 'dauan', n: 'Dầu hướng dương', e: '🫗', sell: 115000, xp: 10 },
+    snack: { id: 'snack', n: 'Snack khoai bí', e: '🍟', sell: 125000, xp: 11 },
+    kem: { id: 'kem', n: 'Kem dưa hấu mật ong', e: '🍨', sell: 128000, xp: 12 },
+    nuocqua: { id: 'nuocqua', n: 'Nước trái cây', e: '🍹', sell: 130000, xp: 12 },
+    keodua: { id: 'keodua', n: 'Kẹo dừa mật ong', e: '🍬', sell: 195000, xp: 16 }
   };
   /* Công trình: q = nhiệm vụ mở khoá, req = phải xây công trình khác trước, r = công thức chế biến (xưởng) */
   var BUILDS = [
     { id: 'them', n: 'Thềm nhà', e: '🪵', lv: 1, q: 'q1', cost: 150000, d: 'Lát thềm gỗ trước nhà. Mở <b>🎁 Quà mỗi ngày</b> ở mục Nhiệm vụ.' },
     { id: 'gieng', n: 'Giếng nước', e: '🪣', lv: 3, q: 'q4', cost: 250000, d: 'Thêm nút <b>Tưới hết</b> (1 chạm tưới cả ruộng). Cây đã tưới lớn nhanh gấp 1,7 lần.' },
-    { id: 'lobanh', n: 'Lò bánh mì', e: '🔥', lv: 4, q: 'q5', cost: 400000, r: { i: [['lua', 3]], o: 'banhmi', t: 240 }, d: 'Nướng 3 🌾 lúa thành 1 🥖 bánh mì, bán được giá hơn.' },
-    { id: 'bosua', n: 'Xưởng bơ sữa', e: '🏭', lv: 6, q: 'q10', cost: 700000, r: { i: [['sua', 2]], o: 'phomai', t: 420 }, d: 'Làm 2 🥛 sữa thành 1 🧀 phô mai.' },
+    { id: 'lobanh', n: 'Lò bánh mì', e: '🔥', lv: 4, q: 'q5', cost: 400000, r: { i: [['lua', 5]], o: 'banhmi', n: 2, t: 240 } },
+    { id: 'nuocep', n: 'Xưởng nước ép', e: '🧃', lv: 5, cost: 550000, r: { i: [['cachua', 3], ['carot', 3]], o: 'nuocep', n: 3, t: 300 } },
+    { id: 'bosua', n: 'Xưởng bơ sữa', e: '🏭', lv: 6, q: 'q10', cost: 700000, r: { i: [['sua', 5]], o: 'phomai', n: 3, t: 420 } },
+    { id: 'tuongot', n: 'Xưởng tương ớt', e: '🌶️', lv: 7, cost: 850000, r: { i: [['ot', 4], ['cachua', 2]], o: 'tuongot', n: 5, t: 480 } },
     { id: 'xetai', n: 'Xe tải giao hàng', e: '🛻', lv: 7, q: 'q11', cost: 900000, d: 'Có thêm 1 đơn hàng cùng lúc và tiền thưởng đơn hàng tăng 20%.' },
-    { id: 'maydet', n: 'Máy dệt', e: '🧵', lv: 8, q: 'q14', cost: 1200000, r: { i: [['len', 2]], o: 'aolen', t: 600 }, d: 'Dệt 2 🧶 len thành 1 🧥 áo len.' },
+    { id: 'maydet', n: 'Máy dệt', e: '🧵', lv: 8, q: 'q14', cost: 1200000, r: { i: [['len', 5]], o: 'aolen', n: 3, t: 600 } },
+    { id: 'kimchi', n: 'Xưởng kim chi', e: '🥬', lv: 8, cost: 1100000, r: { i: [['bapcai', 4], ['ot', 2]], o: 'kimchi', n: 3, t: 600 } },
+    { id: 'banhngot', n: 'Xưởng bánh ngọt', e: '🎂', lv: 9, cost: 1400000, r: { i: [['trung', 3], ['lua', 3], ['sua', 2]], o: 'banhngot', n: 3, t: 540 } },
+    { id: 'dauan', n: 'Nhà máy ép dầu', e: '🌻', lv: 9, cost: 1600000, r: { i: [['huongduong', 4]], o: 'dauan', n: 3, t: 720 } },
     { id: 'coixay', n: 'Cối xay gió', e: '🌀', lv: 9, q: 'q15', cost: 1500000, d: 'Gió mát giúp mọi cây trồng lớn nhanh hơn 15%.' },
     { id: 'nha2', n: 'Nhà gạch', e: '🏡', lv: 10, q: 'q17', req: 'them', cost: 2000000, d: 'Xây lại nhà bằng gạch đỏ. Quà mỗi ngày nhiều gấp đôi.' },
-    { id: 'mut', n: 'Xưởng làm mứt', e: '🍓', lv: 11, q: 'q18', cost: 1800000, r: { i: [['dau', 3]], o: 'mutdau', t: 720 }, d: 'Sên 3 🍓 dâu tây thành 1 🫙 hũ mứt dâu.' },
-    { id: 'chan', n: 'Xưởng chăn gối', e: '🪡', lv: 12, q: 'q28', cost: 2500000, r: { i: [['longvit', 3]], o: 'goi', t: 900 }, d: 'May 3 🪶 lông vịt thành 1 🛏️ gối lông vịt.' },
+    { id: 'mut', n: 'Xưởng làm mứt', e: '🍓', lv: 11, q: 'q18', cost: 1800000, r: { i: [['dau', 5], ['chanh', 2]], o: 'mutdau', n: 3, t: 900 } },
+    { id: 'snack', n: 'Nhà máy snack', e: '🍠', lv: 10, cost: 2000000, r: { i: [['khoai', 3], ['bi', 2]], o: 'snack', n: 6, t: 1200 } },
+    { id: 'chan', n: 'Xưởng chăn gối', e: '🪡', lv: 12, q: 'q28', cost: 2500000, r: { i: [['longvit', 6]], o: 'goi', n: 2, t: 900 } },
+    { id: 'kem', n: 'Nhà máy kem', e: '🍦', lv: 12, cost: 3000000, r: { i: [['suade', 2], ['dua', 2], ['mat', 1]], o: 'kem', n: 4, t: 1200 } },
+    { id: 'nuocqua', n: 'Nhà máy nước trái cây', e: '🍊', lv: 13, cost: 3600000, r: { i: [['cam', 2], ['tao', 2], ['daoq', 1]], o: 'nuocqua', n: 4, t: 1500 } },
+    { id: 'keodua', n: 'Nhà máy kẹo dừa', e: '🥥', lv: 15, cost: 4500000, r: { i: [['dua2', 3], ['mat', 2]], o: 'keodua', n: 5, t: 1800 } },
     { id: 'nha3', n: 'Biệt thự', e: '🏰', lv: 14, q: 'q21', req: 'nha2', cost: 5000000, d: 'Ngôi nhà mơ ước! Quà mỗi ngày gấp 3 và bán hàng ở chợ được giá hơn 10%.' }
   ];
+  BUILDS.sort(function (a, b) { return a.lv - b.lv; });
+  BUILDS.forEach(function (b) {
+    if (!b.r) return; var O = PRODUCTS[b.r.o];
+    b.d = 'Nhập ' + b.r.i.map(function (x) { var I = CM0(x[0]); return x[1] + ' ' + I.e + ' ' + I.n.toLowerCase(); }).join(' + ') + ' từ kho, chế biến thành <b>' + b.r.n + ' ' + O.e + ' ' + O.n.toLowerCase() + '</b> bán ra thị trường.';
+  });
+  function CM0(id) { for (var i = 0; i < CROPS.length; i++) if (CROPS[i].id === id) return CROPS[i]; return PRODUCTS[id]; }
   var FARM_B0 = ['them', 'nha2', 'nha3', 'gieng', 'coixay'];   // công trình nằm ở Khu trồng trọt
   /* Bố cục ruộng KIỂU CŨ (chỉ dùng để chuyển dữ liệu người chơi cũ sang bố cục mới) */
   var OLD_COLS = 5, OLD_MAIN = 35;
@@ -410,17 +435,24 @@
     them: [1500, 'Khách ghé thềm nhà mua rau củ'], gieng: [2500, 'Bán nước giếng sạch cho hàng xóm'], lobanh: [4000, 'Bán bánh mì nóng cho khách qua đường'],
     bosua: [7000, 'Giao sữa tươi mỗi sáng cho cửa hàng'], xetai: [9000, 'Chở hàng thuê cho cả làng'], maydet: [12000, 'Nhận dệt vải thuê'],
     coixay: [15000, 'Xay bột thuê cho bà con'], nha2: [20000, 'Cho khách du lịch thuê phòng homestay'], mut: [18000, 'Bán mứt cho siêu thị'],
-    chan: [25000, 'Nhận may chăn gối theo đơn'], nha3: [50000, 'Homestay cao cấp đón khách du lịch']
+    chan: [25000, 'Nhận may chăn gối theo đơn'], nha3: [50000, 'Homestay cao cấp đón khách du lịch'],
+    nuocep: [5000, 'Bán nước ép cho quán giải khát'], tuongot: [8000, 'Cung cấp tương ớt cho nhà hàng'], kimchi: [11000, 'Bán kim chi cho siêu thị'],
+    banhngot: [13000, 'Nhận làm bánh sinh nhật theo đơn'], dauan: [15000, 'Ép dầu thuê cho bà con'], snack: [18000, 'Giao snack cho các cửa hàng tạp hoá'],
+    kem: [28000, 'Bán kem cho khách du lịch'], nuocqua: [32000, 'Xuất nước trái cây cho chuỗi cà phê'], keodua: [40000, 'Xuất khẩu kẹo dừa đặc sản']
   };
-  BUILDS.forEach(function (b) { b.inc = BINC[b.id][0]; b.src = BINC[b.id][1]; });
+  BUILDS.forEach(function (b) { b.inc = Math.round(BINC[b.id][0] * (b.r ? 1.5 : 1)); b.src = BINC[b.id][1]; });   // xưởng chế biến: thu nhập ×1,5
   /* Vị trí công trình trên bản đồ Ruộng (x = giữa, y = chân móng) */
   var BPOS = {
     them: { x: MX + 60, y: HD - 4, h: 1 }, nha2: { x: MX + 60, y: HD - 4, h: 1 }, nha3: { x: MX + 60, y: HD - 4, h: 1 },
     gieng: { x: MX + 123, y: HD - 3, sm: 1 }, coixay: { x: MX + 250, y: HD - 3, sm: 1 },
     lobanh: { x: 140, y: 650, roof: '#b45309', wall: '#fde68a' }, bosua: { x: 140, y: 820, roof: '#2563eb', wall: '#e0f2fe' }, maydet: { x: 140, y: 990, roof: '#7c3aed', wall: '#ede9fe' },
-    mut: { x: 890, y: 650, roof: '#db2777', wall: '#fce7f3' }, chan: { x: 890, y: 820, roof: '#0d9488', wall: '#ccfbf1' }, xetai: { x: 890, y: 990, roof: '#475569', wall: '#e2e8f0', gar: 1 }
+    mut: { x: 890, y: 650, roof: '#db2777', wall: '#fce7f3' }, chan: { x: 890, y: 820, roof: '#0d9488', wall: '#ccfbf1' }, xetai: { x: 890, y: 990, roof: '#475569', wall: '#e2e8f0', gar: 1 },
+    nuocep: { roof: '#ea580c', wall: '#ffedd5' }, tuongot: { roof: '#b91c1c', wall: '#fee2e2' }, kimchi: { roof: '#15803d', wall: '#dcfce7' },
+    banhngot: { roof: '#c026d3', wall: '#fae8ff' }, dauan: { roof: '#ca8a04', wall: '#fef9c3' }, snack: { roof: '#9a3412', wall: '#fed7aa' },
+    kem: { roof: '#0284c7', wall: '#e0f2fe' }, nuocqua: { roof: '#f97316', wall: '#fff7ed' }, keodua: { roof: '#78350f', wall: '#fef3c7' }
   };
-  var LOTS = ['lobanh', 'bosua', 'maydet', 'mut', 'chan', 'xetai'];
+  BUILDS.forEach(function (b) { if (!BPOS[b.id]) BPOS[b.id] = { x: 0, y: 0, roof: '#64748b', wall: '#f1f5f9' }; });
+  var LOTS = BUILDS.filter(function (b) { return FARM_B0.indexOf(b.id) < 0; }).map(function (b) { return b.id; });
   var GM = {}; GAMES.forEach(function (g) { GM[g.k] = g; });
   /* ================= 🎡 KHU VUI CHƠI (ví 🎉 Hưởng thụ) =================
      Xây khu chơi và mua vé đều trừ ví Hưởng thụ. Chơi xong nhận kinh nghiệm + niềm vui, KHÔNG sinh ra tiền (đúng tinh thần ví Hưởng thụ).
@@ -1111,10 +1143,10 @@
   '.fm-it b{display:block;font-size:15px}.fm-it small{display:block;color:#7a6440;font-size:12px;margin-bottom:6px}.fm-it .q{font-size:20px;font-weight:900;color:#5b3a12}.fm-it .fm-btn{padding:7px 8px;font-size:13px;flex:1}' +
   '.fm-inv .fm-it{padding:8px 5px;border-radius:14px}.fm-inv .fm-it .e{font-size:32px}.fm-inv .fm-it b{font-size:13px;line-height:1.25}.fm-inv .fm-it small{font-size:10.5px;margin-bottom:3px}.fm-inv .fm-it .q{font-size:17px}.fm-inv .fm-it .fm-row{gap:4px;margin-top:5px}.fm-inv .fm-it .fm-btn{padding:7px 2px;font-size:11px;white-space:nowrap;border-radius:10px;min-width:0}' +
   '.fm-zbar.two>*{flex:1 1 0;text-align:center;font-size:13.5px;padding:9px 6px;border-radius:12px}.fm-zbar .qv{background:#fff;color:#3b2a14!important}.fm-zbar .qv.on{background:#2563eb;color:#fff!important;box-shadow:0 2px 8px rgba(37,99,235,.4)}' +
-  '.fm-pbox{position:absolute;left:6px;right:6px;top:6px;z-index:4;display:none;flex-direction:column;max-height:calc(100% - 12px);background:#fffaf0;border-radius:18px;box-shadow:0 8px 28px rgba(0,0,0,.35);border:2px solid #86c35f;overflow:hidden}.fm-pbox.on{display:flex}' +
+  '.fm-pbox{touch-action:manipulation;position:absolute;left:6px;right:6px;top:6px;z-index:4;display:none;flex-direction:column;max-height:calc(100% - 12px);background:#fffaf0;border-radius:18px;box-shadow:0 8px 28px rgba(0,0,0,.35);border:2px solid #86c35f;overflow:hidden}.fm-pbox.on{display:flex}' +
   '.fm-pbh{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#e9f5d8;border-bottom:1px solid #c5dca8}.fm-pbh b{flex:1;font-size:15.5px;color:#3b5a1f}.fm-pbh small{font-size:12.5px;font-weight:800;color:#3b2a14;background:#fff;border-radius:999px;padding:4px 10px}.fm-pbh button{border:0;background:rgba(0,0,0,.08);border-radius:10px;width:32px;height:32px;font-size:16px}' +
   '.fm-pbl{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 10px;flex:1 1 auto}.fm-pbr{display:flex;align-items:center;gap:6px;padding:7px 0;border-bottom:1px dashed #e6d7b0}.fm-pbr.sel{background:#f0fdf4}.fm-pbr .e{font-size:28px;font-family:' + EF + ';width:34px;text-align:center}.fm-pbr .n{flex:1;min-width:0}.fm-pbr .n b{display:block;font-size:14px;color:#3b2a14}.fm-pbr .n small{display:block;font-size:11px;color:#7a6440;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
-  '.fm-pbr .st{width:30px;height:30px;border:0;border-radius:9px;background:#f1e7cc;font-size:18px;font-weight:900;color:#6b4a14}.fm-pbr input{width:44px;height:30px;border:1.5px solid #d6c3a0;border-radius:9px;text-align:center;font-size:15px;font-weight:800;color:#3b2a14;background:#fff;padding:0}.fm-pbr .all{border:0;border-radius:9px;height:30px;padding:0 8px;background:#16a34a;color:#fff;font-size:11.5px;font-weight:800}' +
+  '.fm-pbr .st{width:30px;height:30px;border:0;border-radius:9px;background:#f1e7cc;font-size:18px;font-weight:900;color:#6b4a14}.fm-pbr select{width:52px;height:30px;border:1.5px solid #d6c3a0;border-radius:9px;text-align:center;text-align-last:center;font-size:15px;font-weight:800;color:#3b2a14;background:#fff;padding:0;-webkit-appearance:none;appearance:none}.fm-pbr.sel select{border-color:#16a34a;background:#dcfce7}.fm-pbr .all{border:0;border-radius:9px;height:30px;padding:0 8px;background:#16a34a;color:#fff;font-size:11.5px;font-weight:800}' +
   '.fm-pbf{padding:9px 12px 11px;border-top:1px solid #e6d7b0;background:#fff}.fm-pbf .sum{font-size:12.5px;color:#4a3416;line-height:1.5;margin-bottom:7px}.fm-pbf .sum b{color:#15803d}.fm-pbf .sum .r{color:#dc2626;font-weight:800}.fm-pbf .fm-row{margin-top:0}.fm-pbf .fm-btn{flex:1}' +
   '.fm-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}.fm-sum div{background:#fff;border-radius:14px;padding:10px 6px;text-align:center;box-shadow:0 2px 8px rgba(120,80,0,.1);font-size:12px;color:#7a6440}' +
   '.fm-sum b{display:block;font-size:16px;font-variant-numeric:tabular-nums}' +
@@ -1637,7 +1669,7 @@
           return true;
         }
         var f = S.fac[id];
-        if (b.r && f && f.s === 2) { facGet(id, true); msg.push('+1 ' + PRODUCTS[b.r.o].e); }
+        if (b.r && f && f.s === 2) { facGet(id, true); msg.push('+' + (b.r.n || 1) + ' ' + PRODUCTS[b.r.o].e + ' vào kho'); }
         got = collectInc(id);
         if (S.dmg.bld[id]) msg.push('💧 Xưởng bị dột! Vào 🎯 Nhiệm vụ → Sự cố để sửa');
         else if (b.r && (!S.fac[id] || S.fac[id].s === 0)) {
@@ -1789,11 +1821,18 @@
     return r.sort(function (a, b) { var A = plotRect(a), B = plotRect(b); return A.y - B.y || A.x - B.x; });
   }
   function pbSum() { var t = 0; for (var k in PBQ) t += PBQ[k] || 0; return t; }
+  /* Đặt số ô cho 1 loại cây; nếu vượt quá số ô trống thì bớt dần ở các cây khác (cây nhiều ô nhất bớt trước) */
   function pbSet(id, q) {
-    var E = pbEmpty().length, other = pbSum() - (PBQ[id] || 0);
-    PBQ[id] = Math.max(0, Math.min(E - other, Math.floor(+q || 0)));
+    var E = pbEmpty().length; q = Math.max(0, Math.min(E, Math.floor(+q || 0)));
+    PBQ[id] = q;
+    var over = pbSum() - E;
+    while (over > 0) {
+      var big = null; for (var k in PBQ) if (k !== id && PBQ[k] > 0 && (!big || PBQ[k] > PBQ[big])) big = k;
+      if (!big) break; var cut = Math.min(over, PBQ[big]); PBQ[big] -= cut; over -= cut; if (!PBQ[big]) delete PBQ[big];
+    }
     if (!PBQ[id]) delete PBQ[id];
   }
+  function pbOpts(E, q) { var h = '<option value="0"' + (q ? '' : ' selected') + '>–</option>'; for (var i = 1; i <= E; i++) h += '<option value="' + i + '"' + (i === q ? ' selected' : '') + '>' + i + '</option>'; return h; }
   function pbCrops() { return CROPS.filter(function (c) { return c.lv <= S.lv; }); }
   function plantBox() {
     var E = pbEmpty().length; if (!E) { toast('Không còn ô trống nào. Thu hoạch hoặc mua thêm ô ruộng nhé!'); return; }
@@ -1807,7 +1846,7 @@
     h += pbCrops().map(function (c) {
       var q = PBQ[c.id] || 0, w = c.per ? 'invest' : 'essential';
       return '<div class="fm-pbr' + (q ? ' sel' : '') + '"><span class="e">' + c.e + '</span><span class="n"><b>' + c.n + '</b><small>' + short(c.cost) + '/ô ' + WM[w].e + ' · ' + durL(c.t) + (c.per ? ' · lâu năm' : '') + '</small></span>' +
-        '<button class="st" data-a="pbStep" data-c="' + c.id + '" data-d="-1">−</button><input type="number" inputmode="numeric" min="0" max="' + E + '" data-pb="' + c.id + '" value="' + q + '"><button class="st" data-a="pbStep" data-c="' + c.id + '" data-d="1">+</button>' +
+        '<button class="st" data-a="pbStep" data-c="' + c.id + '" data-d="-1">−</button><select data-pb="' + c.id + '" aria-label="Số ô trồng ' + c.n + '">' + pbOpts(E, q) + '</select><button class="st" data-a="pbStep" data-c="' + c.id + '" data-d="1">+</button>' +
         '<button class="all" data-a="pbAll" data-c="' + c.id + '">Toàn bộ</button></div>';
     }).join('');
     h += '</div><div class="fm-pbf" id="fmPBF"></div>';
@@ -1824,8 +1863,8 @@
     h += '<div class="fm-row">' + (n < E && last ? '<button class="fm-btn alt" data-a="pbFill" data-c="' + last.id + '">' + last.e + ' Trồng kín ' + (E - n) + ' ô còn lại</button>' : '<button class="fm-btn alt" data-a="pbClear">Xoá chọn</button>') +
       '<button class="fm-btn" data-a="pbGo"' + (n ? '' : ' disabled') + '>✅ Xác nhận trồng ' + n + ' ô</button></div>';
     $('fmPBF').innerHTML = h;
-    var rows = $('fmPB').querySelectorAll('.fm-pbr input');
-    for (var i = 0; i < rows.length; i++) { var id = rows[i].getAttribute('data-pb'), q = PBQ[id] || 0; rows[i].parentNode.classList.toggle('sel', q > 0); if (document.activeElement !== rows[i]) rows[i].value = q; }
+    var rows = $('fmPB').querySelectorAll('.fm-pbr select');
+    for (var i = 0; i < rows.length; i++) { var id = rows[i].getAttribute('data-pb'), q = PBQ[id] || 0; rows[i].parentNode.classList.toggle('sel', q > 0); rows[i].value = String(q); }
   }
   function pbGo() {
     var cells = pbEmpty(), k = 0, done = {}, n = 0, keep = S.sel, stop = false;
@@ -2413,12 +2452,12 @@
       else if (s0 === 'req') { r.pill = '🔒 Cần ' + BM[b.req].n.toLowerCase(); r.bg = 'rgba(36,54,26,.88)'; }
       else if (s0 === 'buy') { r.pill = '🔨 Xây · ' + short(b.cost) + ' 📈'; r.bg = '#ea580c'; }
       else if (s0 === 'leak') { r.pill = '🔧 Bị dột · sửa'; r.bg = '#dc2626'; }
-      else if (s0 === 'ready') { r.pill = '✅ Lấy ' + O.e + ' ' + O.n.toLowerCase(); r.bg = '#16a34a'; }
+      else if (s0 === 'ready') { r.pill = '✅ Lấy ' + b.r.n + ' ' + O.e + ' ' + O.n.toLowerCase(); r.bg = '#16a34a'; }
       else if (s0 === 'work') { r.p = Math.min(1, (Date.now() - f.t) / (b.r.t * 1000)); r.pill = '⏳ ' + O.e + ' còn ' + dur((1 - r.p) * b.r.t); r.bg = '#2563eb'; }
       else if (s0 === 'can') { r.pill = '▶ Làm ' + O.e + ' ' + O.n.toLowerCase(); r.bg = '#7c3aed'; }
       else if (s0 === 'need') { r.pill = '⚠️ Thiếu ' + b.r.i.filter(function (x) { return (S.inv[x[0]] || 0) < x[1]; }).map(function (x) { return item(x[0]).e; }).join(''); r.bg = '#d97706'; }
       else { r.pill = '✅ Đang hoạt động'; r.bg = '#16a34a'; }
-      r.rc = b.r ? b.r.i.map(function (x) { return item(x[0]).e + x[1]; }).join(' ') + ' → ' + O.e : b.src;
+      r.rc = b.r ? b.r.i.map(function (x) { return item(x[0]).e + x[1]; }).join(' ') + ' → ' + O.e + b.r.n + ' (' + short(b.r.n * O.sell) + ')' : b.src;
       return r;
     }
     if (id === 'arcade') return { s: 'arc', built: true, e: '🕹️', n: 'Nhà trò chơi Phụ bản', pill: '▶ Chơi game học kiếm tiền', bg: '#0891b2', p: -1, rc: 'Miễn phí · tiếng Anh, Toán, Lịch sử…' };
@@ -2579,12 +2618,12 @@
         var fx = fixFor(b); st = '💧 Bị dột, tạm dừng hoạt động'; stc = 'bad';
         if (fx && fx.s === 1) body += '<div class="fm-pt">🔧 Thợ đang sửa · còn ' + dur(FIXD[fx.t][0] - (Date.now() - fx.st) / 1000) + '</div>';
         else if (fx) body += '<button class="fm-btn org" data-a="fixGo" data-f="' + fx.id + '">🔧 Sửa · −' + short(fx.c) + ' 🏠</button>';
-      } else if (s === 'ready') { st = '✅ Xong 1 ' + O.e + ' ' + O.n.toLowerCase(); stc = 'ok'; body += '<button class="fm-btn org" data-a="facGet" data-b="' + b.id + '">' + O.e + ' Lấy hàng</button>'; }
+      } else if (s === 'ready') { st = '✅ Xong ' + b.r.n + ' ' + O.e + ' ' + O.n.toLowerCase(); stc = 'ok'; body += '<button class="fm-btn org" data-a="facGet" data-b="' + b.id + '">' + O.e + ' Lấy hàng</button>'; }
       else if (s === 'work') { var p = Math.min(1, (Date.now() - f.t) / (b.r.t * 1000)); st = '⏳ Đang làm ' + O.e; stc = 'work'; body += '<div class="fm-pb"><i id="fp_' + b.id + '" style="width:' + Math.round(p * 100) + '%"></i></div><div class="fm-pt" id="ft_' + b.id + '">còn ' + dur((1 - p) * b.r.t) + '</div>'; }
       else if (s === 'can') { st = '▶ Đủ nguyên liệu'; stc = 'can'; body += '<button class="fm-btn" data-a="facGo" data-b="' + b.id + '">▶ Bắt đầu làm ' + O.e + '</button>'; }
       else if (s === 'need') { st = '⚠️ Thiếu nguyên liệu'; stc = 'warn'; }
       else { st = '✅ Đang hoạt động'; stc = 'ok'; body += '<small class="d">' + b.d + '</small>'; }
-      if (b.r) body += '<div class="rc">' + b.r.i.map(function (x) { var hv = S.inv[x[0]] || 0; return '<span class="' + (hv >= x[1] ? 'g' : 'r') + '">' + item(x[0]).e + ' ' + Math.min(hv, x[1]) + '/' + x[1] + '</span>'; }).join('') + '<span class="o">→ ' + O.e + ' · ' + durL(b.r.t) + '</span></div>';
+      if (b.r) body += '<div class="rc">' + b.r.i.map(function (x) { var hv = S.inv[x[0]] || 0; return '<span class="' + (hv >= x[1] ? 'g' : 'r') + '">' + item(x[0]).e + ' ' + Math.min(hv, x[1]) + '/' + x[1] + '</span>'; }).join('') + '<span class="o">→ ' + b.r.n + ' ' + O.e + ' (≈' + short(b.r.n * O.sell) + ') · ' + durL(b.r.t) + '</span></div>';
       var ia = incOf(b.id);
       body += '<div class="inc">🪙 +' + short(b.inc) + '/giờ' + (ia >= 1000 ? ' <button class="fm-btn mini" data-a="incGet" data-b="' + b.id + '">Thu +' + short(ia) + '</button>' : '') + '</div>';
     }
@@ -2615,7 +2654,7 @@
   }
   function prodAll() {
     var got = [], go = 0;
-    BUILDS.forEach(function (b) { if (!b.r || !built(b.id) || S.dmg.bld[b.id]) return; var f = S.fac[b.id]; if (f && f.s === 2) { facGet(b.id, true); got.push(PRODUCTS[b.r.o].e); } });
+    BUILDS.forEach(function (b) { if (!b.r || !built(b.id) || S.dmg.bld[b.id]) return; var f = S.fac[b.id]; if (f && f.s === 2) { facGet(b.id, true); got.push((b.r.n || 1) + PRODUCTS[b.r.o].e); } });
     BUILDS.forEach(function (b) { if (!b.r || !built(b.id) || S.dmg.bld[b.id]) return; var f = S.fac[b.id]; if ((!f || f.s === 0) && canMake(b)) { facGo(b.id, true); go++; } });
     sfx(got.length || go ? 'win' : 'bad');
     toast((got.length ? 'Lấy ' + got.join(' ') + '. ' : '') + (go ? 'Bắt đầu ' + go + ' mẻ mới.' : got.length ? '' : 'Chưa có xưởng nào xong hoặc đủ nguyên liệu.'));
@@ -2726,8 +2765,9 @@
   }
   function facGet(id, q) {
     var b = BM[id], f = S.fac[id]; if (!f || f.s !== 2) return;
-    var O = PRODUCTS[b.r.o]; S.inv[O.id] = (S.inv[O.id] || 0) + 1; f.s = 0; ev('make', O.id); addXP(O.xp);
-    if (!q) { sfx('win'); toast('+1 ' + O.e + ' ' + O.n + ' · +' + O.xp + ' KN'); } save(); hud(); if (tab === 'prod' && !q) renderProd();
+    var O = PRODUCTS[b.r.o], nn = b.r.n || 1; S.inv[O.id] = (S.inv[O.id] || 0) + nn; f.s = 0; ev('make', O.id, nn); addXP(O.xp * nn);
+    var P = BPOS[id]; if (P && tab === 'prod') { burst(P.x, P.y - 80, ['#fde047', '#86efac', '#fff'], 12); floatTxt(P.x, P.y - 120, '+' + nn + ' ' + O.e, '#fef08a'); }
+    if (!q) { sfx('win'); toast('+' + nn + ' ' + O.e + ' ' + O.n + ' · +' + O.xp * nn + ' KN'); } save(); hud(); if (tab === 'prod' && !q) renderProd();
   }
 
   /* --- Nhiệm vụ --- */
@@ -3035,7 +3075,8 @@
   ['gesturestart', 'gesturechange'].forEach(function (t) { stage.addEventListener(t, function (e) { e.preventDefault(); }); });
 
   ov.addEventListener('input', function (e) { if (e.target && e.target.id && e.target.id.indexOf('fpc_') === 0) pctLive(); });
-  ov.addEventListener('input', function (e) { var t = e.target, id = t.getAttribute && t.getAttribute('data-pb'); if (!id) return; pbSet(id, t.value); pbFoot(); });
+  function pbIn(e) { var t = e.target, id = t.getAttribute && t.getAttribute('data-pb'); if (!id) return; pbSet(id, t.value); pbFoot(); }
+  ov.addEventListener('change', pbIn);
   ov.addEventListener('click', function (e) {
     var el = e.target.closest ? e.target.closest('[data-a]') : null;
     if (!el) { if (e.target === $('fmSheet')) closeSheet(); return; }

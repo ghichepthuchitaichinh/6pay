@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.10.31-9';
+const APP_VERSION='2026.11.01-1';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -677,6 +677,10 @@ body:not(.home-white) .qa-fab{display:none;}
 /* dòng "Dữ liệu chỉ lưu trên máy..." nằm sát đáy, bên trái nút ＋ Ghi chi */
 /* (bản 2026.10.29-4) Nút ＋ Ghi chi kéo dài hết chiều ngang, nằm ngay trên dòng phiên bản */
 .qa-fab{left:max(14px,calc(50% - 226px));right:max(14px,calc(50% - 226px));justify-content:center;bottom:calc(max(8px,calc(env(safe-area-inset-bottom,0px) - 12px)) + 44px);}
+/* (bản 2026.11.01-1) Hai nút nằm ngang: 📝 Dự kiến chi (trái) và ＋ Ghi chi (phải) */
+.qa-fab{left:calc(50% + 4px);padding:0 10px;}
+.qa-fab.pl-fab{left:max(14px,calc(50% - 226px));right:calc(50% + 4px);background:var(--accent);color:var(--accent-text,#fff);font-size:16px;box-shadow:0 6px 18px rgba(62,111,184,.32),0 2px 4px rgba(0,0,0,.12);}
+.qa-fab.pl-fab b{font-size:19px;margin-top:0;}
 /* Dòng "Dữ liệu chỉ lưu..." + "Phiên bản" trải dài hết chiều ngang ở dưới cùng; phần đệm trên chừa chỗ cho nút ＋ Ghi chi */
 .home-ver{margin-top:auto;min-height:0;display:block;text-align:center;text-wrap:balance;padding:68px 4px 0;}
 /* Thu gọn các ô trên trang chủ để nhường chỗ cho nút ＋ Ghi chi */
@@ -737,6 +741,27 @@ body:not(.home-white) .qa-fab{display:none;}
 .qa-date{display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap;}
 .qa-date input{flex:1;min-width:130px;font-size:15px;padding:6px 8px;min-height:34px;border:1px solid var(--border);border-radius:18px;background:var(--surface);color:var(--text);}
 .qa-save{margin-top:2px;}
+/* ---------- Bảng Dự kiến chi ---------- */
+.pl-head,.pl-row{display:grid;grid-template-columns:minmax(0,1fr) 112px 84px 30px;gap:5px;align-items:center;}
+.pl-head{font-size:var(--fs-xs);font-weight:800;color:var(--text-soft);padding:6px 4px;border-bottom:2px solid var(--border);position:sticky;top:-8px;background:var(--surface);z-index:1;}
+.pl-head span:nth-child(3){text-align:right;}
+.pl-row{padding:6px 0;border-bottom:1px dashed var(--border);}
+.pl-row input,.pl-row select{width:100%;min-width:0;font:inherit;font-size:15px;padding:7px 6px;min-height:40px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);}
+.pl-row select{font-size:13.5px;padding:7px 2px;}
+.pl-row input.amt{text-align:right;font-weight:700;color:var(--expense-text);font-variant-numeric:tabular-nums;}
+.pl-row input:focus,.pl-row select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft);}
+.pl-act{display:flex;flex-direction:column;gap:3px;}
+.pl-act button{width:30px;height:19px;border:0;border-radius:6px;font-size:12px;line-height:1;cursor:pointer;padding:0;}
+.pl-act .ok{background:var(--pos);color:#fff;}
+.pl-act .del{background:var(--surface-2);color:var(--neg);border:1px solid var(--border);}
+.pl-empty{text-align:center;color:var(--text-soft);font-size:var(--fs-sm);padding:16px 8px;}
+.pl-add{width:100%;margin:10px 0 4px;border:1.5px dashed var(--accent);background:var(--accent-soft);color:var(--newtx-text);font:inherit;font-weight:800;border-radius:12px;min-height:42px;cursor:pointer;}
+.pl-total{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:var(--fs-md,16px);padding:10px 4px 6px;border-top:2px solid var(--border);margin-top:6px;}
+.pl-total b{color:var(--expense-text);font-variant-numeric:tabular-nums;}
+.pl-jars .list-item{display:flex;justify-content:space-between;gap:8px;font-size:var(--fs-sm);padding:5px 4px;}
+.pl-jars small{color:var(--text-soft);}
+.pl-jars .over{color:var(--neg);font-weight:700;}
+.pl-note{font-size:var(--fs-xs);color:var(--text-soft);line-height:1.45;margin:8px 2px 4px;}
 .qa-tip{background:var(--warm-bg);border:1px solid var(--warm-border);color:var(--warm-text);border-radius:12px;padding:8px 12px;font-size:var(--fs-sm);line-height:1.45;margin-bottom:8px;}
 /* ---------- Thông báo nhỏ có nút Hoàn tác ---------- */
 .toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 10px);transform:translate(-50%,-20px);opacity:0;pointer-events:none;z-index:200;display:flex;align-items:center;gap:12px;width:max-content;max-width:min(440px,calc(100vw - 24px));background:#1F2937;color:#fff;border-radius:14px;padding:10px 10px 10px 16px;font-size:var(--fs-sm);line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.25);transition:opacity .2s,transform .2s;}
@@ -874,7 +899,12 @@ html.fs-big .ob-jar .d,html.fs-big .rp-plan,html.fs-big .rp-lim{font-size:14px;}
  <div class="modal-box" id="buyBox" style="text-align:left;"></div>
 </div>
 <!-- Nút ＋ Ghi chi nổi (chỉ hiện ở trang chủ) -->
+<button class="qa-fab pl-fab" id="plFab" onclick="openPlanSpend()" aria-label="Dự kiến chi"><b>📝</b> Dự kiến chi</button>
 <button class="qa-fab" id="qaFab" onclick="openQuickAdd()" aria-label="Ghi khoản chi mới"><b>＋</b> Ghi chi</button>
+<!-- Bảng Dự kiến chi -->
+<div class="sheet-ov" id="plSheet" onclick="if(event.target===this)closePlanSpend()">
+ <div class="sheet" id="plBox" role="dialog" aria-label="Dự kiến chi"></div>
+</div>
 <!-- Bảng ghi chi nhanh -->
 <div class="sheet-ov" id="qaSheet" onclick="if(event.target===this)closeQuickAdd()">
  <div class="sheet" id="qaBox" role="dialog" aria-label="Ghi khoản chi"></div>
@@ -4081,6 +4111,91 @@ function qaSave(){
   tx=tx.filter(x=>x.id!==t.id); subStar(); persist(); render(); showToast('Đã hủy khoản chi vừa ghi.');
  });
  if(onb)setTimeout(maybeShowInstall,2600); else limitCheck(t.jar);
+}
+
+// ---------- Dự kiến chi (nút 📝 Dự kiến chi ở trang chủ) ----------
+// Bảng các khoản định chi: Nội dung chi | Ví | Số tiền. Chỉ để lên kế hoạch, KHÔNG trừ tiền trong ví.
+// Bấm ✓ ở một dòng khi đã chi thật: khoản đó được ghi thành khoản chi và rời khỏi bảng.
+const PLSP_KEY='6pay-dukien-v1';
+let plsp=[];
+try{const a=JSON.parse(localStorage.getItem(PLSP_KEY));if(Array.isArray(a))plsp=a;}catch(e){}
+function plspSave(){try{localStorage.setItem(PLSP_KEY,JSON.stringify(plsp));}catch(e){}}
+function plspBlank(){return {id:uid(),n:'',j:lastJar(),a:0};}
+function openPlanSpend(){
+ hideToast();
+ if(!plsp.length){plsp.push(plspBlank());}
+ drawPlanSpend();
+ document.getElementById('plSheet').classList.add('open');
+}
+function closePlanSpend(){
+ plsp=plsp.filter(r=>(r.n||'').trim()||r.a>0); plspSave();
+ document.getElementById('plSheet').classList.remove('open');
+}
+function plspRowHtml(r){
+ const opts=JARS.map(j=>`<option value="${j.k}"${r.j===j.k?' selected':''}>${j.i} ${j.l}</option>`).join('');
+ return `<div class="pl-row" data-id="${r.id}">
+  <input type="text" maxlength="120" placeholder="Vd. Tiền điện" value="${esc(r.n)}" oninput="plspSet('${r.id}','n',this.value)" aria-label="Nội dung chi">
+  <select onchange="plspSet('${r.id}','j',this.value)" aria-label="Dùng ví">${opts}</select>
+  <input type="text" class="amt" inputmode="numeric" autocomplete="off" placeholder="${amtMode==='x1000'?'0 (nghìn)':'0'}" value="${r.a?editVal(r.a):''}" ${needExact(r.a)?'data-exact="'+r.a+'"':''} oninput="formatAmountInput(this);plspSet('${r.id}','a',getAmt(this))" aria-label="Số tiền">
+  <div class="pl-act"><button type="button" class="ok" onclick="plspDone('${r.id}')" aria-label="Đã chi khoản này" title="Đã chi">✓</button><button type="button" class="del" onclick="plspDel('${r.id}')" aria-label="Xóa dòng" title="Xóa">✕</button></div>
+ </div>`;
+}
+function drawPlanSpend(){
+ document.getElementById('plBox').innerHTML=`
+  <div class="sheet-grip"></div>
+  <div class="sheet-head"><div class="sheet-title">📝 Dự kiến chi</div><button class="sheet-x" onclick="closePlanSpend()" aria-label="Đóng">✕</button></div>
+  <div class="pl-head"><span>Nội dung chi</span><span>Dùng ví</span><span>Số tiền</span><span></span></div>
+  <div id="pl-rows">${plsp.length?plsp.map(plspRowHtml).join(''):'<div class="pl-empty">Chưa có khoản dự kiến nào.</div>'}</div>
+  <button type="button" class="pl-add" onclick="plspAdd()">＋ Thêm dòng</button>
+  <div id="pl-sum">${plspSumHtml()}</div>
+  <div class="pl-note">Bảng này chỉ để lên kế hoạch, chưa trừ tiền trong ví. Khi đã chi thật, bấm <b style="color:var(--pos)">✓</b> ở dòng đó để ghi thành khoản chi.</div>
+  ${plsp.length>1?'<button class="btn cancel" style="width:100%;margin-top:4px" onclick="plspClear()">Xóa hết bảng</button>':''}`;
+}
+function plspSumHtml(){
+ const tot=plsp.reduce((s,r)=>s+(r.a||0),0);
+ const by={}; plsp.forEach(r=>{if(r.a>0)by[r.j]=(by[r.j]||0)+r.a;});
+ const rows=JARS.filter(j=>by[j.k]).map(j=>{const rem=jarRemain(j.k),over=by[j.k]>rem;
+  return `<div class="list-item"><span>${j.i} ${j.l} <small>· còn ${fmt(rem)} ₫</small></span><span class="${over?'over':''}">${fmt(by[j.k])} ₫${over?' ⚠️ thiếu '+fmt(by[j.k]-Math.max(rem,0))+' ₫':''}</span></div>`;}).join('');
+ return `<div class="pl-total"><span>Tổng dự kiến</span><b>${fmt(tot)} ₫</b></div>${rows?'<div class="pl-jars">'+rows+'</div>':''}`;
+}
+function plspSet(id,f,v){
+ const r=plsp.find(x=>x.id===id); if(!r)return;
+ r[f]=f==='a'?(v||0):v; plspSave();
+ if(f!=='n'){const s=document.getElementById('pl-sum'); if(s)s.innerHTML=plspSumHtml();}
+}
+function plspAdd(){
+ plsp.push(plspBlank()); plspSave(); drawPlanSpend();
+ const rows=document.querySelectorAll('#pl-rows .pl-row'); const last=rows[rows.length-1];
+ if(last){const i=last.querySelector('input'); if(i){try{i.focus({preventScroll:false});}catch(e){i.focus();}}}
+}
+function plspDel(id){
+ const i=plsp.findIndex(x=>x.id===id); if(i<0)return;
+ const r=plsp[i]; plsp.splice(i,1); plspSave(); drawPlanSpend();
+ if((r.n||'').trim()||r.a>0)showToast('Đã xóa dòng dự kiến.','Hoàn tác',()=>{plsp.splice(Math.min(i,plsp.length),0,r);plspSave();if(document.getElementById('plSheet').classList.contains('open'))drawPlanSpend();});
+}
+function plspClear(){
+ openConfirm('Xóa toàn bộ các khoản trong bảng Dự kiến chi?',()=>{plsp=[plspBlank()];plspSave();drawPlanSpend();});
+}
+function plspDone(id){
+ const i=plsp.findIndex(x=>x.id===id); if(i<0)return;
+ const r=plsp[i], row=document.querySelector('#pl-rows .pl-row[data-id="'+id+'"]');
+ if(!(r.a>0)){const e=row&&row.querySelector('input.amt');shakeEl(e);if(e)e.focus();return;}
+ if(jarBlocked(r.j,r.a))return;
+ const note=(r.n||'').trim();
+ const t={id:uid(),type:'out',jar:r.j,amount:r.a,note,ts:Date.now(),st:1};
+ const tg=tagGuess(note); if(tg)t.tag=tg;
+ tx.push(t); addStar(); persist();
+ try{localStorage.setItem(LASTJAR_KEY,r.j);}catch(e){}
+ plsp.splice(i,1); plspSave(); drawPlanSpend(); render();
+ const j=jarOf(t.jar);
+ showToast('Đã ghi chi '+fmt(t.amount)+' ₫ từ '+j.i+' '+j.l,'Hoàn tác',()=>{
+  if(!tx.some(x=>x.id===t.id))return;
+  tx=tx.filter(x=>x.id!==t.id); subStar(); persist();
+  plsp.splice(Math.min(i,plsp.length),0,r); plspSave(); render();
+  if(document.getElementById('plSheet').classList.contains('open'))drawPlanSpend();
+  showToast('Đã hủy, khoản này trở lại bảng Dự kiến chi.');
+ });
+ limitCheck(t.jar);
 }
 
 // ---------- Nhãn và gợi ý trong trang chi tiết ví ----------

@@ -1106,9 +1106,16 @@
   '.fm-rw{font-size:14px;font-weight:800;color:#15803d}.fm-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}' +
   '.fm-btn{border:0;border-radius:12px;padding:9px 14px;font-weight:800;font-size:14px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff!important;box-shadow:0 3px 8px rgba(22,163,74,.3)}' +
   '.fm-btn.alt{background:#f1e7cc;color:#6b4a14!important;box-shadow:none}.fm-btn.org{background:linear-gradient(135deg,#f59e0b,#ea580c);box-shadow:0 3px 8px rgba(234,88,12,.3)}.fm-btn.blu{background:linear-gradient(135deg,#3b82f6,#2563eb);box-shadow:0 3px 8px rgba(37,99,235,.3)}.fm-btn:disabled{opacity:.45;cursor:default}' +
-  '.fm-inv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}' +
+  '.fm-inv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}' +
   '.fm-it{background:#fff;border-radius:16px;padding:10px;text-align:center;box-shadow:0 2px 8px rgba(120,80,0,.12)}.fm-it .e{font-size:40px;font-family:' + EF + ';line-height:1.2}' +
   '.fm-it b{display:block;font-size:15px}.fm-it small{display:block;color:#7a6440;font-size:12px;margin-bottom:6px}.fm-it .q{font-size:20px;font-weight:900;color:#5b3a12}.fm-it .fm-btn{padding:7px 8px;font-size:13px;flex:1}' +
+  '.fm-inv .fm-it{padding:8px 5px;border-radius:14px}.fm-inv .fm-it .e{font-size:32px}.fm-inv .fm-it b{font-size:13px;line-height:1.25}.fm-inv .fm-it small{font-size:10.5px;margin-bottom:3px}.fm-inv .fm-it .q{font-size:17px}.fm-inv .fm-it .fm-row{gap:4px;margin-top:5px}.fm-inv .fm-it .fm-btn{padding:7px 2px;font-size:11px;white-space:nowrap;border-radius:10px;min-width:0}' +
+  '.fm-zbar.two>*{flex:1 1 0;text-align:center;font-size:13.5px;padding:9px 6px;border-radius:12px}.fm-zbar .qv{background:#fff;color:#3b2a14!important}.fm-zbar .qv.on{background:#2563eb;color:#fff!important;box-shadow:0 2px 8px rgba(37,99,235,.4)}' +
+  '.fm-pbox{position:absolute;left:6px;right:6px;top:6px;z-index:4;display:none;flex-direction:column;max-height:calc(100% - 12px);background:#fffaf0;border-radius:18px;box-shadow:0 8px 28px rgba(0,0,0,.35);border:2px solid #86c35f;overflow:hidden}.fm-pbox.on{display:flex}' +
+  '.fm-pbh{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#e9f5d8;border-bottom:1px solid #c5dca8}.fm-pbh b{flex:1;font-size:15.5px;color:#3b5a1f}.fm-pbh small{font-size:12.5px;font-weight:800;color:#3b2a14;background:#fff;border-radius:999px;padding:4px 10px}.fm-pbh button{border:0;background:rgba(0,0,0,.08);border-radius:10px;width:32px;height:32px;font-size:16px}' +
+  '.fm-pbl{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 10px;flex:1 1 auto}.fm-pbr{display:flex;align-items:center;gap:6px;padding:7px 0;border-bottom:1px dashed #e6d7b0}.fm-pbr.sel{background:#f0fdf4}.fm-pbr .e{font-size:28px;font-family:' + EF + ';width:34px;text-align:center}.fm-pbr .n{flex:1;min-width:0}.fm-pbr .n b{display:block;font-size:14px;color:#3b2a14}.fm-pbr .n small{display:block;font-size:11px;color:#7a6440;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
+  '.fm-pbr .st{width:30px;height:30px;border:0;border-radius:9px;background:#f1e7cc;font-size:18px;font-weight:900;color:#6b4a14}.fm-pbr input{width:44px;height:30px;border:1.5px solid #d6c3a0;border-radius:9px;text-align:center;font-size:15px;font-weight:800;color:#3b2a14;background:#fff;padding:0}.fm-pbr .all{border:0;border-radius:9px;height:30px;padding:0 8px;background:#16a34a;color:#fff;font-size:11.5px;font-weight:800}' +
+  '.fm-pbf{padding:9px 12px 11px;border-top:1px solid #e6d7b0;background:#fff}.fm-pbf .sum{font-size:12.5px;color:#4a3416;line-height:1.5;margin-bottom:7px}.fm-pbf .sum b{color:#15803d}.fm-pbf .sum .r{color:#dc2626;font-weight:800}.fm-pbf .fm-row{margin-top:0}.fm-pbf .fm-btn{flex:1}' +
   '.fm-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}.fm-sum div{background:#fff;border-radius:14px;padding:10px 6px;text-align:center;box-shadow:0 2px 8px rgba(120,80,0,.1);font-size:12px;color:#7a6440}' +
   '.fm-sum b{display:block;font-size:16px;font-variant-numeric:tabular-nums}' +
   '.fm-log{display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px dashed #eadfc0;font-size:14px}.fm-log .e{font-size:24px;font-family:' + EF + ';width:30px;text-align:center}.fm-log .t{flex:1;min-width:0}.fm-log small{display:block;color:#9a8660;font-size:12px}' +
@@ -1195,6 +1202,7 @@
           '<button class="fm-tool" data-a="tool" data-t="fert"><span class="e" id="fmFertE">🧪</span>Phân bón ▾<span class="n" id="fmFert">0</span></button>' +
           '<button class="fm-tool" data-a="harvestAll"><span class="e">🧺</span>Thu hết</button>' +
         '</div></div>' +
+      '<div class="fm-pbox" id="fmPB"></div>' +
       '<div class="fm-panel" id="fmP_prod"></div><div class="fm-panel" id="fmP_fun"></div><div class="fm-panel" id="fmP_market"></div><div class="fm-panel" id="fmP_quest"></div><div class="fm-panel" id="fmP_earn"></div><div class="fm-panel" id="fmP_book"></div>' +
       '<div class="fm-sheet" id="fmSheet"><div class="fm-sb" id="fmSB"></div></div>' +
       '<div class="fm-toast" id="fmToast"></div>' +
@@ -1774,6 +1782,66 @@
   }
   /* Thanh tóm tắt trên bản đồ: tên khu + việc cần làm (chạm để làm ngay hoặc bay tới chỗ đó) */
   var zbSig = '';
+  /* ===== 🌱 Bảng chọn cây trồng vào các ô trống: chọn loại cây + số ô, xác nhận là game tự gieo từ trên xuống ===== */
+  var PBQ = {};
+  function pbEmpty() {
+    var r = []; for (var i = 0; i < TOTAL; i++) { var pl = S.plots[i]; if (plotOpen(i) && !pl.c && !pl.dmg) r.push(i); }
+    return r.sort(function (a, b) { var A = plotRect(a), B = plotRect(b); return A.y - B.y || A.x - B.x; });
+  }
+  function pbSum() { var t = 0; for (var k in PBQ) t += PBQ[k] || 0; return t; }
+  function pbSet(id, q) {
+    var E = pbEmpty().length, other = pbSum() - (PBQ[id] || 0);
+    PBQ[id] = Math.max(0, Math.min(E - other, Math.floor(+q || 0)));
+    if (!PBQ[id]) delete PBQ[id];
+  }
+  function pbCrops() { return CROPS.filter(function (c) { return c.lv <= S.lv; }); }
+  function plantBox() {
+    var E = pbEmpty().length; if (!E) { toast('Không còn ô trống nào. Thu hoạch hoặc mua thêm ô ruộng nhé!'); return; }
+    PBQ = {}; var c0 = CM[S.sel] && CM[S.sel].lv <= S.lv ? S.sel : 'lua'; PBQ[c0] = E;
+    pbRender(); $('fmPB').classList.add('on');
+  }
+  function pbClose() { $('fmPB').classList.remove('on'); }
+  function pbRender() {
+    var E = pbEmpty().length;
+    var h = '<div class="fm-pbh"><b>🌱 Chọn cây trồng</b><small>' + E + ' ô trống</small><button data-a="pbClose" aria-label="Đóng">✕</button></div><div class="fm-pbl">';
+    h += pbCrops().map(function (c) {
+      var q = PBQ[c.id] || 0, w = c.per ? 'invest' : 'essential';
+      return '<div class="fm-pbr' + (q ? ' sel' : '') + '"><span class="e">' + c.e + '</span><span class="n"><b>' + c.n + '</b><small>' + short(c.cost) + '/ô ' + WM[w].e + ' · ' + durL(c.t) + (c.per ? ' · lâu năm' : '') + '</small></span>' +
+        '<button class="st" data-a="pbStep" data-c="' + c.id + '" data-d="-1">−</button><input type="number" inputmode="numeric" min="0" max="' + E + '" data-pb="' + c.id + '" value="' + q + '"><button class="st" data-a="pbStep" data-c="' + c.id + '" data-d="1">+</button>' +
+        '<button class="all" data-a="pbAll" data-c="' + c.id + '">Toàn bộ</button></div>';
+    }).join('');
+    h += '</div><div class="fm-pbf" id="fmPBF"></div>';
+    $('fmPB').innerHTML = h; pbFoot();
+  }
+  function pbFoot() {
+    var E = pbEmpty().length, n = pbSum(), need = { essential: 0, invest: 0 }, parts = [];
+    pbCrops().forEach(function (c) { var q = PBQ[c.id] || 0; if (!q) return; need[c.per ? 'invest' : 'essential'] += q * c.cost; parts.push(c.e + '×' + q); });
+    var lack = ['essential', 'invest'].filter(function (w) { return need[w] > S.jar[w]; });
+    var h = '<div class="sum">Đã chọn <b>' + n + '/' + E + '</b> ô' + (parts.length ? ': ' + parts.join(' ') : '') + (n < E ? ' · <span class="r">còn ' + (E - n) + ' ô chưa chọn cây</span>' : ' · <b>kín hết ô trống ✓</b>') + '<br>' +
+      ['essential', 'invest'].filter(function (w) { return need[w]; }).map(function (w) { return 'Chi ' + money(need[w]) + ' từ ví ' + WM[w].e + ' ' + WM[w].n + ' (đang có ' + short(S.jar[w]) + ')'; }).join('<br>') +
+      (lack.length ? '<br><span class="r">⚠️ Ví không đủ tiền: chỉ gieo được đến khi hết tiền.</span>' : '') + '</div>';
+    var last = pbCrops().filter(function (c) { return PBQ[c.id]; }).pop();
+    h += '<div class="fm-row">' + (n < E && last ? '<button class="fm-btn alt" data-a="pbFill" data-c="' + last.id + '">' + last.e + ' Trồng kín ' + (E - n) + ' ô còn lại</button>' : '<button class="fm-btn alt" data-a="pbClear">Xoá chọn</button>') +
+      '<button class="fm-btn" data-a="pbGo"' + (n ? '' : ' disabled') + '>✅ Xác nhận trồng ' + n + ' ô</button></div>';
+    $('fmPBF').innerHTML = h;
+    var rows = $('fmPB').querySelectorAll('.fm-pbr input');
+    for (var i = 0; i < rows.length; i++) { var id = rows[i].getAttribute('data-pb'), q = PBQ[id] || 0; rows[i].parentNode.classList.toggle('sel', q > 0); if (document.activeElement !== rows[i]) rows[i].value = q; }
+  }
+  function pbGo() {
+    var cells = pbEmpty(), k = 0, done = {}, n = 0, keep = S.sel, stop = false;
+    pbCrops().forEach(function (c) {
+      var q = PBQ[c.id] || 0;
+      for (var j = 0; j < q && k < cells.length && !stop; j++) {
+        S.sel = c.id;
+        if (plant(cells[k])) { k++; n++; done[c.id] = (done[c.id] || 0) + 1; } else stop = true;
+      }
+    });
+    S.sel = keep;
+    if (!n) return;
+    pbClose(); sfx('ok'); save(); hud(); toolsUI(); zoneBar(true);
+    var left = pbEmpty().length;
+    toast('🌱 Đã gieo ' + n + ' ô: ' + Object.keys(done).map(function (id) { return CM[id].e + '×' + done[id]; }).join(' ') + (left ? ' · còn ' + left + ' ô trống' : ' · kín hết ô trống!') + (stop ? ' · ⚠️ Ví hết tiền nên dừng gieo' : ''));
+  }
   function fieldStat() {
     var r = { ripe: 0, empty: 0, dmg: 0, grow: 0 }, fe = -1;
     for (var i = 0; i < TOTAL; i++) { if (!plotOpen(i)) continue; var pl = S.plots[i]; if (pl.dmg) r.dmg++; else if (!pl.c) { r.empty++; if (fe < 0) fe = i; } else if (pl.p >= 1) r.ripe++; else r.grow++; }
@@ -1783,11 +1851,11 @@
     var el = $('fmZB'), h = '';
     if (tab === 'field') {
       var f = fieldStat();
-      h = '<span class="zn">🌾 Khu trồng trọt</span>' + (f.ripe ? '<button class="ok" data-a="harvestAll">🧺 ' + f.ripe + ' cây chín · thu</button>' : '') + (f.empty ? '<button class="can" data-a="zgoF">🌱 ' + f.empty + ' ô trống</button>' : '') + (f.dmg ? '<button class="bad" data-a="tab" data-t="quest">🥀 ' + f.dmg + ' ô bị hỏng</button>' : '') + (!f.ripe && !f.empty && !f.dmg && f.grow ? '<span class="work">⏳ ' + f.grow + ' cây đang lớn</span>' : '');
+      h = (f.ripe ? '<button class="ok" data-a="harvestAll">🧺 ' + f.ripe + ' cây chín · thu</button>' : '') + (f.empty ? '<button class="can" data-a="pbOpen">🌱 ' + f.empty + ' ô trống · chọn cây trồng</button>' : '') + (f.dmg ? '<button class="bad" data-a="tab" data-t="quest">🥀 ' + f.dmg + ' ô bị hỏng</button>' : '') + (!f.ripe && !f.empty && !f.dmg && f.grow ? '<span class="work">⏳ ' + f.grow + ' cây đang lớn</span>' : '');
     } else if (tab === 'barn') {
       var c = { ready: 0, hungry: 0, grow: 0, bad: 0 }, nf = false;
       for (var i = 0; i < NLOT; i++) { var st = penStat(i); if (!st.n) continue; if (st.pz) { c.bad++; continue; } if (st.ready) c.ready++; if (st.hungry) { c.hungry++; if (st.noFeed) nf = true; } if (!st.ready && !st.hungry) c.grow++; }
-      h = '<span class="zn">🐄 Khu chăn nuôi</span>' + (c.ready ? '<button class="ok" data-a="zgo" data-k="ready">🧺 ' + c.ready + ' chuồng có sản phẩm</button>' : '') + (c.hungry ? '<button class="' + (nf ? 'bad' : 'warn') + '" data-a="zgo" data-k="hungry">🍽️ ' + c.hungry + ' chuồng chưa cho ăn</button>' : '') + (c.grow ? '<button class="work" data-a="zgo" data-k="grow">⏳ ' + c.grow + ' chuồng đang nuôi</button>' : '') + (c.bad ? '<button class="bad" data-a="tab" data-t="quest">🔧 ' + c.bad + ' chuồng hỏng/ốm</button>' : '') + (c.ready || c.hungry ? '<button class="go" data-a="careAllB">⚡ Chăm hết</button>' : '');
+      h = '<button class="ok" data-a="barnGet">🧺 Thu hết' + (c.ready ? ' (' + c.ready + ')' : '') + '</button><button class="go" data-a="careAllB">⚡ Chăm hết' + (c.hungry ? ' (' + c.hungry + ' đói)' : '') + '</button>';
     }
     else if (tab === 'prod') {
       var pc = prodCounts();
@@ -1796,6 +1864,10 @@
       var fr = funReady(), fo = FUN.filter(function (F0) { return funState(F0) === 'open'; }).length;
       h = '<span class="zn">🎡 Khu vui chơi</span>' + (fr ? '<button class="ok" data-a="funAll">😊 ' + fr + ' khu chơi xong · nhận</button>' : '') + (fo ? '<span class="work">🎟️ ' + fo + ' khu còn lượt</span>' : '') + '<button class="can" data-a="lotList" data-k="fun">📋 Danh sách</button>';
     }
+    else if (tab === 'quest') {
+      h = '<button class="qv' + (qView === 'act' ? ' on' : '') + '" data-a="qview" data-v="act">⏳ Đang thực hiện · ' + qCnt.a + '</button><button class="qv' + (qView === 'new' ? ' on' : '') + '" data-a="qview" data-v="new">📋 Chưa thực hiện · ' + qCnt.n + '</button>';
+    }
+    var two = tab === 'quest' || tab === 'barn'; if (el.classList.contains('two') !== two) el.classList.toggle('two', two);
     if (force || h !== zbSig) { el.innerHTML = h; zbSig = h; if (force) el.scrollLeft = 0; }
     var dsp = h ? '' : 'none'; if (el.style.display !== dsp) { el.style.display = dsp; if (running) resize(); }
   }
@@ -1806,16 +1878,17 @@
     }
   }
   /* Chăm cả khu chăn nuôi: thu hết sản phẩm, cho ăn hết các con đói */
-  function careEverything() {
+  function careEverything(onlyGet) {
     var got = 0, fed = 0, miss = {}, sick = 0;
     for (var i = 0; i < NLOT; i++) {
       var P = S.pens[i]; if (!P) continue; var a = AM[P.a];
       if (animPaused(a.id)) { if (penList(i).length) sick++; continue; }
       penList(i).forEach(function (x) { if (x.s === 2) { collectOne(a, x); got++; } });
-      penList(i).forEach(function (x) { if (x.s === 0) { if (feedOne(a, x)) fed++; else miss[a.feed] = (miss[a.feed] || 0) + 1; } });
+      if (!onlyGet) penList(i).forEach(function (x) { if (x.s === 0) { if (feedOne(a, x)) fed++; else miss[a.feed] = (miss[a.feed] || 0) + 1; } });
     }
     var mk = Object.keys(miss);
     if (got || fed) sfx('ok'); else sfx('bad');
+    if (onlyGet) { toast(got ? '🧺 Thu ' + got + ' sản phẩm vào kho.' + (sick ? ' ' + sick + ' chuồng đang hỏng/ốm.' : '') : 'Chưa có sản phẩm nào để thu. Bấm ⚡ Chăm hết để cho các con ăn nhé!'); hud(); save(); zoneBar(true); return; }
     toast(((got ? 'Thu ' + got + ' sản phẩm. ' : '') + (fed ? 'Cho ăn ' + fed + ' con. ' : '') + (mk.length ? 'Thiếu ' + mk.map(function (k) { return miss[k] + ' ' + CM[k].e; }).join(', ') + ' để cho ăn (trồng thêm ở Khu trồng trọt). ' : '') + (sick ? sick + ' chuồng đang hỏng/ốm, vào 🎯 Nhiệm vụ để sửa.' : '')) || 'Các con đang no, chờ chút nhé!');
     hud(); save(); zoneBar(true);
   }
@@ -2659,6 +2732,7 @@
 
   /* --- Nhiệm vụ --- */
   function playBtn(g, lbl) { return '<button class="fm-btn blu" data-a="play" data-g="' + g + '">▶ ' + (lbl || 'Chơi ngay') + '</button>'; }
+  var qView = null, qCnt = { a: 0, n: 0 };
   function renderQuest() {
     var wk = S.mw, W0 = WM[wk], h = fixHtml() + defHtml();
     // Mục tiêu tiếp theo (mở khoá bằng kinh nghiệm)
@@ -2670,6 +2744,7 @@
     if (giftReady()) h += '<div class="fm-card hot" style="padding:9px 12px;display:flex;align-items:center;gap:10px"><span style="font-size:26px;font-family:' + EF + '">🎁</span><b style="flex:1;font-size:14px">Quà mỗi ngày: ' + money(giftAmt()) + ' + 🧪1</b><button class="fm-btn org" data-a="gift">Nhận</button></div>';
     var list = MISSIONS.filter(function (m) { return m.w === wk; }), st = S.wl[wk] || { o: 0, i: 0, n: 0 };
     var done = list.filter(function (m) { var e = mSt(m); return e && e.s === 2; });
+    var hHead = h.length;
     h += '<details class="fm-whead" style="--wc:' + W0.c + '" data-w="' + wk + '"><summary><b>' + W0.e + ' Ví ' + W0.n + '</b><span class="fm-wst">Số dư <b style="color:#1d4ed8">' + short(S.jar[wk]) + '</b> · Chi <b style="color:#dc2626">' + short(st.o) + '</b> · Nhận <b style="color:#15803d">' + short(st.i) + '</b> · Xong <b>' + done.length + '/' + list.length + '</b></span></summary><p>' + W0.d + '</p><p class="q">' + W0.q + '</p></details>';
     var G0 = WGUIDE[wk];
     h += '<div class="fm-wguide" style="--wc:' + W0.c + '"><div><b>✅ Ví này dùng cho:</b> ' + G0.use + '</div><div><b>🚫 Không dùng cho:</b> ' + G0.no + '</div></div>';
@@ -2682,8 +2757,21 @@
     var gchips = '<div class="fm-gchips"><button class="' + (gsel ? '' : 'on') + '" data-a="mgrp" data-g="" style="--wc:' + W0.c + '">Tất cả · ' + avail.length + '</button>' + G0.g.map(function (g) { return '<button class="' + (gsel === g[0] ? 'on' : '') + '" data-a="mgrp" data-g="' + g[0] + '" style="--wc:' + W0.c + '">' + g[1] + ' ' + g[2] + ' · ' + (cnt[g[0]] || 0) + '</button>'; }).join('') + '</div>';
     if (gsel) avail = avail.filter(function (m) { return m.grp === gsel; });
     var lock = list.filter(function (m) { return !mSt(m) && S.lv < m.lv; }).sort(function (a, b) { return a.lv - b.lv; });
-    if (act.length) { h += '<div class="fm-h2">⏳ Đang làm (' + act.length + '/' + MAX_ACTIVE + ')</div>'; act.forEach(function (m) { h += mCard(m, 'act'); }); }
+    var nAvail = list.filter(function (m) { return !mSt(m) && S.lv >= m.lv; }).length;
+    if (!qView) qView = act.length ? 'act' : 'new';
+    qCnt = { a: act.length, n: nAvail };
+    var isAct = qView === 'act';
+    if (isAct) h = h.slice(0, hHead);
+    if (isAct) {
+      if (!act.length) {
+        h += '<div class="fm-card" style="text-align:center;color:#7a6440">Ví ' + W0.e + ' ' + W0.n + ' chưa có nhiệm vụ nào đang làm.<div class="fm-row" style="justify-content:center"><button class="fm-btn" data-a="qview" data-v="new">📋 Xem nhiệm vụ chưa thực hiện</button></div></div>';
+      }
+      var oth = JK.filter(function (k) { return k !== wk; }).map(function (k) { var n = MISSIONS.filter(function (m) { var e = mSt(m); return m.w === k && e && e.s === 1; }).length; return n ? '<button class="fm-btn alt" data-a="wtab" data-w="' + k + '" style="flex:none;padding:6px 10px;font-size:12.5px">' + WM[k].e + ' ' + WM[k].n + ' · ' + n + '</button>' : ''; }).join('');
+      if (oth) h += '<div class="fm-sub" style="margin:8px 0 2px">Các ví khác đang làm nhiệm vụ:</div><div class="fm-row" style="margin-top:4px">' + oth + '</div>';
+    }
+    if (isAct && act.length) { h += '<div class="fm-h2">⏳ Đang làm (' + act.length + '/' + MAX_ACTIVE + ')</div>'; act.forEach(function (m) { h += mCard(m, 'act'); }); }
     var full = act.length >= MAX_ACTIVE;
+    if (!isAct) {
     h += '<div class="fm-h2">📋 Nhiệm vụ có thể nhận (' + avail.length + ')</div>' + gchips;
     if (full) h += '<p class="fm-sub">Ví này đang làm ' + MAX_ACTIVE + ' nhiệm vụ. Hoàn thành bớt rồi nhận thêm nhé!</p>';
     if (!avail.length) h += '<div class="fm-card" style="text-align:center;color:#7a6440">Đã nhận hết nhiệm vụ ở cấp này. Lên cấp để có nhiệm vụ mới! 🌟</div>';
@@ -2694,13 +2782,14 @@
     });
     if (avail.length > showN) h += '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="qmore">Xem thêm ' + (avail.length - showN) + ' nhiệm vụ ▾</button></div>';
     if (lock.length) { h += '<div class="fm-h2">🔒 Sắp mở</div>'; lock.slice(0, 3).forEach(function (m) { h += mCard(m, 'lock'); }); }
-    if (done.length) {
+    }
+    if (isAct && done.length) {
       h += '<details class="fm-done"><summary>✅ Đã hoàn thành ' + done.length + ' nhiệm vụ</summary>' + done.map(function (m) { var e = mSt(m); return '<div class="fm-log"><span class="e">' + m.e + '</span><span class="t">' + esc(m.n) + '</span><span class="a in">+' + short(e.p || 0) + '</span></div>'; }).join('') + '</details>';
     }
     var tot = MISSIONS.filter(function (m) { var e = mSt(m); return e && e.s === 2; }).length;
     h += '<p class="fm-sub" style="text-align:center;margin-top:10px">Tổng cộng đã hoàn thành ' + tot + '/' + MISSIONS.length + ' nhiệm vụ ở 6 ví</p>';
     var pn = $('fmP_quest');
-    pn.innerHTML = h;
+    pn.innerHTML = h; zoneBar(true);
     walletBar(); var wt = $('fmWB'), on = wt && wt.querySelector('.on'); if (on && (on.offsetLeft < wt.scrollLeft || on.offsetLeft + on.offsetWidth > wt.scrollLeft + wt.clientWidth)) wt.scrollLeft = on.offsetLeft - 20;
     qSig = questSig();
   }
@@ -2843,7 +2932,7 @@
   var PANELS = ['market', 'quest', 'earn', 'book'];
   function setTab(t) {
     if (t === 'build') t = 'prod';
-    tab = t; closeSheet();
+    tab = t; closeSheet(); pbClose();
     var nb = $('fmNav').querySelectorAll('button'); for (var i = 0; i < nb.length; i++) nb[i].classList.toggle('on', nb[i].getAttribute('data-t') === t || (t === 'book' && nb[i].getAttribute('data-a') === 'book'));
     PANELS.forEach(function (p) { $('fmP_' + p).classList.toggle('on', p === t); });
     stage.style.visibility = isMap(t) ? 'visible' : 'hidden';
@@ -2946,6 +3035,7 @@
   ['gesturestart', 'gesturechange'].forEach(function (t) { stage.addEventListener(t, function (e) { e.preventDefault(); }); });
 
   ov.addEventListener('input', function (e) { if (e.target && e.target.id && e.target.id.indexOf('fpc_') === 0) pctLive(); });
+  ov.addEventListener('input', function (e) { var t = e.target, id = t.getAttribute && t.getAttribute('data-pb'); if (!id) return; pbSet(id, t.value); pbFoot(); });
   ov.addEventListener('click', function (e) {
     var el = e.target.closest ? e.target.closest('[data-a]') : null;
     if (!el) { if (e.target === $('fmSheet')) closeSheet(); return; }
@@ -2983,6 +3073,15 @@
     else if (a === 'zgo') zoneGo(el.getAttribute('data-k'));
     else if (a === 'zgoF') { var fs = fieldStat(); if (fs.fe >= 0) { var FR = plotRect(fs.fe); flyTo('field', FR.x + FR.s / 2, FR.y + FR.s / 2, Math.max(cam.z, 1)); } tool = 'seed'; toolsUI(); toast(CM[S.sel].e + ' Chạm hoặc vuốt lên ô đất trống để gieo ' + CM[S.sel].n.toLowerCase() + ' (hạt giống trừ ví ' + (CM[S.sel].per ? '📈 Đầu tư' : '🏠 Thiết yếu') + ')'); }
     else if (a === 'careAllB') careEverything();
+    else if (a === 'barnGet') careEverything(true);
+    else if (a === 'qview') { qView = el.getAttribute('data-v'); renderQuest(); $('fmP_quest').scrollTop = 0; }
+    else if (a === 'pbOpen') plantBox();
+    else if (a === 'pbClose') pbClose();
+    else if (a === 'pbStep') { pbSet(el.getAttribute('data-c'), (PBQ[el.getAttribute('data-c')] || 0) + (+el.getAttribute('data-d'))); pbRender(); }
+    else if (a === 'pbAll') { var pc0 = el.getAttribute('data-c'); PBQ = {}; PBQ[pc0] = pbEmpty().length; pbRender(); }
+    else if (a === 'pbFill') { var pc1 = el.getAttribute('data-c'); pbSet(pc1, (PBQ[pc1] || 0) + pbEmpty().length - pbSum()); pbRender(); }
+    else if (a === 'pbClear') { PBQ = {}; pbRender(); }
+    else if (a === 'pbGo') pbGo();
     else if (a === 'mbuyGo') { mSub = 'buy'; setTab('market'); }
     else if (a === 'mgrp') { S.mg[S.mw] = el.getAttribute('data-g'); save(); renderQuest(); }
     else if (a === 'facGo') facGo(el.getAttribute('data-b'));

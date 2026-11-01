@@ -1,4 +1,4 @@
-/* 6PAY - Game NÔNG TRẠI SIXPAY (bản 2026.10.31-10: ⚔️ nhiệm vụ THỦ THÀNH khi thú hoang tấn công (file farm-td.js) và 🧊 chế độ xem 3D (file farm3d.js). Bản 2026.10.31-9: 5 cấp độ theo tổng tài sản 1tr→10tr→20tr→50tr→100tr→1 tỷ, mở tính năng dần, giới hạn 45 phút và mức lãi tối đa mỗi ngày, xem lại diễn biến thiên tai/thú hoang. Bản trước 2026.10.31-5: quy hoạch 4 khu Trồng trọt – Chăn nuôi – Sản xuất – Vui chơi, nhiệm vụ xếp theo hướng dẫn chi tiêu của từng ví,
+/* 6PAY - Game NÔNG TRẠI SIXPAY (bản 2026.11.01: bỏ chữ tên khu ở Sản xuất/Vui chơi, bỏ chế độ xem 3D, ẩn thanh cấp độ phía trên 6 ví — lên bậc và hết giờ chơi vẫn có thông báo. bản 2026.10.31-10: ⚔️ nhiệm vụ THỦ THÀNH khi thú hoang tấn công (file farm-td.js) và 🧊 chế độ xem 3D (file farm3d.js). Bản 2026.10.31-9: 5 cấp độ theo tổng tài sản 1tr→10tr→20tr→50tr→100tr→1 tỷ, mở tính năng dần, giới hạn 45 phút và mức lãi tối đa mỗi ngày, xem lại diễn biến thiên tai/thú hoang. Bản trước 2026.10.31-5: quy hoạch 4 khu Trồng trọt – Chăn nuôi – Sản xuất – Vui chơi, nhiệm vụ xếp theo hướng dẫn chi tiêu của từng ví,
    mọi khoản chi đều ghi rõ trừ ví nào, chuồng nuôi hiện trạng thái rõ ràng (có sản phẩm / chưa cho ăn / đang nuôi), nút 🔔 Thông báo: lịch sử thiên tai, thú hoang,
    thiệt hại và nông sản còn thiếu cho đơn hàng). File này được index.html tải về khi người dùng mở trò chơi.
    Trồng cây, nuôi gà – bò – cừu – cá – ong, xây xưởng chế biến, khu vui chơi, giao đơn hàng và ghi sổ thu chi.
@@ -1330,29 +1330,6 @@
       '<div class="fm-row" style="justify-content:center"><button class="fm-btn blu" data-a="replay" data-i="-1" data-r="' + (lastRP ? lastRP.id : '') + '">▶ Xem diễn biến</button></div>' +
       '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="sheetClose">Đóng</button>' + (tips.length || broke ? '<button class="fm-btn org" data-a="tab" data-t="quest">🛡️ Bảo vệ nông trại</button>' : '') + '</div></div>');
   }
-  /* ===== 🧊 CHẾ ĐỘ XEM 3D (bản thử, file farm3d.js + thư viện three.js) ===== */
-  var F3_SRC = ['games/farm3d.js', './farm3d.js', 'Games/farm3d.js'];
-  function snap3d() {
-    update(Date.now());
-    var big = BIG.map(function (B, k) {
-      var cells = [];
-      for (var j = 0; j < CELLS; j++) { var pl = S.plots[k * CELLS + j]; if (pl && pl.c && CM[pl.c]) { var C = CM[pl.c]; cells.push({ i: j, id: C.id, e: C.e, n: C.n, leaf: C.leaf || '#4caf50', p: Math.min(1, pl.p || 0), per: !!C.per, w: !!pl.w }); } }
-      return { open: !!S.bp[k], cells: cells };
-    });
-    var pens = S.pens.map(function (P, i) { var A = P && AM[P.a]; if (!A) return null; return { a: A.id, e: A.e, n: A.pen || A.n, water: !!A.water, cnt: (S.an[A.id] || []).filter(function (x) { return x.pen === i; }).length }; });
-    var blds = BUILDS.filter(function (b) { return S.bld[b.id]; }).map(function (b) { return { id: b.id, e: b.e, n: b.n }; });
-    return { big: big, pens: pens, blds: blds, defs: { rao: hasDef('rao'), choi: hasDef('choi'), cung: hasDef('cung') }, tier: S.tier || 1, lv: S.lv };
-  }
-  function open3d() {
-    toast('⏳ Đang mở nông trại 3D…');
-    (function go(i) {
-      if (window.Farm3D) { tdOn = true; Farm3D.open({ snap: snap3d, onClose: function () { tdOn = false; resize(); } }); return; }
-      if (i >= F3_SRC.length) { toast('Không tìm thấy file farm3d.js'); return; }
-      var sc = document.createElement('script'); sc.src = F3_SRC[i];
-      sc.onload = function () { go(window.Farm3D ? i : i + 1); }; sc.onerror = function () { sc.remove(); go(i + 1); };
-      document.head.appendChild(sc);
-    })(0);
-  }
   function defStart(id) {
     var D = DFM[id]; if (defState(D) !== 'buy') return;
     if (!has('essential', D.c)) { noMoney(D.c, 'essential'); return; }
@@ -1580,7 +1557,7 @@
   '.fm-fix summary{cursor:pointer;list-style:none}.fm-fix summary::-webkit-details-marker{display:none}.fm-fix summary b{display:block;color:#991b1b;font-size:15px}.fm-fix summary small{display:block;color:#b91c1c;font-size:12px;margin:2px 0 6px}.fm-fx{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:8px;margin-bottom:8px}.fm-fx .e{font-size:26px;font-family:' + EF + '}.fm-fx .t{flex:1;min-width:0}.fm-fx b{display:block;font-size:14px;color:#4a3416}.fm-fx small{display:block;font-size:12px;color:#7a6440;line-height:1.4}.fm-fx .fm-pb{display:block}.fm-fx .fm-btn{flex:none;padding:8px 10px;font-size:13px}' +
   '.fm-acts{margin:0 0 10px;flex-wrap:nowrap}.fm-acts .fm-btn{flex:1;padding:8px 6px;font-size:13px}' +
   '.fm-def summary{cursor:pointer;list-style:none}.fm-def summary::-webkit-details-marker{display:none}.fm-def summary b{color:#365314;font-size:15px}.fm-def>small{display:block;color:#4d7c0f;font-size:12px;margin:4px 0 8px}' +
-  '.fm-tbar{flex:none;padding:6px 8px 2px;background:#3f8a29}.fm-tb{display:flex;align-items:center;gap:6px;width:100%;border:0;border-radius:12px;background:rgba(255,255,255,.95);padding:5px 7px;color:#3b2a10!important;font-size:11.5px;font-weight:800;box-shadow:inset 4px 0 0 var(--tc)}' +
+  '.fm-tbar{display:none!important;flex:none;padding:6px 8px 2px;background:#3f8a29}.fm-tb{display:flex;align-items:center;gap:6px;width:100%;border:0;border-radius:12px;background:rgba(255,255,255,.95);padding:5px 7px;color:#3b2a10!important;font-size:11.5px;font-weight:800;box-shadow:inset 4px 0 0 var(--tc)}' +
   '.fm-tb .tn{flex:none;white-space:nowrap;color:var(--tc)}.fm-tb .tp{flex:1;min-width:60px;position:relative;height:18px;border-radius:9px;background:#eee4c8;overflow:hidden}.fm-tb .tp i{position:absolute;left:0;top:0;bottom:0;background:var(--tc);opacity:.85;border-radius:9px}.fm-tb .tp em{position:relative;display:block;text-align:center;line-height:18px;font-style:normal;font-size:11px;color:#2b1d07;text-shadow:0 0 3px #fff}' +
   '.fm-tb .td,.fm-tb .tt{flex:none;white-space:nowrap;border-radius:8px;padding:2px 5px;background:#f6f0de}.fm-tb .td.full{background:#fee2e2;color:#991b1b}.fm-tb .tt.low{background:#fee2e2;color:#b91c1c;animation:fmBlink 1s infinite}@keyframes fmBlink{50%{opacity:.5}}' +
   '.fm-nav button.lk{opacity:.55}.fm-nav button.lk .e:after{content:"🔒";font-size:11px;position:absolute;margin:-4px 0 0 -6px}' +
@@ -1603,7 +1580,6 @@
     '<div class="fm-tbar" id="fmTB"></div><div class="fm-wbar" id="fmWB"></div><div class="fm-zbar" id="fmZB"></div>' +
     '<div class="fm-main" id="fmMain">' +
       '<div class="fm-stage" id="fmStage"><canvas id="fmCv"></canvas>' +
-        '<div class="fm-zoom" id="fmZoom"><button data-a="v3d" aria-label="Xem nông trại 3D" style="font:900 13px ' + TF + ';color:#7c3aed">3D</button></div>' +
         '<div class="fm-tools" id="fmTools">' +
           '<button class="fm-tool on" data-a="tool" data-t="seed"><span class="e" id="fmSeedE">🌾</span><span id="fmSeedN">Gieo hạt</span></button>' +
           '<button class="fm-tool" id="fmWA" data-a="waterAll"><span class="e">🪣</span>Tưới hết</button>' +
@@ -2279,10 +2255,10 @@
     }
     else if (tab === 'prod') {
       var pc = prodCounts();
-      h = '<span class="zn">🏭 Khu sản xuất</span>' + (pc.ready || pc.can ? '<button class="ok" data-a="prodAll">⚡ ' + (pc.ready ? pc.ready + ' mẻ xong' : '') + (pc.ready && pc.can ? ' · ' : '') + (pc.can ? pc.can + ' đủ nguyên liệu' : '') + '</button>' : '') + (pc.inc >= 1000 ? '<button class="go" data-a="incAll">🪙 Thu +' + short(pc.inc) + '</button>' : '') + (pc.work ? '<span class="work">⏳ ' + pc.work + ' đang làm</span>' : '') + (pc.leak ? '<button class="bad" data-a="tab" data-t="quest">🔧 ' + pc.leak + ' bị dột</button>' : '') + '<button class="can" data-a="lotList" data-k="prod">📋 Danh sách</button>';
+      h = (pc.ready || pc.can ? '<button class="ok" data-a="prodAll">⚡ ' + (pc.ready ? pc.ready + ' mẻ xong' : '') + (pc.ready && pc.can ? ' · ' : '') + (pc.can ? pc.can + ' đủ nguyên liệu' : '') + '</button>' : '') + (pc.inc >= 1000 ? '<button class="go" data-a="incAll">🪙 Thu +' + short(pc.inc) + '</button>' : '') + (pc.work ? '<span class="work">⏳ ' + pc.work + ' đang làm</span>' : '') + (pc.leak ? '<button class="bad" data-a="tab" data-t="quest">🔧 ' + pc.leak + ' bị dột</button>' : '') + '<button class="can" data-a="lotList" data-k="prod">📋 Danh sách</button>';
     } else if (tab === 'fun') {
       var fr = funReady(), fo = FUN.filter(function (F0) { return funState(F0) === 'open'; }).length;
-      h = '<span class="zn">🎡 Khu vui chơi</span>' + (fr ? '<button class="ok" data-a="funAll">😊 ' + fr + ' khu chơi xong · nhận</button>' : '') + (fo ? '<span class="work">🎟️ ' + fo + ' khu còn lượt</span>' : '') + '<button class="can" data-a="lotList" data-k="fun">📋 Danh sách</button>';
+      h = (fr ? '<button class="ok" data-a="funAll">😊 ' + fr + ' khu chơi xong · nhận</button>' : '') + (fo ? '<span class="work">🎟️ ' + fo + ' khu còn lượt</span>' : '') + '<button class="can" data-a="lotList" data-k="fun">📋 Danh sách</button>';
     }
     else if (tab === 'quest') {
       h = '<button class="qv' + (qView === 'act' ? ' on' : '') + '" data-a="qview" data-v="act">⏳ Đang thực hiện · ' + qCnt.a + '</button><button class="qv' + (qView === 'new' ? ' on' : '') + '" data-a="qview" data-v="new">📋 Chưa thực hiện · ' + qCnt.n + '</button>';
@@ -3712,7 +3688,6 @@
     else if (a === 'fixGo') fixStart(el.getAttribute('data-f'));
     else if (a === 'defGo') defStart(el.getAttribute('data-d'));
     else if (a === 'tdGo') tdGo();
-    else if (a === 'v3d') open3d();
     else if (a === 'tdSkip') { closeSheet(); resolveRaid('auto'); }
     else if (a === 'tdPend') { closeSheet(); offerTD(); }
     else if (a === 'jars') jarSheet();

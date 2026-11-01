@@ -1,4 +1,4 @@
-/* 6PAY - Game NÔNG TRẠI SIXPAY (bản 2026.11.01: bỏ chữ tên khu ở Sản xuất/Vui chơi, bỏ chế độ xem 3D, ẩn thanh cấp độ phía trên 6 ví, bỏ % trên thanh ví, Sổ thu chi: chạm từng ví xem nhật ký chi tiêu, bỏ thông báo đã bảo vệ đầy đủ, tab Nhiệm vụ mở ra danh sách 6 ví kèm số nhiệm vụ đang/chưa thực hiện, bỏ các dòng chú thích dưới tên nhiệm vụ/hư hỏng/bảo vệ/công trình/khu chơi/game/phân bón — lên bậc và hết giờ chơi vẫn có thông báo. bản 2026.10.31-10: ⚔️ nhiệm vụ THỦ THÀNH khi thú hoang tấn công (file farm-td.js) và 🧊 chế độ xem 3D (file farm3d.js). Bản 2026.10.31-9: 5 cấp độ theo tổng tài sản 1tr→10tr→20tr→50tr→100tr→1 tỷ, mở tính năng dần, giới hạn 45 phút và mức lãi tối đa mỗi ngày, xem lại diễn biến thiên tai/thú hoang. Bản trước 2026.10.31-5: quy hoạch 4 khu Trồng trọt – Chăn nuôi – Sản xuất – Vui chơi, nhiệm vụ xếp theo hướng dẫn chi tiêu của từng ví,
+/* 6PAY - Game NÔNG TRẠI SIXPAY (bản 2026.11.01: bỏ chữ tên khu ở Sản xuất/Vui chơi, bỏ chế độ xem 3D, ẩn thanh cấp độ phía trên 6 ví, bỏ % trên thanh ví, Sổ thu chi: chạm từng ví xem nhật ký chi tiêu, bỏ giới hạn lãi mỗi ngày, giờ chơi 3 buổi sáng/chiều/tối mỗi buổi 1 giờ (hết giờ khoá nông trại), bỏ thông báo đã bảo vệ đầy đủ, tab Nhiệm vụ mở ra danh sách 6 ví kèm số nhiệm vụ đang/chưa thực hiện, bỏ các dòng chú thích dưới tên nhiệm vụ/hư hỏng/bảo vệ/công trình/khu chơi/game/phân bón — lên bậc và hết giờ chơi vẫn có thông báo. bản 2026.10.31-10: ⚔️ nhiệm vụ THỦ THÀNH khi thú hoang tấn công (file farm-td.js) và 🧊 chế độ xem 3D (file farm3d.js). Bản 2026.10.31-9: 5 cấp độ theo tổng tài sản 1tr→10tr→20tr→50tr→100tr→1 tỷ, mở tính năng dần, giới hạn 45 phút và mức lãi tối đa mỗi ngày, xem lại diễn biến thiên tai/thú hoang. Bản trước 2026.10.31-5: quy hoạch 4 khu Trồng trọt – Chăn nuôi – Sản xuất – Vui chơi, nhiệm vụ xếp theo hướng dẫn chi tiêu của từng ví,
    mọi khoản chi đều ghi rõ trừ ví nào, chuồng nuôi hiện trạng thái rõ ràng (có sản phẩm / chưa cho ăn / đang nuôi), nút 🔔 Thông báo: lịch sử thiên tai, thú hoang,
    thiệt hại và nông sản còn thiếu cho đơn hàng). File này được index.html tải về khi người dùng mở trò chơi.
    Trồng cây, nuôi gà – bò – cừu – cá – ong, xây xưởng chế biến, khu vui chơi, giao đơn hàng và ghi sổ thu chi.
@@ -494,7 +494,11 @@
   /* Tính năng mở theo cấp độ */
   var FEAT = { order: 2, fert: 2, prod: 2, dis: 2, per: 3, fun: 3, raid: 3, buy: 4 };
   var FEATN = { order: '🚚 Đơn hàng', fert: '🧪 Phân bón', prod: '🏭 Khu sản xuất', dis: '🌦️ Mưa bão, gió lốc', per: '🌳 Cây ăn quả lâu năm', fun: '🎡 Khu vui chơi', raid: '🐾 Thú hoang & 🛡️ bảo vệ', buy: '🛒 Mua hàng ở chợ' };
-  var PLAY_MIN = 45;   // phút chơi nông trại tối đa mỗi ngày (tránh chơi quá nhiều)
+  /* Giờ chơi: mỗi ngày tối đa 3 giờ, chia 3 buổi, mỗi buổi tối đa 60 phút. Hết giờ của buổi thì khoá nông trại đến buổi sau.
+     Không giới hạn số tiền lãi trong ngày. */
+  var PLAY_MIN = 60;   // phút chơi tối đa mỗi buổi
+  var SESS = [{ k: 's', n: 'buổi sáng', e: '🌅', h0: 0, h1: 12 }, { k: 'c', n: 'buổi chiều', e: '🌤️', h0: 12, h1: 18 }, { k: 't', n: 'buổi tối', e: '🌙', h0: 18, h1: 24 }];
+  function sessNow() { var h = new Date().getHours(); for (var i = 0; i < SESS.length; i++) if (h >= SESS[i].h0 && h < SESS[i].h1) return SESS[i]; return SESS[0]; }
   var DAYK = 'farm6_day';
   function TI() { return TIERS[Math.max(1, Math.min(5, S.tier || 1)) - 1]; }
   function feat(k) { return (S.tier || 1) >= FEAT[k]; }
@@ -526,12 +530,13 @@
   function dayTick() {
     if (!DAY) { try { DAY = JSON.parse(localStorage.getItem(DAYK)); } catch (e) {} }
     if (!DAY || DAY.k !== dayKey()) { DAY = { k: dayKey(), w0: worth(), lm: 0, play: 0, warn: 0 }; saveDay(); }
+    if (!DAY.ps) DAY.ps = {}; if (!DAY.pw) DAY.pw = {};
     return DAY;
   }
   function dayGain() { var D = dayTick(); return worth() - D.w0 - D.lm; }   // lãi từ nông trại hôm nay (không tính tiền học tập)
-  function room() { return TI().cap - dayGain(); }
+  function room() { return Infinity; }   // đã bỏ giới hạn lãi trong ngày
   function capMsg() { sfx('bad'); toast('📅 Hôm nay nông trại đã lãi đủ ' + short(TI().cap) + ' (mức tối đa của Cấp độ ' + TI().n + '). Chợ đã đóng cửa, mai bán tiếp nhé! Cây vẫn lớn, hàng vẫn giữ trong kho.'); }
-  function playLeft() { return Math.max(0, PLAY_MIN * 60 - dayTick().play); }
+  function playLeft() { return Math.max(0, PLAY_MIN * 60 - (dayTick().ps[sessNow().k] || 0)); }
   function tierProg() { var t = TI(), w = worth(); return t.n >= 5 ? Math.min(1, (w - t.min) / (t.to - t.min)) : Math.max(0, Math.min(1, (w - t.min) / (t.to - t.min))); }
 
   /* ================= TRẠNG THÁI & LƯU TRỮ ================= */
@@ -685,7 +690,7 @@
       var a = Math.max(0, Math.round(+x.a || 0)), ok = Math.max(0, Math.round(+x.ok || 0));
       // Tiền học tập mỗi ngày tối đa lcap (theo ngày chơi game học). Phần vượt không được cộng, nhưng số câu đúng vẫn tính cho khoá học.
       var dk = x.ts ? (function (d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); })(new Date(x.ts)) : today;
-      var used = dk === today ? D.lm : (oldDay[dk] || 0), give = Math.max(0, Math.min(a, TI().lcap - used));
+      var used = dk === today ? D.lm : (oldDay[dk] || 0), give = a;
       lost += a - give; a = give;
       if (dk === today) D.lm += a; else oldDay[dk] = used + a;
       var gs = S.gs[x.g] || (S.gs[x.g] = { ok: 0, earn: 0 });
@@ -2716,7 +2721,7 @@
     if (k === 'start') L0 = [
       gl('💵', 'Con bắt đầu với <b>1 triệu đồng</b> và một nông trại nhỏ. Đích đến: <b>1 tỷ</b>!'),
       gl('🪜', 'Có <b>5 cấp độ</b> theo tổng tài sản: 10tr, 20tr, 50tr, 100tr, 1 tỷ. Lên cấp mở thêm tính năng (bấm thanh 🌱 Cấp độ để xem).'),
-      gl('📅', 'Mỗi ngày chơi tối đa <b>' + PLAY_MIN + ' phút</b> và lãi tối đa một mức. Đủ mức thì nghỉ, cây vẫn lớn, mai chơi tiếp!'),
+      gl('📅', 'Mỗi ngày chơi tối đa <b>3 giờ</b>, chia 3 buổi: sáng, chiều, tối, mỗi buổi <b>1 giờ</b>. Hết giờ thì nghỉ, cây vẫn lớn!'),
       gl('✋', 'Kéo 1 ngón để đi quanh nông trại, chụm/mở 2 ngón (hoặc lăn chuột) để thu nhỏ/phóng to.'),
       gl('🧭', 'Thanh dưới cùng chuyển giữa các khu: Trồng trọt, Chăn nuôi, Sản xuất, Vui chơi, Chợ, Nhiệm vụ, Phụ bản.'),
       gl('🔔', '<b>Thông báo</b> (góc trên): mưa bão, gió lốc, thú hoang, thiệt hại, và nông sản còn thiếu cho đơn hàng.'),
@@ -2771,7 +2776,7 @@
     else if (k === 'tier') L0 = [
       gl('💎', '<b>Tài sản</b> = tiền 6 ví + tiền gửi, đầu tư + đất, chuồng, vật nuôi, công trình, cây ăn quả.'),
       gl('🔁', 'Mua đất, vật nuôi, xây xưởng không làm giảm tài sản. Chi Hưởng thụ, Chia sẻ, thiên tai, đầu tư lỗ thì tài sản giảm.'),
-      gl('📅', 'Mỗi ngày chơi tối đa ' + PLAY_MIN + ' phút và lãi tối đa một mức. Đủ mức thì chợ đóng, cây và vật nuôi vẫn lớn. Ngày mới bắt đầu lúc 0 giờ.')].concat(
+      gl('📅', 'Mỗi ngày chơi tối đa 3 giờ, chia 3 buổi: sáng (trước 12 giờ), chiều (12–18 giờ), tối (sau 18 giờ), mỗi buổi 1 giờ. Hết giờ của buổi thì nông trại khoá đến buổi sau, cây và vật nuôi vẫn lớn.')].concat(
       TIERS.map(function (x) { return gl(x.e, '<b>Cấp độ ' + x.n + ': ' + x.name + '</b> · ' + x.d); }));
     else if (k.indexOf('w_') === 0 && WGUIDE[k.slice(2)]) {
       var W0 = WM[k.slice(2)], G0 = WGUIDE[k.slice(2)];
@@ -2792,7 +2797,7 @@
   function newsTiers() {
     var t = TI();
     sheetLater('<div class="fm-modal"><div class="big">🪜</div><h2>Nông trại có 5 cấp độ!</h2><p style="font-size:13.5px">Nông trại của con đang ở <b>' + t.e + ' Cấp độ ' + t.n + ': ' + t.name + '</b> (tổng tài sản ' + short(worth()) + '). Tài sản đạt 10 triệu, 20 triệu, 50 triệu, 100 triệu thì lên cấp độ mới và mở thêm tính năng. Đích đến: <b>1 tỷ</b>!</p>' +
-      '<p style="font-size:13.5px">📅 Mỗi ngày chơi tối đa <b>' + PLAY_MIN + ' phút</b>, lãi tối đa <b>' + short(t.cap) + '</b> từ nông trại và <b>' + short(t.lcap) + '</b> từ học tập. Chăm chỉ mỗi ngày một chút là cách nhanh nhất!</p>' +
+      '<p style="font-size:13.5px">📅 Mỗi ngày chơi tối đa <b>3 giờ</b>: sáng, chiều, tối mỗi buổi <b>1 giờ</b>. Chăm chỉ mỗi ngày một chút là cách nhanh nhất!</p>' +
       '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="tiers">Xem 5 cấp độ</button><button class="fm-btn" data-a="sheetClose">Bắt đầu</button></div></div>');
   }
   function backSheet(got) {
@@ -2812,7 +2817,6 @@
     if (mSub === 'ord' && !feat('order')) mSub = 'inv';
     var nOrd = feat('order') ? S.orders.filter(canDeliver).length : 0;
     var h = '<div class="fm-seg"><button class="' + (mSub === 'ord' ? 'on' : '') + '" data-a="msub" data-t="ord">' + (feat('order') ? '' : '🔒 ') + '🚚 Đơn hàng' + (nOrd ? '<span class="dot">' + nOrd + '</span>' : '') + '</button><button class="' + (mSub === 'inv' ? 'on' : '') + '" data-a="msub" data-t="inv">📦 Kho</button><button class="' + (mSub === 'buy' ? 'on' : '') + '" data-a="msub" data-t="buy">' + (feat('buy') ? '' : '🔒 ') + '🛒 Mua hàng</button></div>';
-    h += dayCard();
     if (mSub === 'buy') { $('fmP_market').innerHTML = h + (feat('buy') ? buyHtml() : lockCard('buy', 'Mua nông sản còn thiếu ở chợ (đắt hơn giá bán 50%).')); return; }
     if (mSub === 'ord') {
       S.orders.forEach(function (o, k) {
@@ -3377,7 +3381,7 @@
   function renderEarn() {
     var tot = 0; GAMES.forEach(function (g) { tot += (S.gs[g.k] || {}).earn || 0; });
     var h = '<div class="fm-hero"><b>🎮 Phụ bản: kiếm thêm tiền cho nông trại</b><p>Đã mang về tổng cộng: <b>' + money(tot) + '</b></p>' +
-      '<p>📅 Hôm nay: <b>' + short(dayTick().lm) + ' / ' + short(TI().lcap) + '</b> tiền học tập' + (dayTick().lm >= TI().lcap ? ' (đã đủ, các câu đúng vẫn tính cho khoá học và kinh nghiệm)' : '') + '.</p></div>';
+      '<p>📅 Hôm nay: <b>' + short(dayTick().lm) + '</b> tiền học tập.</p></div>';
     var need = {};
     MISSIONS.forEach(function (m) { if (m.k === 'learn' && mSt(m) && mSt(m).s === 1 && !mDone(m)) need[m.g] = 1; });
     GAMES.forEach(function (g) {
@@ -3508,7 +3512,7 @@
     sfx('win'); try { if (window.addStar) window.addStar(); } catch (e) {}
     sheetLater('<div class="fm-modal"><div class="big">' + t.e + '</div><h2>Lên Cấp độ ' + t.n + ': ' + t.name + '!</h2><p>Tổng tài sản đã vượt <b>' + short(t.min) + '</b>. ' + t.d + '</p>' +
       '<p><b>Mở khoá mới:</b></p><div class="fm-ul">' + un.join('') + '</div>' +
-      '<p style="font-size:13px">💹 Giá thị trường tăng từ ×' + o.pm + ' lên <b>×' + t.pm + '</b> (hạt giống, nông sản, hàng chế biến, thu nhập công trình). 📅 Lãi tối đa mỗi ngày: <b>' + short(t.cap) + '</b> + ' + short(t.lcap) + ' tiền học tập.</p>' +
+      '<p style="font-size:13px">💹 Giá thị trường tăng từ ×' + o.pm + ' lên <b>×' + t.pm + '</b> (hạt giống, nông sản, hàng chế biến, thu nhập công trình).</p>' +
       '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="tiers">Xem 5 cấp độ</button><button class="fm-btn" data-a="sheetClose">Tuyệt vời!</button></div></div>');
   }
   function tierSheet() {
@@ -3529,15 +3533,15 @@
         '<li><span>🐄 Chuồng và vật nuôi</span><b>' + money(barnV) + '</b></li><li><span>🏭 Công trình, xưởng</span><b>' + money(bldV) + '</b></li><li><span>🌳 Cây ăn quả lâu năm</span><b>' + money(tree) + '</b></li></ul>' +
         '</details></div>' +
       '<div class="fm-card"><b>📅 Hôm nay</b><ul class="fm-earnlist">' +
-        '<li><span>🌾 Lãi từ nông trại</span><b' + (g >= t.cap ? ' style="color:#dc2626"' : '') + '>' + short(g) + ' / ' + short(t.cap) + '</b></li>' +
-        '<li><span>🎓 Tiền học tập (Phụ bản)</span><b' + (D.lm >= t.lcap ? ' style="color:#dc2626"' : '') + '>' + short(D.lm) + ' / ' + short(t.lcap) + '</b></li>' +
-        '<li><span>⏳ Thời gian chơi còn lại</span><b' + (pl <= 300 ? ' style="color:#dc2626"' : '') + '>' + Math.ceil(pl / 60) + ' / ' + PLAY_MIN + ' phút</b></li></ul></div>' +
+        '<li><span>🌾 Lãi từ nông trại</span><b>' + short(g) + '</b></li>' +
+        '<li><span>🎓 Tiền học tập (Phụ bản)</span><b>' + short(D.lm) + '</b></li>' +
+        '<li><span>⏳ Còn lại ' + sessNow().n + '</span><b' + (pl <= 300 ? ' style="color:#dc2626"' : '') + '>' + Math.ceil(pl / 60) + ' / ' + PLAY_MIN + ' phút</b></li></ul></div>' +
       '<div class="fm-h" style="margin-top:12px">🪜 5 cấp độ nông trại</div>';
     TIERS.forEach(function (x) {
       var done = S.tier > x.n, cur = S.tier === x.n;
       h += '<div class="fm-card' + (done ? ' done' : cur ? ' hot' : ' lock') + '" style="border-left:5px solid ' + x.c + '"><b>' + (done ? '✅ ' : cur ? '👉 ' : '🔒 ') + x.e + ' Cấp độ ' + x.n + ': ' + x.name + '</b>' +
         '<div class="fm-sub" style="margin:2px 0 6px">Tài sản ' + (x.n === 1 ? '1 triệu' : short(x.min)) + ' → ' + (x.n === 5 ? '1 tỷ' : short(x.to)) + '</div><div style="font-size:13px;line-height:1.5;color:#4a3a20">' + x.d + '</div>' +
-        '<div class="fm-ul" style="justify-content:flex-start;margin:6px 0 0"><span>🌾 ' + x.big + ' ô ruộng</span><span>🐄 ' + x.pen + ' chuồng</span><span>⭐ Bậc ' + (x.maxLv > 50 ? '17+' : '≤ ' + x.maxLv) + '</span><span>💹 Giá ×' + x.pm + '</span><span>📅 Lãi ≤ ' + short(x.cap) + '/ngày</span></div></div>';
+        '<div class="fm-ul" style="justify-content:flex-start;margin:6px 0 0"><span>🌾 ' + x.big + ' ô ruộng</span><span>🐄 ' + x.pen + ' chuồng</span><span>⭐ Bậc ' + (x.maxLv > 50 ? '17+' : '≤ ' + x.maxLv) + '</span><span>💹 Giá ×' + x.pm + '</span></div></div>';
     });
     sheet(h + '<div class="fm-row"><button class="fm-btn alt" data-a="roadmap" style="flex:1">⭐ Lộ trình bậc kinh nghiệm</button><button class="fm-btn" data-a="sheetClose" style="flex:1">Đóng</button></div>');
   }
@@ -3555,20 +3559,25 @@
   /* Hết giờ chơi trong ngày */
   var lastPlay = 0;
   function playTick() {
-    var now = Date.now(), D = dayTick();
-    if (lastPlay && !document.hidden) D.play += Math.min(2, (now - lastPlay) / 1000);
+    var now = Date.now(), D = dayTick(), se = sessNow(), lk = $('fmLock');
+    if (lk && lk.classList.contains('on')) {   // đang khoá: không đếm giờ; sang buổi mới thì tự mở khoá
+      lastPlay = now; if (playLeft() > 0 && lk.getAttribute('data-s') !== se.k + D.k) { lk.classList.remove('on'); toast(se.e + ' Bắt đầu ' + se.n + ': con có ' + PLAY_MIN + ' phút chơi nông trại.'); }
+      return;
+    }
+    if (lastPlay && !document.hidden) D.ps[se.k] = (D.ps[se.k] || 0) + Math.min(2, (now - lastPlay) / 1000);
     lastPlay = now;
     var left = playLeft();
-    if (left <= 300 && !D.warn) { D.warn = 1; saveDay(); toast('⏳ Còn 5 phút chơi nông trại hôm nay. Thu hoạch, gieo hạt cho cây lớn qua đêm nhé!'); }
+    if (left <= 300 && !D.pw[se.k]) { D.pw[se.k] = 1; saveDay(); toast('⏳ Còn 5 phút chơi nông trại ' + se.n + ' này. Thu hoạch, gieo hạt cho cây lớn trong lúc nghỉ nhé!'); }
     if (left <= 0) timeUp();
   }
   function timeUp() {
     var el = $('fmLock'); if (!el || el.classList.contains('on')) return;
-    saveDay(); save(); closeSheet();
-    var t0 = new Date(); t0.setHours(24, 0, 0, 0); var hrs = Math.max(1, Math.round((t0 - Date.now()) / 3600000));
-    el.innerHTML = '<div class="fm-lockb"><div class="big">🌙</div><h2>Hết giờ chơi hôm nay!</h2><p>Con đã chơi nông trại đủ <b>' + PLAY_MIN + ' phút</b>. Nông dân giỏi cũng cần nghỉ ngơi, học bài và chơi với gia đình.</p>' +
-      '<p>🌱 Cây trồng, vật nuôi, xưởng <b>vẫn lớn</b> khi con nghỉ. Khoảng ' + hrs + ' giờ nữa (sau 0 giờ) quay lại thu hoạch nhé!</p>' +
-      '<p style="font-size:13px">🎓 Các game học trong app vẫn chơi được. Tiền thưởng gửi về nông trại tối đa ' + short(TI().lcap) + ' mỗi ngày.</p>' +
+    saveDay(); save(); sheetQ = []; closeSheet(); pbClose(); rpStop(); $('fmRP').classList.remove('on');
+    var se = sessNow(), i = SESS.indexOf(se), nx = SESS[i + 1], when0 = nx ? nx.n + ' (từ ' + nx.h0 + ' giờ)' : 'buổi sáng ngày mai';
+    el.setAttribute('data-s', se.k + dayTick().k);
+    el.innerHTML = '<div class="fm-lockb"><div class="big">⏰</div><h2>Hết giờ chơi ' + se.n + '!</h2><p>Con đã chơi nông trại đủ <b>' + PLAY_MIN + ' phút</b> của ' + se.n + '. Nông dân giỏi cũng cần nghỉ ngơi, học bài và chơi với gia đình.</p>' +
+      '<p>🌱 Cây trồng, vật nuôi, xưởng <b>vẫn lớn</b> khi con nghỉ. Quay lại vào <b>' + when0 + '</b> nhé!</p>' +
+      '<p style="font-size:13px">📅 Mỗi ngày chơi tối đa 3 giờ: sáng, chiều, tối mỗi buổi 1 giờ.</p>' +
       '<button class="fm-btn" data-a="close" style="width:100%">Đóng nông trại</button></div>';
     el.classList.add('on'); sfx('bad');
   }

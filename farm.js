@@ -1,4 +1,4 @@
-/* 6PAY - Game NÔNG TRẠI SIXPAY (bản 2026.11.01: bỏ chữ tên khu ở Sản xuất/Vui chơi, bỏ chế độ xem 3D, ẩn thanh cấp độ phía trên 6 ví, bỏ % trên thanh ví, Sổ thu chi: chạm từng ví xem nhật ký chi tiêu — lên bậc và hết giờ chơi vẫn có thông báo. bản 2026.10.31-10: ⚔️ nhiệm vụ THỦ THÀNH khi thú hoang tấn công (file farm-td.js) và 🧊 chế độ xem 3D (file farm3d.js). Bản 2026.10.31-9: 5 cấp độ theo tổng tài sản 1tr→10tr→20tr→50tr→100tr→1 tỷ, mở tính năng dần, giới hạn 45 phút và mức lãi tối đa mỗi ngày, xem lại diễn biến thiên tai/thú hoang. Bản trước 2026.10.31-5: quy hoạch 4 khu Trồng trọt – Chăn nuôi – Sản xuất – Vui chơi, nhiệm vụ xếp theo hướng dẫn chi tiêu của từng ví,
+/* 6PAY - Game NÔNG TRẠI SIXPAY (bản 2026.11.01: bỏ chữ tên khu ở Sản xuất/Vui chơi, bỏ chế độ xem 3D, ẩn thanh cấp độ phía trên 6 ví, bỏ % trên thanh ví, Sổ thu chi: chạm từng ví xem nhật ký chi tiêu, bỏ các dòng chú thích dưới tên nhiệm vụ/hư hỏng/bảo vệ/công trình/khu chơi/game/phân bón — lên bậc và hết giờ chơi vẫn có thông báo. bản 2026.10.31-10: ⚔️ nhiệm vụ THỦ THÀNH khi thú hoang tấn công (file farm-td.js) và 🧊 chế độ xem 3D (file farm3d.js). Bản 2026.10.31-9: 5 cấp độ theo tổng tài sản 1tr→10tr→20tr→50tr→100tr→1 tỷ, mở tính năng dần, giới hạn 45 phút và mức lãi tối đa mỗi ngày, xem lại diễn biến thiên tai/thú hoang. Bản trước 2026.10.31-5: quy hoạch 4 khu Trồng trọt – Chăn nuôi – Sản xuất – Vui chơi, nhiệm vụ xếp theo hướng dẫn chi tiêu của từng ví,
    mọi khoản chi đều ghi rõ trừ ví nào, chuồng nuôi hiện trạng thái rõ ràng (có sản phẩm / chưa cho ăn / đang nuôi), nút 🔔 Thông báo: lịch sử thiên tai, thú hoang,
    thiệt hại và nông sản còn thiếu cho đơn hàng). File này được index.html tải về khi người dùng mở trò chơi.
    Trồng cây, nuôi gà – bò – cừu – cá – ong, xây xưởng chế biến, khu vui chơi, giao đơn hàng và ghi sổ thu chi.
@@ -919,7 +919,7 @@
     if (!S.fix.length) return '';
     var h = '<details class="fm-fix" open><summary><b>🚨 Hư hỏng cần sửa (' + S.fix.length + ')</b><small>Chi phí sửa trừ ví 🏠 Thiết yếu · đang có ' + short(S.jar.essential) + '</small></summary>';
     S.fix.forEach(function (f) {
-      h += '<div class="fm-fx"><span class="e">' + FIXD[f.t][1] + '</span><span class="t"><b>' + fixTitle(f) + '</b><small>' + fixDesc(f) + '</small>';
+      h += '<div class="fm-fx"><span class="e">' + FIXD[f.t][1] + '</span><span class="t"><b>' + fixTitle(f) + '</b>';
       if (f.s === 1) { var p = Math.min(1, (Date.now() - f.st) / (FIXD[f.t][0] * 1000)); h += '<span class="fm-pb"><i id="xp_' + f.id + '" style="width:' + Math.round(p * 100) + '%"></i></span><span class="fm-pt" id="xt_' + f.id + '">🔧 Đang sửa · còn ' + dur((1 - p) * FIXD[f.t][0]) + '</span></span>'; }
       else h += '</span><button class="fm-btn org" data-a="fixGo" data-f="' + f.id + '">🔧 −' + short(f.c) + ' 🏠</button>';
       h += '</div>';
@@ -1357,7 +1357,7 @@
     var h = '<details class="fm-def"><summary><b>🛡️ Bảo vệ nông trại · đã xây ' + nd + '/' + DEFS.length + ' ▾</b>' + (hasDef('rao') ? '' : '<small style="display:block;color:#b45309;margin:2px 0 0">⚠️ Chưa có hàng rào: cáo có thể vào bắt gà</small>') + '</summary>';
     DEFS.forEach(function (D) {
       var st = defState(D), d = S.def[D.id];
-      h += '<div class="fm-card' + (st === 'done' ? ' done' : st === 'lv' || st === 'req' ? ' lock' : '') + '"><div class="fm-li"><span class="fm-ic">' + D.e + '</span><div class="bd"><b class="t">' + D.n + (st === 'done' ? ' ✅' : '') + '</b><small>' + D.d + '</small>';
+      h += '<div class="fm-card' + (st === 'done' ? ' done' : st === 'lv' || st === 'req' ? ' lock' : '') + '"><div class="fm-li"><span class="fm-ic">' + D.e + '</span><div class="bd"><b class="t">' + D.n + (st === 'done' ? ' ✅' : '') + '</b>';
       if (st === 'build') { var p = Math.min(1, (Date.now() - d.st) / (D.t * 1000)); h += '<div class="fm-pb"><i id="dp_' + D.id + '" style="width:' + Math.round(p * 100) + '%"></i></div><div class="fm-pt" id="dt_' + D.id + '">🔨 Đang xây · còn ' + dur((1 - p) * D.t) + '</div>'; }
       else if (st === 'buy') h += '<div class="fm-row"><button class="fm-btn org" data-a="defGo" data-d="' + D.id + '">🔨 Xây · −' + short(D.c) + ' 🏠</button><span class="fm-tag">+' + Math.max(10, Math.round(need(S.lv) * 0.3)) + ' KN</span></div>';
       else if (st === 'lv') h += '<div><span class="fm-tag">🔒 Mở ở bậc ' + D.lv + '</span><span class="fm-tag">Giá ' + short(D.c) + '</span></div>';
@@ -2679,7 +2679,7 @@
   function fertSheet() {
     var h = '<div class="fm-h">🧪 Chọn loại phân bón</div>' + wpay('essential') + '';
     FERTS.forEach(function (f) {
-      h += '<div class="fm-seed' + (S.selF === f.id ? ' on' : '') + '" style="cursor:default"><span class="e">' + f.e + '</span><span class="tx"><b>' + f.n + '</b><small>' + f.d + ' · ' + money(f.p) + '/túi · đang có <b>' + (S.fz[f.id] || 0) + '</b> túi</small>' +
+      h += '<div class="fm-seed' + (S.selF === f.id ? ' on' : '') + '" style="cursor:default"><span class="e">' + f.e + '</span><span class="tx"><b>' + f.n + '</b><small>' + money(f.p) + '/túi · đang có <b>' + (S.fz[f.id] || 0) + '</b> túi</small>' +
         '<span class="fm-row" style="margin-top:6px"><button class="fm-btn" data-a="pickF" data-f="' + f.id + '"' + (S.fz[f.id] ? '' : ' disabled') + '>Dùng loại này</button><button class="fm-btn org" data-a="buyFert" data-f="' + f.id + '" data-q="1">Mua 1 · −' + short(f.p) + ' 🏠</button></span></span></div>';
     });
     sheet(h + '<button class="fm-btn alt" data-a="sheetClose" style="width:100%">Đóng</button>');
@@ -3064,9 +3064,9 @@
   }
   function buildTile(b) {
     var s = wsState(b), O = b.r && PRODUCTS[b.r.o], f = S.fac[b.id], body = '', st = '', stc = '';
-    if (s === 'lv') { st = '🔒 Mở ở bậc ' + b.lv; stc = 'lock'; body = '<small class="d">' + b.d + '</small><div class="fm-wl">' + wch('invest', b.cost) + '</div>'; }
-    else if (s === 'req') { st = '🔒 Cần xây ' + BM[b.req].n.toLowerCase() + ' trước'; stc = 'lock'; body = '<small class="d">' + b.d + '</small><div class="fm-wl">' + wch('invest', b.cost) + '</div>'; }
-    else if (s === 'buy') { st = '🏗️ Có thể xây'; stc = 'buy'; body = '<small class="d">' + b.d + '</small><button class="fm-btn org" data-a="build" data-b="' + b.id + '"' + (S.jar.invest < b.cost ? ' disabled' : '') + '>🔨 Xây · −' + short(b.cost) + ' 📈</button><div class="fm-wl">' + wch('invest') + (S.jar.invest < b.cost ? ' <span class="fm-tag" style="background:#fee2e2;color:#991b1b">Ví chưa đủ</span>' : '') + '</div>'; }
+    if (s === 'lv') { st = '🔒 Mở ở bậc ' + b.lv; stc = 'lock'; body = '<div class="fm-wl">' + wch('invest', b.cost) + '</div>'; }
+    else if (s === 'req') { st = '🔒 Cần xây ' + BM[b.req].n.toLowerCase() + ' trước'; stc = 'lock'; body = '<div class="fm-wl">' + wch('invest', b.cost) + '</div>'; }
+    else if (s === 'buy') { st = '🏗️ Có thể xây'; stc = 'buy'; body = '<button class="fm-btn org" data-a="build" data-b="' + b.id + '"' + (S.jar.invest < b.cost ? ' disabled' : '') + '>🔨 Xây · −' + short(b.cost) + ' 📈</button><div class="fm-wl">' + wch('invest') + (S.jar.invest < b.cost ? ' <span class="fm-tag" style="background:#fee2e2;color:#991b1b">Ví chưa đủ</span>' : '') + '</div>'; }
     else {
       if (s === 'leak') {
         var fx = fixFor(b); st = '💧 Bị dột, tạm dừng hoạt động'; stc = 'bad';
@@ -3076,7 +3076,7 @@
       else if (s === 'work') { var p = Math.min(1, (Date.now() - f.t) / (b.r.t * 1000)); st = '⏳ Đang làm ' + O.e; stc = 'work'; body += '<div class="fm-pb"><i id="fp_' + b.id + '" style="width:' + Math.round(p * 100) + '%"></i></div><div class="fm-pt" id="ft_' + b.id + '">còn ' + dur((1 - p) * b.r.t) + '</div>'; }
       else if (s === 'can') { st = '▶ Đủ nguyên liệu'; stc = 'can'; body += '<button class="fm-btn" data-a="facGo" data-b="' + b.id + '">▶ Bắt đầu làm ' + O.e + '</button>'; }
       else if (s === 'need') { st = '⚠️ Thiếu nguyên liệu'; stc = 'warn'; }
-      else { st = '✅ Đang hoạt động'; stc = 'ok'; body += '<small class="d">' + b.d + '</small>'; }
+      else { st = '✅ Đang hoạt động'; stc = 'ok';  }
       if (b.r) body += '<div class="rc">' + b.r.i.map(function (x) { var hv = S.inv[x[0]] || 0; return '<span class="' + (hv >= x[1] ? 'g' : 'r') + '">' + item(x[0]).e + ' ' + Math.min(hv, x[1]) + '/' + x[1] + '</span>'; }).join('') + '<span class="o">→ ' + b.r.n + ' ' + O.e + ' (≈' + short(b.r.n * O.sell) + ') · ' + durL(b.r.t) + '</span></div>';
       var ia = incOf(b.id);
       body += '<div class="inc">🪙 +' + short(b.inc) + '/giờ' + (ia >= 1000 ? ' <button class="fm-btn mini" data-a="incGet" data-b="' + b.id + '">Thu +' + short(ia) + '</button>' : '') + '</div>';
@@ -3159,18 +3159,18 @@
   }
   function funTile(F0) {
       var st = funState(F0), x = S.fun[F0.id], c = funTicket(F0), body = '', s1 = '', sc = '';
-      if (st === 'lv') { s1 = '🔒 Mở ở bậc ' + F0.lv; sc = 'lock'; body = '<small class="d">' + F0.d + '</small><div class="fm-wl">' + wch('enjoy', F0.cost || null) + '</div>'; }
-      else if (st === 'buy') { s1 = '🏗️ Có thể xây'; sc = 'buy'; body = '<small class="d">' + F0.d + '</small><button class="fm-btn org" data-a="funBuild" data-f="' + F0.id + '"' + (F0.cost && S.jar.enjoy < F0.cost ? ' disabled' : '') + '>' + (F0.cost ? '🔨 Xây · −' + short(F0.cost) + ' 🎉' : '🔨 Xây miễn phí') + '</button><div class="fm-wl">' + wch('enjoy') + (F0.cost && S.jar.enjoy < F0.cost ? ' <span class="fm-tag" style="background:#fee2e2;color:#991b1b">Ví chưa đủ</span>' : '') + '</div>'; }
+      if (st === 'lv') { s1 = '🔒 Mở ở bậc ' + F0.lv; sc = 'lock'; body = '<div class="fm-wl">' + wch('enjoy', F0.cost || null) + '</div>'; }
+      else if (st === 'buy') { s1 = '🏗️ Có thể xây'; sc = 'buy'; body = '<button class="fm-btn org" data-a="funBuild" data-f="' + F0.id + '"' + (F0.cost && S.jar.enjoy < F0.cost ? ' disabled' : '') + '>' + (F0.cost ? '🔨 Xây · −' + short(F0.cost) + ' 🎉' : '🔨 Xây miễn phí') + '</button><div class="fm-wl">' + wch('enjoy') + (F0.cost && S.jar.enjoy < F0.cost ? ' <span class="fm-tag" style="background:#fee2e2;color:#991b1b">Ví chưa đủ</span>' : '') + '</div>'; }
       else if (st === 'play') { var p = Math.min(1, (Date.now() - x.t) / (F0.t * 1000)); s1 = '😄 Đang vui chơi'; sc = 'work'; body = '<div class="fm-pb"><i id="vp_' + F0.id + '" style="width:' + Math.round(p * 100) + '%"></i></div><div class="fm-pt" id="vt_' + F0.id + '">còn ' + dur((1 - p) * F0.t) + '</div>'; }
       else if (st === 'ready') { s1 = '✅ Chơi xong!'; sc = 'ok'; body = '<button class="fm-btn org" data-a="funGet" data-f="' + F0.id + '">😊 Nhận niềm vui +' + funXP(F0) + ' KN</button>'; }
-      else if (st === 'rest') { s1 = '🌙 Đã chơi đủ ' + FUN_DAY + ' lượt hôm nay'; sc = 'lock'; body = '<small class="d">Mai quay lại chơi tiếp nhé!</small>'; }
+      else if (st === 'rest') { s1 = '🌙 Đã chơi đủ ' + FUN_DAY + ' lượt hôm nay'; sc = 'lock'; body = ''; }
       else { s1 = '🎟️ Còn ' + (FUN_DAY - x.n) + '/' + FUN_DAY + ' lượt hôm nay'; sc = 'can'; body = '<button class="fm-btn" data-a="funPlay" data-f="' + F0.id + '"' + (c && S.jar.enjoy < c ? ' disabled' : '') + '>' + (c ? '🎟️ Vào chơi · −' + short(c) + ' 🎉' : '🎟️ Vào chơi miễn phí') + '</button><small class="d">⏱ ' + durL(F0.t) + ' · +' + funXP(F0) + ' KN' + (c && S.jar.enjoy < c ? ' · ví Hưởng thụ chưa đủ' : '') + '</small>'; }
       return tile('st-' + st, st === 'lv' ? '🔒' : F0.e, '', F0.n, s1, sc, body);
   }
   function renderFun() {
     var nB = FUN.filter(function (F0) { return S.fun[F0.id]; }).length;
     var h = '<div class="fm-zhead" style="--zc:#ef4444"><span class="e">🎡</span><div><b>Khu vui chơi</b><small>💳 Ví 🎉 Hưởng thụ: ' + short(S.jar.enjoy) + '</small></div></div>';
-    h += '<button class="fm-arcade" data-a="tab" data-t="earn"><span class="e">🕹️</span><span><b>Nhà trò chơi Phụ bản</b><small>Kiếm tiền cho nông trại</small></span><span class="go">›</span></button>';
+    h += '<button class="fm-arcade" data-a="tab" data-t="earn"><span class="e">🕹️</span><span><b>Nhà trò chơi Phụ bản</b></span><span class="go">›</span></button>';
     h += '<div class="fm-grid">' + FUN.map(funTile).join('') + '</div>';
     if (nB) h += '<p class="fm-sub" style="margin-top:10px;text-align:center">Đã xây ' + nB + '/' + FUN.length + ' khu chơi</p>';
     funH = h; funSig = funSigOf(); refreshLot('fun');
@@ -3288,7 +3288,7 @@
   function mCard(m, mode) {
     var e = mSt(m), p = mProg(m), c = e && e.c != null ? e.c : mCost(m), rq = !reqOk(m);
     var cls = mode === 'lock' ? ' lock' : mode === 'act' && p >= 1 ? ' hot' : '';
-    var h = '<div class="fm-card' + cls + '"><div class="fm-li"><span class="fm-ic">' + (mode === 'lock' ? '🔒' : m.e) + '</span><div class="bd"><b class="t">' + esc(m.n) + '</b><small>' + m.d + '</small>' +
+    var h = '<div class="fm-card' + cls + '"><div class="fm-li"><span class="fm-ic">' + (mode === 'lock' ? '🔒' : m.e) + '</span><div class="bd"><b class="t">' + esc(m.n) + '</b>' +
       '<div><span class="fm-tag b">' + mTask(m) + '</span></div><div>' +
       (m.pct && !e ? '<span class="fm-tag r">Chi: ' + Math.round(m.pct * 100) + '% ví ' + WM[m.w].e + ' ' + WM[m.w].n + ' (≈' + short(c) + ')</span>' : c ? '<span class="fm-tag r">Chi: −' + short(c) + ' từ ví ' + WM[m.w].e + ' ' + WM[m.w].n + '</span>' : '<span class="fm-tag g">Miễn phí</span>') +
       (m.w === 'saving' ? '<span class="fm-tag g">Nhận: ' + mPayText(m, c) + ' (lãi ' + Math.round(m.rate * 100) + '%)</span>' : m.rng ? '<span class="fm-tag g">Nhận: ' + mPayText(m, c) + ' (lãi hoặc lỗ)</span>' : m.pay ? '<span class="fm-tag g">Nhận: +' + short(m.pay) + '</span>' : '<span class="fm-tag">Không hoàn tiền</span>') +
@@ -3355,7 +3355,7 @@
     MISSIONS.forEach(function (m) { if (m.k === 'learn' && mSt(m) && mSt(m).s === 1 && !mDone(m)) need[m.g] = 1; });
     GAMES.forEach(function (g) {
       var gs = S.gs[g.k] || { ok: 0, earn: 0 };
-      h += '<div class="fm-card' + (need[g.k] ? ' hot' : '') + '"><div class="fm-li"><span class="fm-ic">' + g.e + '</span><div class="bd"><b class="t">' + g.n + '</b><small>' + g.d + '</small>' +
+      h += '<div class="fm-card' + (need[g.k] ? ' hot' : '') + '"><div class="fm-li"><span class="fm-ic">' + g.e + '</span><div class="bd"><b class="t">' + g.n + '</b>' +
         '<div>' + (need[g.k] ? '<span class="fm-tag">📚 Đang có khoá học</span>' : '') + '<span class="fm-tag g">Đã mang về ' + short(gs.earn) + '</span><span class="fm-tag b">Đúng ' + gs.ok + ' ' + g.u + '</span></div>' +
         '<div class="fm-row">' + playBtn(g.k, 'Chơi') + '</div></div></div></div>';
     });
@@ -3379,7 +3379,7 @@
     sheet(h);
   }
   function pctSheet() {
-    var h = '<div class="fm-h">⚙️ Tỷ lệ chia tiền vào 6 ví</div><p class="fm-sub">🔗 Dùng chung với tỷ lệ của app 6PAY.</p><div class="fm-row" style="margin-bottom:8px">' +
+    var h = '<div class="fm-h">⚙️ Tỷ lệ chia tiền vào 6 ví</div><div class="fm-row" style="margin-bottom:8px">' +
       PCT_PRESETS.map(function (x, i) { return '<button class="fm-btn alt" data-a="pctPre" data-i="' + i + '" style="flex:1;padding:8px 6px;font-size:12.5px"><b>' + x.n + '</b><br><small>' + [x.p.essential, x.p.education, x.p.saving, x.p.invest, x.p.share, 100 - x.p.essential - x.p.education - x.p.saving - x.p.invest - x.p.share].join('/') + '</small></button>'; }).join('') + '</div>';
     WALLETS.slice(0, 5).forEach(function (W0) { h += '<div class="fm-jar" style="--wc:' + W0.c + '"><span class="e">' + W0.e + '</span><span class="t"><b>' + W0.n + '</b></span><span class="v"><input class="fm-in" id="fpc_' + W0.k + '" type="number" inputmode="numeric" min="0" max="100" value="' + curPct()[W0.k] + '"> %</span></div>'; });
     h += '<div class="fm-jar" style="--wc:' + WM.enjoy.c + '"><span class="e">🎉</span><span class="t"><b>Hưởng thụ (còn lại)</b></span><span class="v" id="fpcE">' + pctOf('enjoy') + '%</span></div><div id="fpcErr" class="fm-sub" style="color:#dc2626;text-align:center"></div>' +
@@ -3437,7 +3437,7 @@
       '<div class="fm-card" style="font-size:14px">📅 Hôm nay: thu <b style="color:#15803d">' + money(ti) + '</b>, chi <b style="color:#dc2626">' + money(to) + '</b> → ' + (ti - to >= 0 ? 'lãi' : 'lỗ') + ' <b>' + money(Math.abs(ti - to)) + '</b></div>' +
       '<div class="fm-card" style="font-size:14px">🎓 Tiền kiếm được từ học tập: <b style="color:#15803d">' + money(learn) + '</b>' + (S.tin ? ' (' + Math.round(learn / S.tin * 100) + '% tổng thu)' : '') + '</div>' +
       (function () {
-        return '<div class="fm-card"><b>👛 Chi tiêu theo 6 ví</b><div class="fm-sub" style="margin:2px 0 6px">Chạm vào một ví để xem nhật ký chi tiêu của ví đó.</div>' +
+        return '<div class="fm-card"><b>👛 Chi tiêu theo 6 ví</b>' +
           WALLETS.map(function (x) { var q = S.wl[x.k] || { o: 0, i: 0, n: 0 }; return '<button class="fm-wrow" data-a="wbook" data-w="' + x.k + '" style="--wc:' + x.c + '"><span class="e">' + x.e + '</span><span class="t"><b>' + x.n + '</b><small>Số dư ' + short(S.jar[x.k]) + '</small></span><span class="v"><small>Đã chi</small><b style="color:#dc2626">' + short(q.o) + '</b></span><span class="v"><small>Đã nhận</small><b style="color:#15803d">' + short(q.i) + '</b></span><span class="go">›</span></button>'; }).join('') + '</div>';
       })() +
       '<div class="fm-card"><b>📊 Bảng tính lãi từng loại cây</b><table class="fm-tb"><tr><th></th><th>Cây</th><th>Lãi/cây</th><th>Thời gian</th><th>Lãi/phút</th></tr>' +

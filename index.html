@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.01-1';
+const APP_VERSION='2026.11.01-2';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -51,7 +51,7 @@ try{if(localStorage.getItem('6pay-fontsize-v1')==='big')document.documentElement
 <link rel="apple-touch-startup-image" href="splash/1668x2224.png" media="(device-width:834px) and (device-height:1112px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 /* ================= 6PAY — Giao diện sáng, màu nhẹ, co giãn theo màn hình ================= */
 :root{
@@ -621,15 +621,6 @@ body{touch-action:manipulation;}
 .lc-q:first-of-type{border-top:none;}
 .lc-q div{font-style:italic;color:var(--text-soft);}
 
-/* ---------- Màn hình chào ---------- */
-.boot-splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:min(5vw,28px);padding:0 10vw;text-align:center;background:#FFFFFF;transition:opacity .3s ease;}
-.boot-splash.hide{opacity:0;pointer-events:none;}
-html.fast-start .boot-splash{display:none!important;}
-.boot-emoji{font-size:min(20vw,120px);line-height:1;animation:bootZoom .8s cubic-bezier(.2,1.15,.4,1) forwards;}
-.boot-brand{font-size:min(11vw,64px);line-height:1;font-weight:800;letter-spacing:.02em;opacity:0;animation:bootIn .5s ease forwards;animation-delay:.3s;}
-.boot-tagline{font-size:min(4.6vw,22px);font-weight:700;color:#24427A;max-width:360px;line-height:1.6;opacity:0;animation:bootIn .6s ease forwards;animation-delay:.6s;}
-@keyframes bootZoom{0%{transform:scale(.55);opacity:0;}55%{opacity:1;}100%{transform:scale(1);opacity:1;}}
-@keyframes bootIn{0%{opacity:0;transform:translateY(12px);}100%{opacity:1;transform:translateY(0);}}
 
 /* ---------- Màn hình thấp ---------- */
 @media (max-height:700px){
@@ -695,7 +686,23 @@ body:not(.home-white) .qa-fab{display:none;}
 .home-wrap>.card-pair{max-height:92px;}
 .home-wrap>.card-pair:last-of-type{max-height:72px;}
 .home-quote{margin-top:auto;padding-top:clamp(8px,1.6vh,14px);}
+/* (bản 2026.11.01-2) Bỏ màn hình chào; câu khẩu hiệu chuyển lên trang chủ. Thu gọn đầu trang và các ô (không tự giãn nữa) để dòng phiên bản luôn hiện trong màn hình */
+.home-tagline{font-size:clamp(12px,1.7vh,13.5px);font-weight:600;color:#24427A;line-height:1.4;margin-top:2px;max-width:340px;text-wrap:balance;}
+.home-icon-badge{width:clamp(44px,7vh,72px);height:clamp(44px,7vh,72px);font-size:clamp(32px,5.2vh,52px);}
+.home-brand{font-size:clamp(32px,5.4vh,48px);}
+.home-header{padding-bottom:clamp(6px,1.1vh,10px);}
+.star-line{margin-top:clamp(2px,.6vh,6px);}
+.home-wrap>.card,.home-wrap>.card-pair{flex:1 1 auto;}
+.home-wrap>.card.balance{max-height:80px;}.home-wrap>.card.hist{max-height:62px;}.home-wrap>.card-pair{max-height:80px;}.home-wrap>.card-pair:last-of-type{max-height:62px;}
+.home-wrap .card{min-height:clamp(42px,5.6vh,50px);padding:6px 14px;margin-bottom:clamp(5px,.8vh,8px);}
+.home-wrap .card.balance{min-height:clamp(48px,6.6vh,60px);}
+.home-wrap .card-pair{margin-bottom:clamp(5px,.8vh,8px);gap:clamp(5px,.8vh,8px);}
+.home-wrap .card-pair .card{min-height:clamp(48px,6.4vh,58px);padding:6px 14px;}
+.home-wrap .card-pair .card.quiz,.home-wrap .card-pair .card.partner{min-height:clamp(42px,5.6vh,50px);}
+.home-quote{padding-top:clamp(4px,1vh,10px);}
+@media (max-height:700px){.home-icon-badge{display:none;}}
 @media (max-height:600px){
+ .home-tagline{display:none;}
  .home-wrap .card{min-height:42px;padding:6px 12px;}
  .home-wrap .card.balance{min-height:48px;}
  .home-wrap .card-pair .card{min-height:46px;padding:6px 12px;}
@@ -822,11 +829,6 @@ html.fs-big .ob-jar .d,html.fs-big .rp-plan,html.fs-big .rp-lim{font-size:14px;}
 </style>
 </head>
 <body>
-<div id="bootSplash" class="boot-splash" aria-hidden="true">
- <div class="boot-emoji">💰</div>
- <div class="boot-brand"><span style="color:#E63946">6</span><span style="color:#F4A300">P</span><span style="color:#2A9D8F">A</span><span style="color:#3E6FB8">Y</span></div>
- <div class="boot-tagline">Hãy ghi chép thường xuyên<br>để tạo thói quen<br>Quản lý tài chính của bạn</div>
-</div>
 <div class="wrap"><div id="app"></div></div>
 <div class="modal-overlay" id="planAskModal" onclick="if(event.target===this)this.classList.remove('open')">
  <div class="modal-box" id="planAskBox"></div>
@@ -1556,6 +1558,7 @@ function scrHome(){
    <div class="home-icon-badge" aria-hidden="true">💰</div>
    <div class="brand-title home-brand">${BRAND_HTML}</div>
    <div class="brand-sub">Quản lý tài chính cá nhân</div>
+   <div class="home-tagline">Hãy ghi chép thường xuyên để tạo thói quen quản lý chi tiêu của bạn</div>
    <div class="star-line">${streakHtml()} &nbsp;·&nbsp; ⭐ ${fmt(stars)} điểm</div>
   </div>
   ${homeNudge()}
@@ -4475,7 +4478,6 @@ function saveSession(){
   const s=JSON.parse(localStorage.getItem(SESS_KEY));
   if(s&&Date.now()-s.ts<SESS_MS&&Array.isArray(s.stack)&&s.stack.length&&s.stack.every(x=>x.id==='home'||SCREENS[x.id])){
    stack=s.stack;locked=false;loggedIn=!!s.loggedIn;fastStart=true;
-   const sp=document.getElementById('bootSplash');if(sp)sp.remove();
   }
  }catch(e){}
 })();
@@ -4500,10 +4502,8 @@ render();
 fetchGuides();
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}
 setTimeout(()=>{
- const sp=document.getElementById('bootSplash');
- if(sp){ sp.classList.add('hide'); setTimeout(()=>sp.remove(),300); }
-  if(!fastStart){if(obDue())obOpen();else setTimeout(maybeShowInstall,500);}
-},3000);
+  if(!fastStart){if(obDue())obOpen();else setTimeout(maybeShowInstall,1500);}
+},300);
 // ===== BỘ ĐẾM ẨN DANH (GoatCounter) =====
 // Chỉ gửi: đã mở app, mở bằng app đã cài hay trình duyệt, mở trò chơi nào, và mỗi máy tối đa 1 lần/ngày "có ghi chép".
 // Không gửi tên, số điện thoại, số tiền, ghi chú hay bất kỳ dữ liệu cá nhân nào.

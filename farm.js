@@ -1,4 +1,4 @@
-/* 6PAY - Game NÔNG TRẠI SIXPAY (bản 2026.11.01: bỏ chữ tên khu ở Sản xuất/Vui chơi, bỏ chế độ xem 3D, ẩn thanh cấp độ phía trên 6 ví — lên bậc và hết giờ chơi vẫn có thông báo. bản 2026.10.31-10: ⚔️ nhiệm vụ THỦ THÀNH khi thú hoang tấn công (file farm-td.js) và 🧊 chế độ xem 3D (file farm3d.js). Bản 2026.10.31-9: 5 cấp độ theo tổng tài sản 1tr→10tr→20tr→50tr→100tr→1 tỷ, mở tính năng dần, giới hạn 45 phút và mức lãi tối đa mỗi ngày, xem lại diễn biến thiên tai/thú hoang. Bản trước 2026.10.31-5: quy hoạch 4 khu Trồng trọt – Chăn nuôi – Sản xuất – Vui chơi, nhiệm vụ xếp theo hướng dẫn chi tiêu của từng ví,
+/* 6PAY - Game NÔNG TRẠI SIXPAY (bản 2026.11.01: bỏ chữ tên khu ở Sản xuất/Vui chơi, bỏ chế độ xem 3D, ẩn thanh cấp độ phía trên 6 ví, bỏ % trên thanh ví, Sổ thu chi: chạm từng ví xem nhật ký chi tiêu — lên bậc và hết giờ chơi vẫn có thông báo. bản 2026.10.31-10: ⚔️ nhiệm vụ THỦ THÀNH khi thú hoang tấn công (file farm-td.js) và 🧊 chế độ xem 3D (file farm3d.js). Bản 2026.10.31-9: 5 cấp độ theo tổng tài sản 1tr→10tr→20tr→50tr→100tr→1 tỷ, mở tính năng dần, giới hạn 45 phút và mức lãi tối đa mỗi ngày, xem lại diễn biến thiên tai/thú hoang. Bản trước 2026.10.31-5: quy hoạch 4 khu Trồng trọt – Chăn nuôi – Sản xuất – Vui chơi, nhiệm vụ xếp theo hướng dẫn chi tiêu của từng ví,
    mọi khoản chi đều ghi rõ trừ ví nào, chuồng nuôi hiện trạng thái rõ ràng (có sản phẩm / chưa cho ăn / đang nuôi), nút 🔔 Thông báo: lịch sử thiên tai, thú hoang,
    thiệt hại và nông sản còn thiếu cho đơn hàng). File này được index.html tải về khi người dùng mở trò chơi.
    Trồng cây, nuôi gà – bò – cừu – cá – ong, xây xưởng chế biến, khu vui chơi, giao đơn hàng và ghi sổ thu chi.
@@ -628,7 +628,7 @@
     if (k === 'in') S.tin += amt; else S.tout += amt;
     var L = S.log[0], now = Date.now();
     if (L && L.key === key && L.k === k && L.w === w && now - L.ts < 120000) { L.a += amt; L.q += q; L.ts = now; }
-    else { var o = { ts: now, k: k, a: amt, key: key, n: name, e: e, q: q }; if (w) o.w = w; S.log.unshift(o); if (S.log.length > 150) S.log.length = 150; }
+    else { var o = { ts: now, k: k, a: amt, key: key, n: name, e: e, q: q }; if (w) o.w = w; S.log.unshift(o); if (S.log.length > 400) S.log.length = 400; }
   }
   /* CHI TIỀN: luôn ghi rõ trừ ví nào (w) vào sổ thu chi */
   function spend(w, c, key, name, e, q) { takeMoney(w, c); addLog('out', c, key, name, e, q, w); wlog(w, 'o', c); }
@@ -1493,6 +1493,8 @@
   '.fm-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}.fm-sum div{background:#fff;border-radius:14px;padding:10px 6px;text-align:center;box-shadow:0 2px 8px rgba(120,80,0,.1);font-size:12px;color:#7a6440}' +
   '.fm-sum b{display:block;font-size:16px;font-variant-numeric:tabular-nums}' +
   '.fm-log{display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px dashed #eadfc0;font-size:14px}.fm-log .e{font-size:24px;font-family:' + EF + ';width:30px;text-align:center}.fm-log .t{flex:1;min-width:0}.fm-log small{display:block;color:#9a8660;font-size:12px}' +
+  '.fm-wrow{display:flex;align-items:center;gap:8px;width:100%;border:0;border-left:6px solid var(--wc);border-radius:12px;background:#fffdf5;padding:8px 10px;margin:6px 0 0;text-align:left;box-shadow:0 1px 4px rgba(120,80,0,.1)}.fm-wrow .e{font-size:24px;font-family:' + EF + '}.fm-wrow .t{flex:1;min-width:0}.fm-wrow .t small,.fm-wrow .v small{display:block;font-size:11px;color:#9a8660;font-weight:600}.fm-wrow .v{text-align:right;min-width:58px;font-size:14px;font-variant-numeric:tabular-nums}.fm-wrow .go{font-size:22px;color:#b0a080;font-weight:900}' +
+  '.fm-wt td:nth-child(2){text-align:left}' +
   '.fm-log .a{font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap}.fm-log .a.in{color:#15803d}.fm-log .a.out{color:#dc2626}' +
   '.fm-tb{width:100%;border-collapse:collapse;font-size:13px}.fm-tb th{text-align:left;color:#7a6440;font-weight:800;padding:6px 4px;border-bottom:2px solid #eadfc0}.fm-tb td{padding:7px 4px;border-bottom:1px solid #f1e8cf;font-variant-numeric:tabular-nums}.fm-tb td.e{font-family:' + EF + ';font-size:20px;width:30px}.fm-tb .g{color:#15803d;font-weight:800}' +
   '.fm-sheet{position:absolute;inset:0;z-index:5;display:none;background:rgba(20,30,10,.45);align-items:flex-end;justify-content:center}.fm-sheet.on{display:flex}' +
@@ -2615,7 +2617,7 @@
     var sl = el.scrollLeft;
     el.innerHTML = WALLETS.map(function (x) {
       var n = walletReady(x.k);
-      return '<button class="' + (tab === 'quest' && S.mw === x.k ? 'on' : '') + '" data-a="wtab" data-w="' + x.k + '" style="--wc:' + x.c + '" title="' + x.n + '"><span class="n">' + x.e + ' ' + (x.k === 'education' ? 'Phát triển' : x.n) + ' <i>' + pctOf(x.k) + '%</i></span><span class="b">' + jarAmt(S.jar[x.k]) + '</span>' + (n ? '<span class="dot">' + n + '</span>' : '') + '</button>';
+      return '<button class="' + (tab === 'quest' && S.mw === x.k ? 'on' : '') + '" data-a="wtab" data-w="' + x.k + '" style="--wc:' + x.c + '" title="' + x.n + '"><span class="n">' + x.e + ' ' + (x.k === 'education' ? 'Phát triển' : x.n) + '</span><span class="b">' + jarAmt(S.jar[x.k]) + '</span>' + (n ? '<span class="dot">' + n + '</span>' : '') + '</button>';
     }).join('') + '<button class="set" data-a="pctSet" aria-label="Cài đặt tỷ lệ 6 ví" style="--wc:#fde68a"><span class="n">⚙️ Tỷ lệ</span><span class="b" style="font-size:12px">Cài đặt</span></button><button class="set" data-a="book" aria-label="Sổ thu chi" style="--wc:#fde68a"><span class="n">📒 Sổ</span><span class="b" style="font-size:12px">Thu chi</span></button>';
     el.scrollLeft = sl;
   }
@@ -3391,6 +3393,41 @@
 
 
   /* --- Sổ thu chi --- */
+  /* Khoản THU thuộc về ví nào (tiền nhiệm vụ trả về tính cho ví của nhiệm vụ) */
+  function logRW(l) {
+    if (l.k !== 'in') return null; var k = l.key || '';
+    if (/^m[rc]_/.test(k)) { var m = MSM[k.slice(3)]; return m ? m.w : l.w || null; }
+    return l.w || null;
+  }
+  /* Nhật ký chi tiêu của 1 ví: tổng hợp theo món (mua gì, số lượng, chi bao nhiêu, nhận lại bao nhiêu) + từng lần ghi chép */
+  function wBook(wk) {
+    var W0 = WM[wk], q = S.wl[wk] || { o: 0, i: 0, n: 0 }, G = {}, order = [], rows = [];
+    S.log.forEach(function (l) {
+      var w = l.k === 'out' ? logW(l) : logRW(l); if (w !== wk) return;
+      rows.push(l);
+      var key = (l.key || '').replace(/^m[rc]_/, 'm_').replace(/^ord\d+$/, 'ord');
+      var g = G[key];
+      if (!g) { var mm = key.indexOf('m_') === 0 && MSM[key.slice(2)]; g = G[key] = { n: mm ? mm.n : String(l.n).replace(/^(Hoàn thành|Rút trước hạn): /, ''), e: mm ? mm.e : l.e, q: 0, o: 0, i: 0 }; order.push(key); }
+      if (l.k === 'out') { g.o += l.a; g.q += l.q || 1; } else { g.i += l.a; if (!g.o) g.q += l.q || 1; }
+    });
+    var net = q.i - q.o;
+    var h = '<div class="fm-h">' + W0.e + ' Nhật ký ví ' + W0.n + '</div>' +
+      '<div class="fm-sum"><div>Đã chi<b style="color:#dc2626">' + short(q.o) + '</b></div><div>Đã nhận<b style="color:#15803d">' + short(q.i) + '</b></div><div>Số dư ví<b>' + short(S.jar[wk]) + '</b></div></div>' +
+      (q.i ? '<div class="fm-card" style="font-size:14px">' + (net >= 0 ? '📈 Nhận lại nhiều hơn số đã chi <b style="color:#15803d">' + money(net) + '</b>' : '📉 Đã chi nhiều hơn số nhận lại <b style="color:#dc2626">' + money(-net) + '</b>') + (q.n ? ' · ' + q.n + ' nhiệm vụ đã xong' : '') + '</div>' : '');
+    if (!rows.length) h += '<div class="fm-card fm-sub" style="text-align:center">Ví này chưa có khoản chi nào.</div>';
+    else {
+      order.sort(function (a, b) { return (G[b].o + G[b].i) - (G[a].o + G[a].i); });
+      h += '<div class="fm-card"><b>🧮 Tổng hợp theo món</b><table class="fm-tb fm-wt"><tr><th></th><th>Món</th><th>SL</th><th>Đã chi</th><th>Đã nhận</th></tr>' +
+        order.map(function (k) { var g = G[k]; return '<tr><td class="e">' + g.e + '</td><td>' + esc(g.n) + '</td><td>' + g.q + '</td><td style="color:#dc2626">' + (g.o ? short(g.o) : '–') + '</td><td class="g">' + (g.i ? short(g.i) : '–') + '</td></tr>'; }).join('') + '</table></div>';
+      h += '<div class="fm-card"><b>🧾 Từng lần ghi chép</b>';
+      rows.slice(0, 80).forEach(function (l) {
+        var d = new Date(l.ts);
+        h += '<div class="fm-log"><span class="e">' + l.e + '</span><span class="t">' + esc(l.n) + (l.q > 1 ? ' × ' + l.q : '') + '<small>' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2) + ' · ' + d.getDate() + '/' + (d.getMonth() + 1) + (l.k === 'in' ? ' · nhận về' : ' · chi ra') + '</small></span><span class="a ' + l.k + '">' + (l.k === 'in' ? '+' : '−') + money(l.a) + '</span></div>';
+      });
+      h += '</div>';
+    }
+    sheet(h + '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="sheetClose" style="flex:1">Đóng</button></div>');
+  }
   function renderBook() {
     var prof = S.tin - S.tout, today = new Date(); today.setHours(0, 0, 0, 0);
     var ti = 0, to = 0; S.log.forEach(function (l) { if (l.ts >= today.getTime()) { if (l.k === 'in') ti += l.a; else to += l.a; } });
@@ -3400,9 +3437,8 @@
       '<div class="fm-card" style="font-size:14px">📅 Hôm nay: thu <b style="color:#15803d">' + money(ti) + '</b>, chi <b style="color:#dc2626">' + money(to) + '</b> → ' + (ti - to >= 0 ? 'lãi' : 'lỗ') + ' <b>' + money(Math.abs(ti - to)) + '</b></div>' +
       '<div class="fm-card" style="font-size:14px">🎓 Tiền kiếm được từ học tập: <b style="color:#15803d">' + money(learn) + '</b>' + (S.tin ? ' (' + Math.round(learn / S.tin * 100) + '% tổng thu)' : '') + '</div>' +
       (function () {
-        var to = 0; WALLETS.forEach(function (x) { to += (S.wl[x.k] || {}).o || 0; });
-        return '<div class="fm-card"><b>👛 Chi tiêu theo 6 ví</b><table class="fm-tb"><tr><th></th><th>Ví</th><th>Đã chi</th><th>Tỉ lệ</th><th>Đã nhận</th></tr>' +
-          WALLETS.map(function (x) { var q = S.wl[x.k] || { o: 0, i: 0, n: 0 }; return '<tr><td class="e">' + x.e + '</td><td>' + x.n + '<br><small style="color:#9a8660">' + q.n + ' nhiệm vụ</small></td><td style="color:#dc2626">' + short(q.o) + '</td><td>' + (to ? Math.round(q.o / to * 100) : 0) + '%</td><td class="g">' + short(q.i) + '</td></tr>'; }).join('') + '</table></div>';
+        return '<div class="fm-card"><b>👛 Chi tiêu theo 6 ví</b><div class="fm-sub" style="margin:2px 0 6px">Chạm vào một ví để xem nhật ký chi tiêu của ví đó.</div>' +
+          WALLETS.map(function (x) { var q = S.wl[x.k] || { o: 0, i: 0, n: 0 }; return '<button class="fm-wrow" data-a="wbook" data-w="' + x.k + '" style="--wc:' + x.c + '"><span class="e">' + x.e + '</span><span class="t"><b>' + x.n + '</b><small>Số dư ' + short(S.jar[x.k]) + '</small></span><span class="v"><small>Đã chi</small><b style="color:#dc2626">' + short(q.o) + '</b></span><span class="v"><small>Đã nhận</small><b style="color:#15803d">' + short(q.i) + '</b></span><span class="go">›</span></button>'; }).join('') + '</div>';
       })() +
       '<div class="fm-card"><b>📊 Bảng tính lãi từng loại cây</b><table class="fm-tb"><tr><th></th><th>Cây</th><th>Lãi/cây</th><th>Thời gian</th><th>Lãi/phút</th></tr>' +
       CROPS.map(function (c) { var pr = c.per ? c.sell : c.sell - c.cost, tt = c.per ? c.re : c.t; return '<tr' + (c.lv > S.lv ? ' style="opacity:.45"' : '') + '><td class="e">' + c.e + '</td><td>' + c.n + (c.per ? ' 🌳' : '') + '</td><td class="g">+' + short(pr) + '</td><td>' + durL(tt) + '</td><td class="g">' + short(Math.round(pr / (tt / 60))) + '</td></tr>'; }).join('') + '</table></div>' +
@@ -3629,6 +3665,7 @@
     else if (a === 'back') { if ($('fmSheet').classList.contains('on')) closeSheet(); else if (tab !== 'field') setTab('field'); else api.close(); }
     else if (a === 'tab') setTab(el.getAttribute('data-t'));
     else if (a === 'book') setTab('book');
+    else if (a === 'wbook') wBook(el.getAttribute('data-w'));
     else if (a === 'msub') { var ms = el.getAttribute('data-t'); if (ms === 'ord' && !feat('order')) { lockSheet('order'); return; } mSub = ms; renderMarket(); }
     else if (a === 'tool') { var t = el.getAttribute('data-t'); if (t === 'seed' && tool === 'seed') seedSheet(); if (t === 'fert' && tool === 'fert') fertSheet(); tool = t; toolsUI(); if (t === 'water') toast('🚿 Chạm hoặc vuốt qua các ô đang trồng để tưới'); else if (t === 'fert') toast('🧪 Chạm vào cây đang lớn để bón phân (còn ' + S.fert + ' túi)'); }
     else if (a === 'pick') { S.sel = el.getAttribute('data-c'); tool = 'seed'; toolsUI(); closeSheet(); save(); toast(CM[S.sel].e + ' Chạm hoặc vuốt lên ô đất trống để gieo ' + CM[S.sel].n); }

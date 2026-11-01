@@ -2495,6 +2495,7 @@ function farmGameOpen(){
 }
 // Nút "Về Nông trại" nổi trên mọi game học khi game được mở từ Nông trại: chơi xong bấm 1 lần là về ngay, không cần bấm ← nhiều lần
 function farmBackBtn(done){
+ done=null; // Đã bỏ nút "Về Nông trại": thoát game là tự quay về Nông trại
  let b=document.getElementById('farmBack');
  if(done===null){if(b)b.style.display='none';return;}
  if(!b){b=document.createElement('button');b.id='farmBack';b.type='button';

@@ -1,4 +1,4 @@
-/* 6PAY - Game NÔNG TRẠI SIXPAY (bản 2026.11.01: bỏ chữ tên khu ở Sản xuất/Vui chơi, bỏ chế độ xem 3D, ẩn thanh cấp độ phía trên 6 ví, bỏ % trên thanh ví, Sổ thu chi: chạm từng ví xem nhật ký chi tiêu, bỏ các dòng chú thích dưới tên nhiệm vụ/hư hỏng/bảo vệ/công trình/khu chơi/game/phân bón — lên bậc và hết giờ chơi vẫn có thông báo. bản 2026.10.31-10: ⚔️ nhiệm vụ THỦ THÀNH khi thú hoang tấn công (file farm-td.js) và 🧊 chế độ xem 3D (file farm3d.js). Bản 2026.10.31-9: 5 cấp độ theo tổng tài sản 1tr→10tr→20tr→50tr→100tr→1 tỷ, mở tính năng dần, giới hạn 45 phút và mức lãi tối đa mỗi ngày, xem lại diễn biến thiên tai/thú hoang. Bản trước 2026.10.31-5: quy hoạch 4 khu Trồng trọt – Chăn nuôi – Sản xuất – Vui chơi, nhiệm vụ xếp theo hướng dẫn chi tiêu của từng ví,
+/* 6PAY - Game NÔNG TRẠI SIXPAY (bản 2026.11.01: bỏ chữ tên khu ở Sản xuất/Vui chơi, bỏ chế độ xem 3D, ẩn thanh cấp độ phía trên 6 ví, bỏ % trên thanh ví, Sổ thu chi: chạm từng ví xem nhật ký chi tiêu, bỏ thông báo đã bảo vệ đầy đủ, tab Nhiệm vụ mở ra danh sách 6 ví kèm số nhiệm vụ đang/chưa thực hiện, bỏ các dòng chú thích dưới tên nhiệm vụ/hư hỏng/bảo vệ/công trình/khu chơi/game/phân bón — lên bậc và hết giờ chơi vẫn có thông báo. bản 2026.10.31-10: ⚔️ nhiệm vụ THỦ THÀNH khi thú hoang tấn công (file farm-td.js) và 🧊 chế độ xem 3D (file farm3d.js). Bản 2026.10.31-9: 5 cấp độ theo tổng tài sản 1tr→10tr→20tr→50tr→100tr→1 tỷ, mở tính năng dần, giới hạn 45 phút và mức lãi tối đa mỗi ngày, xem lại diễn biến thiên tai/thú hoang. Bản trước 2026.10.31-5: quy hoạch 4 khu Trồng trọt – Chăn nuôi – Sản xuất – Vui chơi, nhiệm vụ xếp theo hướng dẫn chi tiêu của từng ví,
    mọi khoản chi đều ghi rõ trừ ví nào, chuồng nuôi hiện trạng thái rõ ràng (có sản phẩm / chưa cho ăn / đang nuôi), nút 🔔 Thông báo: lịch sử thiên tai, thú hoang,
    thiệt hại và nông sản còn thiếu cho đơn hàng). File này được index.html tải về khi người dùng mở trò chơi.
    Trồng cây, nuôi gà – bò – cừu – cá – ong, xây xưởng chế biến, khu vui chơi, giao đơn hàng và ghi sổ thu chi.
@@ -1352,7 +1352,7 @@
   }
   function defHtml0() {
     var all = DEFS.every(function (D) { return defState(D) === 'done'; });
-    if (all) return '<div class="fm-card done" style="padding:9px 12px;font-size:13.5px">🛡️ Nông trại đã được bảo vệ đầy đủ: 🪵 hàng rào, 🛖 chòi canh, 🏹 chòi bắn cung.</div>';
+    if (all) return '';
     var nd = DEFS.filter(function (D) { return defState(D) === 'done'; }).length;
     var h = '<details class="fm-def"><summary><b>🛡️ Bảo vệ nông trại · đã xây ' + nd + '/' + DEFS.length + ' ▾</b>' + (hasDef('rao') ? '' : '<small style="display:block;color:#b45309;margin:2px 0 0">⚠️ Chưa có hàng rào: cáo có thể vào bắt gà</small>') + '</summary>';
     DEFS.forEach(function (D) {
@@ -1520,6 +1520,8 @@
   '.fm-wtabs button{flex:none;position:relative;display:flex;flex-direction:column;align-items:center;gap:0;min-width:72px;border:2px solid #eadfc0;background:#fff;border-radius:14px;padding:4px 10px;font-weight:800;font-size:11.5px;color:#5b3a12!important;white-space:nowrap}' +
   '.fm-wtabs .wb{display:block;margin-top:2px;font-size:11px;font-weight:700;opacity:.85;font-variant-numeric:tabular-nums}.fm-wtabs .wb b{font-size:12.5px;font-weight:900}.fm-wtabs button .e{font-size:21px;line-height:1.15;font-family:' + EF + '}.fm-wtabs button.on{border-color:var(--wc);background:var(--wc);color:#fff!important;box-shadow:0 3px 10px rgba(0,0,0,.18)}' +
   '.fm-wtabs .dot{position:absolute;top:-6px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:#fff;font-size:11px;line-height:18px;padding:0 5px;border:2px solid #fff}' +
+  '.fm-qw{display:flex;align-items:center;gap:10px;width:100%;border:0;border-left:7px solid var(--wc);border-radius:14px;background:#fff;padding:11px 12px;margin:0 0 8px;text-align:left;box-shadow:0 2px 8px rgba(120,80,0,.12)}.fm-qw .e{font-size:28px;font-family:' + EF + '}.fm-qw .t{flex:1;min-width:0;font-size:15.5px}.fm-qw .t small{display:block;font-size:12px;font-weight:700}.fm-qw .t small.ok{color:#15803d}.fm-qw .c{min-width:34px;height:34px;padding:0 8px;border-radius:17px;background:var(--wc);color:#fff;font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}.fm-qw.z .c{background:#e5dcc4;color:#8a7650}.fm-qw.z{opacity:.75}.fm-qw .go{font-size:22px;color:#b0a080;font-weight:900}' +
+  '.fm-qback{padding:6px 12px;font-size:13.5px;margin:0 0 8px}' +
   '.fm-whead{background:#fff;border-radius:14px;padding:9px 12px;margin-bottom:6px;border-left:6px solid var(--wc);box-shadow:0 2px 8px rgba(120,80,0,.12)}.fm-whead summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}.fm-whead summary::-webkit-details-marker{display:none}.fm-whead summary>b{font-size:16px;color:#4a3416}.fm-whead summary:after{content:"ⓘ";margin-left:auto;color:#9a8660}.fm-whs{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}.fm-whs>b{font-size:16px;color:#4a3416}.fm-wgd{margin-left:auto;border:0;background:#f6f0de;border-radius:9px;padding:3px 7px;font-size:15px}.fm-whead p{margin:6px 0 0;font-size:13px;line-height:1.5;color:#6b5a3a}.fm-whead p.q{font-style:italic;color:#9a8660;font-size:12.5px}' +
   '.fm-wst{font-size:12px;color:#7a6440}.fm-wst b{font-variant-numeric:tabular-nums}' +
   '.fm-h2{font-size:15px;font-weight:900;color:#5b3a12;margin:12px 2px 8px}.fm-goal{display:block;width:100%;text-align:left;border:0;border-radius:14px;padding:8px 12px;margin-bottom:8px;background:linear-gradient(135deg,#fffbeb,#fef3c7);box-shadow:0 0 0 2px #fcd34d}.fm-goal .t{display:block;font-weight:800;font-size:13px;color:#5b3a12;line-height:1.35}.fm-goal .fm-pb{display:block;margin:5px 0 3px;height:8px}.fm-goal .s{font-size:11.5px;color:#7a6440}' +
@@ -2617,7 +2619,7 @@
     var sl = el.scrollLeft;
     el.innerHTML = WALLETS.map(function (x) {
       var n = walletReady(x.k);
-      return '<button class="' + (tab === 'quest' && S.mw === x.k ? 'on' : '') + '" data-a="wtab" data-w="' + x.k + '" style="--wc:' + x.c + '" title="' + x.n + '"><span class="n">' + x.e + ' ' + (x.k === 'education' ? 'Phát triển' : x.n) + '</span><span class="b">' + jarAmt(S.jar[x.k]) + '</span>' + (n ? '<span class="dot">' + n + '</span>' : '') + '</button>';
+      return '<button class="' + (tab === 'quest' && !qList && S.mw === x.k ? 'on' : '') + '" data-a="wtab" data-w="' + x.k + '" style="--wc:' + x.c + '" title="' + x.n + '"><span class="n">' + x.e + ' ' + (x.k === 'education' ? 'Phát triển' : x.n) + '</span><span class="b">' + jarAmt(S.jar[x.k]) + '</span>' + (n ? '<span class="dot">' + n + '</span>' : '') + '</button>';
     }).join('') + '<button class="set" data-a="pctSet" aria-label="Cài đặt tỷ lệ 6 ví" style="--wc:#fde68a"><span class="n">⚙️ Tỷ lệ</span><span class="b" style="font-size:12px">Cài đặt</span></button><button class="set" data-a="book" aria-label="Sổ thu chi" style="--wc:#fde68a"><span class="n">📒 Sổ</span><span class="b" style="font-size:12px">Thu chi</span></button>';
     el.scrollLeft = sl;
   }
@@ -3225,7 +3227,32 @@
   /* --- Nhiệm vụ --- */
   function playBtn(g, lbl) { return '<button class="fm-btn blu" data-a="play" data-g="' + g + '">▶ ' + (lbl || 'Chơi ngay') + '</button>'; }
   var qView = null, qCnt = { a: 0, n: 0 };
+  /* Tab Nhiệm vụ: mở ra là danh sách 6 ví (đếm số nhiệm vụ đang/chưa thực hiện), chạm 1 ví để xem nhiệm vụ của ví đó */
+  var qList = true;
+  function qCountW(k) {
+    var a = 0, r = 0, n = 0;
+    MISSIONS.forEach(function (m) { if (m.w !== k) return; var e = mSt(m); if (e && e.s === 1) { a++; if (mProg(m) >= 1) r++; } else if (!e && mOpen(m)) n++; });
+    return { a: a, r: r, n: n };
+  }
+  function renderQuestList() {
+    if (!qView) qView = 'new';
+    var isAct = qView === 'act', h = '', ta = 0, tn = 0;
+    if (!isAct) {
+      h = fixHtml() + defHtml();
+      if (giftReady()) h += '<div class="fm-card hot" style="padding:9px 12px;display:flex;align-items:center;gap:10px"><span style="font-size:26px;font-family:' + EF + '">🎁</span><b style="flex:1;font-size:14px">Quà mỗi ngày: ' + money(giftAmt()) + ' + 🧪1</b><button class="fm-btn org" data-a="gift">Nhận</button></div>';
+    }
+    h += '<div class="fm-h2">' + (isAct ? '⏳ Nhiệm vụ đang thực hiện' : '📋 Nhiệm vụ chưa thực hiện') + '</div>';
+    WALLETS.forEach(function (x) {
+      var c = qCountW(x.k), v = isAct ? c.a : c.n; ta += c.a; tn += c.n;
+      h += '<button class="fm-qw' + (v ? '' : ' z') + '" data-a="qwal" data-w="' + x.k + '" style="--wc:' + x.c + '"><span class="e">' + x.e + '</span><span class="t"><b>' + x.n + '</b>' +
+        (isAct && c.r ? '<small class="ok">✅ ' + c.r + ' nhiệm vụ đã xong, chờ nhận</small>' : '') + '</span><span class="c">' + v + '</span><span class="go">›</span></button>';
+    });
+    qCnt = { a: ta, n: tn };
+    $('fmP_quest').innerHTML = h; zoneBar(true); walletBar();
+    qSig = questSig();
+  }
   function renderQuest() {
+    if (qList) { renderQuestList(); return; }
     var wk = S.mw, W0 = WM[wk], h = fixHtml() + defHtml();
     // Mục tiêu tiếp theo (mở khoá bằng kinh nghiệm)
     var nx = nextUnlock(), nd = need(S.lv);
@@ -3280,7 +3307,7 @@
     var tot = MISSIONS.filter(function (m) { var e = mSt(m); return e && e.s === 2; }).length;
     h += '<p class="fm-sub" style="text-align:center;margin-top:10px">Tổng cộng đã hoàn thành ' + tot + '/' + MISSIONS.length + ' nhiệm vụ ở 6 ví</p>';
     var pn = $('fmP_quest');
-    pn.innerHTML = h; zoneBar(true);
+    pn.innerHTML = '<button class="fm-btn alt fm-qback" data-a="qlist">← Danh sách 6 ví</button>' + h; zoneBar(true);
     walletBar(); var wt = $('fmWB'), on = wt && wt.querySelector('.on'); if (on && (on.offsetLeft < wt.scrollLeft || on.offsetLeft + on.offsetWidth > wt.scrollLeft + wt.clientWidth)) wt.scrollLeft = on.offsetLeft - 20;
     qSig = questSig();
   }
@@ -3663,7 +3690,9 @@
     var a = el.getAttribute('data-a');
     if (a === 'close') api.close();
     else if (a === 'back') { if ($('fmSheet').classList.contains('on')) closeSheet(); else if (tab !== 'field') setTab('field'); else api.close(); }
-    else if (a === 'tab') setTab(el.getAttribute('data-t'));
+    else if (a === 'tab') { if (el.getAttribute('data-t') === 'quest') qList = true; setTab(el.getAttribute('data-t')); }
+    else if (a === 'qwal') { S.mw = el.getAttribute('data-w'); qList = false; save(); renderQuest(); $('fmP_quest').scrollTop = 0; }
+    else if (a === 'qlist') { qList = true; renderQuest(); $('fmP_quest').scrollTop = 0; }
     else if (a === 'book') setTab('book');
     else if (a === 'wbook') wBook(el.getAttribute('data-w'));
     else if (a === 'msub') { var ms = el.getAttribute('data-t'); if (ms === 'ord' && !feat('order')) { lockSheet('order'); return; } mSub = ms; renderMarket(); }
@@ -3713,7 +3742,7 @@
     else if (a === 'facGo') facGo(el.getAttribute('data-b'));
     else if (a === 'facGet') facGet(el.getAttribute('data-b'));
     else if (a === 'play') play(el.getAttribute('data-g'));
-    else if (a === 'wtab') { S.wseen = S.wseen || {}; if (tab === 'quest') S.wseen[S.mw] = 1; S.mw = el.getAttribute('data-w'); save(); if (tab !== 'quest') setTab('quest'); else renderQuest(); var pq = $('fmP_quest'), wh = pq.querySelector('.fm-whead'); pq.scrollTop = wh ? wh.offsetTop - 8 : 0; }
+    else if (a === 'wtab') { qList = false; S.wseen = S.wseen || {}; if (tab === 'quest') S.wseen[S.mw] = 1; S.mw = el.getAttribute('data-w'); save(); if (tab !== 'quest') setTab('quest'); else renderQuest(); var pq = $('fmP_quest'), wh = pq.querySelector('.fm-whead'); pq.scrollTop = wh ? wh.offsetTop - 8 : 0; }
     else if (a === 'mstart') mStart(el.getAttribute('data-m'));
     else if (a === 'mclaim') mClaim(el.getAttribute('data-m'));
     else if (a === 'mcancel') mCancel(el.getAttribute('data-m'));

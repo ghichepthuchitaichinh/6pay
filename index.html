@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.01-2';
+const APP_VERSION='2026.11.02-1';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -1577,7 +1577,7 @@ function scrHome(){
    </button>
   </div>
   <button class="card hist" onclick="histFilter={mode:'day',day:'',month:'',from:'',to:''};histQuery='';push('todayHistory')">
-   <span class="card-label">🕒 Lịch sử giao dịch <small>hôm nay</small></span>
+   <span class="card-label">🕒 Giao dịch hôm nay</span>
    <span class="card-amount ${todayNet()>=0?'pos':'neg'}">${todayNet()>0?'+':''}${fmt(todayNet())} ₫</span>
   </button>
   <div class="card-pair">
@@ -2152,7 +2152,16 @@ function saveLimits(){
  JARS.forEach(j=>{const e=document.getElementById('lim-'+j.k);const a=e?getAmt(e):0;if(a>0)limits[j.k]=a;else delete limits[j.k];});
  limitSave();back();
 }
+let _expJar='essential';
+function expJarNow(){return expDraft.jar||_expJar;}
+function expTagsRefresh(){
+ const jar=expJarNow();
+ if(expDraft.tag&&!tagFits(expDraft.tag,jar))expDraft.tag=expDraft.tagManual?'':tagGuess(expDraft.note,jar);
+ else if(!expDraft.tag&&!expDraft.tagManual)expDraft.tag=tagGuess(expDraft.note,jar);
+ const t=document.getElementById('exp-tags'); if(t)t.innerHTML=tagChips(expDraft.tag||'','expSetTag',jar);
+}
 function scrExpenseDetail(opts){
+ _expJar=opts.jar;
  const jar=JARS.find(j=>j.k===opts.jar);
  const remain=jarRemain(opts.jar); const cls=remain<0?'neg':'pos';
  const list=tx.filter(t=>t.type==='out'&&t.jar===opts.jar).filter(matchExpenseFilter).sort((a,b)=>b.ts-a.ts);
@@ -2169,9 +2178,9 @@ function scrExpenseDetail(opts){
     <div class="form-row tight"><label>Số tiền</label>${amtInput('out-amount',expDraft.amount,expDraft.exact,"expDraft.amount=this.value;expDraft.exact='';")}</div>
     <div class="form-row tight"><label>Ngày</label>${dateInput('out-date',expDraft.date,'expDraft.date=this.value')}</div>
    </div>
-   ${editing?`<div class="form-row tight"><label>Chi từ ví</label><select id="out-jar" onchange="expDraft.jar=this.value">${JARS.map(x=>`<option value="${x.k}" ${(expDraft.jar||opts.jar)===x.k?'selected':''}>${x.i} ${x.l}</option>`).join('')}</select></div>`:''}
+   ${editing?`<div class="form-row tight"><label>Chi từ ví</label><select id="out-jar" onchange="expDraft.jar=this.value;expTagsRefresh()">${JARS.map(x=>`<option value="${x.k}" ${(expDraft.jar||opts.jar)===x.k?'selected':''}>${x.i} ${x.l}</option>`).join('')}</select></div>`:''}
    <div class="form-row tight"><label>Nội dung</label><input type="text" id="out-note" placeholder="Ghi chú (vd. Ăn trưa)" autocomplete="off" value="${esc(expDraft.note).replace(/"/g,'&quot;')}" oninput="expNoteInput(this.value)"><div id="exp-sug"></div></div>
-   <div class="chip-row scroll-x" id="exp-tags" style="margin:0 0 8px;" aria-label="Nhãn chi tiêu (không bắt buộc)">${tagChips(expDraft.tag||'','expSetTag')}</div>
+   <div class="chip-row scroll-x" id="exp-tags" style="margin:0 0 8px;" aria-label="Nhãn chi tiêu (không bắt buộc)">${tagChips(expDraft.tag||'','expSetTag',expJarNow())}</div>
    <div class="filter-row">
     <select id="exp-filter-mode" onchange="expenseFilter.mode=this.value;render();">
      <option value="all" ${expenseFilter.mode==='all'?'selected':''}>Toàn bộ</option>
@@ -2215,10 +2224,10 @@ function confirmExpense(jar){
    if(jarBlocked(nj,amt,nj===t.jar?t.amount:0))return;
    if(nj!==t.jar){moved=jarOf(nj).i+' '+jarOf(nj).l;}
    t.amount=amt;t.note=note;t.jar=nj;t.ts=tsFromDate(ds,t.ts);chkJar=nj;
-   if(expDraft.tag)t.tag=expDraft.tag;else delete t.tag;
+   if(expDraft.tag&&tagFits(expDraft.tag,t.jar))t.tag=expDraft.tag;else delete t.tag;
   }
  }
- else{if(jarBlocked(jar,amt))return;const nt={id:uid(),type:'out',jar,amount:amt,note,ts:tsFromDate(ds),st:1};const tg=expDraft.tag||tagGuess(note);if(tg)nt.tag=tg;tx.push(nt);addStar();try{localStorage.setItem(LASTJAR_KEY,jar);}catch(e){}}
+ else{if(jarBlocked(jar,amt))return;const nt={id:uid(),type:'out',jar,amount:amt,note,ts:tsFromDate(ds),st:1};const tg=(expDraft.tag&&tagFits(expDraft.tag,jar))?expDraft.tag:tagGuess(note,jar);if(tg)nt.tag=tg;tx.push(nt);addStar();try{localStorage.setItem(LASTJAR_KEY,jar);}catch(e){}}
  expDraft={amount:'',exact:'',note:'',editId:'',date:'',jar:'',tag:'',tagManual:false};
  persist(); render();
  if(moved)notify('Đã chuyển khoản chi sang ví '+moved+'.');
@@ -3929,39 +3938,78 @@ function scrStopwatch(){
 // nhắc ghi bù, nhắc ghi chép qua Lịch điện thoại, sao lưu dễ hơn, cỡ chữ lớn, công cụ hằng ngày.
 
 // ---------- Nhãn chi tiêu (không bắt buộc) ----------
+// (bản 2026.11.02-1) Mỗi ví có bộ nhãn riêng: j = danh sách ví dùng nhãn đó. Đổi ví thì nhãn đổi theo.
 // w: từ khóa (viết không dấu) để app tự đoán nhãn từ nội dung. Thêm nhãn mới bằng cách thêm 1 dòng, giữ "khac" ở cuối.
+// Không đổi mã k của nhãn cũ (an, cho, dilai...) vì các khoản chi đã ghi đang dùng mã này.
 const TAGS=[
- {k:'an',l:'Ăn uống',i:'🍜',w:['an','an sang','an trua','an toi','com','pho','bun','mi','ca phe','cafe','tra sua','tra da','nuoc uong','do an','banh','che','nhau','lau','buffet','an vat','grabfood','shopeefood']},
- {k:'cho',l:'Đi chợ',i:'🥬',w:['di cho','cho','sieu thi','rau','thit','ca','gao','trung','thuc pham','bach hoa xanh','winmart','coopmart']},
- {k:'dilai',l:'Đi lại',i:'⛽',w:['xang','do xang','grab','taxi','xe om','gui xe','ve xe','ve tau','may bay','sua xe','rua xe','xe buyt','bus','phi cau duong','xanh sm']},
- {k:'hoadon',l:'Hóa đơn',i:'💡',w:['tien dien','dien','tien nuoc','internet','wifi','cuoc mang','dien thoai','the cao','nap tien','gas','truyen hinh','phi chung cu','phi dich vu']},
- {k:'nha',l:'Nhà cửa',i:'🏠',w:['tien nha','thue nha','tien phong','sua nha','do dung','noi that']},
- {k:'suckhoe',l:'Sức khỏe',i:'💊',w:['thuoc','kham','kham benh','benh vien','bao hiem','nha khoa','vitamin','gym']},
- {k:'concai',l:'Con cái',i:'👶',w:['hoc phi','sua bot','bim','do choi']},
- {k:'hoctap',l:'Học tập',i:'📚',w:['sach','khoa hoc','hoc','lop hoc']},
- {k:'giaitri',l:'Giải trí',i:'🎬',w:['phim','xem phim','karaoke','du lich','di choi','netflix','spotify']},
- {k:'hieuhy',l:'Hiếu hỷ, quà',i:'🎁',w:['dam cuoi','an cuoi','sinh nhat','qua','mung','vieng','tham','bieu','li xi','tu thien']},
- {k:'muasam',l:'Mua sắm',i:'🛍️',w:['quan ao','giay','dep','tui','shopee','lazada','tiki','my pham','mua sam']},
- {k:'khac',l:'Khác',i:'📌',w:[]}
+ // 🏠 Thiết yếu
+ {k:'an',l:'Ăn uống',i:'🍜',j:['essential'],w:['an','ca phe','cafe','an sang','an trua','an toi','com','com trua','pho','bun','mi','banh mi','do an','an vat','grabfood','shopeefood','nuoc uong','tra da']},
+ {k:'cho',l:'Đi chợ',i:'🥬',j:['essential'],w:['di cho','cho','sieu thi','rau','thit','ca','gao','trung','thuc pham','bach hoa xanh','winmart','coopmart','mua do an']},
+ {k:'dilai',l:'Đi lại',i:'⛽',j:['essential'],w:['xang','do xang','grab','taxi','xe om','gui xe','ve xe','ve tau','sua xe','rua xe','xe buyt','bus','phi cau duong','xanh sm','be']},
+ {k:'hoadon',l:'Hóa đơn',i:'💡',j:['essential'],w:['tien dien','dien','tien nuoc','internet','wifi','cuoc mang','dien thoai','the cao','nap tien','gas','truyen hinh','phi chung cu','phi dich vu']},
+ {k:'nha',l:'Nhà cửa',i:'🏠',j:['essential'],w:['tien nha','thue nha','tien phong','sua nha','do dung','noi that','do gia dung']},
+ {k:'suckhoe',l:'Sức khỏe',i:'💊',j:['essential'],w:['thuoc','kham','kham benh','benh vien','bao hiem y te','nha khoa','vitamin']},
+ {k:'concai',l:'Con cái',i:'👶',j:['essential'],w:['sua bot','bim','ta','do so sinh','hoc phi cho con','tien hoc cho con']},
+ {k:'canhan',l:'Đồ dùng cá nhân',i:'🧴',j:['essential'],w:['dau goi','sua tam','kem danh rang','ban chai','giay ve sinh','bot giat','nuoc rua bat','cat toc']},
+ // 📚 Phát triển bản thân
+ {k:'sach',l:'Sách, tài liệu',i:'📖',j:['education'],w:['sach','mua sach','tai lieu','truyen','ebook','fahasa','tiki sach']},
+ {k:'hoctap',l:'Lớp học, học phí',i:'🏫',j:['education'],w:['hoc phi','lop hoc','hoc','hoc them','gia su','trung tam']},
+ {k:'khoahoc',l:'Khóa học online',i:'💻',j:['education'],w:['khoa hoc','khoa hoc online','udemy','coursera','unica','edumall','webinar']},
+ {k:'ngoaingu',l:'Ngoại ngữ',i:'🗣️',j:['education'],w:['tieng anh','tieng trung','tieng nhat','tieng han','ielts','toeic','ngoai ngu','duolingo']},
+ {k:'kynang',l:'Kỹ năng, hội thảo',i:'🎤',j:['education'],w:['hoi thao','ky nang','workshop','seminar','su kien','coaching']},
+ {k:'dungcu',l:'Dụng cụ, phần mềm',i:'🖊️',j:['education'],w:['but','vo','dung cu hoc tap','phan mem','ung dung','app','may tinh']},
+ {k:'renluyen',l:'Rèn luyện sức khỏe',i:'🏋️',j:['education'],w:['gym','yoga','boi','the hinh','tap the duc','phong tap','giay chay']},
+ // 🐷 Tiết kiệm
+ {k:'duphong',l:'Quỹ dự phòng',i:'🛟',j:['saving'],w:['du phong','quy du phong','khan cap']},
+ {k:'guitk',l:'Gửi tiết kiệm',i:'🏦',j:['saving'],w:['gui tiet kiem','tiet kiem','so tiet kiem','gui ngan hang','tich luy']},
+ {k:'muctieu',l:'Mục tiêu lớn',i:'🎯',j:['saving'],w:['mua nha','mua xe','dam cuoi','muc tieu','du lich']},
+ {k:'quycon',l:'Quỹ cho con',i:'🧒',j:['saving'],w:['quy cho con','quy hoc cho con']},
+ {k:'huutri',l:'Hưu trí, bảo hiểm',i:'🧓',j:['saving'],w:['huu tri','bao hiem nhan tho','bao hiem','luong huu']},
+ // 📈 Đầu tư
+ {k:'chungkhoan',l:'Chứng khoán',i:'📊',j:['invest'],w:['chung khoan','co phieu','mua co phieu','chung chi quy','quy mo','etf']},
+ {k:'vang',l:'Vàng, bạc',i:'🪙',j:['invest'],w:['vang','mua vang','bac','nhan vang','sjc','pnj']},
+ {k:'bds',l:'Bất động sản',i:'🏘️',j:['invest'],w:['dat','mua dat','bat dong san','can ho','nha dat']},
+ {k:'kinhdoanh',l:'Kinh doanh',i:'🏪',j:['invest'],w:['kinh doanh','nhap hang','von','ban hang','mo quan','hang hoa']},
+ {k:'traiphieu',l:'Trái phiếu',i:'📜',j:['invest'],w:['trai phieu','chung chi tien gui']},
+ {k:'tiensau',l:'Tài sản số',i:'💠',j:['invest'],w:['bitcoin','crypto','tien so','tien ma hoa']},
+ // 🤝 Chia sẻ
+ {k:'bieu',l:'Biếu bố mẹ, ông bà',i:'👴',j:['share'],w:['bieu','bieu bo me','cho bo me','bieu ong ba','gui ve que']},
+ {k:'hieuhy',l:'Hiếu hỷ',i:'💒',j:['share'],w:['dam cuoi','an cuoi','mung cuoi','vieng','dam hieu','phung vieng','dam gio','tan gia']},
+ {k:'qua',l:'Quà tặng',i:'🎁',j:['share'],w:['qua','sinh nhat','qua sinh nhat','li xi','mung','tang']},
+ {k:'tuthien',l:'Từ thiện',i:'❤️',j:['share'],w:['tu thien','ung ho','quyen gop','cong duc','cung chua']},
+ {k:'giupdo',l:'Giúp đỡ người khác',i:'🤲',j:['share'],w:['giup','giup do','cho muon','ho tro','tham benh','tham']},
+ // 🎉 Hưởng thụ
+ {k:'anngon',l:'Ăn ngon, cà phê',i:'☕',j:['enjoy'],w:['ca phe','cafe','tra sua','nha hang','lau','nuong','buffet','nhau','che','kem','an ngon','highlands','starbucks','phuc long']},
+ {k:'giaitri',l:'Giải trí',i:'🎬',j:['enjoy'],w:['phim','xem phim','karaoke','di choi','netflix','spotify','game','nap game','cgv','youtube premium']},
+ {k:'dulich',l:'Du lịch',i:'✈️',j:['enjoy'],w:['du lich','khach san','ve may bay','may bay','resort','homestay','tour','phuot']},
+ {k:'muasam',l:'Mua sắm',i:'🛍️',j:['enjoy'],w:['quan ao','giay','dep','tui','shopee','lazada','tiki','tiktok shop','mua sam','dong ho']},
+ {k:'lamdep',l:'Làm đẹp',i:'💅',j:['enjoy'],w:['my pham','son','spa','lam mong','lam toc','goi dau','massage','skincare','nuoc hoa']},
+ {k:'sothich',l:'Sở thích',i:'🎨',j:['enjoy'],w:['so thich','cay canh','ca canh','thu cung','do choi','lego','nhac cu','do cau']},
+ {k:'khac',l:'Khác',i:'📌',j:[],w:[]}
 ];
 function tagOf(k){return k?TAGS.find(t=>t.k===k)||null:null;}
 function tagPill(k){const t=tagOf(k);return t?`<span class="tag-pill">${t.i} ${t.l}</span>`:'';}
+// Nhãn dùng được cho một ví (nhãn "Khác" dùng cho mọi ví, luôn ở cuối)
+function tagsFor(jar){return TAGS.filter(t=>!t.j.length||t.j.indexOf(jar)>-1);}
+function tagFits(k,jar){const t=tagOf(k);return !!t&&(!t.j.length||t.j.indexOf(jar)>-1);}
 function normNote(s){return noAccent(String(s||'').trim()).replace(/\s+/g,' ');}
-// Đoán nhãn: ưu tiên nhãn đã dùng cho đúng nội dung này trước đây, sau đó mới đoán theo từ khóa
-function tagGuess(note){
+// Đoán nhãn trong phạm vi nhãn của ví: ưu tiên nhãn đã dùng cho đúng nội dung này trước đây, sau đó mới đoán theo từ khóa
+function tagGuess(note,jar){
  const n=normNote(note); if(!n)return '';
- for(let i=tx.length-1;i>=0;i--){const t=tx[i];if(t.type==='out'&&t.tag&&normNote(t.note)===n)return t.tag;}
+ for(let i=tx.length-1;i>=0;i--){const t=tx[i];if(t.type==='out'&&t.tag&&normNote(t.note)===n&&(!jar||tagFits(t.tag,jar)))return t.tag;}
  const h=' '+n.replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ')+' ';
- for(const t of TAGS){for(const w of t.w){if(h.indexOf(' '+w+' ')>-1)return t.k;}}
- return '';
+ // Chọn từ khóa khớp dài nhất (vd. "ca phe" thắng "ca")
+ let best='',bl=0;
+ for(const t of (jar?tagsFor(jar):TAGS)){for(const w of t.w){if(w.length>bl&&h.indexOf(' '+w+' ')>-1){best=t.k;bl=w.length;}}}
+ return best;
 }
-function tagChips(sel,fn){
- return TAGS.map(t=>`<button type="button" class="chip${sel===t.k?' on':''}" onclick="${fn}('${t.k}')">${t.i} ${t.l}</button>`).join('');
+function tagChips(sel,fn,jar){
+ return (jar?tagsFor(jar):TAGS).map(t=>`<button type="button" class="chip${sel===t.k?' on':''}" onclick="${fn}('${t.k}')">${t.i} ${t.l}</button>`).join('');
 }
 
 // ---------- Gợi ý nội dung từ lịch sử ----------
 const DEFAULT_SUG=[
- {note:'Ăn sáng',jar:'essential',tag:'an'},{note:'Ăn trưa',jar:'essential',tag:'an'},{note:'Cà phê',jar:'enjoy',tag:'an'},
+ {note:'Ăn sáng',jar:'essential',tag:'an'},{note:'Ăn trưa',jar:'essential',tag:'an'},{note:'Cà phê',jar:'enjoy',tag:'anngon'},
  {note:'Đi chợ',jar:'essential',tag:'cho'},{note:'Xăng xe',jar:'essential',tag:'dilai'},{note:'Tiền điện',jar:'essential',tag:'hoadon'}
 ];
 function noteStats(){
@@ -4060,7 +4108,7 @@ function drawQuickAdd(){
   <div class="qa-lbl">Chi từ ví</div>
   <div class="jar-pick" id="qa-jars">${qaJarGrid()}</div>
   <div class="qa-lbl">Nhãn <span style="font-weight:500">(không bắt buộc, giúp báo cáo biết tiền đi đâu)</span></div>
-  <div class="chip-row scroll-x" id="qa-tags">${tagChips(qd.tag,'qaSetTag')}</div>
+  <div class="chip-row scroll-x" id="qa-tags">${tagChips(qd.tag,'qaSetTag',qd.jar)}</div>
   <div class="qa-lbl">Ngày</div>
   <div class="qa-date" id="qa-dates">${qaDateRow()}</div>
   <button class="btn primary qa-save" onclick="qaSave()">✓ Lưu khoản chi</button>`;
@@ -4081,22 +4129,28 @@ function qaSugHtml(q){
 function qaNoteInput(v){
  qd.note=v;
  const s=document.getElementById('qa-sug'); if(s)s.innerHTML=qaSugHtml(v);
- if(qd.tagAuto){const g=tagGuess(v);if(g!==qd.tag){qd.tag=g;const t=document.getElementById('qa-tags');if(t)t.innerHTML=tagChips(qd.tag,'qaSetTag');}}
+ if(qd.tagAuto){const g=tagGuess(v,qd.jar);if(g!==qd.tag){qd.tag=g;const t=document.getElementById('qa-tags');if(t)t.innerHTML=tagChips(qd.tag,'qaSetTag',qd.jar);}}
 }
 function qaPickSug(i){
  const o=_sugList[i]; if(!o)return;
  const n=document.getElementById('qa-note'); if(n)n.value=o.note; qd.note=o.note;
  if(o.jar&&JARS.some(j=>j.k===o.jar))qd.jar=o.jar;
- qd.tag=o.tag||tagGuess(o.note); qd.tagAuto=true;
+ qd.tag=(o.tag&&tagFits(o.tag,qd.jar))?o.tag:tagGuess(o.note,qd.jar); qd.tagAuto=true;
  const a=document.getElementById('qa-amt');
  if(a&&!getAmt(a)&&o.amt){a.value=needExact(o.amt)?fmt(o.amt):(amtMode==='x1000'?fmt(o.amt/1000):fmt(o.amt));if(needExact(o.amt))a.dataset.exact=String(o.amt);qaHint();}
  document.getElementById('qa-jars').innerHTML=qaJarGrid();
- document.getElementById('qa-tags').innerHTML=tagChips(qd.tag,'qaSetTag');
+ document.getElementById('qa-tags').innerHTML=tagChips(qd.tag,'qaSetTag',qd.jar);
  document.getElementById('qa-sug').innerHTML=qaSugHtml(o.note);
  if(a&&!getAmt(a))a.focus();
 }
-function qaSetJar(k){qd.jar=k;document.getElementById('qa-jars').innerHTML=qaJarGrid();}
-function qaSetTag(k){qd.tag=qd.tag===k?'':k;qd.tagAuto=false;document.getElementById('qa-tags').innerHTML=tagChips(qd.tag,'qaSetTag');}
+function qaSetJar(k){
+ qd.jar=k;document.getElementById('qa-jars').innerHTML=qaJarGrid();
+ // Đổi ví thì đổi bộ nhãn theo ví; nhãn đang chọn không thuộc ví mới thì đoán lại (hoặc bỏ chọn)
+ if(qd.tag&&!tagFits(qd.tag,k)){qd.tag=qd.tagAuto?tagGuess(qd.note,k):'';}
+ else if(!qd.tag&&qd.tagAuto)qd.tag=tagGuess(qd.note,k);
+ const t=document.getElementById('qa-tags'); if(t)t.innerHTML=tagChips(qd.tag,'qaSetTag',k);
+}
+function qaSetTag(k){qd.tag=qd.tag===k?'':k;qd.tagAuto=false;document.getElementById('qa-tags').innerHTML=tagChips(qd.tag,'qaSetTag',qd.jar);}
 function qaSetDate(v){if(!/^\d{4}-\d{2}-\d{2}$/.test(v||''))return;if(v>dayKey())v=dayKey();qd.date=v;document.getElementById('qa-dates').innerHTML=qaDateRow();}
 function qaSave(){
  const el=document.getElementById('qa-amt'); const amt=el?getAmt(el):0;
@@ -4187,7 +4241,7 @@ function plspDone(id){
  if(jarBlocked(r.j,r.a))return;
  const note=(r.n||'').trim();
  const t={id:uid(),type:'out',jar:r.j,amount:r.a,note,ts:Date.now(),st:1};
- const tg=tagGuess(note); if(tg)t.tag=tg;
+ const tg=tagGuess(note,r.j); if(tg)t.tag=tg;
  tx.push(t); addStar(); persist();
  try{localStorage.setItem(LASTJAR_KEY,r.j);}catch(e){}
  plsp.splice(i,1); plspSave(); drawPlanSpend(); render();
@@ -4207,18 +4261,18 @@ function expNoteInput(v){
  expDraft.note=v;
  const s=document.getElementById('exp-sug');
  if(s){_sugList=v.trim()?noteSuggest(v,6):[];s.innerHTML=_sugList.length?`<div class="chip-row scroll-x">${_sugList.map((o,i)=>`<button type="button" class="chip sug" onclick="expPickSug(${i})">${esc(o.note)}${o.amt?'<small>· '+shortAmt(o.amt)+'</small>':''}</button>`).join('')}</div>`:'';}
- if(!expDraft.tagManual){const g=tagGuess(v);if(g!==(expDraft.tag||'')){expDraft.tag=g;const t=document.getElementById('exp-tags');if(t)t.innerHTML=tagChips(expDraft.tag,'expSetTag');}}
+ if(!expDraft.tagManual){const g=tagGuess(v,expJarNow());if(g!==(expDraft.tag||'')){expDraft.tag=g;const t=document.getElementById('exp-tags');if(t)t.innerHTML=tagChips(expDraft.tag,'expSetTag',expJarNow());}}
 }
 function expPickSug(i){
  const o=_sugList[i]; if(!o)return;
  const n=document.getElementById('out-note'); if(n)n.value=o.note;
- expDraft.note=o.note; if(!expDraft.tagManual)expDraft.tag=o.tag||tagGuess(o.note);
+ expDraft.note=o.note; if(!expDraft.tagManual)expDraft.tag=(o.tag&&tagFits(o.tag,expJarNow()))?o.tag:tagGuess(o.note,expJarNow());
  const a=document.getElementById('out-amount');
  if(a&&!getAmt(a)&&o.amt){a.value=needExact(o.amt)?fmt(o.amt):(amtMode==='x1000'?fmt(o.amt/1000):fmt(o.amt));if(needExact(o.amt))a.dataset.exact=String(o.amt);expDraft.amount=a.value;expDraft.exact=a.dataset.exact||'';const h=a.parentNode.querySelector('.amt-hint');if(h)h.textContent=hintText(a.value,a.dataset.exact||'');}
  const s=document.getElementById('exp-sug'); if(s)s.innerHTML='';
- const t=document.getElementById('exp-tags'); if(t)t.innerHTML=tagChips(expDraft.tag,'expSetTag');
+ const t=document.getElementById('exp-tags'); if(t)t.innerHTML=tagChips(expDraft.tag,'expSetTag',expJarNow());
 }
-function expSetTag(k){expDraft.tag=expDraft.tag===k?'':k;expDraft.tagManual=true;const t=document.getElementById('exp-tags');if(t)t.innerHTML=tagChips(expDraft.tag,'expSetTag');}
+function expSetTag(k){expDraft.tag=expDraft.tag===k?'':k;expDraft.tagManual=true;const t=document.getElementById('exp-tags');if(t)t.innerHTML=tagChips(expDraft.tag,'expSetTag',expJarNow());}
 
 // ---------- Màn hình chào mừng lần đầu (3 bước, bỏ qua được) ----------
 const OB_KEY='6pay-onboard-v1';

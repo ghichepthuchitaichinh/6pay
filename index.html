@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.02-7';
+const APP_VERSION='2026.11.02-8';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -761,6 +761,13 @@ body:not(.home-white) .qa-fab{display:none;}
 .pl-act button{width:30px;height:19px;border:0;border-radius:6px;font-size:12px;line-height:1;cursor:pointer;padding:0;}
 .pl-act .ok{background:var(--pos);color:#fff;}
 .pl-act .del{background:var(--surface-2);color:var(--neg);border:1px solid var(--border);}
+/* (bản 2026.11.02-8) Hai nút Dự kiến thu / Dự kiến chi ở đầu bảng */
+.pl-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 10px;}
+.pl-tabs button{font:inherit;font-weight:800;font-size:15px;min-height:44px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text-soft);cursor:pointer;}
+.pl-tabs button.in.on{background:var(--income-bg,#E8F6EC);border-color:var(--income-text);color:var(--income-text);}
+.pl-tabs button.out.on{background:var(--expense-bg);border-color:var(--expense-text);color:var(--expense-text);}
+.pl-row.in input.amt{color:var(--income-text);}
+.pl-in .pl-total b{color:var(--income-text);}
 .pl-empty{text-align:center;color:var(--text-soft);font-size:var(--fs-sm);padding:16px 8px;}
 .pl-add{width:100%;margin:10px 0 4px;border:1.5px dashed var(--accent);background:var(--accent-soft);color:var(--newtx-text);font:inherit;font-weight:800;border-radius:12px;min-height:42px;cursor:pointer;}
 .pl-total{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:var(--fs-md,16px);padding:10px 4px 6px;border-top:2px solid var(--border);margin-top:6px;}
@@ -928,11 +935,11 @@ html.fs-big .ob-jar .d,html.fs-big .rp-plan,html.fs-big .rp-lim{font-size:14px;}
  <div class="modal-box" id="buyBox" style="text-align:left;"></div>
 </div>
 <!-- Nút ＋ Ghi chi nổi (chỉ hiện ở trang chủ) -->
-<button class="qa-fab pl-fab" id="plFab" onclick="openPlanSpend()" aria-label="Dự kiến chi"><b>📝</b> Dự kiến chi</button>
+<button class="qa-fab pl-fab" id="plFab" onclick="openPlanSpend()" aria-label="Dự kiến thu và chi"><b>📝</b> Dự kiến</button>
 <button class="qa-fab" id="qaFab" onclick="openQuickAdd()" aria-label="Ghi khoản chi mới"><b>＋</b> Ghi chi</button>
 <!-- Bảng Dự kiến chi -->
 <div class="sheet-ov" id="plSheet" onclick="if(event.target===this)closePlanSpend()">
- <div class="sheet" id="plBox" role="dialog" aria-label="Dự kiến chi"></div>
+ <div class="sheet" id="plBox" role="dialog" aria-label="Dự kiến thu, Dự kiến chi"></div>
 </div>
 <!-- Bảng ghi chi nhanh -->
 <div class="sheet-ov" id="qaSheet" onclick="if(event.target===this)closeQuickAdd()">
@@ -4270,16 +4277,27 @@ let plsp=[];
 try{const a=JSON.parse(localStorage.getItem(PLSP_KEY));if(Array.isArray(a))plsp=a;}catch(e){}
 function plspSave(){try{localStorage.setItem(PLSP_KEY,JSON.stringify(plsp));}catch(e){}}
 function plspBlank(){return {id:uid(),n:'',j:lastJar(),a:0};}
+// (bản 2026.11.02-8) Nút "📝 Dự kiến" mở bảng có 2 nút ở trên: ⬇️ Dự kiến thu và ⬆️ Dự kiến chi
+const PLMODE_KEY='6pay-dukien-mode';
+let plMode='out';
+try{if(localStorage.getItem(PLMODE_KEY)==='in')plMode='in';}catch(e){}
 function openPlanSpend(){
  hideToast();
  if(!plsp.length){plsp.push(plspBlank());}
- drawPlanSpend();
+ if(!plin.length){plin.push(plinBlank());}
+ drawPlan();
  document.getElementById('plSheet').classList.add('open');
 }
 function closePlanSpend(){
  plsp=plsp.filter(r=>(r.n||'').trim()||r.a>0); plspSave();
+ plin=plin.filter(r=>(r.n||'').trim()||r.a>0); plinSave();
  document.getElementById('plSheet').classList.remove('open');
 }
+function plSetMode(m){plMode=m;try{localStorage.setItem(PLMODE_KEY,m);}catch(e){}drawPlan();}
+function plTabs(){
+ return `<div class="pl-tabs"><button type="button" class="in${plMode==='in'?' on':''}" onclick="plSetMode('in')">⬇️ Dự kiến thu</button><button type="button" class="out${plMode==='out'?' on':''}" onclick="plSetMode('out')">⬆️ Dự kiến chi</button></div>`;
+}
+function drawPlan(){if(plMode==='in')drawPlanIn();else drawPlanSpend();}
 function plspRowHtml(r){
  const opts=JARS.map(j=>`<option value="${j.k}"${r.j===j.k?' selected':''}>${j.i} ${j.l}</option>`).join('');
  return `<div class="pl-row" data-id="${r.id}">
@@ -4292,7 +4310,8 @@ function plspRowHtml(r){
 function drawPlanSpend(){
  document.getElementById('plBox').innerHTML=`
   <div class="sheet-grip"></div>
-  <div class="sheet-head"><div class="sheet-title">📝 Dự kiến chi</div><button class="sheet-x" onclick="closePlanSpend()" aria-label="Đóng">✕</button></div>
+  <div class="sheet-head"><div class="sheet-title">📝 Dự kiến</div><button class="sheet-x" onclick="closePlanSpend()" aria-label="Đóng">✕</button></div>
+  ${plTabs()}
   <div class="pl-head"><span>Nội dung chi</span><span>Dùng ví</span><span>Số tiền</span><span></span></div>
   <div id="pl-rows">${plsp.length?plsp.map(plspRowHtml).join(''):'<div class="pl-empty">Chưa có khoản dự kiến nào.</div>'}</div>
   <button type="button" class="pl-add" onclick="plspAdd()">＋ Thêm dòng</button>
@@ -4320,7 +4339,7 @@ function plspAdd(){
 function plspDel(id){
  const i=plsp.findIndex(x=>x.id===id); if(i<0)return;
  const r=plsp[i]; plsp.splice(i,1); plspSave(); drawPlanSpend();
- if((r.n||'').trim()||r.a>0)showToast('Đã xóa dòng dự kiến.','Hoàn tác',()=>{plsp.splice(Math.min(i,plsp.length),0,r);plspSave();if(document.getElementById('plSheet').classList.contains('open'))drawPlanSpend();});
+ if((r.n||'').trim()||r.a>0)showToast('Đã xóa dòng dự kiến.','Hoàn tác',()=>{plsp.splice(Math.min(i,plsp.length),0,r);plspSave();if(document.getElementById('plSheet').classList.contains('open')&&plMode==='out')drawPlanSpend();});
 }
 function plspClear(){
  openConfirm('Xóa toàn bộ các khoản trong bảng Dự kiến chi?',()=>{plsp=[plspBlank()];plspSave();drawPlanSpend();});
@@ -4341,10 +4360,83 @@ function plspDone(id){
   if(!tx.some(x=>x.id===t.id))return;
   tx=tx.filter(x=>x.id!==t.id); subStar(); persist();
   plsp.splice(Math.min(i,plsp.length),0,r); plspSave(); render();
-  if(document.getElementById('plSheet').classList.contains('open'))drawPlanSpend();
+  if(document.getElementById('plSheet').classList.contains('open')&&plMode==='out')drawPlanSpend();
   showToast('Đã hủy, khoản này trở lại bảng Dự kiến chi.');
  });
  limitCheck(t.jar);
+}
+
+// ---------- Dự kiến thu (bản 2026.11.02-8) ----------
+// Bảng các khoản định thu: Nội dung thu | Nguồn thu | Số tiền. Chỉ để lên kế hoạch, CHƯA cộng tiền vào ví.
+// Bấm ✓ ở một dòng khi đã nhận tiền thật: khoản đó được ghi thành khoản thu (chia vào 6 ví như bình thường) và rời khỏi bảng.
+const PLIN_KEY='6pay-dukienthu-v1';
+let plin=[];
+try{const a=JSON.parse(localStorage.getItem(PLIN_KEY));if(Array.isArray(a))plin=a;}catch(e){}
+function plinSave(){try{localStorage.setItem(PLIN_KEY,JSON.stringify(plin));}catch(e){}}
+function plinBlank(){return {id:uid(),n:'',k:'luong',a:0};}
+function plinRowHtml(r){
+ const opts=INCOME_TYPES.map(t=>`<option value="${t.k}"${r.k===t.k?' selected':''}>${t.i} ${t.l}</option>`).join('');
+ return `<div class="pl-row in" data-id="${r.id}">
+  <input type="text" maxlength="120" placeholder="Vd. Lương tháng" value="${esc(r.n)}" oninput="plinSet('${r.id}','n',this.value)" aria-label="Nội dung thu">
+  <select onchange="plinSet('${r.id}','k',this.value)" aria-label="Nguồn thu">${opts}</select>
+  <input type="text" class="amt" inputmode="numeric" autocomplete="off" placeholder="${amtMode==='x1000'?'0 (nghìn)':'0'}" value="${r.a?editVal(r.a):''}" ${needExact(r.a)?'data-exact="'+r.a+'"':''} oninput="formatAmountInput(this);plinSet('${r.id}','a',getAmt(this))" aria-label="Số tiền">
+  <div class="pl-act"><button type="button" class="ok" onclick="plinDone('${r.id}')" aria-label="Đã nhận khoản này" title="Đã nhận">✓</button><button type="button" class="del" onclick="plinDel('${r.id}')" aria-label="Xóa dòng" title="Xóa">✕</button></div>
+ </div>`;
+}
+function drawPlanIn(){
+ document.getElementById('plBox').innerHTML=`
+  <div class="sheet-grip"></div>
+  <div class="sheet-head"><div class="sheet-title">📝 Dự kiến</div><button class="sheet-x" onclick="closePlanSpend()" aria-label="Đóng">✕</button></div>
+  ${plTabs()}
+  <div class="pl-in">
+  <div class="pl-head"><span>Nội dung thu</span><span>Nguồn thu</span><span>Số tiền</span><span></span></div>
+  <div id="pl-rows">${plin.length?plin.map(plinRowHtml).join(''):'<div class="pl-empty">Chưa có khoản dự kiến thu nào.</div>'}</div>
+  <button type="button" class="pl-add" onclick="plinAdd()">＋ Thêm dòng</button>
+  <div id="pl-sum">${plinSumHtml()}</div>
+  <div class="pl-note">Bảng này chỉ để lên kế hoạch, chưa cộng tiền vào ví. Khi đã nhận tiền thật, bấm <b style="color:var(--pos)">✓</b> ở dòng đó để ghi thành khoản thu.</div>
+  ${plin.length>1?'<button class="btn cancel" style="width:100%;margin-top:4px" onclick="plinClear()">Xóa hết bảng</button>':''}
+  </div>`;
+}
+function plinSumHtml(){
+ const tot=plin.reduce((s,r)=>s+(r.a||0),0);
+ const by={}; plin.forEach(r=>{if(r.a>0)by[r.k]=(by[r.k]||0)+r.a;});
+ const rows=INCOME_TYPES.filter(t=>by[t.k]).map(t=>`<div class="list-item"><span>${t.i} ${t.l}</span><span>${fmt(by[t.k])} ₫</span></div>`).join('');
+ return `<div class="pl-total"><span>Tổng dự kiến thu</span><b>${fmt(tot)} ₫</b></div>${rows?'<div class="pl-jars">'+rows+'</div>':''}`;
+}
+function plinSet(id,f,v){
+ const r=plin.find(x=>x.id===id); if(!r)return;
+ r[f]=f==='a'?(v||0):v; plinSave();
+ if(f!=='n'){const s=document.getElementById('pl-sum'); if(s)s.innerHTML=plinSumHtml();}
+}
+function plinAdd(){
+ plin.push(plinBlank()); plinSave(); drawPlanIn();
+ const rows=document.querySelectorAll('#pl-rows .pl-row'); const last=rows[rows.length-1];
+ if(last){const i=last.querySelector('input'); if(i){try{i.focus({preventScroll:false});}catch(e){i.focus();}}}
+}
+function plinDel(id){
+ const i=plin.findIndex(x=>x.id===id); if(i<0)return;
+ const r=plin[i]; plin.splice(i,1); plinSave(); drawPlanIn();
+ if((r.n||'').trim()||r.a>0)showToast('Đã xóa dòng dự kiến thu.','Hoàn tác',()=>{plin.splice(Math.min(i,plin.length),0,r);plinSave();if(document.getElementById('plSheet').classList.contains('open')&&plMode==='in')drawPlanIn();});
+}
+function plinClear(){
+ openConfirm('Xóa toàn bộ các khoản trong bảng Dự kiến thu?',()=>{plin=[plinBlank()];plinSave();drawPlanIn();});
+}
+function plinDone(id){
+ const i=plin.findIndex(x=>x.id===id); if(i<0)return;
+ const r=plin[i], row=document.querySelector('#pl-rows .pl-row[data-id="'+id+'"]');
+ if(!(r.a>0)){const e=row&&row.querySelector('input.amt');shakeEl(e);if(e)e.focus();return;}
+ const k=INCOME_TYPES.some(t=>t.k===r.k)?r.k:'khac';
+ const t={id:uid(),type:'in',sub:k,amount:r.a,note:(r.n||'').trim(),ts:Date.now(),st:1};
+ tx.push(t); addStar(); persist();
+ plin.splice(i,1); plinSave(); drawPlanIn(); render();
+ const m=INCOME_TYPES.find(x=>x.k===k);
+ showToast('Đã ghi thu '+fmt(t.amount)+' ₫ · '+m.i+' '+m.l,'Hoàn tác',()=>{
+  if(!tx.some(x=>x.id===t.id))return;
+  tx=tx.filter(x=>x.id!==t.id); subStar(); persist();
+  plin.splice(Math.min(i,plin.length),0,r); plinSave(); render();
+  if(document.getElementById('plSheet').classList.contains('open')&&plMode==='in')drawPlanIn();
+  showToast('Đã hủy, khoản này trở lại bảng Dự kiến thu.');
+ });
 }
 
 // ---------- Nhãn và gợi ý trong trang chi tiết ví ----------

@@ -17,26 +17,26 @@
      Cây trồng: id, tên, emoji, cấp mở, giá hạt giống (đ), thời gian lớn (giây), giá bán (đ), kinh nghiệm, màu lá.
      Lãi trồng trọt được giữ ở mức vừa phải: muốn mở đất, mua vật nuôi, xây công trình thì nên vào mục 🎮 Phụ bản (chơi game học). */
   var CROPS = [
-    { id: 'lua', n: 'Lúa', e: '🌾', lv: 1, cost: 4000, t: 45, sell: 6000, xp: 1, leaf: '#8bc34a' },
-    { id: 'carot', n: 'Cà rốt', e: '🥕', lv: 1, cost: 7000, t: 90, sell: 10000, xp: 2, leaf: '#4caf50' },
-    { id: 'ngo', n: 'Ngô', e: '🌽', lv: 2, cost: 10500, t: 150, sell: 15000, xp: 3, leaf: '#66bb6a' },
-    { id: 'cachua', n: 'Cà chua', e: '🍅', lv: 3, cost: 15500, t: 240, sell: 22000, xp: 4, leaf: '#43a047' },
-    { id: 'bapcai', n: 'Bắp cải', e: '🥬', lv: 4, cost: 20000, t: 300, sell: 28000, xp: 5, leaf: '#7cb342' },
-    { id: 'ot', n: 'Ớt', e: '🌶️', lv: 5, cost: 25000, t: 420, sell: 35000, xp: 6, leaf: '#2e7d32' },
-    { id: 'dau', n: 'Dâu tây', e: '🍓', lv: 6, cost: 31500, t: 540, sell: 44000, xp: 7, leaf: '#388e3c' },
-    { id: 'huongduong', n: 'Hướng dương', e: '🌻', lv: 7, cost: 39500, t: 720, sell: 55000, xp: 9, leaf: '#558b2f' },
-    { id: 'dua', n: 'Dưa hấu', e: '🍉', lv: 8, cost: 52000, t: 1080, sell: 72000, xp: 12, leaf: '#33691e' },
-    { id: 'khoai', n: 'Khoai lang', e: '🍠', lv: 9, cost: 58000, t: 1200, sell: 80000, xp: 13, leaf: '#6d9b3a' },
-    { id: 'bi', n: 'Bí ngô', e: '🎃', lv: 10, cost: 76000, t: 1800, sell: 105000, xp: 18, leaf: '#689f38' },
-    { id: 'nho', n: 'Nho', e: '🍇', lv: 12, cost: 97000, t: 2400, sell: 135000, xp: 24, leaf: '#4e7d2a' },
+    { id: 'lua', n: 'Lúa', u: 'kg', e: '🌾', lv: 1, cost: 5500, t: 45, sell: 8000, xp: 1, leaf: '#8bc34a' },
+    { id: 'carot', n: 'Cà rốt', u: 'kg', e: '🥕', lv: 1, cost: 12500, t: 90, sell: 18000, xp: 2, leaf: '#4caf50' },
+    { id: 'ngo', n: 'Ngô', u: 'kg', e: '🌽', lv: 2, cost: 6500, t: 150, sell: 9000, xp: 3, leaf: '#66bb6a' },
+    { id: 'cachua', n: 'Cà chua', u: 'kg', e: '🍅', lv: 3, cost: 14000, t: 240, sell: 20000, xp: 4, leaf: '#43a047' },
+    { id: 'bapcai', n: 'Bắp cải', u: 'bắp', e: '🥬', lv: 4, cost: 10500, t: 300, sell: 15000, xp: 5, leaf: '#7cb342' },
+    { id: 'ot', n: 'Ớt', u: 'nửa kg', e: '🌶️', lv: 5, cost: 24500, t: 420, sell: 35000, xp: 6, leaf: '#2e7d32' },
+    { id: 'dau', n: 'Dâu tây', u: 'hộp 250g', e: '🍓', lv: 6, cost: 35000, t: 540, sell: 50000, xp: 7, leaf: '#388e3c' },
+    { id: 'huongduong', n: 'Hướng dương', u: 'bông', e: '🌻', lv: 7, cost: 17500, t: 720, sell: 25000, xp: 9, leaf: '#558b2f' },
+    { id: 'dua', n: 'Dưa hấu', u: 'quả', e: '🍉', lv: 8, cost: 24500, t: 1080, sell: 35000, xp: 12, leaf: '#33691e' },
+    { id: 'khoai', n: 'Khoai lang', u: 'kg', e: '🍠', lv: 9, cost: 17500, t: 1200, sell: 25000, xp: 13, leaf: '#6d9b3a' },
+    { id: 'bi', n: 'Bí ngô', u: 'quả', e: '🎃', lv: 10, cost: 28000, t: 1800, sell: 40000, xp: 18, leaf: '#689f38' },
+    { id: 'nho', n: 'Nho', u: 'kg', e: '🍇', lv: 12, cost: 56000, t: 2400, sell: 80000, xp: 24, leaf: '#4e7d2a' },
     /* Cây ăn quả LÂU NĂM (per): trồng 1 lần, lần đầu lớn chậm (t), sau đó cứ re giây lại ra quả, không phải gieo lại */
-    { id: 'chuoi', n: 'Chuối', e: '🍌', lv: 3, cost: 90000, t: 1800, re: 900, sell: 30000, xp: 4, leaf: '#65a30d', per: 1 },
-    { id: 'chanh', n: 'Chanh', e: '🍋', lv: 5, cost: 120000, t: 2700, re: 1200, sell: 40000, xp: 5, leaf: '#4d7c0f', per: 1 },
-    { id: 'cam', n: 'Cam', e: '🍊', lv: 7, cost: 160000, t: 3600, re: 1500, sell: 52000, xp: 6, leaf: '#3f7d20', per: 1 },
-    { id: 'tao', n: 'Táo', e: '🍎', lv: 9, cost: 200000, t: 5400, re: 2100, sell: 68000, xp: 8, leaf: '#2f6b1f', per: 1 },
-    { id: 'daoq', n: 'Đào', e: '🍑', lv: 11, cost: 260000, t: 7200, re: 2700, sell: 86000, xp: 10, leaf: '#3a7a2a', per: 1 },
-    { id: 'xoai', n: 'Xoài', e: '🥭', lv: 13, cost: 330000, t: 10800, re: 3600, sell: 110000, xp: 13, leaf: '#2d6a1f', per: 1 },
-    { id: 'dua2', n: 'Dừa', e: '🥥', lv: 15, cost: 450000, t: 14400, re: 5400, sell: 150000, xp: 17, leaf: '#4a7c2a', per: 1 }
+    { id: 'chuoi', n: 'Chuối', u: 'nải', e: '🍌', lv: 3, cost: 100000, t: 1800, re: 900, sell: 35000, xp: 4, leaf: '#65a30d', per: 1 },
+    { id: 'chanh', n: 'Chanh', u: 'kg', e: '🍋', lv: 5, cost: 80000, t: 2700, re: 1200, sell: 25000, xp: 5, leaf: '#4d7c0f', per: 1 },
+    { id: 'cam', n: 'Cam', u: 'kg', e: '🍊', lv: 7, cost: 150000, t: 3600, re: 1500, sell: 40000, xp: 6, leaf: '#3f7d20', per: 1 },
+    { id: 'tao', n: 'Táo', u: 'kg', e: '🍎', lv: 9, cost: 220000, t: 5400, re: 2100, sell: 60000, xp: 8, leaf: '#2f6b1f', per: 1 },
+    { id: 'daoq', n: 'Đào', u: 'kg', e: '🍑', lv: 11, cost: 300000, t: 7200, re: 2700, sell: 80000, xp: 10, leaf: '#3a7a2a', per: 1 },
+    { id: 'xoai', n: 'Xoài', u: 'kg', e: '🥭', lv: 13, cost: 280000, t: 10800, re: 3600, sell: 70000, xp: 13, leaf: '#2d6a1f', per: 1 },
+    { id: 'dua2', n: 'Dừa', u: 'chục quả', e: '🥥', lv: 15, cost: 500000, t: 14400, re: 5400, sell: 150000, xp: 17, leaf: '#4a7c2a', per: 1 }
   ];
   /* Phân bón: giá càng cao, rút ngắn thời gian càng nhiều (cut = phần thời gian còn lại bị cắt bỏ) */
   var FERTS = [
@@ -47,61 +47,61 @@
   var FZM = {}; FERTS.forEach(function (f) { FZM[f.id] = f; });
   /* Vật nuôi: ăn 1 nông sản (feed) rồi sau t giây cho 1 sản phẩm (p). cap = số con mỗi chuồng/ao (ít nhất 5), q = nhiệm vụ cần làm để mở chuồng */
   var ANIMALS = [
-    { id: 'ga', n: 'Gà', e: '🐔', pen: 'Chuồng gà', lv: 2, cost: 60000, feed: 'lua', p: 'trung', t: 180, cap: 8, grass: '#9ccc65' },
-    { id: 'bo', n: 'Bò', e: '🐄', pen: 'Chuồng bò', lv: 3, q: 'q3', cost: 200000, feed: 'ngo', p: 'sua', t: 360, cap: 5, grass: '#8bc34a' },
-    { id: 'cuu', n: 'Cừu', e: '🐑', pen: 'Chuồng cừu', lv: 6, q: 'q9', cost: 320000, feed: 'carot', p: 'len', t: 480, cap: 6, grass: '#aed581' },
-    { id: 'ca', n: 'Cá', e: '🐠', pen: 'Ao cá', lv: 5, q: 'q7', cost: 150000, feed: 'lua', p: 'catuoi', t: 300, cap: 10, grass: '#4fc3f7', water: 1 },
-    { id: 'ong', n: 'Ong', e: '🐝', pen: 'Trại ong', lv: 8, q: 'q13', cost: 450000, feed: 'huongduong', p: 'mat', t: 900, cap: 6, grass: '#c5e1a5' },
-    { id: 'vit', n: 'Vịt', e: '🦆', pen: 'Chuồng vịt', lv: 9, q: 'q24', cost: 380000, feed: 'ngo', p: 'longvit', t: 420, cap: 8, grass: '#80deea', water: 1 },
-    { id: 'de', n: 'Dê', e: '🐐', pen: 'Chuồng dê', lv: 11, q: 'q26', cost: 520000, feed: 'bapcai', p: 'suade', t: 600, cap: 5, grass: '#c5e1a5' },
-    { id: 'heo', n: 'Heo', e: '🐖', pen: 'Chuồng heo', lv: 13, q: 'q29', cost: 700000, feed: 'khoai', p: 'nam', t: 1200, cap: 5, grass: '#d7ccc8' }
+    { id: 'ga', n: 'Gà', e: '🐔', pen: 'Chuồng gà', lv: 2, y: 6, cost: 80000, feed: 'lua', p: 'trung', t: 180, cap: 8, grass: '#9ccc65' },
+    { id: 'bo', n: 'Bò', e: '🐄', pen: 'Chuồng bò', lv: 3, y: 10, q: 'q3', cost: 3000000, feed: 'ngo', p: 'sua', t: 360, cap: 5, grass: '#8bc34a' },
+    { id: 'cuu', n: 'Cừu', e: '🐑', pen: 'Chuồng cừu', lv: 6, y: 2, q: 'q9', cost: 2500000, feed: 'carot', p: 'len', t: 480, cap: 6, grass: '#aed581' },
+    { id: 'ca', n: 'Cá', e: '🐠', pen: 'Ao cá', lv: 5, y: 1, q: 'q7', cost: 600000, feed: 'lua', p: 'catuoi', t: 300, cap: 10, grass: '#4fc3f7', water: 1 },
+    { id: 'ong', n: 'Ong', e: '🐝', pen: 'Trại ong', lv: 8, y: 1, q: 'q13', cost: 2000000, feed: 'huongduong', p: 'mat', t: 900, cap: 6, grass: '#c5e1a5' },
+    { id: 'vit', n: 'Vịt', e: '🦆', pen: 'Chuồng vịt', lv: 9, y: 1, q: 'q24', cost: 120000, feed: 'ngo', p: 'longvit', t: 420, cap: 8, grass: '#80deea', water: 1 },
+    { id: 'de', n: 'Dê', e: '🐐', pen: 'Chuồng dê', lv: 11, y: 3, q: 'q26', cost: 2000000, feed: 'bapcai', p: 'suade', t: 600, cap: 5, grass: '#c5e1a5' },
+    { id: 'heo', n: 'Heo', e: '🐖', pen: 'Chuồng heo', lv: 13, y: 1, q: 'q29', cost: 3500000, feed: 'khoai', p: 'nam', t: 1200, cap: 5, grass: '#d7ccc8' }
   ];
   var PRODUCTS = {
-    trung: { id: 'trung', n: 'Trứng gà', e: '🥚', sell: 13000, xp: 2 },
-    sua: { id: 'sua', n: 'Sữa bò', e: '🥛', sell: 30000, xp: 4 },
-    len: { id: 'len', n: 'Len cừu', e: '🧶', sell: 26000, xp: 5 },
-    catuoi: { id: 'catuoi', n: 'Cá tươi', e: '🐟', sell: 15000, xp: 3 },
-    mat: { id: 'mat', n: 'Mật ong', e: '🍯', sell: 100000, xp: 9 },
-    banhmi: { id: 'banhmi', n: 'Bánh mì', e: '🥖', sell: 21000, xp: 4 },
-    phomai: { id: 'phomai', n: 'Phô mai', e: '🧀', sell: 65000, xp: 8 },
-    aolen: { id: 'aolen', n: 'Áo len', e: '🧥', sell: 58000, xp: 9 },
-    mutdau: { id: 'mutdau', n: 'Mứt dâu', e: '🫙', sell: 130000, xp: 14 },
-    longvit: { id: 'longvit', n: 'Lông vịt', e: '🪶', sell: 32000, xp: 4 },
-    suade: { id: 'suade', n: 'Sữa dê', e: '🍼', sell: 55000, xp: 6 },
-    nam: { id: 'nam', n: 'Nấm quý', e: '🍄', sell: 150000, xp: 14 },
-    goi: { id: 'goi', n: 'Gối lông vịt', e: '🛏️', sell: 128000, xp: 12 },
+    trung: { id: 'trung', n: 'Trứng gà', u: 'quả', e: '🥚', sell: 3000, xp: 1 },
+    sua: { id: 'sua', n: 'Sữa bò', u: 'cốc', e: '🥛', sell: 10000, xp: 1 },
+    len: { id: 'len', n: 'Len cừu', u: 'kg', e: '🧶', sell: 60000, xp: 5 },
+    catuoi: { id: 'catuoi', n: 'Cá tươi', u: 'kg', e: '🐟', sell: 45000, xp: 4 },
+    mat: { id: 'mat', n: 'Mật ong', u: 'chai', e: '🍯', sell: 150000, xp: 12 },
+    banhmi: { id: 'banhmi', n: 'Bánh mì', u: 'ổ', e: '🥖', sell: 6000, xp: 1 },
+    phomai: { id: 'phomai', n: 'Phô mai', u: 'hộp', e: '🧀', sell: 70000, xp: 6 },
+    aolen: { id: 'aolen', n: 'Áo len', u: 'chiếc', e: '🧥', sell: 140000, xp: 12 },
+    mutdau: { id: 'mutdau', n: 'Mứt dâu', u: 'hũ', e: '🫙', sell: 65000, xp: 5 },
+    longvit: { id: 'longvit', n: 'Lông vịt', u: 'lạng', e: '🪶', sell: 20000, xp: 2 },
+    suade: { id: 'suade', n: 'Sữa dê', u: 'chai', e: '🍼', sell: 25000, xp: 2 },
+    nam: { id: 'nam', n: 'Nấm quý', u: 'lạng', e: '🍄', sell: 120000, xp: 10 },
+    goi: { id: 'goi', n: 'Gối lông vịt', u: 'chiếc', e: '🛏️', sell: 170000, xp: 14 },
     /* Hàng chế biến mới ở 🏭 Khu sản xuất */
-    nuocep: { id: 'nuocep', n: 'Nước ép rau củ', e: '🧃', sell: 42000, xp: 5 },
-    tuongot: { id: 'tuongot', n: 'Tương ớt', e: '🍶', sell: 48000, xp: 6 },
-    kimchi: { id: 'kimchi', n: 'Kim chi', e: '🥗', sell: 79000, xp: 9 },
-    banhngot: { id: 'banhngot', n: 'Bánh ngọt', e: '🍰', sell: 52000, xp: 6 },
-    dauan: { id: 'dauan', n: 'Dầu hướng dương', e: '🫗', sell: 96000, xp: 10 },
-    snack: { id: 'snack', n: 'Snack khoai bí', e: '🍟', sell: 97000, xp: 11 },
-    kem: { id: 'kem', n: 'Kem dưa hấu mật ong', e: '🍨', sell: 116000, xp: 12 },
-    nuocqua: { id: 'nuocqua', n: 'Nước trái cây', e: '🍹', sell: 108000, xp: 12 },
-    keodua: { id: 'keodua', n: 'Kẹo dừa mật ong', e: '🍬', sell: 169000, xp: 16 }
+    nuocep: { id: 'nuocep', n: 'Nước ép rau củ', u: 'chai', e: '🧃', sell: 20000, xp: 2 },
+    tuongot: { id: 'tuongot', n: 'Tương ớt', u: 'chai', e: '🍶', sell: 25000, xp: 2 },
+    kimchi: { id: 'kimchi', n: 'Kim chi', u: 'hộp', e: '🥗', sell: 35000, xp: 3 },
+    banhngot: { id: 'banhngot', n: 'Bánh ngọt', u: 'cái', e: '🍰', sell: 15000, xp: 1 },
+    dauan: { id: 'dauan', n: 'Dầu hướng dương', u: 'chai', e: '🫗', sell: 45000, xp: 4 },
+    snack: { id: 'snack', n: 'Snack khoai bí', u: 'gói', e: '🍟', sell: 10000, xp: 1 },
+    kem: { id: 'kem', n: 'Kem dưa hấu mật ong', u: 'cốc', e: '🍨', sell: 30000, xp: 2 },
+    nuocqua: { id: 'nuocqua', n: 'Nước trái cây', u: 'chai', e: '🍹', sell: 38000, xp: 3 },
+    keodua: { id: 'keodua', n: 'Kẹo dừa mật ong', u: 'túi', e: '🍬', sell: 50000, xp: 4 }
   };
   /* Công trình: q = nhiệm vụ mở khoá, req = phải xây công trình khác trước, r = công thức chế biến (xưởng) */
   var BUILDS = [
     { id: 'them', n: 'Thềm nhà', e: '🪵', lv: 1, q: 'q1', cost: 150000, d: 'Lát thềm gỗ trước nhà. Mở <b>🎁 Quà mỗi ngày</b> ở mục Nhiệm vụ.' },
     { id: 'gieng', n: 'Giếng nước', e: '🪣', lv: 3, q: 'q4', cost: 250000, d: 'Thêm nút <b>Tưới hết</b> (1 chạm tưới cả ruộng). Cây đã tưới lớn nhanh gấp 1,7 lần.' },
-    { id: 'lobanh', n: 'Lò bánh mì', e: '🔥', lv: 4, q: 'q5', cost: 400000, r: { i: [['lua', 5]], o: 'banhmi', n: 2, t: 240 } },
-    { id: 'nuocep', n: 'Xưởng nước ép', e: '🧃', lv: 5, cost: 550000, r: { i: [['cachua', 3], ['carot', 3]], o: 'nuocep', n: 3, t: 300 } },
-    { id: 'bosua', n: 'Xưởng bơ sữa', e: '🏭', lv: 6, q: 'q10', cost: 700000, r: { i: [['sua', 5]], o: 'phomai', n: 3, t: 420 } },
-    { id: 'tuongot', n: 'Xưởng tương ớt', e: '🌶️', lv: 7, cost: 850000, r: { i: [['ot', 4], ['cachua', 2]], o: 'tuongot', n: 5, t: 480 } },
-    { id: 'xetai', n: 'Xe tải giao hàng', e: '🛻', lv: 7, q: 'q11', cost: 900000, d: 'Mỗi mục đơn hàng có thêm 1 đơn và tiền thưởng thêm tăng từ 10% lên 20%.' },
+    { id: 'lobanh', n: 'Lò bánh mì', e: '🔥', lv: 4, q: 'q5', cost: 400000, r: { i: [['lua', 5]], o: 'banhmi', n: 10, t: 240 } },
+    { id: 'nuocep', n: 'Xưởng nước ép', e: '🧃', lv: 5, cost: 550000, r: { i: [['cachua', 3], ['carot', 3]], o: 'nuocep', n: 8, t: 300 } },
+    { id: 'bosua', n: 'Xưởng bơ sữa', e: '🏭', lv: 6, q: 'q10', cost: 700000, r: { i: [['sua', 10]], o: 'phomai', n: 2, t: 420 } },
+    { id: 'tuongot', n: 'Xưởng tương ớt', e: '🌶️', lv: 7, cost: 850000, r: { i: [['ot', 4], ['cachua', 2]], o: 'tuongot', n: 10, t: 480 } },
+    { id: 'xetai', n: 'Xe tải giao hàng', e: '🛻', lv: 7, q: 'q11', cost: 900000, d: 'Mỗi mục đơn hàng có thêm 1 đơn và tiền thưởng thêm tăng từ 5% lên 10%.' },
     { id: 'maydet', n: 'Máy dệt', e: '🧵', lv: 8, q: 'q14', cost: 1200000, r: { i: [['len', 5]], o: 'aolen', n: 3, t: 600 } },
-    { id: 'kimchi', n: 'Xưởng kim chi', e: '🥬', lv: 8, cost: 1100000, r: { i: [['bapcai', 4], ['ot', 2]], o: 'kimchi', n: 3, t: 600 } },
-    { id: 'banhngot', n: 'Xưởng bánh ngọt', e: '🎂', lv: 9, cost: 1400000, r: { i: [['trung', 3], ['lua', 3], ['sua', 2]], o: 'banhngot', n: 3, t: 540 } },
+    { id: 'kimchi', n: 'Xưởng kim chi', e: '🥬', lv: 8, cost: 1100000, r: { i: [['bapcai', 4], ['ot', 2]], o: 'kimchi', n: 5, t: 600 } },
+    { id: 'banhngot', n: 'Xưởng bánh ngọt', e: '🎂', lv: 9, cost: 1400000, r: { i: [['trung', 6], ['lua', 3], ['sua', 4]], o: 'banhngot', n: 8, t: 540 } },
     { id: 'dauan', n: 'Nhà máy ép dầu', e: '🌻', lv: 9, cost: 1600000, r: { i: [['huongduong', 4]], o: 'dauan', n: 3, t: 720 } },
     { id: 'coixay', n: 'Cối xay gió', e: '🌀', lv: 9, q: 'q15', cost: 1500000, d: 'Gió mát giúp mọi cây trồng lớn nhanh hơn 15%.' },
     { id: 'nha2', n: 'Nhà gạch', e: '🏡', lv: 10, q: 'q17', req: 'them', cost: 2000000, d: 'Xây lại nhà bằng gạch đỏ. Quà mỗi ngày nhiều gấp đôi.' },
-    { id: 'mut', n: 'Xưởng làm mứt', e: '🍓', lv: 11, q: 'q18', cost: 1800000, r: { i: [['dau', 5], ['chanh', 2]], o: 'mutdau', n: 3, t: 900 } },
-    { id: 'snack', n: 'Nhà máy snack', e: '🍠', lv: 10, cost: 2000000, r: { i: [['khoai', 3], ['bi', 2]], o: 'snack', n: 6, t: 1200 } },
-    { id: 'chan', n: 'Xưởng chăn gối', e: '🪡', lv: 12, q: 'q28', cost: 2500000, r: { i: [['longvit', 6]], o: 'goi', n: 2, t: 900 } },
-    { id: 'kem', n: 'Nhà máy kem', e: '🍦', lv: 12, cost: 3000000, r: { i: [['suade', 2], ['dua', 2], ['mat', 1]], o: 'kem', n: 4, t: 1200 } },
-    { id: 'nuocqua', n: 'Nhà máy nước trái cây', e: '🍊', lv: 13, cost: 3600000, r: { i: [['cam', 2], ['tao', 2], ['daoq', 1]], o: 'nuocqua', n: 4, t: 1500 } },
-    { id: 'keodua', n: 'Nhà máy kẹo dừa', e: '🥥', lv: 15, cost: 4500000, r: { i: [['dua2', 3], ['mat', 2]], o: 'keodua', n: 5, t: 1800 } },
+    { id: 'mut', n: 'Xưởng làm mứt', e: '🍓', lv: 11, q: 'q18', cost: 1800000, r: { i: [['dau', 5], ['chanh', 2]], o: 'mutdau', n: 6, t: 900 } },
+    { id: 'snack', n: 'Nhà máy snack', e: '🍠', lv: 10, cost: 2000000, r: { i: [['khoai', 3], ['bi', 2]], o: 'snack', n: 20, t: 1200 } },
+    { id: 'chan', n: 'Xưởng chăn gối', e: '🪡', lv: 12, q: 'q28', cost: 2500000, r: { i: [['longvit', 6]], o: 'goi', n: 1, t: 900 } },
+    { id: 'kem', n: 'Nhà máy kem', e: '🍦', lv: 12, cost: 3000000, r: { i: [['suade', 2], ['dua', 2], ['mat', 1]], o: 'kem', n: 12, t: 1200 } },
+    { id: 'nuocqua', n: 'Nhà máy nước trái cây', e: '🍊', lv: 13, cost: 3600000, r: { i: [['cam', 2], ['tao', 2], ['daoq', 1]], o: 'nuocqua', n: 10, t: 1500 } },
+    { id: 'keodua', n: 'Nhà máy kẹo dừa', e: '🥥', lv: 15, cost: 4500000, r: { i: [['dua2', 3], ['mat', 2]], o: 'keodua', n: 20, t: 1800 } },
     { id: 'nha3', n: 'Biệt thự', e: '🏰', lv: 14, q: 'q21', req: 'nha2', cost: 5000000, d: 'Ngôi nhà mơ ước! Quà mỗi ngày gấp 3 và bán hàng ở chợ được giá hơn 10%.' }
   ];
   BUILDS.sort(function (a, b) { return a.lv - b.lv; });
@@ -483,13 +483,13 @@
   var TIERS = [
     { n: 1, e: '🌱', name: 'Nông trại nhỏ', min: 0, to: 10e6, maxLv: 4, big: 3, pen: 2, pm: 1, cap: 650000, lcap: 200000, c: '#16a34a',
       d: 'Trồng lúa, cà rốt, ngô, cà chua, bắp cải trên 3 ô ruộng. Nuôi gà, bò trong 2 chuồng nhỏ. Bán nông sản ở chợ, làm nhiệm vụ 6 ví và chơi 🎮 Phụ bản.' },
-    { n: 2, e: '🏡', name: 'Trang trại gia đình', min: 10e6, to: 20e6, maxLv: 8, big: 6, pen: 5, pm: 1.5, cap: 1200000, lcap: 300000, c: '#0ea5e9',
+    { n: 2, e: '🏡', name: 'Trang trại gia đình', min: 10e6, to: 20e6, maxLv: 8, big: 6, pen: 5, pm: 1, cap: 1200000, lcap: 300000, c: '#0ea5e9',
       d: 'Mở 🚚 đơn hàng, 🧪 phân bón, 🏭 Khu sản xuất (lò bánh mì, xưởng nước ép, bơ sữa…), nuôi cá, cừu, ong. Bắt đầu có 🌦️ mưa bão, gió lốc: phải để dành tiền sửa chữa.' },
-    { n: 3, e: '🚜', name: 'Hợp tác xã nông nghiệp', min: 20e6, to: 50e6, maxLv: 12, big: 9, pen: 9, pm: 2.5, cap: 2600000, lcap: 400000, c: '#8b5cf6',
+    { n: 3, e: '🚜', name: 'Hợp tác xã nông nghiệp', min: 20e6, to: 50e6, maxLv: 12, big: 9, pen: 9, pm: 1, cap: 2600000, lcap: 400000, c: '#8b5cf6',
       d: 'Mở 🌳 cây ăn quả lâu năm, 🎡 Khu vui chơi, xe tải giao hàng, xưởng kim chi, máy dệt. Có 🐾 thú hoang tấn công: xây hàng rào, chòi canh, chòi bắn cung để bảo vệ.' },
-    { n: 4, e: '🏭', name: 'Doanh nghiệp nông nghiệp', min: 50e6, to: 100e6, maxLv: 16, big: 12, pen: 12, pm: 4, cap: 4500000, lcap: 500000, c: '#f59e0b',
+    { n: 4, e: '🏭', name: 'Doanh nghiệp nông nghiệp', min: 50e6, to: 100e6, maxLv: 16, big: 12, pen: 12, pm: 1, cap: 4500000, lcap: 500000, c: '#f59e0b',
       d: 'Mở 🛒 mua hàng ở chợ, nhà gạch, nhà máy kem, nước trái cây, nuôi dê, heo. Quy mô 12 ô ruộng, 12 chuồng.' },
-    { n: 5, e: '🏆', name: 'Tập đoàn nông nghiệp', min: 100e6, to: 1e9, maxLv: 99, big: 15, pen: 15, pm: 10, cap: 28000000, lcap: 2000000, c: '#ef4444',
+    { n: 5, e: '🏆', name: 'Tập đoàn nông nghiệp', min: 100e6, to: 1e9, maxLv: 99, big: 15, pen: 15, pm: 1, cap: 28000000, lcap: 2000000, c: '#ef4444',
       d: 'Mở toàn bộ tính năng: 15 ô ruộng, 15 chuồng, biệt thự, nhà máy kẹo dừa. Đích đến: tổng tài sản 1 tỷ đồng để thành 🏆 Tỷ phú nông trại!' }
   ];
   /* Tính năng mở theo cấp độ */
@@ -1429,35 +1429,38 @@
 
   /* ================= ĐƠN HÀNG ================= */
   /* (bản 2026.11.02-11) Đơn hàng chia 3 mục: 🌾 Trồng trọt · 🐄 Chăn nuôi · 🏭 Sản xuất, mỗi mục 2 đơn (có xe tải: 3 đơn).
-     Tiền nhận = đúng giá trị hàng theo giá chợ + thưởng thêm 10% (có xe tải: 20%). Bấm 🔄 Đổi đơn để tìm đơn giao được ngay. */
+     Tiền nhận = đúng giá trị hàng theo giá chợ + thưởng thêm 5% (có xe tải: 10%). Bấm 🔄 Đổi đơn để tìm đơn giao được ngay. */
   var OCATS = [{ k: 'crop', n: 'Trồng trọt', e: '🌾' }, { k: 'anim', n: 'Chăn nuôi', e: '🐄' }, { k: 'prod', n: 'Sản xuất', e: '🏭' }];
   function orderSlots() { return built('xetai') ? 3 : 2; }
-  function orderBonus() { return built('xetai') ? 0.2 : 0.1; }
+  function orderBonus() { return built('xetai') ? 0.1 : 0.05; }   // thưởng thêm 5% (có xe tải: 10%)
   function orderPool(cat) {
     if (cat === 'crop') return CROPS.filter(cropOK).map(function (c) { return c.id; });
     if (cat === 'anim') return ANIMALS.filter(function (a) { return S.an[a.id].length; }).map(function (a) { return a.p; });
     var pool = []; BUILDS.forEach(function (b) { if (b.r && built(b.id) && pool.indexOf(b.r.o) < 0) pool.push(b.r.o); }); return pool;
   }
   var NAMES = ['Cô Lan bán xôi', 'Chú Tư quán phở', 'Bếp ăn trường học', 'Siêu thị mini', 'Nhà hàng Sen Vàng', 'Bà Ba bán chè', 'Tiệm bánh Hạnh Phúc', 'Quán cơm Bình Dân', 'Chợ đầu mối', 'Hợp tác xã', 'Khách sạn Biển Xanh', 'Cửa hàng tiện lợi'];
-  /* stock = true: ưu tiên những món đang có trong kho để đơn mới giao được ngay */
+  /* (bản 2026.11.02-12) Quy mô đơn hàng theo cấp độ nông trại: cấp thấp đơn nhỏ (vd. 1 quả trứng), cấp cao đơn lớn (5–10 quả trứng
+     kèm thêm vài sản phẩm phụ). Hàng đắt tiền (≥ 100.000đ/đơn vị) đặt ít hơn. stock = true: ưu tiên món đang có trong kho. */
+  var OQ = { crop: [[1, 2], [1, 3], [3, 8], [5, 12], [8, 20]], anim: [[1, 1], [1, 1], [2, 5], [5, 10], [8, 15]], prod: [[1, 1], [1, 1], [2, 4], [3, 6], [5, 10]] };
+  var OK = [[1, 1], [1, 1], [1, 2], [2, 3], [2, 3]];   // số loại hàng trong 1 đơn theo cấp độ
   function genOrder(cat, stock) {
     var pool = shuffle(orderPool(cat)); if (!pool.length) return null;
     if (stock) pool.sort(function (a, b) { return (S.inv[b] || 0) - (S.inv[a] || 0); });
-    var maxK = cat === 'crop' ? (S.lv >= 3 ? 3 : 2) : 2, k = Math.min(pool.length, ri(1, maxK)), it = [], val = 0, xp = 1;
+    var t = Math.max(1, Math.min(5, S.tier || 1)) - 1, rk = OK[t], qr = OQ[cat][t];
+    var k = Math.min(pool.length, ri(rk[0], rk[1])), it = [], val = 0;
     for (var i = 0; i < k; i++) {
-      var id = pool[i], I = item(id), q;
-      if (cat === 'crop') q = I.t >= 600 || I.per ? ri(1, 3) : ri(2, Math.min(8, 3 + Math.floor(S.lv / 2)));
-      else if (cat === 'anim') q = ri(1, Math.min(4, 2 + Math.floor(S.lv / 5)));
-      else q = I.sell >= 100000 ? ri(1, 2) : ri(1, Math.min(3, 2 + Math.floor(S.lv / 8)));
+      var id = pool[i], I = item(id), q = ri(qr[0], qr[1]);
+      if (i > 0) q = Math.max(1, Math.round(q / 2));                       // sản phẩm phụ: số lượng ít hơn
+      if (I.sell >= 100000) q = Math.max(1, Math.round(q / 3));
       if (stock && (S.inv[id] || 0) > 0) q = Math.max(1, Math.min(q, S.inv[id]));
-      it.push([id, q]); val += sp(id) * q; xp += I.xp * q;
+      it.push([id, q]); val += sp(id) * q;
     }
-    return { k: cat, it: it, v: val, m: Math.round(val / 1000) * 1000, xp: xp, who: NAMES[ri(0, NAMES.length - 1)], tr: ['🚚', '🛻', '🚛', '🛵'][ri(0, 3)] };
+    return { k: cat, it: it, v: val, m: val, xp: 1 + Math.round(val / 15000), who: NAMES[ri(0, NAMES.length - 1)], tr: ['🚚', '🛻', '🚛', '🛵'][ri(0, 3)] };
   }
-  function orderPay(o) { return Math.round(o.v * (1 + orderBonus()) / 1000) * 1000; }
+  function orderPay(o) { return Math.round(o.v * (1 + orderBonus()) / 100) * 100; }
   function fillOrders() {
     if (!feat('order')) return;
-    if (S.orders.some(function (o) { return !o.k || o.v == null; })) S.orders = [];   // đơn kiểu cũ (giá cũ): làm mới
+    if (S.ov !== 3) { S.orders = []; S.ov = 3; }   // đổi bảng giá: làm mới toàn bộ đơn cũ
     OCATS.forEach(function (c) {
       var n = S.orders.filter(function (o) { return o.k === c.k; }).length;
       while (n < orderSlots()) { var o = genOrder(c.k); if (!o) break; S.orders.push(o); n++; }
@@ -2612,8 +2615,9 @@
     S.inv[a.feed]--; x.s = 1; x.p = 0; x.t = Date.now(); ev('feed', a.id); return true;
   }
   function collectOne(a, x) {
-    S.inv[a.p] = (S.inv[a.p] || 0) + 1; x.s = 0; x.p = 0; ev('collect', a.p); addXP(PRODUCTS[a.p].xp);
-    if (x._x) { burst(x._x, x._y - 20, ['#fde047', '#fff', '#fdba74'], 9); floatTxt(x._x, x._y - 30, '+1 ' + PRODUCTS[a.p].e + ' +' + PRODUCTS[a.p].xp + ' KN', '#fef08a'); }
+    var y = a.y || 1;
+    S.inv[a.p] = (S.inv[a.p] || 0) + y; x.s = 0; x.p = 0; ev('collect', a.p, y); addXP(PRODUCTS[a.p].xp);
+    if (x._x) { burst(x._x, x._y - 20, ['#fde047', '#fff', '#fdba74'], 9); floatTxt(x._x, x._y - 30, '+' + y + ' ' + PRODUCTS[a.p].e + ' +' + PRODUCTS[a.p].xp + ' KN', '#fef08a'); }
   }
   function careAll(a, i) {
     if (animPaused(a.id)) { toast((S.dmg.pen[a.id] ? '🔨 ' + a.pen + ' bị hỏng' : '🤒 ' + a.n + ' đang bị ốm') + '. Vào 🎯 Nhiệm vụ → Sự cố để xử lý.'); setTab('quest'); return; }
@@ -2657,7 +2661,7 @@
     ANIMALS.forEach(function (a) {
       var lk = S.lv < a.lv, pc = penCost(a), cnt = S.pens.filter(function (P) { return P && P.a === a.id; }).length;
       h += '<div class="fm-seed' + (lk ? '' : '') + '" style="cursor:default' + (lk ? ';opacity:.5' : '') + '"><span class="e">' + (lk ? '🔒' : a.e) + '</span><span class="tx"><b>' + a.pen + (cnt ? ' <small style="display:inline;color:#15803d">(đang có ' + cnt + ')</small>' : '') + '</b>' +
-        '<small>' + (lk ? 'Mở ở bậc ' + a.lv : 'Chuồng ' + money(pc) + ' · mỗi con ' + money(a.cost) + ' (ví 📈 Đầu tư) · nuôi ' + capPen(a) + ' con<br>Ăn ' + CM[a.feed].e + ' ' + CM[a.feed].n.toLowerCase() + ' → ' + PRODUCTS[a.p].e + ' ' + PRODUCTS[a.p].n.toLowerCase() + ' (bán ' + short(PRODUCTS[a.p].sell) + ') mỗi ' + durL(a.t)) + '</small>' +
+        '<small>' + (lk ? 'Mở ở bậc ' + a.lv : 'Chuồng ' + money(pc) + ' · mỗi con ' + money(a.cost) + ' (ví 📈 Đầu tư) · nuôi ' + capPen(a) + ' con<br>Ăn ' + CM[a.feed].e + ' ' + CM[a.feed].n.toLowerCase() + ' → ' + (a.y || 1) + ' ' + PRODUCTS[a.p].e + ' ' + PRODUCTS[a.p].n.toLowerCase() + ' (bán ' + short(PRODUCTS[a.p].sell) + '/' + PRODUCTS[a.p].u + ') mỗi ' + durL(a.t)) + '</small>' +
         (lk ? '' : '<span class="fm-row" style="margin-top:6px"><button class="fm-btn org" data-a="penBuild" data-i="' + i + '" data-k="' + a.id + '"' + (S.jar.invest < pc ? ' disabled' : '') + '>🔨 Xây · −' + short(pc) + ' 📈</button>' + (S.jar.invest < pc ? '<span class="fm-tag">Ví Đầu tư chưa đủ</span>' : '') + '</span>') + '</span></div>';
     });
     sheet(h + '<button class="fm-btn alt" data-a="sheetClose" style="width:100%">Để sau</button>');
@@ -2745,7 +2749,7 @@
       if (c.per && !CROPS[ci - 1].per) h += '<div class="fm-h" style="margin-top:12px">🌳 Cây ăn quả lâu năm</div>' + wpay('invest');
       if (c.per) { h += '<button class="fm-seed' + (S.sel === c.id ? ' on' : '') + '" data-a="pick" data-c="' + c.id + '"' + (lk ? ' disabled' : '') + '><span class="e">' + (lk ? '🔒' : c.e) + '</span><span class="tx"><b>' + c.n + '</b><small>' + (lk ? 'Mở ở bậc ' + c.lv : 'Cây giống ' + money(c.cost) + ' 📈 · lần đầu ' + durL(c.t) + ' · sau đó cứ ' + durL(c.re) + ' ra 1 lứa · bán ' + money(c.sell)) + '</small></span>' + (lk ? '' : '<span class="pr">+' + short(c.sell) + '<small>mỗi lứa</small></span>') + '</button>'; return; }
       h += '<button class="fm-seed' + (S.sel === c.id ? ' on' : '') + '" data-a="pick" data-c="' + c.id + '"' + (lk ? ' disabled' : '') + '><span class="e">' + (lk ? '🔒' : c.e) + '</span><span class="tx"><b>' + c.n + '</b>' +
-        '<small>' + (lk ? 'Mở ở bậc ' + c.lv : 'Hạt ' + money(c.cost) + ' 🏠 · ⏱ ' + durL(c.t) + ' · bán ' + money(c.sell)) + '</small></span>' +
+        '<small>' + (lk ? 'Mở ở bậc ' + c.lv : 'Hạt ' + money(c.cost) + ' 🏠 · ⏱ ' + durL(c.t) + ' · bán ' + money(c.sell) + '/' + c.u) + '</small></span>' +
         (lk ? '' : '<span class="pr">+' + short(pr) + '<small>lãi/cây</small></span>') + '</button>';
     });
     sheet(h);
@@ -2824,7 +2828,7 @@
       gl('🕹️', '<b>Nhà trò chơi Phụ bản</b> ở đây dẫn tới các game học kiếm tiền.')];
     else if (k === 'market') L0 = [
       gl('📦', '<b>Kho</b>: bán nông sản và hàng chế biến lấy tiền.'),
-      gl('🚚', '<b>Đơn hàng</b> (từ Cấp độ 2) chia 3 mục: 🌾 Trồng trọt, 🐄 Chăn nuôi, 🏭 Sản xuất. Khách trả đúng giá chợ + thưởng thêm 10% (có xe tải: 20%). Chưa đủ hàng thì bấm 🔄 Đổi đơn để tìm đơn giao được ngay.'),
+      gl('🚚', '<b>Đơn hàng</b> (từ Cấp độ 2) chia 3 mục: 🌾 Trồng trọt, 🐄 Chăn nuôi, 🏭 Sản xuất. Khách trả đúng giá chợ + thưởng thêm 5% (có xe tải: 10%). Cấp độ càng cao, đơn càng lớn. Chưa đủ hàng thì bấm 🔄 Đổi đơn để tìm đơn giao được ngay.'),
       gl('🛒', '<b>Mua hàng</b> (từ Cấp độ 4): mua món còn thiếu, đắt hơn giá bán ' + Math.round((BUY_MUL - 1) * 100) + '%, mỗi ngày ' + BUY_TYPES + ' loại. Tự trồng, tự nuôi vẫn lời hơn.'),
       gl('🏰', 'Biệt thự giúp bán giá cao hơn 10%.')];
     else if (k === 'quest') L0 = [
@@ -2909,7 +2913,7 @@
       h += '<p class="fm-sub">Giá trị hàng trong kho: <b>' + money(val) + '</b></p>';
       if (!ids.length) h += '<div class="fm-card" style="text-align:center;color:#7a6440">Kho đang trống. Hãy ra Ruộng thu hoạch nhé! 🌾</div>';
       else h += '<div class="fm-inv">' + ids.map(function (id) { var I = item(id), q = S.inv[id];
-        return '<div class="fm-it"><div class="e">' + I.e + '</div><b>' + I.n + '</b><small>Giá chợ ' + money(sp(id)) + '</small><div class="q">× ' + q + '</div><div class="fm-row"><button class="fm-btn alt" data-a="sell" data-c="' + id + '" data-q="1">Bán 1</button><button class="fm-btn" data-a="sell" data-c="' + id + '" data-q="' + q + '">Bán hết</button></div></div>'; }).join('') + '</div>';
+        return '<div class="fm-it"><div class="e">' + I.e + '</div><b>' + I.n + '</b><small>Giá chợ ' + money(sp(id)) + (I.u ? '/' + I.u : '') + '</small><div class="q">× ' + q + '</div><div class="fm-row"><button class="fm-btn alt" data-a="sell" data-c="' + id + '" data-q="1">Bán 1</button><button class="fm-btn" data-a="sell" data-c="' + id + '" data-q="' + q + '">Bán hết</button></div></div>'; }).join('') + '</div>';
       if (feat('fert')) h += '<div class="fm-h" style="margin-top:16px">🏪 Cửa hàng vật tư</div>' + wpay('essential') +
         FERTS.map(function (f) { return '<div class="fm-card" style="display:flex;align-items:center;gap:10px"><span style="font-size:36px;font-family:' + EF + '">' + f.e + '</span><div style="flex:1"><b>' + f.n + '</b><div class="fm-sub" style="margin:2px 0 6px">' + f.d + '. Đang có ' + (S.fz[f.id] || 0) + ' túi · ' + money(f.p) + '/túi.</div><div class="fm-row" style="margin:0"><button class="fm-btn org" data-a="buyFert" data-f="' + f.id + '" data-q="1">Mua 1 túi · −' + short(f.p) + ' 🏠</button><button class="fm-btn org" data-a="buyFert" data-f="' + f.id + '" data-q="5">Mua 5 · −' + short(f.p * 5) + ' 🏠</button></div></div></div>'; }).join('');
     }
@@ -3605,7 +3609,7 @@
     sfx('win'); try { if (window.addStar) window.addStar(); } catch (e) {}
     sheetLater('<div class="fm-modal"><div class="big">' + t.e + '</div><h2>Lên Cấp độ ' + t.n + ': ' + t.name + '!</h2><p>Tổng tài sản đã vượt <b>' + short(t.min) + '</b>. ' + t.d + '</p>' +
       '<p><b>Mở khoá mới:</b></p><div class="fm-ul">' + un.join('') + '</div>' +
-      '<p style="font-size:13px">💹 Giá thị trường tăng từ ×' + o.pm + ' lên <b>×' + t.pm + '</b> (hạt giống, nông sản, hàng chế biến, thu nhập công trình).</p>' +
+      '<p style="font-size:13px">🚚 Quy mô lớn hơn: đơn hàng đặt nhiều hàng hơn (giá chợ vẫn theo giá thật, không đổi).</p>' +
       '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="tiers">Xem 5 cấp độ</button><button class="fm-btn" data-a="sheetClose">Tuyệt vời!</button></div></div>');
   }
   function tierSheet() {
@@ -3634,7 +3638,7 @@
       var done = S.tier > x.n, cur = S.tier === x.n;
       h += '<div class="fm-card' + (done ? ' done' : cur ? ' hot' : ' lock') + '" style="border-left:5px solid ' + x.c + '"><b>' + (done ? '✅ ' : cur ? '👉 ' : '🔒 ') + x.e + ' Cấp độ ' + x.n + ': ' + x.name + '</b>' +
         '<div class="fm-sub" style="margin:2px 0 6px">Tài sản ' + (x.n === 1 ? '1 triệu' : short(x.min)) + ' → ' + (x.n === 5 ? '1 tỷ' : short(x.to)) + '</div><div style="font-size:13px;line-height:1.5;color:#4a3a20">' + x.d + '</div>' +
-        '<div class="fm-ul" style="justify-content:flex-start;margin:6px 0 0"><span>🌾 ' + x.big + ' ô ruộng</span><span>🐄 ' + x.pen + ' chuồng</span><span>⭐ Bậc ' + (x.maxLv > 50 ? '17+' : '≤ ' + x.maxLv) + '</span><span>💹 Giá ×' + x.pm + '</span></div></div>';
+        '<div class="fm-ul" style="justify-content:flex-start;margin:6px 0 0"><span>🌾 ' + x.big + ' ô ruộng</span><span>🐄 ' + x.pen + ' chuồng</span><span>⭐ Bậc ' + (x.maxLv > 50 ? '17+' : '≤ ' + x.maxLv) + '</span></div></div>';
     });
     sheet(h + '<div class="fm-row"><button class="fm-btn alt" data-a="roadmap" style="flex:1">⭐ Lộ trình bậc kinh nghiệm</button><button class="fm-btn" data-a="sheetClose" style="flex:1">Đóng</button></div>');
   }

@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.02-3';
+const APP_VERSION='2026.11.02-5';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -2679,12 +2679,11 @@ function scrLearnPlay(){
   it("playGame('vnv')",'🧭 Khám phá Việt Nam')+
   it("playGame('words')",'🔤 Game học từ vựng tiếng Anh')+
   it("playGame('zh')",'🀄 Game học từ vựng tiếng Trung')+
-  it("playGame('match')",'🍬 Xếp kẹo từ vựng (Anh – Trung)')+
   it("playGame('math')",'🧮 Toán học cấp 1')+
   it('openQuiz()','🎯 Đố vui tài chính')+
   it("playGame('runner')",'🎮 Bước nhảy tài chính')+
   it("playGame('chess')",'♟️ Cờ vua')+
-  it("playGame('clock')",'🕒 Dạy trẻ xem đồng hồ'));
+  it("playGame('clock')",'🕒 Học xem đồng hồ'));
 }
 
   // ===== Quản lý khoản nợ =====
@@ -4653,7 +4652,7 @@ function gcCount(path,title){
   if(tx.length>_n){const d=new Date().toISOString().slice(0,10);let last='';try{last=localStorage.getItem(GC_DAY_KEY)||'';}catch(e){}
    if(last!==d){try{localStorage.setItem(GC_DAY_KEY,d);}catch(e){}gcCount('su-kien/ghi-chep-trong-ngay','Có ghi chép trong ngày');}}
   _n=tx.length;};
- const GN={runner:'Bước nhảy tài chính',words:'Học từ vựng tiếng Anh',zh:'Học tiếng Trung',math:'Toán',vnh:'Khám phá lịch sử Việt Nam',vnv:'Khám phá Việt Nam',chess:'Cờ vua',clock:'Dạy trẻ xem đồng hồ',farm:'Nông trại Sixpay'};
+ const GN={runner:'Bước nhảy tài chính',words:'Học từ vựng tiếng Anh',zh:'Học tiếng Trung',math:'Toán',vnh:'Khám phá lịch sử Việt Nam',vnv:'Khám phá Việt Nam',chess:'Cờ vua',clock:'Học xem đồng hồ',farm:'Nông trại Sixpay'};
  const _play=playGame;
  playGame=function(k){gcCount('tro-choi/'+k,'Trò chơi: '+(GN[k]||k));return _play.apply(this,arguments);};
 })();

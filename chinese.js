@@ -7,7 +7,7 @@
   var EF = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
   var TF = '-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC","Segoe UI",Roboto,Arial,sans-serif';
   var GAME_SECONDS = 120, REWARD = 10000, PENALTY = 5000;
-  var DAY_SEC_PER_WORD = 5.6;   // Một ngày của bé: thời gian mỗi từ (giây). Muốn gấp hơn thì giảm số này, muốn thoải mái hơn thì tăng.
+  var DAY_SEC_PER_WORD = 5.6;   // Một ngày của bạn: thời gian mỗi từ (giây). Muốn gấp hơn thì giảm số này, muốn thoải mái hơn thì tăng.
   var SPEED = 0.7;              // tốc độ rơi (chế độ theo chủ đề)
   try { var _sp = parseFloat(localStorage.getItem('zh_wg_speed')); if (_sp >= 0.3 && _sp <= 1.5) SPEED = _sp; } catch (e) {}
 
@@ -206,7 +206,7 @@
   TOPICS.forEach(function (t) { t.w.forEach(function (w) { var k = w[0].toLowerCase(); if (!_seen[k]) { _seen[k] = 1; ALL.push(w); } }); });
   var MENU = TOPICS.concat([{ id: 'mix', n: 'Tổng hợp tất cả', i: '🎲', c: '#ec4899', w: ALL, g: GROUPS.length }]);
 
-  /* ================= MỘT NGÀY CỦA BÉ: 15 MÀN x 20 TỪ ================= */
+  /* ================= MỘT NGÀY CỦA BẠN: 15 MÀN x 20 TỪ ================= */
   var L = [
     ['🛏️', 'Phòng ngủ', '#6366f1', 'bed|cái giường|🛏️;pillow|cái gối|@pillow;blanket|cái chăn|@blanket;wardrobe|tủ quần áo|@wardrobe;fan|cái quạt|@fan;air conditioner|điều hòa|@aircon;curtain|rèm cửa|@curtain;window|cửa sổ|🪟;door|cửa ra vào|🚪;lamp|cái đèn|💡;alarm clock|đồng hồ báo thức|⏰;teddy bear|gấu bông|🧸;mirror|cái gương|🪞;slippers|đôi dép|🩴;pajamas|đồ ngủ|@pajamas;desk|bàn học|@desk;bookshelf|giá sách|@bookshelf;picture|bức tranh|🖼️;wake up|thức dậy|🌄;yawn|ngáp|🥱;stretch|vươn vai|🙆;morning|buổi sáng|🌅;sun|mặt trời|☀️;sleepy|buồn ngủ|😴'],
     ['🪥', 'Đánh răng rửa mặt', '#0ea5e9', 'toothbrush|bàn chải đánh răng|🪥;toothpaste|kem đánh răng|@toothpaste;tooth|răng|🦷;tongue|cái lưỡi|👅;mouth|cái miệng|👄;face|khuôn mặt|🙂;eyes|đôi mắt|👀;nose|cái mũi|👃;ear|cái tai|👂;water|nước|💧;tap|vòi nước|🚰;cup|cái cốc|🥛;soap|xà phòng|🧼;bubbles|bọt xà phòng|🫧;towel|khăn mặt|@towel;comb|cái lược|@comb;hair|mái tóc|💇;mirror|cái gương|🪞;toilet|bồn cầu|🚽;toilet paper|giấy vệ sinh|🧻;wash hands|rửa tay|👐;smile|nụ cười|😁;clean|sạch sẽ|✨;bathtub|bồn tắm|🛁'],
@@ -339,6 +339,10 @@
   '.zg-pq{max-width:520px;margin:0 auto;text-align:center}.zg-pq .q{background:rgba(255,255,255,.14);border-radius:18px;padding:18px 14px;margin:8px 0 14px}.zg-pq .q b{display:block;font-size:24px;line-height:1.35}.zg-pq .q i{display:block;font-style:normal;color:#fde68a;margin-top:4px}' +
   '.zg-opt{display:block;width:100%;text-align:left;border:0;border-radius:14px;padding:13px 14px;margin-bottom:8px;font-size:16px;font-weight:700;color:#fff;background:rgba(255,255,255,.16);cursor:pointer;font-family:inherit}' +
   '.zg-opt.ok{background:#16a34a}.zg-opt.bad{background:#dc2626}.zg-opt:disabled{cursor:default}';
+  /* Nút nổi mở game Phá đảo chủ đề (bản 2026.11.02) */
+  st.textContent += '#zgTopics{position:relative}.zg-fab{position:absolute;right:14px;bottom:max(16px,env(safe-area-inset-bottom));z-index:3;border:0;border-radius:999px;padding:13px 20px;font-weight:900;font-size:16px;font-family:inherit;color:#fff;cursor:pointer;' +
+    'background:linear-gradient(135deg,#22d3ee,#0284c7);box-shadow:0 8px 22px rgba(2,132,199,.5),inset 0 -4px 0 rgba(0,0,0,.18);animation:zgFab 2.4s ease-in-out infinite}' +
+    '.zg-fab:active{transform:scale(.96)}@keyframes zgFab{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}';
   document.head.appendChild(st);
 
   /* ================= DOM ================= */
@@ -348,11 +352,11 @@
   '<div class="zg-scr on" id="zgMenu"><div class="zg-top"><button class="zg-btn" data-a="close" style="padding:8px 14px;font-size:20px">←</button><div class="zg-title fl">🀄 Học tiếng Trung – chọn hình thức học</div><button class="zg-btn" data-a="close">✕ Đóng</button></div>' +
     '<div class="zg-choice">' +
     '<button class="zg-big" data-a="topics" style="background:linear-gradient(145deg,#3b82f6,#1d4ed8)"><span class="ic">📚</span><span class="nm">Từ vựng tiếng Trung theo chủ đề</span><span class="sub">Chọn chủ đề yêu thích và hứng từ trong 2 phút</span></button>' +
-    '<button class="zg-big" data-a="day" style="background:linear-gradient(145deg,#f59e0b,#ea580c)"><span class="ic">🌞</span><span class="nm">Một ngày của bé</span><span class="sub">Phá đảo 15 màn từ lúc thức dậy đến khi đi ngủ, hơn ' + DAYWORDS + ' từ vựng</span></button>' +
+    '<button class="zg-big" data-a="day" style="background:linear-gradient(145deg,#f59e0b,#ea580c)"><span class="ic">🌞</span><span class="nm">Một ngày của bạn</span><span class="sub">Phá đảo 15 màn từ lúc thức dậy đến khi đi ngủ, hơn ' + DAYWORDS + ' từ vựng</span></button>' +
     '<button class="zg-big" data-a="phr" style="background:linear-gradient(145deg,#14b8a6,#0f766e)"><span class="ic">💬</span><span class="nm">Những câu giao tiếp cơ bản</span><span class="sub">' + PHRN + ' câu thông dụng theo ' + PHR.length + ' tình huống: nghe, đọc theo và luyện tập</span></button>' +
     '</div></div>' +
-  '<div class="zg-scr" id="zgTopics"><div class="zg-top"><button class="zg-btn" data-a="menu" style="padding:8px 14px;font-size:20px">←</button><div class="zg-title fl">Hãy chọn một chủ đề để bắt đầu chơi</div></div><div class="zg-grid" id="zgGrid"></div></div>' +
-  '<div class="zg-scr" id="zgMap"><div class="zg-top"><button class="zg-btn" data-a="menu" style="padding:8px 14px;font-size:20px">←</button><div class="zg-title fl">🌞 Một ngày của bé</div></div>' +
+  '<div class="zg-scr" id="zgTopics"><div class="zg-top"><button class="zg-btn" data-a="menu" style="padding:8px 14px;font-size:20px">←</button><div class="zg-title fl">Hãy chọn một chủ đề để bắt đầu chơi</div></div><div class="zg-grid" id="zgGrid" style="padding-bottom:96px"></div><button class="zg-fab" data-a="island">🏝️ Phá đảo chủ đề</button></div>' +
+  '<div class="zg-scr" id="zgMap"><div class="zg-top"><button class="zg-btn" data-a="menu" style="padding:8px 14px;font-size:20px">←</button><div class="zg-title fl">🌞 Một ngày của bạn</div></div>' +
     '<div class="zg-scroll"><div class="zg-info"><span id="zgInfo"></span><span><button class="zg-btn" id="zgL1" data-a="lv1" style="padding:6px 12px;font-size:14px">Cấp 1 (có hình)</button> <button class="zg-btn" id="zgL2" data-a="lv2" style="padding:6px 12px;font-size:14px">Cấp 2 (chỉ chữ)</button></span></div><div id="zgMapList"></div></div></div>' +
   '<div class="zg-scr" id="zgIntro"><div class="zg-top"><button class="zg-btn" data-a="introback" style="padding:8px 14px;font-size:20px">←</button><div class="zg-title fl" id="zgIT"></div></div>' +
     '<div class="zg-scroll"><div style="font-size:14px;color:#ffe2c4;line-height:1.5" id="zgIntroTxt"></div><div class="zg-words" id="zgWords"></div><div style="text-align:center;position:sticky;bottom:0;padding:12px 0 4px;background:linear-gradient(rgba(143,31,38,0),#8f1f26 45%)"><button class="zg-btn main" data-a="go">▶ Bắt đầu</button></div></div></div>' +
@@ -395,7 +399,7 @@
     });
   }
 
-  /* ================= BẢN ĐỒ "MỘT NGÀY CỦA BÉ" ================= */
+  /* ================= BẢN ĐỒ "MỘT NGÀY CỦA BẠN" ================= */
   var cur = 0;
   function renderMap() {
     var tot = P.s.reduce(function (a, b) { return a + b; }, 0);
@@ -647,8 +651,8 @@
   }
   function winScreen() {
     var tot = P.s.reduce(function (a, b) { return a + b; }, 0);
-    $('zgRes').innerHTML = '<div style="font-size:70px">🏆</div><h2>Phá đảo "Một ngày của bé"!</h2><div class="zg-stars">★</div>' +
-      '<div>Bé đã hoàn thành cả 15 màn và học ' + DAYWORDS + ' từ vựng</div><div class="zg-mny" style="color:#fde68a">⭐ ' + tot + '/45</div>' +
+    $('zgRes').innerHTML = '<div style="font-size:70px">🏆</div><h2>Phá đảo "Một ngày của bạn"!</h2><div class="zg-stars">★</div>' +
+      '<div>Bạn đã hoàn thành cả 15 màn và học ' + DAYWORDS + ' từ vựng</div><div class="zg-mny" style="color:#fde68a">⭐ ' + tot + '/45</div>' +
       '<div style="font-size:18px;font-weight:800">Tổng tiền thưởng: ' + money(P.m) + '</div>' +
       '<div class="zg-acts"><button class="zg-btn main" data-a="map">Về bản đồ (chơi lại lấy thêm sao)</button></div>';
     show('end');
@@ -709,6 +713,7 @@
     var el = e.target.closest ? e.target.closest('[data-a]') : null; if (!el) return;
     var a = el.getAttribute('data-a'), i = parseInt(el.getAttribute('data-i'), 10);
     if (a === 'close') api.close();
+    else if (a === 'island') openIsland();
     else if (a === 'menu') { stopSpeak(); show('menu'); }
     else if (a === 'topics') toTopics();
     else if (a === 'day') { renderMap(); show('map'); }
@@ -741,6 +746,13 @@
   window.addEventListener('resize', function () { if (root.classList.contains('on') && scr.play.classList.contains('on')) resize(); });
   document.addEventListener('visibilitychange', function () { if (G) G.last = performance.now(); });
 
+  /* Mở game Phá đảo chủ đề (tiếng Trung) — file match.js chỉ tải khi bấm */
+  function openIsland() {
+    stopSpeak();
+    var go = function () { try { window.SixMatchGame.open({ lang: 'zh' }); } catch (e) {} };
+    if (window.SixMatchGame) go();
+    else if (window.loadGame) window.loadGame('match').then(go).catch(function () { alert('Chưa mở được Phá đảo chủ đề. Hãy kiểm tra mạng rồi thử lại.'); });
+  }
   /* ================= API CÔNG KHAI ================= */
   var api = {
     open: function (o) {

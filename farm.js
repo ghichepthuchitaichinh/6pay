@@ -3,7 +3,7 @@
    thiệt hại và nông sản còn thiếu cho đơn hàng). File này được index.html tải về khi người dùng mở trò chơi.
    Trồng cây, nuôi gà – bò – cừu – cá – ong, xây xưởng chế biến, khu vui chơi, giao đơn hàng và ghi sổ thu chi.
    Nông trại được NỐI với các game học: tiền thưởng kiếm được trong Lịch sử Việt Nam, Khám phá Việt Nam, từ vựng tiếng Anh,
-   tiếng Trung, Toán học cấp 1, Đố vui tài chính, Dạy trẻ xem đồng hồ được cộng hết vào ví nông trại (qua hộp thư farm6_inbox).
+   tiếng Trung, Toán học cấp 1, Đố vui tài chính, Học xem đồng hồ được cộng hết vào ví nông trại (qua hộp thư farm6_inbox).
    Bản đồ Trồng trọt/Chăn nuôi kéo được bằng 1 ngón, phóng to/thu nhỏ bằng 2 ngón.
    Cây và vật nuôi vẫn lớn khi đóng app (tính theo đồng hồ của máy). Tiến độ lưu trên máy (localStorage). */
 (function () {
@@ -133,10 +133,10 @@
     { k: 'vnv', n: 'Khám phá Việt Nam', e: '🧭', u: 'câu', d: 'Mỗi câu trả lời đúng +10.000đ' },
     { k: 'en', n: 'Từ vựng tiếng Anh', e: '🔤', u: 'từ', d: 'Hứng đúng mỗi từ +10.000đ' },
     { k: 'zh', n: 'Từ vựng tiếng Trung', e: '🀄', u: 'từ', d: 'Hứng đúng mỗi từ +10.000đ' },
-    { k: 'match', n: 'Xếp kẹo từ vựng', e: '🍬', u: 'từ', d: 'Qua màn: mỗi ⭐ +10.000đ' },
+    { k: 'match', n: 'Phá đảo chủ đề', e: '🏝️', u: 'từ', d: 'Qua màn: mỗi ⭐ +10.000đ' },
     { k: 'math', n: 'Toán học cấp 1', e: '🧮', u: 'câu', d: 'Thử thách theo lớp và bảng cửu chương' },
     { k: 'quiz', n: 'Đố vui tài chính', e: '🎯', u: 'câu', d: 'Trả lời đúng và nhanh để được nhiều tiền' },
-    { k: 'clock', n: 'Dạy trẻ xem đồng hồ', e: '🕒', u: 'giờ', d: 'Bấm “Đố bé xem giờ”: mỗi câu đúng +10.000đ' }
+    { k: 'clock', n: 'Học xem đồng hồ', e: '🕒', u: 'giờ', d: 'Bấm “Đố bạn xem giờ”: mỗi câu đúng +10.000đ' }
   ];
   /* ================= NHIỆM VỤ THEO 6 VÍ =================
      Mỗi ví (giống 6 hũ trong app 6PAY) có một danh sách nhiệm vụ. Bấm "Thực hiện" là CHI tiền từ ví nông trại,
@@ -271,11 +271,11 @@
   [[2, 5, 'Lớp địa lý quê hương'], [6, 8, 'Khám phá 34 tỉnh thành'], [10, 12, 'Khoá học văn hoá vùng miền'], [14, 15, 'Hành trình đất nước'], [18, 20, 'Thi Hiểu biết Việt Nam']].forEach(function (x) {
     M(w, x[0], '🧭', x[2], 'Vào game Khám phá Việt Nam, trả lời đúng ' + x[1] + ' câu.', 'learn', LN('vnv', x[1]));
   });
-  [[1, 3, 'Lớp tài chính cho bé'], [4, 5, 'Khoá học quản lý tiền tiêu vặt'], [7, 8, 'Khoá học 6 chiếc hũ'], [11, 10, 'Khoá học đầu tư thông minh'], [15, 12, 'Hội thảo tự do tài chính'], [19, 15, 'Thi Nhà tài chính nhí']].forEach(function (x) {
+  [[1, 3, 'Lớp tài chính nhập môn'], [4, 5, 'Khoá học quản lý tiền tiêu vặt'], [7, 8, 'Khoá học 6 chiếc hũ'], [11, 10, 'Khoá học đầu tư thông minh'], [15, 12, 'Hội thảo tự do tài chính'], [19, 15, 'Thi Nhà tài chính nhí']].forEach(function (x) {
     M(w, x[0], '🎯', x[2], 'Vào Đố vui tài chính, trả lời đúng ' + x[1] + ' câu.', 'learn', LN('quiz', x[1]), { pay: 1.2 });
   });
-  [[1, 4, 'Bé tập xem đồng hồ'], [5, 6, 'Lớp quản lý thời gian'], [10, 8, 'Khoá học giờ giấc khoa học']].forEach(function (x) {
-    M(w, x[0], '🕒', x[2], 'Vào game Dạy trẻ xem đồng hồ, đọc đúng ' + x[1] + ' giờ.', 'learn', LN('clock', x[1]));
+  [[1, 4, 'Tập xem đồng hồ'], [5, 6, 'Lớp quản lý thời gian'], [10, 8, 'Khoá học giờ giấc khoa học']].forEach(function (x) {
+    M(w, x[0], '🕒', x[2], 'Vào game Học xem đồng hồ, đọc đúng ' + x[1] + ' giờ.', 'learn', LN('clock', x[1]));
   });
   M(w, 3, '🐣', 'Khoá kỹ thuật nuôi gà', 'Học cách chăm gà rồi thực hành: thu 5 🥚 trứng.', 'farm', F('collect', 5, 'trung'), { req: 'a:ga' });
   M(w, 5, '🍅', 'Khoá trồng cà chua sạch', 'Thực hành: thu hoạch 6 🍅 cà chua.', 'farm', F('harvest', 6, 'cachua'));
@@ -430,7 +430,7 @@
   var AM = {}; ANIMALS.forEach(function (a) { AM[a.id] = a; });
   var BM = {}; BUILDS.forEach(function (b) { BM[b.id] = b; });
   /* Thu nhập thụ động của công trình: inc = đồng/giờ, tích tối đa INC_CAP giờ rồi dừng (phải ghé thu thường xuyên).
-     src = công trình kiếm tiền bằng cách nào (dạy trẻ khái niệm "tài sản tạo ra thu nhập"). */
+     src = công trình kiếm tiền bằng cách nào (dạy người chơi khái niệm "tài sản tạo ra thu nhập"). */
   var INC_CAP = 8;
   var BINC = {
     them: [1500, 'Khách ghé thềm nhà mua rau củ'], gieng: [2500, 'Bán nước giếng sạch cho hàng xóm'], lobanh: [4000, 'Bán bánh mì nóng cho khách qua đường'],
@@ -981,7 +981,7 @@
     var sh = shortages(), nt = S.nt || [], h = '<div class="fm-h">🔔 Thông báo nông trại</div>';
     // 1) Nông sản còn thiếu
     h += '<div class="fm-card"><b>📦 Nông sản còn thiếu để đủ đơn hàng</b>';
-    if (!feat('order')) h += '<div class="fm-sub" style="margin:6px 0 0">🔒 Đơn hàng mở ở Cấp độ ' + FEAT.order + '. Bây giờ con bán nông sản trực tiếp ở 🏪 Chợ → 📦 Kho.</div>';
+    if (!feat('order')) h += '<div class="fm-sub" style="margin:6px 0 0">🔒 Đơn hàng mở ở Cấp độ ' + FEAT.order + '. Bây giờ bạn bán nông sản trực tiếp ở 🏪 Chợ → 📦 Kho.</div>';
     else if (!sh.rows.length) h += '<div class="fm-sub" style="margin:6px 0 0">✅ Kho đã đủ hàng cho tất cả ' + S.orders.length + ' đơn hàng. Ra 🏪 Chợ giao hàng thôi!</div>';
     else {
       h += '<div class="fm-sub" style="margin:4px 0 6px">Cộng tất cả ' + S.orders.length + ' đơn hàng đang chờ, so với số hàng đang có trong kho:</div>';
@@ -1545,6 +1545,17 @@
   '.fm-top .fm-ib{min-width:38px;height:40px;padding:0 8px}.fm-money{padding:8px 10px;font-size:14px}' +
   '.fm-nav button{min-width:64px;padding:5px 6px 4px;font-size:11.5px}' +
   '.fm-zbar{flex:none;display:flex;gap:5px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:5px 8px;background:#e9f5d8;border-bottom:1px solid #c5dca8;z-index:2;touch-action:pan-x}.fm-zbar::-webkit-scrollbar{display:none}.fm-zbar>*{flex:none;border:0;border-radius:999px;padding:6px 11px;font-size:12.5px;font-weight:800;line-height:1.2;box-shadow:0 1px 4px rgba(0,0,0,.18);background:#fff;color:#3b2a14!important;white-space:nowrap}' +
+  /* (bản 2026.11.02) Thanh thông báo + nút Chợ nằm ngay trên hàng tab; hàng tab không cuộn, luôn thấy đủ nút */
+  '.fm-brow{flex:none;display:flex;align-items:center;gap:6px;padding:5px 8px;background:#e9f5d8;border-top:1px solid #c5dca8;z-index:2;min-height:46px}' +
+  '.fm-brow .fm-zbar{flex:1 1 auto;min-width:0;padding:0;background:none;border:0}.fm-brow .fm-zbar.two>*{padding:8px 6px;font-size:12.5px}' +
+  '.fm-mk{flex:none;position:relative;border:0;border-radius:14px;padding:5px 12px;display:flex;align-items:center;gap:5px;font-size:14px;font-weight:900;white-space:nowrap;background:linear-gradient(135deg,#fde68a,#f59e0b);color:#5b3300!important;box-shadow:0 2px 6px rgba(180,100,0,.35)}' +
+  '.fm-mk .e{font-size:22px;line-height:1;font-family:' + EF + '}.fm-mk.on{background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff!important}' +
+  '.fm-mk .dot{position:absolute;top:-6px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:#fff;font-size:11px;line-height:18px;padding:0 5px}' +
+  '.fm-navs{overflow:hidden!important;-webkit-mask-image:none!important;mask-image:none!important;padding:4px 4px 3px!important;gap:1px!important}' +
+  '.fm-nav button{flex:1 1 0!important;min-width:0!important;padding:4px 1px 3px!important;font-size:11px!important;letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis}.fm-nav button .e{font-size:20px!important}' +
+  '.fm-nav .dot{right:2px}' +
+  '.fm-dig{position:absolute;z-index:3;display:none;min-width:180px;max-width:260px;background:#fffdf5;border:2px solid #86c35f;border-radius:16px;padding:8px 10px;box-shadow:0 8px 22px rgba(0,0,0,.35);text-align:center}.fm-dig.on{display:block}' +
+  '.fm-dig b{display:block;font-size:15px;color:#3b2a14;white-space:nowrap}.fm-dig small{display:block;font-size:12px;color:#7a6440;margin:2px 0 7px;white-space:nowrap}.fm-dig .fm-row{display:flex;gap:6px;justify-content:center}.fm-dig .fm-btn{flex:1;padding:8px 6px;font-size:13px;white-space:nowrap}' +
   '.fm-zbar .zn{background:rgba(36,54,26,.88);color:#fff!important}.fm-zbar .ok{background:#16a34a;color:#fff!important}.fm-zbar .warn{background:#ea580c;color:#fff!important}.fm-zbar .bad{background:#dc2626;color:#fff!important}.fm-zbar .work{background:#2563eb;color:#fff!important}.fm-zbar .can{background:#fff7d1}.fm-zbar .go{background:linear-gradient(135deg,#facc15,#f59e0b);color:#5b3300!important}' +
   '.fm-wch{display:inline-block;border-radius:8px;padding:2px 8px;font-size:11.5px;font-weight:800;background:#fff;color:#3b2a14;box-shadow:inset 0 0 0 2px var(--wc);margin:4px 4px 0 0;white-space:nowrap}' +
   '.fm-wpay{display:block;background:#fffbeb;border:1.5px dashed #f59e0b;border-radius:10px;padding:6px 10px;margin:8px 0;font-size:12.5px;color:#7a4a00;line-height:1.45;text-align:left}' +
@@ -1598,18 +1609,18 @@
           '<button class="fm-tool" id="fmWA" data-a="waterAll"><span class="e">🪣</span>Tưới hết</button>' +
           '<button class="fm-tool" data-a="tool" data-t="fert"><span class="e" id="fmFertE">🧪</span>Phân bón ▾<span class="n" id="fmFert">0</span></button>' +
           '<button class="fm-tool" data-a="harvestAll"><span class="e">🧺</span>Thu hết</button>' +
-        '</div></div>' +
+        '</div><div class="fm-dig" id="fmDig"></div></div>' +
       '<div class="fm-pbox" id="fmPB"></div>' +
       '<div class="fm-panel" id="fmP_prod"></div><div class="fm-panel" id="fmP_fun"></div><div class="fm-panel" id="fmP_market"></div><div class="fm-panel" id="fmP_quest"></div><div class="fm-panel" id="fmP_earn"></div><div class="fm-panel" id="fmP_book"></div>' +
       '<div class="fm-sheet" id="fmSheet"><div class="fm-sb" id="fmSB"></div></div>' +
       '<div class="fm-toast" id="fmToast"></div>' +
     '</div>' + '<div class="fm-lock" id="fmLock"></div><div class="fm-rp" id="fmRP"></div>' +
+    '<div class="fm-brow" id="fmBR"><div class="fm-zbar" id="fmZB2"></div><button class="fm-mk" data-a="tab" data-t="market"><span class="e">🏪</span>Chợ<span class="dot" id="fmDotO" style="display:none"></span></button></div>' +
     '<div class="fm-nav" id="fmNav"><div class="fm-navs" id="fmNavS">' +
       '<button class="on" data-a="tab" data-t="field"><span class="e">🌾</span>Trồng trọt<span class="dot" id="fmDotF" style="display:none"></span></button>' +
       '<button data-a="tab" data-t="barn"><span class="e">🐄</span>Chăn nuôi<span class="dot" id="fmDotB" style="display:none"></span></button>' +
       '<button data-a="tab" data-t="prod"><span class="e">🏭</span>Sản xuất<span class="dot" id="fmDotK" style="display:none"></span></button>' +
       '<button data-a="tab" data-t="fun"><span class="e">🎡</span>Vui chơi<span class="dot" id="fmDotV" style="display:none"></span></button>' +
-      '<button data-a="tab" data-t="market"><span class="e">🏪</span>Chợ<span class="dot" id="fmDotO" style="display:none"></span></button>' +
       '<button data-a="tab" data-t="quest"><span class="e">🎯</span>Nhiệm vụ<span class="dot" id="fmDotQ" style="display:none"></span></button>' +
       '<button class="earn" data-a="tab" data-t="earn"><span class="e">🎮</span>Phụ bản</button>' +
     '</div></div>';
@@ -2257,7 +2268,8 @@
     r.fe = fe; return r;
   }
   function zoneBar(force) {
-    var el = $('fmZB'), h = '';
+    var el = tab === 'quest' ? $('fmZB') : $('fmZB2'), oth = tab === 'quest' ? $('fmZB2') : $('fmZB'), h = '';
+    if (oth.innerHTML) { oth.innerHTML = ''; } if (oth.id === 'fmZB' && oth.style.display !== 'none') { oth.style.display = 'none'; if (running) resize(); }
     if (tab === 'field') {
       var f = fieldStat();
       h = (f.ripe ? '<button class="ok" data-a="harvestAll">🧺 ' + f.ripe + ' cây chín · thu</button>' : '') + (f.empty ? '<button class="can" data-a="pbOpen">🌱 ' + f.empty + ' ô trống · chọn cây trồng</button>' : '') + (f.dmg ? '<button class="bad" data-a="tab" data-t="quest">🥀 ' + f.dmg + ' ô bị hỏng</button>' : '') + (!f.ripe && !f.empty && !f.dmg && f.grow ? '<span class="work">⏳ ' + f.grow + ' cây đang lớn</span>' : '');
@@ -2278,7 +2290,7 @@
     }
     var two = tab === 'quest' || tab === 'barn'; if (el.classList.contains('two') !== two) el.classList.toggle('two', two);
     if (force || h !== zbSig) { el.innerHTML = h; zbSig = h; if (force) el.scrollLeft = 0; }
-    var dsp = h ? '' : 'none'; if (el.style.display !== dsp) { el.style.display = dsp; if (running) resize(); }
+    var dsp = h || el.id === 'fmZB2' ? '' : 'none'; if (el.style.display !== dsp) { el.style.display = dsp; if (running) resize(); }
   }
   function zoneGo(k) {
     for (var i = 0; i < NLOT; i++) {
@@ -2430,7 +2442,7 @@
       if (tab === 'field') drawField(); else if (tab === 'barn') drawBarn(dt); else drawLots(tab, v);
       drawFX(dt);
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      if (tab === 'field') drawTip();
+      if (tab === 'field') { drawTip(); digPos(); }
       if (WX && Date.now() < WX.until) drawWeather(dt); else WX = null;
     } else if (tab === 'quest' && t - lastPanel > 1000) { lastPanel = t; tickQuest(); }
     raf = requestAnimationFrame(loop);
@@ -2511,9 +2523,29 @@
     if (pl.c && pl.p >= 1) { harvest(i); hud(); return; }
     if (tool === 'seed') {
       if (!pl.c) { if (plant(i)) { hud(); if (first) sfx('ok'); } }
-      else if (first) { if (CM[pl.c].per) treeSheet(i); else TIP = { i: i, until: Date.now() + 2200 }; }
+      else if (first) digOpen(i);
     }
     else if (tool === 'fert') { if (fert(i) && first) sfx('ok'); }
+  }
+  /* (bản 2026.11.02) Chạm vào bất kỳ chỗ nào trên ô đang trồng: hiện tên cây ngay trên ô + nút Đào / Giữ lại */
+  var DIG = null;
+  function digOpen(i) {
+    var pl = S.plots[i], c = CM[pl.c]; if (!c) return;
+    DIG = { i: i };
+    var info = c.per ? (pl.n ? 'Đã cho ' + pl.n + ' lứa · ' : '') + 'lứa tới sau ' + dur(left(pl)) : 'Còn ' + dur(left(pl)) + ' nữa là chín';
+    var el = $('fmDig');
+    el.innerHTML = '<b>' + c.e + ' ' + c.n + (c.per ? ' (cây lâu năm)' : '') + '</b><small>' + info + (pl.w ? ' 💧' : '') + '</small>' +
+      '<div class="fm-row"><button class="fm-btn" style="background:#b91c1c" data-a="dig" data-i="' + i + '">⛏️ Đào</button><button class="fm-btn alt" data-a="digKeep">✋ Giữ lại</button></div>';
+    el.classList.add('on'); digPos();
+  }
+  function digClose() { DIG = null; var el = $('fmDig'); if (el) el.classList.remove('on'); }
+  function digPos() {
+    if (!DIG) return;
+    var P = S.plots[DIG.i]; if (tab !== 'field' || !P || !P.c || P.p >= 1 || P.dmg) { digClose(); return; }
+    var el = $('fmDig'), R = plotRect(DIG.i), sx = (R.x + R.s / 2 - cam.x) * cam.z, sy = (R.y - cam.y) * cam.z, sb = (R.y + R.s - cam.y) * cam.z;
+    var w = el.offsetWidth, h = el.offsetHeight, x = Math.min(W - w - 6, Math.max(6, sx - w / 2)), y = sy - h - 8;
+    if (y < 6) y = Math.min(H - h - 6, sb + 8);
+    el.style.left = Math.round(x) + 'px'; el.style.top = Math.round(y) + 'px';
   }
   function bigState(k) { var B = BIG[k]; return bigOpen(k) ? 'open' : k >= TI().big ? 'tier' : S.lv < B.lv ? 'lv' : 'buy'; }
   function tierFor(key, k) { for (var i = 0; i < 5; i++) if (TIERS[i][key] > k) return TIERS[i]; return TIERS[4]; }
@@ -2707,7 +2739,7 @@
     addMoney(bonus); S.fz.f1 += 2; addLog('in', bonus, 'lv' + S.lv, 'Thưởng lên bậc ' + S.lv, '🎁');
     if (nm) un.push('<span><i>🎯</i>' + nm + ' nhiệm vụ mới</span>');
     var nx = nextUnlock();
-    sheetLater('<div class="fm-modal"><div class="big">🎉</div><h2>Lên bậc ' + S.lv + '!</h2><p>Thưởng <b>' + money(bonus) + '</b> + 🧪 2 túi phân bón. Con được cộng 1 điểm ⭐ vào app.</p>' +
+    sheetLater('<div class="fm-modal"><div class="big">🎉</div><h2>Lên bậc ' + S.lv + '!</h2><p>Thưởng <b>' + money(bonus) + '</b> + 🧪 2 túi phân bón. Bạn được cộng 1 điểm ⭐ vào app.</p>' +
       (un.length ? '<p><b>Mở khoá mới:</b></p><div class="fm-ul">' + un.join('') + '</div>' : '') +
       (nx ? '<p style="font-size:13px">Tiếp theo ở bậc ' + nx.lv + ': ' + nx.u.map(function (u) { return u.e + ' ' + u.t; }).join(', ') + '</p>' : '') +
       '<div class="fm-row" style="justify-content:center">' + (go ? '<button class="fm-btn org" data-a="tab" data-t="' + go + '">Đi xem ngay</button>' : '') + '<button class="fm-btn" data-a="sheetClose">Tuyệt vời!</button></div></div>');
@@ -2723,7 +2755,7 @@
   function guideBody(k) {
     var L0 = [];
     if (k === 'start') L0 = [
-      gl('💵', 'Con bắt đầu với <b>1 triệu đồng</b> và một nông trại nhỏ. Đích đến: <b>1 tỷ</b>!'),
+      gl('💵', 'Bạn bắt đầu với <b>1 triệu đồng</b> và một nông trại nhỏ. Đích đến: <b>1 tỷ</b>!'),
       gl('🪜', 'Có <b>5 cấp độ</b> theo tổng tài sản: 10tr, 20tr, 50tr, 100tr, 1 tỷ. Lên cấp mở thêm tính năng (bấm thanh 🌱 Cấp độ để xem).'),
       gl('📅', 'Mỗi ngày chơi tối đa <b>3 giờ</b>, chia 3 buổi: sáng, chiều, tối, mỗi buổi <b>1 giờ</b>. Hết giờ thì nghỉ, cây vẫn lớn!'),
       gl('☕', 'Chơi liên tục <b>15 phút</b> thì nghỉ <b>5 phút</b>. Muốn chơi tiếp ngay: học xong 1 chủ đề tiếng Anh hoặc tiếng Trung (hứng đúng từ 5 từ).'),
@@ -2801,7 +2833,7 @@
   function guide() { guideSheet('start'); }
   function newsTiers() {
     var t = TI();
-    sheetLater('<div class="fm-modal"><div class="big">🪜</div><h2>Nông trại có 5 cấp độ!</h2><p style="font-size:13.5px">Nông trại của con đang ở <b>' + t.e + ' Cấp độ ' + t.n + ': ' + t.name + '</b> (tổng tài sản ' + short(worth()) + '). Tài sản đạt 10 triệu, 20 triệu, 50 triệu, 100 triệu thì lên cấp độ mới và mở thêm tính năng. Đích đến: <b>1 tỷ</b>!</p>' +
+    sheetLater('<div class="fm-modal"><div class="big">🪜</div><h2>Nông trại có 5 cấp độ!</h2><p style="font-size:13.5px">Nông trại của bạn đang ở <b>' + t.e + ' Cấp độ ' + t.n + ': ' + t.name + '</b> (tổng tài sản ' + short(worth()) + '). Tài sản đạt 10 triệu, 20 triệu, 50 triệu, 100 triệu thì lên cấp độ mới và mở thêm tính năng. Đích đến: <b>1 tỷ</b>!</p>' +
       '<p style="font-size:13.5px">📅 Mỗi ngày chơi tối đa <b>3 giờ</b>: sáng, chiều, tối mỗi buổi <b>1 giờ</b>. Chăm chỉ mỗi ngày một chút là cách nhanh nhất!</p>' +
       '<div class="fm-row" style="justify-content:center"><button class="fm-btn alt" data-a="tiers">Xem 5 cấp độ</button><button class="fm-btn" data-a="sheetClose">Bắt đầu</button></div></div>');
   }
@@ -3506,7 +3538,7 @@
     if (S.tier > from) { applyPM(); fillOrders(); save(); tierUp(from); setTimeout(function () { addXP(0); hud(); }, 400); }
     if (!S.rich && w >= 1e9) {
       S.rich = Date.now(); save(); sfx('win');
-      sheetLater('<div class="fm-modal"><div class="big">🏆</div><h2>Tỷ phú nông trại!</h2><p>Tổng tài sản đã đạt <b>1 tỷ đồng</b>. Con đã đi hết 5 cấp độ: từ một nông trại nhỏ 1 triệu đồng thành một tập đoàn nông nghiệp. Chăm chỉ, kiên nhẫn và chi tiêu đúng 6 ví chính là bí quyết!</p><div class="fm-row" style="justify-content:center"><button class="fm-btn" data-a="sheetClose">Tuyệt vời!</button></div></div>');
+      sheetLater('<div class="fm-modal"><div class="big">🏆</div><h2>Tỷ phú nông trại!</h2><p>Tổng tài sản đã đạt <b>1 tỷ đồng</b>. Bạn đã đi hết 5 cấp độ: từ một nông trại nhỏ 1 triệu đồng thành một tập đoàn nông nghiệp. Chăm chỉ, kiên nhẫn và chi tiêu đúng 6 ví chính là bí quyết!</p><div class="fm-row" style="justify-content:center"><button class="fm-btn" data-a="sheetClose">Tuyệt vời!</button></div></div>');
     }
   }
   function tierUp(from) {
@@ -3571,7 +3603,7 @@
       return;
     }
     if (lk && lk.classList.contains('on')) {   // đang khoá: không đếm giờ; sang buổi mới thì tự mở khoá
-      lastPlay = now; if (playLeft() > 0 && lk.getAttribute('data-s') !== se.k + D.k) { lk.classList.remove('on'); toast(se.e + ' Bắt đầu ' + se.n + ': con có ' + PLAY_MIN + ' phút chơi nông trại.'); }
+      lastPlay = now; if (playLeft() > 0 && lk.getAttribute('data-s') !== se.k + D.k) { lk.classList.remove('on'); toast(se.e + ' Bắt đầu ' + se.n + ': bạn có ' + PLAY_MIN + ' phút chơi nông trại.'); }
       return;
     }
     if (lastPlay && !document.hidden) D.ps[se.k] = (D.ps[se.k] || 0) + Math.min(2, (now - lastPlay) / 1000);
@@ -3590,7 +3622,7 @@
   function brkDone(byStudy) {
     var D = dayTick(); D.brk = 0; D.run = 0; D.lp = Date.now(); saveDay(); lastPlay = 0;
     var el = $('fmLock'); if (el && el.getAttribute('data-s') === 'brk') { el.classList.remove('on'); el.removeAttribute('data-s'); }
-    sfx('win'); toast(byStudy ? '🎓 Giỏi quá! Con đã học xong một chủ đề, chơi tiếp ' + RUN_MIN + ' phút nữa nhé.' : '🌱 Nghỉ xong rồi! Chơi tiếp ' + RUN_MIN + ' phút nữa nhé.');
+    sfx('win'); toast(byStudy ? '🎓 Giỏi quá! Bạn đã học xong một chủ đề, chơi tiếp ' + RUN_MIN + ' phút nữa nhé.' : '🌱 Nghỉ xong rồi! Chơi tiếp ' + RUN_MIN + ' phút nữa nhé.');
   }
   // Kiểm tra giờ nghỉ: trả về true nếu nông trại đang phải nghỉ
   function brkCheck() {
@@ -3618,8 +3650,8 @@
     saveDay(); save(); sheetQ = []; closeSheet(); pbClose(); rpStop(); $('fmRP').classList.remove('on');
     var se = sessNow(), i = SESS.indexOf(se), nx = SESS[i + 1], when0 = nx ? nx.n + ' (từ ' + nx.h0 + ' giờ)' : 'buổi sáng ngày mai';
     el.setAttribute('data-s', se.k + dayTick().k);
-    el.innerHTML = '<div class="fm-lockb"><div class="big">⏰</div><h2>Hết giờ chơi ' + se.n + '!</h2><p>Con đã chơi nông trại đủ <b>' + PLAY_MIN + ' phút</b> của ' + se.n + '. Nông dân giỏi cũng cần nghỉ ngơi, học bài và chơi với gia đình.</p>' +
-      '<p>🌱 Cây trồng, vật nuôi, xưởng <b>vẫn lớn</b> khi con nghỉ. Quay lại vào <b>' + when0 + '</b> nhé!</p>' +
+    el.innerHTML = '<div class="fm-lockb"><div class="big">⏰</div><h2>Hết giờ chơi ' + se.n + '!</h2><p>Bạn đã chơi nông trại đủ <b>' + PLAY_MIN + ' phút</b> của ' + se.n + '. Nông dân giỏi cũng cần nghỉ ngơi, học bài và chơi với gia đình.</p>' +
+      '<p>🌱 Cây trồng, vật nuôi, xưởng <b>vẫn lớn</b> khi bạn nghỉ. Quay lại vào <b>' + when0 + '</b> nhé!</p>' +
       '<p style="font-size:13px">📅 Mỗi ngày chơi tối đa 3 giờ: sáng, chiều, tối mỗi buổi 1 giờ.</p>' +
       '<button class="fm-btn" data-a="close" style="width:100%">Đóng nông trại</button></div>';
     el.classList.add('on'); sfx('bad');
@@ -3631,10 +3663,11 @@
     if (t === 'build') t = 'prod';
     if ((t === 'prod' && !feat('prod')) || (t === 'fun' && !feat('fun'))) { lockSheet(t); return; }
     tab = t; closeSheet(); pbClose();
-    var nb = $('fmNav').querySelectorAll('button'); for (var i = 0; i < nb.length; i++) nb[i].classList.toggle('on', nb[i].getAttribute('data-t') === t || (t === 'book' && nb[i].getAttribute('data-a') === 'book'));
+    var nb = ov.querySelectorAll('#fmNav button, #fmBR .fm-mk'); for (var i = 0; i < nb.length; i++) nb[i].classList.toggle('on', nb[i].getAttribute('data-t') === t || (t === 'book' && nb[i].getAttribute('data-a') === 'book'));
     PANELS.forEach(function (p) { $('fmP_' + p).classList.toggle('on', p === t); });
     stage.style.visibility = isMap(t) ? 'visible' : 'hidden';
     $('fmTools').style.display = t === 'field' ? '' : 'none';
+    digClose();
     zbSig = ''; zoneBar(true);
     if (t === 'prod') renderProd(); else if (t === 'fun') renderFun(); else if (t === 'market') renderMarket(); else if (t === 'quest') renderQuest(); else if (t === 'earn') renderEarn(); else if (t === 'book') renderBook();
     var pn = $('fmP_' + t); if (pn) pn.scrollTop = 0;
@@ -3712,7 +3745,7 @@
     if (g.mode === 'paintWait') { act(g.i, true); save(); }
     else if (g.mode === 'paint') endPaint();
     else if (g.mode === 'tap') {
-      var w = toWorld({ x: g.sx, y: g.sy });
+      var w = toWorld({ x: g.sx, y: g.sy }); digClose();
       if (tab === 'barn') tapBarn(w.x, w.y); else if (tab === 'prod' || tab === 'fun') tapLots(w.x, w.y); else if (!tapBuilding(w.x, w.y)) { act(plotAt(w.x, w.y), true); save(); }
     } else if (g.mode === 'pan') {
       // Thả tay khi đang vuốt nhanh: bản đồ trôi thêm một chút (quán tính)
@@ -3759,6 +3792,8 @@
     else if (a === 'sell') sell(el.getAttribute('data-c'), +el.getAttribute('data-q'));
     else if (a === 'buyFert') { var q = +el.getAttribute('data-q'), FF = FZM[el.getAttribute('data-f') || 'f1'], c = q * FF.p; if (!has('essential', c)) { noMoney(c, 'essential'); return; } S.fz[FF.id] += q; spend('essential', c, 'fert_' + FF.id, 'Mua ' + FF.n.toLowerCase(), FF.e, q); sfx('ok'); toast(FF.e + ' Mua ' + q + ' túi ' + FF.n.toLowerCase() + ': −' + money(c) + ' từ ví 🏠 Thiết yếu'); hud(); save(); if ($('fmSheet').classList.contains('on')) fertSheet(); else renderMarket(); }
     else if (a === 'pickF') { S.selF = el.getAttribute('data-f'); tool = 'fert'; toolsUI(); closeSheet(); save(); toast(FZM[S.selF].e + ' Chạm vào cây đang lớn để bón ' + FZM[S.selF].n.toLowerCase()); }
+    else if (a === 'digKeep') digClose();
+    else if (a === 'dig') { var di = +el.getAttribute('data-i'), dp = S.plots[di], dn = dp && CM[dp.c] ? CM[dp.c] : null; if (dp && dn) { dp.c = null; dp.p = 0; dp.w = 0; dp.n = 0; ev('dig'); } digClose(); save(); hud(); zoneBar(true); sfx('ok'); toast('⛏️ Đã đào bỏ ' + (dn ? dn.e + ' ' + dn.n.toLowerCase() : 'cây') + '. Ô đất trống, có thể gieo cây khác.'); }
     else if (a === 'chop') { var ci = +el.getAttribute('data-i'), cp = S.plots[ci]; cp.c = null; cp.p = 0; cp.w = 0; cp.n = 0; closeSheet(); save(); sfx('ok'); toast('🪓 Đã chặt cây. Ô đất trống, có thể gieo cây khác.'); }
     else if (a === 'build') doBuild(el.getAttribute('data-b'));
     else if (a === 'notif') notifSheet();

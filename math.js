@@ -405,7 +405,7 @@
     if (s >= 2) { try { if (window.addStar) window.addStar(); } catch (e) {} }
     B.innerHTML = '<div class="mt-res"><div class="big">' + (s === 3 ? '🏆' : s ? '🎉' : '💪') + '</div><h2>Đúng ' + Q.ok + '/' + Q.qs.length + ' câu</h2>' +
       '<div class="mt-stars">' + '★'.repeat(s) + '☆'.repeat(3 - s) + '</div><p style="font-size:20px;font-weight:800">' + Q.score + ' điểm' + (nb ? ' · 🎉 Kỷ lục mới!' : '') + '</p>' +
-      '<p class="mt-sub">' + (s === 3 ? 'Xuất sắc! Con đã nắm rất chắc kiến thức lớp ' + grade + '.' : s ? 'Giỏi lắm! Ôn lại phần kiến thức để đạt 3 sao nhé.' : 'Cố lên! Hãy đọc lại phần kiến thức rồi thử lại nhé.') + (s >= 2 ? ' Con được cộng 1 điểm ⭐ vào app.' : '') + '</p>' +
+      '<p class="mt-sub">' + (s === 3 ? 'Xuất sắc! Bạn đã nắm rất chắc kiến thức lớp ' + grade + '.' : s ? 'Giỏi lắm! Ôn lại phần kiến thức để đạt 3 sao nhé.' : 'Cố lên! Hãy đọc lại phần kiến thức rồi thử lại nhé.') + (s >= 2 ? ' Bạn được cộng 1 điểm ⭐ vào app.' : '') + '</p>' +
       '<div class="mt-row"><button class="mt-btn" data-a="start">↻ Làm lượt mới</button></div><div class="mt-row"><button class="mt-btn alt" data-a="grade" data-g="' + grade + '">📖 Xem lại kiến thức</button><button class="mt-btn alt" data-a="menu">Chọn lớp khác</button></div></div>';
     top();
   }
@@ -623,7 +623,7 @@
     qEl.textContent = 'Sẵn sàng…'; hud();
     cancelAnimationFrame(raf); G.last = performance.now(); raf = requestAnimationFrame(loop);
   }
-  /* Đáp án nhiễu: số gần đúng và kết quả của phép tính "hàng xóm" để bé phải nhớ thật */
+  /* Đáp án nhiễu: số gần đúng và kết quả của phép tính "hàng xóm" để người chơi phải nhớ thật */
   function wrongs(f, n) {
     var a = f.a, c = {}, out = [];
     function add(v) { if (v > 0 && v !== a && !c[v]) { c[v] = 1; out.push(v); } }
@@ -725,10 +725,10 @@
     var h = '<div style="font-size:54px">' + (g.money > 0 ? '🎉' : '⏰') + '</div><h2>Hết giờ! – ' + g.t.n + '</h2>' +
       '<div class="mb-mny" style="color:' + (g.money >= 0 ? '#4ade80' : '#f87171') + '">' + money(g.money, 1) + '</div>' +
       (isNew ? '<div style="color:#fde68a;font-weight:800">🏆 Kỷ lục mới!</div>' : (prev ? '<div style="opacity:.8">Kỷ lục: ' + money(prev) + '</div>' : '')) +
-      (star ? '<div style="margin-top:6px">⭐ Giỏi lắm! Con được cộng 1 điểm ⭐ vào app.</div>' : '') +
+      (star ? '<div style="margin-top:6px">⭐ Giỏi lắm! Bạn được cộng 1 điểm ⭐ vào app.</div>' : '') +
       '<div class="mb-stats"><div class="mb-stat"><b>' + g.ok + '</b>Hứng đúng</div><div class="mb-stat"><b>' + g.bad + '</b>Hứng sai</div><div class="mb-stat"><b>' + acc + '%</b>Chính xác</div></div>' +
       '<div class="mb-acts"><button class="mb-btn main" data-a="again">▶ Chơi lại</button><button class="mb-btn" data-a="review">📖 Xem lại bảng</button><button class="mb-btn" data-a="topics">Chọn bảng khác</button></div><div class="mb-list">';
-    if (got.length) h += '<h4>✅ Phép tính con đã nhớ (' + got.length + ')</h4>' + chips(g.got, got, '');
+    if (got.length) h += '<h4>✅ Phép tính bạn đã nhớ (' + got.length + ')</h4>' + chips(g.got, got, '');
     if (mis.length) h += '<h4>📌 Phép tính cần ôn lại (' + mis.length + ')</h4>' + chips(g.missed, mis, 'miss');
     h += '</div>';
     $('mbRes').innerHTML = h; $('mbRes').scrollTop = 0;

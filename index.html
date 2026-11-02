@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.02-13';
+const APP_VERSION='2026.11.02-14';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -3590,7 +3590,20 @@ const CV_CATS={
  temp:{l:'🌡️ Nhiệt độ',def:['c','f'],u:[['c','Độ C (°C)',1],['f','Độ F (°F)',1],['k','Kelvin (K)',1]]},
  speed:{l:'🚀 Tốc độ',def:['kmh','ms'],u:[['ms','Mét/giây (m/s)',1],['kmh','Kilômét/giờ (km/h)',1/3.6],['mph','Dặm/giờ (mph)',0.44704],['kn','Hải lý/giờ (knot)',1852/3600]]},
  time:{l:'⏳ Thời gian',def:['h','min'],u:[['s','Giây',1],['min','Phút',60],['h','Giờ',3600],['d','Ngày',86400],['w','Tuần',604800],['mo','Tháng (30,44 ngày)',2629800],['y','Năm (365,25 ngày)',31557600]]},
- data:{l:'💾 Dung lượng',def:['mb','gb'],u:[['b','Byte (B)',1],['kb','Kilobyte (KB)',1024],['mb','Megabyte (MB)',1048576],['gb','Gigabyte (GB)',1073741824],['tb','Terabyte (TB)',1099511627776]]}
+ data:{l:'💾 Dung lượng',def:['mb','gb'],u:[['b','Byte (B)',1],['kb','Kilobyte (KB)',1024],['mb','Megabyte (MB)',1048576],['gb','Gigabyte (GB)',1073741824],['tb','Terabyte (TB)',1099511627776]]},
+ // (bản 2026.11.02-14) Đơn vị đo phóng xạ: chia theo đại lượng vì các đại lượng khác nhau không đổi trực tiếp sang nhau được
+ radact:{l:'☢️ Phóng xạ: Hoạt độ (Bq, Ci)',def:['mci','mbq'],note:'Hoạt độ = số hạt nhân phân rã mỗi giây. 1 Becquerel (Bq) = 1 phân rã/giây; 1 Curie (Ci) = 3,7×10¹⁰ Bq.',
+  u:[['bq','Becquerel (Bq)',1],['kbq','Kilobecquerel (kBq)',1e3],['mbq','Megabecquerel (MBq)',1e6],['gbq','Gigabecquerel (GBq)',1e9],['tbq','Terabecquerel (TBq)',1e12],
+   ['pci','Picocurie (pCi)',0.037],['nci','Nanocurie (nCi)',37],['uci','Microcurie (µCi)',3.7e4],['mci','Millicurie (mCi)',3.7e7],['ci','Curie (Ci)',3.7e10],['dpm','Phân rã/phút (dpm)',1/60]]},
+ radabs:{l:'☢️ Phóng xạ: Liều hấp thụ (Gy)',def:['gy','rad'],note:'Liều hấp thụ = năng lượng bức xạ mà 1 kg vật chất nhận được. 1 Gray (Gy) = 1 J/kg = 100 rad.',
+  u:[['ugy','Microgray (µGy)',1e-6],['mgy','Milligray (mGy)',1e-3],['cgy','Centigray (cGy)',1e-2],['gy','Gray (Gy)',1],['jkg','Jun/kilôgam (J/kg)',1],['mrad','Millirad (mrad)',1e-5],['rad','Rad',1e-2],['krad','Kilorad (krad)',10]]},
+ radeq:{l:'☢️ Phóng xạ: Liều hiệu dụng (Sv)',def:['msv','mrem'],note:'Liều tương đương/hiệu dụng tính đến mức gây hại cho cơ thể. 1 Sievert (Sv) = 100 rem. Tham khảo: giới hạn cho người dân khoảng 1 mSv/năm; chụp X-quang ngực khoảng 0,02–0,1 mSv.',
+  u:[['nsv','Nanosievert (nSv)',1e-9],['usv','Microsievert (µSv)',1e-6],['msv','Millisievert (mSv)',1e-3],['sv','Sievert (Sv)',1],['urem','Microrem (µrem)',1e-8],['mrem','Millirem (mrem)',1e-5],['rem','Rem',1e-2]]},
+ raddr:{l:'☢️ Phóng xạ: Suất liều (Sv/h)',def:['usvh','msvy'],note:'Suất liều = liều nhận được trong một khoảng thời gian (đọc trên máy đo phóng xạ). Năm tính 365,25 ngày.',
+  u:[['nsvh','Nanosievert/giờ (nSv/h)',1e-9],['usvh','Microsievert/giờ (µSv/h)',1e-6],['msvh','Millisievert/giờ (mSv/h)',1e-3],['svh','Sievert/giờ (Sv/h)',1],
+   ['msvd','Millisievert/ngày (mSv/ngày)',1e-3/24],['msvy','Millisievert/năm (mSv/năm)',1e-3/8766],['svy','Sievert/năm (Sv/năm)',1/8766],['mremh','Millirem/giờ (mrem/h)',1e-5],['remh','Rem/giờ (rem/h)',1e-2]]},
+ radexp:{l:'☢️ Phóng xạ: Liều chiếu (R)',def:['r','mckg'],note:'Liều chiếu = mức ion hóa không khí do tia X, tia gamma. 1 Roentgen (R) = 2,58×10⁻⁴ C/kg.',
+  u:[['ckg','Coulomb/kilôgam (C/kg)',1],['mckg','Millicoulomb/kilôgam (mC/kg)',1e-3],['uckg','Microcoulomb/kilôgam (µC/kg)',1e-6],['ur','Microroentgen (µR)',2.58e-10],['mr','Milliroentgen (mR)',2.58e-7],['r','Roentgen (R)',2.58e-4]]}
 };
 let cv={cat:'length',from:'m',to:'cm',val:'1'};
 function cvConv(cat,from,to,v){
@@ -3627,6 +3640,7 @@ function scrUnits(){
  const cats=Object.keys(CV_CATS).map(k=>`<option value="${k}" ${k===cv.cat?'selected':''}>${CV_CATS[k].l}</option>`).join('');
  return screenWrap('📐 Đổi đơn vị đo',`
   <div class="form-row tight"><label>Loại đơn vị</label><select class="cv-sel" style="width:100%;" onchange="cvCat(this.value)">${cats}</select></div>
+  ${C.note?`<div class="guide-desc" style="text-align:left;margin:0 0 10px;">ℹ️ ${C.note}</div>`:''}
   <div class="cv-box"><label>Từ</label><div class="cv-line"><input type="text" inputmode="decimal" id="cv-val" value="${qa(cv.val)}" oninput="cv.val=this.value;cvRefresh()"><select class="cv-sel" onchange="cvSet('from',this.value)">${opts(cv.from)}</select></div></div>
   <div style="text-align:center;margin:6px 0;"><button class="mini-btn" onclick="cvSwap()">⇅ Đổi chiều</button></div>
   <div class="cv-box"><label>Sang</label><div class="cv-line"><div class="cv-out" id="cv-out">—</div><select class="cv-sel" onchange="cvSet('to',this.value)">${opts(cv.to)}</select></div></div>

@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.02-5';
+const APP_VERSION='2026.11.02-6';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -826,6 +826,33 @@ html.fs-big .mini-btn{font-size:15px;min-height:38px;}
 html.fs-big .jp .n{font-size:14px;}
 html.fs-big .jp .b{font-size:13px;}
 html.fs-big .ob-jar .d,html.fs-big .rp-plan,html.fs-big .rp-lim{font-size:14px;}
+/* (bản 2026.11.02-6) Trang chủ: túi tiền và chữ 6PAY to hơn; các ô thấp gọn lại, không tự giãn; khoảng cách đều giữa các ô, các dòng, các khu vực */
+.home-icon-badge{width:auto;height:auto;font-size:clamp(46px,9.8vh,100px);margin:clamp(0px,.6vh,6px) 0 clamp(2px,.5vh,6px);filter:drop-shadow(0 4px 6px rgba(160,110,0,.25));}
+.home-brand{font-size:clamp(42px,8.2vh,80px);line-height:1;}
+.home-header .brand-sub{margin-top:clamp(6px,1vh,10px);}
+.home-tagline{margin-top:clamp(3px,.6vh,6px);}
+.star-line{margin-top:clamp(6px,1vh,10px);}
+.home-header{padding-bottom:clamp(12px,2.2vh,22px);}
+.home-wrap>.card,.home-wrap>.card-pair{flex:0 0 auto!important;max-height:none!important;}
+.home-wrap .card,.home-wrap .card-pair{margin-bottom:clamp(8px,1.3vh,12px);}
+.home-wrap .card-pair{gap:clamp(8px,1.3vh,12px);}
+.home-wrap .card{min-height:0;height:clamp(44px,5.6vh,52px);padding:0 14px;}
+.home-wrap .card.balance{height:clamp(48px,6.4vh,58px);}
+.home-wrap .card-pair .card{height:clamp(52px,6.8vh,62px);min-height:0;padding:0 14px;gap:1px;}
+.home-wrap .card-pair .card.quiz,.home-wrap .card-pair .card.partner{height:clamp(44px,5.6vh,52px);min-height:0;}
+.home-wrap .card-label{font-size:clamp(14px,1.95vh,16px);}
+.home-wrap .card-amount{font-size:clamp(16px,2.4vh,20px);}
+.home-wrap .card.balance .card-amount{font-size:clamp(20px,3vh,25px);}
+.home-wrap .card-pair .card-amount{font-size:clamp(15.5px,2.25vh,19px);}
+.home-wrap .card.quiz .card-amount,.home-wrap .card.partner .card-amount{font-size:22px;}
+.home-quote{padding-top:clamp(10px,1.8vh,18px);}
+.home-wrap .card-pair .card{margin:0!important;}
+/* Chia đều khoảng trống: một nửa phía trên các ô, một nửa phía trên câu trích dẫn */
+.home-wrap>.card.balance{margin-top:auto;}
+@media (max-height:700px){.home-icon-badge{font-size:40px;margin:0;}.home-brand{font-size:40px;}.home-header{padding-bottom:8px;}.home-header .brand-sub{margin-top:4px;}.star-line{margin-top:4px;}.home-wrap .card,.home-wrap .card-pair{margin-bottom:8px;}.home-wrap .card-pair{gap:8px;}.home-quote{padding-top:6px;}}
+@media (max-height:600px){.home-tagline{display:block;}.home-icon-badge{display:none;}}
+@media (max-height:700px){.home-icon-badge{display:flex;}}
+@media (max-height:560px){.home-icon-badge{display:none;}}
 </style>
 </head>
 <body>

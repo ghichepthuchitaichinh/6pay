@@ -512,11 +512,66 @@
   function r100(n) { return Math.round(n / 100) * 100; }
   function applyPM() {
     var k = TI().pm;
-    CROPS.forEach(function (c) { if (c._c == null) { c._c = c.cost; c._s = c.sell; } c.cost = r100(c._c * k); c.sell = r100(c._s * k); });
-    for (var id in PRODUCTS) { var P0 = PRODUCTS[id]; if (P0._s == null) P0._s = P0.sell; P0.sell = r100(P0._s * k); }
+    CROPS.forEach(function (c) { if (c._c == null) { c._c = c.cost; c._s = c.sell; } c.cost = r100(c._c * k); c.sell = r100(c._s * k * pzMul(c.id)); });
+    for (var id in PRODUCTS) { var P0 = PRODUCTS[id]; if (P0._s == null) P0._s = P0.sell; P0.sell = r100(P0._s * k * pzMul(id)); }
     FERTS.forEach(function (f) { if (f._p == null) f._p = f.p; f.p = r100(f._p * k); });
     BUILDS.forEach(function (b) { if (b._i == null) b._i = b.inc; b.inc = Math.round(b._i * k); });
   }
+  /* ===== (bản 2026.11.02-13) GIÁ CHỢ BIẾN ĐỘNG THEO BUỔI =====
+     Mỗi buổi (sáng / chiều / tối) chợ ra bảng giá mới: khoảng 1/3 mặt hàng tăng hoặc giảm 5–20%, còn lại giữ nguyên.
+     Giá dao động trong khoảng 70%–140% giá gốc và có xu hướng quay về giá gốc. Giá mới áp dụng cho cả buổi chơi
+     (bán ở chợ, đơn hàng mới, giá trị kho). Vào buổi mới, bảng giá hiện ra để người chơi biết giá luôn thay đổi. */
+  var PZ_IDS = null;
+  function pzIds() { if (!PZ_IDS) PZ_IDS = CROPS.map(function (c) { return c.id; }).concat(Object.keys(PRODUCTS)); return PZ_IDS; }
+  function pzKey() { return dayKey() + '-' + sessNow().k; }
+  function pzMul(id) { return (S && S.pz && S.pz.m && S.pz.m[id]) || 1; }
+  function pzRoll() {
+    if (!S.pz) S.pz = { k: '', m: {}, o: {}, seen: '' };
+    var key = pzKey(); if (S.pz.k === key) return false;
+    var first = !S.pz.k;
+    S.pz.o = {}; pzIds().forEach(function (id) { S.pz.o[id] = pzMul(id); });
+    if (!first) pzIds().forEach(function (id) {
+      if (Math.random() >= 0.35) return;
+      var m = S.pz.m[id] || 1, upP = m > 1.12 ? 0.3 : m < 0.88 ? 0.7 : 0.5, d = (0.05 + Math.random() * 0.15) * (Math.random() < upP ? 1 : -1);
+      S.pz.m[id] = Math.max(0.7, Math.min(1.4, Math.round((m + d) * 100) / 100));
+    });
+    S.pz.k = key; applyPM(); return true;
+  }
+  function pzBase(id) { var I = item(id); return I._s != null ? I._s : I.sell; }
+  function pzRow(id) {
+    var I = item(id), b = pzBase(id), now = r100(b * pzMul(id)), old = r100(b * ((S.pz.o && S.pz.o[id]) || pzMul(id))), d = now - old;
+    var lk = CM[id] ? !cropOK(CM[id]) : !pzOpen(id);
+    var note = d > 0 ? '<span class="up">▲ +' + money(d) + ' (+' + Math.round(d / old * 100) + '%)</span>' : d < 0 ? '<span class="dn">▼ −' + money(-d) + ' (−' + Math.round(-d / old * 100) + '%)</span>' : '';
+    return { d: d, h: '<tr' + (lk ? ' class="lk"' : '') + '><td><span class="e">' + I.e + '</span>' + I.n + '</td><td class="pr">' + money(now) + '<small>/' + (I.u || '') + '</small></td><td class="nt">' + note + '</td></tr>' };
+  }
+  function pzOpen(id) {
+    for (var i = 0; i < ANIMALS.length; i++) if (ANIMALS[i].p === id) return ANIMALS[i].lv <= S.lv;
+    for (var j = 0; j < BUILDS.length; j++) if (BUILDS[j].r && BUILDS[j].r.o === id) return BUILDS[j].lv <= S.lv;
+    return true;
+  }
+  function priceBoard() {
+    var se = sessNow(), dt = new Date(), up = 0, dn = 0, first = !S.pz.o || !Object.keys(S.pz.o).some(function (k) { return S.pz.o[k] !== pzMul(k); });
+    function sec(t, ids) {
+      var rows = ids.map(pzRow); rows.forEach(function (r) { if (r.d > 0) up++; else if (r.d < 0) dn++; });
+      return '<tr class="sec"><td colspan="3">' + t + '</td></tr>' + rows.map(function (r) { return r.h; }).join('');
+    }
+    var anim = [], prod = [];
+    ANIMALS.forEach(function (a) { if (anim.indexOf(a.p) < 0) anim.push(a.p); });
+    BUILDS.forEach(function (b) { if (b.r && prod.indexOf(b.r.o) < 0) prod.push(b.r.o); });
+    var body = sec('🌾 Nông sản', CROPS.map(function (c) { return c.id; })) + sec('🐄 Sản phẩm chăn nuôi', anim) + sec('🏭 Hàng chế biến', prod);
+    return '<div class="fm-pz"><div class="fm-h">📈 Bảng giá chợ ' + se.e + ' ' + se.n + ' · ' + ('0' + dt.getDate()).slice(-2) + '/' + ('0' + (dt.getMonth() + 1)).slice(-2) + '</div>' +
+      '<div class="fm-sub" style="margin-bottom:6px">' + (up || dn ? 'So với buổi trước: <b style="color:#15803d">' + up + ' mặt hàng tăng giá</b>, <b style="color:#dc2626">' + dn + ' mặt hàng giảm giá</b>, còn lại giữ nguyên.' : 'Giá các mặt hàng buổi này. Mỗi buổi sáng, chiều, tối chợ sẽ ra bảng giá mới.') + '</div>' +
+      '<div class="fm-pzw"><table><thead><tr><th>Mặt hàng</th><th>Giá</th><th>Biến động</th></tr></thead><tbody>' + body + '</tbody></table></div>' +
+      '<div class="fm-sub" style="margin:8px 0">💡 Giá áp dụng cho cả buổi chơi này. Giá cao thì nên bán, giá thấp thì nên giữ lại trong kho chờ buổi sau.</div>' +
+      '<button class="fm-btn" data-a="sheetClose" style="width:100%">Đã hiểu</button></div>';
+  }
+  // Sang buổi mới: đổi giá và hiện bảng giá (mỗi buổi hiện 1 lần)
+  function pzCheck() {
+    var ch = pzRoll();
+    if (S.pz.seen !== S.pz.k) { S.pz.seen = S.pz.k; save(); sheetLater(priceBoard()); }
+    if (ch) { save(); if (tab === 'market') renderMarket(); }
+  }
+
   /* Tổng tài sản */
   function worth() {
     syncM(); var v = S.m;
@@ -1531,6 +1586,8 @@
   '.fm-seed{display:flex;align-items:center;gap:10px;width:100%;border:2px solid #eadfc0;background:#fff;border-radius:16px;padding:9px 10px;margin-bottom:8px;text-align:left}' +
   '.fm-seed.on{border-color:#f59e0b;background:#fff7d1}.fm-seed:disabled{opacity:.5}.fm-seed .e{font-size:34px;font-family:' + EF + ';width:42px;text-align:center}.fm-seed .tx{flex:1;min-width:0}.fm-seed b{font-size:16px}' +
   '.fm-seed small{display:block;font-size:12px;color:#7a6440;line-height:1.45}.fm-seed .pr{text-align:right;font-weight:900;font-size:14px;color:#15803d;white-space:nowrap}.fm-seed .pr small{color:#9a8660;font-weight:700}' +
+  '.fm-pzw{max-height:58vh;overflow-y:auto;border-radius:12px;border:1px solid #e6d7b0;background:#fff}.fm-pz table{width:100%;border-collapse:collapse;font-size:13.5px}.fm-pz th{position:sticky;top:0;background:#5b3a12;color:#fff;font-weight:800;padding:7px 6px;text-align:left;z-index:1}.fm-pz td{padding:6px;border-bottom:1px dashed #eadfc0;color:#3b2a14;vertical-align:middle}' +
+  '.fm-pz td .e{font-family:' + EF + ';font-size:18px;margin-right:5px}.fm-pz td.pr{font-weight:800;white-space:nowrap;text-align:right}.fm-pz td.pr small{font-weight:600;color:#7a6440;font-size:11px}.fm-pz td.nt{white-space:nowrap;font-size:12.5px;font-weight:800;text-align:right}.fm-pz .up{color:#15803d}.fm-pz .dn{color:#dc2626}.fm-pz tr.sec td{background:#f3e7c4;font-weight:900;color:#5b3a12;border:0}.fm-pz tr.lk td{opacity:.45}' +
   '.fm-modal{text-align:center}.fm-modal .big{font-size:64px;font-family:' + EF + ';line-height:1.2}.fm-modal h2{margin:4px 0 6px;color:#5b3a12}.fm-modal p{color:#6b5a3a;line-height:1.55;margin:6px 0}' +
   '.fm-ul{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}.fm-ul span{background:#fff;border:2px solid #f3d98b;border-radius:14px;padding:6px 10px;font-weight:800}.fm-ul span i{font-style:normal;font-family:' + EF + ';font-size:22px;vertical-align:-3px;margin-right:4px}' +
   '.fm-guide{text-align:left;margin:8px 0;padding:0;list-style:none}.fm-guide li{display:flex;gap:10px;align-items:flex-start;margin:8px 0;line-height:1.5;color:#4a3a20}.fm-guide li i{font-style:normal;font-family:' + EF + ';font-size:24px}' +
@@ -2468,7 +2525,7 @@
     if (!running) return;
     var dt = Math.min(0.05, (now - lastT) / 1000 || 0.016); lastT = now; tm += dt;
     var t = Date.now(); update(t); playTick();
-    if (t - lastSave > 5000) { lastSave = t; checkDisaster(t); checkRaid(t); save(); saveDay(); badges(); walletBar(); checkTier(); tierBar(); }
+    if (t - lastSave > 5000) { lastSave = t; if (S.pz && S.pz.k !== pzKey()) pzCheck(); checkDisaster(t); checkRaid(t); save(); saveDay(); badges(); walletBar(); checkTier(); tierBar(); }
     if (S.fix.length) fixTick(t);
     defTick(t);
     if (isMap(tab) && !tdOn) {
@@ -2829,6 +2886,7 @@
     else if (k === 'market') L0 = [
       gl('📦', '<b>Kho</b>: bán nông sản và hàng chế biến lấy tiền.'),
       gl('🚚', '<b>Đơn hàng</b> (từ Cấp độ 2) chia 3 mục: 🌾 Trồng trọt, 🐄 Chăn nuôi, 🏭 Sản xuất. Khách trả đúng giá chợ + thưởng thêm 5% (có xe tải: 10%). Cấp độ càng cao, đơn càng lớn. Chưa đủ hàng thì bấm 🔄 Đổi đơn để tìm đơn giao được ngay.'),
+      gl('📈', '<b>Giá chợ thay đổi theo buổi</b> (sáng, chiều, tối): mỗi buổi có bảng giá mới, có mặt hàng tăng (xanh), có mặt hàng giảm (đỏ). Xem lại ở nút 📈 Bảng giá trong Chợ.'),
       gl('🛒', '<b>Mua hàng</b> (từ Cấp độ 4): mua món còn thiếu, đắt hơn giá bán ' + Math.round((BUY_MUL - 1) * 100) + '%, mỗi ngày ' + BUY_TYPES + ' loại. Tự trồng, tự nuôi vẫn lời hơn.'),
       gl('🏰', 'Biệt thự giúp bán giá cao hơn 10%.')];
     else if (k === 'quest') L0 = [
@@ -2918,6 +2976,7 @@
         FERTS.map(function (f) { return '<div class="fm-card" style="display:flex;align-items:center;gap:10px"><span style="font-size:36px;font-family:' + EF + '">' + f.e + '</span><div style="flex:1"><b>' + f.n + '</b><div class="fm-sub" style="margin:2px 0 6px">' + f.d + '. Đang có ' + (S.fz[f.id] || 0) + ' túi · ' + money(f.p) + '/túi.</div><div class="fm-row" style="margin:0"><button class="fm-btn org" data-a="buyFert" data-f="' + f.id + '" data-q="1">Mua 1 túi · −' + short(f.p) + ' 🏠</button><button class="fm-btn org" data-a="buyFert" data-f="' + f.id + '" data-q="5">Mua 5 · −' + short(f.p * 5) + ' 🏠</button></div></div></div>'; }).join('');
     }
     h += '<div class="fm-row" style="justify-content:center;margin-top:14px"><button class="fm-btn alt" data-a="book">📒 Xem sổ thu chi</button></div>';
+    h = '<button class="fm-btn blu" data-a="pboard" style="width:100%;margin:0 0 10px">📈 Bảng giá chợ ' + sessNow().e + ' ' + sessNow().n + '</button>' + h;
     $('fmP_market').innerHTML = h;
   }
   /* Mua hàng ở chợ: đắt hơn giá bán 50%, mỗi ngày chỉ được mua 3 loại sản phẩm, trừ ví Thiết yếu */
@@ -3850,6 +3909,7 @@
     else if (a === 'confirm') { closeSheet(); if (confirmFn) confirmFn(); confirmFn = null; }
     else if (a === 'deliver') deliver(+el.getAttribute('data-i'));
     else if (a === 'skip') { var si = +el.getAttribute('data-i'), so = S.orders[si]; if (so) { var no = genOrder(so.k, true); if (no) S.orders[si] = no; else S.orders.splice(si, 1); } fillOrders(); save(); renderMarket(); badges(); if (S.orders[si] && canDeliver(S.orders[si])) toast('✅ Đơn mới này đủ hàng để giao ngay!'); }
+    else if (a === 'pboard') { pzRoll(); sheet(priceBoard()); }
     else if (a === 'ocat') { oCat = el.getAttribute('data-t'); renderMarket(); }
     else if (a === 'sell') sell(el.getAttribute('data-c'), +el.getAttribute('data-q'));
     else if (a === 'buyFert') { var q = +el.getAttribute('data-q'), FF = FZM[el.getAttribute('data-f') || 'f1'], c = q * FF.p; if (!has('essential', c)) { noMoney(c, 'essential'); return; } S.fz[FF.id] += q; spend('essential', c, 'fert_' + FF.id, 'Mua ' + FF.n.toLowerCase(), FF.e, q); sfx('ok'); toast(FF.e + ' Mua ' + q + ' túi ' + FF.n.toLowerCase() + ': −' + money(c) + ' từ ví 🏠 Thiết yếu'); hud(); save(); if ($('fmSheet').classList.contains('on')) fertSheet(); else renderMarket(); }
@@ -3935,6 +3995,7 @@
         if (brkCheck()) { showBreak(); return; }
         if (!S.seen) { S.seen = 1; S.tipCam = 1; S.news5 = 1; S.news6 = 1; save(); guide(); }
         else { if (got) backSheet(got); if (!S.news6) { S.news5 = 1; S.news6 = 1; save(); newsTiers(); } }
+        pzCheck();   // bảng giá chợ của buổi này
         if (checkDisasterLater) { checkDisasterLater = false; checkDisaster(Date.now()); var hadP = S.raidP; checkRaid(Date.now()); if (hadP && S.raidP === hadP) { if (playLeft() > 0) offerTD(); else resolveRaid('auto'); } }
         if (!S.tipCam) { S.tipCam = 1; save(); setTimeout(function () { toast('✋ Mới: kéo 1 ngón để đi quanh nông trại, chụm 2 ngón để phóng to/thu nhỏ'); }, got ? 0 : 600); }
       });

@@ -72,9 +72,11 @@
  }
 
  // ----- Đọc to -----
- function stopSpeech(){try{if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}}
+ function stopSpeech(){if(window.SixTTS){window.SixTTS.stop();return;}try{if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}}
  function speak(txt){
   if(!speakOn)return;
+  // Dùng bộ đọc chung của app (đọc ngay, không bị trễ)
+  if(window.SixTTS&&window.SixTTS.ok){window.SixTTS.speak(txt,'vi-VN',0.9,null,{flush:true});return;}
   try{
    if(!window.speechSynthesis||!window.SpeechSynthesisUtterance)return;
    speechSynthesis.cancel();

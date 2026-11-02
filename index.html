@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.02-2';
+const APP_VERSION='2026.11.02-3';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -2434,6 +2434,62 @@ function sfx(k){
  }catch(e){}
 }
 window.sfx=sfx;
+
+// ===== ĐỌC TỪ BẰNG GIỌNG CỦA MÁY (dùng chung cho mọi game học) — bản 2026.11.02-3 =====
+// Sửa lỗi lúc đọc ngay, lúc đọc rất trễ:
+// 1) Tải sẵn danh sách giọng ngay khi mở app (lần đầu trình duyệt trả về danh sách rỗng).
+// 2) Ưu tiên giọng có sẵn trên máy (localService). Giọng "online" (vd. Google US English) phải tải qua mạng nên hay trễ vài giây.
+// 3) Không gọi đọc ngay sau khi vừa dừng (cancel): Chrome hay bỏ qua hoặc đọc trễ, nên chờ ~120ms.
+// 4) Gọi resume() trước khi đọc: Chrome để lâu không đọc sẽ bị "kẹt" ở trạng thái tạm dừng.
+// 5) Giữ tham chiếu câu đang đọc để trình duyệt không xoá mất (mất thì không báo đọc xong).
+// 6) Lần chạm đầu tiên vào màn hình: đọc thử 1 câu im lặng để "đánh thức" bộ đọc (iPhone bắt buộc).
+window.SixTTS=(function(){
+ const ss=window.speechSynthesis, OK=!!(ss&&window.SpeechSynthesisUtterance);
+ let voices=[], cache={}, live=[], lastStop=0, warmed=false, timer=0;
+ function load(){if(!OK)return;try{const v=ss.getVoices();if(v&&v.length){voices=v;cache={};}}catch(e){}}
+ function nl(v){return String(v.lang||'').toLowerCase().replace('_','-');}
+ function pick(lang){
+  if(!voices.length)load();
+  if(!voices.length)return null;
+  if(lang in cache)return cache[lang];
+  const L=lang.toLowerCase(), base=L.split('-')[0];
+  let exact=voices.filter(v=>nl(v)===L), same;
+  if(base==='zh'){ // tiếng Trung phổ thông, tránh giọng Quảng Đông (zh-HK)
+   same=voices.filter(v=>/^(zh-cn|zh-hans|cmn|zh-sg|zh$)/.test(nl(v)));
+   if(!same.length)same=voices.filter(v=>/^zh-tw/.test(nl(v)));
+  }else same=voices.filter(v=>nl(v).split('-')[0]===base);
+  const v=exact.find(x=>x.localService)||same.find(x=>x.localService)||exact[0]||same[0]||null;
+  cache[lang]=v; return v;
+ }
+ function stop(){if(!OK)return;clearTimeout(timer);try{ss.cancel();}catch(e){}lastStop=Date.now();}
+ // o.flush: dừng câu đang đọc rồi đọc câu mới (dùng khi bấm vào từ). Mặc định: xếp hàng đọc lần lượt.
+ function speak(text,lang,rate,done,o){
+  o=o||{};
+  let fired=false;
+  const fin=()=>{if(fired)return;fired=true;const i=live.indexOf(u);if(i>-1)live.splice(i,1);if(done)try{done();}catch(e){}};
+  if(!OK||!text){fin();return;}
+  var u=new SpeechSynthesisUtterance(String(text));
+  u.lang=lang||'en-US'; u.rate=rate||1; if(o.volume!=null)u.volume=o.volume;
+  const v=pick(u.lang); if(v)u.voice=v;
+  u.onend=fin; u.onerror=fin;
+  live.push(u); if(live.length>30)live.shift();
+  setTimeout(fin,2500+String(text).length*180); // phòng khi trình duyệt không báo đọc xong
+  const go=()=>{try{if(ss.paused)ss.resume();ss.speak(u);}catch(e){fin();}};
+  if(o.flush&&(ss.speaking||ss.pending)){stop();}
+  const wait=Math.max(0,120-(Date.now()-lastStop));
+  if(wait){clearTimeout(timer);timer=setTimeout(go,wait);}else go();
+ }
+ function warm(){
+  if(warmed||!OK)return; warmed=true; load();
+  try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;u.rate=2;live.push(u);u.onend=u.onerror=()=>{const i=live.indexOf(u);if(i>-1)live.splice(i,1);};ss.speak(u);}catch(e){}
+ }
+ if(OK){
+  load();
+  try{ss.addEventListener?ss.addEventListener('voiceschanged',load):(ss.onvoiceschanged=load);}catch(e){}
+  ['pointerdown','touchstart','keydown'].forEach(t=>document.addEventListener(t,warm,{capture:true,passive:true}));
+ }
+ return {speak:speak,stop:stop,warm:warm,ok:OK};
+})();
 function toggleSound(){try{localStorage.setItem(SOUND_KEY,soundOn()?'0':'1');}catch(e){}render();if(soundOn())sfx('ok');}
 
 // ===== HỌC VÀ CHƠI: MỞ 100% MIỄN PHÍ =====
@@ -2469,7 +2525,7 @@ function scrFinUtil(){
 // Tiền thưởng kiếm được ở các game học (trừ Cờ vua và Bước nhảy tài chính) được gửi vào "hộp thư" farm6_inbox.
 // Lần mở Nông trại tiếp theo, toàn bộ tiền trong hộp thư được cộng vào ví nông trại và tính tiến độ nhiệm vụ.
 const FARM_INBOX='farm6_inbox';
-const FARM_GAMES={en:'words',zh:'zh',math:'math',vnh:'vnh',vnv:'vnv',quiz:'quiz',clock:'clock'};
+const FARM_GAMES={en:'words',zh:'zh',math:'math',vnh:'vnh',vnv:'vnv',quiz:'quiz',clock:'clock',match:'match'};
 // Tỷ lệ chia 6 ví dùng CHUNG giữa app và game Nông trại: đổi ở đâu cũng áp dụng cho cả hai
 window.sixPct={
  get:function(){return {essential:pct.essential,education:pct.education,saving:pct.saving,invest:pct.invest,share:pct.share};},
@@ -2504,7 +2560,7 @@ function farmChip(a){
 let farmWatch=0;
 function farmGameOpen(){
  if(gameBusy)return true;
- if(document.querySelector('#vnhOv.show,#vnvOv.show,#ckOv.show,#mtOv.on,.eg-root.on,.zg-root.on,.mb-root.on'))return true;
+ if(document.querySelector('#vnhOv.show,#vnvOv.show,#ckOv.show,#mtOv.on,.eg-root.on,.zg-root.on,.mb-root.on,.mg-root.on'))return true;
  const top=stack[stack.length-1];return !!(top&&top.id==='quiz');
 }
 // Nút "Về Nông trại" nổi trên mọi game học khi game được mở từ Nông trại: chơi xong bấm 1 lần là về ngay, không cần bấm ← nhiều lần
@@ -2525,6 +2581,7 @@ function farmBackBtn(done){
 window.farmExit=function(){
  try{if(window.SixWordGame)SixWordGame.close();}catch(e){}
  try{if(window.SixZhGame)SixZhGame.close();}catch(e){}
+ try{if(window.SixMatchGame)SixMatchGame.close();}catch(e){}
  try{if(window.MathGame)MathGame.close();}catch(e){}
  try{if(window.MathTableGame)MathTableGame.close();}catch(e){}
  try{if(window.ClockGame)ClockGame.close();}catch(e){}
@@ -2552,7 +2609,7 @@ window.farmPlay=function(k,opt){
 // Các game nằm ở thư mục games/, chỉ tải khi người dùng bấm vào (app mở nhanh hơn)
 // Các game nằm ở thư mục games/, chỉ tải khi người dùng bấm vào (app mở nhanh hơn).
 // Nếu file được upload thẳng vào thư mục gốc (không có thư mục games/), app vẫn tự tìm thấy.
-const GAME_FILES={runner:'runner.js',words:'words.js',zh:'chinese.js',math:'math.js',vnh:'history.js',vnv:'vietnam.js',chess:'chess.js',clock:'clock.js',farm:'farm.js'};
+const GAME_FILES={runner:'runner.js',words:'words.js',zh:'chinese.js',math:'math.js',vnh:'history.js',vnv:'vietnam.js',chess:'chess.js',clock:'clock.js',farm:'farm.js',match:'match.js'};
 function gamePaths(k){const f=GAME_FILES[k];return ['games/'+f,'./'+f,'Games/'+f];}
 function gameReady(k){
  if(k==='runner')return !!window.open6PayGame;
@@ -2561,6 +2618,7 @@ function gameReady(k){
  if(k==='math')return !!window.MathGame;
  if(k==='clock')return !!window.ClockGame;
  if(k==='farm')return !!window.FarmGame;
+ if(k==='match')return !!window.SixMatchGame;
  return !!(document.getElementById(k+'Ov')&&window.GameOv);
 }
 function gameStart(k){
@@ -2570,6 +2628,7 @@ function gameStart(k){
  else if(k==='math')MathGame.open();
  else if(k==='clock')ClockGame.open();
  else if(k==='farm')FarmGame.open();
+ else if(k==='match')SixMatchGame.open();
  else GameOv.open(k);
 }
 // Tải 1 file game: thử lần lượt từng đường dẫn, file nào tải được và chạy được thì dùng
@@ -2620,6 +2679,7 @@ function scrLearnPlay(){
   it("playGame('vnv')",'🧭 Khám phá Việt Nam')+
   it("playGame('words')",'🔤 Game học từ vựng tiếng Anh')+
   it("playGame('zh')",'🀄 Game học từ vựng tiếng Trung')+
+  it("playGame('match')",'🍬 Xếp kẹo từ vựng (Anh – Trung)')+
   it("playGame('math')",'🧮 Toán học cấp 1')+
   it('openQuiz()','🎯 Đố vui tài chính')+
   it("playGame('runner')",'🎮 Bước nhảy tài chính')+

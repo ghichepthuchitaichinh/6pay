@@ -1,9 +1,9 @@
 // Service Worker cho 6PAY — chạy offline, luôn ưu tiên bản mới nhất từ mạng.
 // Mỗi lần thay đổi danh sách ASSETS hoặc logic, hãy đổi số phiên bản CACHE_NAME.
-const CACHE_NAME='6pay-cache-v25';
+const CACHE_NAME='6pay-cache-v26';
 const FONT_CACHE='6pay-fonts-v1';
 const ASSETS=['./','./index.html','./manifest.json','./version.json',
- './runner.js','./words.js','./chinese.js','./math.js','./history.js','./vietnam.js','./chess.js','./clock.js','./farm.js',
+ './runner.js','./words.js','./chinese.js','./math.js','./history.js','./vietnam.js','./chess.js','./clock.js','./farm.js','./match.js',
  './icon-192.png','./icon-512.png','./icon-1024.png','./icon-maskable-512.png','./apple-touch-icon.png','./favicon-32.png'];
 
 self.addEventListener('install',e=>{

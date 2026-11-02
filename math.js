@@ -490,6 +490,8 @@
   function sfx(k) { try { if (window.sfx) window.sfx(k); } catch (e) {} }
   var pend = 0;
   function speak(txt) {
+    // Dùng bộ đọc chung của app (đọc nhanh, không bị trễ). Không có thì dùng cách cũ.
+    if (window.SixTTS && window.SixTTS.ok) { pend++; var dn = false; window.SixTTS.speak(txt, 'vi-VN', 0.95, function () { if (dn) return; dn = true; pend = Math.max(0, pend - 1); }); return; }
     try {
       if (!window.speechSynthesis) return;
       var u = new SpeechSynthesisUtterance(txt); u.lang = 'vi-VN'; u.rate = 0.95;
@@ -500,7 +502,7 @@
       speechSynthesis.speak(u);
     } catch (e) { pend = 0; }
   }
-  function stopSpeak() { pend = 0; try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {} }
+  function stopSpeak() { pend = 0; if (window.SixTTS) { window.SixTTS.stop(); return; } try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {} }
 
   /* ================= CSS ================= */
   var st = document.createElement('style');

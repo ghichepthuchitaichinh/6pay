@@ -229,7 +229,7 @@
   var PHRN = PHR.reduce(function (a, g) { return a + g.p.length; }, 0);
   function phT(p) { return LANG === 'zh' ? p[2] : p[0]; }
   function phPy(p) { return LANG === 'zh' ? p[3] : ''; }
-  function phSay(p) { stopSpeak(); speak(LANG === 'zh' ? p[2] : p[0]); }
+  function phSay(p) { pend = 0; speak(LANG === 'zh' ? p[2] : p[0], true); }
 
   /* ================= TIẾN ĐỘ & LƯU TRỮ ================= */
   var P = { s: [], m: 0, lv: 1, mw: {} };
@@ -252,7 +252,9 @@
 
   /* Đọc từ: từ sau chỉ được đọc khi từ trước đã đọc xong */
   var pend = 0;
-  function speak(w) {
+  function speak(w, flush) {
+    // Dùng bộ đọc chung của app (đọc nhanh, không bị trễ). Không có thì dùng cách cũ.
+    if (window.SixTTS && window.SixTTS.ok) { pend++; var dn = false; window.SixTTS.speak(w, 'en-US', 0.85, function () { if (dn) return; dn = true; pend = Math.max(0, pend - 1); }, { flush: flush }); return; }
     try {
       if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
       var u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = 0.85;
@@ -268,7 +270,7 @@
   function lkAsk(fn) { if (window.SixLock) window.SixLock.ask(fn); else fn(); }
   function lkFree(n) { return Math.ceil(n / 3); }
   function sfx(k) { try { if (window.sfx) window.sfx(k); } catch (e) {} }
-  function stopSpeak() { pend = 0; try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {} }
+  function stopSpeak() { pend = 0; if (window.SixTTS) { window.SixTTS.stop(); return; } try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {} }
 
   /* ================= CSS ================= */
   var st = document.createElement('style');
@@ -691,7 +693,7 @@
     else if (a === 'day') { renderMap(); show('map'); }
     else if (a === 'lv1' || a === 'lv2') { P.lv = a === 'lv1' ? 1 : 2; save(); renderMap(); }
     else if (a === 'lvl') { if (i >= lkFree(L.length) && !lkOpen()) lkAsk(function () { renderMap(); openIntro(i); }); else openIntro(i); }
-    else if (a === 'say') { stopSpeak(); speak(introW[i][0]); }
+    else if (a === 'say') { pend = 0; speak(introW[i][0], true); }
     else if (a === 'go') { if (introT) startTopic(introT); else startDay(cur); }
     else if (a === 'retry') startDay(cur);
     else if (a === 'introback') { stopSpeak(); if (introT) toTopics(); else toMap(); }
@@ -726,7 +728,9 @@
       if (o && o.topic) { for (var i = 0; i < TOPICS.length; i++) if (TOPICS[i].id === o.topic) { openTopicIntro(TOPICS[i]); break; } }
       else if (o && o.topics) toTopics();   // mở thẳng danh sách chủ đề (từ màn hình nghỉ của Nông trại)
     },
-    close: function () { cancelAnimationFrame(raf); stopSpeak(); G = null; root.classList.remove('on'); document.body.style.overflow = ''; }
+    close: function () { cancelAnimationFrame(raf); stopSpeak(); G = null; root.classList.remove('on'); document.body.style.overflow = ''; },
+    // Dữ liệu chủ đề dùng chung cho game Xếp kẹo từ vựng (match.js)
+    data: { topics: TOPICS, groups: GROUPS, img: function (k) { return IMGS[k] || null; } }
   };
   window.SixWordGame = api;
   window.SixDayGame = api;

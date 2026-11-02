@@ -133,6 +133,7 @@
     { k: 'vnv', n: 'Khám phá Việt Nam', e: '🧭', u: 'câu', d: 'Mỗi câu trả lời đúng +10.000đ' },
     { k: 'en', n: 'Từ vựng tiếng Anh', e: '🔤', u: 'từ', d: 'Hứng đúng mỗi từ +10.000đ' },
     { k: 'zh', n: 'Từ vựng tiếng Trung', e: '🀄', u: 'từ', d: 'Hứng đúng mỗi từ +10.000đ' },
+    { k: 'match', n: 'Xếp kẹo từ vựng', e: '🍬', u: 'từ', d: 'Qua màn: mỗi ⭐ +10.000đ' },
     { k: 'math', n: 'Toán học cấp 1', e: '🧮', u: 'câu', d: 'Thử thách theo lớp và bảng cửu chương' },
     { k: 'quiz', n: 'Đố vui tài chính', e: '🎯', u: 'câu', d: 'Trả lời đúng và nhanh để được nhiều tiền' },
     { k: 'clock', n: 'Dạy trẻ xem đồng hồ', e: '🕒', u: 'giờ', d: 'Bấm “Đố bé xem giờ”: mỗi câu đúng +10.000đ' }

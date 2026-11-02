@@ -606,6 +606,8 @@
       var id = g.topic.id, prev = best(id), isNew = g.money > prev && g.money > 0; sfx(g.money > 0 ? 'win' : 'bad');
       if (isNew) setBest(id, g.money);
       fe(g.money, g.ok, g.topic.id);
+      // Học xong 1 chủ đề (đủ 2 phút, đúng ít nhất 5 từ): mở khoá giờ nghỉ của Nông trại
+      if (g.ok >= 5) { try { localStorage.setItem('farm6_pass', String(Date.now())); } catch (e) {} }
       var total = g.ok + g.bad, acc = total ? Math.round(g.ok * 100 / total) : 0;
       var h = '<div style="font-size:54px">' + (g.money > 0 ? '🎉' : '⏰') + '</div><h2>Hết giờ! – ' + g.topic.n + '</h2>' +
         '<div class="zg-mny" style="color:' + (g.money >= 0 ? '#4ade80' : '#f87171') + '">' + money(g.money, 1) + '</div>' +
@@ -743,6 +745,7 @@
       show('menu'); root.classList.add('on'); document.body.style.overflow = 'hidden';
       // Mở thẳng một chủ đề (khi bấm "Vào học" từ nhiệm vụ Nông trại)
       if (o && o.topic) { for (var i = 0; i < TOPICS.length; i++) if (TOPICS[i].id === o.topic) { openTopicIntro(TOPICS[i]); break; } }
+      else if (o && o.topics) toTopics();   // mở thẳng danh sách chủ đề (từ màn hình nghỉ của Nông trại)
     },
     close: function () { cancelAnimationFrame(raf); stopSpeak(); G = null; root.classList.remove('on'); document.body.style.overflow = ''; }
   };

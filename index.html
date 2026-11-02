@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.02-1';
+const APP_VERSION='2026.11.02-2';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -948,7 +948,7 @@ const IC_TT='<svg class="lk-ic" viewBox="0 0 48 48" aria-hidden="true"><rect wid
 const INCOME_TYPES=[
  {k:'luong',l:'Lương',i:'💼',d:'Lương là nguồn thu nhập chính<br>để bạn duy trì một cuộc sống ổn định'},
  {k:'thuong',l:'Thưởng',i:'🎁',d:'Hãy làm việc hiệu quả để có thêm những khoản thưởng xứng đáng'},
- {k:'dautu',l:'Đầu tư',i:'📈',d:'Đầu tư sáng suốt để có lợi nhuận ổn định'},
+ {k:'dautu',l:'Đầu tư',i:'📈',d:'Toàn bộ lợi nhuận đầu tư đưa thẳng vào ví Đầu tư để tiếp tục sinh lời'},
  {k:'khac',l:'Thu khác',i:'➕',d:'Đa dạng nguồn thu để có thêm thu nhập'}
 ];
 // Quảng cáo ở trang "Đồng hành cùng 6Pay". Thêm dòng mới theo dạng {html:'...',link:'https://...'} (để link:'' thì hiện chữ mờ, không bấm được)
@@ -1475,7 +1475,12 @@ function totalExpense(){return tx.filter(t=>t.type==='out').reduce((s,t)=>s+t.am
 function balance(){return totalIncome()-totalExpense();}
 function pctEnjoy(){return 100-(pct.essential+pct.education+pct.saving+pct.invest+pct.share);}
 function jarPct(k){return k==='enjoy'?pctEnjoy():pct[k];}
-function jarAllocated(k){return totalIncome()*jarPct(k)/100;}
+// (bản 2026.11.02-2) Thu nhập từ nguồn "Đầu tư" đổ hết vào ví Đầu tư, không chia sang các ví khác.
+// Các nguồn thu còn lại (Lương, Thưởng, Thu khác) vẫn chia theo tỷ lệ 6 ví.
+function investIncome(){return tx.filter(t=>t.type==='in'&&t.sub==='dautu').reduce((s,t)=>s+t.amount,0);}
+function splitIncome(){return totalIncome()-investIncome();}
+function jarShare(k,split,inv,p){return split*(p==null?jarPct(k):p)/100+(k==='invest'?inv:0);}
+function jarAllocated(k){return jarShare(k,splitIncome(),investIncome());}
 function jarSpent(k){return tx.filter(t=>t.type==='out'&&t.jar===k).reduce((s,t)=>s+t.amount,0);}
 // Chuyển tiền giữa các ví (type 'tr'): không tính vào tổng thu, tổng chi
 function jarTrIn(k){return tx.filter(t=>t.type==='tr'&&t.to===k).reduce((s,t)=>s+t.amount,0);}
@@ -1808,7 +1813,7 @@ function scrSettings(){
   <button class="pct-row mode-row set-danger" onclick="openReset()"><span>🧹 Đặt lại app (xóa toàn bộ dữ liệu)</span><span class="set-go" style="color:#c0392b">Reset ›</span></button>
   <div class="guide-desc">Nên sao lưu định kỳ và lưu file vào Google Drive hoặc gửi qua Zalo cho chính mình. Khi app bị gỡ hay đổi điện thoại, bạn chỉ cần mở app và chọn Khôi phục.</div>`);
 }
-function ratioAmt(k,p){return totalIncome()*p/100-jarSpent(k)+jarTrIn(k)-jarTrOut(k);}
+function ratioAmt(k,p){return jarShare(k,splitIncome(),investIncome(),p)-jarSpent(k)+jarTrIn(k)-jarTrOut(k);}
 const PCT_PRESETS=[
  {n:'6PAY mặc định',p:{essential:50,education:10,saving:5,invest:15,share:5}},
  {n:'6 chiếc lọ chuẩn',p:{essential:55,education:10,saving:10,invest:10,share:5}},
@@ -1966,7 +1971,7 @@ function scrJarGuide(opts){
   <div class="list-item"><span>Số dư ví</span><span class="${cls}">${fmt(bal)} ₫</span></div>
   <div class="jg-inline">
    <div class="jg-title">💡 Hướng dẫn chi tiêu</div>
-   <div class="jg-pct">Tỷ lệ phân bổ hiện tại: <b>${jarPct(opts.jar)}%</b> thu nhập</div>
+   <div class="jg-pct">Tỷ lệ phân bổ hiện tại: <b>${jarPct(opts.jar)}%</b> thu nhập${opts.jar==='invest'?' + toàn bộ thu từ đầu tư':''}</div>
    <div class="jg-h ok">✅ Nên chi cho</div>
    <ul>${g.ok.map(t=>'<li>'+t+'</li>').join('')}</ul>
    <div class="jg-h no">⚠️ Nên hạn chế</div>
@@ -2094,7 +2099,7 @@ function openJarGuide(k){
  document.getElementById('jarGuideBox').innerHTML=`
   <button class="jg-x" onclick="closeJarGuide()" aria-label="Đóng">✕</button>
   <div class="jg-title">${j.i} Hướng dẫn chi tiêu<br>Ví ${j.l}</div>
-  <div class="jg-pct">Tỷ lệ phân bổ hiện tại: <b>${jarPct(k)}%</b> thu nhập</div>
+  <div class="jg-pct">Tỷ lệ phân bổ hiện tại: <b>${jarPct(k)}%</b> thu nhập${k==='invest'?' + toàn bộ thu từ đầu tư':''}</div>
   <div class="jg-h ok">✅ Nên chi cho</div>
   <ul>${g.ok.map(t=>'<li>'+t+'</li>').join('')}</ul>
   <div class="jg-h no">⚠️ Nên hạn chế</div>
@@ -2967,9 +2972,9 @@ function openReport(){rpMonth=dayKey().slice(0,7);push('report');}
 function mkShift(mk,n){const p=mk.split('-');const d=new Date(+p[0],+p[1]-1+n,1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');}
 function mkLabel(mk,short){const p=mk.split('-');return short?('T'+(+p[1])):('Tháng '+(+p[1])+'/'+p[0]);}
 function monthSum(mk){
- let i=0,o=0;
- tx.forEach(t=>{if(monthKey(t.ts)!==mk)return;if(t.type==='in')i+=t.amount;else if(t.type==='out')o+=t.amount;});
- return {i,o};
+ let i=0,o=0,v=0;
+ tx.forEach(t=>{if(monthKey(t.ts)!==mk)return;if(t.type==='in'){i+=t.amount;if(t.sub==='dautu')v+=t.amount;}else if(t.type==='out')o+=t.amount;});
+ return {i,o,v};
 }
 function cmpTxt(cur,prev,goodUp){
  if(!prev)return cur?'<span class="rp-cmp">Tháng trước chưa có</span>':'';
@@ -2997,9 +3002,9 @@ function scrReport(){
  const ins=rpInsights(mk,cur,prev,byJar,byTag);
  const planLine=x=>{
   if(!cur.i)return '';
-  const plan=cur.i*jarPct(x.j.k)/100; if(plan<=0)return '';
+  const plan=jarShare(x.j.k,cur.i-(cur.v||0),cur.v||0); if(plan<=0)return '';
   const r=Math.round(x.v/plan*100);
-  return `<div class="rp-plan ${r>100?'over':'ok'}"><span>Kế hoạch ${fmt(plan)} ₫ (${jarPct(x.j.k)}% thu nhập)</span><span>đã dùng <b>${r}%</b></span></div>`;
+  return `<div class="rp-plan ${r>100?'over':'ok'}"><span>Kế hoạch ${fmt(plan)} ₫ (${jarPct(x.j.k)}% thu nhập${x.j.k==='invest'&&cur.v?' + thu từ đầu tư':''})</span><span>đã dùng <b>${r}%</b></span></div>`;
  };
  return screenWrap('📊 Báo cáo tháng',`
   <div class="rp-nav">
@@ -4450,7 +4455,7 @@ function rpInsights(mk,cur,prev,byJar,byTag){
  if(!cur.i&&!cur.o)return out;
  const pk=mkShift(mk,-1), past=mk<dayKey().slice(0,7);
  if(cur.i>0&&cur.o>0){
-  const over=byJar.map(x=>({j:x.j,v:x.v,plan:cur.i*jarPct(x.j.k)/100})).filter(x=>x.plan>0&&x.v>x.plan).sort((a,b)=>b.v/b.plan-a.v/a.plan);
+  const over=byJar.map(x=>({j:x.j,v:x.v,plan:jarShare(x.j.k,cur.i-(cur.v||0),cur.v||0)})).filter(x=>x.plan>0&&x.v>x.plan).sort((a,b)=>b.v/b.plan-a.v/a.plan);
   if(over.length){const o=over[0];out.push(`Ví ${o.j.i} <b>${o.j.l}</b> đã chi ${fmt(o.v)} ₫, vượt kế hoạch ${Math.round((o.v/o.plan-1)*100)}% (kế hoạch ${fmt(o.plan)} ₫).`);}
   else out.push('Tất cả các ví đều chi trong kế hoạch. Làm tốt lắm! 👏');
  }else if(cur.o>0&&!cur.i){

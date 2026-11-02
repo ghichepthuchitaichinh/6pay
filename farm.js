@@ -497,6 +497,9 @@
   /* Giờ chơi: mỗi ngày tối đa 3 giờ, chia 3 buổi, mỗi buổi tối đa 60 phút. Hết giờ của buổi thì khoá nông trại đến buổi sau.
      Không giới hạn số tiền lãi trong ngày. */
   var PLAY_MIN = 60;   // phút chơi tối đa mỗi buổi
+  /* (bản 2026.11.02) Chơi liên tục 15 phút thì phải nghỉ 5 phút, hoặc học xong 1 chủ đề tiếng Anh / tiếng Trung để chơi tiếp.
+     Học xong = chơi hết 1 lượt 2 phút trong mục "Từ vựng theo chủ đề" và hứng đúng ít nhất 5 từ. Rời nông trại từ 5 phút trở lên cũng tính là đã nghỉ. */
+  var RUN_MIN = 15, REST_MIN = 5, PASSK = 'farm6_pass';
   var SESS = [{ k: 's', n: 'buổi sáng', e: '🌅', h0: 0, h1: 12 }, { k: 'c', n: 'buổi chiều', e: '🌤️', h0: 12, h1: 18 }, { k: 't', n: 'buổi tối', e: '🌙', h0: 18, h1: 24 }];
   function sessNow() { var h = new Date().getHours(); for (var i = 0; i < SESS.length; i++) if (h >= SESS[i].h0 && h < SESS[i].h1) return SESS[i]; return SESS[0]; }
   var DAYK = 'farm6_day';
@@ -2722,6 +2725,7 @@
       gl('💵', 'Con bắt đầu với <b>1 triệu đồng</b> và một nông trại nhỏ. Đích đến: <b>1 tỷ</b>!'),
       gl('🪜', 'Có <b>5 cấp độ</b> theo tổng tài sản: 10tr, 20tr, 50tr, 100tr, 1 tỷ. Lên cấp mở thêm tính năng (bấm thanh 🌱 Cấp độ để xem).'),
       gl('📅', 'Mỗi ngày chơi tối đa <b>3 giờ</b>, chia 3 buổi: sáng, chiều, tối, mỗi buổi <b>1 giờ</b>. Hết giờ thì nghỉ, cây vẫn lớn!'),
+      gl('☕', 'Chơi liên tục <b>15 phút</b> thì nghỉ <b>5 phút</b>. Muốn chơi tiếp ngay: học xong 1 chủ đề tiếng Anh hoặc tiếng Trung (hứng đúng từ 5 từ).'),
       gl('✋', 'Kéo 1 ngón để đi quanh nông trại, chụm/mở 2 ngón (hoặc lăn chuột) để thu nhỏ/phóng to.'),
       gl('🧭', 'Thanh dưới cùng chuyển giữa các khu: Trồng trọt, Chăn nuôi, Sản xuất, Vui chơi, Chợ, Nhiệm vụ, Phụ bản.'),
       gl('🔔', '<b>Thông báo</b> (góc trên): mưa bão, gió lốc, thú hoang, thiệt hại, và nông sản còn thiếu cho đơn hàng.'),
@@ -3560,15 +3564,53 @@
   var lastPlay = 0;
   function playTick() {
     var now = Date.now(), D = dayTick(), se = sessNow(), lk = $('fmLock');
+    if (lk && lk.classList.contains('on') && lk.getAttribute('data-s') === 'brk') {   // đang nghỉ giải lao
+      lastPlay = now;
+      if (brkCheck()) { var bt = $('fmBrkT'); if (bt) bt.textContent = brkTxt(); }
+      return;
+    }
     if (lk && lk.classList.contains('on')) {   // đang khoá: không đếm giờ; sang buổi mới thì tự mở khoá
       lastPlay = now; if (playLeft() > 0 && lk.getAttribute('data-s') !== se.k + D.k) { lk.classList.remove('on'); toast(se.e + ' Bắt đầu ' + se.n + ': con có ' + PLAY_MIN + ' phút chơi nông trại.'); }
       return;
     }
     if (lastPlay && !document.hidden) D.ps[se.k] = (D.ps[se.k] || 0) + Math.min(2, (now - lastPlay) / 1000);
+    // Đếm thời gian chơi liên tục (rời nông trại từ 5 phút trở lên thì tính lại từ đầu)
+    if (D.lp && now - D.lp >= REST_MIN * 60000) D.run = 0;
+    if (lastPlay && !document.hidden) { D.run = (D.run || 0) + Math.min(2, (now - lastPlay) / 1000); D.lp = now; }
+    if (brkCheck()) { lastPlay = now; showBreak(); return; }
+    if ((D.run || 0) >= RUN_MIN * 60) { D.brk = now; D.run = 0; saveDay(); lastPlay = now; showBreak(); return; }
     lastPlay = now;
     var left = playLeft();
     if (left <= 300 && !D.pw[se.k]) { D.pw[se.k] = 1; saveDay(); toast('⏳ Còn 5 phút chơi nông trại ' + se.n + ' này. Thu hoạch, gieo hạt cho cây lớn trong lúc nghỉ nhé!'); }
     if (left <= 0) timeUp();
+  }
+  function passTs() { try { return +localStorage.getItem(PASSK) || 0; } catch (e) { return 0; } }
+  function brkLeft() { var D = dayTick(); return D.brk ? Math.max(0, D.brk + REST_MIN * 60000 - Date.now()) : 0; }
+  function brkDone(byStudy) {
+    var D = dayTick(); D.brk = 0; D.run = 0; D.lp = Date.now(); saveDay(); lastPlay = 0;
+    var el = $('fmLock'); if (el && el.getAttribute('data-s') === 'brk') { el.classList.remove('on'); el.removeAttribute('data-s'); }
+    sfx('win'); toast(byStudy ? '🎓 Giỏi quá! Con đã học xong một chủ đề, chơi tiếp ' + RUN_MIN + ' phút nữa nhé.' : '🌱 Nghỉ xong rồi! Chơi tiếp ' + RUN_MIN + ' phút nữa nhé.');
+  }
+  // Kiểm tra giờ nghỉ: trả về true nếu nông trại đang phải nghỉ
+  function brkCheck() {
+    var D = dayTick(); if (!D.brk) return false;
+    if (passTs() > D.brk) { brkDone(true); return false; }
+    if (brkLeft() <= 0) { brkDone(false); return false; }
+    return true;
+  }
+  function brkTxt() { var s = Math.ceil(brkLeft() / 1000); return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
+  function showBreak() {
+    var el = $('fmLock'); if (!el) return;
+    if (el.classList.contains('on') && el.getAttribute('data-s') === 'brk') return;
+    saveDay(); save(); sheetQ = []; closeSheet(); pbClose(); rpStop(); $('fmRP').classList.remove('on');
+    el.setAttribute('data-s', 'brk');
+    el.innerHTML = '<div class="fm-lockb"><div class="big">☕</div><h2>Nghỉ giải lao</h2>' +
+      '<p><b>Bạn đã chơi liên tục ' + RUN_MIN + ' phút, hãy nghỉ ngơi một chút hoặc Học xong một chủ đề ngoại ngữ để tiếp tục chơi</b></p>' +
+      '<p style="font-size:15px">⏳ Nông trại mở lại sau <b id="fmBrkT">' + brkTxt() + '</b></p>' +
+      '<div class="fm-row" style="justify-content:center;flex-wrap:wrap"><button class="fm-btn blu" data-a="brkplay" data-g="en" style="flex:1">🇬🇧 Học tiếng Anh</button><button class="fm-btn blu" data-a="brkplay" data-g="zh" style="flex:1">🇨🇳 Học tiếng Trung</button></div>' +
+      '<p style="font-size:12.5px;color:#6b5a3a">Chọn 1 chủ đề, chơi hết lượt 2 phút và hứng đúng ít nhất 5 từ là được chơi tiếp ngay.</p>' +
+      '<button class="fm-btn alt" data-a="close" style="width:100%">Đóng nông trại</button></div>';
+    el.classList.add('on'); sfx('bad');
   }
   function timeUp() {
     var el = $('fmLock'); if (!el || el.classList.contains('on')) return;
@@ -3751,6 +3793,7 @@
     else if (a === 'facGo') facGo(el.getAttribute('data-b'));
     else if (a === 'facGet') facGet(el.getAttribute('data-b'));
     else if (a === 'play') play(el.getAttribute('data-g'));
+    else if (a === 'brkplay') { if (!window.farmPlay) { toast('Hãy mở Nông trại từ app 6PAY để học.'); return; } retTab = tab; save(); saveDay(); window.farmPlay(el.getAttribute('data-g'), { topics: true }); }
     else if (a === 'wtab') { qList = false; S.wseen = S.wseen || {}; if (tab === 'quest') S.wseen[S.mw] = 1; S.mw = el.getAttribute('data-w'); save(); if (tab !== 'quest') setTab('quest'); else renderQuest(); var pq = $('fmP_quest'), wh = pq.querySelector('.fm-whead'); pq.scrollTop = wh ? wh.offsetTop - 8 : 0; }
     else if (a === 'mstart') mStart(el.getAttribute('data-m'));
     else if (a === 'mclaim') mClaim(el.getAttribute('data-m'));
@@ -3791,6 +3834,7 @@
       requestAnimationFrame(function () {
         resize(); hud(); running = true; lastT = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
         if (playLeft() <= 0) { timeUp(); return; }
+        if (brkCheck()) { showBreak(); return; }
         if (!S.seen) { S.seen = 1; S.tipCam = 1; S.news5 = 1; S.news6 = 1; save(); guide(); }
         else { if (got) backSheet(got); if (!S.news6) { S.news5 = 1; S.news6 = 1; save(); newsTiers(); } }
         if (checkDisasterLater) { checkDisasterLater = false; checkDisaster(Date.now()); var hadP = S.raidP; checkRaid(Date.now()); if (hadP && S.raidP === hadP) { if (playLeft() > 0) offerTD(); else resolveRaid('auto'); } }

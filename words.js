@@ -323,8 +323,14 @@
   '.eg-opt{display:block;width:100%;text-align:left;border:0;border-radius:14px;padding:13px 14px;margin-bottom:8px;font-size:16px;font-weight:700;color:#fff;background:rgba(255,255,255,.16);cursor:pointer;font-family:inherit}' +
   '.eg-opt.ok{background:#16a34a}.eg-opt.bad{background:#dc2626}.eg-opt:disabled{cursor:default}';
   /* Nút nổi mở game Phá đảo chủ đề (bản 2026.11.02) */
-  st.textContent += '#egTopics{position:relative}.eg-fab{position:absolute;right:14px;bottom:max(16px,env(safe-area-inset-bottom));z-index:3;border:0;border-radius:999px;padding:13px 20px;font-weight:900;font-size:16px;font-family:inherit;color:#fff;cursor:pointer;' +
-    'background:linear-gradient(135deg,#22d3ee,#0284c7);box-shadow:0 8px 22px rgba(2,132,199,.5),inset 0 -4px 0 rgba(0,0,0,.18);animation:egFab 2.4s ease-in-out infinite}' +
+  st.textContent += '#egTopics{position:relative}' +
+    /* Nút hình hòn đảo: nền trắng, viền cát, sóng xanh bên dưới, cây dừa ở trên */
+    '.eg-fab{position:absolute;right:14px;bottom:max(18px,env(safe-area-inset-bottom));z-index:3;border:0;cursor:pointer;font-family:inherit;padding:22px 28px 16px;min-width:200px;' +
+    'background:radial-gradient(95% 85% at 50% 40%,#ffffff 0 58%,#fbe7b0 64%,#efc96f 80%,#e2b558 100%);color:#0b5f8a;font-weight:900;font-size:17px;' +
+    'border-radius:63% 37% 56% 44% / 58% 50% 50% 42%;box-shadow:0 0 0 5px rgba(125,211,252,.9),0 0 0 10px rgba(56,189,248,.45),0 12px 24px rgba(0,30,70,.55);animation:egFab 2.6s ease-in-out infinite}' +
+    '.eg-fab .tx{position:relative;white-space:nowrap;text-shadow:0 1px 0 #fff}' +
+    '.eg-fab .pm,.eg-fab .pm2{position:absolute;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;line-height:1;pointer-events:none;filter:drop-shadow(0 3px 2px rgba(0,60,40,.35))}' +
+    '.eg-fab .pm{font-size:54px;left:14px;top:-44px;transform:rotate(-8deg)}.eg-fab .pm2{font-size:36px;left:56px;top:-26px;transform:rotate(10deg)}' +
     '.eg-fab:active{transform:scale(.96)}@keyframes egFab{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}';
   document.head.appendChild(st);
 
@@ -338,7 +344,7 @@
     '<button class="eg-big" data-a="day" style="background:linear-gradient(145deg,#f59e0b,#ea580c)"><span class="ic">🌞</span><span class="nm">Một ngày của bạn</span><span class="sub">Phá đảo 15 màn từ lúc thức dậy đến khi đi ngủ, hơn ' + DAYWORDS + ' từ vựng</span></button>' +
     '<button class="eg-big" data-a="phr" style="background:linear-gradient(145deg,#14b8a6,#0f766e)"><span class="ic">💬</span><span class="nm">Những câu giao tiếp cơ bản</span><span class="sub">' + PHRN + ' câu thông dụng theo ' + PHR.length + ' tình huống: nghe, đọc theo và luyện tập</span></button>' +
     '</div></div>' +
-  '<div class="eg-scr" id="egTopics"><div class="eg-top"><button class="eg-btn" data-a="menu" style="padding:8px 14px;font-size:20px">←</button><div class="eg-title fl">Hãy chọn một chủ đề để bắt đầu chơi</div></div><div class="eg-grid" id="egGrid" style="padding-bottom:96px"></div><button class="eg-fab" data-a="island">🏝️ Phá đảo chủ đề</button></div>' +
+  '<div class="eg-scr" id="egTopics"><div class="eg-top"><button class="eg-btn" data-a="menu" style="padding:8px 14px;font-size:20px">←</button><div class="eg-title fl">Hãy chọn một chủ đề để bắt đầu chơi</div></div><div class="eg-grid" id="egGrid" style="padding-bottom:96px"></div><button class="eg-fab" data-a="island"><span class="pm">🌴</span><span class="pm2">🌴</span><span class="tx">Phá đảo chủ đề</span></button></div>' +
   '<div class="eg-scr" id="egMap"><div class="eg-top"><button class="eg-btn" data-a="menu" style="padding:8px 14px;font-size:20px">←</button><div class="eg-title fl">🌞 Một ngày của bạn</div></div>' +
     '<div class="eg-scroll"><div class="eg-info"><span id="egInfo"></span><span><button class="eg-btn" id="egL1" data-a="lv1" style="padding:6px 12px;font-size:14px">Cấp 1 (có hình)</button> <button class="eg-btn" id="egL2" data-a="lv2" style="padding:6px 12px;font-size:14px">Cấp 2 (chỉ chữ)</button></span></div><div id="egMapList"></div></div></div>' +
   '<div class="eg-scr" id="egIntro"><div class="eg-top"><button class="eg-btn" data-a="introback" style="padding:8px 14px;font-size:20px">←</button><div class="eg-title fl" id="egIT"></div></div>' +

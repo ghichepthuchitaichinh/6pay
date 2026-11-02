@@ -17,26 +17,26 @@
      Cây trồng: id, tên, emoji, cấp mở, giá hạt giống (đ), thời gian lớn (giây), giá bán (đ), kinh nghiệm, màu lá.
      Lãi trồng trọt được giữ ở mức vừa phải: muốn mở đất, mua vật nuôi, xây công trình thì nên vào mục 🎮 Phụ bản (chơi game học). */
   var CROPS = [
-    { id: 'lua', n: 'Lúa', e: '🌾', lv: 1, cost: 5000, t: 45, sell: 6500, xp: 1, leaf: '#8bc34a' },
-    { id: 'carot', n: 'Cà rốt', e: '🥕', lv: 1, cost: 8000, t: 90, sell: 10500, xp: 2, leaf: '#4caf50' },
-    { id: 'ngo', n: 'Ngô', e: '🌽', lv: 2, cost: 12000, t: 150, sell: 16000, xp: 3, leaf: '#66bb6a' },
-    { id: 'cachua', n: 'Cà chua', e: '🍅', lv: 3, cost: 18000, t: 240, sell: 24000, xp: 4, leaf: '#43a047' },
-    { id: 'bapcai', n: 'Bắp cải', e: '🥬', lv: 4, cost: 22000, t: 300, sell: 29000, xp: 5, leaf: '#7cb342' },
-    { id: 'ot', n: 'Ớt', e: '🌶️', lv: 5, cost: 26000, t: 420, sell: 35000, xp: 6, leaf: '#2e7d32' },
-    { id: 'dau', n: 'Dâu tây', e: '🍓', lv: 6, cost: 32000, t: 540, sell: 43000, xp: 7, leaf: '#388e3c' },
-    { id: 'huongduong', n: 'Hướng dương', e: '🌻', lv: 7, cost: 40000, t: 720, sell: 54000, xp: 9, leaf: '#558b2f' },
-    { id: 'dua', n: 'Dưa hấu', e: '🍉', lv: 8, cost: 55000, t: 1080, sell: 75000, xp: 12, leaf: '#33691e' },
-    { id: 'khoai', n: 'Khoai lang', e: '🍠', lv: 9, cost: 60000, t: 1200, sell: 82000, xp: 13, leaf: '#6d9b3a' },
-    { id: 'bi', n: 'Bí ngô', e: '🎃', lv: 10, cost: 80000, t: 1800, sell: 110000, xp: 18, leaf: '#689f38' },
-    { id: 'nho', n: 'Nho', e: '🍇', lv: 12, cost: 100000, t: 2400, sell: 140000, xp: 24, leaf: '#4e7d2a' },
+    { id: 'lua', n: 'Lúa', e: '🌾', lv: 1, cost: 4000, t: 45, sell: 6000, xp: 1, leaf: '#8bc34a' },
+    { id: 'carot', n: 'Cà rốt', e: '🥕', lv: 1, cost: 7000, t: 90, sell: 10000, xp: 2, leaf: '#4caf50' },
+    { id: 'ngo', n: 'Ngô', e: '🌽', lv: 2, cost: 10500, t: 150, sell: 15000, xp: 3, leaf: '#66bb6a' },
+    { id: 'cachua', n: 'Cà chua', e: '🍅', lv: 3, cost: 15500, t: 240, sell: 22000, xp: 4, leaf: '#43a047' },
+    { id: 'bapcai', n: 'Bắp cải', e: '🥬', lv: 4, cost: 20000, t: 300, sell: 28000, xp: 5, leaf: '#7cb342' },
+    { id: 'ot', n: 'Ớt', e: '🌶️', lv: 5, cost: 25000, t: 420, sell: 35000, xp: 6, leaf: '#2e7d32' },
+    { id: 'dau', n: 'Dâu tây', e: '🍓', lv: 6, cost: 31500, t: 540, sell: 44000, xp: 7, leaf: '#388e3c' },
+    { id: 'huongduong', n: 'Hướng dương', e: '🌻', lv: 7, cost: 39500, t: 720, sell: 55000, xp: 9, leaf: '#558b2f' },
+    { id: 'dua', n: 'Dưa hấu', e: '🍉', lv: 8, cost: 52000, t: 1080, sell: 72000, xp: 12, leaf: '#33691e' },
+    { id: 'khoai', n: 'Khoai lang', e: '🍠', lv: 9, cost: 58000, t: 1200, sell: 80000, xp: 13, leaf: '#6d9b3a' },
+    { id: 'bi', n: 'Bí ngô', e: '🎃', lv: 10, cost: 76000, t: 1800, sell: 105000, xp: 18, leaf: '#689f38' },
+    { id: 'nho', n: 'Nho', e: '🍇', lv: 12, cost: 97000, t: 2400, sell: 135000, xp: 24, leaf: '#4e7d2a' },
     /* Cây ăn quả LÂU NĂM (per): trồng 1 lần, lần đầu lớn chậm (t), sau đó cứ re giây lại ra quả, không phải gieo lại */
-    { id: 'chuoi', n: 'Chuối', e: '🍌', lv: 3, cost: 60000, t: 1800, re: 900, sell: 30000, xp: 4, leaf: '#65a30d', per: 1 },
-    { id: 'chanh', n: 'Chanh', e: '🍋', lv: 5, cost: 90000, t: 2700, re: 1200, sell: 40000, xp: 5, leaf: '#4d7c0f', per: 1 },
-    { id: 'cam', n: 'Cam', e: '🍊', lv: 7, cost: 130000, t: 3600, re: 1500, sell: 52000, xp: 6, leaf: '#3f7d20', per: 1 },
-    { id: 'tao', n: 'Táo', e: '🍎', lv: 9, cost: 180000, t: 5400, re: 2100, sell: 68000, xp: 8, leaf: '#2f6b1f', per: 1 },
-    { id: 'daoq', n: 'Đào', e: '🍑', lv: 11, cost: 240000, t: 7200, re: 2700, sell: 86000, xp: 10, leaf: '#3a7a2a', per: 1 },
-    { id: 'xoai', n: 'Xoài', e: '🥭', lv: 13, cost: 320000, t: 10800, re: 3600, sell: 110000, xp: 13, leaf: '#2d6a1f', per: 1 },
-    { id: 'dua2', n: 'Dừa', e: '🥥', lv: 15, cost: 420000, t: 14400, re: 5400, sell: 150000, xp: 17, leaf: '#4a7c2a', per: 1 }
+    { id: 'chuoi', n: 'Chuối', e: '🍌', lv: 3, cost: 90000, t: 1800, re: 900, sell: 30000, xp: 4, leaf: '#65a30d', per: 1 },
+    { id: 'chanh', n: 'Chanh', e: '🍋', lv: 5, cost: 120000, t: 2700, re: 1200, sell: 40000, xp: 5, leaf: '#4d7c0f', per: 1 },
+    { id: 'cam', n: 'Cam', e: '🍊', lv: 7, cost: 160000, t: 3600, re: 1500, sell: 52000, xp: 6, leaf: '#3f7d20', per: 1 },
+    { id: 'tao', n: 'Táo', e: '🍎', lv: 9, cost: 200000, t: 5400, re: 2100, sell: 68000, xp: 8, leaf: '#2f6b1f', per: 1 },
+    { id: 'daoq', n: 'Đào', e: '🍑', lv: 11, cost: 260000, t: 7200, re: 2700, sell: 86000, xp: 10, leaf: '#3a7a2a', per: 1 },
+    { id: 'xoai', n: 'Xoài', e: '🥭', lv: 13, cost: 330000, t: 10800, re: 3600, sell: 110000, xp: 13, leaf: '#2d6a1f', per: 1 },
+    { id: 'dua2', n: 'Dừa', e: '🥥', lv: 15, cost: 450000, t: 14400, re: 5400, sell: 150000, xp: 17, leaf: '#4a7c2a', per: 1 }
   ];
   /* Phân bón: giá càng cao, rút ngắn thời gian càng nhiều (cut = phần thời gian còn lại bị cắt bỏ) */
   var FERTS = [
@@ -57,29 +57,29 @@
     { id: 'heo', n: 'Heo', e: '🐖', pen: 'Chuồng heo', lv: 13, q: 'q29', cost: 700000, feed: 'khoai', p: 'nam', t: 1200, cap: 5, grass: '#d7ccc8' }
   ];
   var PRODUCTS = {
-    trung: { id: 'trung', n: 'Trứng gà', e: '🥚', sell: 12000, xp: 2 },
+    trung: { id: 'trung', n: 'Trứng gà', e: '🥚', sell: 13000, xp: 2 },
     sua: { id: 'sua', n: 'Sữa bò', e: '🥛', sell: 30000, xp: 4 },
-    len: { id: 'len', n: 'Len cừu', e: '🧶', sell: 28000, xp: 5 },
+    len: { id: 'len', n: 'Len cừu', e: '🧶', sell: 26000, xp: 5 },
     catuoi: { id: 'catuoi', n: 'Cá tươi', e: '🐟', sell: 15000, xp: 3 },
-    mat: { id: 'mat', n: 'Mật ong', e: '🍯', sell: 80000, xp: 9 },
-    banhmi: { id: 'banhmi', n: 'Bánh mì', e: '🥖', sell: 26000, xp: 4 },
-    phomai: { id: 'phomai', n: 'Phô mai', e: '🧀', sell: 78000, xp: 8 },
-    aolen: { id: 'aolen', n: 'Áo len', e: '🧥', sell: 72000, xp: 9 },
-    mutdau: { id: 'mutdau', n: 'Mứt dâu', e: '🫙', sell: 165000, xp: 14 },
-    longvit: { id: 'longvit', n: 'Lông vịt', e: '🪶', sell: 22000, xp: 4 },
-    suade: { id: 'suade', n: 'Sữa dê', e: '🍼', sell: 45000, xp: 6 },
-    nam: { id: 'nam', n: 'Nấm quý', e: '🍄', sell: 140000, xp: 14 },
-    goi: { id: 'goi', n: 'Gối lông vịt', e: '🛏️', sell: 120000, xp: 12 },
+    mat: { id: 'mat', n: 'Mật ong', e: '🍯', sell: 100000, xp: 9 },
+    banhmi: { id: 'banhmi', n: 'Bánh mì', e: '🥖', sell: 21000, xp: 4 },
+    phomai: { id: 'phomai', n: 'Phô mai', e: '🧀', sell: 65000, xp: 8 },
+    aolen: { id: 'aolen', n: 'Áo len', e: '🧥', sell: 58000, xp: 9 },
+    mutdau: { id: 'mutdau', n: 'Mứt dâu', e: '🫙', sell: 130000, xp: 14 },
+    longvit: { id: 'longvit', n: 'Lông vịt', e: '🪶', sell: 32000, xp: 4 },
+    suade: { id: 'suade', n: 'Sữa dê', e: '🍼', sell: 55000, xp: 6 },
+    nam: { id: 'nam', n: 'Nấm quý', e: '🍄', sell: 150000, xp: 14 },
+    goi: { id: 'goi', n: 'Gối lông vịt', e: '🛏️', sell: 128000, xp: 12 },
     /* Hàng chế biến mới ở 🏭 Khu sản xuất */
-    nuocep: { id: 'nuocep', n: 'Nước ép rau củ', e: '🧃', sell: 55000, xp: 5 },
-    tuongot: { id: 'tuongot', n: 'Tương ớt', e: '🍶', sell: 60000, xp: 6 },
-    kimchi: { id: 'kimchi', n: 'Kim chi', e: '🥗', sell: 99000, xp: 9 },
-    banhngot: { id: 'banhngot', n: 'Bánh ngọt', e: '🍰', sell: 62000, xp: 6 },
-    dauan: { id: 'dauan', n: 'Dầu hướng dương', e: '🫗', sell: 115000, xp: 10 },
-    snack: { id: 'snack', n: 'Snack khoai bí', e: '🍟', sell: 125000, xp: 11 },
-    kem: { id: 'kem', n: 'Kem dưa hấu mật ong', e: '🍨', sell: 128000, xp: 12 },
-    nuocqua: { id: 'nuocqua', n: 'Nước trái cây', e: '🍹', sell: 130000, xp: 12 },
-    keodua: { id: 'keodua', n: 'Kẹo dừa mật ong', e: '🍬', sell: 195000, xp: 16 }
+    nuocep: { id: 'nuocep', n: 'Nước ép rau củ', e: '🧃', sell: 42000, xp: 5 },
+    tuongot: { id: 'tuongot', n: 'Tương ớt', e: '🍶', sell: 48000, xp: 6 },
+    kimchi: { id: 'kimchi', n: 'Kim chi', e: '🥗', sell: 79000, xp: 9 },
+    banhngot: { id: 'banhngot', n: 'Bánh ngọt', e: '🍰', sell: 52000, xp: 6 },
+    dauan: { id: 'dauan', n: 'Dầu hướng dương', e: '🫗', sell: 96000, xp: 10 },
+    snack: { id: 'snack', n: 'Snack khoai bí', e: '🍟', sell: 97000, xp: 11 },
+    kem: { id: 'kem', n: 'Kem dưa hấu mật ong', e: '🍨', sell: 116000, xp: 12 },
+    nuocqua: { id: 'nuocqua', n: 'Nước trái cây', e: '🍹', sell: 108000, xp: 12 },
+    keodua: { id: 'keodua', n: 'Kẹo dừa mật ong', e: '🍬', sell: 169000, xp: 16 }
   };
   /* Công trình: q = nhiệm vụ mở khoá, req = phải xây công trình khác trước, r = công thức chế biến (xưởng) */
   var BUILDS = [
@@ -89,7 +89,7 @@
     { id: 'nuocep', n: 'Xưởng nước ép', e: '🧃', lv: 5, cost: 550000, r: { i: [['cachua', 3], ['carot', 3]], o: 'nuocep', n: 3, t: 300 } },
     { id: 'bosua', n: 'Xưởng bơ sữa', e: '🏭', lv: 6, q: 'q10', cost: 700000, r: { i: [['sua', 5]], o: 'phomai', n: 3, t: 420 } },
     { id: 'tuongot', n: 'Xưởng tương ớt', e: '🌶️', lv: 7, cost: 850000, r: { i: [['ot', 4], ['cachua', 2]], o: 'tuongot', n: 5, t: 480 } },
-    { id: 'xetai', n: 'Xe tải giao hàng', e: '🛻', lv: 7, q: 'q11', cost: 900000, d: 'Có thêm 1 đơn hàng cùng lúc và tiền thưởng đơn hàng tăng 20%.' },
+    { id: 'xetai', n: 'Xe tải giao hàng', e: '🛻', lv: 7, q: 'q11', cost: 900000, d: 'Mỗi mục đơn hàng có thêm 1 đơn và tiền thưởng thêm tăng từ 10% lên 20%.' },
     { id: 'maydet', n: 'Máy dệt', e: '🧵', lv: 8, q: 'q14', cost: 1200000, r: { i: [['len', 5]], o: 'aolen', n: 3, t: 600 } },
     { id: 'kimchi', n: 'Xưởng kim chi', e: '🥬', lv: 8, cost: 1100000, r: { i: [['bapcai', 4], ['ot', 2]], o: 'kimchi', n: 3, t: 600 } },
     { id: 'banhngot', n: 'Xưởng bánh ngọt', e: '🎂', lv: 9, cost: 1400000, r: { i: [['trung', 3], ['lua', 3], ['sua', 2]], o: 'banhngot', n: 3, t: 540 } },
@@ -1428,25 +1428,41 @@
   function left(pl) { return (1 - pl.p) * ct(pl) / gmul(pl); }
 
   /* ================= ĐƠN HÀNG ================= */
-  function orderSlots() { return built('xetai') ? 4 : 3; }
-  function orderPool() {
-    var pool = CROPS.filter(cropOK).map(function (c) { return c.id; });
-    ANIMALS.forEach(function (a) { if (S.an[a.id].length) pool.push(a.p); });
-    BUILDS.forEach(function (b) { if (b.r && built(b.id)) pool.push(b.r.o); });
-    return pool;
+  /* (bản 2026.11.02-11) Đơn hàng chia 3 mục: 🌾 Trồng trọt · 🐄 Chăn nuôi · 🏭 Sản xuất, mỗi mục 2 đơn (có xe tải: 3 đơn).
+     Tiền nhận = đúng giá trị hàng theo giá chợ + thưởng thêm 10% (có xe tải: 20%). Bấm 🔄 Đổi đơn để tìm đơn giao được ngay. */
+  var OCATS = [{ k: 'crop', n: 'Trồng trọt', e: '🌾' }, { k: 'anim', n: 'Chăn nuôi', e: '🐄' }, { k: 'prod', n: 'Sản xuất', e: '🏭' }];
+  function orderSlots() { return built('xetai') ? 3 : 2; }
+  function orderBonus() { return built('xetai') ? 0.2 : 0.1; }
+  function orderPool(cat) {
+    if (cat === 'crop') return CROPS.filter(cropOK).map(function (c) { return c.id; });
+    if (cat === 'anim') return ANIMALS.filter(function (a) { return S.an[a.id].length; }).map(function (a) { return a.p; });
+    var pool = []; BUILDS.forEach(function (b) { if (b.r && built(b.id) && pool.indexOf(b.r.o) < 0) pool.push(b.r.o); }); return pool;
   }
   var NAMES = ['Cô Lan bán xôi', 'Chú Tư quán phở', 'Bếp ăn trường học', 'Siêu thị mini', 'Nhà hàng Sen Vàng', 'Bà Ba bán chè', 'Tiệm bánh Hạnh Phúc', 'Quán cơm Bình Dân', 'Chợ đầu mối', 'Hợp tác xã', 'Khách sạn Biển Xanh', 'Cửa hàng tiện lợi'];
-  function genOrder() {
-    var pool = shuffle(orderPool()), k = Math.min(pool.length, ri(1, S.lv >= 3 ? 3 : 2)), it = [], val = 0, xp = 2;
+  /* stock = true: ưu tiên những món đang có trong kho để đơn mới giao được ngay */
+  function genOrder(cat, stock) {
+    var pool = shuffle(orderPool(cat)); if (!pool.length) return null;
+    if (stock) pool.sort(function (a, b) { return (S.inv[b] || 0) - (S.inv[a] || 0); });
+    var maxK = cat === 'crop' ? (S.lv >= 3 ? 3 : 2) : 2, k = Math.min(pool.length, ri(1, maxK)), it = [], val = 0, xp = 1;
     for (var i = 0; i < k; i++) {
-      var id = pool[i], P = !!PRODUCTS[id], q = P ? ri(1, 2 + Math.floor(S.lv / 5)) : ri(2, Math.min(8, 3 + Math.floor(S.lv / 2)));
-      if ((CM[id] && CM[id].t >= 600) || (P && PRODUCTS[id].sell >= 70000)) q = ri(1, 2);
-      it.push([id, q]); val += item(id).sell * q; xp += item(id).xp * q;
+      var id = pool[i], I = item(id), q;
+      if (cat === 'crop') q = I.t >= 600 || I.per ? ri(1, 3) : ri(2, Math.min(8, 3 + Math.floor(S.lv / 2)));
+      else if (cat === 'anim') q = ri(1, Math.min(4, 2 + Math.floor(S.lv / 5)));
+      else q = I.sell >= 100000 ? ri(1, 2) : ri(1, Math.min(3, 2 + Math.floor(S.lv / 8)));
+      if (stock && (S.inv[id] || 0) > 0) q = Math.max(1, Math.min(q, S.inv[id]));
+      it.push([id, q]); val += sp(id) * q; xp += I.xp * q;
     }
-    return { it: it, m: Math.round(val * 1.2 / 1000) * 1000, xp: xp, who: NAMES[ri(0, NAMES.length - 1)], tr: ['🚚', '🛻', '🚛', '🛵'][ri(0, 3)] };
+    return { k: cat, it: it, v: val, m: Math.round(val / 1000) * 1000, xp: xp, who: NAMES[ri(0, NAMES.length - 1)], tr: ['🚚', '🛻', '🚛', '🛵'][ri(0, 3)] };
   }
-  function orderPay(o) { return built('xetai') ? Math.round(o.m * 1.2 / 1000) * 1000 : o.m; }
-  function fillOrders() { if (!feat('order')) return; while (S.orders.length < orderSlots()) S.orders.push(genOrder()); }
+  function orderPay(o) { return Math.round(o.v * (1 + orderBonus()) / 1000) * 1000; }
+  function fillOrders() {
+    if (!feat('order')) return;
+    if (S.orders.some(function (o) { return !o.k || o.v == null; })) S.orders = [];   // đơn kiểu cũ (giá cũ): làm mới
+    OCATS.forEach(function (c) {
+      var n = S.orders.filter(function (o) { return o.k === c.k; }).length;
+      while (n < orderSlots()) { var o = genOrder(c.k); if (!o) break; S.orders.push(o); n++; }
+    });
+  }
   function canDeliver(o) { return o.it.every(function (x) { return (S.inv[x[0]] || 0) >= x[1]; }); }
 
   /* ================= CSS ================= */
@@ -1516,6 +1532,7 @@
   '.fm-ul{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}.fm-ul span{background:#fff;border:2px solid #f3d98b;border-radius:14px;padding:6px 10px;font-weight:800}.fm-ul span i{font-style:normal;font-family:' + EF + ';font-size:22px;vertical-align:-3px;margin-right:4px}' +
   '.fm-guide{text-align:left;margin:8px 0;padding:0;list-style:none}.fm-guide li{display:flex;gap:10px;align-items:flex-start;margin:8px 0;line-height:1.5;color:#4a3a20}.fm-guide li i{font-style:normal;font-family:' + EF + ';font-size:24px}' +
   '.fm-toast{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:rgba(36,54,26,.92);color:#fff;padding:9px 16px;border-radius:18px;font-size:14px;font-weight:700;z-index:6;pointer-events:none;max-width:92%;text-align:center;transition:opacity .25s;opacity:0}.fm-toast.on{opacity:1}' +
+  '.fm-ocat{display:flex;gap:6px;margin:0 0 10px}.fm-ocat button{flex:1 1 0;min-width:0;position:relative;border:2px solid #e2cf9f;background:#fffaf0;border-radius:12px;padding:8px 4px;font-size:13px;font-weight:800;color:#5b3a12!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fm-ocat button.on{background:#16a34a;border-color:#16a34a;color:#fff!important}.fm-ocat .dot{position:absolute;top:-2px;right:2px;min-width:17px;height:17px;border-radius:9px;background:#ef4444;color:#fff;font-size:10.5px;line-height:17px;padding:0 4px}' +
   '.fm-seg{position:sticky;top:-12px;z-index:3;display:flex;background:#5b3a12;border-radius:16px;padding:5px;gap:5px;margin:-4px 0 12px;box-shadow:0 0 0 6px #fdf6e3,0 6px 14px rgba(60,30,0,.35)}.fm-seg button{flex:1;border:0;border-radius:12px;padding:11px 4px;font-weight:900;font-size:15px;background:none;color:#fde9b8!important;position:relative;white-space:nowrap}.fm-seg button.on{background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff!important;box-shadow:0 3px 8px rgba(0,0,0,.3)}' +
   '.fm-seg .dot{display:inline-block;min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:#fff;font-size:11px;line-height:18px;padding:0 5px;margin-left:4px}' +
   '.fm-ic{flex:none;width:52px;height:52px;border-radius:14px;background:#f6f0de;display:flex;align-items:center;justify-content:center;font-size:30px;font-family:' + EF + '}' +
@@ -2807,7 +2824,7 @@
       gl('🕹️', '<b>Nhà trò chơi Phụ bản</b> ở đây dẫn tới các game học kiếm tiền.')];
     else if (k === 'market') L0 = [
       gl('📦', '<b>Kho</b>: bán nông sản và hàng chế biến lấy tiền.'),
-      gl('🚚', '<b>Đơn hàng</b> (từ Cấp độ 2): khách trả cao hơn bán lẻ khoảng 20% (có xe tải: thêm 20%). Gom đủ hàng rồi bấm Giao hàng, không làm được thì Đổi đơn.'),
+      gl('🚚', '<b>Đơn hàng</b> (từ Cấp độ 2) chia 3 mục: 🌾 Trồng trọt, 🐄 Chăn nuôi, 🏭 Sản xuất. Khách trả đúng giá chợ + thưởng thêm 10% (có xe tải: 20%). Chưa đủ hàng thì bấm 🔄 Đổi đơn để tìm đơn giao được ngay.'),
       gl('🛒', '<b>Mua hàng</b> (từ Cấp độ 4): mua món còn thiếu, đắt hơn giá bán ' + Math.round((BUY_MUL - 1) * 100) + '%, mỗi ngày ' + BUY_TYPES + ' loại. Tự trồng, tự nuôi vẫn lời hơn.'),
       gl('🏰', 'Biệt thự giúp bán giá cao hơn 10%.')];
     else if (k === 'quest') L0 = [
@@ -2876,11 +2893,15 @@
     var h = '<div class="fm-seg"><button class="' + (mSub === 'ord' ? 'on' : '') + '" data-a="msub" data-t="ord">' + (feat('order') ? '' : '🔒 ') + '🚚 Đơn hàng' + (nOrd ? '<span class="dot">' + nOrd + '</span>' : '') + '</button><button class="' + (mSub === 'inv' ? 'on' : '') + '" data-a="msub" data-t="inv">📦 Kho</button><button class="' + (mSub === 'buy' ? 'on' : '') + '" data-a="msub" data-t="buy">' + (feat('buy') ? '' : '🔒 ') + '🛒 Mua hàng</button></div>';
     if (mSub === 'buy') { $('fmP_market').innerHTML = h + (feat('buy') ? buyHtml() : lockCard('buy', 'Mua nông sản còn thiếu ở chợ (đắt hơn giá bán 50%).')); return; }
     if (mSub === 'ord') {
+      h += '<div class="fm-ocat">' + OCATS.map(function (c) { var nd = S.orders.filter(function (o) { return o.k === c.k && canDeliver(o); }).length; return '<button class="' + (oCat === c.k ? 'on' : '') + '" data-a="ocat" data-t="' + c.k + '">' + c.e + ' ' + c.n + (nd ? '<span class="dot">' + nd + '</span>' : '') + '</button>'; }).join('') + '</div>';
+      if (!orderPool(oCat).length) h += '<div class="fm-card" style="text-align:center;color:#7a6440">' + (oCat === 'anim' ? '🐄 Chưa có vật nuôi nào. Nuôi gà, bò… ở Khu chăn nuôi để nhận đơn hàng chăn nuôi.' : '🏭 Chưa có xưởng chế biến nào. Xây xưởng ở Khu sản xuất để nhận đơn hàng sản xuất.') + '</div>';
+      else h += '<p class="fm-sub" style="margin:0 0 8px">Khách trả đúng giá chợ + thưởng thêm <b>' + Math.round(orderBonus() * 100) + '%</b>. Chưa đủ hàng thì bấm <b>🔄 Đổi đơn</b> để tìm đơn giao được ngay.</p>';
       S.orders.forEach(function (o, k) {
+        if (o.k !== oCat) return;
         var ok = canDeliver(o);
         h += '<div class="fm-card fm-ord"><span class="tr">' + o.tr + '</span><div class="bd"><b class="w">' + esc(o.who) + '</b><div class="fm-need">' +
           o.it.map(function (x) { var hv = S.inv[x[0]] || 0, I = item(x[0]); return '<span class="' + (hv >= x[1] ? 'ok' : 'no') + '"><i>' + I.e + '</i>' + Math.min(hv, x[1]) + '/' + x[1] + '</span>'; }).join('') +
-          '</div><div class="fm-rw">Thưởng: ' + money(orderPay(o)) + ' · +' + o.xp + ' KN</div><div class="fm-row"><button class="fm-btn" data-a="deliver" data-i="' + k + '"' + (ok ? '' : ' disabled') + '>✅ Giao hàng</button><button class="fm-btn alt" data-a="skip" data-i="' + k + '">🔄 Đổi đơn</button></div></div></div>';
+          '</div><div class="fm-rw">Giá trị hàng ' + money(o.v) + ' + thưởng ' + money(orderPay(o) - o.v) + ' = <b>' + money(orderPay(o)) + '</b> · +' + o.xp + ' KN</div><div class="fm-row"><button class="fm-btn" data-a="deliver" data-i="' + k + '"' + (ok ? '' : ' disabled') + '>✅ Giao hàng</button><button class="fm-btn alt" data-a="skip" data-i="' + k + '">🔄 Đổi đơn</button></div></div></div>';
       });
     } else {
       var ids = CROPS.map(function (c) { return c.id; }).concat(Object.keys(PRODUCTS)).filter(function (id) { return S.inv[id] > 0; });
@@ -2896,7 +2917,7 @@
     $('fmP_market').innerHTML = h;
   }
   /* Mua hàng ở chợ: đắt hơn giá bán 50%, mỗi ngày chỉ được mua 3 loại sản phẩm, trừ ví Thiết yếu */
-  var BUY_TYPES = 3, BUY_MUL = 1.5;
+  var BUY_TYPES = 3, BUY_MUL = 1.5, oCat = 'crop';
   function bp(id) { return Math.round(item(id).sell * BUY_MUL / 100) * 100; }
   function buyDay() { if (!S.bday || S.bday.d !== dayKey()) S.bday = { d: dayKey(), ids: [] }; return S.bday; }
   function buyable() {
@@ -3824,7 +3845,8 @@
     else if (a === 'sheetClose') closeSheet();
     else if (a === 'confirm') { closeSheet(); if (confirmFn) confirmFn(); confirmFn = null; }
     else if (a === 'deliver') deliver(+el.getAttribute('data-i'));
-    else if (a === 'skip') { S.orders.splice(+el.getAttribute('data-i'), 1); fillOrders(); save(); renderMarket(); badges(); }
+    else if (a === 'skip') { var si = +el.getAttribute('data-i'), so = S.orders[si]; if (so) { var no = genOrder(so.k, true); if (no) S.orders[si] = no; else S.orders.splice(si, 1); } fillOrders(); save(); renderMarket(); badges(); if (S.orders[si] && canDeliver(S.orders[si])) toast('✅ Đơn mới này đủ hàng để giao ngay!'); }
+    else if (a === 'ocat') { oCat = el.getAttribute('data-t'); renderMarket(); }
     else if (a === 'sell') sell(el.getAttribute('data-c'), +el.getAttribute('data-q'));
     else if (a === 'buyFert') { var q = +el.getAttribute('data-q'), FF = FZM[el.getAttribute('data-f') || 'f1'], c = q * FF.p; if (!has('essential', c)) { noMoney(c, 'essential'); return; } S.fz[FF.id] += q; spend('essential', c, 'fert_' + FF.id, 'Mua ' + FF.n.toLowerCase(), FF.e, q); sfx('ok'); toast(FF.e + ' Mua ' + q + ' túi ' + FF.n.toLowerCase() + ': −' + money(c) + ' từ ví 🏠 Thiết yếu'); hud(); save(); if ($('fmSheet').classList.contains('on')) fertSheet(); else renderMarket(); }
     else if (a === 'pickF') { S.selF = el.getAttribute('data-f'); tool = 'fert'; toolsUI(); closeSheet(); save(); toast(FZM[S.selF].e + ' Chạm vào cây đang lớn để bón ' + FZM[S.selF].n.toLowerCase()); }

@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.02-14';
+const APP_VERSION='2026.11.02-15';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -3591,26 +3591,69 @@ const CV_CATS={
  speed:{l:'🚀 Tốc độ',def:['kmh','ms'],u:[['ms','Mét/giây (m/s)',1],['kmh','Kilômét/giờ (km/h)',1/3.6],['mph','Dặm/giờ (mph)',0.44704],['kn','Hải lý/giờ (knot)',1852/3600]]},
  time:{l:'⏳ Thời gian',def:['h','min'],u:[['s','Giây',1],['min','Phút',60],['h','Giờ',3600],['d','Ngày',86400],['w','Tuần',604800],['mo','Tháng (30,44 ngày)',2629800],['y','Năm (365,25 ngày)',31557600]]},
  data:{l:'💾 Dung lượng',def:['mb','gb'],u:[['b','Byte (B)',1],['kb','Kilobyte (KB)',1024],['mb','Megabyte (MB)',1048576],['gb','Gigabyte (GB)',1073741824],['tb','Terabyte (TB)',1099511627776]]},
- // (bản 2026.11.02-14) Đơn vị đo phóng xạ: chia theo đại lượng vì các đại lượng khác nhau không đổi trực tiếp sang nhau được
- radact:{l:'☢️ Phóng xạ: Hoạt độ (Bq, Ci)',def:['mci','mbq'],note:'Hoạt độ = số hạt nhân phân rã mỗi giây. 1 Becquerel (Bq) = 1 phân rã/giây; 1 Curie (Ci) = 3,7×10¹⁰ Bq.',
-  u:[['bq','Becquerel (Bq)',1],['kbq','Kilobecquerel (kBq)',1e3],['mbq','Megabecquerel (MBq)',1e6],['gbq','Gigabecquerel (GBq)',1e9],['tbq','Terabecquerel (TBq)',1e12],
-   ['pci','Picocurie (pCi)',0.037],['nci','Nanocurie (nCi)',37],['uci','Microcurie (µCi)',3.7e4],['mci','Millicurie (mCi)',3.7e7],['ci','Curie (Ci)',3.7e10],['dpm','Phân rã/phút (dpm)',1/60]]},
- radabs:{l:'☢️ Phóng xạ: Liều hấp thụ (Gy)',def:['gy','rad'],note:'Liều hấp thụ = năng lượng bức xạ mà 1 kg vật chất nhận được. 1 Gray (Gy) = 1 J/kg = 100 rad.',
-  u:[['ugy','Microgray (µGy)',1e-6],['mgy','Milligray (mGy)',1e-3],['cgy','Centigray (cGy)',1e-2],['gy','Gray (Gy)',1],['jkg','Jun/kilôgam (J/kg)',1],['mrad','Millirad (mrad)',1e-5],['rad','Rad',1e-2],['krad','Kilorad (krad)',10]]},
- radeq:{l:'☢️ Phóng xạ: Liều hiệu dụng (Sv)',def:['msv','mrem'],note:'Liều tương đương/hiệu dụng tính đến mức gây hại cho cơ thể. 1 Sievert (Sv) = 100 rem. Tham khảo: giới hạn cho người dân khoảng 1 mSv/năm; chụp X-quang ngực khoảng 0,02–0,1 mSv.',
-  u:[['nsv','Nanosievert (nSv)',1e-9],['usv','Microsievert (µSv)',1e-6],['msv','Millisievert (mSv)',1e-3],['sv','Sievert (Sv)',1],['urem','Microrem (µrem)',1e-8],['mrem','Millirem (mrem)',1e-5],['rem','Rem',1e-2]]},
- raddr:{l:'☢️ Phóng xạ: Suất liều (Sv/h)',def:['usvh','msvy'],note:'Suất liều = liều nhận được trong một khoảng thời gian (đọc trên máy đo phóng xạ). Năm tính 365,25 ngày.',
-  u:[['nsvh','Nanosievert/giờ (nSv/h)',1e-9],['usvh','Microsievert/giờ (µSv/h)',1e-6],['msvh','Millisievert/giờ (mSv/h)',1e-3],['svh','Sievert/giờ (Sv/h)',1],
-   ['msvd','Millisievert/ngày (mSv/ngày)',1e-3/24],['msvy','Millisievert/năm (mSv/năm)',1e-3/8766],['svy','Sievert/năm (Sv/năm)',1/8766],['mremh','Millirem/giờ (mrem/h)',1e-5],['remh','Rem/giờ (rem/h)',1e-2]]},
- radexp:{l:'☢️ Phóng xạ: Liều chiếu (R)',def:['r','mckg'],note:'Liều chiếu = mức ion hóa không khí do tia X, tia gamma. 1 Roentgen (R) = 2,58×10⁻⁴ C/kg.',
-  u:[['ckg','Coulomb/kilôgam (C/kg)',1],['mckg','Millicoulomb/kilôgam (mC/kg)',1e-3],['uckg','Microcoulomb/kilôgam (µC/kg)',1e-6],['ur','Microroentgen (µR)',2.58e-10],['mr','Milliroentgen (mR)',2.58e-7],['r','Roentgen (R)',2.58e-4]]}
+ // (bản 2026.11.02-15) Phóng xạ: gộp 5 đại lượng vào một mục, đổi chéo qua điều kiện (loại tia, môi trường, thời gian, đồng vị, khoảng cách)
+ rad:{l:'☢️ Phóng xạ (đổi chéo các đại lượng)',def:['usvh','msvy'],rad:1,
+  g:[['act','Hoạt độ (Bq, Ci)'],['abs','Liều hấp thụ (Gy, rad)'],['eq','Liều hiệu dụng (Sv, rem)'],['dr','Suất liều (Sv/h)'],['exp','Liều chiếu (R, C/kg)']],
+  u:[['bq','Becquerel (Bq)',1,'act'],['kbq','Kilobecquerel (kBq)',1e3,'act'],['mbq','Megabecquerel (MBq)',1e6,'act'],['gbq','Gigabecquerel (GBq)',1e9,'act'],['tbq','Terabecquerel (TBq)',1e12,'act'],
+   ['pci','Picocurie (pCi)',0.037,'act'],['nci','Nanocurie (nCi)',37,'act'],['uci','Microcurie (µCi)',3.7e4,'act'],['mci','Millicurie (mCi)',3.7e7,'act'],['ci','Curie (Ci)',3.7e10,'act'],['dpm','Phân rã/phút (dpm)',1/60,'act'],
+   ['ugy','Microgray (µGy)',1e-6,'abs'],['mgy','Milligray (mGy)',1e-3,'abs'],['cgy','Centigray (cGy)',1e-2,'abs'],['gy','Gray (Gy)',1,'abs'],['jkg','Jun/kilôgam (J/kg)',1,'abs'],['mrad','Millirad (mrad)',1e-5,'abs'],['rad','Rad',1e-2,'abs'],['krad','Kilorad (krad)',10,'abs'],
+   ['nsv','Nanosievert (nSv)',1e-9,'eq'],['usv','Microsievert (µSv)',1e-6,'eq'],['msv','Millisievert (mSv)',1e-3,'eq'],['sv','Sievert (Sv)',1,'eq'],['urem','Microrem (µrem)',1e-8,'eq'],['mrem','Millirem (mrem)',1e-5,'eq'],['rem','Rem',1e-2,'eq'],
+   ['nsvh','Nanosievert/giờ (nSv/h)',1e-9,'dr'],['usvh','Microsievert/giờ (µSv/h)',1e-6,'dr'],['msvh','Millisievert/giờ (mSv/h)',1e-3,'dr'],['svh','Sievert/giờ (Sv/h)',1,'dr'],
+   ['msvd','Millisievert/ngày (mSv/ngày)',1e-3/24,'dr'],['msvy','Millisievert/năm (mSv/năm)',1e-3/8766,'dr'],['svy','Sievert/năm (Sv/năm)',1/8766,'dr'],['mremh','Millirem/giờ (mrem/h)',1e-5,'dr'],['remh','Rem/giờ (rem/h)',1e-2,'dr'],
+   ['ckg','Coulomb/kilôgam (C/kg)',1,'exp'],['mckg','Millicoulomb/kilôgam (mC/kg)',1e-3,'exp'],['uckg','Microcoulomb/kilôgam (µC/kg)',1e-6,'exp'],['ur','Microroentgen (µR)',2.58e-10,'exp'],['mr','Milliroentgen (mR)',2.58e-7,'exp'],['r','Roentgen (R)',2.58e-4,'exp']]}
 };
 let cv={cat:'length',from:'m',to:'cm',val:'1'};
+// ----- Điều kiện đổi chéo phóng xạ -----
+const RAD_WR=[['g','Tia gamma / tia X',1],['b','Tia beta (electron)',1],['p','Proton',2],['a','Hạt alpha',20],['n0','Neutron chậm (nhiệt)',2.5],['n1','Neutron 1 MeV',20],['n10','Neutron nhanh 10 MeV',8.8]];
+const RAD_MF=[['air','Không khí (1 R ≈ 0,00876 Gy)',33.97],['tis','Mô cơ thể (1 R ≈ 0,0096 Gy)',37.2]];
+// e: hệ số liều khi nuốt vào (Sv/Bq, người lớn, ICRP 72); g: hằng số suất liều gamma ở 1 m (µSv·m²/(h·MBq)); null = không áp dụng
+const RAD_NUC=[['cs137','Cesium-137 (Cs-137)',1.3e-8,0.092],['co60','Cobalt-60 (Co-60)',3.4e-9,0.351],['i131','Iốt-131 (I-131)',2.2e-8,0.066],['ir192','Iridium-192 (Ir-192)',1.4e-9,0.13],
+ ['tc99m','Technetium-99m (Tc-99m)',2.2e-11,0.0195],['f18','Flo-18 (F-18)',4.9e-11,0.143],['k40','Kali-40 (K-40)',6.2e-9,0.021],['sr90','Stronti-90 (Sr-90)',2.8e-8,null],
+ ['ra226','Radi-226 (Ra-226)',2.8e-7,null],['am241','Americi-241 (Am-241)',2.0e-7,null],['pu239','Plutoni-239 (Pu-239)',2.5e-7,null],['po210','Poloni-210 (Po-210)',1.2e-6,null],
+ ['c14','Cacbon-14 (C-14)',5.8e-10,null],['h3','Triti (H-3, nước)',1.8e-11,null]];
+let cvr={wr:'g',mf:'air',t:'1',src:'ing',nuc:'cs137',d:'1'};
+function cvNum(x,def){const v=parseFloat(String(x).replace(',','.'));return isNaN(v)?def:v;}
+function radU(k){return CV_CATS.rad.u.find(x=>x[0]===k);}
+function radRateLike(g){return g==='dr'||(g==='act'&&cvr.src==='ext');}
+function radNeed(fg,tg){
+ const one=(f)=>f(fg)!==f(tg);
+ return {wr:one(g=>g==='abs'||g==='exp'),mf:one(g=>g==='exp'),t:radRateLike(fg)!==radRateLike(tg),src:one(g=>g==='act')};
+}
+function radConv(from,to,v){
+ const fu=radU(from),tu=radU(to);
+ if(fu[3]===tu[3])return v*fu[2]/tu[2];
+ const wr=(RAD_WR.find(x=>x[0]===cvr.wr)||RAD_WR[0])[2], mf=(RAD_MF.find(x=>x[0]===cvr.mf)||RAD_MF[0])[2];
+ const t=cvNum(cvr.t,NaN), d=cvNum(cvr.d,NaN), n=RAD_NUC.find(x=>x[0]===cvr.nuc)||RAD_NUC[0];
+ const ext=cvr.src==='ext', gam=n[3]==null?NaN:n[3]*1e-12/(d*d); // Sv/h cho mỗi Bq
+ const x=v*fu[2]; let H=NaN,R=NaN; // H: liều (Sv), R: suất liều (Sv/h)
+ switch(fu[3]){case 'abs':H=x*wr;break;case 'eq':H=x;break;case 'exp':H=x*mf*wr;break;case 'dr':R=x;break;
+  case 'act':if(ext)R=x*gam;else H=x*n[2];break;}
+ const needR=radRateLike(tu[3]);
+ if(needR&&isNaN(R))R=H/t; if(!needR&&isNaN(H))H=R*t;
+ let y;
+ switch(tu[3]){case 'abs':y=H/wr;break;case 'eq':y=H;break;case 'exp':y=H/wr/mf;break;case 'dr':y=R;break;
+  case 'act':y=ext?R/gam:H/n[2];break;}
+ return y/tu[2];
+}
+function radWhy(fg,tg){
+ const N=radNeed(fg,tg),n=RAD_NUC.find(x=>x[0]===cvr.nuc)||RAD_NUC[0],m=[];
+ if(fg===tg)return 'Cùng một đại lượng: đổi trực tiếp, không cần điều kiện.';
+ if(N.src){
+  if(cvr.src==='ext'){if(n[3]==null)return '⚠️ '+n[1]+' chủ yếu phát tia alpha/beta, gần như không chiếu xa ra ngoài nên không tính được suất liều khi đứng gần. Hãy chọn "Nuốt vào cơ thể" hoặc đồng vị khác.';
+   m.push('Suất liều ở khoảng cách d = hoạt độ × hằng số gamma ('+String(n[3]).replace('.',',')+' µSv·m²/h cho mỗi MBq) ÷ d²');}
+  else m.push('Liều khi nuốt vào = hoạt độ × hệ số liều ('+n[2].toExponential(1).replace('.',',')+' Sv/Bq, người lớn)');
+ }
+ if(N.mf)m.push('Liều chiếu → liều hấp thụ theo môi trường đã chọn');
+ if(N.wr)m.push('Liều hiệu dụng (Sv) = liều hấp thụ (Gy) × trọng số loại tia');
+ if(N.t)m.push('Liều = suất liều × thời gian chiếu');
+ return m.join('. ')+'.';
+}
 function cvConv(cat,from,to,v){
  if(cat==='temp'){
   const c=from==='c'?v:(from==='f'?(v-32)*5/9:v-273.15);
   return to==='c'?c:(to==='f'?c*9/5+32:c+273.15);
  }
+ if(cat==='rad')return radConv(from,to,v);
  const u=CV_CATS[cat].u, f=u.find(x=>x[0]===from)[2], t=u.find(x=>x[0]===to)[2];
  return v*f/t;
 }
@@ -3623,27 +3666,51 @@ function cvFmt(x){
 }
 function cvVal(){const v=parseFloat(String(cv.val).replace(',','.'));return isNaN(v)?null:v;}
 function cvRefresh(){
- const o=document.getElementById('cv-out'),a=document.getElementById('cv-all');
+ const o=document.getElementById('cv-out'),a=document.getElementById('cv-all'),w=document.getElementById('cv-why');
  if(!o||!a)return;
+ const C=CV_CATS[cv.cat];
+ if(w&&C.rad)w.textContent=radWhy(radU(cv.from)[3],radU(cv.to)[3]);
  const v=cvVal();
  if(v===null){o.textContent='—';a.innerHTML='';return;}
  o.textContent=cvFmt(cvConv(cv.cat,cv.from,cv.to,v));
- a.innerHTML=CV_CATS[cv.cat].u.map(u=>`<div class="lc-row"><span class="lc-l">${u[1]}</span><span class="lc-v ${u[0]===cv.to?'pos':''}">${cvFmt(cvConv(cv.cat,cv.from,u[0],v))}</span></div>`).join('');
+ const row=u=>`<div class="lc-row"><span class="lc-l">${u[1]}</span><span class="lc-v ${u[0]===cv.to?'pos':''}">${cvFmt(cvConv(cv.cat,cv.from,u[0],v))}</span></div>`;
+ a.innerHTML=C.g?C.g.map(g=>`<div class="lc-row" style="font-weight:700;opacity:.8;">${g[1]}</div>`+C.u.filter(u=>u[3]===g[0]).map(row).join('')).join(''):C.u.map(row).join('');
 }
 function cvCat(c){cv={cat:c,from:CV_CATS[c].def[0],to:CV_CATS[c].def[1],val:cv.val};render();}
 function cvSet(w,k){cv[w]=k;render();}
 function cvSwap(){const t=cv.from;cv.from=cv.to;cv.to=t;render();}
+function cvrSet(k,v){cvr[k]=v;render();}
+function radParams(){
+ const fg=radU(cv.from)[3],tg=radU(cv.to)[3],N=radNeed(fg,tg);
+ const sel=(k,list)=>`<select class="cv-sel" style="width:100%;" onchange="cvrSet('${k}',this.value)">${list.map(x=>`<option value="${x[0]}" ${x[0]===cvr[k]?'selected':''}>${x[1]}</option>`).join('')}</select>`;
+ const inp=(k,unit)=>`<div class="cv-line"><input type="text" inputmode="decimal" value="${qa(cvr[k])}" oninput="cvr['${k}']=this.value;cvRefresh()"><span style="padding:0 8px;white-space:nowrap;">${unit}</span></div>`;
+ const rows=[];
+ if(N.src){
+  rows.push(`<div class="form-row tight"><label>Cách tiếp xúc</label>${sel('src',[['ing','Nuốt vào cơ thể (ăn, uống)'],['ext','Đứng gần nguồn (chiếu từ ngoài)']])}</div>`);
+  rows.push(`<div class="form-row tight"><label>Đồng vị phóng xạ</label>${sel('nuc',RAD_NUC)}</div>`);
+  if(cvr.src==='ext')rows.push(`<div class="form-row tight"><label>Khoảng cách tới nguồn</label>${inp('d','mét')}</div>`);
+ }
+ if(N.wr)rows.push(`<div class="form-row tight"><label>Loại tia</label>${sel('wr',RAD_WR.map(x=>[x[0],x[1]+' (×'+String(x[2]).replace('.',',')+')']))}</div>`);
+ if(N.mf)rows.push(`<div class="form-row tight"><label>Môi trường</label>${sel('mf',RAD_MF)}</div>`);
+ if(N.t)rows.push(`<div class="form-row tight"><label>Thời gian chiếu</label>${inp('t','giờ')}</div>`);
+ return `<div class="lc-card" style="margin-top:12px;"><div class="lc-h">⚙️ Điều kiện quy đổi</div>${rows.join('')}
+  <div class="guide-desc" id="cv-why" style="text-align:left;margin:6px 0 0;"></div>
+  <div class="guide-desc" style="text-align:left;margin:6px 0 0;opacity:.75;">Kết quả đổi giữa các đại lượng khác nhau chỉ là ước tính để tham khảo, không thay cho đánh giá an toàn bức xạ của chuyên gia.</div></div>`;
+}
 function scrUnits(){
  if(!CV_CATS[cv.cat])cv={cat:'length',from:'m',to:'cm',val:'1'};
  const C=CV_CATS[cv.cat];
- const opts=sel=>C.u.map(u=>`<option value="${u[0]}" ${u[0]===sel?'selected':''}>${u[1]}</option>`).join('');
+ const opt=(u,sel)=>`<option value="${u[0]}" ${u[0]===sel?'selected':''}>${u[1]}</option>`;
+ const opts=sel=>C.g?C.g.map(g=>`<optgroup label="${g[1]}">${C.u.filter(u=>u[3]===g[0]).map(u=>opt(u,sel)).join('')}</optgroup>`).join(''):C.u.map(u=>opt(u,sel)).join('');
  const cats=Object.keys(CV_CATS).map(k=>`<option value="${k}" ${k===cv.cat?'selected':''}>${CV_CATS[k].l}</option>`).join('');
  return screenWrap('📐 Đổi đơn vị đo',`
   <div class="form-row tight"><label>Loại đơn vị</label><select class="cv-sel" style="width:100%;" onchange="cvCat(this.value)">${cats}</select></div>
   ${C.note?`<div class="guide-desc" style="text-align:left;margin:0 0 10px;">ℹ️ ${C.note}</div>`:''}
+  ${C.rad?`<div class="guide-desc" style="text-align:left;margin:0 0 10px;">ℹ️ Chọn đơn vị bất kỳ ở ô "Từ" và "Sang", kể cả khác đại lượng (ví dụ Bq → mSv, Gy → Sv, R → Gy, µSv/h → mSv). Khi khác đại lượng, phần ⚙️ Điều kiện quy đổi bên dưới sẽ hiện ra.</div>`:''}
   <div class="cv-box"><label>Từ</label><div class="cv-line"><input type="text" inputmode="decimal" id="cv-val" value="${qa(cv.val)}" oninput="cv.val=this.value;cvRefresh()"><select class="cv-sel" onchange="cvSet('from',this.value)">${opts(cv.from)}</select></div></div>
   <div style="text-align:center;margin:6px 0;"><button class="mini-btn" onclick="cvSwap()">⇅ Đổi chiều</button></div>
   <div class="cv-box"><label>Sang</label><div class="cv-line"><div class="cv-out" id="cv-out">—</div><select class="cv-sel" onchange="cvSet('to',this.value)">${opts(cv.to)}</select></div></div>
+  ${C.rad?radParams():''}
   <div class="lc-card" style="margin-top:12px;"><div class="lc-h">Bảng quy đổi</div><div id="cv-all"></div></div>`);
 }
 

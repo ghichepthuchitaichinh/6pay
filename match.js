@@ -1,10 +1,12 @@
-/* 6PAY - Game "Phá đảo chủ đề" (tiếng Anh & tiếng Trung). Bản 2026.11.02-4.
+/* 6PAY - Game "Phá đảo chủ đề" (tiếng Anh & tiếng Trung). Bản 2026.11.05-1.
    Mở từ nút nổi 🏝️ trong mục "Từ vựng theo chủ đề" của Game tiếng Anh / Game tiếng Trung.
    Luật chơi kiểu xếp kẹo: đổi chỗ 2 viên kẹo cạnh nhau để có hàng 3 viên giống nhau trở lên.
    Mỗi viên kẹo là 1 từ vựng. Ăn viên nào, app đọc từ đó và hiện chữ + nghĩa tiếng Việt ở dưới cùng.
    Mỗi chủ đề là 1 hòn đảo. Các màn trên đảo chia nhau TOÀN BỘ từ vựng của chủ đề (mỗi màn 5–6 từ).
    (bản 2026.11.02-5) Thiên về HỌC: không giới hạn lượt, không thua. Phải ăn đủ TẤT CẢ các từ trong danh sách mới qua màn.
    Mỗi màn có đồng hồ bấm giờ: xong càng nhanh càng nhiều sao (⭐⭐⭐ / ⭐⭐ / ⭐), lưu thời gian tốt nhất của từng màn.
+   (bản 2026.11.05-1) Mỗi từ phải ăn 12 viên (trước là 6). Màn CUỐI mỗi đảo có LỚP BĂNG 🧊 phủ lên nhiều viên kẹo từ vựng:
+   viên có băng bị ăn lần 1 chỉ vỡ băng (không tính), phải ăn thêm lần nữa mới được tính.
    Kẹo đặc biệt: hàng 4 → kẹo sọc · hình L, T → kẹo gói · hàng 5 → kẹo cầu vồng. */
 (function () {
   if (window.SixMatchGame) return;
@@ -157,9 +159,11 @@
   function levelDef(L) {
     var lv = D().levels[L], tp = D().topics[lv.ti], K = lv.words.length;
     var d = Math.min(1, lv.ti / 40);                           // độ khó tăng dần theo đảo
-    // Dễ: mỗi từ chỉ cần ăn 6–10 viên. Mốc sao theo thời gian: ⭐⭐⭐ ≤ K×18 giây, ⭐⭐ ≤ K×30 giây, xong là có ⭐
-    return { L: L, ti: lv.ti, sub: lv.sub, nsub: tp.levels.length, topic: tp, words: lv.words, K: K,
-      quota: 6 + Math.round(d * 4), t3: K * 18, t2: K * 30 };
+    // Mỗi từ phải ăn 12–16 viên (đảo sau khó hơn). Màn cuối đảo có lớp băng bảo vệ kẹo từ vựng.
+    // Mốc sao theo thời gian tính theo số viên phải ăn (màn có băng được cộng thêm 40% thời gian).
+    var quota = 12 + Math.round(d * 4), ice = lv.sub === tp.levels.length - 1, tf = ice ? 1.4 : 1;
+    return { L: L, ti: lv.ti, sub: lv.sub, nsub: tp.levels.length, topic: tp, words: lv.words, K: K, ice: ice,
+      quota: quota, t3: Math.round(K * quota * 3 * tf), t2: Math.round(K * quota * 5 * tf) };
   }
   var PR = { en: null, zh: null };
   function prog() {
@@ -357,6 +361,7 @@
     modal('<div style="font-size:14px;font-weight:800;color:#0b80c8">' + def.topic.i + ' Đảo ' + (def.ti + 1) + ' · Màn ' + (def.sub + 1) + '/' + def.nsub + '</div><h2>' + esc(def.topic.n) + '</h2>' +
       '<div class="mg-stars">' + [1, 2, 3].map(function (i) { return '<span class="' + (starsOf(L) >= i ? 'on' : '') + '">⭐</span>'; }).join('') + '</div>' +
       '<p>🎯 Ăn mỗi từ <b>' + def.quota + ' viên</b>. Ăn đủ <b>tất cả ' + def.K + ' từ</b> dưới đây là qua màn. Không giới hạn lượt.</p>' +
+      (def.ice ? '<div class="mg-rule" style="background:#e3f6ff;color:#0b5f94">🧊 <b>Màn cuối đảo – có lớp băng!</b><br>Nhiều viên kẹo được phủ băng. Ăn lần 1 chỉ làm vỡ băng (chưa tính), ăn thêm lần nữa mới được tính.</div>' : '') +
       '<div class="mg-rule">⏱ Xong trong <b>' + mmss(def.t3) + '</b>: ⭐⭐⭐ &nbsp;·&nbsp; trong <b>' + mmss(def.t2) + '</b>: ⭐⭐ &nbsp;·&nbsp; chậm hơn: ⭐' + (bestT(L) ? '<br>🏅 Thời gian tốt nhất của bạn: <b>' + mmss(bestT(L)) + '</b>' : '') + '</div>' +
       '<p style="font-size:13px;color:#4a7aa0;margin-bottom:0">Các từ trong màn này (chạm để nghe):</p>' +
       '<div class="mg-wl">' + def.words.map(function (w, i) { return '<div class="mg-wi" data-a="sayw" data-i="' + i + '">' + wordHtml(w, 34) + '</div>'; }).join('') + '</div>' +
@@ -370,7 +375,9 @@
   var NC = C * R;
   function cell(r, c) { return G.b[r * C + c]; }
   function setCell(r, c, t) { G.b[r * C + c] = t; }
-  function mk(t, sp) { return { id: tid++, t: t, sp: sp || '', x: 0, y: 0, s: 1, a: 1 }; }
+  function mk(t, sp) { return { id: tid++, t: t, sp: sp || '', x: 0, y: 0, s: 1, a: 1, ice: 0, ia: 0 }; }
+  var ICE0 = 0.4, ICE1 = 0.22;                 // màn cuối đảo: 40% kẹo lúc đầu & 22% kẹo rơi xuống có lớp băng
+  function frost(tl) { if (G && G.def.ice && tl && !tl.sp && tl.t >= 0) { tl.ice = 1; tl.ia = 1; } return tl; }
   function rowOf(i) { return Math.floor(i / C); }
   function colOf(i) { return i % C; }
 
@@ -379,11 +386,12 @@
     G = { def: def, K: def.K, b: new Array(NC), moves: 0, score: 0, ms: 0, busy: true, sel: null, got: [], spoken: [], hintT: 0, hint: null, over: false };
     for (var i = 0; i < def.K; i++) G.got[i] = 0;
     do { for (var r = 0; r < R; r++) for (var c = 0; c < C; c++) { var t; do { t = Math.floor(Math.random() * G.K); } while ((c >= 2 && cell(r, c - 1).t === t && cell(r, c - 2).t === t) || (r >= 2 && cell(r - 1, c).t === t && cell(r - 2, c).t === t)); setCell(r, c, mk(t)); } } while (!findMove());
-    for (var r2 = 0; r2 < R; r2++) for (var c2 = 0; c2 < C; c2++) { var tl = cell(r2, c2); tl.x = c2; tl.y = r2 - R - 1 - Math.random() * 2; }
+    for (var r2 = 0; r2 < R; r2++) for (var c2 = 0; c2 < C; c2++) { var tl = cell(r2, c2); tl.x = c2; tl.y = r2 - R - 1 - Math.random() * 2; if (Math.random() < ICE0) frost(tl); }
     $('mgLvT').textContent = def.topic.i + ' Đảo ' + (def.ti + 1) + ' · Màn ' + (def.sub + 1) + '/' + def.nsub;
     $('mgMu').classList.toggle('off', !MUS.on); $('mgVo').classList.toggle('off', !VOICE.on);
     cardWord(0, false);
     show('play'); resize(); hud(); musicStart(); sfx('splash');
+    if (def.ice) banner = { s: '🧊 Ice!', l: 1.4 };
     cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(loop);
     gravityAnim().then(function () { G.busy = false; G.hintT = performance.now(); });
   }
@@ -474,6 +482,29 @@
     drawPic(c, G.def.words[t][2], px / 2, px / 2 + px * 0.01, px * 0.62);
     return o;
   }
+  /* Lớp băng phủ trên viên kẹo (màn cuối đảo) */
+  function iceSprite() {
+    if (SPR.ice) return SPR.ice;
+    var px = Math.max(8, Math.round(S * DPR)), o = document.createElement('canvas'); o.width = o.height = px;
+    var c = o.getContext('2d'), m = px * 0.03, w = px - 2 * m;
+    rrect(c, m, m, w, w, px * 0.24);
+    var g = c.createLinearGradient(0, 0, px, px);
+    g.addColorStop(0, 'rgba(235,250,255,.62)'); g.addColorStop(0.5, 'rgba(170,225,255,.42)'); g.addColorStop(1, 'rgba(120,200,250,.58)');
+    c.fillStyle = g; c.fill();
+    c.lineWidth = px * 0.06; c.strokeStyle = 'rgba(255,255,255,.95)'; c.stroke();
+    rrect(c, m + px * 0.06, m + px * 0.06, w - px * 0.12, w - px * 0.12, px * 0.18); c.lineWidth = px * 0.025; c.strokeStyle = 'rgba(90,180,240,.8)'; c.stroke();
+    c.save(); rrect(c, m, m, w, w, px * 0.24); c.clip();
+    c.fillStyle = 'rgba(255,255,255,.75)';
+    c.beginPath(); c.moveTo(px * 0.1, px * 0.42); c.lineTo(px * 0.42, px * 0.1); c.lineTo(px * 0.52, px * 0.1); c.lineTo(px * 0.1, px * 0.52); c.closePath(); c.fill();
+    c.beginPath(); c.moveTo(px * 0.55, px * 0.92); c.lineTo(px * 0.92, px * 0.55); c.lineTo(px * 0.92, px * 0.62); c.lineTo(px * 0.62, px * 0.92); c.closePath(); c.fill();
+    c.restore();
+    c.font = Math.round(px * 0.26) + 'px ' + EF; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('❄️', px * 0.8, px * 0.2);
+    return (SPR.ice = o);
+  }
+  function iceBurst(r, c) {
+    var x = c * S + S / 2, y = r * S + S / 2;
+    for (var i = 0; i < 10; i++) { var a = Math.random() * 6.28, v = 150 + Math.random() * 150; parts.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 100, r: S * (0.05 + Math.random() * 0.06), c: i % 2 ? '#bfeaff' : '#ffffff', l: 1, k: 1.8 + Math.random(), st: i % 3 === 0 }); }
+  }
   function sprite(t, sp) { var k = sp === 'b' ? 'b' : t + (sp || ''); return SPR[k] || (SPR[k] = candy(t, sp)); }
 
   var last = 0;
@@ -506,6 +537,7 @@
       ctx.globalAlpha = tl.a;
       if (tl.sp === 'b' || tl.t < 0) { ctx.save(); ctx.translate(tl.x * S + S / 2, tl.y * S + S / 2); ctx.rotate(now / 900); ctx.drawImage(sprite(0, 'b'), -sz / 2, -sz / 2, sz, sz); ctx.restore(); }
       else ctx.drawImage(sprite(tl.t, tl.sp), x, y, sz, sz);
+      if (tl.ia > 0) { ctx.globalAlpha = tl.a * tl.ia; ctx.drawImage(iceSprite(), x, y, sz, sz); ctx.globalAlpha = tl.a; }
       if (G.sel && tl === G.sel.t) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; rrect(ctx, x + 2, y + 2, sz - 4, sz - 4, sz * 0.24); ctx.stroke(); }
     }
     ctx.globalAlpha = 1; ctx.restore();
@@ -637,7 +669,11 @@
   function clearSet(set, creates, chain) {
     var keep = {}; creates.forEach(function (cr) { keep[cr.i] = 1; });
     var fx = blast(set, keep), n = 0, idx = [], before = doneCount();
-    for (var k in set) { k = +k; if (keep[k] || !G.b[k]) continue; idx.push(k); n++; }
+    var cracked = [];
+    for (var k in set) { k = +k; if (keep[k] || !G.b[k]) continue; if (G.b[k].ice) { cracked.push(k); continue; } idx.push(k); n++; }
+    // Viên có lớp băng: lần ăn này chỉ làm vỡ băng, viên kẹo ở lại và chưa được tính
+    cracked.forEach(function (i) { var tl = G.b[i]; tl.ice = 0; iceBurst(rowOf(i), colOf(i)); texts.push({ s: '🧊', x: colOf(i) * S + S / 2, y: rowOf(i) * S + S / 2, c: '#bfeaff', l: 1 }); tween(260, function (p) { tl.ia = 1 - p; }); });
+    if (cracked.length) sfx('splash');
     if (fx.rb) sfx('rainbow'); else if (fx.boom) sfx('boom'); else if (fx.line) sfx('line'); else sfx('pop', chain);
     if (fx.boom || fx.rb) shake = Math.max(shake, 14); else if (fx.line) shake = Math.max(shake, 7);
     var pts = n * 60 * chain + (fx.line * 120) + (fx.boom * 200) + (fx.rb * 400);
@@ -649,11 +685,12 @@
       burst(r, c, tl.sp === 'b' ? -1 : tl.t, !!tl.sp);
     });
     if (doneCount() > before) sfx('goal');
-    creates.forEach(function (cr) { var tl = G.b[cr.i]; if (tl) { tl.t = cr.t; tl.sp = cr.sp; } });
+    creates.forEach(function (cr) { var tl = G.b[cr.i]; if (tl) { tl.t = cr.t; tl.sp = cr.sp; tl.ice = 0; tl.ia = 0; } });
     if (creates.length) sfx('make');
     var anims = idx.map(function (i) { var tl = G.b[i]; return tween(200, function (p) { tl.s = 1 + p * 0.25; tl.a = 1 - p; }, easeIn).then(function () { if (G && G.b[i] === tl) G.b[i] = null; }); });
     creates.forEach(function (cr) { var tl = G.b[cr.i]; if (tl) anims.push(tween(300, function (p) { tl.s = p < 0.5 ? 1 + p * 0.6 : 1.3 - (p - 0.5) * 0.6; })); });
     hud();
+    if (!idx.length && cracked.length) anims.push(wait(260));
     return Promise.all(anims);
   }
   /* Kẹo mới: ưu tiên nhẹ các từ còn thiếu để màn chơi không bị "kẹt" 1 từ */
@@ -667,7 +704,7 @@
       var wr = R - 1;
       for (var r = R - 1; r >= 0; r--) { var tl = cell(r, c); if (tl) { if (wr !== r) { setCell(wr, c, tl); setCell(r, c, null); } wr--; } }
       var spawn = 0;
-      for (var r2 = wr; r2 >= 0; r2--) { var nt = mk(newType()); spawn++; nt.x = c; nt.y = -spawn; setCell(r2, c, nt); }
+      for (var r2 = wr; r2 >= 0; r2--) { var nt = mk(newType()); if (Math.random() < ICE1) frost(nt); spawn++; nt.x = c; nt.y = -spawn; setCell(r2, c, nt); }
       for (var r3 = 0; r3 < R; r3++) { var t3 = cell(r3, c); if (t3.y !== r3 || t3.x !== c) { var dist = r3 - t3.y; anims.push(moveTile(t3, c, r3, Math.max(160, 70 * Math.sqrt(Math.abs(dist)) * 2.4), bounce)); } }
     }
     return Promise.all(anims);
@@ -725,7 +762,7 @@
       var bomb = a.sp === 'b' ? a : b, o = bomb === a ? b : a, T = o.t;
       announce(T); bomb.sp = ''; bomb.t = -1;
       var targets = []; G.b.forEach(function (x, k) { if (x && x.t === T && x.sp !== 'b') targets.push(k); });
-      if (o.sp) { targets.forEach(function (k) { G.b[k].sp = o.sp === 'w' ? 'w' : (Math.random() < 0.5 ? 'h' : 'v'); }); sfx('make'); await wait(380); if (!G) return; }
+      if (o.sp) { targets.forEach(function (k) { G.b[k].sp = o.sp === 'w' ? 'w' : (Math.random() < 0.5 ? 'h' : 'v'); G.b[k].ice = 0; G.b[k].ia = 0; }); sfx('make'); await wait(380); if (!G) return; }
       targets.forEach(function (k) { set[k] = 1; }); set[G.b.indexOf(bomb)] = 1;
       banner = { s: 'Rainbow!', l: 1.2 };
     } else {

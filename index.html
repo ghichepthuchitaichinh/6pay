@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.07-1';
+const APP_VERSION='2026.11.07-2';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -2607,7 +2607,8 @@ window.SixLevelQuiz=(function(){
   if(o){if(passed){if(o.onPass)o.onPass();}else if(o.onClose)o.onClose();}
  }
  function cur(){return Q.ws[Q.k];}
- function wordHtml(w,big){return '<div class="w">'+esc(w[0])+'</div>'+(O.lang==='zh'&&w[3]?'<div class="py">'+esc(w[3])+'</div>':'');}
+ function prOf(w){try{if(O.pron)return O.pron(w)||'';}catch(e){}return O.lang==='zh'?(w[3]||''):'';}
+ function wordHtml(w,big){const p=prOf(w);return '<div class="w">'+esc(w[0])+'</div>'+(p?'<div class="py">'+esc(p)+'</div>':'');}
  function head(){
   return '<div class="qz-step"><span class="'+(Q.part===1?'on':'')+'">Phần 1 · Phát âm</span><span class="'+(Q.part===2?'on':'')+'">Phần 2 · Chọn nghĩa</span></div>'+
    '<div class="qz-dots">Từ '+(Q.k+1)+'/'+Q.ws.length+'</div>';
@@ -2657,7 +2658,7 @@ window.SixLevelQuiz=(function(){
   B.innerHTML='<div style="font-size:62px;margin-top:10px">'+(pass?'🎉':'💪')+'</div>'+
    '<h2 style="margin:6px 0">'+(pass?'Bạn đã vượt qua bài kiểm tra!':'Chưa qua bài kiểm tra')+'</h2>'+
    '<div style="opacity:.9;line-height:1.5">'+(pass?'Phát âm và chọn nghĩa đều đúng'+(Q.skip1?' (phần phát âm được bỏ qua)':'')+'. Màn tiếp theo đã được mở.':'Bạn cần làm đúng <b>tất cả</b> các từ mới được chơi màn tiếp theo. Hãy ôn lại các từ dưới đây rồi làm lại nhé.')+'</div>'+
-   (bad.length?'<div style="margin-top:14px">'+bad.map(w=>'<div class="qz-row" data-q="sayw" data-w="'+esc(w[0])+'"><span>🔊</span><span><b>'+esc(w[0])+'</b>'+(O.lang==='zh'&&w[3]?'<i>'+esc(w[3])+'</i>':'')+'<span class="vi">'+esc(w[1])+'</span></span><em>'+(Q.bad1[w[0]]?'Sai phát âm':'')+(Q.bad1[w[0]]&&Q.bad2[w[0]]?' · ':'')+(Q.bad2[w[0]]?'Sai nghĩa':'')+'</em></div>').join('')+'</div>':'')+
+   (bad.length?'<div style="margin-top:14px">'+bad.map(w=>'<div class="qz-row" data-q="sayw" data-w="'+esc(w[0])+'"><span>🔊</span><span><b>'+esc(w[0])+'</b>'+(prOf(w)?'<i>'+esc(prOf(w))+'</i>':'')+'<span class="vi">'+esc(w[1])+'</span></span><em>'+(Q.bad1[w[0]]?'Sai phát âm':'')+(Q.bad1[w[0]]&&Q.bad2[w[0]]?' · ':'')+(Q.bad2[w[0]]?'Sai nghĩa':'')+'</em></div>').join('')+'</div>':'')+
    '<div class="qz-acts">'+(pass?'<button class="qz-btn go" data-q="pass">▶ Chơi màn tiếp theo</button>':'<button class="qz-btn go" data-q="again">↻ Làm lại bài kiểm tra</button><button class="qz-btn" data-q="close">Ôn lại sau</button>')+'</div>';
  }
 

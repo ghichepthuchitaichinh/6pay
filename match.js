@@ -355,8 +355,11 @@
     $('mgMap').innerHTML = html;
     if (scroll) setTimeout(function () { var e = $('mgIsl' + curT); if (e) $('mgMap').scrollTop = Math.max(0, e.offsetTop - 80); }, 30);
   }
+  // (bản 2026.11.07-2) Phiên âm: tiếng Anh = IPA · cách đọc kiểu Việt; tiếng Trung = pinyin · cách đọc kiểu Việt
+  function prTxt(w) { var A = langApi(LANG); try { if (A && A.data && A.data.pron) return A.data.pron(w) || ''; } catch (e) {} return LANG === 'zh' ? (w[3] || '') : ''; }
   function wordHtml(w, sz) {
-    return picHtml(w[2], sz) + '<b>' + esc(w[0]) + '</b>' + (LANG === 'zh' ? '<i>' + esc(w[3] || '') + '</i>' : '') + '<small>' + esc(w[1]) + '</small>';
+    var pr = prTxt(w);
+    return picHtml(w[2], sz) + '<b>' + esc(w[0]) + '</b>' + (pr ? '<i>' + esc(pr) + '</i>' : '') + '<small>' + esc(w[1]) + '</small>';
   }
   var PRE = null;
   function preLevel(L) {
@@ -425,7 +428,7 @@
     if (!G || t < 0 || t >= G.K) return;
     var w = G.def.words[t]; cardT = t;
     $('mgCP').innerHTML = picHtml(w[2], 40); $('mgCW').textContent = w[0];
-    $('mgCY').textContent = LANG === 'zh' ? (w[3] || '') : ''; $('mgCY').style.display = LANG === 'zh' ? '' : 'none';
+    var pr = prTxt(w); $('mgCY').textContent = pr; $('mgCY').style.display = pr ? '' : 'none';
     $('mgCM').textContent = w[1];
     if (pop) { var c = $('mgCard'); c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop'); }
   }
@@ -840,7 +843,7 @@
     var passed = function () { if (prog().q) delete prog().q[L]; saveProg(); unmodal(); stopPlay(); renderMap(false); show('map'); if (L + 1 < levelCount()) preLevel(L + 1); };
     if (!window.SixLevelQuiz) { passed(); return; }   // app bản cũ chưa có bài kiểm tra: không chặn người chơi
     musicStop(); hush();
-    window.SixLevelQuiz.open({ lang: LANG, title: 'Đảo ' + (lv.ti + 1) + ' · Màn ' + (lv.sub + 1), words: lv.words, all: tp.w, onPass: passed });
+    window.SixLevelQuiz.open({ lang: LANG, title: 'Đảo ' + (lv.ti + 1) + ' · Màn ' + (lv.sub + 1), words: lv.words, all: tp.w, pron: prTxt, onPass: passed });
   }
   function stopPlay() { cancelAnimationFrame(raf); raf = 0; tweens = []; parts = []; texts = []; beams = []; banner = null; G = null; musicStop(); hush(); }
 

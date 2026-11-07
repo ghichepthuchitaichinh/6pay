@@ -1,4 +1,4 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    Mỗi tòa thành là 1 chủ đề từ vựng tiếng Anh (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
    Mỗi đợt quái kéo đến, con quái nào cũng vác theo 1 tấm biển ghi 1 từ vựng của chủ đề.
    Người chơi xây chòi trên các ô đá ➕ dọc đường để bắn quái, bảo vệ tòa thành.
@@ -237,7 +237,7 @@
       '<div class="tt-scr" id="ttGame">' +
       '<div class="tt-top"><button class="tt-ib" data-a="quit" aria-label="Quay lại">←</button>' +
       '<div class="tt-hud"><span class="tt-pill" id="ttHP"><i>❤️</i><span></span></span><span class="tt-pill" id="ttGold"><i>💰</i><span></span></span><span class="tt-pill" id="ttWv"><i>👹</i><span></span></span></div>' +
-      '<button class="tt-ib" data-a="speed" id="ttSpd">1×</button><button class="tt-ib" data-a="pause" id="ttPau">⏸</button></div>' +
+      '<button class="tt-ib" data-a="pause" id="ttPau">⏸</button></div>' +
       '<div class="tt-stage" id="ttStage"><canvas id="ttCv"></canvas>' +
       '<button class="tt-wavebtn" data-a="wave" id="ttWB"></button>' +
       '<div class="tt-banner" id="ttBan"></div><div class="tt-toast" id="ttToast"></div><div class="tt-pop" id="ttPop"></div>' +
@@ -339,7 +339,7 @@
     G = {
       tp: tp, seed: Math.floor(Math.random() * 1e6), map: MAPS[tp.ti % MAPS.length], waves: planWaves(tp), wave: 0, phase: 'prep',
       hp: HPMAX, gold: START_GOLD, towers: [], enemies: [], shots: [], fx: [], txt: [], spots: null, q: [], qT: 0,
-      speed: 1, paused: false, said: {}, bank: [], ok: 0, t: 0, prepT: 30, shake: 0, sel: -1, flagT: 0, ended: false
+      paused: false, said: {}, bank: [], ok: 0, t: 0, prepT: 30, shake: 0, sel: -1, flagT: 0, ended: false
     };
     G.waves[0].forEach(function (w) { addBank(w); });
   }
@@ -429,7 +429,7 @@
     raf = requestAnimationFrame(loop);
     var dt = Math.min(0.05, ((ts - (last || ts)) / 1000)); last = ts;
     if (!G || !X) return;
-    var m = G.paused || G.ended ? 0 : G.speed * (SAY ? 0.18 : 1);
+    var m = G.paused || G.ended ? 0 : (SAY ? 0.18 : 1);   // luôn chạy tốc độ bình thường (không có nút tua nhanh)
     G.flagT += dt;
     if (m) step(dt * m);
     if (!G.paused && !G.ended && G.phase === 'prep' && !SAY) { G.prepT -= dt; if (G.prepT <= 0) startWave(); else waveBtn(); }
@@ -553,7 +553,7 @@
     hp.textContent = G.hp; gd.textContent = G.gold; wv.textContent = (G.wave + 1) + '/' + G.waves.length;
     if (fx === 'gold') { var e = $('ttGold'); e.classList.remove('bump'); void e.offsetWidth; e.classList.add('bump'); }
     if (fx === 'hp') { var h = $('ttHP'); h.classList.remove('hurt'); void h.offsetWidth; h.classList.add('hurt'); }
-    $('ttSpd').textContent = G.speed + '×'; $('ttPau').textContent = G.paused ? '▶' : '⏸';
+    $('ttPau').textContent = G.paused ? '▶' : '⏸';
   }
   function reward(w) { var s = G.said[w]; return REWARD[Math.min(2, s ? s.n : 0)]; }
   function renderBank() {
@@ -909,7 +909,6 @@
     if (a === 'next') { openIntro(DATA.topics[+el.getAttribute('data-i')]); stopLoop(); G = null; return; }
     if (a === 'hearw') { say(G.tp.w[+el.getAttribute('data-i')][0]); return; }
     if (G.ended) return;
-    if (a === 'speed') { G.speed = G.speed === 1 ? 2 : 1; hud(); return; }
     if (a === 'pause') { G.paused = !G.paused; hud(); return; }
     if (a === 'wave') { startWave(); return; }
     if (a === 'chip') { openSay(+el.getAttribute('data-w'), null); return; }

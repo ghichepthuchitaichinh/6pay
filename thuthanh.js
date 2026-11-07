@@ -1,4 +1,4 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    (bản 2026.11.07-6) CỐT TRUYỆN: bầy quái lẻn vào KHO TỪ VỰNG (đầu đường, phía trên) đánh cắp từ vựng, mỗi con vác 1 từ
    để mang về THÀNH CỦA CHÚNG (cuối đường, phía dưới). Nhiệm vụ của người chơi: xây chòi chặn đường, không cho quái mang từ về thành.
    Mỗi màn là 1 kho từ vựng theo chủ đề (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
@@ -19,6 +19,17 @@
   var PKEY = 'tt_p';
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   var START_GOLD = 100, HPMAX = 20;
+  /* (bản 2026.11.07-7) 5 CẤP ĐỘ. Quái luôn đi tốc độ bình thường (để người chơi nghe rõ từng từ);
+     cấp khó hơn thì quái trâu hơn (hp), ra dày hơn (gap), có thêm quái ôn từ cũ (more), kho giữ được ít từ hơn (life), ít vàng khởi đầu (gold),
+     nhưng thưởng Nông trại nhiều hơn (rw). boss: số con trùm ở đợt cuối. */
+  var DIFF = [
+    { k: 'easy', n: 'Dễ', e: '🌱', c: '#16a34a', hp: 0.7, gap: 1.25, more: 0.5, life: 25, gold: 150, rw: 0.5, boss: 1 },
+    { k: 'normal', n: 'Thường', e: '⚔️', c: '#2563eb', hp: 1, gap: 1, more: 1, life: 20, gold: 100, rw: 1, boss: 1 },
+    { k: 'hard', n: 'Khó', e: '🔥', c: '#ea580c', hp: 1.5, gap: 0.88, more: 1.5, life: 15, gold: 90, rw: 1.5, boss: 1 },
+    { k: 'extreme', n: 'Cực khó', e: '💀', c: '#dc2626', hp: 2.2, gap: 0.76, more: 2, life: 10, gold: 80, rw: 2, boss: 2 },
+    { k: 'insane', n: 'Khó vô địch', e: '👑', c: '#7c3aed', hp: 3.2, gap: 0.65, more: 2.5, life: 5, gold: 70, rw: 3, boss: 3 }
+  ];
+  var DSEL = 1; try { var _d = +localStorage.getItem('tt_diff'); if (_d >= 0 && _d < DIFF.length) DSEL = _d; } catch (e) {}
   var REWARD = [30, 20, 12], ENEMY_REWARD = 12, PICK_REWARD = 15;
   var STAR_VND = 10000, WORD_VND = 2000;
 
@@ -56,6 +67,9 @@
     else if (k === 'win') [523, 659, 784, 1047].forEach(function (f, i) { tone(f, i * 0.12, 0.3, 'triangle', 0.13); });
     else if (k === 'lose') [392, 330, 262, 196].forEach(function (f, i) { tone(f, i * 0.16, 0.35, 'sawtooth', 0.07); });
     else if (k === 'tap') tone(660, 0, 0.05, 'sine', 0.06);
+    else if (k === 'fire') { tone(140, 0, 0.3, 'sawtooth', 0.035, 90); tone(220, 0, 0.25, 'triangle', 0.02, 120); }
+    else if (k === 'launch') { tone(180, 0, 0.45, 'sawtooth', 0.06, 900); tone(90, 0, 0.3, 'square', 0.04, 60); }
+    else if (k === 'bigboom') { tone(110, 0, 0.5, 'sawtooth', 0.16, 30); tone(60, 0.02, 0.6, 'square', 0.1, 25); tone(300, 0, 0.15, 'triangle', 0.08, 80); }
   }
 
   /* ================= ĐỌC TỪ (giọng máy) ================= */
@@ -120,9 +134,10 @@
 
   /* ================= TIẾN ĐỘ ================= */
   var P = null;
-  function prog() { if (!P) { try { P = JSON.parse(localStorage.getItem(PKEY)); } catch (e) {} if (!P || !P.s) P = { s: {}, b: {} }; } return P; }
+  function prog() { if (!P) { try { P = JSON.parse(localStorage.getItem(PKEY)); } catch (e) {} if (!P || !P.s) P = { s: {}, b: {} }; if (!P.d) P.d = {}; } return P; }
   function saveProg() { try { localStorage.setItem(PKEY, JSON.stringify(prog())); } catch (e) {} }
   function stars(id) { return prog().s[id] || 0; }
+  function bestDiff(id) { var d = prog().d[id]; return d == null ? -1 : d; }   // cấp độ cao nhất đã thắng
   function unlocked(tp) {
     var list = DATA.topics.filter(function (t) { return t.g === tp.g; }), i = list.indexOf(tp);
     return i <= 0 || stars(list[i - 1].id) > 0;
@@ -169,6 +184,12 @@
     '.tt-say .tt-pr{margin-top:3px;line-height:1.35}.tt-say .tt-pr span{display:inline-block;margin-right:10px;font-size:15px}.tt-say .tt-pr .ipa{color:#c4b5fd;font-family:"Segoe UI","Noto Sans","DejaVu Sans",Arial,sans-serif}.tt-say .tt-pr .vi{color:#fde68a;font-weight:800}',
     '.tt-say .tip{font-size:12px;opacity:.7;margin-top:2px}',
     '.tt-chip .vi{display:block;font-size:11px;font-weight:700;color:#92400e;text-align:left;white-space:nowrap}',
+    '.tt-dif{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:4px 0 12px}',
+    '.tt-dif button{border:2px solid transparent;border-radius:14px;padding:8px 2px 7px;background:rgba(255,255,255,.08);color:#fff;font-family:inherit;cursor:pointer;text-align:center;line-height:1.15}',
+    '.tt-dif button i{display:block;font-style:normal;font-family:' + EF + ';font-size:22px;margin-bottom:3px}.tt-dif button b{display:block;font-size:11.5px;font-weight:900}.tt-dif button small{display:block;font-size:10px;opacity:.75;margin-top:2px}',
+    '.tt-dif button.on{background:var(--c);border-color:#fde047;box-shadow:0 0 0 2px rgba(253,224,71,.35),0 6px 16px rgba(0,0,0,.35);transform:translateY(-2px)}',
+    '.tt-dnote{font-size:12.5px;line-height:1.45;opacity:.9;margin:-4px 0 12px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.06)}',
+    '.tt-cs .bd{position:absolute;left:6px;bottom:6px;font-family:' + EF + ';font-size:13px}',
     '.tt-go{position:sticky;bottom:0;padding:12px 0 4px;background:linear-gradient(180deg,transparent,#0b1530 40%)}',
     '.tt-btn{display:block;width:100%;border:0;border-radius:18px;padding:15px;font-size:18px;font-weight:900;font-family:inherit;color:#fff;cursor:pointer;background:linear-gradient(180deg,#f97316,#c2410c);box-shadow:0 5px 0 #7c2d12,0 10px 22px rgba(0,0,0,.35)}.tt-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #7c2d12}',
     '.tt-btn.g{background:linear-gradient(180deg,#22c55e,#15803d);box-shadow:0 5px 0 #14532d,0 10px 22px rgba(0,0,0,.35)}.tt-btn.s{background:rgba(255,255,255,.16);box-shadow:none}',
@@ -186,7 +207,7 @@
     '.tt-banner.on{opacity:1;transform:scale(1)}.tt-banner b{display:inline-block;padding:10px 26px;border-radius:16px;background:rgba(0,0,0,.6);font-size:26px;font-weight:900;text-shadow:0 2px 0 #000;border:2px solid rgba(253,224,71,.7)}.tt-banner small{display:block;margin-top:6px;font-weight:700;font-size:14px;text-shadow:0 1px 3px #000}',
     '.tt-toast{position:absolute;left:50%;bottom:70px;transform:translateX(-50%) translateY(20px);z-index:6;max-width:92%;background:rgba(15,23,42,.94);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:9px 14px;font-size:14px;font-weight:700;line-height:1.4;text-align:center;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}',
     '.tt-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}',
-    '.tt-pop{position:absolute;z-index:7;width:236px;background:rgba(15,23,42,.97);border:2px solid rgba(253,224,71,.5);border-radius:16px;padding:8px;box-shadow:0 12px 30px rgba(0,0,0,.55);display:none}',
+    '.tt-pop{position:absolute;z-index:7;width:244px;max-height:calc(100% - 12px);overflow-y:auto;background:rgba(15,23,42,.97);border:2px solid rgba(253,224,71,.5);border-radius:16px;padding:8px;box-shadow:0 12px 30px rgba(0,0,0,.55);display:none}',
     '.tt-pop.on{display:block}.tt-pop h4{margin:2px 4px 6px;font-size:14px;font-weight:900;color:#fde68a}',
     '.tt-opt{display:flex;align-items:center;gap:8px;width:100%;border:0;border-radius:12px;padding:8px;margin-bottom:5px;background:rgba(255,255,255,.1);color:#fff;font-family:inherit;text-align:left;cursor:pointer}',
     '.tt-opt:last-child{margin-bottom:0}.tt-opt i{font-style:normal;font-family:' + EF + ';font-size:24px;width:32px;text-align:center}.tt-opt b{display:block;font-size:14px}.tt-opt small{display:block;font-size:11.5px;opacity:.8}',
@@ -198,7 +219,7 @@
     '.tt-chip:active{transform:translateY(2px);box-shadow:0 1px 0 #92400e}.tt-chip b{display:block;font-size:15px;font-weight:900;line-height:1.15;text-align:left}.tt-chip small{display:block;font-size:11.5px;font-weight:800;color:#a16207;text-align:left}',
     '.tt-chip .p{width:34px;text-align:center;flex:none}.tt-chip.tried{background:linear-gradient(180deg,#fee2e2,#fca5a5);box-shadow:0 3px 0 #991b1b}',
     '@keyframes ttIn{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}',
-    '.tt-empty{padding:12px;font-size:13px;opacity:.85;line-height:1.4;white-space:normal}',
+    '.tt-empty{padding:4px 2px;font-size:12.5px;opacity:.85;line-height:1.35;white-space:normal;height:58px;overflow:hidden}',
     /* bảng đọc từ */
     '.tt-say{position:absolute;left:0;right:0;bottom:0;z-index:8;padding:12px 14px 14px;background:linear-gradient(180deg,rgba(30,41,59,.97),rgba(15,23,42,.99));border-top:3px solid #f59e0b;border-radius:22px 22px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.5);transform:translateY(105%);transition:transform .25s;text-align:center}',
     '.tt-say.on{transform:none}.tt-say .x{position:absolute;right:10px;top:10px}',
@@ -268,7 +289,7 @@
         var s = stars(t.id), lk = !unlocked(t);
         h += '<button class="tt-cs' + (lk ? ' lk' : '') + (s ? ' dn' : '') + '" style="--c:' + t.c + '" data-a="castle" data-i="' + t.ti + '">' +
           '<div class="ca">' + castleSvg(t.c) + '<span>' + esc(t.i) + '</span></div><div class="nm">' + esc(t.n) + '</div>' +
-          '<div class="ss">' + (s ? '⭐'.repeat(s) + '<span style="opacity:.3">' + '⭐'.repeat(3 - s) + '</span>' : '<span style="opacity:.75;font-size:11.5px;letter-spacing:0">' + t.w.length + ' từ</span>') + '</div></button>';
+          (bestDiff(t.id) >= 0 ? '<span class="bd" title="Cấp độ cao nhất đã thắng">' + DIFF[bestDiff(t.id)].e + '</span>' : '') + '<div class="ss">' + (s ? '⭐'.repeat(s) + '<span style="opacity:.3">' + '⭐'.repeat(3 - s) + '</span>' : '<span style="opacity:.75;font-size:11.5px;letter-spacing:0">' + t.w.length + ' từ</span>') + '</div></button>';
       });
       h += '</div>';
     });
@@ -277,6 +298,11 @@
 
   /* ================= MÀN HÌNH GIỚI THIỆU THÀNH ================= */
   var CUR = null;
+  function diffNote(i) {
+    var d = DIFF[i];
+    return d.e + ' <b>' + d.n + '</b>: kho giữ được <b>' + d.life + '</b> từ · vàng khởi đầu <b>' + d.gold + '</b> 💰 · quái ' + (d.hp < 1 ? 'yếu hơn' : d.hp === 1 ? 'bình thường' : 'trâu gấp ' + String(d.hp).replace('.', ',') + ' lần') +
+      (d.boss > 1 ? ' · <b>' + d.boss + ' trùm</b> ở đợt cuối' : '') + ' · thưởng Nông trại <b>×' + String(d.rw).replace('.', ',') + '</b>';
+  }
   function openIntro(tp) {
     CUR = tp; hush();
     var nW = planWaves(tp).length;
@@ -284,6 +310,9 @@
     var h = '<div class="tt-ibox"><div class="tt-ihead" style="--c:' + tp.c + '"><span class="e">' + esc(tp.i) + '</span><div><b>Kho từ: ' + esc(tp.n) + '</b><small>' + tp.w.length + ' từ vựng · ' + nW + ' đợt quái' + (stars(tp.id) ? ' · Tốt nhất: ' + '⭐'.repeat(stars(tp.id)) : '') + '</small></div></div>' +
       '<div style="margin:12px 0 0;padding:12px 14px;border-radius:16px;background:rgba(127,29,29,.45);border:1px solid rgba(252,165,165,.35);font-size:14px;line-height:1.5">👹 <b>Bầy quái đang trộm từ</b> trong kho “' + esc(tp.n) + '”. Mỗi con vác một từ, chạy theo con đường để mang về <b>thành của chúng</b>. Hãy xây chòi chặn đường, <b>không để chúng mang từ nào về thành!</b></div>' +
       '<div class="tt-how"><div><i>🎤</i>Chạm vào từ ở thanh dưới, đọc đúng để nhận 💰</div><div><i>🏹</i>Chạm ô đá ➕ dọc đường để xây chòi chặn quái</div><div><i>👹</i>Chạm vào quái, đọc đúng từ nó đang trộm để làm nó choáng</div></div>' +
+      '<div class="tt-grp" style="margin-top:6px">🎚️ Chọn cấp độ</div><div class="tt-dif" id="ttDif">' +
+      DIFF.map(function (d, i) { return '<button class="' + (i === DSEL ? 'on' : '') + '" style="--c:' + d.c + '" data-a="diff" data-i="' + i + '"><i>' + d.e + '</i><b>' + d.n + '</b><small>📚 ' + d.life + '</small></button>'; }).join('') +
+      '</div><div class="tt-dnote" id="ttDN">' + diffNote(DSEL) + '</div>' +
       '<div class="tt-grp" style="margin-top:6px">📖 Ôn từ trước khi vào trận (chạm để nghe)</div>' +
       '<div style="font-size:12.5px;opacity:.85;margin:-2px 0 8px;line-height:1.45">Dòng tím là phiên âm quốc tế (IPA). Dòng 🗣️ là cách đọc gần đúng bằng chữ Việt: âm tiết có <b>dấu sắc</b> là âm cần nhấn mạnh.</div><div class="tt-wl">';
     tp.w.forEach(function (x, i) {
@@ -303,9 +332,13 @@
   var TW = {
     arrow: { n: 'Chòi cung thủ', e: '🏹', c: 50, r: 0.27, d: 9, cd: 0.62, roof: '#dc2626', info: 'Bắn nhanh, bắn xa' },
     cannon: { n: 'Chòi pháo đá', e: '💣', c: 90, r: 0.23, d: 26, cd: 1.7, sp: 0.085, roof: '#334155', info: 'Nổ lan, diệt cả bầy' },
-    ice: { n: 'Chòi băng', e: '❄️', c: 70, r: 0.22, d: 4, cd: 0.9, slow: 0.5, roof: '#0ea5e9', info: 'Làm quái đi chậm lại' }
+    ice: { n: 'Chòi băng', e: '❄️', c: 70, r: 0.22, d: 4, cd: 0.9, slow: 0.5, roof: '#0ea5e9', info: 'Làm quái đi chậm lại' },
+    /* (bản 2026.11.07-7) Chòi phun lửa: tầm gần, phun liên tục, đốt cháy cả bầy quanh mục tiêu, quái bị cháy mất máu thêm 2 giây */
+    fire: { n: 'Chòi phun lửa', e: '🔥', c: 110, r: 0.17, d: 2.2, cd: 0.1, burn: 7, area: 0.075, roof: '#ea580c', info: 'Phun lửa liên tục, đốt cháy cả bầy' },
+    /* Chòi tên lửa: tầm rất xa, nhắm con trâu nhất, tên lửa tự dẫn đường, nổ cực mạnh */
+    rocket: { n: 'Chòi tên lửa', e: '🚀', c: 160, r: 0.4, d: 70, cd: 2.6, sp: 0.12, roof: '#4c1d95', info: 'Bắn cực xa, nổ cực mạnh' }
   };
-  var TW_KEYS = ['arrow', 'cannon', 'ice'];
+  var TW_KEYS = ['arrow', 'ice', 'cannon', 'fire', 'rocket'];
   var EN = {
     bat: { e: '🦇', hp: 24, spd: 0.13, sz: 0.075 },
     gob: { e: '👺', hp: 42, spd: 0.095, sz: 0.085 },
@@ -329,9 +362,9 @@
     words.forEach(function (w) { list.push({ t: pool[Math.floor(r() * pool.length)], w: w }); });
     // Đợt sau có thêm quái vác lại từ của các đợt trước (ôn lại từ cũ)
     var old = []; for (var j = 0; j < k; j++) old = old.concat(G.waves[j]);
-    var extra = Math.min(old.length, k * 2);
+    var extra = Math.min(old.length, Math.round(k * 2 * DIFF[G.dif].more));
     shuffle(old, r).slice(0, extra).forEach(function (w) { list.splice(Math.floor(r() * (list.length + 1)), 0, { t: pool[Math.floor(r() * pool.length)], w: w }); });
-    if (k === G.waves.length - 1) list.push({ t: 'boss', w: G.waves[k][0] });
+    if (k === G.waves.length - 1) for (var bi = 0; bi < DIFF[G.dif].boss; bi++) list.push({ t: 'boss', w: G.waves[k][bi % G.waves[k].length] });
     return list;
   }
 
@@ -340,7 +373,7 @@
   function newGame(tp) {
     G = {
       tp: tp, seed: Math.floor(Math.random() * 1e6), map: MAPS[tp.ti % MAPS.length], waves: planWaves(tp), wave: 0, phase: 'prep',
-      hp: HPMAX, gold: START_GOLD, towers: [], enemies: [], shots: [], fx: [], txt: [], spots: null, q: [], qT: 0,
+      dif: DSEL, hp: DIFF[DSEL].life, hpMax: DIFF[DSEL].life, gold: DIFF[DSEL].gold, quake: 0, towers: [], enemies: [], shots: [], fx: [], txt: [], spots: null, q: [], qT: 0,
       paused: false, said: {}, bank: [], ok: 0, t: 0, prepT: 30, shake: 0, sel: -1, flagT: 0, ended: false
     };
     G.waves[0].forEach(function (w) { addBank(w); });
@@ -371,6 +404,7 @@
     var cand = [], step = W * 0.065, R = W * 0.25;
     for (var y = H * 0.05; y < H * 0.8; y += step) for (var x = W * 0.08; x <= W * 0.92; x += step) {
       var d = distPath(x, y); if (d < PW * 1.05 || d > PW * 1.75) continue;
+      if (y < W * 0.24 && Math.abs(x - clamp(PATH[0].x, W * 0.13, W * 0.87)) < W * 0.2) continue;   // chừa chỗ cho bảng Kho từ vựng
       var cov = 0; for (var s = 0; s <= 60; s++) { var p = posAt(s / 60); if (p.y > 0 && Math.hypot(p.x - x, p.y - y) < R) cov++; }
       cand.push({ x: x, y: y, c: cov });
     }
@@ -443,9 +477,9 @@
     if (G.phase === 'run' && G.q.length) {
       G.qT -= dt;
       if (G.qT <= 0) {
-        var o = G.q.shift(), D = EN[o.t], sc = (1 + 0.2 * G.wave) * (1 + Math.min(0.6, G.tp.ti * 0.012));
+        var o = G.q.shift(), D = EN[o.t], sc = (1 + 0.2 * G.wave) * (1 + Math.min(0.6, G.tp.ti * 0.012)) * DIFF[G.dif].hp;
         G.enemies.push({ t: o.t, w: o.w, hp: D.hp * sc, max: D.hp * sc, f: 0, slowT: 0, stunT: 0, said: false, bob: Math.random() * 6, hit: 0 });
-        G.qT = o.t === 'boss' ? 2.2 : Math.max(0.85, 1.7 - G.wave * 0.09);
+        G.qT = (o.t === 'boss' ? 2.2 : Math.max(0.85, 1.7 - G.wave * 0.09)) * DIFF[G.dif].gap;
         if (o.t === 'boss') { banner('🐲 Trùm trộm từ xuất hiện!', 'Đừng để nó mang từ về thành – mất tới 5 từ!'); sfx('horn'); }
       }
     }
@@ -455,6 +489,11 @@
       if (e.stunT > 0) e.stunT -= dt;
       else { var sp = D2.spd * W * (e.slowT > 0 ? 0.5 : 1); e.f += sp * dt / PLEN; }
       if (e.slowT > 0) e.slowT -= dt; if (e.hit > 0) e.hit -= dt;
+      if (e.burnT > 0) {   // đang cháy: mất máu dần + tóe lửa trên người
+        e.burnT -= dt;
+        if (Math.random() < dt * 14) { var bp = posAt(e.f), bz = EN[e.t].sz * W; flame(bp.x + (Math.random() - 0.5) * bz * 0.6, bp.y - bz * 0.2, 0, -W * 0.12, bz * 0.22, 0.45); }
+        dmgE(e, e.burnD * dt, true); if (G.enemies[i] !== e) continue;
+      }
       e.bob += dt * 8;
       if (e.f >= 1) { G.enemies.splice(i, 1); hurt(D2.dmg || 1, e); if (SAY && SAY.e === e) closeSay(); }
     }
@@ -468,12 +507,19 @@
       if (!best) return;
       t.cd = T.cd / (1 + 0.12 * (t.lv - 1)); t.fl = 0.15;
       var dmg = T.d * Math.pow(1.5, t.lv - 1), sy = s.y - W * 0.075;
+      if (t.k === 'fire') { fireAt(t, T, s, best, dmg); return; }
+      if (t.k === 'rocket') {
+        var big = best; G.enemies.forEach(function (e) { var q = posAt(e.f); if (q.y > -10 && Math.hypot(q.x - s.x, q.y - s.y) <= rr && e.hp > big.hp) big = e; });
+        G.shots.push({ k: 'rocket', x: s.x, y: s.y - W * 0.1, e: big, a: -Math.PI / 2, v: W * 0.35, d: dmg, sp: T.sp * W, tx: 0, ty: 0, tr: 0 });
+        smoke(s.x, s.y - W * 0.08, 6); sfx('launch'); return;
+      }
       if (t.k === 'cannon') { var p = posAt(Math.min(1, best.f + EN[best.t].spd * W * 0.55 / PLEN)); G.shots.push({ k: 'cannon', x: s.x, y: sy, sx: s.x, sy: sy, tx: p.x, ty: p.y, t: 0, dur: 0.55, d: dmg, sp: T.sp * W }); sfx('boom'); }
       else { G.shots.push({ k: t.k, x: s.x, y: sy, e: best, d: dmg, v: W * (t.k === 'arrow' ? 1.6 : 1.1), slow: T.slow }); sfx(t.k === 'arrow' ? 'arrow' : 'ice'); }
     });
     // đạn bay
     for (i = G.shots.length - 1; i >= 0; i--) {
       var b = G.shots[i];
+      if (b.k === 'rocket') { if (stepRocket(b, dt)) G.shots.splice(i, 1); continue; }
       if (b.k === 'cannon') {
         b.t += dt; var k = Math.min(1, b.t / b.dur);
         b.x = b.sx + (b.tx - b.sx) * k; b.y = b.sy + (b.ty - b.sy) * k - Math.sin(k * Math.PI) * W * 0.12;
@@ -493,15 +539,17 @@
       } else { b.x += dx / dl * mv; b.y += dy / dl * mv; }
     }
     // hiệu ứng
-    for (i = G.fx.length - 1; i >= 0; i--) { var f = G.fx[i]; f.l -= dt; if (f.l <= 0) { G.fx.splice(i, 1); continue; } if (f.vx != null) { f.x += f.vx * dt; f.y += f.vy * dt; f.vy += W * 0.9 * dt; } }
+    for (i = G.fx.length - 1; i >= 0; i--) { var f = G.fx[i]; f.l -= dt; if (f.l <= 0) { G.fx.splice(i, 1); continue; } if (f.vx != null) { f.x += f.vx * dt; f.y += f.vy * dt; f.vy += W * 0.9 * dt * (f.g == null ? 1 : f.g); } }
+    if (G.fx.length > 600) G.fx.splice(0, G.fx.length - 600);
     for (i = G.txt.length - 1; i >= 0; i--) { var tx = G.txt[i]; tx.l -= dt; tx.y -= W * 0.08 * dt; if (tx.l <= 0) G.txt.splice(i, 1); }
     if (G.shake > 0) G.shake -= dt;
+    if (G.quake > 0) G.quake -= dt;
     // hết đợt
     if (G.phase === 'run' && !G.q.length && !G.enemies.length && !G.ended) waveDone();
   }
-  function dmgE(e, d) {
+  function dmgE(e, d, quiet) {
     if (G.enemies.indexOf(e) < 0) return;
-    e.hp -= d; e.hit = 0.12;
+    e.hp -= d; if (!quiet) e.hit = 0.12;
     if (e.hp <= 0) {
       var p = posAt(e.f), x = G.tp.w[e.w];
       G.enemies.splice(G.enemies.indexOf(e), 1);
@@ -521,6 +569,48 @@
   }
   function spark(x, y, cols, n) { for (var i = 0; i < n; i++) { var a = Math.random() * 6.28, v = W * (0.15 + Math.random() * 0.35); G.fx.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - W * 0.2, l: 0.5 + Math.random() * 0.3, c: cols[i % cols.length], r: 1.5 + Math.random() * 2.5 }); } }
   function boom(x, y, r) { G.fx.push({ ring: 1, x: x, y: y, r: r, l: 0.35, L: 0.35 }); spark(x, y, ['#f97316', '#fbbf24', '#78716c', '#fff'], 14); }
+  /* ----- hiệu ứng lửa & khói (bản 2026.11.07-7) ----- */
+  function flame(x, y, vx, vy, r, l) { G.fx.push({ k: 'flame', x: x, y: y, vx: vx, vy: vy, g: -0.25, r: r, l: l, L: l }); }
+  function smoke(x, y, n, big) { for (var i = 0; i < n; i++) { var a = Math.random() * 6.28, v = W * (big ? 0.12 : 0.05) * Math.random(); G.fx.push({ k: 'smoke', x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - W * 0.03, g: -0.05, r: W * (big ? 0.03 : 0.014) * (0.6 + Math.random() * 0.6), l: big ? 1.1 : 0.7, L: big ? 1.1 : 0.7 }); } }
+  /* Chòi phun lửa: luồng lửa từ miệng chòi tới mục tiêu, cháy lan cho các quái đứng gần mục tiêu */
+  function fireAt(t, T, s, best, dmg) {
+    var p = posAt(best.f), tx = p.x, ty = p.y - EN[best.t].sz * W * 0.3, nx = s.x, ny = s.y - W * 0.075;
+    var dx = tx - nx, dy = ty - ny, dl = Math.hypot(dx, dy) || 1, sp = dl / 0.32;
+    t.fa = Math.atan2(dy, dx); t.fl = 0.18;
+    for (var i = 0; i < 3; i++) {
+      var j = (Math.random() - 0.5) * 0.35, c = Math.cos(j), sn = Math.sin(j), vx = (dx * c - dy * sn) / dl * sp, vy = (dx * sn + dy * c) / dl * sp;
+      flame(nx, ny, vx * (0.85 + Math.random() * 0.3), vy * (0.85 + Math.random() * 0.3), W * (0.014 + Math.random() * 0.012), 0.34 + Math.random() * 0.1);
+    }
+    var area = T.area * W, burn = T.burn * Math.pow(1.4, t.lv - 1);
+    G.enemies.slice().forEach(function (e) { var q = posAt(e.f); if (Math.hypot(q.x - p.x, q.y - p.y) <= area || e === best) { e.burnT = 2; e.burnD = Math.max(e.burnD || 0, burn); dmgE(e, dmg, true); if (G.enemies.indexOf(e) >= 0) e.hit = 0.05; } });
+    t.snd = (t.snd || 0) - T.cd; if (t.snd <= 0) { t.snd = 0.35; sfx('fire'); }
+  }
+  /* Tên lửa: phóng thẳng lên rồi bẻ lái đuổi theo mục tiêu, vệt khói + đuôi lửa, nổ lớn có sóng xung kích */
+  function stepRocket(b, dt) {
+    var alive = G.enemies.indexOf(b.e) >= 0;
+    if (alive) { var p = posAt(b.e.f); b.tx = p.x; b.ty = p.y - EN[b.e.t].sz * W * 0.3; }
+    else if (!b.tx) { b.tx = b.x; b.ty = b.y + W * 0.3; }
+    b.tr += dt; b.v = Math.min(W * 1.5, b.v + W * 2.2 * dt);
+    var want = Math.atan2(b.ty - b.y, b.tx - b.x), da = want - b.a;
+    while (da > Math.PI) da -= 2 * Math.PI; while (da < -Math.PI) da += 2 * Math.PI;
+    var turn = (b.tr < 0.18 ? 1.5 : 7) * dt; b.a += clamp(da, -turn, turn);
+    b.x += Math.cos(b.a) * b.v * dt; b.y += Math.sin(b.a) * b.v * dt;
+    var tailx = b.x - Math.cos(b.a) * W * 0.03, taily = b.y - Math.sin(b.a) * W * 0.03;
+    if (Math.random() < 0.8) G.fx.push({ k: 'smoke', x: tailx, y: taily, vx: (Math.random() - 0.5) * W * 0.03, vy: (Math.random() - 0.5) * W * 0.03, g: -0.04, r: W * 0.012, l: 0.6, L: 0.6 });
+    flame(tailx, taily, -Math.cos(b.a) * W * 0.25, -Math.sin(b.a) * W * 0.25, W * 0.012, 0.16);
+    if (Math.hypot(b.tx - b.x, b.ty - b.y) < W * 0.03 || b.tr > 4) {
+      var r = b.sp;
+      G.fx.push({ ring: 1, col: '255,255,255', x: b.x, y: b.y, r: r * 1.5, l: 0.3, L: 0.3 });
+      G.fx.push({ ring: 1, x: b.x, y: b.y, r: r, l: 0.5, L: 0.5 });
+      G.fx.push({ k: 'flash', x: b.x, y: b.y, r: r * 1.1, l: 0.22, L: 0.22 });
+      for (var i = 0; i < 14; i++) { var a = Math.random() * 6.28, v = W * (0.1 + Math.random() * 0.3); flame(b.x, b.y, Math.cos(a) * v, Math.sin(a) * v, W * (0.02 + Math.random() * 0.02), 0.4 + Math.random() * 0.25); }
+      spark(b.x, b.y, ['#fde047', '#fb923c', '#fff', '#a8a29e'], 18); smoke(b.x, b.y, 10, true);
+      G.enemies.slice().forEach(function (e) { var q = posAt(e.f), dd = Math.hypot(q.x - b.x, q.y - b.y); if (dd < r) dmgE(e, b.d * (dd < r * 0.45 ? 1 : 0.55)); });
+      G.quake = 0.25; sfx('bigboom');
+      return true;
+    }
+    return false;
+  }
 
   /* ================= ĐỢT QUÁI ================= */
   function startWave() {
@@ -687,7 +777,7 @@
   function emo(e, x, y, sz) { X.fillStyle = '#000'; X.font = sz + 'px ' + EF; X.fillText(e, x, y); }
   function render() {
     X.setTransform(DPR, 0, 0, DPR, 0, 0);
-    var sh = G.shake > 0 ? (Math.random() - 0.5) * 6 : 0;
+    var sh = G.shake > 0 || G.quake > 0 ? (Math.random() - 0.5) * (G.quake > 0 ? 9 : 6) : 0;
     X.save(); X.translate(sh, sh * 0.6);
     X.drawImage(BG, 0, 0, W, H);
     X.textAlign = 'center'; X.textBaseline = 'middle';
@@ -719,13 +809,31 @@
     G.enemies.forEach(drawSign);
     // đạn
     G.shots.forEach(function (b) {
+      if (b.k === 'rocket') {
+        X.save(); X.translate(b.x, b.y); X.rotate(b.a); var L = W * 0.05, R = W * 0.011;
+        var fg = X.createRadialGradient(-L * 0.6, 0, 1, -L * 0.6, 0, L * 0.7); fg.addColorStop(0, 'rgba(255,255,255,.95)'); fg.addColorStop(0.3, 'rgba(253,224,71,.85)'); fg.addColorStop(1, 'rgba(249,115,22,0)');
+        X.globalCompositeOperation = 'lighter'; X.fillStyle = fg; X.beginPath(); X.ellipse(-L * 0.75, 0, L * 0.55 * (0.8 + Math.random() * 0.4), R * 1.4, 0, 0, 7); X.fill(); X.globalCompositeOperation = 'source-over';
+        X.fillStyle = '#e5e7eb'; rr(-L * 0.5, -R, L * 0.85, R * 2, R * 0.6); X.fill();
+        X.fillStyle = '#dc2626'; X.beginPath(); X.moveTo(L * 0.35, -R); X.quadraticCurveTo(L * 0.62, 0, L * 0.35, R); X.closePath(); X.fill();
+        X.fillStyle = '#7c3aed'; X.beginPath(); X.moveTo(-L * 0.5, -R); X.lineTo(-L * 0.7, -R * 2.1); X.lineTo(-L * 0.25, -R); X.closePath(); X.fill();
+        X.beginPath(); X.moveTo(-L * 0.5, R); X.lineTo(-L * 0.7, R * 2.1); X.lineTo(-L * 0.25, R); X.closePath(); X.fill();
+        X.restore(); return;
+      }
       if (b.k === 'arrow') { X.save(); X.translate(b.x, b.y); X.rotate(b.a || 0); X.strokeStyle = '#7c2d12'; X.lineWidth = 2.5; X.beginPath(); X.moveTo(-10, 0); X.lineTo(8, 0); X.stroke(); X.fillStyle = '#e5e7eb'; X.beginPath(); X.moveTo(12, 0); X.lineTo(6, -4); X.lineTo(6, 4); X.fill(); X.fillStyle = '#f87171'; X.fillRect(-12, -3, 4, 6); X.restore(); }
       else if (b.k === 'ice') { X.fillStyle = '#e0f2fe'; X.shadowColor = '#38bdf8'; X.shadowBlur = 10; X.beginPath(); X.arc(b.x, b.y, W * 0.013, 0, 7); X.fill(); X.shadowBlur = 0; }
       else { X.fillStyle = 'rgba(0,0,0,.25)'; X.beginPath(); X.ellipse(b.sx + (b.tx - b.sx) * (b.t / b.dur), b.sy + (b.ty - b.sy) * (b.t / b.dur), 6, 3, 0, 0, 7); X.fill(); var g2 = X.createRadialGradient(b.x - 2, b.y - 2, 1, b.x, b.y, W * 0.022); g2.addColorStop(0, '#9ca3af'); g2.addColorStop(1, '#1f2937'); X.fillStyle = g2; X.beginPath(); X.arc(b.x, b.y, W * 0.02, 0, 7); X.fill(); }
     });
     // hiệu ứng
     G.fx.forEach(function (f) {
-      if (f.ring) { var k = 1 - f.l / f.L; X.strokeStyle = 'rgba(251,146,60,' + (1 - k) + ')'; X.lineWidth = 5 * (1 - k) + 1; X.beginPath(); X.arc(f.x, f.y, f.r * (0.3 + k * 0.8), 0, 7); X.stroke(); X.fillStyle = 'rgba(254,215,170,' + (0.4 * (1 - k)) + ')'; X.fill(); return; }
+      if (f.k === 'smoke') { var ks = 1 - f.l / f.L; X.fillStyle = 'rgba(120,113,108,' + (0.45 * (1 - ks)) + ')'; X.beginPath(); X.arc(f.x, f.y, f.r * (1 + ks * 2.2), 0, 7); X.fill(); return; }
+      if (f.k === 'flame' || f.k === 'flash') {
+        var kf = f.l / f.L, rad = f.k === 'flash' ? f.r * (1.2 - kf * 0.4) : f.r * (1 + (1 - kf) * 1.6);
+        var fg = X.createRadialGradient(f.x, f.y, 0, f.x, f.y, rad);
+        if (f.k === 'flash') { fg.addColorStop(0, 'rgba(255,255,255,' + kf + ')'); fg.addColorStop(0.4, 'rgba(253,224,71,' + kf * 0.8 + ')'); fg.addColorStop(1, 'rgba(249,115,22,0)'); }
+        else { fg.addColorStop(0, 'rgba(255,250,220,' + kf + ')'); fg.addColorStop(0.35, 'rgba(253,186,33,' + kf * 0.9 + ')'); fg.addColorStop(0.75, 'rgba(234,88,12,' + kf * 0.55 + ')'); fg.addColorStop(1, 'rgba(185,28,28,0)'); }
+        X.globalCompositeOperation = 'lighter'; X.fillStyle = fg; X.beginPath(); X.arc(f.x, f.y, rad, 0, 7); X.fill(); X.globalCompositeOperation = 'source-over'; return;
+      }
+      if (f.ring) { var k = 1 - f.l / f.L; X.strokeStyle = 'rgba(' + (f.col || '251,146,60') + ',' + (1 - k) + ')'; X.lineWidth = 5 * (1 - k) + 1; X.beginPath(); X.arc(f.x, f.y, f.r * (0.3 + k * 0.8), 0, 7); X.stroke(); X.fillStyle = 'rgba(254,215,170,' + (0.4 * (1 - k)) + ')'; X.fill(); return; }
       X.globalAlpha = clamp(f.l * 2, 0, 1); X.fillStyle = f.c; X.beginPath(); X.arc(f.x, f.y, f.r, 0, 7); X.fill(); X.globalAlpha = 1;
     });
     G.txt.forEach(function (t) {
@@ -765,7 +873,7 @@
       if (i === 2) emo('👹', fx + fw / 2, fy - ph + fh / 2 + wv * 0.3, fh * 0.75);
     });
     // biển tên thành của quái + số từ đã bị chúng mang về
-    var lost = HPMAX - G.hp, lb = 'THÀNH CỦA QUÁI' + (lost ? ' · 📜 ' + lost : ''), fs = Math.max(10, Math.round(W * 0.03));
+    var lost = G.hpMax - G.hp, lb = 'THÀNH CỦA QUÁI' + (lost ? ' · 📜 ' + lost : ''), fs = Math.max(10, Math.round(W * 0.03));
     X.font = '900 ' + fs + 'px ' + TF; var lw = X.measureText(lb).width + fs * 1.4, ly = base - fs * 0.2;
     X.fillStyle = 'rgba(28,25,23,.85)'; rr(cx - lw / 2, ly - fs * 1.5, lw, fs * 1.5, fs * 0.5); X.fill();
     X.strokeStyle = '#7f1d1d'; X.lineWidth = 1.5; X.stroke(); X.fillStyle = '#fca5a5'; X.fillText(lb, cx, ly - fs * 0.72);
@@ -793,6 +901,8 @@
     X.fillStyle = '#92400e'; X.fillRect(x - s * 0.3, y - s * 0.62, s * 0.08, s * 0.36); X.fillRect(x + s * 0.22, y - s * 0.62, s * 0.08, s * 0.36);
     X.fillStyle = '#b45309'; rr(x - s * 0.36, y - s * 0.68, s * 0.72, s * 0.12, 3); X.fill();
     // người/vũ khí trong chòi
+    if (t.k === 'fire' && t.fl > 0) { var gl = X.createRadialGradient(x, y - s * 0.47, 1, x, y - s * 0.47, s * 0.55); gl.addColorStop(0, 'rgba(253,186,33,.7)'); gl.addColorStop(1, 'rgba(234,88,12,0)'); X.globalCompositeOperation = 'lighter'; X.fillStyle = gl; X.beginPath(); X.arc(x, y - s * 0.47, s * 0.55, 0, 7); X.fill(); X.globalCompositeOperation = 'source-over'; }
+    if (t.k === 'rocket' && t.cd <= 0.4) { X.strokeStyle = 'rgba(167,139,250,' + (0.5 + 0.5 * Math.sin(G.flagT * 10)) + ')'; X.lineWidth = 2; X.beginPath(); X.arc(x, y - s * 0.47, s * 0.32, 0, 7); X.stroke(); }
     X.save(); X.translate(x, y - s * 0.47); X.scale(fl, fl); emo(T.e, 0, 0, s * 0.36); X.restore();
     // mái
     X.fillStyle = T.roof; X.beginPath(); X.moveTo(x - s * 0.46, y - s * 0.66); X.lineTo(x, y - s * 1.02); X.lineTo(x + s * 0.46, y - s * 0.66); X.closePath(); X.fill();
@@ -805,6 +915,7 @@
     var D = EN[e.t], p = posAt(e.f), sz = D.sz * W, by = Math.abs(Math.sin(e.bob)) * sz * 0.1;
     if (p.y < -sz) return;
     X.fillStyle = 'rgba(0,0,0,.3)'; X.beginPath(); X.ellipse(p.x, p.y + sz * 0.3, sz * 0.38, sz * 0.13, 0, 0, 7); X.fill();
+    if (e.burnT > 0) { X.fillStyle = 'rgba(249,115,22,.28)'; X.beginPath(); X.arc(p.x, p.y - sz * 0.1, sz * 0.55, 0, 7); X.fill(); }
     if (e.slowT > 0) { X.fillStyle = 'rgba(125,211,252,.35)'; X.beginPath(); X.arc(p.x, p.y - sz * 0.1, sz * 0.55, 0, 7); X.fill(); }
     X.save(); X.translate(p.x, p.y - by);
     if (p.dx < 0) X.scale(-1, 1);
@@ -864,9 +975,9 @@
   function endGame(win) {
     if (G.ended) return;
     G.ended = true; closeSay(); closePop(); waveBtn();
-    var st = win ? (G.hp >= HPMAX * 0.8 ? 3 : G.hp >= HPMAX * 0.4 ? 2 : 1) : 0, tp = G.tp, pv = prog(), old = pv.s[tp.id] || 0;
-    if (win) { if (st > old) pv.s[tp.id] = st; pv.b[tp.id] = Math.max(pv.b[tp.id] || 0, G.hp); saveProg(); }
-    var vnd = (win ? st * STAR_VND : 0) + G.ok * WORD_VND;
+    var st = win ? (G.hp >= G.hpMax * 0.8 ? 3 : G.hp >= G.hpMax * 0.4 ? 2 : 1) : 0, tp = G.tp, pv = prog(), old = pv.s[tp.id] || 0;
+    if (win) { if (st > old) pv.s[tp.id] = st; pv.b[tp.id] = Math.max(pv.b[tp.id] || 0, G.hp); if (G.dif > bestDiff(tp.id)) pv.d[tp.id] = G.dif; saveProg(); }
+    var vnd = Math.round(((win ? st * STAR_VND : 0) * DIFF[G.dif].rw + G.ok * WORD_VND) / 1000) * 1000;
     try { if (window.farmEarn && (vnd || G.ok)) window.farmEarn('castle', vnd, G.ok, tp.id); } catch (e) {}
     if (win) { try { localStorage.setItem('farm6_pass', String(Date.now())); } catch (e) {} }
     sfx(win ? 'win' : 'lose');
@@ -876,7 +987,8 @@
     if (win) { var list = DATA.topics.filter(function (t) { return t.g === tp.g; }), k = list.indexOf(tp); next = list[k + 1] || DATA.topics[tp.ti + 1] || null; }
     var h = '<div class="tt-endc"><div class="big">' + (win ? '🏆' : '💥') + '</div><h2>' + (win ? 'Bảo vệ kho từ thành công!' : 'Quái đã cướp quá nhiều từ!') + '</h2>' +
       (win ? '<div class="stars">' + '⭐'.repeat(st) + '<span style="opacity:.25">' + '⭐'.repeat(3 - st) + '</span></div>' : '') +
-      '<div class="sum">' + (win ? 'Kho còn giữ ' + G.hp + '/' + HPMAX + ' 📚 · ' : 'Bạn chặn được ' + G.wave + '/' + G.waves.length + ' đợt · ') + 'Đọc đúng <b>' + G.ok + '/' + tp.w.length + '</b> từ</div>' +
+      '<div class="sum" style="margin-bottom:4px">Cấp độ: <b style="color:' + DIFF[G.dif].c + ';background:#fff;border-radius:8px;padding:1px 8px">' + DIFF[G.dif].e + ' ' + DIFF[G.dif].n + '</b></div>' +
+      '<div class="sum">' + (win ? 'Kho còn giữ ' + G.hp + '/' + G.hpMax + ' 📚 · ' : 'Bạn chặn được ' + G.wave + '/' + G.waves.length + ' đợt · ') + 'Đọc đúng <b>' + G.ok + '/' + tp.w.length + '</b> từ</div>' +
       (vnd ? '<div class="farm">🧑‍🌾 +' + money(vnd) + ' vào Nông trại</div>' : '') +
       (bad.length ? '<div style="font-size:13.5px;font-weight:800;color:#fca5a5">Từ cần luyện thêm (chạm để nghe):</div><div class="wl">' + bad.slice(0, 24).map(function (i) { var pv = pronOf(tp.w[i]).vi; return '<span class="bd" data-a="hearw" data-i="' + i + '">' + esc(tp.w[i][0]) + (pv ? ' <i style="font-style:normal;color:#fde68a">(' + esc(pv) + ')</i>' : '') + ' · ' + esc(tp.w[i][1]) + '</span>'; }).join('') + '</div>' : '<div class="sum">🎉 Bạn đã đọc đúng toàn bộ từ vựng trong kho!</div>') +
       '<div class="acts">' + (next && win ? '<button class="tt-btn g" data-a="next" data-i="' + next.ti + '">▶ Kho từ tiếp: ' + esc(next.n) + '</button>' : '') +
@@ -891,7 +1003,7 @@
     $('ttEnd').classList.remove('on'); closePop();
     requestAnimationFrame(function () {
       lay(); renderBank(); hud(); waveBtn();
-      banner('Kho từ: ' + tp.n, 'Quái sắp tới trộm từ – mau chuẩn bị chòi chặn đường!');
+      banner(DIFF[G.dif].e + ' ' + DIFF[G.dif].n + ' · ' + tp.n, 'Quái sắp tới trộm từ – mau chuẩn bị chòi chặn đường!');
       setTimeout(function () { if (G && G.tp === tp && !G.towers.length) toast('💡 Chạm vào từ ở thanh dưới để đọc và nhận vàng, rồi chạm ô đá <b>➕</b> để xây chòi chặn quái.'); }, 2200);
       if (!raf) { last = 0; raf = requestAnimationFrame(loop); }
     });
@@ -908,6 +1020,10 @@
       openIntro(tp); return;
     }
     if (a === 'hear') { say(CUR.w[+el.getAttribute('data-i')][0]); return; }
+    if (a === 'diff') {
+      DSEL = +el.getAttribute('data-i'); try { localStorage.setItem('tt_diff', String(DSEL)); } catch (e) {}
+      Array.prototype.forEach.call($('ttDif').children, function (b, i) { b.classList.toggle('on', i === DSEL); }); $('ttDN').innerHTML = diffNote(DSEL); sfx('tap'); return;
+    }
     if (a === 'start') { startGame(CUR); return; }
     if (a === 'map') { stopLoop(); closeSay(); if (G) G.ended = true; G = null; renderMap(); show('ttMap'); return; }
     if (!G) return;
@@ -919,7 +1035,7 @@
       e2.classList.add('on'); return;
     }
     if (a === 'resume') { $('ttEnd').classList.remove('on'); G.paused = false; hud(); return; }
-    if (a === 'again') { startGame(G.tp); return; }
+    if (a === 'again') { DSEL = G.dif; startGame(G.tp); return; }
     if (a === 'next') { openIntro(DATA.topics[+el.getAttribute('data-i')]); stopLoop(); G = null; return; }
     if (a === 'hearw') { say(G.tp.w[+el.getAttribute('data-i')][0]); return; }
     if (G.ended) return;

@@ -174,7 +174,10 @@
   function starsOf(L) { return prog().s[L] || 0; }
   function bestT(L) { return (prog().t || {})[L] || 0; }
   function mmss(sec) { sec = Math.max(0, Math.round(sec)); return Math.floor(sec / 60) + ':' + ('0' + sec % 60).slice(-2); }
-  function unlocked(L) { return L === 0 || starsOf(L - 1) > 0; }
+  // (bản 2026.11.07-1) Qua màn lần đầu phải làm đúng bài kiểm tra (phát âm + chọn nghĩa) mới mở màn sau
+  function qzPend(L) { return !!(prog().q || {})[L]; }
+  function qzGate(L) { return L > 0 && starsOf(L - 1) > 0 && qzPend(L - 1); }   // màn L đang chờ bài kiểm tra của màn trước
+  function unlocked(L) { return L === 0 || (starsOf(L - 1) > 0 && !qzPend(L - 1)); }
   function totalStars() { var s = 0, p = prog().s; for (var k in p) s += p[k]; return s; }
 
   /* ================= CSS ================= */
@@ -338,7 +341,7 @@
       lv.forEach(function (x, k) {
         var a = n === 1 ? Math.PI * 0.75 : Math.PI * (0.78 + 1.44 * k / (n - 1)), px = 50 + Math.cos(a) * 37, py = 47 + Math.sin(a) * 34;
         var L2 = x.L, ok = unlocked(L2), sv = starsOf(L2);
-        h += '<button class="mg-node' + (!ok ? ' lock' : L2 === cur ? ' cur' : '') + '" data-a="lvl" data-l="' + L2 + '" style="left:' + px.toFixed(1) + '%;top:' + py.toFixed(1) + '%"><i>' + (ok ? (k + 1) : '🔒') + '</i><b>' + (ok ? '★'.repeat(sv) + '☆'.repeat(3 - sv) : '') + '</b></button>';
+        h += '<button class="mg-node' + (!ok ? ' lock' : L2 === cur ? ' cur' : '') + '" data-a="lvl" data-l="' + L2 + '" style="left:' + px.toFixed(1) + '%;top:' + py.toFixed(1) + '%"><i>' + (ok ? (k + 1) : qzGate(L2) ? '📝' : '🔒') + '</i><b>' + (ok ? '★'.repeat(sv) + '☆'.repeat(3 - sv) : '') + '</b></button>';
       });
       h += '<div class="sign">Đảo ' + (ti + 1) + ': ' + esc(t.n) + ' <small>· ' + t.w.length + ' từ</small></div></div>';
       if (ti % 3 === 1) h += '<span class="mg-fish" style="top:' + (top + ISH - 30) + 'px;' + (left ? 'right:8%' : 'left:8%') + '">' + ['🐠', '🐬', '🐟', '🦈', '🐙'][ti % 5] + '</span>';
@@ -810,6 +813,7 @@
     var stars = win ? timeStars(sec) : 0;
     var prev = starsOf(L), gain = 0, pb = bestT(L), rec = win && (!pb || sec < pb);
     if (win) {
+      if ((!prev || qzPend(L)) && L + 1 < levelCount()) { if (!prog().q) prog().q = {}; prog().q[L] = 1; }
       if (stars > prev) { gain = (stars - prev) * STAR_PRICE; prog().s[L] = stars; }
       if (!prog().t) prog().t = {}; if (rec) prog().t[L] = sec; saveProg();
       sfx('win');
@@ -826,8 +830,17 @@
       '<p style="font-size:24px;font-weight:900;color:#0b6fb8;margin:2px 0">⏱ ' + mmss(sec) + '</p><p>' + msg + '</p>' + (pb && !rec ? '<p style="font-size:13px;color:#4a7aa0">🏅 Thời gian tốt nhất: ' + mmss(pb) + '</p>' : '') +
       (gain ? '<p>🧑‍🌾 <b>+' + money(gain) + '</b> đã chuyển vào Nông trại</p>' : '') +
       '<p style="font-size:13px;color:#4a7aa0;margin:8px 0 0">📚 Ôn lại từ vựng (chạm để nghe):</p><div class="mg-wl">' + words + '</div>' +
-      '<div class="mg-acts"><button class="mg-btn pk" data-a="tomap">🗺️ Bản đồ</button><button class="mg-btn pk" data-a="again">↻ Chơi lại</button>' + (win && next ? '<button class="mg-btn go" data-a="next">▶ Màn tiếp</button>' : '') + '</div>');
+      (win && qzPend(L) ? '<p style="background:#fff4d6;color:#7a4b00;border-radius:12px;padding:8px 10px;font-size:14px;margin:10px 0 0">📝 Hãy làm <b>bài kiểm tra</b>: đọc đúng từ vựng và chọn đúng nghĩa để mở màn tiếp theo.</p>' : '') +
+      '<div class="mg-acts"><button class="mg-btn pk" data-a="tomap">🗺️ Bản đồ</button><button class="mg-btn pk" data-a="again">↻ Chơi lại</button>' + (win && qzPend(L) ? '<button class="mg-btn go" data-a="quiz">📝 Làm bài kiểm tra</button>' : win && next ? '<button class="mg-btn go" data-a="next">▶ Màn tiếp</button>' : '') + '</div>');
     if (win) setTimeout(function () { sfx('star'); }, 300);
+  }
+  /* Bài kiểm tra sau màn (bản 2026.11.07-1) — dùng SixLevelQuiz trong index.html */
+  function startQuiz(L) {
+    var lv = D().levels[L], tp = D().topics[lv.ti];
+    var passed = function () { if (prog().q) delete prog().q[L]; saveProg(); unmodal(); stopPlay(); renderMap(false); show('map'); if (L + 1 < levelCount()) preLevel(L + 1); };
+    if (!window.SixLevelQuiz) { passed(); return; }   // app bản cũ chưa có bài kiểm tra: không chặn người chơi
+    musicStop(); hush();
+    window.SixLevelQuiz.open({ lang: LANG, title: 'Đảo ' + (lv.ti + 1) + ' · Màn ' + (lv.sub + 1), words: lv.words, all: tp.w, onPass: passed });
   }
   function stopPlay() { cancelAnimationFrame(raf); raf = 0; tweens = []; parts = []; texts = []; beams = []; banner = null; G = null; musicStop(); hush(); }
 
@@ -871,7 +884,8 @@
     else if (a === 'home') { if (FIXED) api.close(); else { renderHome(); show('home'); } }
     else if (a === 'help') modal('<div style="font-size:44px">🏝️</div><h2>Cách chơi</h2><div class="mg-how" style="background:#eafaff;color:#08406e">' + RULES + '</div><div class="mg-acts"><button class="mg-btn go" data-a="unmod">Đã hiểu</button></div>');
     else if (a === 'lang') openLang(el.getAttribute('data-l'));
-    else if (a === 'lvl') { var L = +el.getAttribute('data-l'); if (!unlocked(L)) { sfx('bad'); return; } sfx('select'); preLevel(L); }
+    else if (a === 'lvl') { var L = +el.getAttribute('data-l'); if (!unlocked(L)) { if (qzGate(L)) startQuiz(L - 1); else sfx('bad'); return; } sfx('select'); preLevel(L); }
+    else if (a === 'quiz') { if (G) startQuiz(G.def.L); }
     else if (a === 'unmod') unmodal();
     else if (a === 'start') { if (PRE) start(PRE); }
     else if (a === 'sayw') { var i = +el.getAttribute('data-i'), def = G ? G.def : PRE; if (def && def.words[i]) say(def.words[i][0], true); }

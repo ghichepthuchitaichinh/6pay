@@ -257,6 +257,7 @@
   while (P.s.length < 15) P.s.push(0);
   if (P.lv !== 2) P.lv = 1;
   if (!P.mw) P.mw = {};
+  if (!P.qz) P.qz = {};   // (bản 2026.11.07-1) màn đã qua nhưng CHƯA làm đúng bài kiểm tra -> chưa mở màn sau
   function save() { try { localStorage.setItem('dg_p', JSON.stringify(P)); } catch (e) {} }
   function best(id) { try { return +localStorage.getItem('wg_best_' + id) || 0; } catch (e) { return 0; } }
   function setBest(id, v) { try { localStorage.setItem('wg_best_' + id, v); } catch (e) {} }
@@ -418,8 +419,8 @@
     CH.forEach(function (c) {
       h += '<h3>' + c[0] + '</h3><div class="eg-nodes">';
       for (var i = c[1]; i < c[2]; i++) {
-        var lock = i > 0 && !P.s[i - 1], rv = (P.mw[i] || []).length;
-        h += '<button class="eg-node' + (lock ? ' lock' : '') + '" ' + (lock ? '' : 'data-a="lvl" data-i="' + i + '"') + ' style="background:linear-gradient(145deg,' + L[i].c + ',' + L[i].c + 'bb)"><span class="ic">' + (lock ? '🔒' : L[i].i) + '</span><span class="nm">' + (i >= lkFree(L.length) && !lkOpen() ? '🔒 ' : '') + (i + 1) + '. ' + L[i].n + '</span><span class="st">' + stars(P.s[i]) + '</span>' + (rv && !lock ? '<span class="rv">📌 ' + rv + ' từ cần ôn</span>' : '') + '</button>';
+        var lock = i > 0 && (!P.s[i - 1] || !!P.qz[i - 1]), qzl = lock && i > 0 && P.s[i - 1] && P.qz[i - 1], rv = (P.mw[i] || []).length;
+        h += '<button class="eg-node' + (lock ? ' lock' : '') + '" ' + (qzl ? 'data-a="quizlv" data-i="' + (i - 1) + '"' : lock ? '' : 'data-a="lvl" data-i="' + i + '"') + ' style="background:linear-gradient(145deg,' + L[i].c + ',' + L[i].c + 'bb)"><span class="ic">' + (lock ? '🔒' : L[i].i) + '</span><span class="nm">' + (i >= lkFree(L.length) && !lkOpen() ? '🔒 ' : '') + (i + 1) + '. ' + L[i].n + '</span><span class="st">' + stars(P.s[i]) + '</span>' + (rv && !lock ? '<span class="rv">📌 ' + rv + ' từ cần ôn</span>' : '') + (qzl ? '<span class="rv" style="color:#fde68a">📝 Làm bài kiểm tra màn ' + i + ' để mở</span>' : '') + '</button>';
       }
       h += '</div>';
     });
@@ -639,7 +640,7 @@
       // các từ chưa hứng được (kể cả chưa kịp xuất hiện) cũng cần ôn
       L[g.li].w.forEach(function (w) { if (!g.got[w[0]] && !g.missed[w[0]]) { g.missed[w[0]] = w; mis2.push(w[0]); } });
       fe(gain, n);
-      P.m = Math.max(0, P.m + gain); sfx(pass ? 'win' : 'bad'); if (sr > P.s[g.li]) P.s[g.li] = sr;
+      P.m = Math.max(0, P.m + gain); sfx(pass ? 'win' : 'bad'); if (pass && (!P.s[g.li] || P.qz[g.li])) P.qz[g.li] = 1; if (sr > P.s[g.li]) P.s[g.li] = sr;
       if (mis2.length) P.mw[g.li] = mis2; else delete P.mw[g.li];
       save();
       var last = g.li === 14;
@@ -647,7 +648,8 @@
         '<div class="eg-stars">' + stars(sr) + '</div><div>Hứng đúng <b>' + n + '/' + N + '</b> từ</div>' +
         '<div class="eg-mny" style="color:' + (gain >= 0 ? '#4ade80' : '#f87171') + '">' + money(gain, 1) + '</div>' +
         (pass ? '<div style="opacity:.85;font-size:14px">đã gồm thưởng ' + money(sr * 20000) + ' cho ' + sr + ' sao</div>' : '<div style="opacity:.85;font-size:14px">Cần hứng đúng ít nhất ' + Math.ceil(N * 0.6) + ' từ để qua màn</div>') +
-        '<div class="eg-acts">' + (pass ? '<button class="eg-btn main" data-a="' + (last ? 'win' : 'next') + '">' + (last ? '🏆 Phá đảo!' : '▶ Màn tiếp theo') + '</button>' : '') +
+        (pass && P.qz[g.li] ? '<div style="margin-top:10px;background:rgba(245,158,11,.22);border-radius:14px;padding:10px 12px;font-size:15px;line-height:1.45">📝 Hãy làm <b>bài kiểm tra</b>: đọc đúng từ vựng và chọn đúng nghĩa để mở ' + (last ? 'phần thưởng Phá đảo' : 'màn tiếp theo') + '.</div>' : '') +
+        '<div class="eg-acts">' + (pass ? (P.qz[g.li] ? '<button class="eg-btn main" data-a="quiz">📝 Làm bài kiểm tra</button>' : '<button class="eg-btn main" data-a="' + (last ? 'win' : 'next') + '">' + (last ? '🏆 Phá đảo!' : '▶ Màn tiếp theo') + '</button>') : '') +
         '<button class="eg-btn" data-a="retry">↻ Chơi lại</button><button class="eg-btn" data-a="map">Bản đồ</button></div>';
       if (mis2.length) h2 += '<div class="eg-list"><h4>📌 Từ cần ôn lại (' + mis2.length + ') – lần chơi lại sẽ xuất hiện nhiều hơn</h4>' + rows(mis2, g.missed, 'miss') + '</div>';
       $('egRes').innerHTML = h2;
@@ -661,6 +663,13 @@
       '<div style="font-size:18px;font-weight:800">Tổng tiền thưởng: ' + money(P.m) + '</div>' +
       '<div class="eg-acts"><button class="eg-btn main" data-a="map">Về bản đồ (chơi lại lấy thêm sao)</button></div>';
     show('end');
+  }
+  /* Bài kiểm tra sau màn (bản 2026.11.07-1): phần 1 phát âm, phần 2 chọn nghĩa. Đúng hết mới mở màn tiếp theo. */
+  function startQuiz(li) {
+    stopSpeak(); cur = li;
+    var passed = function () { delete P.qz[li]; save(); if (li >= L.length - 1) winScreen(); else openIntro(li + 1); };
+    if (!window.SixLevelQuiz) { passed(); return; }   // app bản cũ chưa có bài kiểm tra: không chặn người chơi
+    window.SixLevelQuiz.open({ lang: 'en', title: 'Màn ' + (li + 1) + ': ' + L[li].n, words: L[li].w, all: ALL, prefer: P.mw[li] || [], onPass: passed });
   }
   function toMap() { cancelAnimationFrame(raf); G = null; stopSpeak(); renderMap(); show('map'); }
   function toTopics() { cancelAnimationFrame(raf); G = null; stopSpeak(); renderTopics(); show('topics'); }
@@ -733,6 +742,8 @@
     else if (a === 'again') startTopic(G ? G.topic : TOPICS[0]);
     else if (a === 'next') { if (cur + 1 >= lkFree(L.length) && !lkOpen()) lkAsk(function () { openIntro(cur + 1); }); else openIntro(cur + 1); }
     else if (a === 'win') winScreen();
+    else if (a === 'quiz') startQuiz(cur);
+    else if (a === 'quizlv') startQuiz(i);
     else if (a === 'endback') { if (G && G.mode === 'topic') toTopics(); else toMap(); }
     else if (a === 'phr') { stopSpeak(); renderPhr(); }
     else if (a === 'phrcat') { if (i >= lkFree(PHR.length) && !lkOpen()) lkAsk(function () { renderPhr(); renderPhrList(i); }); else renderPhrList(i); }

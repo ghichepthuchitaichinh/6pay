@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.06-1';
+const APP_VERSION='2026.11.07-1';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -2522,6 +2522,190 @@ window.SixTTS=(function(){
   ['pointerdown','touchstart','keydown'].forEach(t=>document.addEventListener(t,warm,{capture:true,passive:true}));
  }
  return {speak:speak,stop:stop,warm:warm,ok:OK};
+})();
+// ===== BÀI KIỂM TRA SAU MỖI MÀN (game tiếng Anh, tiếng Trung, Phá đảo chủ đề) — bản 2026.11.07-1 =====
+// Phần 1: phát âm từ vựng (app nghe giọng bạn qua micro). Phần 2: chọn nghĩa tiếng Việt đúng của từ đó.
+// Phải đúng TẤT CẢ mới được chơi màn tiếp theo. Mỗi từ được đọc tối đa QZ_TRIES lần.
+// Gọi: SixLevelQuiz.open({lang:'en'|'zh', title, words:[[chữ, nghĩa, hình, pinyin?],...], all:[...], pic:(w,cỡ)=>html, prefer:[chữ...], onPass, onClose})
+window.SixLevelQuiz=(function(){
+ const QZ_N=5;        // số từ mỗi bài kiểm tra
+ const QZ_TRIES=3;    // số lần được đọc lại mỗi từ
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ let O=null,Q=null,rec=null,root=null,recTimer=0;
+ const css=document.createElement('style');
+ css.textContent='.qz-root{position:fixed;inset:0;z-index:100200;display:none;flex-direction:column;background:linear-gradient(180deg,#0b1d3a,#1d4e89);color:#fff;font-family:-apple-system,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei","Noto Sans SC",Arial,sans-serif;-webkit-user-select:none;user-select:none}'+
+ '.qz-root.on{display:flex}.qz-root *{box-sizing:border-box}'+
+ '.qz-top{display:flex;align-items:center;gap:10px;padding:max(12px,env(safe-area-inset-top)) 14px 8px}.qz-top b{flex:1;font-size:18px;line-height:1.25}'+
+ '.qz-btn{border:0;border-radius:14px;padding:11px 18px;font-weight:800;font-size:16px;font-family:inherit;color:#fff;background:rgba(255,255,255,.16);cursor:pointer}.qz-btn:active{transform:scale(.97)}'+
+ '.qz-btn.go{background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 6px 18px rgba(34,197,94,.35)}.qz-btn:disabled{opacity:.5}'+
+ '.qz-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px 18px max(24px,env(safe-area-inset-bottom));max-width:540px;width:100%;margin:0 auto;text-align:center}'+
+ '.qz-step{display:flex;gap:6px;justify-content:center;margin:2px 0 10px}.qz-step span{flex:1;max-width:160px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,.12);font-size:13px;font-weight:800}.qz-step span.on{background:#f59e0b;color:#3b2300}'+
+ '.qz-dots{font-size:14px;opacity:.9;margin-bottom:8px}'+
+ '.qz-card{background:rgba(255,255,255,.14);border-radius:22px;padding:22px 14px;margin:6px 0 14px}.qz-card .w{font-size:40px;font-weight:900;line-height:1.2;word-break:break-word}.qz-card .py{font-size:18px;color:#fde68a;margin-top:4px}'+
+ '.qz-card .hint{font-size:14px;opacity:.85;margin-top:8px}'+
+ '.qz-mic{width:120px;height:120px;border-radius:50%;border:0;font-size:52px;cursor:pointer;background:radial-gradient(circle at 35% 30%,#ff7a7a,#dc2626);box-shadow:0 10px 26px rgba(220,38,38,.45);color:#fff;margin:6px auto 4px;display:block}'+
+ '.qz-mic.rec{animation:qzP 1s ease-in-out infinite}@keyframes qzP{0%,100%{box-shadow:0 0 0 0 rgba(255,90,90,.7)}50%{box-shadow:0 0 0 22px rgba(255,90,90,0)}}'+
+ '.qz-fb{min-height:52px;font-size:16px;line-height:1.45;margin:8px 0}.qz-fb .ok{color:#4ade80;font-weight:800}.qz-fb .bad{color:#fca5a5;font-weight:800}'+
+ '.qz-opt{display:block;width:100%;text-align:left;border:0;border-radius:14px;padding:14px;margin-bottom:9px;font-weight:700;font-size:17px;font-family:inherit;color:#fff;background:rgba(255,255,255,.16);cursor:pointer}'+
+ '.qz-opt.ok{background:#16a34a}.qz-opt.bad{background:#dc2626}.qz-opt:disabled{cursor:default}'+
+ '.qz-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0}'+
+ '.qz-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;background:rgba(239,68,68,.22);margin-bottom:7px;text-align:left;cursor:pointer}.qz-row b{font-size:18px}.qz-row i{font-style:normal;color:#fde68a;font-size:13px;margin-left:6px}.qz-row span.vi{display:block;opacity:.85;font-size:14px}.qz-row em{font-style:normal;margin-left:auto;font-size:12px;opacity:.85;white-space:nowrap}';
+ document.head.appendChild(css);
+ function ensure(){
+  if(root)return;
+  root=document.createElement('div');root.className='qz-root';
+  root.innerHTML='<div class="qz-top"><button class="qz-btn" data-q="close" style="padding:8px 14px;font-size:20px">←</button><b id="qzT"></b></div><div class="qz-body" id="qzB"></div>';
+  document.body.appendChild(root);
+  root.addEventListener('click',onClick);
+ }
+ const $=id=>document.getElementById(id);
+ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+ function sfx(k){try{if(window.sfx)window.sfx(k);}catch(e){}}
+ function lang(){return O.lang==='zh'?'zh-CN':'en-US';}
+ function say(t){try{if(window.SixTTS&&window.SixTTS.ok)window.SixTTS.speak(t,lang(),O.lang==='zh'?0.8:0.85,null,{flush:true});else{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang=lang();speechSynthesis.speak(u);}}catch(e){}}
+ function hush(){try{if(window.SixTTS)window.SixTTS.stop();else speechSynthesis.cancel();}catch(e){}}
+
+ /* ---------- So khớp phát âm ---------- */
+ const ONES=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+ const TENS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+ function enNum(n){n=+n;if(n<20)return ONES[n];if(n<100)return TENS[Math.floor(n/10)]+(n%10?' '+ONES[n%10]:'');if(n===100)return 'one hundred';if(n===1000)return 'one thousand';return String(n);}
+ function normEn(s){return String(s).toLowerCase().replace(/\d+/g,m=>' '+enNum(m)+' ').replace(/[’`]/g,"'").replace(/[^a-z' ]+/g,' ').replace(/\s+/g,' ').trim();}
+ const ZD='零一二三四五六七八九';
+ function zhNum(m){const n=+m;if(n<10)return ZD[n];if(n<100)return (n>=20?ZD[Math.floor(n/10)]:'')+'十'+(n%10?ZD[n%10]:'');return m;}
+ function normZh(s){return String(s).replace(/\d+/g,zhNum).replace(/[^㐀-鿿]/g,'');}
+ function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let p=[];for(let j=0;j<=n;j++)p[j]=j;for(let i=1;i<=m;i++){let c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c;}return p[n];}
+ function match(target,alts){
+  if(O.lang==='zh'){
+   const t=normZh(target);if(!t)return true;
+   return alts.some(a=>{const x=normZh(a);if(!x)return false;if(x.indexOf(t)>=0)return true;
+    if(t.length>=3&&Math.abs(x.length-t.length)<=1){let same=0;for(const ch of t)if(x.indexOf(ch)>=0)same++;return same/t.length>=0.67;}return false;});
+  }
+  const t=normEn(target),tc=t.replace(/[ ']/g,'');if(!t)return true;
+  return alts.some(a=>{const x=normEn(a);if(!x)return false;const xc=x.replace(/[ ']/g,'');
+   if(x===t||xc===tc||(' '+x+' ').indexOf(' '+t+' ')>=0||xc.indexOf(tc)>=0&&xc.length<=tc.length+4)return true;
+   return tc.length>=5&&1-lev(xc,tc)/Math.max(xc.length,tc.length)>=0.8;});
+ }
+
+ /* ---------- Mở bài kiểm tra ---------- */
+ function open(o){
+  ensure();O=o;
+  const pref=o.prefer||[];
+  let ws=o.words.filter(w=>w&&w[0]);
+  const a=shuffle(ws.filter(w=>pref.indexOf(w[0])>=0)),b=shuffle(ws.filter(w=>pref.indexOf(w[0])<0));
+  ws=a.concat(b).slice(0,Math.min(o.n||QZ_N,ws.length));
+  shuffle(ws);
+  Q={ws:ws,part:1,k:0,tries:0,heard:'',state:'',bad1:{},bad2:{},skip1:!SR,opts:[],pick:-1};
+  $('qzT').textContent='📝 Bài kiểm tra'+(o.title?' · '+o.title:'');
+  root.classList.add('on');
+  if(Q.skip1){Q.part=1;Q.state='nosr';}
+  draw();
+ }
+ function close(passed){
+  stopRec();hush();root.classList.remove('on');
+  const o=O;O=null;Q=null;
+  if(o){if(passed){if(o.onPass)o.onPass();}else if(o.onClose)o.onClose();}
+ }
+ function cur(){return Q.ws[Q.k];}
+ function wordHtml(w,big){return '<div class="w">'+esc(w[0])+'</div>'+(O.lang==='zh'&&w[3]?'<div class="py">'+esc(w[3])+'</div>':'');}
+ function head(){
+  return '<div class="qz-step"><span class="'+(Q.part===1?'on':'')+'">Phần 1 · Phát âm</span><span class="'+(Q.part===2?'on':'')+'">Phần 2 · Chọn nghĩa</span></div>'+
+   '<div class="qz-dots">Từ '+(Q.k+1)+'/'+Q.ws.length+'</div>';
+ }
+ function draw(){
+  const B=$('qzB');
+  if(Q.part===3)return drawResult(B);
+  const w=cur();
+  if(Q.part===1){
+   if(Q.state==='nosr'){
+    B.innerHTML='<div class="qz-step"><span class="on">Phần 1 · Phát âm</span><span>Phần 2 · Chọn nghĩa</span></div>'+
+     '<div class="qz-card"><div style="font-size:46px">🎤</div><div class="hint" style="font-size:16px;opacity:1">Máy của bạn chưa hỗ trợ nhận giọng nói, hoặc micro đang bị chặn / không có mạng.<br>Phần phát âm sẽ được bỏ qua lần này.</div></div>'+
+     '<div class="qz-acts">'+(SR?'<button class="qz-btn" data-q="retrysr">🔁 Thử lại micro</button>':'')+'<button class="qz-btn go" data-q="topart2">Sang phần 2 ▶</button></div>';
+    return;
+   }
+   const listening=Q.state==='rec',done=Q.state==='ok'||Q.state==='fail';
+   let fb='';
+   if(Q.state==='rec')fb='Đang nghe… hãy đọc to, rõ từ trên';
+   else if(Q.state==='ok')fb='<span class="ok">✅ Chính xác!</span>'+(Q.heard?'<br><small>App nghe được: “'+esc(Q.heard)+'”</small>':'');
+   else if(Q.state==='wrong')fb='<span class="bad">❌ Chưa đúng</span>'+(Q.heard?' – app nghe được: “'+esc(Q.heard)+'”':'')+'<br>Bạn còn <b>'+(QZ_TRIES-Q.tries)+'</b> lần đọc. Bấm 🔊 nghe mẫu rồi đọc lại nhé.';
+   else if(Q.state==='fail')fb='<span class="bad">❌ Hết '+QZ_TRIES+' lần đọc</span>'+(Q.heard?' – app nghe được: “'+esc(Q.heard)+'”':'')+'<br>Từ này sẽ được tính là sai. Hãy nghe mẫu và luyện thêm.';
+   else if(Q.state==='nospeech')fb='Mình chưa nghe thấy gì. Bấm 🎤 rồi đọc to hơn nhé.';
+   else fb='Bấm 🔊 để nghe mẫu, rồi bấm 🎤 và đọc từ trên.';
+   B.innerHTML=head()+'<div class="qz-card">'+wordHtml(w)+'<div class="hint">Hãy đọc to từ này</div></div>'+
+    '<div class="qz-acts" style="margin:0 0 4px"><button class="qz-btn" data-q="say">🔊 Nghe mẫu</button></div>'+
+    (done?'':'<button class="qz-mic'+(listening?' rec':'')+'" data-q="mic">'+(listening?'👂':'🎤')+'</button>')+
+    '<div class="qz-fb">'+fb+'</div>'+
+    (done?'<div class="qz-acts"><button class="qz-btn go" data-q="next1">Tiếp tục ▶</button></div>':'');
+   return;
+  }
+  // Phần 2
+  if(!Q.opts.length){
+   const seen={};seen[w[1]]=1;
+   const pool=shuffle((O.all||O.words).filter(x=>x&&x[1]&&!seen[x[1]]&&(seen[x[1]]=1)));
+   Q.opts=shuffle([w[1]].concat(pool.slice(0,3)));
+   setTimeout(()=>{if(Q&&Q.part===2&&cur()===w)say(w[0]);},150);
+  }
+  const done=Q.pick>=0;
+  B.innerHTML=head()+'<div class="qz-card" data-q="say" style="cursor:pointer">'+wordHtml(w)+'<div class="hint">🔊 Chạm để nghe lại</div></div>'+
+   '<div style="font-size:15px;margin-bottom:9px;color:#cfe0ff">Từ này có nghĩa là gì?</div>'+
+   Q.opts.map((t,i)=>'<button class="qz-opt'+(done?(t===w[1]?' ok':(i===Q.pick?' bad':'')):'')+'" data-q="ans" data-i="'+i+'"'+(done?' disabled':'')+'>'+esc(t)+'</button>').join('')+
+   (done?'<div class="qz-acts"><button class="qz-btn go" data-q="next2">'+(Q.k+1<Q.ws.length?'Từ tiếp theo ▶':'Xem kết quả ▶')+'</button></div>':'');
+ }
+ function drawResult(B){
+  const bad=Q.ws.filter(w=>Q.bad1[w[0]]||Q.bad2[w[0]]),pass=!bad.length;
+  sfx(pass?'win':'bad');
+  B.innerHTML='<div style="font-size:62px;margin-top:10px">'+(pass?'🎉':'💪')+'</div>'+
+   '<h2 style="margin:6px 0">'+(pass?'Bạn đã vượt qua bài kiểm tra!':'Chưa qua bài kiểm tra')+'</h2>'+
+   '<div style="opacity:.9;line-height:1.5">'+(pass?'Phát âm và chọn nghĩa đều đúng'+(Q.skip1?' (phần phát âm được bỏ qua)':'')+'. Màn tiếp theo đã được mở.':'Bạn cần làm đúng <b>tất cả</b> các từ mới được chơi màn tiếp theo. Hãy ôn lại các từ dưới đây rồi làm lại nhé.')+'</div>'+
+   (bad.length?'<div style="margin-top:14px">'+bad.map(w=>'<div class="qz-row" data-q="sayw" data-w="'+esc(w[0])+'"><span>🔊</span><span><b>'+esc(w[0])+'</b>'+(O.lang==='zh'&&w[3]?'<i>'+esc(w[3])+'</i>':'')+'<span class="vi">'+esc(w[1])+'</span></span><em>'+(Q.bad1[w[0]]?'Sai phát âm':'')+(Q.bad1[w[0]]&&Q.bad2[w[0]]?' · ':'')+(Q.bad2[w[0]]?'Sai nghĩa':'')+'</em></div>').join('')+'</div>':'')+
+   '<div class="qz-acts">'+(pass?'<button class="qz-btn go" data-q="pass">▶ Chơi màn tiếp theo</button>':'<button class="qz-btn go" data-q="again">↻ Làm lại bài kiểm tra</button><button class="qz-btn" data-q="close">Ôn lại sau</button>')+'</div>';
+ }
+
+ /* ---------- Nhận giọng nói ---------- */
+ function stopRec(){clearTimeout(recTimer);if(rec){const r=rec;rec=null;try{r.onresult=r.onerror=r.onend=null;r.abort();}catch(e){}}}
+ function listen(){
+  if(!SR||rec)return;
+  hush();
+  const w=cur(),r=new SR();rec=r;
+  r.lang=lang();r.interimResults=false;r.maxAlternatives=5;r.continuous=false;
+  let got=false;
+  r.onresult=e=>{
+   got=true;const alts=[];
+   for(let i=0;i<e.results.length;i++)for(let j=0;j<e.results[i].length;j++)alts.push(e.results[i][j].transcript);
+   stopRec();
+   Q.heard=alts[0]||'';
+   if(match(w[0],alts)){Q.state='ok';sfx('ok');}
+   else{Q.tries++;if(Q.tries>=QZ_TRIES){Q.state='fail';Q.bad1[w[0]]=1;}else Q.state='wrong';sfx('bad');}
+   draw();
+  };
+  r.onerror=e=>{
+   const er=e&&e.error;stopRec();
+   if(er==='not-allowed'||er==='service-not-allowed'||er==='network'||er==='audio-capture')Q.state='nosr';
+   else Q.state='nospeech';
+   draw();
+  };
+  r.onend=()=>{if(!got&&rec===r){stopRec();Q.state='nospeech';draw();}};
+  Q.state='rec';Q.heard='';draw();
+  try{r.start();}catch(e){stopRec();Q.state='nosr';draw();return;}
+  recTimer=setTimeout(()=>{if(rec===r){try{r.stop();}catch(e){}}},7000);
+ }
+
+ function onClick(e){
+  const el=e.target.closest?e.target.closest('[data-q]'):null;if(!el||!Q&&el.getAttribute('data-q')!=='close')return;
+  const a=el.getAttribute('data-q');
+  if(a==='close'){close(false);return;}
+  if(a==='say'){stopRec();if(Q.state==='rec')Q.state='';say(cur()[0]);if(Q.part===1)draw();}
+  else if(a==='sayw')say(el.getAttribute('data-w'));
+  else if(a==='mic'){if(Q.state==='rec'){stopRec();Q.state='';draw();}else listen();}
+  else if(a==='next1'){Q.k++;Q.tries=0;Q.heard='';Q.state='';if(Q.k>=Q.ws.length){Q.part=2;Q.k=0;}draw();}
+  else if(a==='topart2'){Q.skip1=true;Q.part=2;Q.k=0;Q.state='';draw();}
+  else if(a==='retrysr'){Q.state='';draw();listen();}
+  else if(a==='ans'){if(Q.pick>=0)return;const i=+el.getAttribute('data-i');Q.pick=i;if(Q.opts[i]===cur()[1])sfx('ok');else{sfx('bad');Q.bad2[cur()[0]]=1;}draw();}
+  else if(a==='next2'){Q.k++;Q.pick=-1;Q.opts=[];if(Q.k>=Q.ws.length)Q.part=3;draw();}
+  else if(a==='again'){const o=O;open(o);}
+  else if(a==='pass')close(true);
+ }
+ return {open:open,close:()=>{if(O)close(false);},supported:!!SR};
 })();
 function toggleSound(){try{localStorage.setItem(SOUND_KEY,soundOn()?'0':'1');}catch(e){}render();if(soundOn())sfx('ok');}
 

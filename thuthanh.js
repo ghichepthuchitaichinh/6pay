@@ -1,4 +1,4 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.07-1)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    Mỗi tòa thành là 1 chủ đề từ vựng tiếng Anh (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
    Mỗi đợt quái kéo đến, con quái nào cũng vác theo 1 tấm biển ghi 1 từ vựng của chủ đề.
    Người chơi xây chòi trên các ô đá ➕ dọc đường để bắn quái, bảo vệ tòa thành.
@@ -110,7 +110,12 @@
     return im ? '<img src="' + im.src + '" alt="" style="width:' + sz + 'px;height:' + sz + 'px;vertical-align:middle">' :
       '<span style="font-family:' + EF.replace(/"/g, "'") + ';font-size:' + Math.round(sz * 0.86) + 'px;line-height:1">' + esc(p) + '</span>';
   }
-  function pronOf(w) { try { return DATA && DATA.pron ? DATA.pron(w) || '' : ''; } catch (e) { return ''; } }
+  /* Phiên âm: x = [từ, nghĩa, hình]. Trả về { ipa: '/ˈkæmərə/', vi: 'kém-mơ-rơ' } (cách đọc kiểu Việt: âm tiết có dấu sắc là âm nhấn) */
+  function pronOf(x) {
+    var t = ''; try { t = DATA && DATA.pron ? DATA.pron(x) || '' : ''; } catch (e) {}
+    var k = t.indexOf(' · '); return t ? { ipa: k >= 0 ? t.slice(0, k) : t, vi: k >= 0 ? t.slice(k + 3) : '' } : { ipa: '', vi: '' };
+  }
+  function pronHtml(x, cls) { var p = pronOf(x); if (!p.ipa && !p.vi) return ''; return '<div class="' + (cls || 'tt-pr') + '">' + (p.ipa ? '<span class="ipa">' + esc(p.ipa) + '</span>' : '') + (p.vi ? '<span class="vi">🗣️ ' + esc(p.vi) + '</span>' : '') + '</div>'; }
 
   /* ================= TIẾN ĐỘ ================= */
   var P = null;
@@ -159,7 +164,10 @@
     '.tt-wl{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}@media(min-width:520px){.tt-wl{grid-template-columns:repeat(3,1fr)}}',
     '.tt-wc{display:flex;align-items:center;gap:10px;background:#fff;color:#0f172a;border-radius:14px;padding:8px 10px;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.2)}.tt-wc:active{transform:scale(.97)}',
     '.tt-wc .p{flex:none;width:42px;text-align:center}.tt-wc b{display:block;font-size:15px;line-height:1.2;word-break:break-word}.tt-wc small{display:block;font-size:12.5px;color:#475569;line-height:1.25}',
-    '.tt-wc em{display:block;font-style:normal;font-size:11px;color:#b45309}',
+    '.tt-wc .tt-pr{line-height:1.25;margin:1px 0}.tt-wc .tt-pr span{display:block;font-size:11.5px}.tt-wc .tt-pr .ipa{color:#7c3aed;font-family:"Segoe UI","Noto Sans","DejaVu Sans",Arial,sans-serif}.tt-wc .tt-pr .vi{color:#b45309;font-weight:700}',
+    '.tt-say .tt-pr{margin-top:3px;line-height:1.35}.tt-say .tt-pr span{display:inline-block;margin-right:10px;font-size:15px}.tt-say .tt-pr .ipa{color:#c4b5fd;font-family:"Segoe UI","Noto Sans","DejaVu Sans",Arial,sans-serif}.tt-say .tt-pr .vi{color:#fde68a;font-weight:800}',
+    '.tt-say .tip{font-size:12px;opacity:.7;margin-top:2px}',
+    '.tt-chip .vi{display:block;font-size:11px;font-weight:700;color:#92400e;text-align:left;white-space:nowrap}',
     '.tt-go{position:sticky;bottom:0;padding:12px 0 4px;background:linear-gradient(180deg,transparent,#0b1530 40%)}',
     '.tt-btn{display:block;width:100%;border:0;border-radius:18px;padding:15px;font-size:18px;font-weight:900;font-family:inherit;color:#fff;cursor:pointer;background:linear-gradient(180deg,#f97316,#c2410c);box-shadow:0 5px 0 #7c2d12,0 10px 22px rgba(0,0,0,.35)}.tt-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #7c2d12}',
     '.tt-btn.g{background:linear-gradient(180deg,#22c55e,#15803d);box-shadow:0 5px 0 #14532d,0 10px 22px rgba(0,0,0,.35)}.tt-btn.s{background:rgba(255,255,255,.16);box-shadow:none}',
@@ -194,7 +202,7 @@
     '.tt-say{position:absolute;left:0;right:0;bottom:0;z-index:8;padding:12px 14px 14px;background:linear-gradient(180deg,rgba(30,41,59,.97),rgba(15,23,42,.99));border-top:3px solid #f59e0b;border-radius:22px 22px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.5);transform:translateY(105%);transition:transform .25s;text-align:center}',
     '.tt-say.on{transform:none}.tt-say .x{position:absolute;right:10px;top:10px}',
     '.tt-say .top{display:flex;align-items:center;justify-content:center;gap:12px;margin:2px 40px 6px}.tt-say .w{font-size:32px;font-weight:900;line-height:1.15;word-break:break-word}',
-    '.tt-say .pr{font-size:14px;color:#fde68a;margin-top:2px}.tt-say .mn{font-size:15px;opacity:.9;margin-top:2px}',
+    '.tt-say .mn{font-size:15px;opacity:.9;margin-top:3px}',
     '.tt-say .fb{min-height:44px;font-size:15px;line-height:1.4;margin:6px 0}.tt-say .ok{color:#4ade80;font-weight:900;font-size:19px}.tt-say .bad{color:#fca5a5;font-weight:800}',
     '.tt-say .row{display:flex;align-items:center;justify-content:center;gap:16px}',
     '.tt-mic{width:84px;height:84px;border-radius:50%;border:0;font-size:38px;cursor:pointer;color:#fff;background:radial-gradient(circle at 35% 30%,#ff8a8a,#dc2626);box-shadow:0 8px 20px rgba(220,38,38,.45);font-family:' + EF + '}',
@@ -274,10 +282,10 @@
     $('ttIT').textContent = '🏰 ' + tp.n;
     var h = '<div class="tt-ibox"><div class="tt-ihead" style="--c:' + tp.c + '"><span class="e">' + esc(tp.i) + '</span><div><b>Thành ' + esc(tp.n) + '</b><small>' + tp.w.length + ' từ vựng · ' + nW + ' đợt quái' + (stars(tp.id) ? ' · Tốt nhất: ' + '⭐'.repeat(stars(tp.id)) : '') + '</small></div></div>' +
       '<div class="tt-how"><div><i>🎤</i>Chạm vào từ ở thanh dưới, đọc đúng để nhận 💰</div><div><i>🏹</i>Chạm ô đá ➕ dọc đường để xây chòi bắn quái</div><div><i>👹</i>Chạm vào quái và đọc từ nó vác để làm nó choáng</div></div>' +
-      '<div class="tt-grp" style="margin-top:6px">📖 Ôn từ trước khi vào trận (chạm để nghe)</div><div class="tt-wl">';
+      '<div class="tt-grp" style="margin-top:6px">📖 Ôn từ trước khi vào trận (chạm để nghe)</div>' +
+      '<div style="font-size:12.5px;opacity:.85;margin:-2px 0 8px;line-height:1.45">Dòng tím là phiên âm quốc tế (IPA). Dòng 🗣️ là cách đọc gần đúng bằng chữ Việt: âm tiết có <b>dấu sắc</b> là âm cần nhấn mạnh.</div><div class="tt-wl">';
     tp.w.forEach(function (x, i) {
-      var pr = pronOf(x[0]);
-      h += '<div class="tt-wc" data-a="hear" data-i="' + i + '"><div class="p">' + picHtml(x[2], 38) + '</div><div><b>' + esc(x[0]) + '</b>' + (pr ? '<em>' + esc(pr) + '</em>' : '') + '<small>' + esc(x[1]) + '</small></div></div>';
+      h += '<div class="tt-wc" data-a="hear" data-i="' + i + '"><div class="p">' + picHtml(x[2], 38) + '</div><div><b>' + esc(x[0]) + '</b>' + pronHtml(x) + '<small>' + esc(x[1]) + '</small></div></div>';
     });
     h += '</div><div class="tt-go"><button class="tt-btn" data-a="start">⚔️ Vào trận bảo vệ thành</button></div></div>';
     $('ttIB').innerHTML = h; $('ttIB').scrollTop = 0;
@@ -552,7 +560,8 @@
     var c = $('ttChips'), h = '';
     G.bank.forEach(function (w) {
       var x = G.tp.w[w], s = G.said[w], gain = SR ? reward(w) : PICK_REWARD;
-      h += '<button class="tt-chip' + (s && s.n ? ' tried' : '') + '" data-a="chip" data-w="' + w + '"><span class="p">' + picHtml(x[2], 30) + '</span><span><b>' + esc(x[0]) + '</b><small>+' + gain + ' 💰</small></span></button>';
+      var pv = pronOf(x).vi;
+      h += '<button class="tt-chip' + (s && s.n ? ' tried' : '') + '" data-a="chip" data-w="' + w + '"><span class="p">' + picHtml(x[2], 30) + '</span><span><b>' + esc(x[0]) + '</b>' + (pv ? '<span class="vi">🗣️ ' + esc(pv) + '</span>' : '') + '<small>+' + gain + ' 💰</small></span></button>';
     });
     if (!h) h = '<div class="tt-empty">✅ Đã đọc hết từ của đợt này. Chạm vào con quái đang đi để đọc từ nó vác, được thêm 💰 và làm quái choáng!</div>';
     c.innerHTML = h;
@@ -575,7 +584,7 @@
   }
   function drawSay() {
     if (!SAY) return;
-    var x = G.tp.w[SAY.w], pr = pronOf(x[0]), fb = '', body = '';
+    var x = G.tp.w[SAY.w], fb = '', body = '';
     if (SAY.mode === 'mic') {
       if (SAY.st === 'rec') fb = '🎙️ Đang nghe… hãy đọc to và rõ';
       else if (SAY.st === 'ok') fb = '<span class="ok">✅ Chuẩn rồi! ' + esc(SAY.msg || '') + '</span>';
@@ -595,7 +604,8 @@
     var showWord = SAY.mode === 'mic' || SAY.st === 'ok';
     $('ttSay').innerHTML = '<button class="tt-ib x" data-a="sayx">✕</button>' +
       '<div class="top"><div>' + picHtml(x[2], 58) + '</div><div style="text-align:left"><div class="w">' + (showWord ? esc(x[0]) : '❓❓❓') + '</div>' +
-      (showWord && pr ? '<div class="pr">' + esc(pr) + '</div>' : '') + '<div class="mn">' + esc(x[1]) + '</div></div></div>' +
+      (showWord ? pronHtml(x) : '') + '<div class="mn">' + esc(x[1]) + '</div></div></div>' +
+      (showWord && pronOf(x).vi ? '<div class="tip">🗣️ Cách đọc gần đúng: âm có dấu sắc là âm nhấn</div>' : '') +
       (SAY.e ? '<div style="font-size:13px;color:#fca5a5;font-weight:700">👹 Đọc đúng để làm quái choáng!</div>' : '') +
       '<div class="fb">' + fb + '</div>' + body;
   }
@@ -854,7 +864,7 @@
       (win ? '<div class="stars">' + '⭐'.repeat(st) + '<span style="opacity:.25">' + '⭐'.repeat(3 - st) + '</span></div>' : '') +
       '<div class="sum">' + (win ? 'Còn ' + G.hp + '/' + HPMAX + ' ❤️ · ' : 'Bạn chặn được ' + G.wave + '/' + G.waves.length + ' đợt · ') + 'Đọc đúng <b>' + G.ok + '/' + tp.w.length + '</b> từ</div>' +
       (vnd ? '<div class="farm">🧑‍🌾 +' + money(vnd) + ' vào Nông trại</div>' : '') +
-      (bad.length ? '<div style="font-size:13.5px;font-weight:800;color:#fca5a5">Từ cần luyện thêm (chạm để nghe):</div><div class="wl">' + bad.slice(0, 24).map(function (i) { return '<span class="bd" data-a="hearw" data-i="' + i + '">' + esc(tp.w[i][0]) + ' · ' + esc(tp.w[i][1]) + '</span>'; }).join('') + '</div>' : '<div class="sum">🎉 Bạn đã đọc đúng toàn bộ từ vựng của thành!</div>') +
+      (bad.length ? '<div style="font-size:13.5px;font-weight:800;color:#fca5a5">Từ cần luyện thêm (chạm để nghe):</div><div class="wl">' + bad.slice(0, 24).map(function (i) { var pv = pronOf(tp.w[i]).vi; return '<span class="bd" data-a="hearw" data-i="' + i + '">' + esc(tp.w[i][0]) + (pv ? ' <i style="font-style:normal;color:#fde68a">(' + esc(pv) + ')</i>' : '') + ' · ' + esc(tp.w[i][1]) + '</span>'; }).join('') + '</div>' : '<div class="sum">🎉 Bạn đã đọc đúng toàn bộ từ vựng của thành!</div>') +
       '<div class="acts">' + (next && win ? '<button class="tt-btn g" data-a="next" data-i="' + next.ti + '">▶ Thành tiếp: ' + esc(next.n) + '</button>' : '') +
       '<button class="tt-btn" data-a="again">🔁 Chơi lại thành này</button><button class="tt-btn s" data-a="map">🗺️ Về bản đồ các thành</button></div></div>';
     var el = $('ttEnd'); el.innerHTML = h; el.classList.add('on');

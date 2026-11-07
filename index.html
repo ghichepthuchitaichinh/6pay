@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.07-2';
+const APP_VERSION='2026.11.07-3';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -1739,7 +1739,7 @@ async function changePass(){
   // ===== Sao lưu / khôi phục dữ liệu =====
 // Không sao lưu tài khoản và mật khẩu, nên khôi phục xong mật khẩu hiện tại trên máy vẫn giữ nguyên.
 // Sao lưu theo tiền tố khóa, nên dữ liệu game và tiện ích mới thêm sau này cũng tự được sao lưu.
-const BACKUP_PREFIX=['6pay','wg_','dg_','vnh_','vnv_','zh_','math_','mtb_','farm6_'];
+const BACKUP_PREFIX=['6pay','wg_','dg_','vnh_','vnv_','zh_','math_','mtb_','farm6_','tt_'];
 const LASTBACKUP_KEY='6pay-lastbackup';
 const BACKUP_SKIP=['farm6_day','6pay-account-v1','6pay-session-v1','6pay-guides-cache-v1','6pay-clicks-v1','6pay-lockfail-v1','6pay-lastbackup'];
 const OLD_BACKUP_KEYS=['6pay-state-v1','6pay-stars-v1','6pay-streak-v1','6pay-plan-v1','6pay-plandone-v1','6pay-quiz-v1','6pay-debts-v1','6pay-read-v1','6pay-fs-v1','6pay-notes-v1','6pay-goals-v1','6pay-bills-v1','6pay-pomo-v1','vnh_history_v1','vnv_travel_v1'];
@@ -2743,7 +2743,7 @@ function scrFinUtil(){
 // Tiền thưởng kiếm được ở các game học (trừ Cờ vua và Bước nhảy tài chính) được gửi vào "hộp thư" farm6_inbox.
 // Lần mở Nông trại tiếp theo, toàn bộ tiền trong hộp thư được cộng vào ví nông trại và tính tiến độ nhiệm vụ.
 const FARM_INBOX='farm6_inbox';
-const FARM_GAMES={en:'words',zh:'zh',math:'math',vnh:'vnh',vnv:'vnv',quiz:'quiz',clock:'clock',match:'match'};
+const FARM_GAMES={en:'words',zh:'zh',math:'math',vnh:'vnh',vnv:'vnv',quiz:'quiz',clock:'clock',match:'match',castle:'castle'};
 // Tỷ lệ chia 6 ví dùng CHUNG giữa app và game Nông trại: đổi ở đâu cũng áp dụng cho cả hai
 window.sixPct={
  get:function(){return {essential:pct.essential,education:pct.education,saving:pct.saving,invest:pct.invest,share:pct.share};},
@@ -2778,7 +2778,7 @@ function farmChip(a){
 let farmWatch=0;
 function farmGameOpen(){
  if(gameBusy)return true;
- if(document.querySelector('#vnhOv.show,#vnvOv.show,#ckOv.show,#mtOv.on,.eg-root.on,.zg-root.on,.mb-root.on,.mg-root.on'))return true;
+ if(document.querySelector('#vnhOv.show,#vnvOv.show,#ckOv.show,#mtOv.on,.eg-root.on,.zg-root.on,.mb-root.on,.mg-root.on,.tt-root.on'))return true;
  const top=stack[stack.length-1];return !!(top&&top.id==='quiz');
 }
 // Nút "Về Nông trại" nổi trên mọi game học khi game được mở từ Nông trại: chơi xong bấm 1 lần là về ngay, không cần bấm ← nhiều lần
@@ -2800,6 +2800,7 @@ window.farmExit=function(){
  try{if(window.SixWordGame)SixWordGame.close();}catch(e){}
  try{if(window.SixZhGame)SixZhGame.close();}catch(e){}
  try{if(window.SixMatchGame)SixMatchGame.close();}catch(e){}
+ try{if(window.SixCastleGame)SixCastleGame.close();}catch(e){}
  try{if(window.MathGame)MathGame.close();}catch(e){}
  try{if(window.MathTableGame)MathTableGame.close();}catch(e){}
  try{if(window.ClockGame)ClockGame.close();}catch(e){}
@@ -2827,7 +2828,7 @@ window.farmPlay=function(k,opt){
 // Các game nằm ở thư mục games/, chỉ tải khi người dùng bấm vào (app mở nhanh hơn)
 // Các game nằm ở thư mục games/, chỉ tải khi người dùng bấm vào (app mở nhanh hơn).
 // Nếu file được upload thẳng vào thư mục gốc (không có thư mục games/), app vẫn tự tìm thấy.
-const GAME_FILES={runner:'runner.js',words:'words.js',zh:'chinese.js',math:'math.js',vnh:'history.js',vnv:'vietnam.js',chess:'chess.js',clock:'clock.js',farm:'farm.js',match:'match.js'};
+const GAME_FILES={runner:'runner.js',words:'words.js',zh:'chinese.js',math:'math.js',vnh:'history.js',vnv:'vietnam.js',chess:'chess.js',clock:'clock.js',farm:'farm.js',match:'match.js',castle:'thuthanh.js'};
 function gamePaths(k){const f=GAME_FILES[k];return ['games/'+f,'./'+f,'Games/'+f];}
 function gameReady(k){
  if(k==='runner')return !!window.open6PayGame;
@@ -2837,6 +2838,7 @@ function gameReady(k){
  if(k==='clock')return !!window.ClockGame;
  if(k==='farm')return !!window.FarmGame;
  if(k==='match')return !!window.SixMatchGame;
+ if(k==='castle')return !!window.SixCastleGame;
  return !!(document.getElementById(k+'Ov')&&window.GameOv);
 }
 function gameStart(k){
@@ -2847,6 +2849,7 @@ function gameStart(k){
  else if(k==='clock')ClockGame.open();
  else if(k==='farm')FarmGame.open();
  else if(k==='match')SixMatchGame.open();
+ else if(k==='castle')SixCastleGame.open();
  else GameOv.open(k);
 }
 // Tải 1 file game: thử lần lượt từng đường dẫn, file nào tải được và chạy được thì dùng
@@ -2896,6 +2899,7 @@ function scrLearnPlay(){
   it("playGame('vnh')",'<svg viewBox="0 0 30 20" width="22" height="15" style="vertical-align:-2px;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.35)" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><polygon fill="#FFFF00" points="15,4.5 16.35,8.65 20.71,8.65 17.18,11.21 18.53,15.35 15,12.79 11.47,15.35 12.82,11.21 9.29,8.65 13.65,8.65"/></svg> Lịch sử Việt Nam')+
   it("playGame('vnv')",'🧭 Khám phá Việt Nam')+
   it("playGame('words')",'🔤 Game học từ vựng tiếng Anh')+
+  it("playGame('castle')",'🏰 Thủ thành tiếng Anh')+
   it("playGame('zh')",'🀄 Game học từ vựng tiếng Trung')+
   it("playGame('math')",'🧮 Toán học cấp 1')+
   it('openQuiz()','🎯 Đố vui tài chính')+

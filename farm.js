@@ -134,6 +134,7 @@
     { k: 'en', n: 'Từ vựng tiếng Anh', e: '🔤', u: 'từ', d: 'Hứng đúng mỗi từ +10.000đ' },
     { k: 'zh', n: 'Từ vựng tiếng Trung', e: '🀄', u: 'từ', d: 'Hứng đúng mỗi từ +10.000đ' },
     { k: 'match', n: 'Phá đảo chủ đề', e: '🏝️', u: 'từ', d: 'Qua màn: mỗi ⭐ +10.000đ' },
+    { k: 'castle', n: 'Thủ thành tiếng Anh', e: '🏰', u: 'từ', d: 'Mỗi từ đọc đúng +2.000đ · giữ thành mỗi ⭐ +10.000đ' },
     { k: 'math', n: 'Toán học cấp 1', e: '🧮', u: 'câu', d: 'Thử thách theo lớp và bảng cửu chương' },
     { k: 'quiz', n: 'Đố vui tài chính', e: '🎯', u: 'câu', d: 'Trả lời đúng và nhanh để được nhiều tiền' },
     { k: 'clock', n: 'Học xem đồng hồ', e: '🕒', u: 'giờ', d: 'Bấm “Đố bạn xem giờ”: mỗi câu đúng +10.000đ' }
@@ -2625,7 +2626,9 @@
     else if (tool === 'fert') { if (fert(i) && first) sfx('ok'); }
   }
   /* (bản 2026.11.02) Chạm vào bất kỳ chỗ nào trên ô đang trồng: hiện tên cây ngay trên ô + nút Đào / Giữ lại */
-  var DIG = null;
+  var DIG = null, DIG_T = 0;
+  /* (bản 2026.11.07) Thông báo Đào / Giữ lại chỉ hiện 1 giây rồi tự ẩn. Nếu ngón tay đang chạm vào thông báo thì chờ bấm xong mới ẩn. */
+  function digTimer(ms) { clearTimeout(DIG_T); DIG_T = setTimeout(digClose, ms); }
   function digOpen(i) {
     var pl = S.plots[i], c = CM[pl.c]; if (!c) return;
     DIG = { i: i };
@@ -2634,8 +2637,10 @@
     el.innerHTML = '<b>' + c.e + ' ' + c.n + (c.per ? ' (cây lâu năm)' : '') + '</b><small>' + info + (pl.w ? ' 💧' : '') + '</small>' +
       '<div class="fm-row"><button class="fm-btn" style="background:#b91c1c" data-a="dig" data-i="' + i + '">⛏️ Đào</button><button class="fm-btn alt" data-a="digKeep">✋ Giữ lại</button></div>';
     el.classList.add('on'); digPos();
+    if (!el._t1) { el._t1 = 1; el.addEventListener('pointerdown', function () { clearTimeout(DIG_T); }); el.addEventListener('pointerup', function () { if (DIG) digTimer(600); }); }
+    digTimer(1000);
   }
-  function digClose() { DIG = null; var el = $('fmDig'); if (el) el.classList.remove('on'); }
+  function digClose() { clearTimeout(DIG_T); DIG = null; var el = $('fmDig'); if (el) el.classList.remove('on'); }
   function digPos() {
     if (!DIG) return;
     var P = S.plots[DIG.i]; if (tab !== 'field' || !P || !P.c || P.p >= 1 || P.dmg) { digClose(); return; }

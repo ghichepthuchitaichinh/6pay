@@ -134,7 +134,7 @@
     { k: 'en', n: 'Từ vựng tiếng Anh', e: '🔤', u: 'từ', d: 'Hứng đúng mỗi từ +10.000đ' },
     { k: 'zh', n: 'Từ vựng tiếng Trung', e: '🀄', u: 'từ', d: 'Hứng đúng mỗi từ +10.000đ' },
     { k: 'match', n: 'Phá đảo chủ đề', e: '🏝️', u: 'từ', d: 'Qua màn: mỗi ⭐ +10.000đ' },
-    { k: 'castle', n: 'Thủ thành tiếng Anh', e: '🏰', u: 'từ', d: 'Mỗi từ đọc đúng +2.000đ · giữ thành mỗi ⭐ +10.000đ' },
+    { k: 'castle', n: 'Thủ thành tiếng Anh', e: '🏰', u: 'từ', d: 'Chặn quái trộm từ: mỗi từ đọc đúng +2.000đ · mỗi ⭐ +10.000đ' },
     { k: 'math', n: 'Toán học cấp 1', e: '🧮', u: 'câu', d: 'Thử thách theo lớp và bảng cửu chương' },
     { k: 'quiz', n: 'Đố vui tài chính', e: '🎯', u: 'câu', d: 'Trả lời đúng và nhanh để được nhiều tiền' },
     { k: 'clock', n: 'Học xem đồng hồ', e: '🕒', u: 'giờ', d: 'Bấm “Đố bạn xem giờ”: mỗi câu đúng +10.000đ' }

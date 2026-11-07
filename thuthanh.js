@@ -1,9 +1,9 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    (bản 2026.11.07-6) CỐT TRUYỆN: bầy quái lẻn vào KHO TỪ VỰNG (đầu đường, phía trên) đánh cắp từ vựng, mỗi con vác 1 từ
    để mang về THÀNH CỦA CHÚNG (cuối đường, phía dưới). Nhiệm vụ của người chơi: xây chòi chặn đường, không cho quái mang từ về thành.
    Mỗi màn là 1 kho từ vựng theo chủ đề (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
    📚 trên thanh trên cùng = số từ kho còn giữ được (20). Mỗi con quái về tới thành = mất 1 từ (trùm = mất 5).
-   MUỐN CÓ VÀNG XÂY CHÒI: phải ĐỌC ĐÚNG phát âm từ vựng (app nghe giọng bạn qua micro):
+   MUỐN CÓ VÀNG XÂY CHÒI: phải ĐỌC ĐÚNG từ tiếng Anh rồi NÓI ĐÚNG NGHĨA TIẾNG VIỆT (app nghe giọng bạn qua micro, đọc gần đúng vẫn được):
      • Các từ của đợt sắp tới hiện ở thanh dưới cùng: chạm vào từ → nghe mẫu → đọc → đúng thì nhận vàng
        (đọc đúng ngay lần đầu +30 vàng, lần 2 +20, từ lần 3 +12).
      • Chạm vào con quái đang đi để đọc từ nó vác: đúng thì quái bị choáng, mất máu và bạn được +12 vàng.
@@ -183,6 +183,8 @@
     '.tt-wc .tt-pr{line-height:1.25;margin:1px 0}.tt-wc .tt-pr span{display:block;font-size:11.5px}.tt-wc .tt-pr .ipa{color:#7c3aed;font-family:"Segoe UI","Noto Sans","DejaVu Sans",Arial,sans-serif}.tt-wc .tt-pr .vi{color:#b45309;font-weight:700}',
     '.tt-say .tt-pr{margin-top:3px;line-height:1.35}.tt-say .tt-pr span{display:inline-block;margin-right:10px;font-size:15px}.tt-say .tt-pr .ipa{color:#c4b5fd;font-family:"Segoe UI","Noto Sans","DejaVu Sans",Arial,sans-serif}.tt-say .tt-pr .vi{color:#fde68a;font-weight:800}',
     '.tt-say .tip{font-size:12px;opacity:.7;margin-top:2px}',
+    '.tt-steps{display:flex;gap:6px;justify-content:center;margin:0 44px 8px}.tt-steps span{flex:1;max-width:170px;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12.5px;font-weight:800}.tt-steps span.on{background:#f59e0b;color:#3b2300}.tt-steps span.dn{background:rgba(22,163,74,.55)}',
+    '.tt-ib:disabled{opacity:.45}',
     '.tt-chip .vi{display:block;font-size:11px;font-weight:700;color:#92400e;text-align:left;white-space:nowrap}',
     '.tt-dif{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:4px 0 12px}',
     '.tt-dif button{border:2px solid transparent;border-radius:14px;padding:8px 2px 7px;background:rgba(255,255,255,.08);color:#fff;font-family:inherit;cursor:pointer;text-align:center;line-height:1.15}',
@@ -264,7 +266,7 @@
       '<button class="tt-wavebtn" data-a="wave" id="ttWB"></button>' +
       '<div class="tt-banner" id="ttBan"></div><div class="tt-toast" id="ttToast"></div><div class="tt-pop" id="ttPop"></div>' +
       '<div class="tt-say" id="ttSay"></div><div class="tt-end" id="ttEnd"></div></div>' +
-      '<div class="tt-bank"><div class="hd"><span>📜 Đọc đúng từ để nhận vàng xây chòi</span><span id="ttBN"></span></div><div class="tt-chips" id="ttChips"></div></div>' +
+      '<div class="tt-bank"><div class="hd"><span>📜 Đọc đúng từ + nói đúng nghĩa để nhận vàng</span><span id="ttBN"></span></div><div class="tt-chips" id="ttChips"></div></div>' +
       '</div>';
     document.body.appendChild(root);
     root.addEventListener('click', onClick);
@@ -309,7 +311,7 @@
     $('ttIT').textContent = '🏰 ' + tp.n;
     var h = '<div class="tt-ibox"><div class="tt-ihead" style="--c:' + tp.c + '"><span class="e">' + esc(tp.i) + '</span><div><b>Kho từ: ' + esc(tp.n) + '</b><small>' + tp.w.length + ' từ vựng · ' + nW + ' đợt quái' + (stars(tp.id) ? ' · Tốt nhất: ' + '⭐'.repeat(stars(tp.id)) : '') + '</small></div></div>' +
       '<div style="margin:12px 0 0;padding:12px 14px;border-radius:16px;background:rgba(127,29,29,.45);border:1px solid rgba(252,165,165,.35);font-size:14px;line-height:1.5">👹 <b>Bầy quái đang trộm từ</b> trong kho “' + esc(tp.n) + '”. Mỗi con vác một từ, chạy theo con đường để mang về <b>thành của chúng</b>. Hãy xây chòi chặn đường, <b>không để chúng mang từ nào về thành!</b></div>' +
-      '<div class="tt-how"><div><i>🎤</i>Chạm vào từ ở thanh dưới, đọc đúng để nhận 💰</div><div><i>🏹</i>Chạm ô đá ➕ dọc đường để xây chòi chặn quái</div><div><i>👹</i>Chạm vào quái, đọc đúng từ nó đang trộm để làm nó choáng</div></div>' +
+      '<div class="tt-how"><div><i>🎤</i>Chạm vào từ ở thanh dưới: đọc đúng từ tiếng Anh, rồi nói đúng nghĩa tiếng Việt để nhận 💰</div><div><i>🏹</i>Chạm ô đá ➕ dọc đường để xây chòi chặn quái</div><div><i>👹</i>Chạm vào quái, đọc đúng từ nó đang trộm để làm nó choáng</div></div>' +
       '<div class="tt-grp" style="margin-top:6px">🎚️ Chọn cấp độ</div><div class="tt-dif" id="ttDif">' +
       DIFF.map(function (d, i) { return '<button class="' + (i === DSEL ? 'on' : '') + '" style="--c:' + d.c + '" data-a="diff" data-i="' + i + '"><i>' + d.e + '</i><b>' + d.n + '</b><small>📚 ' + d.life + '</small></button>'; }).join('') +
       '</div><div class="tt-dnote" id="ttDN">' + diffNote(DSEL) + '</div>' +
@@ -662,71 +664,94 @@
 
   /* ================= BẢNG ĐỌC TỪ ================= */
   var SAY = null, rec = null, recTimer = 0;
+  /* (bản 2026.11.07-8) ĐỌC TỪ 2 BƯỚC: bước 1 đọc từ tiếng Anh, bước 2 NÓI NGHĨA TIẾNG VIỆT của từ. Đúng cả 2 bước mới được tính là đúng.
+     Máy so khớp dễ tính (window.SixPron trong index.html): đọc gần đúng vẫn được, sai càng nhiều lần máy càng dễ tính hơn. */
   function openSay(w, e) {
     stopRec(); closePop();
-    SAY = { w: w, e: e || null, st: '', heard: '', mode: SR ? 'mic' : 'pick', opts: null, pick: -1 };
+    SAY = { w: w, e: e || null, step: 1, st: '', heard: '', mode: SR ? 'mic' : 'pick', vmode: SR ? 'mic' : 'pick', opts: null, pick: -1, tr: 0, peek: false };
     drawSay(); $('ttSay').classList.add('on');
-    if (SAY.mode === 'mic') { var s0 = SAY; say(G.tp.w[w][0], function () { setTimeout(function () { if (SAY === s0 && !rec && SAY.st === '') listen(); }, 250); }); }
+    if (SAY.mode === 'mic') { var s0 = SAY; say(G.tp.w[w][0], function () { setTimeout(function () { if (SAY === s0 && !rec && SAY.st === '' && SAY.step === 1) listen(); }, 250); }); }
     else say(G.tp.w[w][0]);
   }
   function closeSay() { stopRec(); SAY = null; var el = $('ttSay'); if (el) el.classList.remove('on'); }
   function pickOpts(w) {
-    var others = G.tp.w.map(function (x, i) { return i; }).filter(function (i) { return i !== w; });
+    var others = G.tp.w.map(function (x, i) { return i; }).filter(function (i) { return i !== w && G.tp.w[i][1] !== G.tp.w[w][1]; });
     var o = shuffle(others).slice(0, 2).concat([w]); return shuffle(o);
+  }
+  function enOK(target, alts) { return window.SixPron ? window.SixPron.matchEn(target, alts, SAY.tr) : matchWord(target, alts); }
+  function viOK(meaning, alts) {
+    if (window.SixPron) return window.SixPron.matchVi(meaning, alts, SAY.tr);
+    var m = String(meaning).toLowerCase(); return alts.some(function (a) { a = String(a).toLowerCase(); return a.indexOf(m) >= 0 || m.indexOf(a) >= 0 && a.length > 1; });
   }
   function drawSay() {
     if (!SAY) return;
-    var x = G.tp.w[SAY.w], fb = '', body = '';
-    if (SAY.mode === 'mic') {
-      if (SAY.st === 'rec') fb = '🎙️ Đang nghe… hãy đọc to và rõ';
-      else if (SAY.st === 'ok') fb = '<span class="ok">✅ Chuẩn rồi! ' + esc(SAY.msg || '') + '</span>';
-      else if (SAY.st === 'wrong') fb = '<span class="bad">Máy nghe thành: “' + esc(SAY.heard || '…') + '”</span>&nbsp;– nghe mẫu rồi đọc lại nhé';
-      else if (SAY.st === 'nospeech') fb = 'Chưa nghe thấy gì. Bấm 🎤 rồi đọc to hơn nhé.';
-      else if (SAY.st === 'nosr') fb = '<span class="bad">Không dùng được micro.</span>&nbsp;Hãy cho phép app dùng micro, hoặc chọn từ thay vì đọc.';
-      else fb = 'Nghe mẫu, rồi bấm 🎤 và đọc từ này';
-      body = '<div class="row"><button class="tt-ib" data-a="sayhear" style="height:54px;padding:0 16px;font-size:16px">🔊 Nghe mẫu</button>' +
-        '<button class="tt-mic' + (SAY.st === 'rec' ? ' rec' : '') + '" data-a="mic">🎤</button>' +
-        (SAY.st === 'nosr' ? '<button class="tt-ib" data-a="topick" style="height:54px;padding:0 14px;font-size:15px">👆 Chọn từ</button>' : '<span style="width:96px"></span>') + '</div>';
+    var x = G.tp.w[SAY.w], fb = '', body = '', st = SAY.st, done = st === 'ok';
+    var mic = SAY.step === 1 ? SAY.mode === 'mic' : SAY.vmode === 'mic';
+    var steps = '<div class="tt-steps"><span class="' + (SAY.step === 1 ? 'on' : 'dn') + '">' + (SAY.step > 1 ? '✅' : '①') + ' Đọc từ tiếng Anh</span><span class="' + (done ? 'dn' : SAY.step === 2 ? 'on' : '') + '">' + (done ? '✅' : '②') + ' Nói nghĩa tiếng Việt</span></div>';
+    if (done) fb = '<span class="ok">✅ Đúng cả cách đọc và nghĩa! ' + esc(SAY.msg || '') + '</span>';
+    else if (mic && st === 'ok1') fb = '<span class="ok">✅ Đọc đúng rồi!</span>&nbsp;Giờ hãy nói <b>nghĩa tiếng Việt</b> của từ này';
+    else if (mic) {
+      if (st === 'rec') fb = SAY.step === 1 ? '🎙️ Đang nghe… hãy đọc từ tiếng Anh' : '🎙️ Đang nghe… hãy nói nghĩa tiếng Việt';
+      else if (st === 'wrong') fb = '<span class="bad">Máy nghe thành: “' + esc(SAY.heard || '…') + '”</span>&nbsp;– ' + (SAY.step === 1 ? 'nghe mẫu rồi đọc lại nhé' : 'chưa đúng nghĩa, thử lại nhé');
+      else if (st === 'nospeech') fb = 'Chưa nghe thấy gì. Bấm 🎤 rồi nói to hơn nhé.';
+      else if (st === 'nosr') fb = '<span class="bad">Không dùng được micro' + (SAY.step === 2 ? ' tiếng Việt' : '') + '.</span>&nbsp;Hãy cho phép app dùng micro, hoặc chọn đáp án thay vì nói.';
+      else fb = SAY.step === 1 ? 'Nghe mẫu, rồi bấm 🎤 và đọc từ này' : 'Bấm 🎤 và nói nghĩa tiếng Việt của từ này';
+      var left = SAY.step === 1 ? '<button class="tt-ib" data-a="sayhear" style="height:54px;padding:0 14px;font-size:15px">🔊 Nghe mẫu</button>'
+        : '<button class="tt-ib" data-a="peek" style="height:54px;padding:0 12px;font-size:14px"' + (SAY.peek ? ' disabled' : '') + '>💡 Xem nghĩa</button>';
+      body = '<div class="row">' + left + '<button class="tt-mic' + (st === 'rec' ? ' rec' : '') + '" data-a="mic">🎤</button>' +
+        (st === 'nosr' ? '<button class="tt-ib" data-a="topick" style="height:54px;padding:0 12px;font-size:14px">👆 Chọn đáp án</button>' : '<span style="width:96px"></span>') + '</div>';
     } else {
       if (!SAY.opts) SAY.opts = pickOpts(SAY.w);
-      fb = SAY.st === 'ok' ? '<span class="ok">✅ Đúng rồi! ' + esc(SAY.msg || '') + '</span>' : SAY.st === 'wrong' ? '<span class="bad">Chưa đúng, nghe lại rồi chọn nhé</span>' : 'Nghe mẫu rồi chọn đúng từ tiếng Anh';
-      body = '<div class="ch">' + SAY.opts.map(function (i) { var cl = SAY.st === 'ok' && i === SAY.w ? 'okb' : SAY.pick === i && i !== SAY.w ? 'bdb' : ''; return '<button class="' + cl + '" data-a="pick" data-w="' + i + '">' + esc(G.tp.w[i][0]) + '</button>'; }).join('') +
+      fb = st === 'wrong' ? '<span class="bad">Chưa đúng, thử lại nhé</span>' : st === 'ok1' ? '<span class="ok">✅ Đúng rồi!</span>&nbsp;Giờ chọn đúng <b>nghĩa tiếng Việt</b>' : SAY.step === 1 ? 'Nghe mẫu rồi chọn đúng từ tiếng Anh' : 'Chọn đúng nghĩa tiếng Việt của từ này';
+      body = '<div class="ch">' + SAY.opts.map(function (i) { var cl = SAY.pick === i && i !== SAY.w ? 'bdb' : (done && i === SAY.w ? 'okb' : ''); return '<button class="' + cl + '" data-a="pick" data-w="' + i + '">' + esc(G.tp.w[i][SAY.step === 1 ? 0 : 1]) + '</button>'; }).join('') +
         '</div><div style="margin-top:8px"><button class="tt-ib" data-a="sayhear" style="padding:0 16px;font-size:15px">🔊 Nghe lại</button></div>';
     }
-    var showWord = SAY.mode === 'mic' || SAY.st === 'ok';
-    $('ttSay').innerHTML = '<button class="tt-ib x" data-a="sayx">✕</button>' +
+    var showWord = SAY.step > 1 || SAY.mode === 'mic', showMean = done || SAY.peek;
+    $('ttSay').innerHTML = '<button class="tt-ib x" data-a="sayx">✕</button>' + steps +
       '<div class="top"><div>' + picHtml(x[2], 58) + '</div><div style="text-align:left"><div class="w">' + (showWord ? esc(x[0]) : '❓❓❓') + '</div>' +
-      (showWord ? pronHtml(x) : '') + '<div class="mn">' + esc(x[1]) + '</div></div></div>' +
-      (showWord && pronOf(x).vi ? '<div class="tip">🗣️ Cách đọc gần đúng: âm có dấu sắc là âm nhấn</div>' : '') +
-      (SAY.e ? '<div style="font-size:13px;color:#fca5a5;font-weight:700">👹 Đọc đúng để làm tên trộm choáng váng!</div>' : '') +
+      (showWord ? pronHtml(x) : '') + '<div class="mn">' + (showMean ? '🇻🇳 ' + esc(x[1]) : (SAY.step === 2 ? '🇻🇳 Nghĩa là gì? ❓' : '')) + '</div></div></div>' +
+      (SAY.step === 1 && showWord && pronOf(x).vi ? '<div class="tip">🗣️ Cách đọc gần đúng: âm có dấu sắc là âm nhấn</div>' : '') +
+      (SAY.e && !done ? '<div style="font-size:13px;color:#fca5a5;font-weight:700">👹 Đúng cả 2 bước để làm tên trộm choáng váng!</div>' : '') +
       '<div class="fb">' + fb + '</div>' + body;
   }
   function stopRec() { clearTimeout(recTimer); if (rec) { var r = rec; rec = null; try { r.onresult = r.onerror = r.onend = null; r.abort(); } catch (e) {} } }
   function listen() {
     if (!SR || rec || !SAY) return;
     hush();
-    var s0 = SAY, target = G.tp.w[SAY.w][0], r = new SR(); rec = r;
-    r.lang = 'en-US'; r.interimResults = false; r.maxAlternatives = 5; r.continuous = false;
-    var got = false;
+    var s0 = SAY, step = SAY.step, x = G.tp.w[SAY.w], r = new SR(); rec = r;
+    r.lang = step === 1 ? 'en-US' : 'vi-VN'; r.interimResults = true; r.maxAlternatives = 5; r.continuous = false;
+    var got = false, alts = [];
     r.onresult = function (e) {
-      got = true; var alts = [];
-      for (var i = 0; i < e.results.length; i++) for (var j = 0; j < e.results[i].length; j++) alts.push(e.results[i][j].transcript);
-      stopRec(); if (SAY !== s0) return;
-      SAY.heard = alts[0] || '';
-      if (matchWord(target, alts)) success(); else fail();
+      for (var i = 0; i < e.results.length; i++) for (var j = 0; j < e.results[i].length; j++) { var tx = e.results[i][j].transcript; if (tx && alts.indexOf(tx) < 0) alts.push(tx); }
+      var fin = false; for (var k = 0; k < e.results.length; k++) if (e.results[k].isFinal) fin = true;
+      // vừa nghe được gần đúng là chấp nhận ngay, không cần chờ hết câu
+      var ok = step === 1 ? enOK(x[0], alts) : viOK(x[1], alts);
+      if (!ok && !fin) return;
+      got = true; stopRec(); if (SAY !== s0 || SAY.step !== step) return;
+      SAY.heard = alts[alts.length - 1] || alts[0] || '';
+      if (ok) { if (step === 1) step1Done(); else success(); } else fail();
     };
     r.onerror = function (e) {
       var er = e && e.error; stopRec(); if (SAY !== s0) return;
-      SAY.st = (er === 'not-allowed' || er === 'service-not-allowed' || er === 'audio-capture' || er === 'network') ? 'nosr' : 'nospeech'; drawSay();
+      if (alts.length) { SAY.heard = alts[0]; var ok = step === 1 ? enOK(x[0], alts) : viOK(x[1], alts); if (ok) { if (step === 1) step1Done(); else success(); } else fail(); return; }
+      SAY.st = (er === 'not-allowed' || er === 'service-not-allowed' || er === 'audio-capture' || er === 'network' || er === 'language-not-supported') ? 'nosr' : 'nospeech'; drawSay();
     };
-    r.onend = function () { if (!got && rec === r) { stopRec(); if (SAY === s0) { SAY.st = 'nospeech'; drawSay(); } } };
+    r.onend = function () {
+      if (got || rec !== r) return; stopRec(); if (SAY !== s0) return;
+      if (alts.length) { SAY.heard = alts[0]; var ok = step === 1 ? enOK(x[0], alts) : viOK(x[1], alts); if (ok) { if (step === 1) step1Done(); else success(); } else fail(); return; }
+      SAY.st = 'nospeech'; drawSay();
+    };
     SAY.st = 'rec'; SAY.heard = ''; drawSay();
     try { r.start(); } catch (e) { stopRec(); SAY.st = 'nosr'; drawSay(); return; }
-    recTimer = setTimeout(function () { if (rec === r) { try { r.stop(); } catch (e) {} } }, 6000);
+    recTimer = setTimeout(function () { if (rec === r) { try { r.stop(); } catch (e) {} } }, 6500);
   }
   function fail() {
-    var s = G.said[SAY.w] || (G.said[SAY.w] = { n: 0, ok: 0 }); s.n++;
+    var s = G.said[SAY.w] || (G.said[SAY.w] = { n: 0, ok: 0 }); s.n++; SAY.tr++;
     SAY.st = 'wrong'; sfx('bad'); drawSay(); renderBank();
+  }
+  function step1Done() {
+    SAY.step = 2; SAY.st = 'ok1'; SAY.tr = 0; SAY.pick = -1; SAY.opts = null; sfx('tap'); drawSay();
+    var s0 = SAY; if (SAY.vmode === 'mic') setTimeout(function () { if (SAY === s0 && SAY.step === 2 && !rec && SAY.st === 'ok1') listen(); }, 900);
   }
   function success() {
     var w = SAY.w, s = G.said[w] || (G.said[w] = { n: 0, ok: 0 }), gain;
@@ -739,7 +764,7 @@
     var i = G.bank.indexOf(w); if (i >= 0) G.bank.splice(i, 1);
     G.gold += gain; SAY.st = 'ok'; SAY.msg = '+' + gain + ' 💰';
     sfx('coin'); drawSay(); renderBank(); hud('gold');
-    var s0 = SAY; setTimeout(function () { if (SAY === s0) closeSay(); }, 900);
+    var s0 = SAY; setTimeout(function () { if (SAY === s0) closeSay(); }, 1300);
   }
 
   /* ================= XÂY CHÒI ================= */
@@ -1004,7 +1029,7 @@
     requestAnimationFrame(function () {
       lay(); renderBank(); hud(); waveBtn();
       banner(DIFF[G.dif].e + ' ' + DIFF[G.dif].n + ' · ' + tp.n, 'Quái sắp tới trộm từ – mau chuẩn bị chòi chặn đường!');
-      setTimeout(function () { if (G && G.tp === tp && !G.towers.length) toast('💡 Chạm vào từ ở thanh dưới để đọc và nhận vàng, rồi chạm ô đá <b>➕</b> để xây chòi chặn quái.'); }, 2200);
+      setTimeout(function () { if (G && G.tp === tp && !G.towers.length) toast('💡 Chạm vào từ ở thanh dưới, đọc từ tiếng Anh rồi nói nghĩa tiếng Việt để nhận vàng, rồi chạm ô đá <b>➕</b> để xây chòi chặn quái.'); }, 2200);
       if (!raf) { last = 0; raf = requestAnimationFrame(loop); }
     });
   }
@@ -1047,11 +1072,13 @@
     if (a === 'sell') { var t2 = towerAt(G.sel); G.gold += Math.floor(t2.spent * 0.6); G.towers.splice(G.towers.indexOf(t2), 1); sfx('coin'); hud('gold'); closePop(); return; }
     if (a === 'sayx') { closeSay(); return; }
     if (a === 'sayhear') { if (!SAY) return; stopRec(); if (SAY.st === 'rec') SAY.st = ''; say(G.tp.w[SAY.w][0]); drawSay(); return; }
-    if (a === 'mic') { if (!SAY) return; if (rec) { stopRec(); SAY.st = ''; drawSay(); } else listen(); return; }
-    if (a === 'topick') { if (!SAY) return; stopRec(); SAY.mode = 'pick'; SAY.st = ''; SAY.opts = null; drawSay(); say(G.tp.w[SAY.w][0]); return; }
+    if (a === 'mic') { if (!SAY || SAY.st === 'ok') return; if (rec) { stopRec(); SAY.st = ''; drawSay(); } else listen(); return; }
+    if (a === 'topick') { if (!SAY) return; stopRec(); if (SAY.step === 1) { SAY.mode = 'pick'; SAY.vmode = 'pick'; } else SAY.vmode = 'pick'; SAY.st = ''; SAY.opts = null; drawSay(); if (SAY.step === 1) say(G.tp.w[SAY.w][0]); return; }
+    if (a === 'peek') { if (!SAY || SAY.peek) return; stopRec(); SAY.peek = true; var sp = G.said[SAY.w] || (G.said[SAY.w] = { n: 0, ok: 0 }); sp.n++; SAY.tr++; SAY.st = ''; drawSay(); renderBank(); return; }
     if (a === 'pick') {
       if (!SAY || SAY.st === 'ok') return; var w = +el.getAttribute('data-w'); SAY.pick = w;
-      if (w === SAY.w) success(); else { var s = G.said[SAY.w] || (G.said[SAY.w] = { n: 0, ok: 0 }); s.n++; SAY.st = 'wrong'; sfx('bad'); drawSay(); }
+      if (w === SAY.w) { if (SAY.step === 1) step1Done(); else success(); }
+      else { var s = G.said[SAY.w] || (G.said[SAY.w] = { n: 0, ok: 0 }); s.n++; SAY.tr++; SAY.st = 'wrong'; sfx('bad'); drawSay(); renderBank(); }
     }
   }
   function alertMap(t) {

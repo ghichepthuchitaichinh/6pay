@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.07-7';
+const APP_VERSION='2026.11.07-8';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -2523,6 +2523,94 @@ window.SixTTS=(function(){
  }
  return {speak:speak,stop:stop,warm:warm,ok:OK};
 })();
+// ===== SO KHỚP GIỌNG NÓI DỄ TÍNH (bản 2026.11.07-8) — dùng chung cho Thủ thành tiếng Anh và bài kiểm tra sau mỗi màn =====
+// matchEn(từ tiếng Anh, [các câu máy nghe được], số lần đã đọc sai): đọc GẦN ĐÚNG vẫn tính là đúng
+//   • so cả chữ viết lẫn "mã âm" (âm gần giống nhau như f/ph/v, s/z/c, k/c/q, bỏ nguyên âm giữa từ, bỏ âm câm...)
+//   • xét mọi phương án máy nghe được, mọi cụm từ trong câu (người chơi lỡ nói thêm "a", "the"... vẫn được)
+//   • đọc sai càng nhiều lần thì máy càng dễ tính hơn
+// matchVi(nghĩa tiếng Việt, [các câu máy nghe được], số lần sai): nói đúng nghĩa (không cần đủ dấu, bỏ qua "cái/con/chiếc...", chấp nhận 1 trong các nghĩa)
+window.SixPron=(function(){
+ const ONES=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+ const TENS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+ function enNum(n){n=+n;if(n<20)return ONES[n];if(n<100)return TENS[Math.floor(n/10)]+(n%10?' '+ONES[n%10]:'');if(n===100)return 'one hundred';if(n===1000)return 'one thousand';return String(n);}
+ // chữ cái đứng một mình máy hay nghe ra (bee → "b", tea → "t", eye → "I"...)
+ const LET={a:'ay',b:'bee',c:'see',d:'dee',e:'ee',f:'ef',g:'gee',h:'aitch',i:'eye',j:'jay',k:'kay',l:'el',m:'em',n:'en',o:'oh',p:'pee',q:'queue',r:'are',s:'es',t:'tea',u:'you',v:'vee',w:'double you',x:'ex',y:'why',z:'zee'};
+ const FILL={a:1,an:1,the:1,uh:1,um:1,er:1,ah:1,oh:0,is:1,its:1,it:1,this:1,that:1};
+ function normEn(s){return String(s).toLowerCase().replace(/\d+/g,m=>' '+enNum(m)+' ').replace(/[’`]/g,"'").replace(/[^a-z' ]+/g,' ').replace(/'/g,'').replace(/\s+/g,' ').trim();}
+ function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let p=[];for(let j=0;j<=n;j++)p[j]=j;for(let i=1;i<=m;i++){let c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c;}return p[n];}
+ function sim(a,b){if(!a||!b)return 0;if(a===b)return 1;return 1-lev(a,b)/Math.max(a.length,b.length);}
+ // mã âm tiếng Anh (kiểu Metaphone rút gọn): từ đọc giống nhau thì ra mã giống nhau
+ function key(w){
+  w=String(w).toLowerCase().replace(/[^a-z]/g,'');if(!w)return '';
+  w=w.replace(/^kn|^gn|^pn/,'n').replace(/^wr/,'r').replace(/^wh/,'w').replace(/^x/,'s').replace(/mb$/,'m')
+   .replace(/tion|sion|cian/g,'xn').replace(/tch/g,'x').replace(/sch/g,'sk').replace(/sh|ch/g,'x').replace(/th/g,'0').replace(/ph/g,'f')
+   .replace(/gh(?=[aeiou])/g,'g').replace(/gh/g,'').replace(/ck/g,'k').replace(/dge|dgi|dgy/g,'j').replace(/c(?=[eiy])/g,'s').replace(/c/g,'k').replace(/q/g,'k')
+   .replace(/g(?=[eiy])/g,'j').replace(/x/g,function(m,o){return o===0?'x':'ks';}).replace(/z/g,'s').replace(/v/g,'f').replace(/w(?![aeiou])/g,'').replace(/y(?![aeiou])/g,'');
+  w=w.replace(/e$/,'');
+  const head=/^[aeiou]/.test(w)?'A':'', body=w.replace(/[aeiou]/g,'');
+  return (head+body).replace(/(.)\1+/g,'$1');
+ }
+ function keys(s){return s.split(' ').map(key).join('');}
+ function cands(alts){
+  const out=[];
+  alts.forEach(a=>{
+   let x=normEn(a);if(!x)return;
+   let toks=x.split(' ').map(t=>t.length===1&&LET[t]?LET[t]:t);
+   out.push(toks);
+   const nf=toks.filter(t=>!FILL[t]);if(nf.length&&nf.length!==toks.length)out.push(nf);
+  });
+  return out;
+ }
+ function matchEn(target,alts,tries){
+  const t=normEn(target);if(!t)return true;
+  const tt=t.split(' '),tc=tt.join(''),tk=keys(t),n=tt.length;
+  const lv=Math.min(2,tries||0), thr=[0.62,0.55,0.48][lv], kthr=[0.75,0.67,0.6][lv];
+  for(const toks of cands(alts)){
+   for(let L=Math.max(1,n-1);L<=n+1;L++)for(let i=0;i+L<=toks.length;i++){
+    const seg=toks.slice(i,i+L),sc=seg.join(''),sk=keys(seg.join(' '));
+    if(sc===tc||sk===tk&&tk.length>=1)return true;
+    if(tc.length<=3){ // từ rất ngắn: mã âm giống, hoặc sai 1 chữ mà cùng chữ đầu
+     if(sc[0]===tc[0]&&lev(sc,tc)<=1)return true;
+     if(sk[0]===tk[0]&&sim(sk,tk)>=(lv>=1?0.5:0.5)&&sim(sc,tc)>=(lv>=1?0.3:0.34))return true;
+     continue;
+    }
+    if(sc.indexOf(tc)>=0&&sc.length<=tc.length+4)return true;
+    if(sim(sc,tc)>=thr||sim(sk,tk)>=kthr&&sim(sc,tc)>=thr-0.15)return true;
+   }
+  }
+  return false;
+ }
+ // ----- tiếng Việt -----
+ const VN=['không','một','hai','ba','bốn','năm','sáu','bảy','tám','chín','mười'];
+ const CLS=['cai','con','chiec','qua','trai','doi','buc','tam','cuon','to','ngoi','bo','canh','soi','hat','chu','loai','mon','su','viec','nguoi','em','ong'];
+ function plain(s){return String(s).toLowerCase().replace(/\d+/g,m=>+m<=10?' '+VN[+m]+' ':m).normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim();}
+ function strip(s){const t=s.split(' ');while(t.length>1&&CLS.indexOf(t[0])>=0)t.shift();return t.join(' ');}
+ function variants(m){
+  const out=[],raw=String(m);
+  const inside=(raw.match(/\(([^)]*)\)/g)||[]).map(x=>x.slice(1,-1));
+  raw.replace(/\([^)]*\)/g,' ').split(/[\/,;]| hoặc /).concat(inside).forEach(v=>{const p=plain(v);if(p){out.push(p);const s=strip(p);if(s!==p)out.push(s);}});
+  return out;
+ }
+ function matchVi(meaning,alts,tries){
+  const vs=variants(meaning);if(!vs.length)return true;
+  const lv=Math.min(2,tries||0), thr=[0.72,0.64,0.56][lv], tov=[0.66,0.6,0.5][lv];
+  for(const a of alts){
+   let h=plain(a).replace(/^(nghia la|co nghia la|la|tu nay la|day la)\s+/,'');if(!h)continue;
+   const hs=strip(h),hc=h.replace(/ /g,''),hsc=hs.replace(/ /g,'');
+   for(const v of vs){
+    const vc=v.replace(/ /g,'');
+    if(hc===vc||hsc===vc)return true;
+    if((' '+h+' ').indexOf(' '+v+' ')>=0)return true;
+    if(vc.length>=4&&(hc.indexOf(vc)>=0))return true;
+    if(vc.length>=4&&(sim(hsc,vc)>=thr||sim(hc,vc)>=thr))return true;
+    const vt=v.split(' '),ht=h.split(' ');let hit=0;vt.forEach(x=>{if(ht.some(y=>y===x||x.length>=3&&sim(x,y)>=0.67))hit++;});
+    if(vt.length>=2&&hit/vt.length>=tov)return true;
+   }
+  }
+  return false;
+ }
+ return {matchEn:matchEn,matchVi:matchVi,key:key};
+})();
 // ===== BÀI KIỂM TRA SAU MỖI MÀN (game tiếng Anh, tiếng Trung, Phá đảo chủ đề) — bản 2026.11.07-1 =====
 // Phần 1: phát âm từ vựng (app nghe giọng bạn qua micro). Phần 2: chọn nghĩa tiếng Việt đúng của từ đó.
 // Phải đúng TẤT CẢ mới được chơi màn tiếp theo. Mỗi từ được đọc tối đa QZ_TRIES lần.
@@ -2581,10 +2669,8 @@ window.SixLevelQuiz=(function(){
    return alts.some(a=>{const x=normZh(a);if(!x)return false;if(x.indexOf(t)>=0)return true;
     if(t.length>=3&&Math.abs(x.length-t.length)<=1){let same=0;for(const ch of t)if(x.indexOf(ch)>=0)same++;return same/t.length>=0.67;}return false;});
   }
-  const t=normEn(target),tc=t.replace(/[ ']/g,'');if(!t)return true;
-  return alts.some(a=>{const x=normEn(a);if(!x)return false;const xc=x.replace(/[ ']/g,'');
-   if(x===t||xc===tc||(' '+x+' ').indexOf(' '+t+' ')>=0||xc.indexOf(tc)>=0&&xc.length<=tc.length+4)return true;
-   return tc.length>=5&&1-lev(xc,tc)/Math.max(xc.length,tc.length)>=0.8;});
+  // (bản 2026.11.07-8) tiếng Anh: đọc gần đúng vẫn được, sai càng nhiều lần máy càng dễ tính
+  return window.SixPron.matchEn(target,alts,Q?Q.tries:0);
  }
 
  /* ---------- Mở bài kiểm tra ---------- */

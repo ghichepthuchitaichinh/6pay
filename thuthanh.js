@@ -1,4 +1,4 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.08-10: nâng độ khó mức Dễ và Thường lên gần bằng mức Khó – quái trâu hơn, ra dày hơn, nhiều lính bắn chòi/quái tàng hình hơn, kho giữ ít từ hơn, ít vàng khởi đầu hơn; thưởng cũng tăng theo. Bản 2026.11.08-9: đọc/chọn đáp án lấy vàng KHÔNG GIỚI HẠN nhưng theo LƯỢT – mỗi lượt mỗi từ ở thanh dưới chỉ được 1 lần, đọc/chọn hết các từ thì sang lượt mới, tất cả từ mở lại (thay cho luật "3 lần liền"). Bản 2026.11.08-8: bỏ cách đọc kiểu Việt, chỉ giữ phiên âm IPA; chọn đáp án đúng 1 từ đủ 3 lần cũng được tặng 🎁 quà mưa; máy nghe giọng dễ tính hơn. Bản 2026.11.08-7: 60 kho từ chia thành 10 GIAI ĐOẠN (mỗi giai đoạn 6 kho); bảo vệ đủ 6 kho của một giai đoạn thì mở màn 🌍 BOSS THẾ GIỚI – kho từ nằm giữa bản đồ, chòi xây quanh kho, quái tràn vào từ 4 CỬA (Bắc, Nam, Tây, Đông); boss thế giới lần sau mạnh hơn lần trước (máu, sát thương, số quái triệu hồi đều tăng). Bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.08-11: mỗi kho từ thêm 1 ĐỢT CÂU GIAO TIẾP ngay trước đợt cuối – quái vác trộm câu giao tiếp cơ bản theo chủ đề của kho (6 câu/kho, 60 kho), đọc đúng câu được thưởng gấp rưỡi, bước 2 chọn nghĩa tiếng Việt. Bản 2026.11.08-10: nâng độ khó mức Dễ và Thường lên gần bằng mức Khó – quái trâu hơn, ra dày hơn, nhiều lính bắn chòi/quái tàng hình hơn, kho giữ ít từ hơn, ít vàng khởi đầu hơn; thưởng cũng tăng theo. Bản 2026.11.08-9: đọc/chọn đáp án lấy vàng KHÔNG GIỚI HẠN nhưng theo LƯỢT – mỗi lượt mỗi từ ở thanh dưới chỉ được 1 lần, đọc/chọn hết các từ thì sang lượt mới, tất cả từ mở lại (thay cho luật "3 lần liền"). Bản 2026.11.08-8: bỏ cách đọc kiểu Việt, chỉ giữ phiên âm IPA; chọn đáp án đúng 1 từ đủ 3 lần cũng được tặng 🎁 quà mưa; máy nghe giọng dễ tính hơn. Bản 2026.11.08-7: 60 kho từ chia thành 10 GIAI ĐOẠN (mỗi giai đoạn 6 kho); bảo vệ đủ 6 kho của một giai đoạn thì mở màn 🌍 BOSS THẾ GIỚI – kho từ nằm giữa bản đồ, chòi xây quanh kho, quái tràn vào từ 4 CỬA (Bắc, Nam, Tây, Đông); boss thế giới lần sau mạnh hơn lần trước (máu, sát thương, số quái triệu hồi đều tăng). Bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    (bản 2026.11.07-6) CỐT TRUYỆN: bầy quái lẻn vào KHO TỪ VỰNG (đầu đường, phía trên) đánh cắp từ vựng, mỗi con vác 1 từ
    để mang về THÀNH CỦA CHÚNG (cuối đường, phía dưới). Nhiệm vụ của người chơi: xây chòi chặn đường, không cho quái mang từ về thành.
    Mỗi màn là 1 kho từ vựng theo chủ đề (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
@@ -151,6 +151,77 @@
   }
   function pronHtml(x, cls) { var p = pronOf(x); if (!p.ipa && !p.vi) return ''; return '<div class="' + (cls || 'tt-pr') + '">' + (p.ipa ? '<span class="ipa">' + esc(p.ipa) + '</span>' : '') + (p.vi ? '<span class="vi">🗣️ ' + esc(p.vi) + '</span>' : '') + '</div>'; }
 
+  /* (bản 2026.11.08-10) CÂU GIAO TIẾP CƠ BẢN theo từng kho từ: chen thành 1 đợt quái ngay TRƯỚC ĐỢT CUỐI của mỗi kho.
+     Mỗi câu: 'câu tiếng Anh|nghĩa tiếng Việt|hình'. Thêm câu: thêm vào đúng mã kho (id chủ đề trong words.js). */
+  var SENT = {
+    family: "This is my family.|Đây là gia đình tôi.|👪;How many people are there in your family?|Gia đình bạn có mấy người?|❓;I have one brother and one sister.|Tôi có một anh trai và một em gái.|👫;My father is a teacher.|Bố tôi là giáo viên.|👨‍🏫;I love my mother very much.|Tôi rất yêu mẹ tôi.|❤️;Who is that man?|Người đàn ông kia là ai?|🧔",
+    body: "My head hurts.|Tôi bị đau đầu.|🤕;Wash your hands, please.|Làm ơn rửa tay đi.|🧼;Close your eyes.|Nhắm mắt lại.|😌;Open your mouth.|Há miệng ra.|👄;I have a stomachache.|Tôi bị đau bụng.|🤢;She has long hair.|Cô ấy có mái tóc dài.|👩",
+    emotions: "How are you today?|Hôm nay bạn thế nào?|🙂;I am very happy.|Tôi rất vui.|😊;Why are you sad?|Sao bạn buồn vậy?|😢;Don't be angry.|Đừng giận nhé.|😠;I am tired.|Tôi mệt rồi.|😩;I'm so excited!|Tôi háo hức quá!|🤩",
+    clothes: "What are you wearing?|Bạn đang mặc gì?|👕;Put on your coat.|Mặc áo khoác vào.|🧥;Can I try this on?|Tôi mặc thử cái này được không?|👗;This shirt is too big.|Cái áo này rộng quá.|👔;I like your shoes.|Tôi thích đôi giày của bạn.|👟;Take off your hat.|Bỏ mũ ra.|🧢",
+    personal: "Where is my toothbrush?|Bàn chải đánh răng của tôi đâu?|🪥;Can I borrow your comb?|Cho tôi mượn cái lược được không?|💇;Please pass me a towel.|Làm ơn đưa tôi cái khăn.|🧻;Don't forget your umbrella.|Đừng quên ô nhé.|☂️;I need some soap.|Tôi cần ít xà phòng.|🧼;Keep your things tidy.|Hãy giữ đồ đạc gọn gàng.|🧺",
+    health: "I don't feel well.|Tôi thấy không khỏe.|🤒;I need to see a doctor.|Tôi cần đi khám bác sĩ.|👨‍⚕️;Call an ambulance!|Gọi xe cứu thương đi!|🚑;Take this medicine twice a day.|Uống thuốc này ngày hai lần.|💊;I have a fever.|Tôi bị sốt.|🌡️;Get well soon!|Mau khỏe nhé!|💐",
+    jobs: "What do you do?|Bạn làm nghề gì?|💼;I am a nurse.|Tôi là y tá.|👩‍⚕️;What do you want to be?|Bạn muốn làm nghề gì?|🤔;I want to be a pilot.|Tôi muốn làm phi công.|👨‍✈️;Where does your mother work?|Mẹ bạn làm việc ở đâu?|🏢;He works in a factory.|Anh ấy làm việc ở nhà máy.|🏭",
+    verbs: "Let's go!|Đi thôi!|🏃;Can you swim?|Bạn biết bơi không?|🏊;Please sit down.|Mời ngồi.|🪑;Stand up, please.|Hãy đứng lên.|🧍;I am reading a book.|Tôi đang đọc sách.|📖;Come here, please.|Lại đây nào.|👋",
+    adjectives: "It is very big.|Nó rất to.|🐘;This bag is heavy.|Cái túi này nặng.|🎒;You are so tall!|Bạn cao quá!|🦒;That's too expensive.|Cái đó đắt quá.|💸;The room is clean.|Căn phòng sạch sẽ.|✨;My car is old.|Xe của tôi cũ rồi.|🚗",
+    daily: "What time do you get up?|Bạn dậy lúc mấy giờ?|⏰;I get up at six o'clock.|Tôi dậy lúc sáu giờ.|🌅;I brush my teeth every morning.|Sáng nào tôi cũng đánh răng.|🪥;It's time for breakfast.|Đến giờ ăn sáng rồi.|🥣;I go to bed at ten.|Tôi đi ngủ lúc mười giờ.|🛏️;What do you do after school?|Sau giờ học bạn làm gì?|🎒",
+    character: "She is very kind.|Cô ấy rất tốt bụng.|💖;He is friendly and funny.|Anh ấy thân thiện và hài hước.|🤗;Be brave!|Dũng cảm lên!|🦁;Don't be lazy.|Đừng lười biếng.|🦥;You are so clever.|Bạn thông minh quá.|🧠;Always be honest.|Hãy luôn trung thực.|😇",
+    home: "Welcome to my house.|Chào mừng đến nhà tôi.|🏠;Please come in.|Mời vào.|🚪;Where is the bathroom?|Phòng tắm ở đâu?|🚽;Close the window, please.|Làm ơn đóng cửa sổ.|🪟;Turn on the light.|Bật đèn lên.|💡;My room is upstairs.|Phòng tôi ở trên lầu.|🛏️",
+    kitchen: "Dinner is ready!|Cơm tối xong rồi!|🍲;Can you help me cook?|Bạn giúp tôi nấu ăn được không?|👩‍🍳;Pass me a spoon, please.|Đưa tôi cái thìa với.|🥄;Be careful with the knife.|Cẩn thận con dao.|🔪;Please set the table.|Hãy dọn bát đũa ra bàn.|🍽️;Put it in the fridge.|Cho nó vào tủ lạnh.|🧊",
+    objects: "Where is my phone?|Điện thoại của tôi đâu?|📱;I can't find my keys.|Tôi không tìm thấy chìa khóa.|🔑;Is this your bag?|Đây có phải túi của bạn không?|🎒;Can I use your pen?|Tôi dùng bút của bạn được không?|🖊️;It's on the table.|Nó ở trên bàn.|🪑;What is this?|Đây là cái gì?|❓",
+    tools: "Can you fix it?|Bạn sửa nó được không?|🔧;Hand me the hammer, please.|Đưa tôi cái búa với.|🔨;I need a screwdriver.|Tôi cần một cái tua vít.|🪛;Hold the ladder for me.|Giữ thang giúp tôi.|🪜;Be careful, it's sharp.|Cẩn thận, nó sắc đấy.|⚠️;Put the tools away.|Cất dụng cụ đi.|🧰",
+    tech: "My computer is not working.|Máy tính của tôi bị hỏng.|💻;Can you turn it on?|Bạn bật nó lên được không?|🔌;Please charge my phone.|Làm ơn sạc điện thoại giúp tôi.|🔋;Let me take a photo.|Để tôi chụp một tấm ảnh.|📷;Print this page, please.|Làm ơn in trang này.|🖨️;Restart the computer.|Khởi động lại máy tính.|🔄",
+    chores: "Let's clean the house.|Cùng dọn nhà nào.|🧹;Can you wash the dishes?|Bạn rửa bát được không?|🍽️;I will do the laundry.|Tôi sẽ giặt quần áo.|👕;Please take out the trash.|Làm ơn đổ rác.|🗑️;Make your bed.|Dọn giường của con đi.|🛏;Thank you for helping me.|Cảm ơn bạn đã giúp tôi.|🙏",
+    internet: "What is the Wi-Fi password?|Mật khẩu wifi là gì?|📶;Send me a message.|Nhắn tin cho tôi nhé.|💬;Can I have your phone number?|Cho tôi xin số điện thoại nhé?|📞;I will call you later.|Tôi sẽ gọi cho bạn sau.|📱;The internet is very slow.|Mạng chậm quá.|🐢;Please like and share.|Hãy bấm thích và chia sẻ nhé.|👍",
+    fruits: "Do you like apples?|Bạn có thích táo không?|🍎;I want a banana.|Tôi muốn một quả chuối.|🍌;How much are these oranges?|Chỗ cam này bao nhiêu tiền?|🍊;This mango is very sweet.|Quả xoài này rất ngọt.|🥭;Let's eat some fruit.|Mình ăn chút trái cây nhé.|🍇;Wash the fruit first.|Rửa trái cây trước đã.|💧",
+    vegetables: "Eat your vegetables.|Ăn rau đi con.|🥦;I don't like onions.|Tôi không thích hành.|🧅;Vegetables are good for you.|Rau tốt cho sức khỏe.|🥕;Can I have some corn?|Cho tôi ít ngô nhé?|🌽;Please cut the carrots.|Làm ơn thái cà rốt.|🔪;We grow tomatoes at home.|Nhà tôi trồng cà chua.|🍅",
+    food: "I'm hungry.|Tôi đói rồi.|😋;What would you like to eat?|Bạn muốn ăn gì?|🍽️;I'd like a bowl of noodles.|Cho tôi một bát phở.|🍜;It's delicious!|Ngon quá!|😍;Can I have the menu, please?|Cho tôi xem thực đơn nhé.|📋;Enjoy your meal!|Chúc ngon miệng!|🍲",
+    drinks: "I'm thirsty.|Tôi khát nước.|🥵;Would you like some tea?|Bạn uống trà không?|🍵;A glass of water, please.|Cho tôi một cốc nước.|💧;I'd like a coffee with milk.|Cho tôi một cà phê sữa.|☕;No ice, please.|Không đá nhé.|🧊;Cheers!|Cạn ly!|🥂",
+    sweets: "Can I have some candy?|Cho tôi ít kẹo nhé?|🍬;I love chocolate.|Tôi rất thích sô cô la.|🍫;Let's get some ice cream.|Đi ăn kem đi.|🍦;Don't eat too many sweets.|Đừng ăn nhiều đồ ngọt quá.|🚫;This cake is yummy.|Bánh này ngon tuyệt.|🍰;Would you like a cookie?|Bạn ăn bánh quy không?|🍪",
+    school: "Good morning, teacher.|Chào buổi sáng cô giáo.|👩‍🏫;May I come in?|Em vào lớp được không ạ?|🚪;Open your books, please.|Các em mở sách ra.|📖;May I go to the toilet?|Em xin phép đi vệ sinh ạ.|🚻;I don't understand.|Em không hiểu.|🤔;Can you say that again, please?|Cô nói lại được không ạ?|🔁",
+    toys: "Let's play together.|Mình chơi cùng nhau nhé.|🤝;Can I play with your doll?|Mình chơi búp bê của bạn được không?|🪆;This is my favorite toy.|Đây là đồ chơi yêu thích của tôi.|🧸;Let's fly a kite.|Đi thả diều nào.|🪁;Put your toys away.|Cất đồ chơi đi.|🧺;It's your turn.|Đến lượt bạn.|🎲",
+    sports: "Do you like football?|Bạn có thích bóng đá không?|⚽;Let's play basketball.|Chơi bóng rổ đi.|🏀;What is your favorite sport?|Môn thể thao yêu thích của bạn là gì?|🏅;I go swimming every weekend.|Cuối tuần nào tôi cũng đi bơi.|🏊;Who won the game?|Đội nào thắng?|🏆;Come on! You can do it!|Cố lên! Bạn làm được mà!|💪",
+    music: "Can you play the guitar?|Bạn biết chơi ghi-ta không?|🎸;Let's sing a song.|Hát một bài nào.|🎤;I like this song.|Tôi thích bài hát này.|🎶;Turn up the music.|Vặn to nhạc lên.|🔊;Please turn it down.|Làm ơn vặn nhỏ lại.|🔉;What music do you like?|Bạn thích nghe nhạc gì?|🎧",
+    festivals: "Happy birthday!|Chúc mừng sinh nhật!|🎂;Merry Christmas!|Giáng sinh vui vẻ!|🎄;This gift is for you.|Món quà này dành cho bạn.|🎁;Let's go to the party.|Đi dự tiệc thôi.|🎉;Make a wish!|Ước một điều đi!|🕯️;Thank you for coming.|Cảm ơn bạn đã đến.|🙏",
+    fantasy: "Once upon a time…|Ngày xửa ngày xưa…|📜;Look, a dragon!|Nhìn kìa, một con rồng!|🐉;The wizard has magic.|Pháp sư có phép thuật.|🧙;Do you believe in fairies?|Bạn có tin có nàng tiên không?|🧚;Make a wish.|Hãy ước đi.|🌟;They lived happily ever after.|Họ sống hạnh phúc mãi mãi.|💞",
+    subjects: "What is your favorite subject?|Môn học yêu thích của bạn là gì?|📘;I like English.|Tôi thích tiếng Anh.|🔤;We have math today.|Hôm nay chúng ta có môn toán.|➗;I'm good at art.|Tôi giỏi môn mỹ thuật.|🎨;Science is interesting.|Môn khoa học rất thú vị.|🔬;When do we have music?|Khi nào chúng ta học âm nhạc?|🎵",
+    science: "Let's do an experiment.|Cùng làm thí nghiệm nào.|⚗️;Look through the microscope.|Nhìn qua kính hiển vi.|🔬;Wear your safety glasses.|Hãy đeo kính bảo hộ.|🥽;What happens next?|Điều gì xảy ra tiếp theo?|🤔;Write down the results.|Ghi lại kết quả.|📝;Don't touch that!|Đừng chạm vào cái đó!|⚠️",
+    hobbies: "What do you do in your free time?|Lúc rảnh bạn làm gì?|🕒;I like reading books.|Tôi thích đọc sách.|📚;My hobby is drawing.|Sở thích của tôi là vẽ tranh.|🎨;Do you like cooking?|Bạn có thích nấu ăn không?|🍳;Let's go fishing this weekend.|Cuối tuần này đi câu cá nhé.|🎣;I collect stamps.|Tôi sưu tầm tem.|📮",
+    tet: "Happy New Year!|Chúc mừng năm mới!|🎊;I wish you good health.|Chúc bạn sức khỏe dồi dào.|💪;Here is your lucky money.|Lì xì cho con này.|🧧;Let's watch the fireworks.|Cùng xem pháo hoa nào.|🎆;We visit our grandparents at Tet.|Tết chúng tôi đi thăm ông bà.|👴;Wishing you a lot of luck!|Chúc bạn thật nhiều may mắn!|🍀",
+    pets: "Do you have a pet?|Bạn có nuôi thú cưng không?|🐾;I have a dog.|Tôi có một con chó.|🐶;What's its name?|Nó tên là gì?|❓;Can I touch your cat?|Tôi vuốt mèo của bạn được không?|🐱;Don't forget to feed the fish.|Đừng quên cho cá ăn.|🐟;My dog likes to play.|Con chó của tôi thích chơi đùa.|🎾",
+    wild: "Let's go to the zoo.|Đi sở thú nào.|🦁;Look at the elephant!|Nhìn con voi kìa!|🐘;Monkeys can climb trees.|Khỉ biết trèo cây.|🐵;Don't feed the animals.|Không cho thú ăn.|🚫;Tigers are dangerous.|Hổ rất nguy hiểm.|🐯;Which animal do you like best?|Bạn thích con vật nào nhất?|🤔",
+    birds: "Listen! The birds are singing.|Nghe kìa! Chim đang hót.|🐦;Birds can fly.|Chim biết bay.|🕊️;Look at that eagle!|Nhìn con đại bàng kia kìa!|🦅;The parrot can talk.|Con vẹt biết nói.|🦜;There is a nest in the tree.|Trên cây có một cái tổ.|🪺;The rooster crows in the morning.|Gà trống gáy vào buổi sáng.|🐓",
+    sea: "Look, a dolphin!|Nhìn kìa, một con cá heo!|🐬;Whales are very big.|Cá voi rất to.|🐋;Don't swim near sharks.|Đừng bơi gần cá mập.|🦈;I like eating crab.|Tôi thích ăn cua.|🦀;Turtles live a long time.|Rùa sống rất lâu.|🐢;Let's go to the aquarium.|Đi thủy cung đi.|🐠",
+    insects: "There is a bee!|Có con ong kìa!|🐝;Don't be scared, it's just an ant.|Đừng sợ, chỉ là con kiến thôi.|🐜;The butterfly is beautiful.|Con bướm đẹp quá.|🦋;I got a mosquito bite.|Tôi bị muỗi đốt.|🦟;I'm afraid of spiders.|Tôi sợ nhện.|🕷️;Close the door, the flies are coming in.|Đóng cửa lại, ruồi bay vào kìa.|🪰",
+    zodiac: "What's your zodiac animal?|Bạn tuổi con gì?|🐲;I was born in the year of the dragon.|Tôi tuổi Thìn.|🐉;This is the year of the horse.|Năm nay là năm con ngựa.|🐎;My mother is a tiger.|Mẹ tôi tuổi Dần.|🐅;How old are you?|Bạn bao nhiêu tuổi?|🎂;We are the same age.|Chúng ta bằng tuổi nhau.|🤝",
+    flowers: "These flowers are for you.|Những bông hoa này tặng bạn.|💐;What a beautiful rose!|Bông hồng đẹp quá!|🌹;Please water the plants.|Làm ơn tưới cây.|🚿;Don't pick the flowers.|Đừng hái hoa.|🚫;The tree is very tall.|Cái cây rất cao.|🌳;Sunflowers are yellow.|Hoa hướng dương màu vàng.|🌻",
+    nature: "Look at the rainbow!|Nhìn cầu vồng kìa!|🌈;The sun is shining.|Mặt trời đang chiếu sáng.|☀️;There are many stars tonight.|Tối nay có nhiều sao.|⭐;Let's go to the mountains.|Đi lên núi chơi nào.|⛰️;Please don't litter.|Làm ơn đừng xả rác.|🗑️;Let's protect nature.|Hãy bảo vệ thiên nhiên.|🌏",
+    weather: "What's the weather like today?|Hôm nay thời tiết thế nào?|⛅;It's sunny.|Trời nắng.|☀️;It's raining.|Trời đang mưa.|🌧️;Take an umbrella with you.|Mang theo ô nhé.|☂️;It's very hot today.|Hôm nay nóng quá.|🥵;It's cold, wear a jacket.|Trời lạnh, mặc áo khoác vào.|🧥",
+    space: "Look at the moon!|Nhìn mặt trăng kìa!|🌙;I want to be an astronaut.|Tôi muốn làm phi hành gia.|🧑‍🚀;The Earth goes around the Sun.|Trái đất quay quanh Mặt trời.|🌍;How many planets are there?|Có bao nhiêu hành tinh?|🪐;The rocket is taking off.|Tên lửa đang cất cánh.|🚀;Make a wish on a shooting star.|Ước khi thấy sao băng nhé.|🌠",
+    farm: "My grandparents live on a farm.|Ông bà tôi sống ở nông trại.|🏡;Let's feed the chickens.|Cho gà ăn nào.|🐔;The farmer is planting rice.|Bác nông dân đang cấy lúa.|👨‍🌾;Help me water the plants.|Giúp tôi tưới cây nhé.|🌱;It's harvest time.|Đến mùa thu hoạch rồi.|🌾;The cows are eating grass.|Mấy con bò đang ăn cỏ.|🐄",
+    places: "Where are you going?|Bạn đang đi đâu?|🚶;I'm going to the supermarket.|Tôi đang đi siêu thị.|🛒;Where is the post office?|Bưu điện ở đâu?|📮;Is it far from here?|Có xa đây không?|📏;It's next to the bank.|Nó ở cạnh ngân hàng.|🏦;Let's meet at the park.|Gặp nhau ở công viên nhé.|🌳",
+    transport: "How do you go to school?|Bạn đến trường bằng gì?|🏫;I go by bike.|Tôi đi xe đạp.|🚲;Where is the bus stop?|Trạm xe buýt ở đâu?|🚏;Let's take a taxi.|Mình đi taxi nhé.|🚕;Fasten your seat belt.|Thắt dây an toàn vào.|🚗;What time does the train leave?|Mấy giờ tàu chạy?|🚆",
+    travel: "Where are you from?|Bạn đến từ đâu?|🌏;I'm from Vietnam.|Tôi đến từ Việt Nam.|🇻🇳;Can I see your passport?|Cho tôi xem hộ chiếu của bạn.|🛂;I'd like to book a room.|Tôi muốn đặt một phòng.|🏨;How much is the ticket?|Vé bao nhiêu tiền?|🎫;Have a nice trip!|Chúc chuyến đi vui vẻ!|✈️",
+    countries: "Which country are you from?|Bạn đến từ nước nào?|🌏;I'm Vietnamese.|Tôi là người Việt Nam.|🇻🇳;Have you ever been to Japan?|Bạn đã từng đến Nhật Bản chưa?|🇯🇵;I want to visit Korea.|Tôi muốn đi Hàn Quốc.|🇰🇷;What language do they speak?|Họ nói tiếng gì?|🗣️;Thailand is near Vietnam.|Thái Lan ở gần Việt Nam.|🇹🇭",
+    money: "How much is it?|Cái này bao nhiêu tiền?|💰;It's too expensive.|Đắt quá.|😮;Can you give me a discount?|Bạn bớt cho tôi được không?|🏷️;I'll take it.|Tôi lấy cái này.|🛍️;Can I pay by card?|Tôi trả bằng thẻ được không?|💳;Here is your change.|Đây là tiền thừa của bạn.|🪙",
+    beach: "Let's go to the beach.|Đi biển đi.|🏖️;Don't forget your sunscreen.|Đừng quên kem chống nắng.|🧴;The water is so cool.|Nước mát quá.|🌊;Let's build a sandcastle.|Cùng xây lâu đài cát nào.|🏰;Don't swim too far.|Đừng bơi ra xa quá.|⚠️;Let's watch the sunset.|Cùng ngắm hoàng hôn nào.|🌅",
+    signs: "Stop! The light is red.|Dừng lại! Đèn đỏ rồi.|🛑;Look left and right.|Nhìn bên trái và bên phải.|👀;Please cross at the zebra crossing.|Hãy qua đường ở vạch kẻ đường.|🚸;No smoking here.|Ở đây cấm hút thuốc.|🚭;Be careful!|Cẩn thận!|⚠️;Wear a helmet.|Đội mũ bảo hiểm vào.|⛑️",
+    world: "Where is Brazil?|Nước Bra-xin ở đâu?|🇧🇷;I'd like to travel around the world.|Tôi muốn đi du lịch vòng quanh thế giới.|🌍;What's the capital of France?|Thủ đô của nước Pháp là gì?|🇫🇷;Canada is a very big country.|Ca-na-đa là một nước rất rộng.|🇨🇦;People in Mexico speak Spanish.|Người Mê-hi-cô nói tiếng Tây Ban Nha.|🇲🇽;Have you been abroad?|Bạn đã ra nước ngoài chưa?|✈️",
+    colors: "What color is it?|Nó màu gì?|🎨;It's red.|Nó màu đỏ.|🔴;What's your favorite color?|Màu yêu thích của bạn là gì?|🌈;I like blue.|Tôi thích màu xanh dương.|🔵;Do you have it in black?|Có màu đen không?|⚫;The sky is blue.|Bầu trời màu xanh.|☁️",
+    numbers: "How many apples are there?|Có bao nhiêu quả táo?|🍎;There are five.|Có năm quả.|5️⃣;What's your phone number?|Số điện thoại của bạn là gì?|📞;Let's count from one to ten.|Đếm từ một đến mười nào.|🔢;I am ten years old.|Tôi mười tuổi.|🎂;Two plus two is four.|Hai cộng hai bằng bốn.|➕",
+    shapes: "What shape is it?|Nó hình gì?|🔷;It's a circle.|Nó là hình tròn.|⚪;Draw a triangle.|Vẽ một hình tam giác.|🔺;The box is a square.|Cái hộp hình vuông.|🟥;The window is a rectangle.|Cửa sổ hình chữ nhật.|🪟;I like stars.|Tôi thích hình ngôi sao.|⭐",
+    days: "What day is it today?|Hôm nay là thứ mấy?|📅;Today is Monday.|Hôm nay là thứ Hai.|🗓️;When is your birthday?|Sinh nhật bạn vào khi nào?|🎂;My birthday is in May.|Sinh nhật tôi vào tháng Năm.|🎉;See you on Friday.|Hẹn gặp bạn vào thứ Sáu.|👋;What's the date today?|Hôm nay là ngày bao nhiêu?|❓",
+    time: "What time is it?|Bây giờ là mấy giờ?|⏰;It's seven o'clock.|Bây giờ là bảy giờ.|🕖;Hurry up! We are late.|Nhanh lên! Chúng ta muộn rồi.|🏃;See you tomorrow.|Hẹn gặp lại ngày mai.|👋;Wait a minute, please.|Làm ơn đợi một phút.|⏳;Good night.|Chúc ngủ ngon.|🌙",
+    directions: "Excuse me, where is the bank?|Xin lỗi, ngân hàng ở đâu?|🏦;Go straight ahead.|Đi thẳng về phía trước.|⬆️;Turn left.|Rẽ trái.|⬅️;Turn right at the corner.|Đến góc đường thì rẽ phải.|➡️;It's behind the school.|Nó ở phía sau trường học.|🏫;Is it near here?|Nó có gần đây không?|📍",
+    office: "Nice to meet you.|Rất vui được gặp bạn.|🤝;What time is the meeting?|Cuộc họp lúc mấy giờ?|👥;Could you send me the file?|Bạn gửi cho tôi tài liệu được không?|📁;I'm busy right now.|Bây giờ tôi đang bận.|⏳;Let's have lunch together.|Cùng ăn trưa nhé.|🍱;Good job!|Làm tốt lắm!|👍",
+    finance: "How much did you spend today?|Hôm nay bạn đã tiêu bao nhiêu?|💸;I want to save money.|Tôi muốn tiết kiệm tiền.|🐷;Let's make a budget.|Cùng lập ngân sách nào.|📒;Write down every expense.|Hãy ghi lại mọi khoản chi.|📝;Don't spend more than you earn.|Đừng tiêu nhiều hơn số tiền kiếm được.|⚖️;Saving a little every day is a good habit.|Mỗi ngày tiết kiệm một ít là thói quen tốt.|✅"
+  };
+  var SENT_CACHE = {};
+  function sentOf(tp) {
+    if (!tp || tp.wb || !SENT[tp.id]) return [];
+    return SENT_CACHE[tp.id] || (SENT_CACHE[tp.id] = SENT[tp.id].split(';').map(function (s) { var a = s.split('|'); return [a[0], a[1], a[2] || '💬', 1]; }));
+  }
+  function isSent(w) { var x = G && G.tp.w[w]; return !!(x && x[3] === 1); }
+
   /* ================= TIẾN ĐỘ ================= */
   var P = null;
   function prog() { if (!P) { try { P = JSON.parse(localStorage.getItem(PKEY)); } catch (e) {} if (!P || !P.s) P = { s: {}, b: {} }; if (!P.d) P.d = {}; } return P; }
@@ -257,6 +328,7 @@
     '.tt-bank .hd{display:flex;align-items:center;justify-content:space-between;padding:0 12px 5px;font-size:12.5px;font-weight:800;color:#fde68a}',
     '.tt-chips{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:2px 12px 4px;scrollbar-width:none;min-height:62px}.tt-chips::-webkit-scrollbar{display:none}',
     '.tt-chip{flex:none;display:flex;align-items:center;gap:7px;border:0;border-radius:14px;padding:6px 10px 6px 7px;background:linear-gradient(180deg,#fef3c7,#fcd34d);color:#3b2300;font-family:inherit;cursor:pointer;box-shadow:0 3px 0 #92400e;animation:ttIn .35s}',
+    '.tt-chip.sen{background:linear-gradient(180deg,#ccfbf1,#5eead4);box-shadow:0 3px 0 #0f766e}.tt-chip.sen b{max-width:200px;white-space:normal;font-size:13px}.tt-chip.sen small{color:#0f766e}.tt-say .w.sen{font-size:22px}.tt-wc.sen b{font-size:14px}',
     '.tt-chip:active{transform:translateY(2px);box-shadow:0 1px 0 #92400e}.tt-chip b{display:block;font-size:15px;font-weight:900;line-height:1.15;text-align:left}.tt-chip small{display:block;font-size:11.5px;font-weight:800;color:#a16207;text-align:left}',
     '.tt-chip .p{width:34px;text-align:center;flex:none}.tt-chip.tried{background:linear-gradient(180deg,#fee2e2,#fca5a5);box-shadow:0 3px 0 #991b1b}.tt-gift{position:absolute;left:6px;bottom:8px;z-index:5;display:flex;flex-direction:column;gap:6px}.tt-gift button{position:relative;width:50px;height:50px;border:2px solid rgba(253,224,71,.8);border-radius:14px;background:radial-gradient(circle at 50% 35%,#7c3aed,#312e81);font-size:25px;cursor:pointer;box-shadow:0 4px 0 #1e1b4b,0 0 14px rgba(253,224,71,.5);animation:ttIn .35s}.tt-gift button:active{transform:translateY(2px)}.tt-gift button em{position:absolute;right:-6px;top:-7px;min-width:20px;height:20px;border-radius:10px;background:#dc2626;color:#fff;font-size:12px;font-style:normal;font-weight:900;line-height:20px;padding:0 4px}.tt-gift button.on{animation:ttGiftP .7s infinite alternate}@keyframes ttGiftP{to{box-shadow:0 4px 0 #1e1b4b,0 0 26px #fde047;transform:scale(1.08)}}.tt-chip.lock{background:linear-gradient(180deg,#e5e7eb,#9ca3af);box-shadow:0 3px 0 #4b5563;opacity:.8}.tt-chip.lock small{color:#374151}',
     '@keyframes ttIn{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}',
@@ -368,9 +440,9 @@
   }
   function openIntro(tp) {
     CUR = tp; hush();
-    var nW = planWaves(tp).length;
+    var SS = sentOf(tp), nW = planWaves(tp).length + (SS.length ? 1 : 0);
     $('ttIT').textContent = (tp.wb ? '🌍 ' : '🏰 ') + tp.n;
-    var h = '<div class="tt-ibox"><div class="tt-ihead" style="--c:' + tp.c + '"><span class="e">' + esc(tp.i) + '</span><div><b>' + (tp.wb ? '' : 'Kho từ: ') + esc(tp.n) + '</b><small>' + tp.w.length + ' từ vựng · ' + nW + ' đợt quái' + (stars(tp.id) ? ' · Tốt nhất: ' + '⭐'.repeat(stars(tp.id)) : '') + '</small></div></div>' +
+    var h = '<div class="tt-ibox"><div class="tt-ihead" style="--c:' + tp.c + '"><span class="e">' + esc(tp.i) + '</span><div><b>' + (tp.wb ? '' : 'Kho từ: ') + esc(tp.n) + '</b><small>' + tp.w.length + ' từ vựng' + (SS.length ? ' · ' + SS.length + ' câu giao tiếp' : '') + ' · ' + nW + ' đợt quái' + (stars(tp.id) ? ' · Tốt nhất: ' + '⭐'.repeat(stars(tp.id)) : '') + '</small></div></div>' +
       (tp.wb ? '<div style="margin:12px 0 0;padding:12px 14px;border-radius:16px;background:rgba(127,29,29,.6);border:1px solid rgba(253,224,71,.5);font-size:14px;line-height:1.5">🌍 <b>Boss thế giới ' + tp.wb + ': ' + esc(WB[tp.wb - 1].e + ' ' + WB[tp.wb - 1].n) + '</b> dẫn đại quân vây <b>kho từ vựng ở giữa bản đồ</b>. Quái tràn vào từ <b>4 cửa: Bắc, Nam, Tây, Đông</b>. Hãy xây chòi quanh kho để chặn cả 4 hướng! Đợt cuối boss xuất hiện: nó bắn phá chòi và <b>triệu hồi thêm quái</b>.' + (tp.wb > 1 ? ' Boss này <b>mạnh hơn boss thế giới ' + (tp.wb - 1) + '</b>.' : '') + '</div>' : '') +
       '<div style="margin:12px 0 0;padding:12px 14px;border-radius:16px;background:rgba(127,29,29,.45);border:1px solid rgba(252,165,165,.35);font-size:14px;line-height:1.5' + (tp.wb ? ';display:none' : '') + '">👹 <b>Bầy quái đang trộm từ</b> trong kho “' + esc(tp.n) + '”. Mỗi con vác một từ, chạy theo con đường để mang về <b>thành của chúng</b>. Hãy xây chòi chặn đường, <b>không để chúng mang từ nào về thành!</b></div>' +
       '<div class="tt-how"><div><i>🎤</i>Chạm vào từ ở thanh dưới: đọc đúng từ tiếng Anh, rồi nói đúng nghĩa tiếng Việt để nhận 💰</div><div><i>🏹</i>Chạm ô đá ➕ dọc đường để xây chòi chặn quái</div><div><i>👹</i>Chạm vào quái, đọc đúng từ nó đang trộm để làm nó choáng</div><div><i>🥷</i><b>Lính bắn chòi</b> phá chòi: dùng vàng 🔧 sửa, 🛡️ bảo hộ, xây 🎯 súng bắn tỉa</div><div><i>🎁</i>Đọc đúng mỗi <b>từ mới</b> (hoặc chọn đáp án đúng từ đó <b>3 lần</b>) được tặng 1 trận mưa: ☄️ sao băng, 🧪 axit, 🔥 lửa, ❄️ tuyết – phủ khắp bản đồ, diệt cả bầy</div><div><i>🦎</i><b>Quái tàng hình</b>: chòi thường không thấy, phải xây 👁️ <b>chòi mắt thần</b> để soi</div><div><i>📈</i>Quái <b>cộng dồn</b> mỗi đợt, đợt cuối có 🐲 trùm và 👿 <b>trùm cuối</b></div></div>' +
@@ -382,6 +454,11 @@
     tp.w.forEach(function (x, i) {
       h += '<div class="tt-wc" data-a="hear" data-i="' + i + '"><div class="p">' + picHtml(x[2], 38) + '</div><div><b>' + esc(x[0]) + '</b>' + pronHtml(x) + '<small>' + esc(x[1]) + '</small></div></div>';
     });
+    if (SS.length) {
+      h += '</div><div class="tt-grp" style="margin-top:10px">💬 Câu giao tiếp (đợt ' + (nW - 1) + ', trước đợt cuối)</div>' +
+        '<div style="font-size:12.5px;opacity:.85;margin:-2px 0 8px;line-height:1.45">Quái của đợt này vác trộm <b>câu giao tiếp</b>. Đọc đúng câu được thưởng gấp rưỡi 💰. Chạm vào câu để nghe.</div><div class="tt-wl">';
+      SS.forEach(function (x, i) { h += '<div class="tt-wc sen" data-a="hears" data-i="' + i + '"><div class="p">' + picHtml(x[2], 34) + '</div><div><b>' + esc(x[0]) + '</b><small>' + esc(x[1]) + '</small></div></div>'; });
+    }
     h += '</div><div class="tt-go"><button class="tt-btn" data-a="start">' + (tp.wb ? '🌍 Vào trận đánh Boss thế giới' : '⚔️ Vào trận chặn quái trộm từ') + '</button></div></div>';
     $('ttIB').innerHTML = h; $('ttIB').scrollTop = 0;
     show('ttIntro');
@@ -485,8 +562,15 @@
   /* ================= TRẠNG THÁI TRẬN ================= */
   var G = null, CV = null, X = null, BG = null, W = 0, H = 0, DPR = 1, raf = 0, last = 0;
   function newGame(tp) {
+    /* (bản 2026.11.08-11) chen 1 đợt CÂU GIAO TIẾP ngay trước đợt cuối: câu được nối vào sau danh sách từ (chỉ trong trận này) */
+    var S = sentOf(tp), wv = planWaves(tp), gtp = tp;
+    if (S.length) {
+      gtp = {}; for (var kk in tp) gtp[kk] = tp[kk];
+      gtp.w = tp.w.concat(S); gtp.nW = tp.w.length;
+      wv.splice(wv.length - 1, 0, S.map(function (x, i) { return tp.w.length + i; }));
+    }
     G = {
-      tp: tp, wb: tp.wb || 0, seed: Math.floor(Math.random() * 1e6), paths: tp.wb ? WB_PATHS : [MAPS[tp.ti % MAPS.length]], waves: planWaves(tp), wave: 0, phase: 'prep',
+      tp: gtp, tp0: tp, sw: S.length ? wv.length - 2 : -1, wb: tp.wb || 0, seed: Math.floor(Math.random() * 1e6), paths: tp.wb ? WB_PATHS : [MAPS[tp.ti % MAPS.length]], waves: wv, wave: 0, phase: 'prep',
       dif: DSEL, hp: DIFF[DSEL].life, hpMax: DIFF[DSEL].life, gold: DIFF[DSEL].gold, quake: 0, towers: [], enemies: [], shots: [], fx: [], txt: [], spots: null, q: [], qT: 0,
       paused: false, said: {}, bank: [], done: {}, round: 1, gifts: [], rain: null, rp: [], ok: 0, t: 0, prepT: 30, shake: 0, sel: -1, flagT: 0, ended: false
     };
@@ -903,14 +987,14 @@
   function startWave() {
     if (G.phase !== 'prep' || G.ended) return;
     G.phase = 'run'; G.q = waveEnemies(G, G.wave); G.qT = 0.6; setTimeout(renderGift, 1500);
-    banner('Đợt ' + (G.wave + 1) + ' / ' + G.waves.length, G.q.length + ' con quái đang lẻn vào trộm từ!'); sfx('horn');
+    banner((G.wave === G.sw ? '💬 Đợt câu giao tiếp ' : 'Đợt ') + (G.wave + 1) + ' / ' + G.waves.length, G.wave === G.sw ? 'Quái vác trộm cả câu giao tiếp – đọc đúng câu được thưởng gấp rưỡi!' : G.q.length + ' con quái đang lẻn vào trộm từ!'); sfx('horn');
     waveBtn(); hud();
   }
   function waveDone() {
     if (G.wave >= G.waves.length - 1) { endGame(true); return; }
     G.wave++; G.phase = 'prep'; G.prepT = 30;
     G.waves[G.wave].forEach(function (w) { addBank(w); });
-    banner('Đã chặn đợt ' + G.wave + '! 🎉', 'Đọc từ của đợt tới để có thêm vàng xây chòi'); sfx('coin');
+    banner('Đã chặn đợt ' + G.wave + '! 🎉', G.wave === G.sw ? '💬 Đợt tới là CÂU GIAO TIẾP – đọc các câu ở thanh dưới để có vàng' : 'Đọc từ của đợt tới để có thêm vàng xây chòi'); sfx('coin');
     renderBank(); waveBtn(); hud(); renderGift();
   }
   function waveBtn() {
@@ -1000,13 +1084,13 @@
     if (fx === 'hp') { var h = $('ttHP'); h.classList.remove('hurt'); void h.offsetWidth; h.classList.add('hurt'); }
     $('ttPau').textContent = G.paused ? '▶' : '⏸';
   }
-  function reward(w) { var s = G.said[w]; return REWARD[Math.min(2, s ? s.n : 0)]; }
+  function reward(w) { var s = G.said[w], b = REWARD[Math.min(2, s ? s.n : 0)]; return isSent(w) ? Math.round(b * 1.5) : b; }   // câu giao tiếp: thưởng gấp rưỡi
   function renderBank() {
     var c = $('ttChips'), h = '';
     G.bank.filter(function (w) { return !locked(w); }).concat(G.bank.filter(locked)).forEach(function (w) {   // từ chưa đọc ở lượt này xếp trước
       var x = G.tp.w[w], s = G.said[w], gain = useMic() ? reward(w) : pickGain(reward(w)), lk = locked(w), rd = 0;
       var pv = pronOf(x).vi;
-      h += '<button class="tt-chip' + (lk ? ' lock' : s && s.n ? ' tried' : '') + '" data-a="chip" data-w="' + w + '"><span class="p">' + picHtml(x[2], 30) + '</span><span><b>' + esc(x[0]) + '</b>' + (pv ? '<span class="vi">🗣️ ' + esc(pv) + '</span>' : '') + '<small>' + (lk ? '✅ Xong lượt ' + G.round : '+' + gain + ' 💰' + (rd ? ' · lần ' + (rd + 1) + '/' + MAX_READ : '')) + '</small></span></button>';
+      h += '<button class="tt-chip' + (isSent(w) ? ' sen' : '') + (lk ? ' lock' : s && s.n ? ' tried' : '') + '" data-a="chip" data-w="' + w + '"><span class="p">' + picHtml(x[2], 30) + '</span><span><b>' + esc(x[0]) + '</b>' + (pv ? '<span class="vi">🗣️ ' + esc(pv) + '</span>' : '') + '<small>' + (lk ? '✅ Xong lượt ' + G.round : '+' + gain + ' 💰' + (rd ? ' · lần ' + (rd + 1) + '/' + MAX_READ : '')) + '</small></span></button>';
     });
     if (!h) h = '<div class="tt-empty">✅ Đã đọc hết từ của đợt này. Chạm vào con quái đang trộm từ để đọc từ nó vác, được thêm 💰 và làm quái choáng!</div>';
     c.innerHTML = h;
@@ -1027,7 +1111,7 @@
   }
   function closeSay() { stopRec(); SAY = null; var el = $('ttSay'); if (el) el.classList.remove('on'); }
   function pickOpts(w) {
-    var others = G.tp.w.map(function (x, i) { return i; }).filter(function (i) { return i !== w && G.tp.w[i][1] !== G.tp.w[w][1]; });
+    var others = G.tp.w.map(function (x, i) { return i; }).filter(function (i) { return i !== w && G.tp.w[i][1] !== G.tp.w[w][1] && isSent(i) === isSent(w); });   // câu thì chọn giữa các câu, từ thì giữa các từ
     var o = shuffle(others).slice(0, 2).concat([w]); return shuffle(o);
   }
   function enOK(target, alts) { return window.SixPron ? window.SixPron.matchEn(target, alts, SAY.tr) : matchWord(target, alts); }
@@ -1039,8 +1123,9 @@
     if (!SAY) return;
     var x = G.tp.w[SAY.w], fb = '', body = '', st = SAY.st, done = st === 'ok';
     var mic = SAY.step === 1 ? SAY.mode === 'mic' : SAY.vmode === 'mic';
-    var steps = '<div class="tt-steps"><span class="' + (SAY.step === 1 ? 'on' : 'dn') + '">' + (SAY.step > 1 ? '✅' : '①') + ' Đọc từ tiếng Anh</span><span class="' + (done ? 'dn' : SAY.step === 2 ? 'on' : '') + '">' + (done ? '✅' : '②') + ' Nói nghĩa tiếng Việt</span></div>';
-    if (done) fb = '<span class="ok">' + (SAY.picked || SAY.vmode === 'pick' ? '✅ Chọn đúng cả từ và nghĩa! ' : '✅ Đúng cả cách đọc và nghĩa! ') + esc(SAY.msg || '') + '</span>';
+    var sn = isSent(SAY.w);
+    var steps = '<div class="tt-steps"><span class="' + (SAY.step === 1 ? 'on' : 'dn') + '">' + (SAY.step > 1 ? '✅' : '①') + (sn ? ' Đọc câu tiếng Anh' : ' Đọc từ tiếng Anh') + '</span><span class="' + (done ? 'dn' : SAY.step === 2 ? 'on' : '') + '">' + (done ? '✅' : '②') + (sn ? ' Chọn nghĩa tiếng Việt' : ' Nói nghĩa tiếng Việt') + '</span></div>';
+    if (done) fb = '<span class="ok">' + (SAY.picked || SAY.vmode === 'pick' && !SAY.sent2 ? '✅ Chọn đúng cả từ và nghĩa! ' : '✅ Đúng cả cách đọc và nghĩa! ') + esc(SAY.msg || '') + '</span>';
     else if (mic && st === 'ok1') fb = '<span class="ok">✅ Đọc đúng rồi!</span>&nbsp;Giờ hãy nói <b>nghĩa tiếng Việt</b> của từ này';
     else if (mic) {
       if (st === 'rec') fb = SAY.step === 1 ? '🎙️ Đang nghe… hãy đọc từ tiếng Anh' : '🎙️ Đang nghe… hãy nói nghĩa tiếng Việt';
@@ -1061,7 +1146,7 @@
     }
     var showWord = SAY.step > 1 || SAY.mode === 'mic', showMean = done || SAY.peek;
     $('ttSay').innerHTML = '<button class="tt-ib x" data-a="sayx">✕</button>' + steps +
-      '<div class="top"><div>' + picHtml(x[2], 58) + '</div><div style="text-align:left"><div class="w">' + (showWord ? esc(x[0]) : '❓❓❓') + '</div>' +
+      '<div class="top"><div>' + picHtml(x[2], 58) + '</div><div style="text-align:left"><div class="w' + (sn ? ' sen' : '') + '">' + (showWord ? esc(x[0]) : '❓❓❓') + '</div>' +
       (showWord ? pronHtml(x) : '') + '<div class="mn">' + (showMean ? '🇻🇳 ' + esc(x[1]) : (SAY.step === 2 ? '🇻🇳 Nghĩa là gì? ❓' : '')) + '</div></div></div>' +
       (SAY.e && !done ? '<div style="font-size:13px;color:#fca5a5;font-weight:700">👹 Đúng cả 2 bước để làm tên trộm choáng váng!</div>' : '') +
       '<div class="fb">' + fb + '</div>' + body;
@@ -1103,6 +1188,7 @@
   }
   function step1Done() {
     if (SAY.mode === 'pick') SAY.picked = true;
+    if (isSent(SAY.w) && SAY.vmode === 'mic') { SAY.vmode = 'pick'; SAY.sent2 = true; }   // câu dài: bước 2 chọn nghĩa, không bị giảm thưởng
     SAY.step = 2; SAY.st = 'ok1'; SAY.tr = 0; SAY.pick = -1; SAY.opts = null; sfx('tap'); drawSay();
     var s0 = SAY; if (SAY.vmode === 'mic') setTimeout(function () { if (SAY === s0 && SAY.step === 2 && !rec && SAY.st === 'ok1') listen(); }, 900);
   }
@@ -1112,7 +1198,7 @@
       gain = ENEMY_REWARD; var e = SAY.e;
       if (G.enemies.indexOf(e) >= 0) { e.stunT = 2.2; e.said = true; var p = posAt(e.f, e.pi); spark(p.x, p.y - W * 0.05, ['#fde047', '#fff', '#a78bfa'], 12); dmgE(e, e.max * (e.t === 'wboss' ? 0.04 : 0.25)); }
     } else gain = reward(w);
-    var isPick = SAY.picked || SAY.vmode === 'pick', pts = isPick ? pickGain(LB_READ) : LB_READ;
+    var isPick = SAY.picked || SAY.vmode === 'pick' && !SAY.sent2, pts = isPick ? pickGain(LB_READ) : LB_READ;
     if (isPick) gain = pickGain(gain);
     var gk = null;
     if (!s.ok) G.ok++;
@@ -1413,7 +1499,9 @@
     if (!seen(e)) { e._sx = null; return; }   // quái tàng hình chưa bị soi: không hiện biển từ
     var x = G.tp.w[e.w], fs = Math.max(11, Math.round(W * 0.034)) * (e.t === 'boss' || e.t === 'king' || e.t === 'wboss' ? 1.15 : 1);
     X.font = '800 ' + fs + 'px ' + TF;
-    var ps = fs * 1.35, tw = X.measureText(x[0]).width, bw = tw + ps + fs * 1.0, bh = fs * 1.75;
+    var lab = x[0];
+    if (x[3] === 1) { fs = Math.round(fs * 0.85); X.font = '800 ' + fs + 'px ' + TF; while (lab.length > 8 && X.measureText(lab).width > W * 0.5) lab = lab.slice(0, -2).replace(/\s+$/, '') + '…'; }   // câu dài: thu nhỏ, cắt bớt
+    var ps = fs * 1.35, tw = X.measureText(lab).width, bw = tw + ps + fs * 1.0, bh = fs * 1.75;
     var bx = clamp(p.x - bw / 2, 2, W - bw - 2), byy = p.y - sz * 0.62 - bh - fs * 0.7 - Math.abs(Math.sin(e.bob)) * sz * 0.08;
     // cán cầm biển
     X.strokeStyle = '#78350f'; X.lineWidth = 2.5; X.beginPath(); X.moveTo(p.x + sz * 0.18, p.y - sz * 0.15); X.lineTo(clamp(p.x, bx + 6, bx + bw - 6), byy + bh); X.stroke();
@@ -1422,7 +1510,7 @@
     X.strokeStyle = e.said ? '#16a34a' : G.tp.c; X.lineWidth = 2; X.stroke();
     var im = picImg(x[2]), px = bx + fs * 0.35 + ps / 2, py = byy + bh / 2;
     if (im && im.complete && im.naturalWidth) X.drawImage(im, px - ps / 2, py - ps / 2, ps, ps); else if (!im) emo(x[2], px, py + 1, ps * 0.85);
-    X.fillStyle = '#1c1917'; X.font = '800 ' + fs + 'px ' + TF; X.textAlign = 'left'; X.fillText(x[0], bx + fs * 0.6 + ps, py + 1); X.textAlign = 'center';
+    X.fillStyle = '#1c1917'; X.font = '800 ' + fs + 'px ' + TF; X.textAlign = 'left'; X.fillText(lab, bx + fs * 0.6 + ps, py + 1); X.textAlign = 'center';
     // máu
     var hw = Math.max(sz * 0.8, 26), hx = p.x - hw / 2, hy = byy + bh + 3;
     X.fillStyle = 'rgba(0,0,0,.6)'; X.fillRect(hx - 1, hy - 1, hw + 2, 5); X.fillStyle = e.hp / e.max > 0.5 ? '#4ade80' : e.hp / e.max > 0.25 ? '#facc15' : '#f87171'; X.fillRect(hx, hy, hw * clamp(e.hp / e.max, 0, 1), 3);
@@ -1478,13 +1566,13 @@
     var next = null, nextWb = -1;
     if (win && tp.wb) next = phaseTopics(tp.wb)[0] || null;   // hạ boss thế giới → sang kho đầu của giai đoạn sau
     else if (win) {
-      var list = DATA.topics.filter(function (t) { return t.g === tp.g; }), k = list.indexOf(tp); next = list[k + 1] || DATA.topics[tp.ti + 1] || null;
+      var list = DATA.topics.filter(function (t) { return t.g === tp.g; }), k = list.indexOf(G.tp0 || tp); next = list[k + 1] || DATA.topics[tp.ti + 1] || null;
       var ph = Math.floor(tp.ti / phSize()); if (ph < PHASES && unlocked(wbTopic(ph)) && !stars(wbTopic(ph).id)) nextWb = ph;   // vừa mở khóa boss thế giới
     }
     var h = '<div class="tt-endc"><div class="big">' + (win ? '🏆' : '💥') + '</div><h2>' + (tp.wb ? (win ? 'Đã hạ Boss thế giới ' + tp.wb + '!' : 'Boss thế giới đã cướp quá nhiều từ!') : (win ? 'Bảo vệ kho từ thành công!' : 'Quái đã cướp quá nhiều từ!')) + '</h2>' +
       (win ? '<div class="stars">' + '⭐'.repeat(st) + '<span style="opacity:.25">' + '⭐'.repeat(3 - st) + '</span></div>' : '') +
       '<div class="sum" style="margin-bottom:4px">Cấp độ: <b style="color:' + DIFF[G.dif].c + ';background:#fff;border-radius:8px;padding:1px 8px">' + DIFF[G.dif].e + ' ' + DIFF[G.dif].n + '</b></div>' +
-      '<div class="sum">' + (win ? 'Kho còn giữ ' + G.hp + '/' + G.hpMax + ' 📚 · ' : 'Bạn chặn được ' + G.wave + '/' + G.waves.length + ' đợt · ') + 'Đọc đúng <b>' + G.ok + '/' + tp.w.length + '</b> từ</div>' +
+      '<div class="sum">' + (win ? 'Kho còn giữ ' + G.hp + '/' + G.hpMax + ' 📚 · ' : 'Bạn chặn được ' + G.wave + '/' + G.waves.length + ' đợt · ') + 'Đọc đúng <b>' + G.ok + '/' + tp.w.length + '</b> ' + (tp.nW ? 'từ & câu' : 'từ') + '</div>' +
       (vnd ? '<div class="farm">🧑‍🌾 +' + money(vnd) + ' vào Nông trại</div>' : '') +
       '<div class="farm" style="background:rgba(234,179,8,.3)">🏆 ' + (lbp ? '+' + lbp + ' điểm xếp hạng · ' : '') + 'Hạng của bạn: #' + lbRank().toLocaleString('vi-VN') + '</div>' +
       (bad.length ? '<div style="font-size:13.5px;font-weight:800;color:#fca5a5">Từ cần luyện thêm (chạm để nghe):</div><div class="wl">' + bad.slice(0, 24).map(function (i) { var pv = pronOf(tp.w[i]).vi; return '<span class="bd" data-a="hearw" data-i="' + i + '">' + esc(tp.w[i][0]) + (pv ? ' <i style="font-style:normal;color:#fde68a">(' + esc(pv) + ')</i>' : '') + ' · ' + esc(tp.w[i][1]) + '</span>'; }).join('') + '</div>' : '<div class="sum">🎉 Bạn đã đọc đúng toàn bộ từ vựng trong kho!</div>') +
@@ -1502,7 +1590,7 @@
     requestAnimationFrame(function () {
       lay(); renderBank(); hud(); waveBtn(); renderGift();
       banner(DIFF[G.dif].e + ' ' + DIFF[G.dif].n + ' · ' + tp.n, 'Quái sắp tới trộm từ – mau chuẩn bị chòi chặn đường!');
-      setTimeout(function () { if (G && G.tp === tp && !G.towers.length) toast('💡 Chạm vào từ ở thanh dưới, đọc từ tiếng Anh rồi nói nghĩa tiếng Việt để nhận vàng, rồi chạm ô đá <b>➕</b> để xây chòi chặn quái.'); }, 2200);
+      setTimeout(function () { if (G && G.tp0 === tp && !G.towers.length) toast('💡 Chạm vào từ ở thanh dưới, đọc từ tiếng Anh rồi nói nghĩa tiếng Việt để nhận vàng, rồi chạm ô đá <b>➕</b> để xây chòi chặn quái.'); }, 2200);
       if (!raf) { last = 0; raf = requestAnimationFrame(loop); }
     });
   }
@@ -1526,6 +1614,7 @@
       openIntro(wt); return;
     }
     if (a === 'hear') { say(CUR.w[+el.getAttribute('data-i')][0]); return; }
+    if (a === 'hears') { say(sentOf(CUR)[+el.getAttribute('data-i')][0]); return; }
     if (a === 'diff') {
       DSEL = +el.getAttribute('data-i'); try { localStorage.setItem('tt_diff', String(DSEL)); } catch (e) {}
       Array.prototype.forEach.call($('ttDif').children, function (b, i) { b.classList.toggle('on', i === DSEL); }); $('ttDN').innerHTML = diffNote(DSEL); sfx('tap'); return;
@@ -1541,7 +1630,7 @@
       e2.classList.add('on'); return;
     }
     if (a === 'resume') { $('ttEnd').classList.remove('on'); G.paused = false; hud(); return; }
-    if (a === 'again') { DSEL = G.dif; startGame(G.tp); return; }
+    if (a === 'again') { DSEL = G.dif; startGame(G.tp0 || G.tp); return; }
     if (a === 'next') { openIntro(DATA.topics[+el.getAttribute('data-i')]); stopLoop(); G = null; return; }
     if (a === 'hearw') { say(G.tp.w[+el.getAttribute('data-i')][0]); return; }
     if (G.ended) return;

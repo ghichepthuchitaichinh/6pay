@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thủ Thành – Bảng xếp hạng (bản thử)</title>
+<style>
+  :root{
+    --bg:#0f1424; --panel:#171e33; --panel2:#1e2742; --line:#2b3658;
+    --text:#e8ecf7; --muted:#8e9aba; --gold:#f5c542; --silver:#c9d1dc; --bronze:#d08a4c;
+    --me:#2bd47d; --accent:#4f8cff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden}
+  .wrap{display:flex;height:100vh;gap:12px;padding:12px}
+
+  /* ===== KHU VỰC GAME (mô phỏng) ===== */
+  .game{flex:1;background:linear-gradient(180deg,#22305a 0%,#1a3b2e 70%,#24452f 100%);border-radius:14px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+  .hud{position:absolute;top:12px;left:12px;display:flex;gap:10px;flex-wrap:wrap}
+  .chip{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.15);padding:6px 12px;border-radius:999px;font-weight:600;font-size:14px}
+  .castle{font-size:80px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4))}
+  .word{margin:14px 0;background:rgba(0,0,0,.35);padding:14px 26px;border-radius:12px;font-size:28px;font-weight:700;letter-spacing:1px}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .btn{border:0;border-radius:10px;padding:12px 16px;font-size:15px;font-weight:700;cursor:pointer;color:#fff}
+  .b1{background:#22a35a}.b2{background:#c9822b}.b3{background:#4a5578}
+  .btn:active{transform:scale(.97)}
+  .note{margin-top:14px;font-size:13px;color:#c8d2ea;opacity:.8;text-align:center;max-width:420px}
+  .float{position:absolute;font-weight:800;font-size:20px;color:var(--gold);pointer-events:none;animation:up 1.2s ease-out forwards;text-shadow:0 2px 6px #000}
+  @keyframes up{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-70px)}}
+
+  /* ===== BẢNG XẾP HẠNG (bên phải) ===== */
+  .board{width:300px;background:var(--panel);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
+  .board h2{margin:0;padding:12px 14px;font-size:16px;background:var(--panel2);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  .board h2 small{color:var(--muted);font-weight:500;font-size:12px}
+  .list{list-style:none;margin:0;padding:6px 8px;flex:1;overflow:hidden}
+  .row{display:flex;align-items:center;gap:8px;padding:7px 6px;border-radius:9px;transition:background .3s}
+  .row + .row{border-top:1px solid rgba(255,255,255,.04)}
+  .row.top1{background:linear-gradient(90deg,rgba(245,197,66,.18),transparent)}
+  .row.top2{background:linear-gradient(90deg,rgba(201,209,220,.14),transparent)}
+  .row.top3{background:linear-gradient(90deg,rgba(208,138,76,.16),transparent)}
+  .row.me{outline:2px solid var(--me);background:rgba(43,212,125,.12)}
+  .rk{width:30px;height:30px;flex:none;display:flex;align-items:center;justify-content:center}
+  .av{width:28px;height:28px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff}
+  .nm{flex:1;min-width:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sc{font-weight:700;font-size:14px;color:#ffd978;font-variant-numeric:tabular-nums}
+  .mebox{border-top:1px solid var(--line);background:var(--panel2);padding:10px 12px}
+  .mebox .lbl{font-size:12px;color:var(--muted);margin-bottom:6px}
+  .mebox .row{background:rgba(43,212,125,.12);outline:2px solid var(--me)}
+  .myrank{font-weight:800;color:var(--me);font-size:13px;min-width:30px;text-align:center}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
+  .bump{animation:bump .6s}
+  @keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}
+
+  @media (max-width:700px){
+    body{overflow:auto;height:auto}
+    .wrap{flex-direction:column;height:auto}
+    .game{min-height:380px}
+    .board{width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- ======= Màn hình game (chỉ để mô phỏng) ======= -->
+  <div class="game" id="game">
+    <div class="hud">
+      <span class="chip">💰 <span id="money">0</span> xu</span>
+      <span class="chip">⭐ <span id="pts">0</span> điểm</span>
+      <span class="chip">🏰 Nhiệm vụ: <span id="missions">0</span></span>
+    </div>
+    <div class="castle">🏰</div>
+    <div class="word" id="word">CON MÈO</div>
+    <div class="btns">
+      <button class="btn b1" onclick="onReadCorrect(event)">✅ Đọc đúng</button>
+      <button class="btn b2" onclick="onMission(event)">🛡️ Hoàn thành nhiệm vụ thủ thành</button>
+      <button class="btn b3" onclick="resetAll()">↺ Chơi lại từ đầu</button>
+    </div>
+    <div class="note">Các nút trên chỉ để thử. Khi ghép vào game thật, gọi
+      <b>Leaderboard.readCorrect()</b> và <b>Leaderboard.completeMission()</b> ở đúng chỗ.</div>
+  </div>
+
+  <!-- ======= Bảng xếp hạng ======= -->
+  <aside class="board">
+    <h2>🏆 Bảng xếp hạng <small id="total"></small></h2>
+    <ol class="list" id="list"></ol>
+    <div class="mebox" id="mebox"></div>
+  </aside>
+</div>
+
+<script>
+/* =========================================================
+   CẤU HÌNH – chỉnh tại đây
+   ========================================================= */
+const CONFIG = {
+  READ_MONEY: 10,      // đọc đúng: cộng xu
+  READ_POINTS: 5,      // đọc đúng: cộng điểm xếp hạng
+  MISSION_POINTS: 50,  // hoàn thành nhiệm vụ thủ thành: cộng điểm xếp hạng
+  BOT_MIN: 200,        // số người chơi ảo tối thiểu
+  BOT_MAX: 300,        // số người chơi ảo tối đa
+  TOP_SCORE: 5000,     // điểm của người đứng đầu (xấp xỉ)
+  BOTS_ACTIVE: true,   // người chơi ảo thỉnh thoảng tăng điểm cho sinh động
+  PLAYER_NAME: "Bạn",
+  STORAGE_KEY: "thuthanh_leaderboard_v1"
+};
+
+/* =========================================================
+   TẠO DANH SÁCH NGƯỜI CHƠI ẢO
+   ========================================================= */
+const HO = ["Nguyễn","Trần","Lê","Phạm","Hoàng","Huỳnh","Phan","Vũ","Võ","Đặng","Bùi","Đỗ","Hồ","Ngô","Dương","Lý"];
+const DEM = ["Văn","Thị","Minh","Gia","Ngọc","Đức","Thanh","Quốc","Bảo","Hoài","Anh","Hải","Khánh","Tuấn"];
+const TEN = ["An","Bảo","Chi","Dũng","Duy","Giang","Hà","Hiếu","Hùng","Huy","Khang","Khoa","Lan","Linh","Long","Mai","Minh","My","Nam","Ngân","Nhi","Phát","Phúc","Quân","Sơn","Tâm","Thảo","Thịnh","Trang","Trí","Tú","Vy","Yến","Đạt"];
+const BIETDANH = ["Hiệp Sĩ","Thần Đồng","Chiến Binh","Cung Thủ","Rồng Lửa","Mèo Con","Thủ Lĩnh","Siêu Nhân","Kiếm Sĩ","Tướng Quân","Hổ Con","Đại Bàng","Pháo Thủ","Vua Chữ","Sao Băng"];
+const COLORS = ["#e5534b","#d9822b","#c9a227","#3fa34d","#2e9d8f","#3b82c4","#5b6ee1","#8b5cf6","#c2549d","#6b7a99"];
+
+function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+
+function makeName(used){
+  let n;
+  do{
+    const t = Math.random();
+    if(t<0.4)      n = `${pick(HO)} ${pick(DEM)} ${pick(TEN)}`;
+    else if(t<0.75)n = `${pick(BIETDANH)} ${pick(TEN)}`;
+    else           n = `${pick(TEN)}${rand(1,99)}`;
+  }while(used.has(n));
+  used.add(n); return n;
+}
+
+function makeBots(){
+  const n = rand(CONFIG.BOT_MIN, CONFIG.BOT_MAX), used = new Set(), bots = [];
+  for(let i=0;i<n;i++){
+    // phân bố: ít người điểm cao, nhiều người điểm thấp; người thấp nhất vẫn > 0
+    const r = i/(n-1);
+    const score = Math.max(5, Math.round(CONFIG.TOP_SCORE*Math.pow(1-r,2.6) + rand(5,40)));
+    bots.push({id:"b"+i, name:makeName(used), score, color:pick(COLORS)});
+  }
+  return bots;
+}
+
+/* =========================================================
+   TRẠNG THÁI + LƯU TRỮ
+   ========================================================= */
+let state;
+function save(){ try{localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(state))}catch(e){} }
+function load(){
+  try{ const s = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEY)); if(s && s.bots) return s; }catch(e){}
+  return null;
+}
+function newState(){
+  return { bots: makeBots(), me:{id:"me", name:CONFIG.PLAYER_NAME, score:0, money:0, missions:0, color:"#2bd47d"} };
+}
+state = load() || newState();
+
+/* =========================================================
+   XẾP HẠNG
+   ========================================================= */
+// Khi bằng điểm, người chơi đứng SAU người ảo -> lúc mới vào (0 điểm) luôn xếp cuối
+function ranked(){
+  const all = state.bots.concat([state.me]);
+  all.sort((a,b)=> b.score-a.score || (a.id==="me") - (b.id==="me"));
+  return all;
+}
+
+/* ---------- Biểu tượng ---------- */
+function cup(color){
+  return `<svg width="26" height="26" viewBox="0 0 24 24"><path fill="${color}" d="M7 3h10v2h3v3a4 4 0 0 1-4 4h-.3A5 5 0 0 1 13 14.9V17h3v2H8v-2h3v-2.1A5 5 0 0 1 8.3 12H8a4 4 0 0 1-4-4V5h3V3Zm10 4v3a2 2 0 0 0 1-1.7V7h-1ZM6 7v1.3A2 2 0 0 0 7 10V7H6Z"/><rect x="7" y="20" width="10" height="2" rx="1" fill="${color}"/></svg>`;
+}
+function shield(num){
+  return `<svg width="28" height="28" viewBox="0 0 24 24"><path fill="#3b4a78" stroke="#6f86c8" stroke-width="1.2" d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5l-8-3Z"/><text x="12" y="15.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="Arial">${num}</text></svg>`;
+}
+function rankIcon(r){
+  if(r===1) return cup("var(--gold)");
+  if(r===2) return cup("var(--silver)");
+  if(r===3) return cup("var(--bronze)");
+  return shield(r);
+}
+function avatar(p){ return `<div class="av" style="background:${p.color}">${p.name.trim()[0].toUpperCase()}</div>`; }
+function fmt(n){ return n.toLocaleString("vi-VN"); }
+
+/* ---------- Vẽ bảng ---------- */
+let lastRank = null;
+function render(){
+  const all = ranked();
+  const myRank = all.findIndex(p=>p.id==="me")+1;
+  document.getElementById("total").textContent = fmt(all.length)+" người chơi";
+
+  // Top 10
+  document.getElementById("list").innerHTML = all.slice(0,10).map((p,i)=>{
+    const r=i+1, cls=[r<=3?"top"+r:"", p.id==="me"?"me":""].join(" ");
+    return `<li class="row ${cls}"><div class="rk">${rankIcon(r)}</div>${avatar(p)}
+      <div class="nm">${p.id==="me"?"⭐ "+p.name:p.name}</div><div class="sc">${fmt(p.score)}</div></li>`;
+  }).join("");
+
+  // Hạng của bạn
+  let hint = "";
+  if(myRank>1){
+    const ahead = all[myRank-2];
+    const need = ahead.score - state.me.score + 1;
+    hint = `Cần thêm <b>${fmt(need)}</b> điểm để vượt lên hạng #${myRank-1}`;
+  } else hint = "🎉 Bạn đang đứng đầu bảng!";
+  const iconOrNum = myRank<=10 ? rankIcon(myRank) : `<span class="myrank">#${fmt(myRank)}</span>`;
+  document.getElementById("mebox").innerHTML = `
+    <div class="lbl">Xếp hạng của bạn</div>
+    <div class="row" id="myrow"><div class="rk">${iconOrNum}</div>${avatar(state.me)}
+      <div class="nm">${state.me.name}</div><div class="sc">${fmt(state.me.score)}</div></div>
+    <div class="hint">${hint}</div>`;
+  if(lastRank!==null && myRank<lastRank) document.getElementById("myrow").classList.add("bump");
+  lastRank = myRank;
+
+  // HUD
+  document.getElementById("money").textContent = fmt(state.me.money);
+  document.getElementById("pts").textContent = fmt(state.me.score);
+  document.getElementById("missions").textContent = state.me.missions;
+}
+
+/* =========================================================
+   API ĐỂ GHÉP VÀO GAME
+   ========================================================= */
+const Leaderboard = {
+  readCorrect(){                 // gọi khi người chơi đọc đúng
+    state.me.money += CONFIG.READ_MONEY;
+    state.me.score += CONFIG.READ_POINTS;
+    save(); render();
+  },
+  completeMission(){             // gọi khi hoàn thành nhiệm vụ thủ thành
+    state.me.missions += 1;
+    state.me.score += CONFIG.MISSION_POINTS;
+    save(); render();
+  },
+  setPlayerName(name){ state.me.name = name; save(); render(); },
+  getMyRank(){ return ranked().findIndex(p=>p.id==="me")+1; },
+  reset(){ state = newState(); lastRank=null; save(); render(); }
+};
+
+/* ---------- Người chơi ảo hoạt động ---------- */
+if(CONFIG.BOTS_ACTIVE){
+  setInterval(()=>{
+    const k = rand(2,6);
+    for(let i=0;i<k;i++){
+      const b = pick(state.bots);
+      b.score += pick([5,5,5,10,50]);   // giống luật của người thật
+    }
+    save(); render();
+  }, 4000);
+}
+
+/* =========================================================
+   PHẦN MÔ PHỎNG (bỏ khi ghép vào game thật)
+   ========================================================= */
+const WORDS = ["CON MÈO","QUẢ TÁO","CÁI BÀN","BÔNG HOA","CON CÁ","NGÔI NHÀ","MẶT TRỜI","CÂY BÚT","CON GÀ","QUYỂN SÁCH"];
+function floatText(e, txt){
+  const g=document.getElementById("game"), rect=g.getBoundingClientRect(), f=document.createElement("div");
+  f.className="float"; f.textContent=txt;
+  f.style.left=(e.clientX-rect.left-40)+"px"; f.style.top=(e.clientY-rect.top-30)+"px";
+  g.appendChild(f); setTimeout(()=>f.remove(),1200);
+}
+function onReadCorrect(e){
+  Leaderboard.readCorrect();
+  floatText(e, `+${CONFIG.READ_MONEY} xu  +${CONFIG.READ_POINTS} điểm`);
+  document.getElementById("word").textContent = pick(WORDS);
+}
+function onMission(e){
+  Leaderboard.completeMission();
+  floatText(e, `+${CONFIG.MISSION_POINTS} điểm`);
+}
+function resetAll(){ Leaderboard.reset(); }
+
+render();
+</script>
+</body>
+</html>

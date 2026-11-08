@@ -1,4 +1,4 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.08-8: bỏ cách đọc kiểu Việt, chỉ giữ phiên âm IPA; chọn đáp án đúng 1 từ đủ 3 lần cũng được tặng 🎁 quà mưa; máy nghe giọng dễ tính hơn. Bản 2026.11.08-7: 60 kho từ chia thành 10 GIAI ĐOẠN (mỗi giai đoạn 6 kho); bảo vệ đủ 6 kho của một giai đoạn thì mở màn 🌍 BOSS THẾ GIỚI – kho từ nằm giữa bản đồ, chòi xây quanh kho, quái tràn vào từ 4 CỬA (Bắc, Nam, Tây, Đông); boss thế giới lần sau mạnh hơn lần trước (máu, sát thương, số quái triệu hồi đều tăng). Bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.08-9: đọc/chọn đáp án lấy vàng KHÔNG GIỚI HẠN nhưng theo LƯỢT – mỗi lượt mỗi từ ở thanh dưới chỉ được 1 lần, đọc/chọn hết các từ thì sang lượt mới, tất cả từ mở lại (thay cho luật "3 lần liền"). Bản 2026.11.08-8: bỏ cách đọc kiểu Việt, chỉ giữ phiên âm IPA; chọn đáp án đúng 1 từ đủ 3 lần cũng được tặng 🎁 quà mưa; máy nghe giọng dễ tính hơn. Bản 2026.11.08-7: 60 kho từ chia thành 10 GIAI ĐOẠN (mỗi giai đoạn 6 kho); bảo vệ đủ 6 kho của một giai đoạn thì mở màn 🌍 BOSS THẾ GIỚI – kho từ nằm giữa bản đồ, chòi xây quanh kho, quái tràn vào từ 4 CỬA (Bắc, Nam, Tây, Đông); boss thế giới lần sau mạnh hơn lần trước (máu, sát thương, số quái triệu hồi đều tăng). Bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    (bản 2026.11.07-6) CỐT TRUYỆN: bầy quái lẻn vào KHO TỪ VỰNG (đầu đường, phía trên) đánh cắp từ vựng, mỗi con vác 1 từ
    để mang về THÀNH CỦA CHÚNG (cuối đường, phía dưới). Nhiệm vụ của người chơi: xây chòi chặn đường, không cho quái mang từ về thành.
    Mỗi màn là 1 kho từ vựng theo chủ đề (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
@@ -488,14 +488,16 @@
     G = {
       tp: tp, wb: tp.wb || 0, seed: Math.floor(Math.random() * 1e6), paths: tp.wb ? WB_PATHS : [MAPS[tp.ti % MAPS.length]], waves: planWaves(tp), wave: 0, phase: 'prep',
       dif: DSEL, hp: DIFF[DSEL].life, hpMax: DIFF[DSEL].life, gold: DIFF[DSEL].gold, quake: 0, towers: [], enemies: [], shots: [], fx: [], txt: [], spots: null, q: [], qT: 0,
-      paused: false, said: {}, bank: [], lastW: -1, streak: 0, gifts: [], rain: null, rp: [], ok: 0, t: 0, prepT: 30, shake: 0, sel: -1, flagT: 0, ended: false
+      paused: false, said: {}, bank: [], done: {}, round: 1, gifts: [], rain: null, rp: [], ok: 0, t: 0, prepT: 30, shake: 0, sel: -1, flagT: 0, ended: false
     };
     if (G.wb) G.gold += 100;   // màn boss thế giới: thêm vàng khởi đầu để xây chòi cho cả 4 hướng
     G.waves[0].forEach(function (w) { addBank(w); });
   }
   function addBank(w) { if (G.bank.indexOf(w) < 0) G.bank.push(w); }
   /* (bản 2026.11.08-4) từ đang bị khóa: vừa đọc đúng MAX_READ lần liền, phải đọc từ khác trước */
-  function locked(w) { return G.lastW === w && G.streak >= MAX_READ; }
+  /* (bản 2026.11.08-9) LƯỢT ĐỌC: mỗi lượt, mỗi từ ở thanh dưới chỉ được đọc/chọn đúng 1 lần. Hết các từ thì sang lượt mới, mọi từ mở lại. */
+  function locked(w) { return !!G.done[w]; }
+  function roundLeft() { return G.bank.filter(function (w) { return !G.done[w]; }).length; }
 
   /* ================= BỐ CỤC ================= */
   var PATH = [], PLEN = 0, PW = 30, PATHS = [];
@@ -1001,14 +1003,14 @@
   function reward(w) { var s = G.said[w]; return REWARD[Math.min(2, s ? s.n : 0)]; }
   function renderBank() {
     var c = $('ttChips'), h = '';
-    G.bank.forEach(function (w) {
-      var x = G.tp.w[w], s = G.said[w], gain = useMic() ? reward(w) : pickGain(reward(w)), lk = locked(w), rd = G.lastW === w ? G.streak : 0;
+    G.bank.filter(function (w) { return !locked(w); }).concat(G.bank.filter(locked)).forEach(function (w) {   // từ chưa đọc ở lượt này xếp trước
+      var x = G.tp.w[w], s = G.said[w], gain = useMic() ? reward(w) : pickGain(reward(w)), lk = locked(w), rd = 0;
       var pv = pronOf(x).vi;
-      h += '<button class="tt-chip' + (lk ? ' lock' : s && s.n ? ' tried' : '') + '" data-a="chip" data-w="' + w + '"><span class="p">' + picHtml(x[2], 30) + '</span><span><b>' + esc(x[0]) + '</b>' + (pv ? '<span class="vi">🗣️ ' + esc(pv) + '</span>' : '') + '<small>' + (lk ? '🔒 Đọc từ khác trước' : '+' + gain + ' 💰' + (rd ? ' · lần ' + (rd + 1) + '/' + MAX_READ : '')) + '</small></span></button>';
+      h += '<button class="tt-chip' + (lk ? ' lock' : s && s.n ? ' tried' : '') + '" data-a="chip" data-w="' + w + '"><span class="p">' + picHtml(x[2], 30) + '</span><span><b>' + esc(x[0]) + '</b>' + (pv ? '<span class="vi">🗣️ ' + esc(pv) + '</span>' : '') + '<small>' + (lk ? '✅ Xong lượt ' + G.round : '+' + gain + ' 💰' + (rd ? ' · lần ' + (rd + 1) + '/' + MAX_READ : '')) + '</small></span></button>';
     });
     if (!h) h = '<div class="tt-empty">✅ Đã đọc hết từ của đợt này. Chạm vào con quái đang trộm từ để đọc từ nó vác, được thêm 💰 và làm quái choáng!</div>';
     c.innerHTML = h;
-    $('ttBN').textContent = G.bank.length ? G.bank.length + ' từ' : '';
+    $('ttBN').textContent = G.bank.length ? '🔄 Lượt ' + G.round + ' · còn ' + roundLeft() + '/' + G.bank.length + ' từ' : '';
   }
 
   /* ================= BẢNG ĐỌC TỪ ================= */
@@ -1124,8 +1126,10 @@
     var more = '';
     if (!SAY.e) {   // (bản 2026.11.08-4) đọc từ ở thanh dưới: không giới hạn, nhưng đọc 1 từ MAX_READ lần liền thì phải đọc từ khác trước
       s.r = (s.r || 0) + 1;
-      if (G.lastW === w) G.streak++; else { G.lastW = w; G.streak = 1; }
-      more = locked(w) ? ' (đủ ' + MAX_READ + ' lần liền – đọc từ khác rồi quay lại nhé)' : ' (lần ' + G.streak + '/' + MAX_READ + ')';
+      G.done[w] = 1;
+      var left = roundLeft();
+      if (!left) { G.round++; G.done = {}; more = ' · 🔄 Hết lượt! Sang lượt ' + G.round + ', tất cả từ đã mở lại'; setTimeout(function () { if (G && !G.ended) banner('🔄 Lượt ' + G.round, 'Tất cả từ đã mở lại – đọc tiếp để lấy vàng!'); }, 1400); }
+      else more = ' (lượt ' + G.round + ': còn ' + left + ' từ)';
     }
     G.gold += gain; SAY.st = 'ok'; SAY.msg = '+' + gain + ' 💰 · +' + pts + ' điểm 🏆' + more + (gk ? ' · 🎁 Quà: ' + RAIN[gk].e + ' ' + RAIN[gk].n + '!' : giftMsg);
     sfx('coin'); drawSay(); renderBank(); hud('gold'); lbAdd(pts);
@@ -1545,7 +1549,7 @@
     if (a === 'wave') { startWave(); return; }
     if (a === 'chip') {
       var cw = +el.getAttribute('data-w');
-      if (locked(cw)) { toast('🔒 Bạn vừa đọc từ <b>' + esc(G.tp.w[cw][0]) + '</b> ' + MAX_READ + ' lần liền. Hãy đọc đúng một <b>từ khác</b>, rồi sẽ đọc lại được từ này!'); sfx('bad'); return; }
+      if (locked(cw)) { toast('✅ Từ <b>' + esc(G.tp.w[cw][0]) + '</b> đã xong ở lượt ' + G.round + '. Hãy đọc hết <b>' + roundLeft() + ' từ còn lại</b> để sang lượt mới, rồi sẽ đọc lại được từ này!'); sfx('bad'); return; }
       openSay(cw, null); return;
     }
     if (a === 'build') { build(el.getAttribute('data-k')); return; }

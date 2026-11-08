@@ -1,4 +1,4 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    (bản 2026.11.07-6) CỐT TRUYỆN: bầy quái lẻn vào KHO TỪ VỰNG (đầu đường, phía trên) đánh cắp từ vựng, mỗi con vác 1 từ
    để mang về THÀNH CỦA CHÚNG (cuối đường, phía dưới). Nhiệm vụ của người chơi: xây chòi chặn đường, không cho quái mang từ về thành.
    Mỗi màn là 1 kho từ vựng theo chủ đề (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
@@ -7,7 +7,8 @@
      • Các từ của đợt sắp tới hiện ở thanh dưới cùng: chạm vào từ → nghe mẫu → đọc → đúng thì nhận vàng
        (đọc đúng ngay lần đầu +30 vàng, lần 2 +20, từ lần 3 +12).
      • Chạm vào con quái đang đi để đọc từ nó vác: đúng thì quái bị choáng, mất máu và bạn được +12 vàng.
-   Máy không nghe được giọng (trình duyệt không hỗ trợ micro): nghe mẫu rồi chọn đúng từ (thưởng ít hơn).
+   Máy không nghe được giọng, hoặc người chơi bấm 👆 Chọn đáp án: nghe mẫu rồi chọn đúng từ (thưởng = 2/3 khi đọc).
+   Mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng nhận vàng + điểm xếp hạng.
    Qua màn: 📚 còn ≥ 80% → ⭐⭐⭐, ≥ 40% → ⭐⭐, còn lại ⭐. Mỗi ⭐ +10.000đ và mỗi từ đọc đúng +2.000đ chuyển vào Nông trại Sixpay.
    Mỗi vùng đất (nhóm chủ đề) mở sẵn kho từ đầu tiên, bảo vệ được kho trước mới mở kho sau.
    Gọi: SixCastleGame.open() / SixCastleGame.close() */
@@ -30,7 +31,13 @@
     { k: 'insane', n: 'Khó vô địch', e: '👑', c: '#7c3aed', hp: 3.2, gap: 0.65, more: 2.5, life: 5, gold: 70, rw: 3, boss: 3 }
   ];
   var DSEL = 1; try { var _d = +localStorage.getItem('tt_diff'); if (_d >= 0 && _d < DIFF.length) DSEL = _d; } catch (e) {}
-  var REWARD = [30, 20, 12], ENEMY_REWARD = 12, PICK_REWARD = 15;
+  var REWARD = [30, 20, 12], ENEMY_REWARD = 12;
+  /* (bản 2026.11.08-2) Chọn đáp án thay vì đọc: thưởng bằng PICK_RATE (2/3) so với đọc. Mỗi từ ở thanh dưới đọc tối đa MAX_READ lần. */
+  var PICK_RATE = 2 / 3, MAX_READ = 3;
+  var PICKPREF = false; try { PICKPREF = localStorage.getItem('tt_pick') === '1'; } catch (e) {}
+  function useMic() { return !!SR && !PICKPREF; }
+  function pickGain(n) { return Math.max(1, Math.round(n * PICK_RATE)); }
+  function setPickPref(v) { PICKPREF = v; try { localStorage.setItem('tt_pick', v ? '1' : '0'); } catch (e) {} }
   var STAR_VND = 10000, WORD_VND = 2000;
 
   /* ================= TIỆN ÍCH ================= */
@@ -385,6 +392,8 @@
     var old = []; for (var j = 0; j < k; j++) old = old.concat(G.waves[j]);
     var extra = Math.min(old.length, Math.round(k * 2 * DIFF[G.dif].more));
     shuffle(old, r).slice(0, extra).forEach(function (w) { list.splice(Math.floor(r() * (list.length + 1)), 0, { t: pool[Math.floor(r() * pool.length)], w: w }); });
+    // (bản 2026.11.08-2) gấp đôi số quái: mỗi con thêm 1 con đi kèm vác cùng từ
+    var dbl = []; list.forEach(function (o) { dbl.push(o, { t: pool[Math.floor(r() * pool.length)], w: o.w }); }); list = dbl;
     if (k === G.waves.length - 1) for (var bi = 0; bi < DIFF[G.dif].boss; bi++) list.push({ t: 'boss', w: G.waves[k][bi % G.waves[k].length] });
     return list;
   }
@@ -399,7 +408,7 @@
     };
     G.waves[0].forEach(function (w) { addBank(w); });
   }
-  function addBank(w) { if (G.bank.indexOf(w) < 0 && !(G.said[w] && G.said[w].ok)) G.bank.push(w); }
+  function addBank(w) { if (G.bank.indexOf(w) < 0 && !(G.said[w] && (G.said[w].r || 0) >= MAX_READ)) G.bank.push(w); }
 
   /* ================= BỐ CỤC ================= */
   var PATH = [], PLEN = 0, PW = 30;
@@ -501,7 +510,7 @@
       if (G.qT <= 0) {
         var o = G.q.shift(), D = EN[o.t], sc = (1 + 0.2 * G.wave) * (1 + Math.min(0.6, G.tp.ti * 0.012)) * DIFF[G.dif].hp;
         G.enemies.push({ t: o.t, w: o.w, hp: D.hp * sc, max: D.hp * sc, f: 0, slowT: 0, stunT: 0, said: false, bob: Math.random() * 6, hit: 0 });
-        G.qT = (o.t === 'boss' ? 2.2 : Math.max(0.85, 1.7 - G.wave * 0.09)) * DIFF[G.dif].gap;
+        G.qT = (o.t === 'boss' ? 2.2 : Math.max(0.6, (1.7 - G.wave * 0.09) * 0.7)) * DIFF[G.dif].gap;   // quái gấp đôi nên ra dày hơn một chút
         if (o.t === 'boss') { banner('🐲 Trùm trộm từ xuất hiện!', 'Đừng để nó mang từ về thành – mất tới 5 từ!'); sfx('horn'); }
       }
     }
@@ -739,9 +748,9 @@
   function renderBank() {
     var c = $('ttChips'), h = '';
     G.bank.forEach(function (w) {
-      var x = G.tp.w[w], s = G.said[w], gain = SR ? reward(w) : PICK_REWARD;
+      var x = G.tp.w[w], s = G.said[w], gain = useMic() ? reward(w) : pickGain(reward(w)), rd = s && s.r ? s.r : 0;
       var pv = pronOf(x).vi;
-      h += '<button class="tt-chip' + (s && s.n ? ' tried' : '') + '" data-a="chip" data-w="' + w + '"><span class="p">' + picHtml(x[2], 30) + '</span><span><b>' + esc(x[0]) + '</b>' + (pv ? '<span class="vi">🗣️ ' + esc(pv) + '</span>' : '') + '<small>+' + gain + ' 💰</small></span></button>';
+      h += '<button class="tt-chip' + (s && s.n ? ' tried' : '') + '" data-a="chip" data-w="' + w + '"><span class="p">' + picHtml(x[2], 30) + '</span><span><b>' + esc(x[0]) + '</b>' + (pv ? '<span class="vi">🗣️ ' + esc(pv) + '</span>' : '') + '<small>+' + gain + ' 💰' + (rd ? ' · lần ' + (rd + 1) + '/' + MAX_READ : '') + '</small></span></button>';
     });
     if (!h) h = '<div class="tt-empty">✅ Đã đọc hết từ của đợt này. Chạm vào con quái đang trộm từ để đọc từ nó vác, được thêm 💰 và làm quái choáng!</div>';
     c.innerHTML = h;
@@ -754,7 +763,8 @@
      Máy so khớp dễ tính (window.SixPron trong index.html): đọc gần đúng vẫn được, sai càng nhiều lần máy càng dễ tính hơn. */
   function openSay(w, e) {
     stopRec(); closePop();
-    SAY = { w: w, e: e || null, step: 1, st: '', heard: '', mode: SR ? 'mic' : 'pick', vmode: SR ? 'mic' : 'pick', opts: null, pick: -1, tr: 0, peek: false };
+    var md = useMic() ? 'mic' : 'pick';
+    SAY = { w: w, e: e || null, step: 1, st: '', heard: '', mode: md, vmode: md, opts: null, pick: -1, tr: 0, peek: false, picked: false };
     drawSay(); $('ttSay').classList.add('on');
     if (SAY.mode === 'mic') { var s0 = SAY; say(G.tp.w[w][0], function () { setTimeout(function () { if (SAY === s0 && !rec && SAY.st === '' && SAY.step === 1) listen(); }, 250); }); }
     else say(G.tp.w[w][0]);
@@ -785,12 +795,13 @@
       var left = SAY.step === 1 ? '<button class="tt-ib" data-a="sayhear" style="height:54px;padding:0 14px;font-size:15px">🔊 Nghe mẫu</button>'
         : '<button class="tt-ib" data-a="peek" style="height:54px;padding:0 12px;font-size:14px"' + (SAY.peek ? ' disabled' : '') + '>💡 Xem nghĩa</button>';
       body = '<div class="row">' + left + '<button class="tt-mic' + (st === 'rec' ? ' rec' : '') + '" data-a="mic">🎤</button>' +
-        (st === 'nosr' ? '<button class="tt-ib" data-a="topick" style="height:54px;padding:0 12px;font-size:14px">👆 Chọn đáp án</button>' : '<span style="width:96px"></span>') + '</div>';
+        '<button class="tt-ib" data-a="topick" style="height:54px;padding:0 12px;font-size:14px;line-height:1.15">👆 Chọn đáp án<br><small style="font-size:10.5px;opacity:.8">thưởng 2/3</small></button></div>';
     } else {
       if (!SAY.opts) SAY.opts = pickOpts(SAY.w);
       fb = st === 'wrong' ? '<span class="bad">Chưa đúng, thử lại nhé</span>' : st === 'ok1' ? '<span class="ok">✅ Đúng rồi!</span>&nbsp;Giờ chọn đúng <b>nghĩa tiếng Việt</b>' : SAY.step === 1 ? 'Nghe mẫu rồi chọn đúng từ tiếng Anh' : 'Chọn đúng nghĩa tiếng Việt của từ này';
       body = '<div class="ch">' + SAY.opts.map(function (i) { var cl = SAY.pick === i && i !== SAY.w ? 'bdb' : (done && i === SAY.w ? 'okb' : ''); return '<button class="' + cl + '" data-a="pick" data-w="' + i + '">' + esc(G.tp.w[i][SAY.step === 1 ? 0 : 1]) + '</button>'; }).join('') +
-        '</div><div style="margin-top:8px"><button class="tt-ib" data-a="sayhear" style="padding:0 16px;font-size:15px">🔊 Nghe lại</button></div>';
+        '</div><div style="margin-top:8px;display:flex;gap:8px;justify-content:center"><button class="tt-ib" data-a="sayhear" style="padding:0 16px;font-size:15px">🔊 Nghe lại</button>' +
+        (SR ? '<button class="tt-ib" data-a="tomic" style="padding:0 14px;font-size:14px">🎤 Đọc bằng giọng</button>' : '') + '</div>';
     }
     var showWord = SAY.step > 1 || SAY.mode === 'mic', showMean = done || SAY.peek;
     $('ttSay').innerHTML = '<button class="tt-ib x" data-a="sayx">✕</button>' + steps +
@@ -836,6 +847,7 @@
     SAY.st = 'wrong'; sfx('bad'); drawSay(); renderBank();
   }
   function step1Done() {
+    if (SAY.mode === 'pick') SAY.picked = true;
     SAY.step = 2; SAY.st = 'ok1'; SAY.tr = 0; SAY.pick = -1; SAY.opts = null; sfx('tap'); drawSay();
     var s0 = SAY; if (SAY.vmode === 'mic') setTimeout(function () { if (SAY === s0 && SAY.step === 2 && !rec && SAY.st === 'ok1') listen(); }, 900);
   }
@@ -844,12 +856,19 @@
     if (SAY.e) {
       gain = ENEMY_REWARD; var e = SAY.e;
       if (G.enemies.indexOf(e) >= 0) { e.stunT = 2.2; e.said = true; var p = posAt(e.f); spark(p.x, p.y - W * 0.05, ['#fde047', '#fff', '#a78bfa'], 12); dmgE(e, e.max * 0.25); }
-    } else gain = SAY.mode === 'pick' ? PICK_REWARD : reward(w);
+    } else gain = reward(w);
+    var isPick = SAY.picked || SAY.vmode === 'pick', pts = isPick ? pickGain(LB_READ) : LB_READ;
+    if (isPick) gain = pickGain(gain);
     if (!s.ok) G.ok++;
     s.ok = 1;
-    var i = G.bank.indexOf(w); if (i >= 0) G.bank.splice(i, 1);
-    G.gold += gain; SAY.st = 'ok'; SAY.msg = '+' + gain + ' 💰 · +' + LB_READ + ' điểm 🏆';
-    sfx('coin'); drawSay(); renderBank(); hud('gold'); lbAdd(LB_READ);
+    var more = '';
+    if (!SAY.e) {   // đọc từ ở thanh dưới: tối đa MAX_READ lần mỗi từ
+      s.r = (s.r || 0) + 1;
+      if (s.r >= MAX_READ) { var i = G.bank.indexOf(w); if (i >= 0) G.bank.splice(i, 1); more = ' (đủ ' + MAX_READ + ' lần)'; }
+      else more = ' (lần ' + s.r + '/' + MAX_READ + ')';
+    }
+    G.gold += gain; SAY.st = 'ok'; SAY.msg = '+' + gain + ' 💰 · +' + pts + ' điểm 🏆' + more;
+    sfx('coin'); drawSay(); renderBank(); hud('gold'); lbAdd(pts);
     var s0 = SAY; setTimeout(function () { if (SAY === s0) closeSay(); }, 1300);
   }
 
@@ -1162,7 +1181,8 @@
     if (a === 'sayx') { closeSay(); return; }
     if (a === 'sayhear') { if (!SAY) return; stopRec(); if (SAY.st === 'rec') SAY.st = ''; say(G.tp.w[SAY.w][0]); drawSay(); return; }
     if (a === 'mic') { if (!SAY || SAY.st === 'ok') return; if (rec) { stopRec(); SAY.st = ''; drawSay(); } else listen(); return; }
-    if (a === 'topick') { if (!SAY) return; stopRec(); if (SAY.step === 1) { SAY.mode = 'pick'; SAY.vmode = 'pick'; } else SAY.vmode = 'pick'; SAY.st = ''; SAY.opts = null; drawSay(); if (SAY.step === 1) say(G.tp.w[SAY.w][0]); return; }
+    if (a === 'topick') { if (!SAY) return; stopRec(); setPickPref(true); renderBank(); if (SAY.step === 1) { SAY.mode = 'pick'; SAY.vmode = 'pick'; } else SAY.vmode = 'pick'; SAY.st = ''; SAY.opts = null; drawSay(); if (SAY.step === 1) say(G.tp.w[SAY.w][0]); return; }
+    if (a === 'tomic') { if (!SAY || !SR || SAY.st === 'ok') return; setPickPref(false); renderBank(); if (SAY.step === 1) { SAY.mode = 'mic'; SAY.vmode = 'mic'; } else SAY.vmode = 'mic'; SAY.st = ''; SAY.opts = null; SAY.pick = -1; drawSay(); listen(); return; }
     if (a === 'peek') { if (!SAY || SAY.peek) return; stopRec(); SAY.peek = true; var sp = G.said[SAY.w] || (G.said[SAY.w] = { n: 0, ok: 0 }); sp.n++; SAY.tr++; SAY.st = ''; drawSay(); renderBank(); return; }
     if (a === 'pick') {
       if (!SAY || SAY.st === 'ok') return; var w = +el.getAttribute('data-w'); SAY.pick = w;

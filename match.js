@@ -355,7 +355,7 @@
     $('mgMap').innerHTML = html;
     if (scroll) setTimeout(function () { var e = $('mgIsl' + curT); if (e) $('mgMap').scrollTop = Math.max(0, e.offsetTop - 80); }, 30);
   }
-  // (bản 2026.11.07-2) Phiên âm: tiếng Anh = IPA · cách đọc kiểu Việt; tiếng Trung = pinyin · cách đọc kiểu Việt
+  // (bản 2026.11.08-8) Phiên âm: tiếng Anh = chỉ IPA (đã bỏ cách đọc kiểu Việt); tiếng Trung = pinyin · cách đọc kiểu Việt
   function prTxt(w) { var A = langApi(LANG); try { if (A && A.data && A.data.pron) return A.data.pron(w) || ''; } catch (e) {} return LANG === 'zh' ? (w[3] || '') : ''; }
   function wordHtml(w, sz) {
     var pr = prTxt(w);

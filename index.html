@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 // Mỗi lần sửa app trên GitHub, hãy đổi số này (vd. 2026.10.26-2 -> 2026.10.26-3) VÀ sửa số trong file version.json cho giống hệt, để máy người dùng tự tải bản mới.
-const APP_VERSION='2026.11.08-7';
+const APP_VERSION='2026.11.08-8';
 // ===================== BỘ ĐẾM NGƯỜI DÙNG ẨN DANH (GoatCounter) =====================
 // Dán mã trang GoatCounter của bạn vào giữa hai dấu nháy. Ví dụ trang của bạn là 6pay.goatcounter.com
 // thì gõ: const GOATCOUNTER_CODE='6pay';
@@ -2564,18 +2564,23 @@ window.SixPron=(function(){
  function matchEn(target,alts,tries){
   const t=normEn(target);if(!t)return true;
   const tt=t.split(' '),tc=tt.join(''),tk=keys(t),n=tt.length;
-  const lv=Math.min(2,tries||0), thr=[0.62,0.55,0.48][lv], kthr=[0.75,0.67,0.6][lv];
+  // (bản 2026.11.08-8) DỄ TÍNH HƠN: hạ ngưỡng giống nhau, chấp nhận lệch âm cuối/âm giữa, từ ngắn chỉ cần cùng âm đầu và gần giống
+  const lv=Math.min(2,tries||0), thr=[0.5,0.44,0.38][lv], kthr=[0.6,0.5,0.45][lv];
   for(const toks of cands(alts)){
-   for(let L=Math.max(1,n-1);L<=n+1;L++)for(let i=0;i+L<=toks.length;i++){
+   for(let L=Math.max(1,n-1);L<=n+2;L++)for(let i=0;i+L<=toks.length;i++){
     const seg=toks.slice(i,i+L),sc=seg.join(''),sk=keys(seg.join(' '));
     if(sc===tc||sk===tk&&tk.length>=1)return true;
-    if(tc.length<=3){ // từ rất ngắn: mã âm giống, hoặc sai 1 chữ mà cùng chữ đầu
+    if(tc.length<=3){ // từ rất ngắn: cùng âm đầu và sai không quá 1 chữ / 1 âm
      if(sc[0]===tc[0]&&lev(sc,tc)<=1)return true;
-     if(sk[0]===tk[0]&&sim(sk,tk)>=(lv>=1?0.5:0.5)&&sim(sc,tc)>=(lv>=1?0.3:0.34))return true;
+     if(sk[0]===tk[0]&&lev(sk,tk)<=1&&sc.length<=tc.length+3)return true;
+     if(lv>=1&&lev(sc,tc)<=1)return true;
      continue;
     }
-    if(sc.indexOf(tc)>=0&&sc.length<=tc.length+4)return true;
-    if(sim(sc,tc)>=thr||sim(sk,tk)>=kthr&&sim(sc,tc)>=thr-0.15)return true;
+    if(sc.indexOf(tc)>=0&&sc.length<=tc.length+6)return true;
+    if(tk.length>=3&&sk.indexOf(tk)>=0&&sc.length<=tc.length+6)return true;
+    if(sc.slice(0,3)===tc.slice(0,3)&&sim(sc,tc)>=thr-0.1)return true;   // đúng phần đầu từ, sai phần đuôi
+    if(sim(sc,tc)>=thr||sim(sk,tk)>=kthr&&sim(sc,tc)>=thr-0.2)return true;
+    if(sk[0]===tk[0]&&sim(sk,tk)>=kthr+0.1)return true;
    }
   }
   return false;
@@ -2593,7 +2598,7 @@ window.SixPron=(function(){
  }
  function matchVi(meaning,alts,tries){
   const vs=variants(meaning);if(!vs.length)return true;
-  const lv=Math.min(2,tries||0), thr=[0.72,0.64,0.56][lv], tov=[0.66,0.6,0.5][lv];
+  const lv=Math.min(2,tries||0), thr=[0.6,0.52,0.45][lv], tov=[0.66,0.66,0.5][lv];   // (bản 2026.11.08-8) dễ tính hơn
   for(const a of alts){
    let h=plain(a).replace(/^(nghia la|co nghia la|la|tu nay la|day la)\s+/,'');if(!h)continue;
    const hs=strip(h),hc=h.replace(/ /g,''),hsc=hs.replace(/ /g,'');
@@ -2603,7 +2608,8 @@ window.SixPron=(function(){
     if((' '+h+' ').indexOf(' '+v+' ')>=0)return true;
     if(vc.length>=4&&(hc.indexOf(vc)>=0))return true;
     if(vc.length>=4&&(sim(hsc,vc)>=thr||sim(hc,vc)>=thr))return true;
-    const vt=v.split(' '),ht=h.split(' ');let hit=0;vt.forEach(x=>{if(ht.some(y=>y===x||x.length>=3&&sim(x,y)>=0.67))hit++;});
+    if(vc.length<4&&h.split(' ').some(y=>y.length<=vc.length+1&&lev(y,vc)<=1))return true;   // nghĩa ngắn (vd "mèo"): sai 1 chữ vẫn được
+    const vt=strip(v).split(' '),ht=h.split(' ');let hit=0;vt.forEach(x=>{if(ht.some(y=>y===x||x.length>=3&&sim(x,y)>=0.6))hit++;});
     if(vt.length>=2&&hit/vt.length>=tov)return true;
    }
   }

@@ -1,4 +1,4 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    (bản 2026.11.07-6) CỐT TRUYỆN: bầy quái lẻn vào KHO TỪ VỰNG (đầu đường, phía trên) đánh cắp từ vựng, mỗi con vác 1 từ
    để mang về THÀNH CỦA CHÚNG (cuối đường, phía dưới). Nhiệm vụ của người chơi: xây chòi chặn đường, không cho quái mang từ về thành.
    Mỗi màn là 1 kho từ vựng theo chủ đề (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
@@ -239,7 +239,26 @@
     '.tt-endc .big{font-family:' + EF + ';font-size:64px;line-height:1}.tt-endc h2{margin:6px 0 2px;font-size:24px;font-weight:900}.tt-endc .stars{font-size:38px;letter-spacing:4px;margin:6px 0;font-family:' + EF + '}',
     '.tt-endc .sum{font-size:14.5px;line-height:1.5;opacity:.95;margin-bottom:10px}.tt-endc .farm{display:inline-block;background:rgba(22,163,74,.35);border-radius:999px;padding:5px 14px;font-weight:800;font-size:14px;margin-bottom:10px}',
     '.tt-endc .wl{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0 12px}.tt-endc .wl span{background:rgba(255,255,255,.12);border-radius:10px;padding:4px 9px;font-size:13.5px;font-weight:700;cursor:pointer}.tt-endc .wl span.bd{background:rgba(220,38,38,.35)}',
-    '.tt-endc .acts{display:grid;gap:9px}'
+    '.tt-endc .acts{display:grid;gap:9px}',
+    /* bảng xếp hạng */
+    '.tt-lb{position:absolute;right:5px;top:5px;z-index:4;width:150px;pointer-events:none;background:rgba(8,15,40,.62);border:1px solid rgba(253,224,71,.35);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.4);overflow:hidden;font-size:11.5px}','.tt-lb .hd,.tt-lb.dock{pointer-events:auto}',
+    '.tt-lb .hd{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:6px 9px;font-weight:900;font-size:13px;color:#fde68a;background:rgba(0,0,0,.3);cursor:pointer}',
+    '.tt-lb .hd em{font-style:normal;font-size:11px;color:#cbd5e1;font-weight:700}',
+    '.tt-lb ol{list-style:none;margin:0;padding:3px 5px}',
+    '.tt-lb li{display:flex;align-items:center;gap:4px;padding:1px 3px;border-radius:7px}',
+    '.tt-lb li.r1{background:linear-gradient(90deg,rgba(245,197,66,.28),transparent)}.tt-lb li.r2{background:linear-gradient(90deg,rgba(203,213,225,.22),transparent)}.tt-lb li.r3{background:linear-gradient(90deg,rgba(208,138,76,.26),transparent)}',
+    '.tt-lb li.me{outline:2px solid #4ade80;background:rgba(74,222,128,.18)}',
+    '.tt-lb .ic{width:19px;height:19px;flex:none;display:flex;align-items:center;justify-content:center}.tt-lb .ic svg{width:19px;height:19px}',
+    '.tt-lb .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}',
+    '.tt-lb .sc{font-weight:900;color:#fde047;font-variant-numeric:tabular-nums}',
+    '.tt-lb .my{border-top:1px solid rgba(255,255,255,.15);padding:5px 8px 7px;background:rgba(22,163,74,.18)}',
+    '.tt-lb .my .t{display:flex;align-items:center;gap:6px;font-weight:900}.tt-lb .my .t b{color:#4ade80;font-size:15px}.tt-lb .my .t span{margin-left:auto;color:#fde047}',
+    '.tt-lb .my small{display:block;margin-top:2px;font-size:10.5px;opacity:.85;line-height:1.3}',
+    '.tt-lb.min ol,.tt-lb.min .my small{display:none}.tt-lb.min{width:auto}',
+    '.tt-lb.dock{top:0;right:0;bottom:0;width:222px;border-radius:0;border-width:0 0 0 1px;font-size:13.5px;display:flex;flex-direction:column}',
+    '.tt-lb.dock .hd{font-size:15px;padding:10px 12px;cursor:default}.tt-lb.dock ol{flex:1;padding:6px 8px}.tt-lb.dock li{padding:6px 5px}.tt-lb.dock .ic,.tt-lb.dock .ic svg{width:26px;height:26px}',
+    '.tt-lb.dock .my{padding:10px 12px}.tt-lb.dock .my small{font-size:12px}',
+    '.tt-lb.bump .my{animation:ttBump .5s}'
   ].join('');
   document.head.appendChild(css);
 
@@ -262,7 +281,7 @@
       '<div class="tt-top"><button class="tt-ib" data-a="quit" aria-label="Quay lại">←</button>' +
       '<div class="tt-hud"><span class="tt-pill" id="ttHP" title="Số từ trong kho còn giữ được"><i>📚</i><span></span></span><span class="tt-pill" id="ttGold"><i>💰</i><span></span></span><span class="tt-pill" id="ttWv"><i>👹</i><span></span></span></div>' +
       '<button class="tt-ib" data-a="pause" id="ttPau">⏸</button></div>' +
-      '<div class="tt-stage" id="ttStage"><canvas id="ttCv"></canvas>' +
+      '<div class="tt-stage" id="ttStage"><canvas id="ttCv"></canvas><div class="tt-lb" id="ttLB"></div>' +
       '<button class="tt-wavebtn" data-a="wave" id="ttWB"></button>' +
       '<div class="tt-banner" id="ttBan"></div><div class="tt-toast" id="ttToast"></div><div class="tt-pop" id="ttPop"></div>' +
       '<div class="tt-say" id="ttSay"></div><div class="tt-end" id="ttEnd"></div></div>' +
@@ -390,7 +409,7 @@
     W = Math.min(sw, Math.round(sh * 0.78)); H = sh; DPR = Math.min(2.5, window.devicePixelRatio || 1);
     CV = $('ttCv'); X = CV.getContext('2d');
     CV.width = Math.round(W * DPR); CV.height = Math.round(H * DPR);
-    CV.style.width = W + 'px'; CV.style.height = H + 'px'; CV.style.left = Math.round((sw - W) / 2) + 'px';
+    CV.style.width = W + 'px'; CV.style.height = H + 'px'; var dock = sw - W >= 230; CV.style.left = Math.round(dock ? Math.max(0, (sw - 222 - W) / 2) : (sw - W) / 2) + 'px'; lbLayout(dock);
     PW = Math.max(26, W * 0.085);
     PATH = G.map.map(function (p) { return { x: p[0] * W, y: p[1] * H }; });
     PLEN = 0; for (var i = 1; i < PATH.length; i++) { PATH[i].L = PLEN; PLEN += Math.hypot(PATH[i].x - PATH[i - 1].x, PATH[i].y - PATH[i - 1].y); PATH[i].E = PLEN; }
@@ -470,6 +489,7 @@
     var m = G.paused || G.ended ? 0 : (SAY ? 0.18 : 1);   // luôn chạy tốc độ bình thường (không có nút tua nhanh)
     G.flagT += dt;
     if (m) step(dt * m);
+    if (!G.paused && !G.ended) { lbT += dt; if (lbT > 7) { lbT = 0; lbBotsPlay(1 + Math.floor(Math.random() * 3)); lbSave(); lbRender(); } }
     if (!G.paused && !G.ended && G.phase === 'prep' && !SAY) { G.prepT -= dt; if (G.prepT <= 0) startWave(); else waveBtn(); }
     render(dt);
   }
@@ -640,6 +660,72 @@
   var toT = 0;
   function toast(t) { var el = $('ttToast'); el.innerHTML = t; el.classList.add('on'); clearTimeout(toT); toT = setTimeout(function () { el.classList.remove('on'); }, 2600); }
 
+  /* ================= BẢNG XẾP HẠNG (bản 2026.11.08-1) =================
+     Danh sách 200~300 người chơi ảo tạo 1 lần rồi lưu trong máy (khóa tt_lb). Người chơi mới 0 điểm nên đứng cuối bảng.
+     Đọc đúng mỗi lần +LB_READ điểm; bảo vệ kho từ thành công +LB_STAR điểm cho mỗi ⭐ (nhân hệ số thưởng của cấp độ).
+     Người chơi ảo thỉnh thoảng cũng được cộng điểm (khi đang chơi và theo thời gian vắng mặt) cho bảng sinh động. */
+  var LB_KEY = 'tt_lb', LB = null, LB_READ = 10, LB_STAR = 50, LB_TOP = 5000, lbPrev = 0, lbT = 0, lbMin = false;
+  try { lbMin = localStorage.getItem('tt_lbmin') === '1'; } catch (e) {}
+  var LB_HO = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Huỳnh', 'Phan', 'Vũ', 'Võ', 'Đặng', 'Bùi', 'Đỗ', 'Hồ', 'Ngô', 'Dương', 'Lý'];
+  var LB_DEM = ['Văn', 'Thị', 'Minh', 'Gia', 'Ngọc', 'Đức', 'Thanh', 'Quốc', 'Bảo', 'Hoài', 'Anh', 'Hải', 'Khánh', 'Tuấn'];
+  var LB_TEN = ['An', 'Bảo', 'Chi', 'Dũng', 'Duy', 'Giang', 'Hà', 'Hiếu', 'Hùng', 'Huy', 'Khang', 'Khoa', 'Lan', 'Linh', 'Long', 'Mai', 'Minh', 'My', 'Nam', 'Ngân', 'Nhi', 'Phát', 'Phúc', 'Quân', 'Sơn', 'Tâm', 'Thảo', 'Thịnh', 'Trang', 'Trí', 'Tú', 'Vy', 'Yến', 'Đạt'];
+  var LB_NICK = ['Hiệp Sĩ', 'Thần Đồng', 'Chiến Binh', 'Cung Thủ', 'Rồng Lửa', 'Mèo Con', 'Thủ Lĩnh', 'Siêu Nhân', 'Kiếm Sĩ', 'Tướng Quân', 'Hổ Con', 'Đại Bàng', 'Pháo Thủ', 'Vua Từ Vựng', 'Sao Băng'];
+  function lbPick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function lbMake() {
+    var n = 200 + Math.floor(Math.random() * 101), used = {}, out = [];
+    for (var i = 0; i < n; i++) {
+      var nm, t;
+      do {
+        t = Math.random();
+        nm = t < 0.4 ? lbPick(LB_HO) + ' ' + lbPick(LB_DEM) + ' ' + lbPick(LB_TEN) : t < 0.75 ? lbPick(LB_NICK) + ' ' + lbPick(LB_TEN) : lbPick(LB_TEN) + (1 + Math.floor(Math.random() * 99));
+      } while (used[nm]);
+      used[nm] = 1;
+      out.push({ n: nm, s: Math.max(5, Math.round(LB_TOP * Math.pow(1 - i / (n - 1), 2.6)) + 5 + Math.floor(Math.random() * 36)) });
+    }
+    return out;
+  }
+  function lbSave() { try { localStorage.setItem(LB_KEY, JSON.stringify(LB)); } catch (e) {} }
+  function lbBotsPlay(k) { for (var i = 0; i < k; i++) lbPick(LB.b).s += lbPick([10, 10, 10, 20, 50]); }
+  function lbData() {
+    if (!LB) {
+      try { LB = JSON.parse(localStorage.getItem(LB_KEY)); } catch (e) {}
+      if (!LB || !LB.b || !LB.b.length) LB = { b: lbMake(), me: 0, t: Date.now() };
+      var hrs = (Date.now() - (LB.t || Date.now())) / 36e5;          // vắng mặt bao lâu thì người ảo chơi thêm bấy nhiêu
+      lbBotsPlay(Math.min(300, Math.floor(hrs * 6))); LB.t = Date.now(); lbSave();
+    }
+    return LB;
+  }
+  function lbRank() { var d = lbData(), r = 1; d.b.forEach(function (b) { if (b.s >= d.me) r++; }); return r; }   // bằng điểm thì người ảo đứng trước
+  function lbAdd(n) {
+    var d = lbData(); d.me += n; d.t = Date.now(); lbSave();
+    var r = lbRank();
+    if (lbPrev && r < lbPrev && (r <= 10 && lbPrev > 10 || r <= 3 && lbPrev > 3 || r === 1)) toast(r === 1 ? '👑 Bạn đã lên <b>HẠNG 1</b> bảng xếp hạng!' : r <= 3 ? '🏆 Bạn đã vào <b>TOP 3</b> – hạng #' + r + '!' : '🎉 Bạn đã vào <b>TOP 10</b> – hạng #' + r + '!');
+    lbRender(r < lbPrev);
+  }
+  function lbCup(c) { return '<svg viewBox="0 0 24 24"><path fill="' + c + '" stroke="rgba(0,0,0,.35)" stroke-width=".6" d="M7 3h10v2h3v3a4 4 0 0 1-4 4h-.3A5 5 0 0 1 13 14.9V17h3v2H8v-2h3v-2.1A5 5 0 0 1 8.3 12H8a4 4 0 0 1-4-4V5h3V3Zm10 4v3a2 2 0 0 0 1-1.7V7h-1ZM6 7v1.3A2 2 0 0 0 7 10V7H6Z"/><rect x="7" y="20" width="10" height="2" rx="1" fill="' + c + '"/></svg>'; }
+  function lbShield(r) { return '<svg viewBox="0 0 24 24"><path fill="#3b4a78" stroke="#8ea2e0" stroke-width="1.2" d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5l-8-3Z"/><text x="12" y="15.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="Arial">' + r + '</text></svg>'; }
+  function lbIcon(r) { return r === 1 ? lbCup('#f5c542') : r === 2 ? lbCup('#d1d9e3') : r === 3 ? lbCup('#d08a4c') : lbShield(r); }
+  function lbLayout(dock) { var el = $('ttLB'); if (!el) return; el.classList.toggle('dock', !!dock); el.classList.toggle('min', !dock && lbMin); lbRender(); }
+  function lbRender(up) {
+    var el = $('ttLB'); if (!el) return;
+    var d = lbData(), me = { n: 'Bạn', s: d.me, me: 1 }, r = lbRank();
+    var top = d.b.slice().sort(function (a, b) { return b.s - a.s; }).slice(0, 10);
+    if (r <= 10) top.splice(r - 1, 0, me), top = top.slice(0, 10);
+    var dock = el.classList.contains('dock'), mini = !dock && lbMin;
+    var h = '<div class="hd" data-a="lb"><span>🏆 ' + (mini ? 'Hạng #' + r.toLocaleString('vi-VN') : 'Bảng xếp hạng') + '</span><em>' + (dock ? (d.b.length + 1) + ' người' : mini ? '▾' : '▴') + '</em></div><ol>';
+    top.forEach(function (p, i) {
+      var k = i + 1;
+      h += '<li class="' + (k <= 3 ? 'r' + k : '') + (p.me ? ' me' : '') + '"><span class="ic">' + lbIcon(k) + '</span><span class="nm">' + (p.me ? '⭐ ' : '') + esc(p.n) + '</span><span class="sc">' + p.s.toLocaleString('vi-VN') + '</span></li>';
+    });
+    var need = 0; d.b.forEach(function (b) { if (b.s >= d.me && (!need || b.s - d.me + 1 < need)) need = b.s - d.me + 1; });   // điểm cần để vượt người ngay trên
+    var hint = r > 1 ? 'Còn ' + need.toLocaleString('vi-VN') + ' điểm nữa để lên hạng #' + (r - 1).toLocaleString('vi-VN') : '👑 Bạn đang đứng đầu!';
+    if (!mini) h += '</ol><div class="my"><div class="t">Bạn <b>#' + r.toLocaleString('vi-VN') + '</b><span>' + d.me.toLocaleString('vi-VN') + ' điểm</span></div><small>' + hint + '</small></div>';
+    else h += '</ol>';
+    el.innerHTML = h;
+    if (up) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+    lbPrev = r;
+  }
+
   /* ================= HUD & THANH TỪ VỰNG ================= */
   var hudV = {};
   function hud(fx) {
@@ -762,8 +848,8 @@
     if (!s.ok) G.ok++;
     s.ok = 1;
     var i = G.bank.indexOf(w); if (i >= 0) G.bank.splice(i, 1);
-    G.gold += gain; SAY.st = 'ok'; SAY.msg = '+' + gain + ' 💰';
-    sfx('coin'); drawSay(); renderBank(); hud('gold');
+    G.gold += gain; SAY.st = 'ok'; SAY.msg = '+' + gain + ' 💰 · +' + LB_READ + ' điểm 🏆';
+    sfx('coin'); drawSay(); renderBank(); hud('gold'); lbAdd(LB_READ);
     var s0 = SAY; setTimeout(function () { if (SAY === s0) closeSay(); }, 1300);
   }
 
@@ -1005,6 +1091,7 @@
     var vnd = Math.round(((win ? st * STAR_VND : 0) * DIFF[G.dif].rw + G.ok * WORD_VND) / 1000) * 1000;
     try { if (window.farmEarn && (vnd || G.ok)) window.farmEarn('castle', vnd, G.ok, tp.id); } catch (e) {}
     if (win) { try { localStorage.setItem('farm6_pass', String(Date.now())); } catch (e) {} }
+    var lbp = win ? Math.max(LB_STAR / 2, Math.round(LB_STAR * st * DIFF[G.dif].rw)) : 0; if (lbp) lbAdd(lbp);
     sfx(win ? 'win' : 'lose');
     var good = [], bad = [];
     tp.w.forEach(function (x, i) { var s = G.said[i]; if (s && s.ok) good.push(i); else bad.push(i); });
@@ -1015,6 +1102,7 @@
       '<div class="sum" style="margin-bottom:4px">Cấp độ: <b style="color:' + DIFF[G.dif].c + ';background:#fff;border-radius:8px;padding:1px 8px">' + DIFF[G.dif].e + ' ' + DIFF[G.dif].n + '</b></div>' +
       '<div class="sum">' + (win ? 'Kho còn giữ ' + G.hp + '/' + G.hpMax + ' 📚 · ' : 'Bạn chặn được ' + G.wave + '/' + G.waves.length + ' đợt · ') + 'Đọc đúng <b>' + G.ok + '/' + tp.w.length + '</b> từ</div>' +
       (vnd ? '<div class="farm">🧑‍🌾 +' + money(vnd) + ' vào Nông trại</div>' : '') +
+      '<div class="farm" style="background:rgba(234,179,8,.3)">🏆 ' + (lbp ? '+' + lbp + ' điểm xếp hạng · ' : '') + 'Hạng của bạn: #' + lbRank().toLocaleString('vi-VN') + '</div>' +
       (bad.length ? '<div style="font-size:13.5px;font-weight:800;color:#fca5a5">Từ cần luyện thêm (chạm để nghe):</div><div class="wl">' + bad.slice(0, 24).map(function (i) { var pv = pronOf(tp.w[i]).vi; return '<span class="bd" data-a="hearw" data-i="' + i + '">' + esc(tp.w[i][0]) + (pv ? ' <i style="font-style:normal;color:#fde68a">(' + esc(pv) + ')</i>' : '') + ' · ' + esc(tp.w[i][1]) + '</span>'; }).join('') + '</div>' : '<div class="sum">🎉 Bạn đã đọc đúng toàn bộ từ vựng trong kho!</div>') +
       '<div class="acts">' + (next && win ? '<button class="tt-btn g" data-a="next" data-i="' + next.ti + '">▶ Kho từ tiếp: ' + esc(next.n) + '</button>' : '') +
       '<button class="tt-btn" data-a="again">🔁 Chơi lại kho từ này</button><button class="tt-btn s" data-a="map">🗺️ Về bản đồ các kho từ</button></div></div>';
@@ -1038,6 +1126,7 @@
     var el = ev.target.closest ? ev.target.closest('[data-a]') : null; if (!el) return;
     var a = el.getAttribute('data-a'); ac();
     if (a === 'close') { close(); return; }
+    if (a === 'lb') { var lbe = $('ttLB'); if (lbe && !lbe.classList.contains('dock')) { lbMin = !lbMin; try { localStorage.setItem('tt_lbmin', lbMin ? '1' : '0'); } catch (e) {} lbe.classList.toggle('min', lbMin); lbRender(); } return; }
     if (a === 'snd') { SND.on = !SND.on; try { localStorage.setItem('tt_snd', SND.on ? '1' : '0'); } catch (e) {} sndBtn(); return; }
     if (a === 'castle') {
       var tp = DATA.topics[+el.getAttribute('data-i')];

@@ -1,4 +1,4 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.08-7: 60 kho từ chia thành 10 GIAI ĐOẠN (mỗi giai đoạn 6 kho); bảo vệ đủ 6 kho của một giai đoạn thì mở màn 🌍 BOSS THẾ GIỚI – kho từ nằm giữa bản đồ, chòi xây quanh kho, quái tràn vào từ 4 CỬA (Bắc, Nam, Tây, Đông); boss thế giới lần sau mạnh hơn lần trước (máu, sát thương, số quái triệu hồi đều tăng). Bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    (bản 2026.11.07-6) CỐT TRUYỆN: bầy quái lẻn vào KHO TỪ VỰNG (đầu đường, phía trên) đánh cắp từ vựng, mỗi con vác 1 từ
    để mang về THÀNH CỦA CHÚNG (cuối đường, phía dưới). Nhiệm vụ của người chơi: xây chòi chặn đường, không cho quái mang từ về thành.
    Mỗi màn là 1 kho từ vựng theo chủ đề (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
@@ -157,7 +157,26 @@
   function saveProg() { try { localStorage.setItem(PKEY, JSON.stringify(prog())); } catch (e) {} }
   function stars(id) { return prog().s[id] || 0; }
   function bestDiff(id) { var d = prog().d[id]; return d == null ? -1 : d; }   // cấp độ cao nhất đã thắng
+  /* (bản 2026.11.08-7) 10 GIAI ĐOẠN + BOSS THẾ GIỚI */
+  var PHASES = 10, WB_WORDS = 30;
+  var WB = [
+    { n: 'Khủng long bạo chúa', e: '🦖' }, { n: 'Bạch tuộc khổng lồ', e: '🐙' }, { n: 'Bọ cạp sa mạc', e: '🦂' }, { n: 'Vua khỉ đột', e: '🦍' }, { n: 'Mực ma biển sâu', e: '🦑' },
+    { n: 'Cá sấu chúa', e: '🐊' }, { n: 'Rồng thần', e: '🐉' }, { n: 'Vua xương', e: '💀' }, { n: 'Quái vật vũ trụ', e: '👾' }, { n: 'Chúa tể bóng tối', e: '😈' }
+  ];
+  function phSize() { return Math.ceil(DATA.topics.length / PHASES); }
+  function phaseTopics(k) { var n = phSize(); return DATA.topics.slice(k * n, (k + 1) * n); }
+  function phaseDone(k) { return phaseTopics(k).filter(function (t) { return stars(t.id) > 0; }).length; }
+  /* màn boss thế giới k (0..9): lấy ~30 từ trộn từ 6 kho của giai đoạn đó */
+  function wbTopic(k) {
+    DATA.wb = DATA.wb || [];
+    if (DATA.wb[k]) return DATA.wb[k];
+    var tops = phaseTopics(k), per = Math.ceil(WB_WORDS / Math.max(1, tops.length)), r = rng(hashS('wb' + k)), seen = {}, w = [];
+    tops.forEach(function (t) { shuffle(t.w.slice(), r).slice(0, per).forEach(function (x) { var key = String(x[0]).toLowerCase(); if (!seen[key]) { seen[key] = 1; w.push(x); } }); });
+    var last = tops[tops.length - 1];
+    return (DATA.wb[k] = { id: 'wb' + (k + 1), wb: k + 1, n: 'Boss thế giới ' + (k + 1) + ': ' + WB[k].n, i: WB[k].e, c: '#991b1b', g: -1, w: w, ti: last ? last.ti : k * 6 });
+  }
   function unlocked(tp) {
+    if (tp.wb) return phaseDone(tp.wb - 1) >= phaseTopics(tp.wb - 1).length;
     var list = DATA.topics.filter(function (t) { return t.g === tp.g; }), i = list.indexOf(tp);
     return i <= 0 || stars(list[i - 1].id) > 0;
   }
@@ -183,6 +202,7 @@
     '.tt-grid{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}',
     '@media(min-width:520px){.tt-grid{grid-template-columns:repeat(4,1fr)}}',
     '.tt-cs{position:relative;border:0;border-radius:18px;padding:10px 6px 9px;color:#fff;font-family:inherit;cursor:pointer;text-align:center;background:linear-gradient(180deg,var(--c),rgba(0,0,0,.35)),var(--c);box-shadow:0 6px 0 rgba(0,0,0,.28),0 8px 18px rgba(0,0,0,.3),inset 0 2px 0 rgba(255,255,255,.25);min-height:118px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}',
+    '.tt-cs.wbt{grid-column:1/-1;flex-direction:row;gap:12px;min-height:84px;padding:10px 14px;text-align:left;background:linear-gradient(135deg,#450a0a,#991b1b 55%,#f97316);border:2px solid rgba(253,224,71,.7)}.tt-cs.wbt .be{font-size:50px;font-family:' + EF + ';filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}.tt-cs.wbt b{display:block;font-size:12px;letter-spacing:1px;color:#fde68a}.tt-cs.wbt strong{display:block;font-size:17px;font-weight:900}.tt-cs.wbt small{display:block;font-size:12px;opacity:.9;margin-top:2px}',
     '.tt-cs:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.28),0 4px 10px rgba(0,0,0,.3)}',
     '.tt-cs .ca{position:relative;width:62px;height:50px;margin-bottom:4px}',
     '.tt-cs .ca svg{position:absolute;inset:0;width:62px;height:50px}.tt-cs .ca span{position:absolute;left:50%;top:22px;transform:translateX(-50%);font-family:' + EF + ';font-size:22px;line-height:1}',
@@ -321,18 +341,21 @@
     tops.forEach(function (t) { tot += stars(t.id); });
     var h = '<div class="tt-hero"><b>Lũ quái đang trộm từ vựng!</b><small>Mỗi chủ đề là một kho từ vựng. Bầy quái lẻn vào, mỗi con vác trộm một từ để mang về thành của chúng. Hãy đọc đúng từ để có vàng, xây chòi chặn đường – đừng để chúng mang từ nào về thành!</small>' +
       '<span class="st">⭐ ' + tot + ' / ' + tops.length * 3 + '</span><i>🏰</i></div>';
-    var byG = {};
-    tops.forEach(function (t) { (byG[t.g] = byG[t.g] || []).push(t); });
-    Object.keys(byG).sort(function (a, b) { return a - b; }).forEach(function (g) {
-      h += '<div class="tt-grp">' + esc(DATA.groups[g] || 'Vùng đất ' + (+g + 1)) + '</div><div class="tt-grid">';
-      byG[g].forEach(function (t) {
+    // (bản 2026.11.08-7) bản đồ chia 10 giai đoạn, cuối mỗi giai đoạn là màn Boss thế giới
+    for (var k = 0; k < PHASES; k++) {
+      var pt = phaseTopics(k); if (!pt.length) break;
+      var dn = phaseDone(k), wt = wbTopic(k), ws = stars(wt.id), wl = !unlocked(wt);
+      h += '<div class="tt-grp">🚩 Giai đoạn ' + (k + 1) + ' <span style="font-size:12.5px;opacity:.8">· ' + dn + '/' + pt.length + ' kho' + (ws ? ' · 🌍 đã hạ boss' : '') + '</span></div><div class="tt-grid">';
+      pt.forEach(function (t) {
         var s = stars(t.id), lk = !unlocked(t);
         h += '<button class="tt-cs' + (lk ? ' lk' : '') + (s ? ' dn' : '') + '" style="--c:' + t.c + '" data-a="castle" data-i="' + t.ti + '">' +
           '<div class="ca">' + castleSvg(t.c) + '<span>' + esc(t.i) + '</span></div><div class="nm">' + esc(t.n) + '</div>' +
           (bestDiff(t.id) >= 0 ? '<span class="bd" title="Cấp độ cao nhất đã thắng">' + DIFF[bestDiff(t.id)].e + '</span>' : '') + '<div class="ss">' + (s ? '⭐'.repeat(s) + '<span style="opacity:.3">' + '⭐'.repeat(3 - s) + '</span>' : '<span style="opacity:.75;font-size:11.5px;letter-spacing:0">' + t.w.length + ' từ</span>') + '</div></button>';
       });
+      h += '<button class="tt-cs wbt' + (wl ? ' lk' : '') + (ws ? ' dn' : '') + '" data-a="wboss" data-k="' + k + '"><span class="be">' + (wl ? '🔒' : WB[k].e) + '</span><span><b>🌍 BOSS THẾ GIỚI ' + (k + 1) + '</b><strong>' + esc(WB[k].n) + '</strong><small>' +
+        (wl ? 'Bảo vệ đủ ' + pt.length + ' kho của giai đoạn ' + (k + 1) + ' để mở (' + dn + '/' + pt.length + ')' : (ws ? '⭐'.repeat(ws) + '<span style="opacity:.3">' + '⭐'.repeat(3 - ws) + '</span> · ' : '') + 'Quái tràn vào từ 4 cửa · mạnh hơn boss trước') + '</small></span></button>';
       h += '</div>';
-    });
+    }
     $('ttMapB').innerHTML = h;
   }
 
@@ -346,9 +369,10 @@
   function openIntro(tp) {
     CUR = tp; hush();
     var nW = planWaves(tp).length;
-    $('ttIT').textContent = '🏰 ' + tp.n;
-    var h = '<div class="tt-ibox"><div class="tt-ihead" style="--c:' + tp.c + '"><span class="e">' + esc(tp.i) + '</span><div><b>Kho từ: ' + esc(tp.n) + '</b><small>' + tp.w.length + ' từ vựng · ' + nW + ' đợt quái' + (stars(tp.id) ? ' · Tốt nhất: ' + '⭐'.repeat(stars(tp.id)) : '') + '</small></div></div>' +
-      '<div style="margin:12px 0 0;padding:12px 14px;border-radius:16px;background:rgba(127,29,29,.45);border:1px solid rgba(252,165,165,.35);font-size:14px;line-height:1.5">👹 <b>Bầy quái đang trộm từ</b> trong kho “' + esc(tp.n) + '”. Mỗi con vác một từ, chạy theo con đường để mang về <b>thành của chúng</b>. Hãy xây chòi chặn đường, <b>không để chúng mang từ nào về thành!</b></div>' +
+    $('ttIT').textContent = (tp.wb ? '🌍 ' : '🏰 ') + tp.n;
+    var h = '<div class="tt-ibox"><div class="tt-ihead" style="--c:' + tp.c + '"><span class="e">' + esc(tp.i) + '</span><div><b>' + (tp.wb ? '' : 'Kho từ: ') + esc(tp.n) + '</b><small>' + tp.w.length + ' từ vựng · ' + nW + ' đợt quái' + (stars(tp.id) ? ' · Tốt nhất: ' + '⭐'.repeat(stars(tp.id)) : '') + '</small></div></div>' +
+      (tp.wb ? '<div style="margin:12px 0 0;padding:12px 14px;border-radius:16px;background:rgba(127,29,29,.6);border:1px solid rgba(253,224,71,.5);font-size:14px;line-height:1.5">🌍 <b>Boss thế giới ' + tp.wb + ': ' + esc(WB[tp.wb - 1].e + ' ' + WB[tp.wb - 1].n) + '</b> dẫn đại quân vây <b>kho từ vựng ở giữa bản đồ</b>. Quái tràn vào từ <b>4 cửa: Bắc, Nam, Tây, Đông</b>. Hãy xây chòi quanh kho để chặn cả 4 hướng! Đợt cuối boss xuất hiện: nó bắn phá chòi và <b>triệu hồi thêm quái</b>.' + (tp.wb > 1 ? ' Boss này <b>mạnh hơn boss thế giới ' + (tp.wb - 1) + '</b>.' : '') + '</div>' : '') +
+      '<div style="margin:12px 0 0;padding:12px 14px;border-radius:16px;background:rgba(127,29,29,.45);border:1px solid rgba(252,165,165,.35);font-size:14px;line-height:1.5' + (tp.wb ? ';display:none' : '') + '">👹 <b>Bầy quái đang trộm từ</b> trong kho “' + esc(tp.n) + '”. Mỗi con vác một từ, chạy theo con đường để mang về <b>thành của chúng</b>. Hãy xây chòi chặn đường, <b>không để chúng mang từ nào về thành!</b></div>' +
       '<div class="tt-how"><div><i>🎤</i>Chạm vào từ ở thanh dưới: đọc đúng từ tiếng Anh, rồi nói đúng nghĩa tiếng Việt để nhận 💰</div><div><i>🏹</i>Chạm ô đá ➕ dọc đường để xây chòi chặn quái</div><div><i>👹</i>Chạm vào quái, đọc đúng từ nó đang trộm để làm nó choáng</div><div><i>🥷</i><b>Lính bắn chòi</b> phá chòi: dùng vàng 🔧 sửa, 🛡️ bảo hộ, xây 🎯 súng bắn tỉa</div><div><i>🎁</i>Đọc đúng mỗi <b>từ mới</b> được tặng 1 trận mưa: ☄️ sao băng, 🧪 axit, 🔥 lửa, ❄️ tuyết – phủ khắp bản đồ, diệt cả bầy</div><div><i>🦎</i><b>Quái tàng hình</b>: chòi thường không thấy, phải xây 👁️ <b>chòi mắt thần</b> để soi</div><div><i>📈</i>Quái <b>cộng dồn</b> mỗi đợt, đợt cuối có 🐲 trùm và 👿 <b>trùm cuối</b></div></div>' +
       '<div class="tt-grp" style="margin-top:6px">🎚️ Chọn cấp độ</div><div class="tt-dif" id="ttDif">' +
       DIFF.map(function (d, i) { return '<button class="' + (i === DSEL ? 'on' : '') + '" style="--c:' + d.c + '" data-a="diff" data-i="' + i + '"><i>' + d.e + '</i><b>' + d.n + '</b><small>📚 ' + d.life + '</small></button>'; }).join('') +
@@ -358,7 +382,7 @@
     tp.w.forEach(function (x, i) {
       h += '<div class="tt-wc" data-a="hear" data-i="' + i + '"><div class="p">' + picHtml(x[2], 38) + '</div><div><b>' + esc(x[0]) + '</b>' + pronHtml(x) + '<small>' + esc(x[1]) + '</small></div></div>';
     });
-    h += '</div><div class="tt-go"><button class="tt-btn" data-a="start">⚔️ Vào trận chặn quái trộm từ</button></div></div>';
+    h += '</div><div class="tt-go"><button class="tt-btn" data-a="start">' + (tp.wb ? '🌍 Vào trận đánh Boss thế giới' : '⚔️ Vào trận chặn quái trộm từ') + '</button></div></div>';
     $('ttIB').innerHTML = h; $('ttIB').scrollTop = 0;
     show('ttIntro');
   }
@@ -369,6 +393,14 @@
     [[0.82, -0.06], [0.82, 0.17], [0.2, 0.17], [0.2, 0.37], [0.64, 0.37], [0.64, 0.57], [0.2, 0.57], [0.2, 0.77], [0.5, 0.77], [0.5, 0.9]],
     [[0.5, -0.06], [0.5, 0.12], [0.84, 0.12], [0.84, 0.3], [0.16, 0.3], [0.16, 0.5], [0.84, 0.5], [0.84, 0.69], [0.2, 0.69], [0.2, 0.8], [0.5, 0.8], [0.5, 0.9]]
   ];
+  /* (bản 2026.11.08-7) bản đồ Boss thế giới: kho từ ở giữa (0.5, 0.46), 4 cửa Bắc – Nam – Tây – Đông */
+  var WB_PATHS = [
+    [[0.3, -0.06], [0.3, 0.17], [0.5, 0.17], [0.5, 0.46]],
+    [[0.72, 1.06], [0.72, 0.78], [0.5, 0.78], [0.5, 0.46]],
+    [[-0.08, 0.3], [0.17, 0.3], [0.17, 0.46], [0.5, 0.46]],
+    [[1.08, 0.62], [0.83, 0.62], [0.83, 0.46], [0.5, 0.46]]
+  ];
+  var GATE_N = ['CỬA BẮC', 'CỬA NAM', 'CỬA TÂY', 'CỬA ĐÔNG'];
   var TW = {
     arrow: { n: 'Chòi cung thủ', e: '🏹', c: 50, r: 0.27, d: 9, cd: 0.62, roof: '#dc2626', info: 'Bắn nhanh, bắn xa' },
     cannon: { n: 'Chòi pháo đá', e: '💣', c: 90, r: 0.23, d: 26, cd: 1.7, sp: 0.085, roof: '#334155', info: 'Nổ lan, diệt cả bầy' },
@@ -404,8 +436,18 @@
     inv: { e: '🦎', hp: 66, spd: 0.088, sz: 0.09, inv: 1 },
     boss: { e: '🐲', hp: 650, spd: 0.04, sz: 0.15, dmg: 5 },
     /* trùm cuối: ra sau cùng ở đợt cuối, rất trâu, vừa đi vừa bắn cầu lửa phá chòi */
-    king: { e: '👿', hp: 1700, spd: 0.034, sz: 0.19, dmg: 8, gun: { r: 0.32, cd: 2.2, d: 22 } }
+    king: { e: '👿', hp: 1700, spd: 0.034, sz: 0.19, dmg: 8, gun: { r: 0.32, cd: 2.2, d: 22 } },
+    /* (bản 2026.11.08-7) boss thế giới: rất trâu, bắn cầu lửa phá chòi, triệu hồi quái; lần sau mạnh hơn lần trước */
+    wboss: { e: '🌍', hp: 2600, spd: 0.03, sz: 0.24, dmg: 15, gun: { r: 0.38, cd: 1.6, d: 24 } }
   };
+  function enE(e) { return e.t === 'wboss' && G.wb ? WB[G.wb - 1].e : EN[e.t].e; }
+  /* độ trâu của quái: theo đợt, theo kho, theo cấp độ; màn boss thế giới k: quái +15%/boss, boss thế giới +70%/boss */
+  function enScale(t) {
+    var sc = (1 + 0.15 * G.wave) * (1 + Math.min(0.6, G.tp.ti * 0.012)) * DIFF[G.dif].hp;
+    if (G.wb) sc *= (1 + 0.15 * (G.wb - 1)) * (t === 'wboss' ? 1 + 0.7 * (G.wb - 1) : 1);
+    return sc;
+  }
+  function onMap(p, m) { m = m || 10; return p.x > -m && p.x < W + m && p.y > -m && p.y < H + m; }
   function planWaves(tp) {
     var n = tp.w.length, K = clamp(Math.ceil(n / 6), 3, 8);
     var r = rng(hashS('tt' + tp.id)), order = shuffle(tp.w.map(function (x, i) { return i; }), r), waves = [], k = 0;
@@ -432,9 +474,11 @@
     }
     if (k === G.waves.length - 1) {
       var all = []; for (j = 0; j <= k; j++) all = all.concat(G.waves[j]);
-      for (var bi = 0; bi < DIFF[G.dif].boss; bi++) list.splice(Math.floor(list.length * (0.55 + 0.1 * bi)), 0, { t: 'boss', w: all[(bi * 7) % all.length] });
-      list.push({ t: 'king', w: all[all.length - 1] });   // trùm cuối ra sau cùng
+      for (var bi = 0; bi < DIFF[G.dif].boss + (G.wb ? Math.floor((G.wb - 1) / 3) : 0); bi++) list.splice(Math.floor(list.length * (0.55 + 0.1 * bi)), 0, { t: 'boss', w: all[(bi * 7) % all.length] });
+      list.push({ t: G.wb ? 'wboss' : 'king', w: all[all.length - 1] });   // trùm cuối (màn boss thế giới: BOSS THẾ GIỚI) ra sau cùng
     }
+    var off = Math.floor(r() * 4);
+    list.forEach(function (o, i) { o.pi = G.wb ? (i + off) % 4 : 0; });   // (bản 2026.11.08-7) màn boss thế giới: chia quái đều cho 4 cửa
     return list;
   }
 
@@ -442,10 +486,11 @@
   var G = null, CV = null, X = null, BG = null, W = 0, H = 0, DPR = 1, raf = 0, last = 0;
   function newGame(tp) {
     G = {
-      tp: tp, seed: Math.floor(Math.random() * 1e6), map: MAPS[tp.ti % MAPS.length], waves: planWaves(tp), wave: 0, phase: 'prep',
+      tp: tp, wb: tp.wb || 0, seed: Math.floor(Math.random() * 1e6), paths: tp.wb ? WB_PATHS : [MAPS[tp.ti % MAPS.length]], waves: planWaves(tp), wave: 0, phase: 'prep',
       dif: DSEL, hp: DIFF[DSEL].life, hpMax: DIFF[DSEL].life, gold: DIFF[DSEL].gold, quake: 0, towers: [], enemies: [], shots: [], fx: [], txt: [], spots: null, q: [], qT: 0,
       paused: false, said: {}, bank: [], lastW: -1, streak: 0, gifts: [], rain: null, rp: [], ok: 0, t: 0, prepT: 30, shake: 0, sel: -1, flagT: 0, ended: false
     };
+    if (G.wb) G.gold += 100;   // màn boss thế giới: thêm vàng khởi đầu để xây chòi cho cả 4 hướng
     G.waves[0].forEach(function (w) { addBank(w); });
   }
   function addBank(w) { if (G.bank.indexOf(w) < 0) G.bank.push(w); }
@@ -453,7 +498,7 @@
   function locked(w) { return G.lastW === w && G.streak >= MAX_READ; }
 
   /* ================= BỐ CỤC ================= */
-  var PATH = [], PLEN = 0, PW = 30;
+  var PATH = [], PLEN = 0, PW = 30, PATHS = [];
   function lay() {
     var st = $('ttStage'); if (!st) return;
     var sw = st.clientWidth, sh = st.clientHeight; if (!sw || !sh) return;
@@ -462,8 +507,12 @@
     CV.width = Math.round(W * DPR); CV.height = Math.round(H * DPR);
     CV.style.width = W + 'px'; CV.style.height = H + 'px'; var dock = sw - W >= 230; CV.style.left = Math.round(dock ? Math.max(0, (sw - 222 - W) / 2) : (sw - W) / 2) + 'px'; lbLayout(dock);
     PW = Math.max(26, W * 0.085);
-    PATH = G.map.map(function (p) { return { x: p[0] * W, y: p[1] * H }; });
-    PLEN = 0; for (var i = 1; i < PATH.length; i++) { PATH[i].L = PLEN; PLEN += Math.hypot(PATH[i].x - PATH[i - 1].x, PATH[i].y - PATH[i - 1].y); PATH[i].E = PLEN; }
+    PATHS = G.paths.map(function (m) {   // (bản 2026.11.08-7) nhiều đường (màn boss thế giới có 4 đường từ 4 cửa)
+      var pt = m.map(function (p) { return { x: p[0] * W, y: p[1] * H }; }), L = 0;
+      for (var i = 1; i < pt.length; i++) { pt[i].L = L; L += Math.hypot(pt[i].x - pt[i - 1].x, pt[i].y - pt[i - 1].y); pt[i].E = L; }
+      return { p: pt, L: L };
+    });
+    PATH = PATHS[0].p; PLEN = PATHS[0].L;
     if (!G.spots) G.spots = makeSpots();
     drawBG();
   }
@@ -471,27 +520,29 @@
     var dx = b.x - a.x, dy = b.y - a.y, l = dx * dx + dy * dy, t = l ? ((px - a.x) * dx + (py - a.y) * dy) / l : 0;
     t = clamp(t, 0, 1); return Math.hypot(px - (a.x + t * dx), py - (a.y + t * dy));
   }
-  function distPath(px, py) { var m = 1e9; for (var i = 1; i < PATH.length; i++) m = Math.min(m, distSeg(px, py, PATH[i - 1], PATH[i])); return m; }
+  function distPath(px, py) { var m = 1e9; PATHS.forEach(function (P) { for (var i = 1; i < P.p.length; i++) m = Math.min(m, distSeg(px, py, P.p[i - 1], P.p[i])); }); return m; }
+  function plen(pi) { return (PATHS[pi || 0] || PATHS[0]).L; }
   function makeSpots() {
-    var cand = [], step = W * 0.065, R = W * 0.25;
-    for (var y = H * 0.05; y < H * 0.8; y += step) for (var x = W * 0.08; x <= W * 0.92; x += step) {
+    var cand = [], step = W * 0.065, R = W * 0.25, ctr = PATH[PATH.length - 1];
+    for (var y = H * 0.05; y < H * (G.wb ? 0.92 : 0.8); y += step) for (var x = W * 0.08; x <= W * 0.92; x += step) {
       var d = distPath(x, y); if (d < PW * 1.05 || d > PW * 1.75) continue;
-      if (y < W * 0.24 && Math.abs(x - clamp(PATH[0].x, W * 0.13, W * 0.87)) < W * 0.2) continue;   // chừa chỗ cho bảng Kho từ vựng
-      var cov = 0; for (var s = 0; s <= 60; s++) { var p = posAt(s / 60); if (p.y > 0 && Math.hypot(p.x - x, p.y - y) < R) cov++; }
+      if (!G.wb && y < W * 0.24 && Math.abs(x - clamp(PATH[0].x, W * 0.13, W * 0.87)) < W * 0.2) continue;   // chừa chỗ cho bảng Kho từ vựng
+      if (G.wb && Math.hypot(x - ctr.x, y - ctr.y) < W * 0.15) continue;   // chừa chỗ cho kho từ ở giữa
+      var cov = 0; PATHS.forEach(function (P, pi) { for (var s = 0; s <= 60; s++) { var p = posAt(s / 60, pi); if (onMap(p, 0) && Math.hypot(p.x - x, p.y - y) < R) cov++; } });
       cand.push({ x: x, y: y, c: cov });
     }
     cand.sort(function (a, b) { return b.c - a.c; });
-    var out = [], gap = W * 0.17;
-    cand.forEach(function (c) { if (out.length >= 11) return; if (out.every(function (o) { return Math.hypot(o.x - c.x, o.y - c.y) > gap; })) out.push(c); });
+    var out = [], gap = W * (G.wb ? 0.155 : 0.17);
+    cand.forEach(function (c) { if (out.length >= (G.wb ? 12 : 11)) return; if (out.every(function (o) { return Math.hypot(o.x - c.x, o.y - c.y) > gap; })) out.push(c); });
     return out.map(function (o) { return { nx: o.x / W, ny: o.y / H }; });
   }
-  function posAt(f) {
-    var d = clamp(f, 0, 1) * PLEN;
-    for (var i = 1; i < PATH.length; i++) if (d <= PATH[i].E || i === PATH.length - 1) {
-      var a = PATH[i - 1], b = PATH[i], seg = b.E - b.L || 1, t = clamp((d - b.L) / seg, 0, 1);
+  function posAt(f, pi) {
+    var P = PATHS[pi || 0] || PATHS[0], PT = P.p, d = clamp(f, 0, 1) * P.L;
+    for (var i = 1; i < PT.length; i++) if (d <= PT[i].E || i === PT.length - 1) {
+      var a = PT[i - 1], b = PT[i], seg = b.E - b.L || 1, t = clamp((d - b.L) / seg, 0, 1);
       return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t, dx: b.x - a.x, dy: b.y - a.y };
     }
-    return PATH[PATH.length - 1];
+    return PT[PT.length - 1];
   }
   function spotXY(s) { return { x: s.nx * W, y: s.ny * H }; }
 
@@ -506,16 +557,16 @@
     var FL = ['#fde047', '#f472b6', '#fff', '#c4b5fd', '#fb923c'];
     for (i = 0; i < 70; i++) { var fx = r() * W, fy = r() * H; if (distPath(fx, fy) < PW) continue; b.fillStyle = FL[i % FL.length]; b.beginPath(); b.arc(fx, fy, 1.6 + r() * 1.6, 0, 7); b.fill(); }
     // con đường đất
-    function poly() { b.beginPath(); b.moveTo(PATH[0].x, PATH[0].y); for (var j = 1; j < PATH.length; j++) b.lineTo(PATH[j].x, PATH[j].y); }
+    function poly() { b.beginPath(); PATHS.forEach(function (P) { b.moveTo(P.p[0].x, P.p[0].y); for (var j = 1; j < P.p.length; j++) b.lineTo(P.p[j].x, P.p[j].y); }); }
     b.lineJoin = 'round'; b.lineCap = 'round';
     poly(); b.strokeStyle = 'rgba(0,0,0,.22)'; b.lineWidth = PW + 12; b.stroke();
     poly(); b.strokeStyle = '#8a5a2b'; b.lineWidth = PW + 6; b.stroke();
     poly(); b.strokeStyle = '#d9b07a'; b.lineWidth = PW; b.stroke();
     poly(); b.strokeStyle = 'rgba(255,240,200,.35)'; b.lineWidth = PW * 0.35; b.setLineDash([PW * 0.3, PW * 0.6]); b.stroke(); b.setLineDash([]);
-    for (i = 0; i < 90; i++) { var p = posAt(r()); b.fillStyle = r() < 0.5 ? 'rgba(120,80,40,.45)' : 'rgba(255,255,255,.35)'; b.beginPath(); b.arc(p.x + (r() - 0.5) * PW * 0.8, p.y + (r() - 0.5) * PW * 0.8, 1 + r() * 2, 0, 7); b.fill(); }
+    for (i = 0; i < 90 * PATHS.length; i++) { var p = posAt(r(), Math.floor(r() * PATHS.length)); b.fillStyle = r() < 0.5 ? 'rgba(120,80,40,.45)' : 'rgba(255,255,255,.35)'; b.beginPath(); b.arc(p.x + (r() - 0.5) * PW * 0.8, p.y + (r() - 0.5) * PW * 0.8, 1 + r() * 2, 0, 7); b.fill(); }
     // ánh vàng quanh kho từ vựng (đầu đường)
-    var s0 = PATH[1]; var cg = b.createRadialGradient(s0.x, 0, 4, s0.x, 0, PW * 1.8); cg.addColorStop(0, 'rgba(253,224,71,.55)'); cg.addColorStop(1, 'rgba(253,224,71,0)');
-    b.fillStyle = cg; b.fillRect(s0.x - PW * 2, 0, PW * 4, PW * 1.8);
+    if (!G.wb) { var s0 = PATH[1]; var cg = b.createRadialGradient(s0.x, 0, 4, s0.x, 0, PW * 1.8); cg.addColorStop(0, 'rgba(253,224,71,.55)'); cg.addColorStop(1, 'rgba(253,224,71,0)');
+    b.fillStyle = cg; b.fillRect(s0.x - PW * 2, 0, PW * 4, PW * 1.8); }
     // cây cối, đá trang trí
     var spots = (G.spots || []).map(spotXY), TREES = ['🌳', '🌲', '🌳', '🌴', '🪨', '🌲', '🌳', '🍄'];
     b.textAlign = 'center'; b.textBaseline = 'middle';
@@ -523,6 +574,7 @@
     for (i = 0; i < 400 && placed < 26; i++) {
       var tx = r() * W, ty = r() * H * 0.84 + 6; if (distPath(tx, ty) < PW * 1.1) continue;
       if (spots.some(function (s) { return Math.hypot(s.x - tx, s.y - ty) < W * 0.11; })) continue;
+      if (G.wb && Math.hypot(tx - PATH[PATH.length - 1].x, ty - PATH[PATH.length - 1].y) < W * 0.16) continue;
       var e = TREES[Math.floor(r() * TREES.length)], sz = W * (e === '🪨' || e === '🍄' ? 0.05 : 0.075 + r() * 0.03);
       b.fillStyle = 'rgba(0,0,0,.18)'; b.beginPath(); b.ellipse(tx, ty + sz * 0.42, sz * 0.38, sz * 0.13, 0, 0, 7); b.fill();
       b.fillStyle = '#000'; b.font = sz + 'px ' + EF; b.fillText(e, tx, ty); placed++;
@@ -551,9 +603,10 @@
     if (G.phase === 'run' && G.q.length) {
       G.qT -= dt;
       if (G.qT <= 0) {
-        var o = G.q.shift(), D = EN[o.t], sc = (1 + 0.15 * G.wave) * (1 + Math.min(0.6, G.tp.ti * 0.012)) * DIFF[G.dif].hp;   // đợt cộng dồn đã đông nên máu tăng chậm hơn
-        G.enemies.push({ t: o.t, w: o.w, hp: D.hp * sc, max: D.hp * sc, f: 0, slowT: 0, stunT: 0, said: false, bob: Math.random() * 6, hit: 0, gcd: 1, rev: 0 });
-        G.qT = (o.t === 'boss' || o.t === 'king' ? 2.2 : Math.max(0.55, (1.6 - G.wave * 0.09) * 0.7)) * DIFF[G.dif].gap;   // quái gấp đôi + cộng dồn nên ra dày hơn một chút
+        var o = G.q.shift(), D = EN[o.t], sc = enScale(o.t);   // đợt cộng dồn đã đông nên máu tăng chậm hơn
+        G.enemies.push({ t: o.t, w: o.w, pi: o.pi || 0, hp: D.hp * sc, max: D.hp * sc, f: 0, slowT: 0, stunT: 0, said: false, bob: Math.random() * 6, hit: 0, gcd: 1, rev: 0 });
+        G.qT = (o.t === 'boss' || o.t === 'king' || o.t === 'wboss' ? 2.2 : Math.max(0.55, (1.6 - G.wave * 0.09) * 0.7)) * DIFF[G.dif].gap * (G.wb ? 0.8 : 1);
+        if (o.t === 'wboss') { var wbI = WB[G.wb - 1]; banner('🌍 BOSS THẾ GIỚI: ' + wbI.e + ' ' + wbI.n + '!', 'Từ ' + GATE_N[o.pi || 0] + ' – nó phá chòi và triệu hồi thêm quái!'); sfx('horn'); G.quake = 0.6; }   // quái gấp đôi + cộng dồn nên ra dày hơn một chút
         if (o.t === 'boss') { banner('🐲 Trùm trộm từ xuất hiện!', 'Đừng để nó mang từ về thành – mất tới 5 từ!'); sfx('horn'); }
         if (o.t === 'king') { banner('👿 TRÙM CUỐI xuất hiện!', 'Nó bắn cầu lửa phá chòi, về tới thành là mất 8 từ!'); sfx('horn'); G.quake = 0.4; }
         if (o.t === 'inv' && !G.invSeen) { G.invSeen = true; banner('🦎 Quái tàng hình!', 'Chòi thường không thấy chúng – xây 👁️ chòi mắt thần để soi'); sfx('horn'); }
@@ -564,15 +617,25 @@
     for (var i = G.enemies.length - 1; i >= 0; i--) {
       var e = G.enemies[i], D2 = EN[e.t];
       if (e.stunT > 0) e.stunT -= dt;
-      else { var sp = D2.spd * W * (e.slowT > 0 ? 0.5 : 1) * (e.aim && e.t === 'gun' && (e.stand || 0) < 5 ? 0 : 1); e.f += sp * dt / PLEN; }   // lính bắn chòi đứng lại bắn tối đa 5 giây rồi đi tiếp
+      else { var sp = D2.spd * W * (e.slowT > 0 ? 0.5 : 1) * (e.aim && e.t === 'gun' && (e.stand || 0) < 5 ? 0 : 1); e.f += sp * dt / plen(e.pi); }   // lính bắn chòi đứng lại bắn tối đa 5 giây rồi đi tiếp
       if (e.slowT > 0) e.slowT -= dt; if (e.hit > 0) e.hit -= dt; if (e.acidT > 0) e.acidT -= dt; if (e.frzT > 0) e.frzT -= dt;
       if (e.burnT > 0) {   // đang cháy: mất máu dần + tóe lửa trên người
         e.burnT -= dt;
-        if (Math.random() < dt * 14) { var bp = posAt(e.f), bz = EN[e.t].sz * W; flame(bp.x + (Math.random() - 0.5) * bz * 0.6, bp.y - bz * 0.2, 0, -W * 0.12, bz * 0.22, 0.45); }
+        if (Math.random() < dt * 14) { var bp = posAt(e.f, e.pi), bz = EN[e.t].sz * W; flame(bp.x + (Math.random() - 0.5) * bz * 0.6, bp.y - bz * 0.2, 0, -W * 0.12, bz * 0.22, 0.45); }
         dmgE(e, e.burnD * dt, true); if (G.enemies[i] !== e) continue;
       }
       e.bob += dt * 8;
       if (D2.gun && e.stunT <= 0 && e.f < 1) enemyShoot(e, D2, dt);
+      if (e.t === 'wboss' && e.stunT <= 0 && e.f < 0.97 && onMap(posAt(e.f, e.pi), 0)) {   // (bản 2026.11.08-7) boss thế giới triệu hồi quái
+        e.sumT = (e.sumT == null ? 4 : e.sumT) - dt;
+        if (e.sumT <= 0) {
+          e.sumT = Math.max(3, 7 - 0.4 * G.wb);
+          var bpz = posAt(e.f, e.pi), nS = 2 + Math.floor(G.wb / 2);
+          for (var si2 = 0; si2 < nS; si2++) { var tS = si2 % 2 ? 'bat' : 'gob', scS = enScale(tS); G.enemies.push({ t: tS, w: Math.floor(Math.random() * G.tp.w.length), pi: e.pi, hp: EN[tS].hp * scS, max: EN[tS].hp * scS, f: Math.min(0.99, e.f + 0.015 * (si2 + 1)), slowT: 0, stunT: 0, said: false, bob: Math.random() * 6, hit: 0, gcd: 1, rev: 0 }); }
+          G.fx.push({ ring: 1, col: '192,38,211', x: bpz.x, y: bpz.y - EN.wboss.sz * W * 0.3, r: W * 0.2, l: 0.5, L: 0.5 }); spark(bpz.x, bpz.y, ['#e879f9', '#a855f7', '#fff'], 14);
+          G.txt.push({ x: bpz.x, y: bpz.y - W * 0.2, s: '🌀 Triệu hồi ' + nS + ' quái!', c: '#f0abfc', l: 1.4 }); sfx('launch');
+        }
+      }
       if (e.f >= 1) {
         G.enemies.splice(i, 1); hurt(D2.dmg || 1, e); if (SAY && SAY.e === e) closeSay();
         if (D2.inv && !G.invTip && !G.ended) { G.invTip = true; toast('🦎 Quái tàng hình vừa lọt qua! Chòi thường không thấy chúng. Hãy xây <b>👁️ Chòi mắt thần</b> sát đường để soi, các chòi khác mới bắn được.'); }
@@ -582,7 +645,7 @@
     var eyes = G.towers.filter(function (t) { return t.k === 'eye'; });
     G.enemies.forEach(function (e) {
       if (!EN[e.t].inv) return;
-      var p = posAt(e.f), inR = eyes.some(function (t) { var s = spotXY(G.spots[t.s]); return Math.hypot(p.x - s.x, p.y - s.y) <= towerRange(t); });
+      var p = posAt(e.f, e.pi), inR = eyes.some(function (t) { var s = spotXY(G.spots[t.s]); return Math.hypot(p.x - s.x, p.y - s.y) <= towerRange(t); });
       if (inR) { if (e.rev <= 0) spark(p.x, p.y - EN[e.t].sz * W * 0.3, ['#c4b5fd', '#fff', '#a78bfa'], 6); e.rev = 0.3; } else if (e.rev > 0) e.rev -= dt;
     });
     // chòi bắn
@@ -591,21 +654,21 @@
       t.cd -= dt; if (t.fl > 0) t.fl -= dt;
       if (T.eye || t.cd > 0) return;
       var best = null;
-      G.enemies.forEach(function (e) { var p = posAt(e.f); if (seen(e) && p.y > -10 && Math.hypot(p.x - s.x, p.y - (s.y - W * 0.02)) <= rr && (!best || e.f > best.f)) best = e; });
+      G.enemies.forEach(function (e) { var p = posAt(e.f, e.pi); if (seen(e) && onMap(p) && Math.hypot(p.x - s.x, p.y - (s.y - W * 0.02)) <= rr && (!best || e.f > best.f)) best = e; });
       if (!best) return;
       t.cd = T.cd / (1 + 0.12 * (t.lv - 1)); t.fl = 0.15;
       var dmg = T.d * Math.pow(1.5, t.lv - 1), sy = s.y - W * 0.075;
       if (t.k === 'fire') { fireAt(t, T, s, best, dmg); return; }
       if (t.k === 'snipe') {   // ưu tiên lính bắn chòi / trùm cuối đang trong tầm
-        var pr = null; G.enemies.forEach(function (e) { if (!EN[e.t].gun || !seen(e)) return; var q = posAt(e.f); if (q.y > -10 && Math.hypot(q.x - s.x, q.y - s.y) <= rr && (!pr || e.f > pr.f)) pr = e; });
+        var pr = null; G.enemies.forEach(function (e) { if (!EN[e.t].gun || !seen(e)) return; var q = posAt(e.f, e.pi); if (onMap(q) && Math.hypot(q.x - s.x, q.y - s.y) <= rr && (!pr || e.f > pr.f)) pr = e; });
         G.shots.push({ k: 'snipe', x: s.x, y: sy, e: pr || best, d: dmg, v: W * 3.2 }); G.fx.push({ k: 'flash', x: s.x, y: sy, r: W * 0.035, l: 0.12, L: 0.12 }); sfx('arrow'); return;
       }
       if (t.k === 'rocket') {
-        var big = best; G.enemies.forEach(function (e) { if (!seen(e)) return; var q = posAt(e.f); if (q.y > -10 && Math.hypot(q.x - s.x, q.y - s.y) <= rr && e.hp > big.hp) big = e; });
+        var big = best; G.enemies.forEach(function (e) { if (!seen(e)) return; var q = posAt(e.f, e.pi); if (onMap(q) && Math.hypot(q.x - s.x, q.y - s.y) <= rr && e.hp > big.hp) big = e; });
         G.shots.push({ k: 'rocket', x: s.x, y: s.y - W * 0.1, e: big, a: -Math.PI / 2, v: W * 0.35, d: dmg, sp: T.sp * W, tx: 0, ty: 0, tr: 0 });
         smoke(s.x, s.y - W * 0.08, 6); sfx('launch'); return;
       }
-      if (t.k === 'cannon') { var p = posAt(Math.min(1, best.f + EN[best.t].spd * W * 0.55 / PLEN)); G.shots.push({ k: 'cannon', x: s.x, y: sy, sx: s.x, sy: sy, tx: p.x, ty: p.y, t: 0, dur: 0.55, d: dmg, sp: T.sp * W }); sfx('boom'); }
+      if (t.k === 'cannon') { var p = posAt(Math.min(1, best.f + EN[best.t].spd * W * 0.55 / plen(best.pi)), best.pi); G.shots.push({ k: 'cannon', x: s.x, y: sy, sx: s.x, sy: sy, tx: p.x, ty: p.y, t: 0, dur: 0.55, d: dmg, sp: T.sp * W }); sfx('boom'); }
       else { G.shots.push({ k: t.k, x: s.x, y: sy, e: best, d: dmg, v: W * (t.k === 'arrow' ? 1.6 : 1.1), slow: T.slow }); sfx(t.k === 'arrow' ? 'arrow' : 'ice'); }
     });
     // đạn bay
@@ -626,12 +689,12 @@
         b.x = b.sx + (b.tx - b.sx) * k; b.y = b.sy + (b.ty - b.sy) * k - Math.sin(k * Math.PI) * W * 0.12;
         if (k >= 1) {
           G.shots.splice(i, 1); boom(b.tx, b.ty, b.sp);
-          G.enemies.slice().forEach(function (e) { if (!seen(e)) return; var p = posAt(e.f); var dd = Math.hypot(p.x - b.tx, p.y - b.ty); if (dd < b.sp) dmgE(e, b.d * (dd < b.sp * 0.4 ? 1 : 0.6)); });
+          G.enemies.slice().forEach(function (e) { if (!seen(e)) return; var p = posAt(e.f, e.pi); var dd = Math.hypot(p.x - b.tx, p.y - b.ty); if (dd < b.sp) dmgE(e, b.d * (dd < b.sp * 0.4 ? 1 : 0.6)); });
         }
         continue;
       }
       if (G.enemies.indexOf(b.e) < 0) { G.shots.splice(i, 1); continue; }
-      var p2 = posAt(b.e.f), ty = p2.y - EN[b.e.t].sz * W * 0.35, dx = p2.x - b.x, dy = ty - b.y, dl = Math.hypot(dx, dy), mv = b.v * dt;
+      var p2 = posAt(b.e.f, b.e.pi), ty = p2.y - EN[b.e.t].sz * W * 0.35, dx = p2.x - b.x, dy = ty - b.y, dl = Math.hypot(dx, dy), mv = b.v * dt;
       b.a = Math.atan2(dy, dx);
       if (dl <= mv + 4) {
         G.shots.splice(i, 1);
@@ -650,17 +713,17 @@
   }
   /* (bản 2026.11.08-3) lính bắn chòi / trùm cuối bắn phá chòi gần nhất trong tầm */
   function enemyShoot(e, D, dt) {
-    var p = posAt(e.f), rr = D.gun.r * W, best = null, bd = 1e9;
-    if (p.y < 0) { e.aim = null; return; }
+    var p = posAt(e.f, e.pi), rr = D.gun.r * W, best = null, bd = 1e9;
+    if (!onMap(p, 0)) { e.aim = null; return; }
     G.towers.forEach(function (t) { var s = spotXY(G.spots[t.s]), d = Math.hypot(s.x - p.x, s.y - p.y); if (d <= rr && d < bd) { bd = d; best = t; } });
     e.aim = best;
     if (!best) return;
     e.stand = (e.stand || 0) + dt;
     e.gcd -= dt; if (e.gcd > 0) return;
     e.gcd = D.gun.cd * (0.85 + Math.random() * 0.3);
-    var dmg = D.gun.d * (1 + 0.08 * G.wave) * Math.sqrt(DIFF[G.dif].hp), sz = D.sz * W;
-    G.shots.push({ k: e.t === 'king' ? 'efire' : 'ebul', x: p.x, y: p.y - sz * 0.35, tw: best, d: dmg, v: W * (e.t === 'king' ? 0.9 : 1.4) });
-    sfx(e.t === 'king' ? 'launch' : 'arrow');
+    var dmg = D.gun.d * (1 + 0.08 * G.wave) * Math.sqrt(DIFF[G.dif].hp) * (e.t === 'wboss' ? 1 + 0.25 * (G.wb - 1) : 1), sz = D.sz * W, big = e.t === 'king' || e.t === 'wboss';
+    G.shots.push({ k: big ? 'efire' : 'ebul', x: p.x, y: p.y - sz * 0.35, tw: best, d: dmg, v: W * (big ? 0.9 : 1.4) });
+    sfx(big ? 'launch' : 'arrow');
   }
   function dmgT(t, d) {
     if (G.towers.indexOf(t) < 0) return;
@@ -680,7 +743,7 @@
     if (G.enemies.indexOf(e) < 0) return;
     e.hp -= d; if (!quiet) e.hit = 0.12;
     if (e.hp <= 0) {
-      var p = posAt(e.f), x = G.tp.w[e.w];
+      var p = posAt(e.f, e.pi), x = G.tp.w[e.w];
       G.enemies.splice(G.enemies.indexOf(e), 1);
       spark(p.x, p.y - W * 0.03, ['#fde047', '#f97316', '#fff', '#a3e635'], 12);
       var ty = p.y - W * 0.1; G.txt.forEach(function (t) { if (Math.abs(t.y - ty) < W * 0.05 && Math.abs(t.x - p.x) < W * 0.4) ty = t.y - W * 0.055; });
@@ -703,7 +766,7 @@
   function smoke(x, y, n, big) { for (var i = 0; i < n; i++) { var a = Math.random() * 6.28, v = W * (big ? 0.12 : 0.05) * Math.random(); G.fx.push({ k: 'smoke', x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - W * 0.03, g: -0.05, r: W * (big ? 0.03 : 0.014) * (0.6 + Math.random() * 0.6), l: big ? 1.1 : 0.7, L: big ? 1.1 : 0.7 }); } }
   /* Chòi phun lửa: luồng lửa từ miệng chòi tới mục tiêu, cháy lan cho các quái đứng gần mục tiêu */
   function fireAt(t, T, s, best, dmg) {
-    var p = posAt(best.f), tx = p.x, ty = p.y - EN[best.t].sz * W * 0.3, nx = s.x, ny = s.y - W * 0.075;
+    var p = posAt(best.f, best.pi), tx = p.x, ty = p.y - EN[best.t].sz * W * 0.3, nx = s.x, ny = s.y - W * 0.075;
     var dx = tx - nx, dy = ty - ny, dl = Math.hypot(dx, dy) || 1, sp = dl / 0.32;
     t.fa = Math.atan2(dy, dx); t.fl = 0.18;
     var big = 1 + 0.28 * (t.lv - 1);   // (bản 2026.11.08-4) cấp càng cao lửa càng to, luồng lửa càng dày
@@ -713,13 +776,13 @@
     }
     if (t.lv >= 3) { var ex = 2 + t.lv; for (var k2 = 0; k2 < ex; k2++) { var a2 = Math.random() * 6.28, v2 = W * (0.05 + Math.random() * 0.1) * big; flame(tx + (Math.random() - 0.5) * W * 0.03, ty, Math.cos(a2) * v2, Math.sin(a2) * v2 - W * 0.05, W * 0.016 * big, 0.3 + Math.random() * 0.15); } }   // lửa bùng tại chỗ trúng
     var area = T.area * W * (1 + 0.3 * (t.lv - 1)), burn = T.burn * Math.pow(1.4, t.lv - 1);
-    G.enemies.slice().forEach(function (e) { if (!seen(e) && e !== best) return; var q = posAt(e.f); if (Math.hypot(q.x - p.x, q.y - p.y) <= area || e === best) { e.burnT = 2; e.burnD = Math.max(e.burnD || 0, burn); dmgE(e, dmg, true); if (G.enemies.indexOf(e) >= 0) e.hit = 0.05; } });
+    G.enemies.slice().forEach(function (e) { if (!seen(e) && e !== best) return; var q = posAt(e.f, e.pi); if (Math.hypot(q.x - p.x, q.y - p.y) <= area || e === best) { e.burnT = 2; e.burnD = Math.max(e.burnD || 0, burn); dmgE(e, dmg, true); if (G.enemies.indexOf(e) >= 0) e.hit = 0.05; } });
     t.snd = (t.snd || 0) - T.cd; if (t.snd <= 0) { t.snd = 0.35; sfx('fire'); }
   }
   /* Tên lửa: phóng thẳng lên rồi bẻ lái đuổi theo mục tiêu, vệt khói + đuôi lửa, nổ lớn có sóng xung kích */
   function stepRocket(b, dt) {
     var alive = G.enemies.indexOf(b.e) >= 0;
-    if (alive) { var p = posAt(b.e.f); b.tx = p.x; b.ty = p.y - EN[b.e.t].sz * W * 0.3; }
+    if (alive) { var p = posAt(b.e.f, b.e.pi); b.tx = p.x; b.ty = p.y - EN[b.e.t].sz * W * 0.3; }
     else if (!b.tx) { b.tx = b.x; b.ty = b.y + W * 0.3; }
     b.tr += dt; b.v = Math.min(W * 1.5, b.v + W * 2.2 * dt);
     var want = Math.atan2(b.ty - b.y, b.tx - b.x), da = want - b.a;
@@ -736,7 +799,7 @@
       G.fx.push({ k: 'flash', x: b.x, y: b.y, r: r * 1.1, l: 0.22, L: 0.22 });
       for (var i = 0; i < 14; i++) { var a = Math.random() * 6.28, v = W * (0.1 + Math.random() * 0.3); flame(b.x, b.y, Math.cos(a) * v, Math.sin(a) * v, W * (0.02 + Math.random() * 0.02), 0.4 + Math.random() * 0.25); }
       spark(b.x, b.y, ['#fde047', '#fb923c', '#fff', '#a8a29e'], 18); smoke(b.x, b.y, 10, true);
-      G.enemies.slice().forEach(function (e) { if (!seen(e)) return; var q = posAt(e.f), dd = Math.hypot(q.x - b.x, q.y - b.y); if (dd < r) dmgE(e, b.d * (dd < r * 0.45 ? 1 : 0.55)); });
+      G.enemies.slice().forEach(function (e) { if (!seen(e)) return; var q = posAt(e.f, e.pi), dd = Math.hypot(q.x - b.x, q.y - b.y); if (dd < r) dmgE(e, b.d * (dd < r * 0.45 ? 1 : 0.55)); });
       G.quake = 0.25; sfx('bigboom');
       return true;
     }
@@ -761,7 +824,7 @@
   function useRain(k) {
     var i = G.gifts.indexOf(k); if (i < 0) return;
     if (G.rain) { toast('Trận ' + RAIN[G.rain.k].e + ' ' + RAIN[G.rain.k].n + ' đang rơi, đợi tạnh rồi gọi tiếp nhé!'); return; }
-    if (!G.enemies.some(function (e) { return posAt(e.f).y > 0; })) { toast('Chưa có quái trên bản đồ. Hãy để dành ' + RAIN[k].e + ' ' + RAIN[k].n + ' khi bầy quái kéo đến!'); sfx('bad'); return; }
+    if (!G.enemies.some(function (e) { return onMap(posAt(e.f, e.pi), 0); })) { toast('Chưa có quái trên bản đồ. Hãy để dành ' + RAIN[k].e + ' ' + RAIN[k].n + ' khi bầy quái kéo đến!'); sfx('bad'); return; }
     G.gifts.splice(i, 1); closePop();
     G.rain = { k: k, t: 0, tick: 0.15, n: 0, N: Math.round(RAIN[k].dur / 0.5), sc: rainSc(), mt: 0 };
     banner(RAIN[k].e + ' ' + RAIN[k].n.toUpperCase() + '!', RAIN[k].info); sfx(k === 'snow' ? 'ice' : k === 'meteor' ? 'launch' : k === 'fire' ? 'fire' : 'horn');
@@ -779,14 +842,14 @@
     }
     if (R.k === 'meteor' && R.t < D.dur) {   // sao băng rơi xuống các khúc đường
       R.mt -= dt;
-      if (R.mt <= 0) { R.mt = 0.12 + Math.random() * 0.12; var tg = posAt(Math.random()), sx = tg.x + W * (0.25 + Math.random() * 0.2); G.rp.push({ k: 'meteor', x: sx, y: -W * 0.1, sx: sx, sy: -W * 0.1, tx: tg.x + (Math.random() - 0.5) * PW, ty: tg.y, t: 0, dur: 0.45 + Math.random() * 0.2 }); }
+      if (R.mt <= 0) { R.mt = 0.12 + Math.random() * 0.12; var tg = posAt(Math.random(), Math.floor(Math.random() * PATHS.length)), sx = tg.x + W * (0.25 + Math.random() * 0.2); G.rp.push({ k: 'meteor', x: sx, y: -W * 0.1, sx: sx, sy: -W * 0.1, tx: tg.x + (Math.random() - 0.5) * PW, ty: tg.y, t: 0, dur: 0.45 + Math.random() * 0.2 }); }
     }
     // sát thương đồng loạt
     if (R.tick <= 0 && R.n < R.N) {
       R.tick = 0.5; R.n++;
       var d = D.dmg * R.sc / R.N;
       G.enemies.slice().forEach(function (e) {
-        var p = posAt(e.f); if (p.y < 0) return;
+        var p = posAt(e.f, e.pi); if (!onMap(p, 0)) return;
         if (R.k === 'fire') { e.burnT = 2; e.burnD = Math.max(e.burnD || 0, 5 * R.sc); }
         if (R.k === 'snow') e.slowT = Math.max(e.slowT, 1.5);
         if (R.k === 'acid') e.acidT = 0.8;
@@ -1046,7 +1109,7 @@
     var w = SAY.w, s = G.said[w] || (G.said[w] = { n: 0, ok: 0 }), gain;
     if (SAY.e) {
       gain = ENEMY_REWARD; var e = SAY.e;
-      if (G.enemies.indexOf(e) >= 0) { e.stunT = 2.2; e.said = true; var p = posAt(e.f); spark(p.x, p.y - W * 0.05, ['#fde047', '#fff', '#a78bfa'], 12); dmgE(e, e.max * 0.25); }
+      if (G.enemies.indexOf(e) >= 0) { e.stunT = 2.2; e.said = true; var p = posAt(e.f, e.pi); spark(p.x, p.y - W * 0.05, ['#fde047', '#fff', '#a78bfa'], 12); dmgE(e, e.max * (e.t === 'wboss' ? 0.04 : 0.25)); }
     } else gain = reward(w);
     var isPick = SAY.picked || SAY.vmode === 'pick', pts = isPick ? pickGain(LB_READ) : LB_READ;
     if (isPick) gain = pickGain(gain);
@@ -1114,7 +1177,7 @@
     X.save(); X.translate(sh, sh * 0.6);
     X.drawImage(BG, 0, 0, W, H);
     X.textAlign = 'center'; X.textBaseline = 'middle';
-    drawCastle(); drawVault();
+    if (G.wb) { drawGates(); drawFort(); } else { drawCastle(); drawVault(); }
     // vòng tầm bắn khi đang chọn
     if (G.sel >= 0) {
       var sp = spotXY(G.spots[G.sel]), tt = towerAt(G.sel), rad = tt ? towerRange(tt) : TW.arrow.r * W, ey = tt && tt.k === 'eye';
@@ -1145,7 +1208,7 @@
     // chòi + quái theo thứ tự từ trên xuống
     var list = [];
     G.towers.forEach(function (t) { list.push({ y: spotXY(G.spots[t.s]).y, t: t }); });
-    G.enemies.forEach(function (e) { list.push({ y: posAt(e.f).y, e: e }); });
+    G.enemies.forEach(function (e) { list.push({ y: posAt(e.f, e.pi).y, e: e }); });
     list.sort(function (a, b) { return a.y - b.y; });
     list.forEach(function (o) { if (o.t) drawTower(o.t); else drawEnemy(o.e); });
     G.enemies.forEach(drawSign);
@@ -1182,6 +1245,7 @@
       X.globalAlpha = clamp(f.l * 2, 0, 1); X.fillStyle = f.c; X.beginPath(); X.arc(f.x, f.y, f.r, 0, 7); X.fill(); X.globalAlpha = 1;
     });
     drawRain();
+    if (G.wb) drawWbBar();
     G.txt.forEach(function (t) {
       X.globalAlpha = clamp(t.l * 1.5, 0, 1); X.font = '900 ' + Math.round(W * (t.big ? 0.042 : 0.038)) + 'px ' + TF;
       X.lineWidth = 4; X.strokeStyle = 'rgba(0,0,0,.75)'; X.strokeText(t.s, clamp(t.x, W * 0.2, W * 0.8), t.y); X.fillStyle = t.c; X.fillText(t.s, clamp(t.x, W * 0.2, W * 0.8), t.y); X.globalAlpha = 1;
@@ -1223,6 +1287,46 @@
     X.font = '900 ' + fs + 'px ' + TF; var lw = X.measureText(lb).width + fs * 1.4, ly = base - fs * 0.2;
     X.fillStyle = 'rgba(28,25,23,.85)'; rr(cx - lw / 2, ly - fs * 1.5, lw, fs * 1.5, fs * 0.5); X.fill();
     X.strokeStyle = '#7f1d1d'; X.lineWidth = 1.5; X.stroke(); X.fillStyle = '#fca5a5'; X.fillText(lb, cx, ly - fs * 0.72);
+  }
+  /* (bản 2026.11.08-7) màn boss thế giới: kho từ vựng ở giữa bản đồ (quái về tới đây là mất từ) */
+  function drawFort() {
+    var c = PATH[PATH.length - 1], r = W * 0.1, hurtF = G.shake > 0;
+    var gl = X.createRadialGradient(c.x, c.y, r * 0.5, c.x, c.y, r * 1.8); gl.addColorStop(0, 'rgba(253,224,71,.45)'); gl.addColorStop(1, 'rgba(253,224,71,0)');
+    X.fillStyle = gl; X.beginPath(); X.arc(c.x, c.y, r * 1.8, 0, 7); X.fill();
+    X.fillStyle = 'rgba(0,0,0,.3)'; X.beginPath(); X.ellipse(c.x, c.y + r * 0.55, r * 1.05, r * 0.4, 0, 0, 7); X.fill();
+    var g = X.createLinearGradient(c.x - r, 0, c.x + r, 0); g.addColorStop(0, hurtF ? '#a855f7' : '#78716c'); g.addColorStop(0.5, hurtF ? '#d8b4fe' : '#d6d3d1'); g.addColorStop(1, hurtF ? '#7e22ce' : '#57534e');
+    X.fillStyle = g; X.beginPath(); X.ellipse(c.x, c.y, r, r * 0.75, 0, 0, 7); X.fill(); X.strokeStyle = '#292524'; X.lineWidth = 2; X.stroke();
+    for (var i = 0; i < 12; i++) { var a = i / 12 * Math.PI * 2; X.fillStyle = '#a8a29e'; X.strokeStyle = '#292524'; X.lineWidth = 1; X.fillRect(c.x + Math.cos(a) * r * 0.92 - 4, c.y + Math.sin(a) * r * 0.69 - 9, 8, 9); X.strokeRect(c.x + Math.cos(a) * r * 0.92 - 4, c.y + Math.sin(a) * r * 0.69 - 9, 8, 9); }
+    var gg = X.createLinearGradient(0, c.y - r * 0.5, 0, c.y + r * 0.3); gg.addColorStop(0, '#fde68a'); gg.addColorStop(1, '#d97706');
+    X.fillStyle = gg; rr(c.x - r * 0.62, c.y - r * 0.42, r * 1.24, r * 0.7, r * 0.15); X.fill(); X.strokeStyle = '#92400e'; X.lineWidth = 2; X.stroke();
+    emo('📚', c.x - r * 0.28, c.y - r * 0.07, r * 0.5); emo(G.tp.i, c.x + r * 0.3, c.y - r * 0.07, r * 0.45);
+    var wv = Math.sin(G.flagT * 5) * 3; X.strokeStyle = '#334155'; X.lineWidth = 2; X.beginPath(); X.moveTo(c.x, c.y - r * 0.42); X.lineTo(c.x, c.y - r * 1.15); X.stroke();
+    X.fillStyle = '#dc2626'; X.beginPath(); X.moveTo(c.x, c.y - r * 1.15); X.quadraticCurveTo(c.x + r * 0.3, c.y - r * 1.15 + wv, c.x + r * 0.55, c.y - r * 1.05 + wv * 0.5); X.lineTo(c.x + r * 0.55, c.y - r * 0.8 + wv * 0.5); X.quadraticCurveTo(c.x + r * 0.3, c.y - r * 0.8 - wv, c.x, c.y - r * 0.85); X.fill();
+    var lost = G.hpMax - G.hp, lb = 'KHO TỪ VỰNG' + (lost ? ' · 📜 −' + lost : ''), fs = Math.max(9, Math.round(W * 0.026));
+    X.font = '900 ' + fs + 'px ' + TF; X.lineWidth = 3; X.strokeStyle = 'rgba(0,0,0,.7)'; X.strokeText(lb, c.x, c.y + r * 0.95); X.fillStyle = lost ? '#fca5a5' : '#fef08a'; X.fillText(lb, c.x, c.y + r * 0.95);
+  }
+  /* 4 cửa quái tràn vào */
+  function drawGates() {
+    PATHS.forEach(function (P, i) {
+      var p0 = P.p[0], m = W * 0.065, x = clamp(p0.x, m, W - m), y = clamp(p0.y, m, H - m), r = W * 0.055, a = G.flagT * 2 + i;
+      var g = X.createRadialGradient(x, y, 2, x, y, r * 1.6); g.addColorStop(0, 'rgba(192,38,211,.75)'); g.addColorStop(0.6, 'rgba(76,29,149,.5)'); g.addColorStop(1, 'rgba(76,29,149,0)');
+      X.fillStyle = g; X.beginPath(); X.arc(x, y, r * 1.6, 0, 7); X.fill();
+      X.strokeStyle = 'rgba(240,171,252,.85)'; X.lineWidth = 3; X.beginPath(); X.arc(x, y, r, a, a + 4.2); X.stroke();
+      X.strokeStyle = 'rgba(255,255,255,.6)'; X.lineWidth = 2; X.beginPath(); X.arc(x, y, r * 0.65, -a * 1.3, -a * 1.3 + 3.5); X.stroke();
+      emo('👹', x, y, r * 0.8);
+      var fs = Math.max(9, Math.round(W * 0.024)); X.font = '900 ' + fs + 'px ' + TF; X.lineWidth = 3; X.strokeStyle = 'rgba(0,0,0,.75)';
+      var ly = y + r * 1.25 + fs * 0.4; if (ly > H - 4) ly = y - r * 1.3;
+      X.strokeText(GATE_N[i], x, ly); X.fillStyle = '#f5d0fe'; X.fillText(GATE_N[i], x, ly);
+    });
+  }
+  /* thanh máu boss thế giới ở đầu màn hình */
+  function drawWbBar() {
+    var b = null; G.enemies.forEach(function (e) { if (e.t === 'wboss') b = e; }); if (!b) return;
+    var I = WB[G.wb - 1], bw = W * 0.56, bx = W * 0.03, by = 8, fs = Math.max(10, Math.round(W * 0.03)), k = clamp(b.hp / b.max, 0, 1);
+    X.fillStyle = 'rgba(15,10,30,.8)'; rr(bx, by, bw, fs * 2.5, 8); X.fill(); X.strokeStyle = '#f0abfc'; X.lineWidth = 1.5; X.stroke();
+    X.textAlign = 'left'; X.font = '900 ' + fs + 'px ' + TF; X.fillStyle = '#fde68a'; X.fillText('🌍 ' + I.e + ' ' + I.n, bx + 8, by + fs * 0.85); X.textAlign = 'center';
+    X.fillStyle = 'rgba(0,0,0,.6)'; X.fillRect(bx + 8, by + fs * 1.55, bw - 16, fs * 0.55);
+    var hg = X.createLinearGradient(bx, 0, bx + bw, 0); hg.addColorStop(0, '#dc2626'); hg.addColorStop(1, '#f97316'); X.fillStyle = hg; X.fillRect(bx + 8, by + fs * 1.55, (bw - 16) * k, fs * 0.55);
   }
   /* Kho từ vựng ở đầu đường: nơi bầy quái lẻn vào trộm từ */
   function drawVault() {
@@ -1268,7 +1372,7 @@
     if (t.lv > 1) { X.font = '900 ' + Math.round(s * (t.lv > 3 ? 0.17 : 0.2)) + 'px ' + TF; X.fillStyle = '#fde047'; X.strokeStyle = '#000'; X.lineWidth = 3; var st = '★'.repeat(t.lv); X.strokeText(st, x, y + s * 0.18); X.fillText(st, x, y + s * 0.18); }
   }
   function drawEnemy(e) {
-    var D = EN[e.t], p = posAt(e.f), sz = D.sz * W, by = Math.abs(Math.sin(e.bob)) * sz * 0.1;
+    var D = EN[e.t], p = posAt(e.f, e.pi), sz = D.sz * W, by = Math.abs(Math.sin(e.bob)) * sz * 0.1;
     e._hid = !seen(e);
     if (p.y < -sz) return;
     if (D.inv) {   // (bản 2026.11.08-4) quái tàng hình: chưa bị soi thì chỉ là một bóng mờ lung linh
@@ -1283,6 +1387,7 @@
       X.beginPath(); X.moveTo(p.x, p.y - sz * 0.35); X.lineTo(ap.x, ap.y - W * 0.06); X.stroke(); X.setLineDash([]);
     }
     X.fillStyle = 'rgba(0,0,0,.3)'; X.beginPath(); X.ellipse(p.x, p.y + sz * 0.3, sz * 0.38, sz * 0.13, 0, 0, 7); X.fill();
+    if (e.t === 'wboss') { var au = 0.5 + 0.5 * Math.sin(G.flagT * 4); var ag = X.createRadialGradient(p.x, p.y - sz * 0.2, sz * 0.2, p.x, p.y - sz * 0.2, sz * 0.9); ag.addColorStop(0, 'rgba(220,38,38,' + (0.25 + 0.2 * au) + ')'); ag.addColorStop(1, 'rgba(220,38,38,0)'); X.fillStyle = ag; X.beginPath(); X.arc(p.x, p.y - sz * 0.2, sz * 0.9, 0, 7); X.fill(); }
     if (e.burnT > 0) { X.fillStyle = 'rgba(249,115,22,.28)'; X.beginPath(); X.arc(p.x, p.y - sz * 0.1, sz * 0.55, 0, 7); X.fill(); }
     if (e.acidT > 0) { X.fillStyle = 'rgba(132,204,22,.38)'; X.beginPath(); X.arc(p.x, p.y - sz * 0.1, sz * 0.55, 0, 7); X.fill(); }
     if (e.frzT > 0) { X.fillStyle = 'rgba(224,242,254,.6)'; X.strokeStyle = '#bae6fd'; X.lineWidth = 2; rr(p.x - sz * 0.45, p.y - sz * 0.6, sz * 0.9, sz * 0.9, sz * 0.15); X.fill(); X.stroke(); }
@@ -1290,14 +1395,14 @@
     X.save(); X.translate(p.x, p.y - by);
     if (p.dx < 0) X.scale(-1, 1);
     if (e.hit > 0) X.globalAlpha = 0.6;
-    emo(D.e, 0, 0, sz); X.restore(); X.globalAlpha = 1;
+    emo(enE(e), 0, 0, sz); X.restore(); X.globalAlpha = 1;
     if (e.stunT > 0) { for (var i = 0; i < 3; i++) { var a = G.flagT * 5 + i * 2.1; emo('⭐', p.x + Math.cos(a) * sz * 0.4, p.y - sz * 0.55 + Math.sin(a) * sz * 0.12, sz * 0.22); } }
     e._x = p.x; e._y = p.y; e._s = sz;
   }
   function drawSign(e) {
-    var D = EN[e.t], p = posAt(e.f), sz = D.sz * W; if (p.y < -sz * 2) return;
+    var D = EN[e.t], p = posAt(e.f, e.pi), sz = D.sz * W; if (p.y < -sz * 2 || !onMap(p, sz)) { e._sx = null; return; }
     if (!seen(e)) { e._sx = null; return; }   // quái tàng hình chưa bị soi: không hiện biển từ
-    var x = G.tp.w[e.w], fs = Math.max(11, Math.round(W * 0.034)) * (e.t === 'boss' || e.t === 'king' ? 1.15 : 1);
+    var x = G.tp.w[e.w], fs = Math.max(11, Math.round(W * 0.034)) * (e.t === 'boss' || e.t === 'king' || e.t === 'wboss' ? 1.15 : 1);
     X.font = '800 ' + fs + 'px ' + TF;
     var ps = fs * 1.35, tw = X.measureText(x[0]).width, bw = tw + ps + fs * 1.0, bh = fs * 1.75;
     var bx = clamp(p.x - bw / 2, 2, W - bw - 2), byy = p.y - sz * 0.62 - bh - fs * 0.7 - Math.abs(Math.sin(e.bob)) * sz * 0.08;
@@ -1354,23 +1459,28 @@
     G.ended = true; closeSay(); closePop(); waveBtn();
     var st = win ? (G.hp >= G.hpMax * 0.8 ? 3 : G.hp >= G.hpMax * 0.4 ? 2 : 1) : 0, tp = G.tp, pv = prog(), old = pv.s[tp.id] || 0;
     if (win) { if (st > old) pv.s[tp.id] = st; pv.b[tp.id] = Math.max(pv.b[tp.id] || 0, G.hp); if (G.dif > bestDiff(tp.id)) pv.d[tp.id] = G.dif; saveProg(); }
-    var vnd = Math.round(((win ? st * STAR_VND : 0) * DIFF[G.dif].rw + G.ok * WORD_VND) / 1000) * 1000;
+    var vnd = Math.round(((win ? st * STAR_VND * (tp.wb ? 2 : 1) : 0) * DIFF[G.dif].rw + G.ok * WORD_VND) / 1000) * 1000;   // boss thế giới: thưởng sao gấp đôi
     try { if (window.farmEarn && (vnd || G.ok)) window.farmEarn('castle', vnd, G.ok, tp.id); } catch (e) {}
     if (win) { try { localStorage.setItem('farm6_pass', String(Date.now())); } catch (e) {} }
-    var lbp = win ? Math.max(LB_STAR / 2, Math.round(LB_STAR * st * DIFF[G.dif].rw)) : 0; if (lbp) lbAdd(lbp);
+    var lbp = win ? Math.max(LB_STAR / 2, Math.round(LB_STAR * st * DIFF[G.dif].rw)) * (tp.wb ? 2 : 1) : 0; if (lbp) lbAdd(lbp);
     sfx(win ? 'win' : 'lose');
     var good = [], bad = [];
     tp.w.forEach(function (x, i) { var s = G.said[i]; if (s && s.ok) good.push(i); else bad.push(i); });
-    var next = null;
-    if (win) { var list = DATA.topics.filter(function (t) { return t.g === tp.g; }), k = list.indexOf(tp); next = list[k + 1] || DATA.topics[tp.ti + 1] || null; }
-    var h = '<div class="tt-endc"><div class="big">' + (win ? '🏆' : '💥') + '</div><h2>' + (win ? 'Bảo vệ kho từ thành công!' : 'Quái đã cướp quá nhiều từ!') + '</h2>' +
+    var next = null, nextWb = -1;
+    if (win && tp.wb) next = phaseTopics(tp.wb)[0] || null;   // hạ boss thế giới → sang kho đầu của giai đoạn sau
+    else if (win) {
+      var list = DATA.topics.filter(function (t) { return t.g === tp.g; }), k = list.indexOf(tp); next = list[k + 1] || DATA.topics[tp.ti + 1] || null;
+      var ph = Math.floor(tp.ti / phSize()); if (ph < PHASES && unlocked(wbTopic(ph)) && !stars(wbTopic(ph).id)) nextWb = ph;   // vừa mở khóa boss thế giới
+    }
+    var h = '<div class="tt-endc"><div class="big">' + (win ? '🏆' : '💥') + '</div><h2>' + (tp.wb ? (win ? 'Đã hạ Boss thế giới ' + tp.wb + '!' : 'Boss thế giới đã cướp quá nhiều từ!') : (win ? 'Bảo vệ kho từ thành công!' : 'Quái đã cướp quá nhiều từ!')) + '</h2>' +
       (win ? '<div class="stars">' + '⭐'.repeat(st) + '<span style="opacity:.25">' + '⭐'.repeat(3 - st) + '</span></div>' : '') +
       '<div class="sum" style="margin-bottom:4px">Cấp độ: <b style="color:' + DIFF[G.dif].c + ';background:#fff;border-radius:8px;padding:1px 8px">' + DIFF[G.dif].e + ' ' + DIFF[G.dif].n + '</b></div>' +
       '<div class="sum">' + (win ? 'Kho còn giữ ' + G.hp + '/' + G.hpMax + ' 📚 · ' : 'Bạn chặn được ' + G.wave + '/' + G.waves.length + ' đợt · ') + 'Đọc đúng <b>' + G.ok + '/' + tp.w.length + '</b> từ</div>' +
       (vnd ? '<div class="farm">🧑‍🌾 +' + money(vnd) + ' vào Nông trại</div>' : '') +
       '<div class="farm" style="background:rgba(234,179,8,.3)">🏆 ' + (lbp ? '+' + lbp + ' điểm xếp hạng · ' : '') + 'Hạng của bạn: #' + lbRank().toLocaleString('vi-VN') + '</div>' +
       (bad.length ? '<div style="font-size:13.5px;font-weight:800;color:#fca5a5">Từ cần luyện thêm (chạm để nghe):</div><div class="wl">' + bad.slice(0, 24).map(function (i) { var pv = pronOf(tp.w[i]).vi; return '<span class="bd" data-a="hearw" data-i="' + i + '">' + esc(tp.w[i][0]) + (pv ? ' <i style="font-style:normal;color:#fde68a">(' + esc(pv) + ')</i>' : '') + ' · ' + esc(tp.w[i][1]) + '</span>'; }).join('') + '</div>' : '<div class="sum">🎉 Bạn đã đọc đúng toàn bộ từ vựng trong kho!</div>') +
-      '<div class="acts">' + (next && win ? '<button class="tt-btn g" data-a="next" data-i="' + next.ti + '">▶ Kho từ tiếp: ' + esc(next.n) + '</button>' : '') +
+      (nextWb >= 0 ? '<div class="farm" style="background:rgba(220,38,38,.35)">🌍 Đã mở khóa <b>Boss thế giới ' + (nextWb + 1) + ': ' + esc(WB[nextWb].e + ' ' + WB[nextWb].n) + '</b>!</div>' : '') +
+      '<div class="acts">' + (nextWb >= 0 ? '<button class="tt-btn g" data-a="wboss" data-k="' + nextWb + '">🌍 Đánh Boss thế giới ' + (nextWb + 1) + '</button>' : '') + (next && win ? '<button class="tt-btn g" data-a="next" data-i="' + next.ti + '">▶ Kho từ tiếp: ' + esc(next.n) + '</button>' : '') +
       '<button class="tt-btn" data-a="again">🔁 Chơi lại kho từ này</button><button class="tt-btn s" data-a="map">🗺️ Về bản đồ các kho từ</button></div></div>';
     var el = $('ttEnd'); el.innerHTML = h; el.classList.add('on');
   }
@@ -1399,6 +1509,12 @@
       var tp = DATA.topics[+el.getAttribute('data-i')];
       if (!unlocked(tp)) { var list = DATA.topics.filter(function (t) { return t.g === tp.g; }); alertMap('🔒 Hãy bảo vệ kho từ "' + list[list.indexOf(tp) - 1].n + '" trước để mở kho này.'); return; }
       openIntro(tp); return;
+    }
+    if (a === 'wboss') {
+      var wk = +el.getAttribute('data-k'), wt = wbTopic(wk);
+      if (!unlocked(wt)) { alertMap('🔒 Bảo vệ đủ ' + phaseTopics(wk).length + ' kho từ của giai đoạn ' + (wk + 1) + ' để mở Boss thế giới (' + phaseDone(wk) + '/' + phaseTopics(wk).length + ').'); return; }
+      if (G) { stopLoop(); G = null; }
+      openIntro(wt); return;
     }
     if (a === 'hear') { say(CUR.w[+el.getAttribute('data-i')][0]); return; }
     if (a === 'diff') {

@@ -1,4 +1,4 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    (bản 2026.11.07-6) CỐT TRUYỆN: bầy quái lẻn vào KHO TỪ VỰNG (đầu đường, phía trên) đánh cắp từ vựng, mỗi con vác 1 từ
    để mang về THÀNH CỦA CHÚNG (cuối đường, phía dưới). Nhiệm vụ của người chơi: xây chòi chặn đường, không cho quái mang từ về thành.
    Mỗi màn là 1 kho từ vựng theo chủ đề (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
@@ -8,7 +8,7 @@
        (đọc đúng ngay lần đầu +30 vàng, lần 2 +20, từ lần 3 +12).
      • Chạm vào con quái đang đi để đọc từ nó vác: đúng thì quái bị choáng, mất máu và bạn được +12 vàng.
    Máy không nghe được giọng, hoặc người chơi bấm 👆 Chọn đáp án: nghe mẫu rồi chọn đúng từ (thưởng = 2/3 khi đọc).
-   Mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng nhận vàng + điểm xếp hạng.
+   Đọc từ ở thanh dưới không giới hạn số lần, lần nào đúng cũng nhận vàng + điểm xếp hạng; đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được.
    Qua màn: 📚 còn ≥ 80% → ⭐⭐⭐, ≥ 40% → ⭐⭐, còn lại ⭐. Mỗi ⭐ +10.000đ và mỗi từ đọc đúng +2.000đ chuyển vào Nông trại Sixpay.
    Mỗi vùng đất (nhóm chủ đề) mở sẵn kho từ đầu tiên, bảo vệ được kho trước mới mở kho sau.
    Gọi: SixCastleGame.open() / SixCastleGame.close() */
@@ -32,8 +32,11 @@
   ];
   var DSEL = 1; try { var _d = +localStorage.getItem('tt_diff'); if (_d >= 0 && _d < DIFF.length) DSEL = _d; } catch (e) {}
   var REWARD = [30, 20, 12], ENEMY_REWARD = 12;
-  /* (bản 2026.11.08-2) Chọn đáp án thay vì đọc: thưởng bằng PICK_RATE (2/3) so với đọc. Mỗi từ ở thanh dưới đọc tối đa MAX_READ lần. */
+  /* (bản 2026.11.08-2) Chọn đáp án thay vì đọc: thưởng bằng PICK_RATE (2/3) so với đọc.
+     (bản 2026.11.08-4) Đọc từ ở thanh dưới KHÔNG GIỚI HẠN, nhưng 1 từ đọc đúng MAX_READ lần liền thì phải đọc từ khác rồi mới được đọc lại. */
   var PICK_RATE = 2 / 3, MAX_READ = 3;
+  /* (bản 2026.11.08-4) chòi nâng được tới cấp MAX_LV */
+  var MAX_LV = 5;
   var PICKPREF = false; try { PICKPREF = localStorage.getItem('tt_pick') === '1'; } catch (e) {}
   function useMic() { return !!SR && !PICKPREF; }
   function pickGain(n) { return Math.max(1, Math.round(n * PICK_RATE)); }
@@ -226,7 +229,7 @@
     '.tt-chips{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:2px 12px 4px;scrollbar-width:none;min-height:62px}.tt-chips::-webkit-scrollbar{display:none}',
     '.tt-chip{flex:none;display:flex;align-items:center;gap:7px;border:0;border-radius:14px;padding:6px 10px 6px 7px;background:linear-gradient(180deg,#fef3c7,#fcd34d);color:#3b2300;font-family:inherit;cursor:pointer;box-shadow:0 3px 0 #92400e;animation:ttIn .35s}',
     '.tt-chip:active{transform:translateY(2px);box-shadow:0 1px 0 #92400e}.tt-chip b{display:block;font-size:15px;font-weight:900;line-height:1.15;text-align:left}.tt-chip small{display:block;font-size:11.5px;font-weight:800;color:#a16207;text-align:left}',
-    '.tt-chip .p{width:34px;text-align:center;flex:none}.tt-chip.tried{background:linear-gradient(180deg,#fee2e2,#fca5a5);box-shadow:0 3px 0 #991b1b}',
+    '.tt-chip .p{width:34px;text-align:center;flex:none}.tt-chip.tried{background:linear-gradient(180deg,#fee2e2,#fca5a5);box-shadow:0 3px 0 #991b1b}.tt-chip.lock{background:linear-gradient(180deg,#e5e7eb,#9ca3af);box-shadow:0 3px 0 #4b5563;opacity:.8}.tt-chip.lock small{color:#374151}',
     '@keyframes ttIn{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}',
     '.tt-empty{padding:4px 2px;font-size:12.5px;opacity:.85;line-height:1.35;white-space:normal;height:58px;overflow:hidden}',
     /* bảng đọc từ */
@@ -337,7 +340,7 @@
     $('ttIT').textContent = '🏰 ' + tp.n;
     var h = '<div class="tt-ibox"><div class="tt-ihead" style="--c:' + tp.c + '"><span class="e">' + esc(tp.i) + '</span><div><b>Kho từ: ' + esc(tp.n) + '</b><small>' + tp.w.length + ' từ vựng · ' + nW + ' đợt quái' + (stars(tp.id) ? ' · Tốt nhất: ' + '⭐'.repeat(stars(tp.id)) : '') + '</small></div></div>' +
       '<div style="margin:12px 0 0;padding:12px 14px;border-radius:16px;background:rgba(127,29,29,.45);border:1px solid rgba(252,165,165,.35);font-size:14px;line-height:1.5">👹 <b>Bầy quái đang trộm từ</b> trong kho “' + esc(tp.n) + '”. Mỗi con vác một từ, chạy theo con đường để mang về <b>thành của chúng</b>. Hãy xây chòi chặn đường, <b>không để chúng mang từ nào về thành!</b></div>' +
-      '<div class="tt-how"><div><i>🎤</i>Chạm vào từ ở thanh dưới: đọc đúng từ tiếng Anh, rồi nói đúng nghĩa tiếng Việt để nhận 💰</div><div><i>🏹</i>Chạm ô đá ➕ dọc đường để xây chòi chặn quái</div><div><i>👹</i>Chạm vào quái, đọc đúng từ nó đang trộm để làm nó choáng</div><div><i>🥷</i><b>Lính bắn chòi</b> phá chòi: dùng vàng 🔧 sửa, 🛡️ bảo hộ, xây 🎯 súng bắn tỉa</div><div><i>📈</i>Quái <b>cộng dồn</b> mỗi đợt, đợt cuối có 🐲 trùm và 👿 <b>trùm cuối</b></div></div>' +
+      '<div class="tt-how"><div><i>🎤</i>Chạm vào từ ở thanh dưới: đọc đúng từ tiếng Anh, rồi nói đúng nghĩa tiếng Việt để nhận 💰</div><div><i>🏹</i>Chạm ô đá ➕ dọc đường để xây chòi chặn quái</div><div><i>👹</i>Chạm vào quái, đọc đúng từ nó đang trộm để làm nó choáng</div><div><i>🥷</i><b>Lính bắn chòi</b> phá chòi: dùng vàng 🔧 sửa, 🛡️ bảo hộ, xây 🎯 súng bắn tỉa</div><div><i>🦎</i><b>Quái tàng hình</b>: chòi thường không thấy, phải xây 👁️ <b>chòi mắt thần</b> để soi</div><div><i>📈</i>Quái <b>cộng dồn</b> mỗi đợt, đợt cuối có 🐲 trùm và 👿 <b>trùm cuối</b></div></div>' +
       '<div class="tt-grp" style="margin-top:6px">🎚️ Chọn cấp độ</div><div class="tt-dif" id="ttDif">' +
       DIFF.map(function (d, i) { return '<button class="' + (i === DSEL ? 'on' : '') + '" style="--c:' + d.c + '" data-a="diff" data-i="' + i + '"><i>' + d.e + '</i><b>' + d.n + '</b><small>📚 ' + d.life + '</small></button>'; }).join('') +
       '</div><div class="tt-dnote" id="ttDN">' + diffNote(DSEL) + '</div>' +
@@ -366,13 +369,20 @@
     /* Chòi tên lửa: tầm rất xa, nhắm con trâu nhất, tên lửa tự dẫn đường, nổ cực mạnh */
     rocket: { n: 'Chòi tên lửa', e: '🚀', c: 160, r: 0.4, d: 70, cd: 2.6, sp: 0.12, roof: '#4c1d95', info: 'Bắn cực xa, nổ cực mạnh' },
     /* (bản 2026.11.08-3) Chòi súng bắn tỉa: tầm xa nhất, ưu tiên bắn LÍNH BẮN CHÒI và trùm cuối */
-    snipe: { n: 'Súng bắn tỉa tầm xa', e: '🎯', c: 130, r: 0.62, d: 48, cd: 1.3, roof: '#166534', info: 'Bắn xa nhất, ưu tiên diệt lính bắn chòi' }
+    snipe: { n: 'Súng bắn tỉa tầm xa', e: '🎯', c: 130, r: 0.62, d: 48, cd: 1.3, roof: '#166534', info: 'Bắn xa nhất, ưu tiên diệt lính bắn chòi' },
+    /* (bản 2026.11.08-4) Chòi mắt thần: không bắn, chỉ SOI quái tàng hình trong tầm để các chòi khác nhìn thấy và bắn được */
+    eye: { n: 'Chòi mắt thần', e: '👁️', c: 75, r: 0.3, d: 0, cd: 1, eye: 1, roof: '#7c3aed', info: 'Soi quái tàng hình cho các chòi khác bắn' }
   };
-  var TW_KEYS = ['arrow', 'ice', 'cannon', 'fire', 'snipe', 'rocket'];
+  var TW_KEYS = ['arrow', 'ice', 'cannon', 'fire', 'eye', 'snipe', 'rocket'];
+  /* (bản 2026.11.08-4) tầm bắn/tầm soi theo cấp: chòi phun lửa +20%/cấp (cấp 5 phun xa gần gấp đôi), chòi mắt +15%/cấp, chòi khác +8%/cấp */
+  function towerRange(t) { return TW[t.k].r * W * (1 + (t.k === 'fire' ? 0.2 : t.k === 'eye' ? 0.15 : 0.08) * (t.lv - 1)); }
+  function upInfo(t) { return t.k === 'fire' ? 'Lửa to hơn, phun xa hơn, cháy lan rộng hơn' : t.k === 'eye' ? 'Soi xa hơn, thấy quái tàng hình sớm hơn' : 'Mạnh hơn, bắn xa hơn'; }
   /* (bản 2026.11.08-3) Máu chòi: lính bắn chòi và trùm cuối bắn phá chòi; chòi hết máu thì sập (ô đá trống lại, phải mua chòi mới).
      Người chơi dùng vàng để: 🔧 sửa chòi, 🛡️ mua bảo hộ (khiên hút sát thương), mua chòi mới, hoặc xây 🎯 súng bắn tỉa để diệt lính bắn chòi từ xa. */
   var TOWER_HP = 100, SHIELD_RATE = 0.7;
   function towerMax(t) { return Math.round(TOWER_HP * (1 + 0.5 * (t.lv - 1))); }
+  /* (bản 2026.11.08-4) quái có bị chòi nhìn thấy không: quái tàng hình chỉ lộ ra khi đang trong tầm soi của chòi mắt thần */
+  function seen(e) { return !EN[e.t].inv || e.rev > 0; }
   var EN = {
     bat: { e: '🦇', hp: 24, spd: 0.13, sz: 0.075 },
     gob: { e: '👺', hp: 42, spd: 0.095, sz: 0.085 },
@@ -381,6 +391,8 @@
     ogre: { e: '👹', hp: 125, spd: 0.056, sz: 0.1 },
     /* lính bắn chòi: đi đến gần chòi nào thì đứng lại bắn phá chòi đó */
     gun: { e: '🥷', hp: 70, spd: 0.075, sz: 0.09, gun: { r: 0.27, cd: 1.5, d: 7 } },
+    /* (bản 2026.11.08-4) tắc kè tàng hình: chòi thường không phát hiện được, chỉ bị bắn khi đang ở trong tầm soi của 👁️ chòi mắt thần */
+    inv: { e: '🦎', hp: 66, spd: 0.088, sz: 0.09, inv: 1 },
     boss: { e: '🐲', hp: 650, spd: 0.04, sz: 0.15, dmg: 5 },
     /* trùm cuối: ra sau cùng ở đợt cuối, rất trâu, vừa đi vừa bắn cầu lửa phá chòi */
     king: { e: '👿', hp: 1700, spd: 0.034, sz: 0.19, dmg: 8, gun: { r: 0.32, cd: 2.2, d: 22 } }
@@ -405,6 +417,9 @@
     if (k >= 1) {
       var nG = Math.min(Math.floor(list.length / 3), Math.max(1, Math.round(k * DIFF[G.dif].more)));
       for (var gi = 0; gi < nG; gi++) list[Math.floor((gi + 0.5) * list.length / nG)].t = 'gun';
+      // (bản 2026.11.08-4) quái tàng hình: từ đợt 2, mỗi đợt nhiều thêm
+      var nI = Math.min(Math.floor(list.length / 4), Math.max(1, Math.round(k * 0.8 * DIFF[G.dif].more)));
+      for (var ii = 0; ii < nI; ii++) { var ix = Math.floor((ii + 0.2) * list.length / nI); while (ix < list.length - 1 && list[ix].t === 'gun') ix++; if (list[ix].t !== 'gun') list[ix].t = 'inv'; }
     }
     if (k === G.waves.length - 1) {
       var all = []; for (j = 0; j <= k; j++) all = all.concat(G.waves[j]);
@@ -420,11 +435,13 @@
     G = {
       tp: tp, seed: Math.floor(Math.random() * 1e6), map: MAPS[tp.ti % MAPS.length], waves: planWaves(tp), wave: 0, phase: 'prep',
       dif: DSEL, hp: DIFF[DSEL].life, hpMax: DIFF[DSEL].life, gold: DIFF[DSEL].gold, quake: 0, towers: [], enemies: [], shots: [], fx: [], txt: [], spots: null, q: [], qT: 0,
-      paused: false, said: {}, bank: [], ok: 0, t: 0, prepT: 30, shake: 0, sel: -1, flagT: 0, ended: false
+      paused: false, said: {}, bank: [], lastW: -1, streak: 0, ok: 0, t: 0, prepT: 30, shake: 0, sel: -1, flagT: 0, ended: false
     };
     G.waves[0].forEach(function (w) { addBank(w); });
   }
-  function addBank(w) { if (G.bank.indexOf(w) < 0 && !(G.said[w] && (G.said[w].r || 0) >= MAX_READ)) G.bank.push(w); }
+  function addBank(w) { if (G.bank.indexOf(w) < 0) G.bank.push(w); }
+  /* (bản 2026.11.08-4) từ đang bị khóa: vừa đọc đúng MAX_READ lần liền, phải đọc từ khác trước */
+  function locked(w) { return G.lastW === w && G.streak >= MAX_READ; }
 
   /* ================= BỐ CỤC ================= */
   var PATH = [], PLEN = 0, PW = 30;
@@ -525,10 +542,11 @@
       G.qT -= dt;
       if (G.qT <= 0) {
         var o = G.q.shift(), D = EN[o.t], sc = (1 + 0.15 * G.wave) * (1 + Math.min(0.6, G.tp.ti * 0.012)) * DIFF[G.dif].hp;   // đợt cộng dồn đã đông nên máu tăng chậm hơn
-        G.enemies.push({ t: o.t, w: o.w, hp: D.hp * sc, max: D.hp * sc, f: 0, slowT: 0, stunT: 0, said: false, bob: Math.random() * 6, hit: 0, gcd: 1 });
+        G.enemies.push({ t: o.t, w: o.w, hp: D.hp * sc, max: D.hp * sc, f: 0, slowT: 0, stunT: 0, said: false, bob: Math.random() * 6, hit: 0, gcd: 1, rev: 0 });
         G.qT = (o.t === 'boss' || o.t === 'king' ? 2.2 : Math.max(0.55, (1.6 - G.wave * 0.09) * 0.7)) * DIFF[G.dif].gap;   // quái gấp đôi + cộng dồn nên ra dày hơn một chút
         if (o.t === 'boss') { banner('🐲 Trùm trộm từ xuất hiện!', 'Đừng để nó mang từ về thành – mất tới 5 từ!'); sfx('horn'); }
         if (o.t === 'king') { banner('👿 TRÙM CUỐI xuất hiện!', 'Nó bắn cầu lửa phá chòi, về tới thành là mất 8 từ!'); sfx('horn'); G.quake = 0.4; }
+        if (o.t === 'inv' && !G.invSeen) { G.invSeen = true; banner('🦎 Quái tàng hình!', 'Chòi thường không thấy chúng – xây 👁️ chòi mắt thần để soi'); sfx('horn'); }
         if (o.t === 'gun' && !G.gunSeen) { G.gunSeen = true; banner('🥷 Lính bắn chòi!', 'Chúng bắn phá chòi – sửa 🔧, mua bảo hộ 🛡️ hoặc xây 🎯 súng bắn tỉa'); sfx('horn'); }
       }
     }
@@ -545,25 +563,35 @@
       }
       e.bob += dt * 8;
       if (D2.gun && e.stunT <= 0 && e.f < 1) enemyShoot(e, D2, dt);
-      if (e.f >= 1) { G.enemies.splice(i, 1); hurt(D2.dmg || 1, e); if (SAY && SAY.e === e) closeSay(); }
+      if (e.f >= 1) {
+        G.enemies.splice(i, 1); hurt(D2.dmg || 1, e); if (SAY && SAY.e === e) closeSay();
+        if (D2.inv && !G.invTip && !G.ended) { G.invTip = true; toast('🦎 Quái tàng hình vừa lọt qua! Chòi thường không thấy chúng. Hãy xây <b>👁️ Chòi mắt thần</b> sát đường để soi, các chòi khác mới bắn được.'); }
+      }
     }
+    // (bản 2026.11.08-4) chòi mắt thần soi quái tàng hình
+    var eyes = G.towers.filter(function (t) { return t.k === 'eye'; });
+    G.enemies.forEach(function (e) {
+      if (!EN[e.t].inv) return;
+      var p = posAt(e.f), inR = eyes.some(function (t) { var s = spotXY(G.spots[t.s]); return Math.hypot(p.x - s.x, p.y - s.y) <= towerRange(t); });
+      if (inR) { if (e.rev <= 0) spark(p.x, p.y - EN[e.t].sz * W * 0.3, ['#c4b5fd', '#fff', '#a78bfa'], 6); e.rev = 0.3; } else if (e.rev > 0) e.rev -= dt;
+    });
     // chòi bắn
     G.towers.forEach(function (t) {
-      var T = TW[t.k], s = spotXY(G.spots[t.s]), rr = T.r * W * (1 + 0.08 * (t.lv - 1));
+      var T = TW[t.k], s = spotXY(G.spots[t.s]), rr = towerRange(t);
       t.cd -= dt; if (t.fl > 0) t.fl -= dt;
-      if (t.cd > 0) return;
+      if (T.eye || t.cd > 0) return;
       var best = null;
-      G.enemies.forEach(function (e) { var p = posAt(e.f); if (p.y > -10 && Math.hypot(p.x - s.x, p.y - (s.y - W * 0.02)) <= rr && (!best || e.f > best.f)) best = e; });
+      G.enemies.forEach(function (e) { var p = posAt(e.f); if (seen(e) && p.y > -10 && Math.hypot(p.x - s.x, p.y - (s.y - W * 0.02)) <= rr && (!best || e.f > best.f)) best = e; });
       if (!best) return;
       t.cd = T.cd / (1 + 0.12 * (t.lv - 1)); t.fl = 0.15;
       var dmg = T.d * Math.pow(1.5, t.lv - 1), sy = s.y - W * 0.075;
       if (t.k === 'fire') { fireAt(t, T, s, best, dmg); return; }
       if (t.k === 'snipe') {   // ưu tiên lính bắn chòi / trùm cuối đang trong tầm
-        var pr = null; G.enemies.forEach(function (e) { if (!EN[e.t].gun) return; var q = posAt(e.f); if (q.y > -10 && Math.hypot(q.x - s.x, q.y - s.y) <= rr && (!pr || e.f > pr.f)) pr = e; });
+        var pr = null; G.enemies.forEach(function (e) { if (!EN[e.t].gun || !seen(e)) return; var q = posAt(e.f); if (q.y > -10 && Math.hypot(q.x - s.x, q.y - s.y) <= rr && (!pr || e.f > pr.f)) pr = e; });
         G.shots.push({ k: 'snipe', x: s.x, y: sy, e: pr || best, d: dmg, v: W * 3.2 }); G.fx.push({ k: 'flash', x: s.x, y: sy, r: W * 0.035, l: 0.12, L: 0.12 }); sfx('arrow'); return;
       }
       if (t.k === 'rocket') {
-        var big = best; G.enemies.forEach(function (e) { var q = posAt(e.f); if (q.y > -10 && Math.hypot(q.x - s.x, q.y - s.y) <= rr && e.hp > big.hp) big = e; });
+        var big = best; G.enemies.forEach(function (e) { if (!seen(e)) return; var q = posAt(e.f); if (q.y > -10 && Math.hypot(q.x - s.x, q.y - s.y) <= rr && e.hp > big.hp) big = e; });
         G.shots.push({ k: 'rocket', x: s.x, y: s.y - W * 0.1, e: big, a: -Math.PI / 2, v: W * 0.35, d: dmg, sp: T.sp * W, tx: 0, ty: 0, tr: 0 });
         smoke(s.x, s.y - W * 0.08, 6); sfx('launch'); return;
       }
@@ -588,7 +616,7 @@
         b.x = b.sx + (b.tx - b.sx) * k; b.y = b.sy + (b.ty - b.sy) * k - Math.sin(k * Math.PI) * W * 0.12;
         if (k >= 1) {
           G.shots.splice(i, 1); boom(b.tx, b.ty, b.sp);
-          G.enemies.slice().forEach(function (e) { var p = posAt(e.f); var dd = Math.hypot(p.x - b.tx, p.y - b.ty); if (dd < b.sp) dmgE(e, b.d * (dd < b.sp * 0.4 ? 1 : 0.6)); });
+          G.enemies.slice().forEach(function (e) { if (!seen(e)) return; var p = posAt(e.f); var dd = Math.hypot(p.x - b.tx, p.y - b.ty); if (dd < b.sp) dmgE(e, b.d * (dd < b.sp * 0.4 ? 1 : 0.6)); });
         }
         continue;
       }
@@ -668,12 +696,14 @@
     var p = posAt(best.f), tx = p.x, ty = p.y - EN[best.t].sz * W * 0.3, nx = s.x, ny = s.y - W * 0.075;
     var dx = tx - nx, dy = ty - ny, dl = Math.hypot(dx, dy) || 1, sp = dl / 0.32;
     t.fa = Math.atan2(dy, dx); t.fl = 0.18;
-    for (var i = 0; i < 3; i++) {
-      var j = (Math.random() - 0.5) * 0.35, c = Math.cos(j), sn = Math.sin(j), vx = (dx * c - dy * sn) / dl * sp, vy = (dx * sn + dy * c) / dl * sp;
-      flame(nx, ny, vx * (0.85 + Math.random() * 0.3), vy * (0.85 + Math.random() * 0.3), W * (0.014 + Math.random() * 0.012), 0.34 + Math.random() * 0.1);
+    var big = 1 + 0.28 * (t.lv - 1);   // (bản 2026.11.08-4) cấp càng cao lửa càng to, luồng lửa càng dày
+    for (var i = 0; i < 3 + (t.lv - 1); i++) {
+      var j = (Math.random() - 0.5) * 0.35 * (1 + 0.15 * (t.lv - 1)), c = Math.cos(j), sn = Math.sin(j), vx = (dx * c - dy * sn) / dl * sp, vy = (dx * sn + dy * c) / dl * sp;
+      flame(nx, ny, vx * (0.85 + Math.random() * 0.3), vy * (0.85 + Math.random() * 0.3), W * (0.014 + Math.random() * 0.012) * big, 0.34 + Math.random() * 0.1);
     }
-    var area = T.area * W, burn = T.burn * Math.pow(1.4, t.lv - 1);
-    G.enemies.slice().forEach(function (e) { var q = posAt(e.f); if (Math.hypot(q.x - p.x, q.y - p.y) <= area || e === best) { e.burnT = 2; e.burnD = Math.max(e.burnD || 0, burn); dmgE(e, dmg, true); if (G.enemies.indexOf(e) >= 0) e.hit = 0.05; } });
+    if (t.lv >= 3) { var ex = 2 + t.lv; for (var k2 = 0; k2 < ex; k2++) { var a2 = Math.random() * 6.28, v2 = W * (0.05 + Math.random() * 0.1) * big; flame(tx + (Math.random() - 0.5) * W * 0.03, ty, Math.cos(a2) * v2, Math.sin(a2) * v2 - W * 0.05, W * 0.016 * big, 0.3 + Math.random() * 0.15); } }   // lửa bùng tại chỗ trúng
+    var area = T.area * W * (1 + 0.3 * (t.lv - 1)), burn = T.burn * Math.pow(1.4, t.lv - 1);
+    G.enemies.slice().forEach(function (e) { if (!seen(e) && e !== best) return; var q = posAt(e.f); if (Math.hypot(q.x - p.x, q.y - p.y) <= area || e === best) { e.burnT = 2; e.burnD = Math.max(e.burnD || 0, burn); dmgE(e, dmg, true); if (G.enemies.indexOf(e) >= 0) e.hit = 0.05; } });
     t.snd = (t.snd || 0) - T.cd; if (t.snd <= 0) { t.snd = 0.35; sfx('fire'); }
   }
   /* Tên lửa: phóng thẳng lên rồi bẻ lái đuổi theo mục tiêu, vệt khói + đuôi lửa, nổ lớn có sóng xung kích */
@@ -696,7 +726,7 @@
       G.fx.push({ k: 'flash', x: b.x, y: b.y, r: r * 1.1, l: 0.22, L: 0.22 });
       for (var i = 0; i < 14; i++) { var a = Math.random() * 6.28, v = W * (0.1 + Math.random() * 0.3); flame(b.x, b.y, Math.cos(a) * v, Math.sin(a) * v, W * (0.02 + Math.random() * 0.02), 0.4 + Math.random() * 0.25); }
       spark(b.x, b.y, ['#fde047', '#fb923c', '#fff', '#a8a29e'], 18); smoke(b.x, b.y, 10, true);
-      G.enemies.slice().forEach(function (e) { var q = posAt(e.f), dd = Math.hypot(q.x - b.x, q.y - b.y); if (dd < r) dmgE(e, b.d * (dd < r * 0.45 ? 1 : 0.55)); });
+      G.enemies.slice().forEach(function (e) { if (!seen(e)) return; var q = posAt(e.f), dd = Math.hypot(q.x - b.x, q.y - b.y); if (dd < r) dmgE(e, b.d * (dd < r * 0.45 ? 1 : 0.55)); });
       G.quake = 0.25; sfx('bigboom');
       return true;
     }
@@ -808,9 +838,9 @@
   function renderBank() {
     var c = $('ttChips'), h = '';
     G.bank.forEach(function (w) {
-      var x = G.tp.w[w], s = G.said[w], gain = useMic() ? reward(w) : pickGain(reward(w)), rd = s && s.r ? s.r : 0;
+      var x = G.tp.w[w], s = G.said[w], gain = useMic() ? reward(w) : pickGain(reward(w)), lk = locked(w), rd = G.lastW === w ? G.streak : 0;
       var pv = pronOf(x).vi;
-      h += '<button class="tt-chip' + (s && s.n ? ' tried' : '') + '" data-a="chip" data-w="' + w + '"><span class="p">' + picHtml(x[2], 30) + '</span><span><b>' + esc(x[0]) + '</b>' + (pv ? '<span class="vi">🗣️ ' + esc(pv) + '</span>' : '') + '<small>+' + gain + ' 💰' + (rd ? ' · lần ' + (rd + 1) + '/' + MAX_READ : '') + '</small></span></button>';
+      h += '<button class="tt-chip' + (lk ? ' lock' : s && s.n ? ' tried' : '') + '" data-a="chip" data-w="' + w + '"><span class="p">' + picHtml(x[2], 30) + '</span><span><b>' + esc(x[0]) + '</b>' + (pv ? '<span class="vi">🗣️ ' + esc(pv) + '</span>' : '') + '<small>' + (lk ? '🔒 Đọc từ khác trước' : '+' + gain + ' 💰' + (rd ? ' · lần ' + (rd + 1) + '/' + MAX_READ : '')) + '</small></span></button>';
     });
     if (!h) h = '<div class="tt-empty">✅ Đã đọc hết từ của đợt này. Chạm vào con quái đang trộm từ để đọc từ nó vác, được thêm 💰 và làm quái choáng!</div>';
     c.innerHTML = h;
@@ -922,10 +952,10 @@
     if (!s.ok) G.ok++;
     s.ok = 1;
     var more = '';
-    if (!SAY.e) {   // đọc từ ở thanh dưới: tối đa MAX_READ lần mỗi từ
+    if (!SAY.e) {   // (bản 2026.11.08-4) đọc từ ở thanh dưới: không giới hạn, nhưng đọc 1 từ MAX_READ lần liền thì phải đọc từ khác trước
       s.r = (s.r || 0) + 1;
-      if (s.r >= MAX_READ) { var i = G.bank.indexOf(w); if (i >= 0) G.bank.splice(i, 1); more = ' (đủ ' + MAX_READ + ' lần)'; }
-      else more = ' (lần ' + s.r + '/' + MAX_READ + ')';
+      if (G.lastW === w) G.streak++; else { G.lastW = w; G.streak = 1; }
+      more = locked(w) ? ' (đủ ' + MAX_READ + ' lần liền – đọc từ khác rồi quay lại nhé)' : ' (lần ' + G.streak + '/' + MAX_READ + ')';
     }
     G.gold += gain; SAY.st = 'ok'; SAY.msg = '+' + gain + ' 💰 · +' + pts + ' điểm 🏆' + more;
     sfx('coin'); drawSay(); renderBank(); hud('gold'); lbAdd(pts);
@@ -943,7 +973,7 @@
     } else {
       var T = TW[t.k], up = upCost(t);
       h = '<h4>' + T.e + ' ' + T.n + ' · cấp ' + t.lv + '</h4>' +
-        (t.lv < 3 ? '<button class="tt-opt grn' + (G.gold < up ? ' no' : '') + '" data-a="up"><i>⬆️</i><span><b>Nâng lên cấp ' + (t.lv + 1) + '</b><small>Mạnh hơn, bắn xa hơn</small></span><em>' + up + ' 💰</em></button>' : '<div style="font-size:13px;opacity:.8;margin:2px 4px 6px">⭐ Đã đạt cấp cao nhất</div>') +
+        (t.lv < MAX_LV ? '<button class="tt-opt grn' + (G.gold < up ? ' no' : '') + '" data-a="up"><i>⬆️</i><span><b>Nâng lên cấp ' + (t.lv + 1) + '/' + MAX_LV + '</b><small>' + upInfo(t) + '</small></span><em>' + up + ' 💰</em></button>' : '<div style="font-size:13px;opacity:.8;margin:2px 4px 6px">⭐ Đã đạt cấp cao nhất</div>') +
         towerBar(t) +
         (t.hp < towerMax(t) ? '<button class="tt-opt grn' + (G.gold < fixCost(t) ? ' no' : '') + '" data-a="fix"><i>🔧</i><span><b>Sửa chòi</b><small>Hồi đầy máu chòi (' + Math.ceil(t.hp) + '/' + towerMax(t) + ')</small></span><em>' + fixCost(t) + ' 💰</em></button>' : '') +
         (t.sh < shieldMax(t) - 0.5 ? '<button class="tt-opt blu' + (G.gold < shieldCost(t) ? ' no' : '') + '" data-a="shield"><i>🛡️</i><span><b>' + (t.sh > 0 ? 'Nạp đầy bảo hộ' : 'Mua bảo hộ') + '</b><small>Khiên chặn ' + shieldMax(t) + ' sát thương của lính bắn chòi</small></span><em>' + shieldCost(t) + ' 💰</em></button>' : '<div style="font-size:12.5px;opacity:.85;margin:2px 4px 6px">🛡️ Bảo hộ đang đầy</div>') +
@@ -985,8 +1015,8 @@
     drawCastle(); drawVault();
     // vòng tầm bắn khi đang chọn
     if (G.sel >= 0) {
-      var sp = spotXY(G.spots[G.sel]), tt = towerAt(G.sel), rad = tt ? TW[tt.k].r * W * (1 + 0.08 * (tt.lv - 1)) : TW.arrow.r * W;
-      X.fillStyle = 'rgba(255,255,255,.12)'; X.strokeStyle = 'rgba(255,255,255,.6)'; X.lineWidth = 2; X.setLineDash([6, 6]);
+      var sp = spotXY(G.spots[G.sel]), tt = towerAt(G.sel), rad = tt ? towerRange(tt) : TW.arrow.r * W, ey = tt && tt.k === 'eye';
+      X.fillStyle = ey ? 'rgba(167,139,250,.14)' : 'rgba(255,255,255,.12)'; X.strokeStyle = ey ? 'rgba(196,181,253,.8)' : 'rgba(255,255,255,.6)'; X.lineWidth = 2; X.setLineDash([6, 6]);
       X.beginPath(); X.arc(sp.x, sp.y, rad, 0, 7); X.fill(); X.stroke(); X.setLineDash([]);
     }
     // ô đá xây chòi
@@ -1000,6 +1030,15 @@
       X.strokeStyle = can ? 'rgba(253,224,71,' + (0.55 + 0.45 * pulse) + ')' : 'rgba(255,255,255,.35)'; X.lineWidth = can ? 3 : 2;
       X.beginPath(); X.ellipse(p.x, p.y, r + (can ? pulse * 3 : 0), r * 0.62 + (can ? pulse * 2 : 0), 0, 0, 7); X.stroke();
       X.fillStyle = can ? '#fef08a' : 'rgba(255,255,255,.75)'; X.font = '900 ' + Math.round(r * 1.05) + 'px ' + TF; X.fillText('+', p.x, p.y + 1);
+    });
+    // (bản 2026.11.08-4) vùng soi của chòi mắt thần: vòng tím mờ + tia quét
+    G.towers.forEach(function (t) {
+      if (t.k !== 'eye') return;
+      var ep = spotXY(G.spots[t.s]), er = towerRange(t), a0 = G.flagT * 1.6 + t.s;
+      X.fillStyle = 'rgba(167,139,250,.07)'; X.strokeStyle = 'rgba(196,181,253,.35)'; X.lineWidth = 1.5; X.setLineDash([5, 7]);
+      X.beginPath(); X.arc(ep.x, ep.y, er, 0, 7); X.fill(); X.stroke(); X.setLineDash([]);
+      var sg = X.createRadialGradient(ep.x, ep.y, 0, ep.x, ep.y, er); sg.addColorStop(0, 'rgba(196,181,253,.35)'); sg.addColorStop(1, 'rgba(196,181,253,0)');
+      X.fillStyle = sg; X.beginPath(); X.moveTo(ep.x, ep.y); X.arc(ep.x, ep.y, er, a0, a0 + 0.55); X.closePath(); X.fill();
     });
     // chòi + quái theo thứ tự từ trên xuống
     var list = [];
@@ -1105,7 +1144,8 @@
     X.fillStyle = '#92400e'; X.fillRect(x - s * 0.3, y - s * 0.62, s * 0.08, s * 0.36); X.fillRect(x + s * 0.22, y - s * 0.62, s * 0.08, s * 0.36);
     X.fillStyle = '#b45309'; rr(x - s * 0.36, y - s * 0.68, s * 0.72, s * 0.12, 3); X.fill();
     // người/vũ khí trong chòi
-    if (t.k === 'fire' && t.fl > 0) { var gl = X.createRadialGradient(x, y - s * 0.47, 1, x, y - s * 0.47, s * 0.55); gl.addColorStop(0, 'rgba(253,186,33,.7)'); gl.addColorStop(1, 'rgba(234,88,12,0)'); X.globalCompositeOperation = 'lighter'; X.fillStyle = gl; X.beginPath(); X.arc(x, y - s * 0.47, s * 0.55, 0, 7); X.fill(); X.globalCompositeOperation = 'source-over'; }
+    if (t.k === 'eye') { var eg = 0.5 + 0.5 * Math.sin(G.flagT * 3 + t.s); X.fillStyle = 'rgba(167,139,250,' + (0.25 + 0.25 * eg) + ')'; X.beginPath(); X.arc(x, y - s * 0.47, s * (0.3 + 0.06 * eg), 0, 7); X.fill(); }
+    if (t.k === 'fire' && t.fl > 0) { var gl = X.createRadialGradient(x, y - s * 0.47, 1, x, y - s * 0.47, s * 0.55 * (1 + 0.2 * (t.lv - 1))); gl.addColorStop(0, 'rgba(253,186,33,.7)'); gl.addColorStop(1, 'rgba(234,88,12,0)'); X.globalCompositeOperation = 'lighter'; X.fillStyle = gl; X.beginPath(); X.arc(x, y - s * 0.47, s * 0.55 * (1 + 0.2 * (t.lv - 1)), 0, 7); X.fill(); X.globalCompositeOperation = 'source-over'; }
     if (t.k === 'rocket' && t.cd <= 0.4) { X.strokeStyle = 'rgba(167,139,250,' + (0.5 + 0.5 * Math.sin(G.flagT * 10)) + ')'; X.lineWidth = 2; X.beginPath(); X.arc(x, y - s * 0.47, s * 0.32, 0, 7); X.stroke(); }
     X.save(); X.translate(x, y - s * 0.47); X.scale(fl, fl); emo(T.e, 0, 0, s * 0.36); X.restore();
     // mái
@@ -1122,11 +1162,19 @@
       if (t.sh > 0) { X.fillStyle = '#38bdf8'; X.fillRect(bx2, by2 + 5, bw2 * clamp(t.sh / shieldMax(t), 0, 1), 3); }
     }
     // sao cấp độ
-    if (t.lv > 1) { X.font = '900 ' + Math.round(s * 0.2) + 'px ' + TF; X.fillStyle = '#fde047'; X.strokeStyle = '#000'; X.lineWidth = 3; var st = '★'.repeat(t.lv); X.strokeText(st, x, y + s * 0.18); X.fillText(st, x, y + s * 0.18); }
+    if (t.lv > 1) { X.font = '900 ' + Math.round(s * (t.lv > 3 ? 0.17 : 0.2)) + 'px ' + TF; X.fillStyle = '#fde047'; X.strokeStyle = '#000'; X.lineWidth = 3; var st = '★'.repeat(t.lv); X.strokeText(st, x, y + s * 0.18); X.fillText(st, x, y + s * 0.18); }
   }
   function drawEnemy(e) {
     var D = EN[e.t], p = posAt(e.f), sz = D.sz * W, by = Math.abs(Math.sin(e.bob)) * sz * 0.1;
+    e._hid = !seen(e);
     if (p.y < -sz) return;
+    if (D.inv) {   // (bản 2026.11.08-4) quái tàng hình: chưa bị soi thì chỉ là một bóng mờ lung linh
+      if (e._hid) {
+        X.save(); X.globalAlpha = 0.13 + 0.07 * Math.sin(G.flagT * 7 + e.bob); X.translate(p.x + Math.sin(G.flagT * 11 + e.bob) * 1.5, p.y - by); if (p.dx < 0) X.scale(-1, 1);
+        emo(D.e, 0, 0, sz); X.restore(); X.globalAlpha = 1; e._x = null; return;
+      }
+      X.strokeStyle = 'rgba(196,181,253,' + (0.55 + 0.3 * Math.sin(G.flagT * 8)) + ')'; X.lineWidth = 2; X.beginPath(); X.arc(p.x, p.y - sz * 0.1, sz * 0.6, 0, 7); X.stroke();
+    }
     if (D.gun && e.aim && G.towers.indexOf(e.aim) >= 0) {   // tia ngắm đỏ: lính bắn chòi đang nhắm chòi nào
       var ap = spotXY(G.spots[e.aim.s]); X.strokeStyle = 'rgba(239,68,68,' + (0.25 + 0.2 * Math.sin(G.flagT * 9)) + ')'; X.lineWidth = 1.5; X.setLineDash([4, 5]);
       X.beginPath(); X.moveTo(p.x, p.y - sz * 0.35); X.lineTo(ap.x, ap.y - W * 0.06); X.stroke(); X.setLineDash([]);
@@ -1143,6 +1191,7 @@
   }
   function drawSign(e) {
     var D = EN[e.t], p = posAt(e.f), sz = D.sz * W; if (p.y < -sz * 2) return;
+    if (!seen(e)) { e._sx = null; return; }   // quái tàng hình chưa bị soi: không hiện biển từ
     var x = G.tp.w[e.w], fs = Math.max(11, Math.round(W * 0.034)) * (e.t === 'boss' || e.t === 'king' ? 1.15 : 1);
     X.font = '800 ' + fs + 'px ' + TF;
     var ps = fs * 1.35, tw = X.measureText(x[0]).width, bw = tw + ps + fs * 1.0, bh = fs * 1.75;
@@ -1170,7 +1219,7 @@
     // chạm vào quái (thân hoặc biển từ)
     var hit = null, bd = 1e9;
     G.enemies.forEach(function (e) {
-      if (e._x == null) return;
+      if (e._x == null || e._hid) return;
       var onSign = e._sx != null && x >= e._sx - 4 && x <= e._sx + e._sw + 4 && y >= e._sy - 4 && y <= e._sy + e._sh + 8;
       var d = Math.hypot(x - e._x, y - (e._y - e._s * 0.2));
       if (onSign) d = Math.min(d, 1);
@@ -1261,9 +1310,13 @@
     if (G.ended) return;
     if (a === 'pause') { G.paused = !G.paused; hud(); return; }
     if (a === 'wave') { startWave(); return; }
-    if (a === 'chip') { openSay(+el.getAttribute('data-w'), null); return; }
+    if (a === 'chip') {
+      var cw = +el.getAttribute('data-w');
+      if (locked(cw)) { toast('🔒 Bạn vừa đọc từ <b>' + esc(G.tp.w[cw][0]) + '</b> ' + MAX_READ + ' lần liền. Hãy đọc đúng một <b>từ khác</b>, rồi sẽ đọc lại được từ này!'); sfx('bad'); return; }
+      openSay(cw, null); return;
+    }
     if (a === 'build') { build(el.getAttribute('data-k')); return; }
-    if (a === 'up') { var t = towerAt(G.sel), c = upCost(t); if (G.gold < c) { needGold(c); return; } G.gold -= c; t.spent += c; var om = towerMax(t); t.lv++; t.hp += towerMax(t) - om; var p = spotXY(G.spots[t.s]); spark(p.x, p.y - W * 0.05, ['#fde047', '#fff', '#86efac'], 14); sfx('build'); hud('gold'); openPop(G.sel); return; }
+    if (a === 'up') { var t = towerAt(G.sel); if (!t || t.lv >= MAX_LV) return; var c = upCost(t); if (G.gold < c) { needGold(c); return; } G.gold -= c; t.spent += c; var om = towerMax(t); t.lv++; t.hp += towerMax(t) - om; var p = spotXY(G.spots[t.s]); spark(p.x, p.y - W * 0.05, ['#fde047', '#fff', '#86efac'], 14); sfx('build'); hud('gold'); openPop(G.sel); return; }
     if (a === 'fix') { var tf = towerAt(G.sel); if (!tf) return; var cf = fixCost(tf); if (G.gold < cf) { needGold(cf); return; } G.gold -= cf; tf.hp = towerMax(tf); var pf = spotXY(G.spots[tf.s]); spark(pf.x, pf.y - W * 0.05, ['#86efac', '#fff', '#fde68a'], 12); sfx('build'); hud('gold'); openPop(G.sel); return; }
     if (a === 'shield') { var tsh = towerAt(G.sel); if (!tsh) return; var cs = shieldCost(tsh); if (G.gold < cs) { needGold(cs); return; } G.gold -= cs; tsh.sh = shieldMax(tsh); var ps = spotXY(G.spots[tsh.s]); G.fx.push({ ring: 1, col: '125,211,252', x: ps.x, y: ps.y - W * 0.06, r: W * 0.12, l: 0.45, L: 0.45 }); sfx('ice'); hud('gold'); openPop(G.sel); return; }
     if (a === 'sell') { var t2 = towerAt(G.sel); G.gold += Math.floor(t2.spent * 0.6); G.towers.splice(G.towers.indexOf(t2), 1); sfx('coin'); hud('gold'); closePop(); return; }

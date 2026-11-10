@@ -1,4 +1,4 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.08-12: mỗi kho 10 câu giao tiếp; sau các đợt từ vựng (~5 từ/đợt) là ĐỢT CÂU GIAO TIẾP chỉ gồm câu, quái trâu gấp 1,7 lần; ĐỢT CUỐI riêng gồm tất cả từ vựng + câu + trùm cuối. CẢNH NỀN THEO CHỦ ĐỀ: mỗi kho có cảnh riêng (biển có sóng, nghĩa địa/đầm lầy có sương mù, giông bão có mưa chớp, xứ tuyết, vũ trụ, sân khấu, đêm hội pháo hoa…) kèm ÂM THANH NỀN tự tạo (sóng biển, gió hú rùng rợn, chim hót, mưa sấm, phố xá…), tự tắt khi đang đọc từ. Bản 2026.11.08-11: mỗi kho từ thêm 1 ĐỢT CÂU GIAO TIẾP ngay trước đợt cuối – quái vác trộm câu giao tiếp cơ bản theo chủ đề của kho (6 câu/kho, 60 kho), đọc đúng câu được thưởng gấp rưỡi, bước 2 chọn nghĩa tiếng Việt. Bản 2026.11.08-10: nâng độ khó mức Dễ và Thường lên gần bằng mức Khó – quái trâu hơn, ra dày hơn, nhiều lính bắn chòi/quái tàng hình hơn, kho giữ ít từ hơn, ít vàng khởi đầu hơn; thưởng cũng tăng theo. Bản 2026.11.08-9: đọc/chọn đáp án lấy vàng KHÔNG GIỚI HẠN nhưng theo LƯỢT – mỗi lượt mỗi từ ở thanh dưới chỉ được 1 lần, đọc/chọn hết các từ thì sang lượt mới, tất cả từ mở lại (thay cho luật "3 lần liền"). Bản 2026.11.08-8: bỏ cách đọc kiểu Việt, chỉ giữ phiên âm IPA; chọn đáp án đúng 1 từ đủ 3 lần cũng được tặng 🎁 quà mưa; máy nghe giọng dễ tính hơn. Bản 2026.11.08-7: 60 kho từ chia thành 10 GIAI ĐOẠN (mỗi giai đoạn 6 kho); bảo vệ đủ 6 kho của một giai đoạn thì mở màn 🌍 BOSS THẾ GIỚI – kho từ nằm giữa bản đồ, chòi xây quanh kho, quái tràn vào từ 4 CỬA (Bắc, Nam, Tây, Đông); boss thế giới lần sau mạnh hơn lần trước (máu, sát thương, số quái triệu hồi đều tăng). Bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.10-2: thêm 🦅 QUÁI BIẾT BAY (từ đợt 3) – không đi theo đường mà bay thẳng từ cửa vào tới kho từ, bóng in dưới đất, đập cánh. Bản 2026.11.10-1: BẢNG XẾP HẠNG TỤT HẠNG KHI VẮNG MẶT – cứ mỗi 1 tiếng người chơi không chơi thì người ảo đứng ngay dưới được cộng điểm vượt lên, người chơi tụt 1 hạng. Bản 2026.11.08-12: mỗi kho 10 câu giao tiếp; sau các đợt từ vựng (~5 từ/đợt) là ĐỢT CÂU GIAO TIẾP chỉ gồm câu, quái trâu gấp 1,7 lần; ĐỢT CUỐI riêng gồm tất cả từ vựng + câu + trùm cuối. CẢNH NỀN THEO CHỦ ĐỀ: mỗi kho có cảnh riêng (biển có sóng, nghĩa địa/đầm lầy có sương mù, giông bão có mưa chớp, xứ tuyết, vũ trụ, sân khấu, đêm hội pháo hoa…) kèm ÂM THANH NỀN tự tạo (sóng biển, gió hú rùng rợn, chim hót, mưa sấm, phố xá…), tự tắt khi đang đọc từ. Bản 2026.11.08-11: mỗi kho từ thêm 1 ĐỢT CÂU GIAO TIẾP ngay trước đợt cuối – quái vác trộm câu giao tiếp cơ bản theo chủ đề của kho (6 câu/kho, 60 kho), đọc đúng câu được thưởng gấp rưỡi, bước 2 chọn nghĩa tiếng Việt. Bản 2026.11.08-10: nâng độ khó mức Dễ và Thường lên gần bằng mức Khó – quái trâu hơn, ra dày hơn, nhiều lính bắn chòi/quái tàng hình hơn, kho giữ ít từ hơn, ít vàng khởi đầu hơn; thưởng cũng tăng theo. Bản 2026.11.08-9: đọc/chọn đáp án lấy vàng KHÔNG GIỚI HẠN nhưng theo LƯỢT – mỗi lượt mỗi từ ở thanh dưới chỉ được 1 lần, đọc/chọn hết các từ thì sang lượt mới, tất cả từ mở lại (thay cho luật "3 lần liền"). Bản 2026.11.08-8: bỏ cách đọc kiểu Việt, chỉ giữ phiên âm IPA; chọn đáp án đúng 1 từ đủ 3 lần cũng được tặng 🎁 quà mưa; máy nghe giọng dễ tính hơn. Bản 2026.11.08-7: 60 kho từ chia thành 10 GIAI ĐOẠN (mỗi giai đoạn 6 kho); bảo vệ đủ 6 kho của một giai đoạn thì mở màn 🌍 BOSS THẾ GIỚI – kho từ nằm giữa bản đồ, chòi xây quanh kho, quái tràn vào từ 4 CỬA (Bắc, Nam, Tây, Đông); boss thế giới lần sau mạnh hơn lần trước (máu, sát thương, số quái triệu hồi đều tăng). Bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    (bản 2026.11.07-6) CỐT TRUYỆN: bầy quái lẻn vào KHO TỪ VỰNG (đầu đường, phía trên) đánh cắp từ vựng, mỗi con vác 1 từ
    để mang về THÀNH CỦA CHÚNG (cuối đường, phía dưới). Nhiệm vụ của người chơi: xây chòi chặn đường, không cho quái mang từ về thành.
    Mỗi màn là 1 kho từ vựng theo chủ đề (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
@@ -446,7 +446,7 @@
     var h = '<div class="tt-ibox"><div class="tt-ihead" style="--c:' + tp.c + '"><span class="e">' + esc(tp.i) + '</span><div><b>' + (tp.wb ? '' : 'Kho từ: ') + esc(tp.n) + '</b><small>' + tp.w.length + ' từ vựng' + (SS.length ? ' · ' + SS.length + ' câu giao tiếp' : '') + ' · ' + nW + ' đợt quái · 🎨 ' + esc((SCENES[sceneKey(tp)] || SCENES.meadow).n) + (stars(tp.id) ? ' · Tốt nhất: ' + '⭐'.repeat(stars(tp.id)) : '') + '</small></div></div>' +
       (tp.wb ? '<div style="margin:12px 0 0;padding:12px 14px;border-radius:16px;background:rgba(127,29,29,.6);border:1px solid rgba(253,224,71,.5);font-size:14px;line-height:1.5">🌍 <b>Boss thế giới ' + tp.wb + ': ' + esc(WB[tp.wb - 1].e + ' ' + WB[tp.wb - 1].n) + '</b> dẫn đại quân vây <b>kho từ vựng ở giữa bản đồ</b>. Quái tràn vào từ <b>4 cửa: Bắc, Nam, Tây, Đông</b>. Hãy xây chòi quanh kho để chặn cả 4 hướng! Đợt cuối boss xuất hiện: nó bắn phá chòi và <b>triệu hồi thêm quái</b>.' + (tp.wb > 1 ? ' Boss này <b>mạnh hơn boss thế giới ' + (tp.wb - 1) + '</b>.' : '') + '</div>' : '') +
       '<div style="margin:12px 0 0;padding:12px 14px;border-radius:16px;background:rgba(127,29,29,.45);border:1px solid rgba(252,165,165,.35);font-size:14px;line-height:1.5' + (tp.wb ? ';display:none' : '') + '">👹 <b>Bầy quái đang trộm từ</b> trong kho “' + esc(tp.n) + '”. Mỗi con vác một từ, chạy theo con đường để mang về <b>thành của chúng</b>. Hãy xây chòi chặn đường, <b>không để chúng mang từ nào về thành!</b></div>' +
-      '<div class="tt-how"><div><i>🎤</i>Chạm vào từ ở thanh dưới: đọc đúng từ tiếng Anh, rồi nói đúng nghĩa tiếng Việt để nhận 💰</div><div><i>🏹</i>Chạm ô đá ➕ dọc đường để xây chòi chặn quái</div><div><i>👹</i>Chạm vào quái, đọc đúng từ nó đang trộm để làm nó choáng</div><div><i>🥷</i><b>Lính bắn chòi</b> phá chòi: dùng vàng 🔧 sửa, 🛡️ bảo hộ, xây 🎯 súng bắn tỉa</div><div><i>🎁</i>Đọc đúng mỗi <b>từ mới</b> (hoặc chọn đáp án đúng từ đó <b>3 lần</b>) được tặng 1 trận mưa: ☄️ sao băng, 🧪 axit, 🔥 lửa, ❄️ tuyết – phủ khắp bản đồ, diệt cả bầy</div><div><i>🦎</i><b>Quái tàng hình</b>: chòi thường không thấy, phải xây 👁️ <b>chòi mắt thần</b> để soi</div><div><i>📈</i>Quái <b>cộng dồn</b> mỗi đợt từ vựng; tiếp theo là <b>đợt câu giao tiếp</b> (quái trâu hơn), đợt cuối có tất cả từ + câu, 🐲 trùm và 👿 <b>trùm cuối</b></div></div>' +
+      '<div class="tt-how"><div><i>🎤</i>Chạm vào từ ở thanh dưới: đọc đúng từ tiếng Anh, rồi nói đúng nghĩa tiếng Việt để nhận 💰</div><div><i>🏹</i>Chạm ô đá ➕ dọc đường để xây chòi chặn quái</div><div><i>👹</i>Chạm vào quái, đọc đúng từ nó đang trộm để làm nó choáng</div><div><i>🥷</i><b>Lính bắn chòi</b> phá chòi: dùng vàng 🔧 sửa, 🛡️ bảo hộ, xây 🎯 súng bắn tỉa</div><div><i>🎁</i>Đọc đúng mỗi <b>từ mới</b> (hoặc chọn đáp án đúng từ đó <b>3 lần</b>) được tặng 1 trận mưa: ☄️ sao băng, 🧪 axit, 🔥 lửa, ❄️ tuyết – phủ khắp bản đồ, diệt cả bầy</div><div><i>🦅</i><b>Quái biết bay</b> (từ đợt 3): bay thẳng về kho từ, không đi theo đường – xây chòi gần kho để chặn</div><div><i>🦎</i><b>Quái tàng hình</b>: chòi thường không thấy, phải xây 👁️ <b>chòi mắt thần</b> để soi</div><div><i>📈</i>Quái <b>cộng dồn</b> mỗi đợt từ vựng; tiếp theo là <b>đợt câu giao tiếp</b> (quái trâu hơn), đợt cuối có tất cả từ + câu, 🐲 trùm và 👿 <b>trùm cuối</b></div></div>' +
       '<div class="tt-grp" style="margin-top:6px">🎚️ Chọn cấp độ</div><div class="tt-dif" id="ttDif">' +
       DIFF.map(function (d, i) { return '<button class="' + (i === DSEL ? 'on' : '') + '" style="--c:' + d.c + '" data-a="diff" data-i="' + i + '"><i>' + d.e + '</i><b>' + d.n + '</b><small>📚 ' + d.life + '</small></button>'; }).join('') +
       '</div><div class="tt-dnote" id="ttDN">' + diffNote(DSEL) + '</div>' +
@@ -512,6 +512,8 @@
     gun: { e: '🥷', hp: 70, spd: 0.075, sz: 0.09, gun: { r: 0.27, cd: 1.5, d: 7 } },
     /* (bản 2026.11.08-4) tắc kè tàng hình: chòi thường không phát hiện được, chỉ bị bắn khi đang ở trong tầm soi của 👁️ chòi mắt thần */
     inv: { e: '🦎', hp: 66, spd: 0.088, sz: 0.09, inv: 1 },
+    /* (bản 2026.11.10-2) quái biết bay: không đi theo đường mà BAY THẲNG từ cửa vào tới kho từ (đường tắt), nên dễ lọt qua các chòi xây dọc đường */
+    fly: { e: '🦅', hp: 46, spd: 0.07, sz: 0.09, fly: 1 },
     boss: { e: '🐲', hp: 650, spd: 0.04, sz: 0.15, dmg: 5 },
     /* trùm cuối: ra sau cùng ở đợt cuối, rất trâu, vừa đi vừa bắn cầu lửa phá chòi */
     king: { e: '👿', hp: 1700, spd: 0.034, sz: 0.19, dmg: 8, gun: { r: 0.32, cd: 2.2, d: 22 } },
@@ -556,13 +558,18 @@
       var nI = Math.min(Math.floor(list.length / (sw ? 6 : 4)), Math.max(1, Math.round(k * 0.8 * DIFF[G.dif].more)));
       for (var ii = 0; ii < nI; ii++) { var ix = Math.floor((ii + 0.2) * list.length / nI); while (ix < list.length - 1 && list[ix].t === 'gun') ix++; if (list[ix].t !== 'gun') list[ix].t = 'inv'; }
     }
+    // (bản 2026.11.10-2) quái biết bay: từ đợt 3, thỉnh thoảng vài con (cấp độ khó thì nhiều hơn)
+    if (k >= 2) {
+      var nF = Math.min(Math.floor(list.length / 7), Math.max(1, Math.round((k - 1) * 0.6 * DIFF[G.dif].more)));
+      for (var fi = 0; fi < nF; fi++) { var fx2 = Math.floor((fi + 0.65) * list.length / nF) % list.length, tries = 0; while (list[fx2].t !== 'gob' && list[fx2].t !== 'bat' && list[fx2].t !== 'ghost' && list[fx2].t !== 'zom' && list[fx2].t !== 'ogre' && tries++ < list.length) fx2 = (fx2 + 1) % list.length; if (tries < list.length) list[fx2].t = 'fly'; }
+    }
     if (k === G.waves.length - 1) {
       var all = []; for (j = 0; j <= k; j++) all = all.concat(G.waves[j]);
       for (var bi = 0; bi < DIFF[G.dif].boss + (G.wb ? Math.floor((G.wb - 1) / 3) : 0); bi++) list.splice(Math.floor(list.length * (0.55 + 0.1 * bi)), 0, { t: 'boss', w: all[(bi * 7) % all.length] });
       list.push({ t: G.wb ? 'wboss' : 'king', w: all[all.length - 1] });   // trùm cuối (màn boss thế giới: BOSS THẾ GIỚI) ra sau cùng
     }
     var off = Math.floor(r() * 4);
-    list.forEach(function (o, i) { o.pi = G.wb ? (i + off) % 4 : 0; });   // (bản 2026.11.08-7) màn boss thế giới: chia quái đều cho 4 cửa
+    list.forEach(function (o, i) { o.pi = (G.wb ? (i + off) % 4 : 0) + (o.t === 'fly' ? 100 : 0); });   // quái bay: đường bay thẳng số 100+   // (bản 2026.11.08-7) màn boss thế giới: chia quái đều cho 4 cửa
     return list;
   }
 
@@ -592,7 +599,7 @@
   function roundLeft() { return G.bank.filter(function (w) { return !G.done[w]; }).length; }
 
   /* ================= BỐ CỤC ================= */
-  var PATH = [], PLEN = 0, PW = 30, PATHS = [];
+  var PATH = [], PLEN = 0, PW = 30, PATHS = [], FLY = [];
   function lay() {
     var st = $('ttStage'); if (!st) return;
     var sw = st.clientWidth, sh = st.clientHeight; if (!sw || !sh) return;
@@ -607,6 +614,8 @@
       return { p: pt, L: L };
     });
     PATH = PATHS[0].p; PLEN = PATHS[0].L;
+    // (bản 2026.11.10-2) ĐƯỜNG BAY của quái biết bay: đường thẳng từ cửa vào tới kho từ (cuối đường đi)
+    FLY = PATHS.map(function (P) { var a = P.p[0], b = P.p[P.p.length - 1], L = Math.hypot(b.x - a.x, b.y - a.y) || 1; return { p: [{ x: a.x, y: a.y }, { x: b.x, y: b.y, L: 0, E: L }], L: L }; });
     if (!G.spots) G.spots = makeSpots();
     drawBG(); ambInit();
   }
@@ -615,7 +624,8 @@
     t = clamp(t, 0, 1); return Math.hypot(px - (a.x + t * dx), py - (a.y + t * dy));
   }
   function distPath(px, py) { var m = 1e9; PATHS.forEach(function (P) { for (var i = 1; i < P.p.length; i++) m = Math.min(m, distSeg(px, py, P.p[i - 1], P.p[i])); }); return m; }
-  function plen(pi) { return (PATHS[pi || 0] || PATHS[0]).L; }
+  function pathOf(pi) { return (pi >= 100 ? FLY[pi - 100] : PATHS[pi || 0]) || PATHS[0]; }   // pi >= 100: đường bay thẳng
+  function plen(pi) { return pathOf(pi).L; }
   function makeSpots() {
     var cand = [], step = W * 0.065, R = W * 0.25, ctr = PATH[PATH.length - 1];
     for (var y = H * 0.05; y < H * (G.wb ? 0.92 : 0.8); y += step) for (var x = W * 0.08; x <= W * 0.92; x += step) {
@@ -631,7 +641,7 @@
     return out.map(function (o) { return { nx: o.x / W, ny: o.y / H }; });
   }
   function posAt(f, pi) {
-    var P = PATHS[pi || 0] || PATHS[0], PT = P.p, d = clamp(f, 0, 1) * P.L;
+    var P = pathOf(pi), PT = P.p, d = clamp(f, 0, 1) * P.L;
     for (var i = 1; i < PT.length; i++) if (d <= PT[i].E || i === PT.length - 1) {
       var a = PT[i - 1], b = PT[i], seg = b.E - b.L || 1, t = clamp((d - b.L) / seg, 0, 1);
       return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t, dx: b.x - a.x, dy: b.y - a.y };
@@ -1089,6 +1099,7 @@
         if (o.t === 'boss') { banner('🐲 Trùm trộm từ xuất hiện!', 'Đừng để nó mang từ về thành – mất tới 5 từ!'); sfx('horn'); }
         if (o.t === 'king') { banner('👿 TRÙM CUỐI xuất hiện!', 'Nó bắn cầu lửa phá chòi, về tới thành là mất 8 từ!'); sfx('horn'); G.quake = 0.4; }
         if (o.t === 'inv' && !G.invSeen) { G.invSeen = true; banner('🦎 Quái tàng hình!', 'Chòi thường không thấy chúng – xây 👁️ chòi mắt thần để soi'); sfx('horn'); }
+        if (o.t === 'fly' && !G.flySeen) { G.flySeen = true; banner('🦅 Quái biết bay!', 'Chúng bay thẳng về kho từ, không đi theo đường – xây chòi gần kho hoặc dùng 🎁 mưa'); sfx('horn'); }
         if (o.t === 'gun' && !G.gunSeen) { G.gunSeen = true; banner('🥷 Lính bắn chòi!', 'Chúng bắn phá chòi – sửa 🔧, mua bảo hộ 🛡️ hoặc xây 🎯 súng bắn tỉa'); sfx('horn'); }
       }
     }
@@ -1117,6 +1128,7 @@
       }
       if (e.f >= 1) {
         G.enemies.splice(i, 1); hurt(D2.dmg || 1, e); if (SAY && SAY.e === e) closeSay();
+        if (D2.fly && !G.flyTip && !G.ended) { G.flyTip = true; toast('🦅 Quái biết bay vừa lọt vào kho! Chúng bay thẳng, không đi theo đường. Hãy xây chòi <b>gần kho từ</b> hoặc gọi <b>🎁 mưa</b> để hạ chúng.'); }
         if (D2.inv && !G.invTip && !G.ended) { G.invTip = true; toast('🦎 Quái tàng hình vừa lọt qua! Chòi thường không thấy chúng. Hãy xây <b>👁️ Chòi mắt thần</b> sát đường để soi, các chòi khác mới bắn được.'); }
       }
     }
@@ -1435,14 +1447,34 @@
     if (!LB) {
       try { LB = JSON.parse(localStorage.getItem(LB_KEY)); } catch (e) {}
       if (!LB || !LB.b || !LB.b.length) LB = { b: lbMake(), me: 0, t: Date.now() };
+      if (!LB.p) LB.p = LB.t || Date.now();                            // (bản 2026.11.10-1) lần cuối người chơi thật sự chơi
       var hrs = (Date.now() - (LB.t || Date.now())) / 36e5;          // vắng mặt bao lâu thì người ảo chơi thêm bấy nhiêu
-      lbBotsPlay(Math.min(300, Math.floor(hrs * 6))); LB.t = Date.now(); lbSave();
+      lbBotsPlay(Math.min(300, Math.floor(hrs * 6))); LB.t = Date.now();
+      lbDecay(); lbSave();
     }
     return LB;
   }
+  /* (bản 2026.11.10-1) TỤT HẠNG KHI VẮNG MẶT: cứ mỗi 1 tiếng người chơi không chơi (không đọc đúng / không bảo vệ kho),
+     người ảo đứng ngay dưới được cộng điểm vượt lên trên người chơi -> người chơi tụt 1 hạng.
+     LB.p = thời điểm chơi gần nhất, LB.dc = số hạng đã bị tụt trong lần vắng mặt này. Chơi lại thì đếm lại từ đầu. */
+  var LB_IDLE = 36e5;   // 1 tiếng
+  function lbDecay() {
+    if (!LB || !LB.b) return false;
+    var due = Math.floor((Date.now() - (LB.p || Date.now())) / LB_IDLE) - (LB.dc || 0), moved = false;
+    for (; due > 0; due--) {
+      var below = null;
+      LB.b.forEach(function (b) { if (b.s < LB.me && (!below || b.s > below.s)) below = b; });   // người ảo ngay dưới người chơi
+      LB.dc = (LB.dc || 0) + 1;
+      if (!below) continue;                                          // đã đứng cuối bảng thì không tụt nữa
+      below.s = LB.me + 1 + Math.floor(Math.random() * 15);          // vượt lên trên người chơi vài điểm
+      moved = true;
+    }
+    return moved;
+  }
+  setInterval(function () { if (LB && lbDecay()) { lbSave(); lbRender(); } }, 60000);   // đang mở game mà không chơi cũng tính
   function lbRank() { var d = lbData(), r = 1; d.b.forEach(function (b) { if (b.s >= d.me) r++; }); return r; }   // bằng điểm thì người ảo đứng trước
   function lbAdd(n) {
-    var d = lbData(); d.me += n; d.t = Date.now(); lbSave();
+    var d = lbData(); d.me += n; d.t = d.p = Date.now(); d.dc = 0; lbSave();
     var r = lbRank();
     if (lbPrev && r < lbPrev && (r <= 10 && lbPrev > 10 || r <= 3 && lbPrev > 3 || r === 1)) toast(r === 1 ? '👑 Bạn đã lên <b>HẠNG 1</b> bảng xếp hạng!' : r <= 3 ? '🏆 Bạn đã vào <b>TOP 3</b> – hạng #' + r + '!' : '🎉 Bạn đã vào <b>TOP 10</b> – hạng #' + r + '!');
     lbRender(r < lbPrev);
@@ -1701,7 +1733,7 @@
     // chòi + quái theo thứ tự từ trên xuống
     var list = [];
     G.towers.forEach(function (t) { list.push({ y: spotXY(G.spots[t.s]).y, t: t }); });
-    G.enemies.forEach(function (e) { list.push({ y: posAt(e.f, e.pi).y, e: e }); });
+    G.enemies.forEach(function (e) { list.push({ y: posAt(e.f, e.pi).y + (EN[e.t].fly ? H * 2 : 0), e: e }); });   // quái bay vẽ sau cùng (bay phía trên)
     list.sort(function (a, b) { return a.y - b.y; });
     list.forEach(function (o) { if (o.t) drawTower(o.t); else drawEnemy(o.e); });
     ambDraw(false); X.textAlign = 'center'; X.textBaseline = 'middle';   // (bản 2026.11.08-12) sương mù, mưa, tuyết, đom đóm… (dưới bảng tên từ)
@@ -1880,7 +1912,8 @@
       var ap = spotXY(G.spots[e.aim.s]); X.strokeStyle = 'rgba(239,68,68,' + (0.25 + 0.2 * Math.sin(G.flagT * 9)) + ')'; X.lineWidth = 1.5; X.setLineDash([4, 5]);
       X.beginPath(); X.moveTo(p.x, p.y - sz * 0.35); X.lineTo(ap.x, ap.y - W * 0.06); X.stroke(); X.setLineDash([]);
     }
-    X.fillStyle = 'rgba(0,0,0,.3)'; X.beginPath(); X.ellipse(p.x, p.y + sz * 0.3, sz * 0.38, sz * 0.13, 0, 0, 7); X.fill();
+    if (D.fly) { X.fillStyle = 'rgba(0,0,0,.18)'; X.beginPath(); X.ellipse(p.x, p.y + sz * 0.95, sz * 0.3, sz * 0.09, 0, 0, 7); X.fill(); }   // quái bay: bóng in xa dưới đất
+    else { X.fillStyle = 'rgba(0,0,0,.3)'; X.beginPath(); X.ellipse(p.x, p.y + sz * 0.3, sz * 0.38, sz * 0.13, 0, 0, 7); X.fill(); }
     if (e.t === 'wboss') { var au = 0.5 + 0.5 * Math.sin(G.flagT * 4); var ag = X.createRadialGradient(p.x, p.y - sz * 0.2, sz * 0.2, p.x, p.y - sz * 0.2, sz * 0.9); ag.addColorStop(0, 'rgba(220,38,38,' + (0.25 + 0.2 * au) + ')'); ag.addColorStop(1, 'rgba(220,38,38,0)'); X.fillStyle = ag; X.beginPath(); X.arc(p.x, p.y - sz * 0.2, sz * 0.9, 0, 7); X.fill(); }
     if (e.burnT > 0) { X.fillStyle = 'rgba(249,115,22,.28)'; X.beginPath(); X.arc(p.x, p.y - sz * 0.1, sz * 0.55, 0, 7); X.fill(); }
     if (e.acidT > 0) { X.fillStyle = 'rgba(132,204,22,.38)'; X.beginPath(); X.arc(p.x, p.y - sz * 0.1, sz * 0.55, 0, 7); X.fill(); }
@@ -1888,6 +1921,7 @@
     if (e.slowT > 0) { X.fillStyle = 'rgba(125,211,252,.35)'; X.beginPath(); X.arc(p.x, p.y - sz * 0.1, sz * 0.55, 0, 7); X.fill(); }
     X.save(); X.translate(p.x, p.y - by);
     if (p.dx < 0) X.scale(-1, 1);
+    if (D.fly) X.scale(1, 0.82 + 0.18 * Math.abs(Math.sin(e.bob * 1.6)));   // đập cánh
     if (e.hit > 0) X.globalAlpha = 0.6;
     emo(enE(e), 0, 0, sz); X.restore(); X.globalAlpha = 1;
     if (e.stunT > 0) { for (var i = 0; i < 3; i++) { var a = G.flagT * 5 + i * 2.1; emo('⭐', p.x + Math.cos(a) * sz * 0.4, p.y - sz * 0.55 + Math.sin(a) * sz * 0.12, sz * 0.22); } }

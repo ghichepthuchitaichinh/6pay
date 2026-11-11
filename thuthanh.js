@@ -1,4 +1,4 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.11-5: ⏱️ NÂNG CẤP TỐC ĐỘ BẮN cho từng loại chòi (+6%/bậc, 10 bậc) trong Thư viện chòi, bảng chỉ số có cột tốc độ bắn; ⏩ TUA GAME x2 – nút x1/x2 trên thanh trên cùng, nhớ lựa chọn, bảng đọc từ vẫn chạy chậm. Bản 2026.11.11-4: MỞ KHÓA LƯỢT CHỌN – hết 5 lần chọn, mỗi lần đọc hết 1 lượt từ thì từ đó được thêm 1 lần chọn, lặp mãi; 5 CHÒI MỚI ⚡ sấm sét, ☠️ độc dược, 🌪️ lốc xoáy, 🔴 tia tử thần, ☄️ thiên thạch; MỖI LOẠI CHÒI CÓ VŨ KHÍ + ĐỈNH THÁP + DÁNG THÂN RIÊNG, vũ khí xoay theo quái; 🏯 THƯ VIỆN CHÒI – xem hình động 12 loại × 10 cấp, bảng máu/dame/thủ/tầm, nâng cấp ❤️ máu ⚔️ dame 🛡️ thủ vĩnh viễn bằng 💎 ngọc (đọc đúng +2, chọn đúng +1, thắng +10/⭐). Bản 2026.11.11-3: GIỚI HẠN 👆 CHỌN ĐÁP ÁN 5 lần mỗi từ/câu (đếm mãi) – hết lượt muốn thêm vàng phải 🎤 đọc bằng giọng; TỪ DỄ TRƯỚC – từ vựng tiểu học cơ bản ra ở các đợt đầu, hết rồi mới tới từ khó; CÂU GIAO TIẾP soạn lại: 183 câu khó được thay bằng câu ngắn, dễ cho học sinh tiểu học, câu ngắn ra trước. Bản 2026.11.11-2: CHÒI 10 CẤP – từ cấp 6 chòi tiến hóa thêm 5 bậc (Hồng ngọc, Thạch anh tím, Kim cương, Lục bảo, Thần thoại): mọc 2 tháp canh phụ, tầng trên, xích sắt, cánh rồng, tia sét, vầng hào quang; sao đổi màu theo bậc, cấp 10 sao cầu vồng + vương miện. CHÒI THEO CHỦ ĐỀ – 17 phong cách (đá rêu, nhà gỗ rơm, phố gạch, công nghệ neon, kẹo ngọt, chùa tháp phương Đông, gỗ rừng, tre rừng rậm, nấm phép thuật, san hô vỏ sò, băng tuyết, gô-tích giông bão, sa mạc, kho báu, dung nham, đầm lầy, ma quái) theo cảnh của từng kho từ. Bản 2026.11.11-1: ĐỒ HỌA MỚI – chòi vẽ lại theo 5 cấp càng cao càng hầm hố (chòi gỗ → tháp đá → pháo đài → tháp sắt quỷ có gai, sừng, mắt đỏ → tháp hắc thạch viền vàng, pha lê, cầu năng lượng bay quanh); quái có viền, khối, hào quang, bước đi lắc lư, bụi chân, chớp trắng khi trúng đòn; nền có hạt đất, ánh nắng, mặt đường có khối, bóng mây trôi. Bản 2026.11.10-2: thêm 🦅 QUÁI BIẾT BAY (từ đợt 3) – không đi theo đường mà bay thẳng từ cửa vào tới kho từ, bóng in dưới đất, đập cánh. Bản 2026.11.10-1: BẢNG XẾP HẠNG TỤT HẠNG KHI VẮNG MẶT – cứ mỗi 1 tiếng người chơi không chơi thì người ảo đứng ngay dưới được cộng điểm vượt lên, người chơi tụt 1 hạng. Bản 2026.11.08-12: mỗi kho 10 câu giao tiếp; sau các đợt từ vựng (~5 từ/đợt) là ĐỢT CÂU GIAO TIẾP chỉ gồm câu, quái trâu gấp 1,7 lần; ĐỢT CUỐI riêng gồm tất cả từ vựng + câu + trùm cuối. CẢNH NỀN THEO CHỦ ĐỀ: mỗi kho có cảnh riêng (biển có sóng, nghĩa địa/đầm lầy có sương mù, giông bão có mưa chớp, xứ tuyết, vũ trụ, sân khấu, đêm hội pháo hoa…) kèm ÂM THANH NỀN tự tạo (sóng biển, gió hú rùng rợn, chim hót, mưa sấm, phố xá…), tự tắt khi đang đọc từ. Bản 2026.11.08-11: mỗi kho từ thêm 1 ĐỢT CÂU GIAO TIẾP ngay trước đợt cuối – quái vác trộm câu giao tiếp cơ bản theo chủ đề của kho (6 câu/kho, 60 kho), đọc đúng câu được thưởng gấp rưỡi, bước 2 chọn nghĩa tiếng Việt. Bản 2026.11.08-10: nâng độ khó mức Dễ và Thường lên gần bằng mức Khó – quái trâu hơn, ra dày hơn, nhiều lính bắn chòi/quái tàng hình hơn, kho giữ ít từ hơn, ít vàng khởi đầu hơn; thưởng cũng tăng theo. Bản 2026.11.08-9: đọc/chọn đáp án lấy vàng KHÔNG GIỚI HẠN nhưng theo LƯỢT – mỗi lượt mỗi từ ở thanh dưới chỉ được 1 lần, đọc/chọn hết các từ thì sang lượt mới, tất cả từ mở lại (thay cho luật "3 lần liền"). Bản 2026.11.08-8: bỏ cách đọc kiểu Việt, chỉ giữ phiên âm IPA; chọn đáp án đúng 1 từ đủ 3 lần cũng được tặng 🎁 quà mưa; máy nghe giọng dễ tính hơn. Bản 2026.11.08-7: 60 kho từ chia thành 10 GIAI ĐOẠN (mỗi giai đoạn 6 kho); bảo vệ đủ 6 kho của một giai đoạn thì mở màn 🌍 BOSS THẾ GIỚI – kho từ nằm giữa bản đồ, chòi xây quanh kho, quái tràn vào từ 4 CỬA (Bắc, Nam, Tây, Đông); boss thế giới lần sau mạnh hơn lần trước (máu, sát thương, số quái triệu hồi đều tăng). Bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.11-6: 🔁 MÀN LUÂN PHIÊN – 🛤️ đi theo lối → 🌊 vượt biển (quái bơi tràn qua biển, chòi đổi thành 🚢 tàu chiến) → 🌫️ sương mù (chòi chỉ thấy quái ở gần) → 🦅 không kích (quái bay tràn vào, chòi đổi thành ✈️ máy bay chiến đấu); 🎒 ĐỘI CHÒI CHƠI NỐI TIẾP – chòi và vàng giữ nguyên khi sang màn/chủ đề mới, cùng vị trí; chạm chòi để ĐỔI DẠNG (tốn vàng) và NÂNG TRỰC TIẾP ⚔️ sát thương, 🎯 tầm bắn, ⏱️ tốc độ, ❤️ máu (càng lên càng đắt); 👹 MÁU QUÁI TĂNG THEO SỨC MẠNH ĐỘI CHÒI; ⏯️ LƯU TRẬN ĐANG DỞ – tắt game mở lại chơi tiếp đúng chỗ; 11 Ô CHÒI CỐ ĐỊNH cách đều, chòi thu nhỏ để không chồng lên nhau. Bản 2026.11.11-5: ⏱️ NÂNG CẤP TỐC ĐỘ BẮN cho từng loại chòi (+6%/bậc, 10 bậc) trong Thư viện chòi, bảng chỉ số có cột tốc độ bắn; ⏩ TUA GAME x2 – nút x1/x2 trên thanh trên cùng, nhớ lựa chọn, bảng đọc từ vẫn chạy chậm. Bản 2026.11.11-4: MỞ KHÓA LƯỢT CHỌN – hết 5 lần chọn, mỗi lần đọc hết 1 lượt từ thì từ đó được thêm 1 lần chọn, lặp mãi; 5 CHÒI MỚI ⚡ sấm sét, ☠️ độc dược, 🌪️ lốc xoáy, 🔴 tia tử thần, ☄️ thiên thạch; MỖI LOẠI CHÒI CÓ VŨ KHÍ + ĐỈNH THÁP + DÁNG THÂN RIÊNG, vũ khí xoay theo quái; 🏯 THƯ VIỆN CHÒI – xem hình động 12 loại × 10 cấp, bảng máu/dame/thủ/tầm, nâng cấp ❤️ máu ⚔️ dame 🛡️ thủ vĩnh viễn bằng 💎 ngọc (đọc đúng +2, chọn đúng +1, thắng +10/⭐). Bản 2026.11.11-3: GIỚI HẠN 👆 CHỌN ĐÁP ÁN 5 lần mỗi từ/câu (đếm mãi) – hết lượt muốn thêm vàng phải 🎤 đọc bằng giọng; TỪ DỄ TRƯỚC – từ vựng tiểu học cơ bản ra ở các đợt đầu, hết rồi mới tới từ khó; CÂU GIAO TIẾP soạn lại: 183 câu khó được thay bằng câu ngắn, dễ cho học sinh tiểu học, câu ngắn ra trước. Bản 2026.11.11-2: CHÒI 10 CẤP – từ cấp 6 chòi tiến hóa thêm 5 bậc (Hồng ngọc, Thạch anh tím, Kim cương, Lục bảo, Thần thoại): mọc 2 tháp canh phụ, tầng trên, xích sắt, cánh rồng, tia sét, vầng hào quang; sao đổi màu theo bậc, cấp 10 sao cầu vồng + vương miện. CHÒI THEO CHỦ ĐỀ – 17 phong cách (đá rêu, nhà gỗ rơm, phố gạch, công nghệ neon, kẹo ngọt, chùa tháp phương Đông, gỗ rừng, tre rừng rậm, nấm phép thuật, san hô vỏ sò, băng tuyết, gô-tích giông bão, sa mạc, kho báu, dung nham, đầm lầy, ma quái) theo cảnh của từng kho từ. Bản 2026.11.11-1: ĐỒ HỌA MỚI – chòi vẽ lại theo 5 cấp càng cao càng hầm hố (chòi gỗ → tháp đá → pháo đài → tháp sắt quỷ có gai, sừng, mắt đỏ → tháp hắc thạch viền vàng, pha lê, cầu năng lượng bay quanh); quái có viền, khối, hào quang, bước đi lắc lư, bụi chân, chớp trắng khi trúng đòn; nền có hạt đất, ánh nắng, mặt đường có khối, bóng mây trôi. Bản 2026.11.10-2: thêm 🦅 QUÁI BIẾT BAY (từ đợt 3) – không đi theo đường mà bay thẳng từ cửa vào tới kho từ, bóng in dưới đất, đập cánh. Bản 2026.11.10-1: BẢNG XẾP HẠNG TỤT HẠNG KHI VẮNG MẶT – cứ mỗi 1 tiếng người chơi không chơi thì người ảo đứng ngay dưới được cộng điểm vượt lên, người chơi tụt 1 hạng. Bản 2026.11.08-12: mỗi kho 10 câu giao tiếp; sau các đợt từ vựng (~5 từ/đợt) là ĐỢT CÂU GIAO TIẾP chỉ gồm câu, quái trâu gấp 1,7 lần; ĐỢT CUỐI riêng gồm tất cả từ vựng + câu + trùm cuối. CẢNH NỀN THEO CHỦ ĐỀ: mỗi kho có cảnh riêng (biển có sóng, nghĩa địa/đầm lầy có sương mù, giông bão có mưa chớp, xứ tuyết, vũ trụ, sân khấu, đêm hội pháo hoa…) kèm ÂM THANH NỀN tự tạo (sóng biển, gió hú rùng rợn, chim hót, mưa sấm, phố xá…), tự tắt khi đang đọc từ. Bản 2026.11.08-11: mỗi kho từ thêm 1 ĐỢT CÂU GIAO TIẾP ngay trước đợt cuối – quái vác trộm câu giao tiếp cơ bản theo chủ đề của kho (6 câu/kho, 60 kho), đọc đúng câu được thưởng gấp rưỡi, bước 2 chọn nghĩa tiếng Việt. Bản 2026.11.08-10: nâng độ khó mức Dễ và Thường lên gần bằng mức Khó – quái trâu hơn, ra dày hơn, nhiều lính bắn chòi/quái tàng hình hơn, kho giữ ít từ hơn, ít vàng khởi đầu hơn; thưởng cũng tăng theo. Bản 2026.11.08-9: đọc/chọn đáp án lấy vàng KHÔNG GIỚI HẠN nhưng theo LƯỢT – mỗi lượt mỗi từ ở thanh dưới chỉ được 1 lần, đọc/chọn hết các từ thì sang lượt mới, tất cả từ mở lại (thay cho luật "3 lần liền"). Bản 2026.11.08-8: bỏ cách đọc kiểu Việt, chỉ giữ phiên âm IPA; chọn đáp án đúng 1 từ đủ 3 lần cũng được tặng 🎁 quà mưa; máy nghe giọng dễ tính hơn. Bản 2026.11.08-7: 60 kho từ chia thành 10 GIAI ĐOẠN (mỗi giai đoạn 6 kho); bảo vệ đủ 6 kho của một giai đoạn thì mở màn 🌍 BOSS THẾ GIỚI – kho từ nằm giữa bản đồ, chòi xây quanh kho, quái tràn vào từ 4 CỬA (Bắc, Nam, Tây, Đông); boss thế giới lần sau mạnh hơn lần trước (máu, sát thương, số quái triệu hồi đều tăng). Bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    (bản 2026.11.07-6) CỐT TRUYỆN: bầy quái lẻn vào KHO TỪ VỰNG (đầu đường, phía trên) đánh cắp từ vựng, mỗi con vác 1 từ
    để mang về THÀNH CỦA CHÚNG (cuối đường, phía dưới). Nhiệm vụ của người chơi: xây chòi chặn đường, không cho quái mang từ về thành.
    Mỗi màn là 1 kho từ vựng theo chủ đề (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
@@ -402,7 +402,18 @@
     '.tt-lib .ur{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid rgba(255,255,255,.08)}.tt-lib .ur i{font-style:normal;font-size:24px}.tt-lib .ur span{flex:1;min-width:0}.tt-lib .ur small{display:block;font-size:11.5px;opacity:.8}',
     '.tt-lib .bar{display:block;height:6px;border-radius:4px;background:rgba(255,255,255,.15);margin-top:3px;overflow:hidden}.tt-lib .bar em{display:block;height:100%;background:linear-gradient(90deg,#38bdf8,#a855f7)}',
     '.tt-lib .ur button{border:0;border-radius:12px;padding:9px 10px;font-weight:900;font-family:inherit;color:#fff;background:linear-gradient(180deg,#0ea5e9,#0369a1);cursor:pointer;white-space:nowrap}.tt-lib .ur button.no{opacity:.5}.tt-lib .ur button[disabled]{background:#475569}',
-    '.tt-lib .msg{margin-top:8px;padding:8px 10px;border-radius:12px;background:rgba(253,224,71,.15);font-weight:800;font-size:13px}.tt-lib .note{margin-top:8px;font-size:12px;opacity:.8;line-height:1.45}'
+    '.tt-lib .msg{margin-top:8px;padding:8px 10px;border-radius:12px;background:rgba(253,224,71,.15);font-weight:800;font-size:13px}.tt-lib .note{margin-top:8px;font-size:12px;opacity:.8;line-height:1.45}',
+    /* (bản 2026.11.11-6) thẻ màn chơi, đổi dạng chòi, nâng chỉ số */
+    '.tt-pop{width:262px}.tt-sub{font-size:11.5px;font-weight:800;opacity:.85;margin:2px 4px 4px}',
+    '.tt-mode{margin:12px 0 0;padding:12px 14px;border-radius:16px;background:linear-gradient(135deg,rgba(14,116,144,.6),rgba(30,58,138,.6));border:1px solid rgba(125,211,252,.45);font-size:13.5px;line-height:1.5}',
+    '.tt-mode .mh{display:flex;gap:10px;align-items:center}.tt-mode .mh>span{font-size:36px;font-family:' + EF + '}.tt-mode .mh b{display:block;font-size:16.5px;color:#fde68a}.tt-mode .mh small{display:block;font-size:13px;opacity:.95}',
+    '.tt-mode .ml{margin-top:7px;font-size:12.5px;opacity:.96}.tt-mode .warn{color:#fecaca;font-weight:700}',
+    '.tt-lnk{margin-top:9px;background:none;border:1px dashed rgba(255,255,255,.45);color:#fff;border-radius:10px;padding:7px 10px;font:inherit;font-size:12.5px;cursor:pointer}',
+    '.tt-frm{display:flex;gap:4px;margin:0 0 6px}.tt-frm button{flex:1;border:0;border-radius:10px;padding:5px 2px;background:rgba(255,255,255,.1);color:#fff;font:inherit;font-size:10.5px;line-height:1.25;cursor:pointer}',
+    '.tt-frm button i{display:block;font-style:normal;font-family:' + EF + ';font-size:21px}.tt-frm button em{display:block;font-style:normal;font-weight:900;color:#fde047}',
+    '.tt-frm button.on{background:rgba(22,163,74,.55);box-shadow:inset 0 0 0 2px #86efac}.tt-frm button.best:not(.on){box-shadow:inset 0 0 0 2px #fde047}.tt-frm button.no{opacity:.45}',
+    '.tt-ups{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:0 0 6px}.tt-ups button{border:0;border-radius:10px;padding:6px 7px;background:rgba(124,58,237,.5);color:#fff;font:inherit;font-size:11px;line-height:1.3;text-align:left;cursor:pointer}',
+    '.tt-ups button b{display:block;font-size:12px}.tt-ups button em{font-style:normal;font-weight:900;color:#fde047}.tt-ups button.no{opacity:.45}.tt-ups button.mx{background:rgba(255,255,255,.08);opacity:.75}'
   ].join('');
   document.head.appendChild(css);
 
@@ -436,6 +447,8 @@
     var cv = $('ttCv');
     cv.addEventListener('pointerdown', onTap);
     window.addEventListener('resize', function () { if (G && root.classList.contains('on')) lay(); });
+    document.addEventListener('visibilitychange', function () { if (document.hidden && G && !G.ended) runSave(); });
+    window.addEventListener('pagehide', function () { if (G && !G.ended) runSave(); });
   }
   function show(id) { ['ttMap', 'ttIntro', 'ttGame'].forEach(function (k) { $(k).classList.toggle('on', k === id); }); }
   function sndBtn() { var b = $('ttSnd'); if (b) b.textContent = SND.on ? '🔊' : '🔇'; }
@@ -462,6 +475,8 @@
         (wl ? 'Bảo vệ đủ ' + pt.length + ' kho của giai đoạn ' + (k + 1) + ' để mở (' + dn + '/' + pt.length + ')' : (ws ? '⭐'.repeat(ws) + '<span style="opacity:.3">' + '⭐'.repeat(3 - ws) + '</span> · ' : '') + 'Quái tràn vào từ 4 cửa · mạnh hơn boss trước') + '</small></span></button>';
       h += '</div>';
     }
+    var RM = runGet();   // (bản 2026.11.11-6) nút chơi tiếp trận đang dở
+    if (RM) h = '<button class="tt-btn g" data-a="cont" style="margin:0 0 12px;font-size:16px;padding:13px">⏯️ Chơi tiếp trận đang dở: ' + esc(RM.n || '') + ' · ' + (MODES[RM.mode] || MODES.path).e + ' đợt ' + ((RM.wave || 0) + 1) + '</button>' + h;
     $('ttMapB').innerHTML = h;
   }
 
@@ -477,6 +492,7 @@
     var SS = sentOf(tp), nW = planWaves(tp).length + (SS.length ? 2 : 0);
     $('ttIT').textContent = (tp.wb ? '🌍 ' : '🏰 ') + tp.n;
     var h = '<div class="tt-ibox"><div class="tt-ihead" style="--c:' + tp.c + '"><span class="e">' + esc(tp.i) + '</span><div><b>' + (tp.wb ? '' : 'Kho từ: ') + esc(tp.n) + '</b><small>' + tp.w.length + ' từ vựng' + (SS.length ? ' · ' + SS.length + ' câu giao tiếp' : '') + ' · ' + nW + ' đợt quái · 🎨 ' + esc((SCENES[sceneKey(tp)] || SCENES.meadow).n) + (stars(tp.id) ? ' · Tốt nhất: ' + '⭐'.repeat(stars(tp.id)) : '') + '</small></div></div>' +
+      modeCard(tp) +
       '<button class="tt-btn s" data-a="lib" style="margin:12px 0 0;font-size:16px;padding:12px">🏯 Xem các chòi 10 cấp · máu, dame, thủ · nâng cấp (💎 ' + gems() + ')</button>' +
       (tp.wb ? '<div style="margin:12px 0 0;padding:12px 14px;border-radius:16px;background:rgba(127,29,29,.6);border:1px solid rgba(253,224,71,.5);font-size:14px;line-height:1.5">🌍 <b>Boss thế giới ' + tp.wb + ': ' + esc(WB[tp.wb - 1].e + ' ' + WB[tp.wb - 1].n) + '</b> dẫn đại quân vây <b>kho từ vựng ở giữa bản đồ</b>. Quái tràn vào từ <b>4 cửa: Bắc, Nam, Tây, Đông</b>. Hãy xây chòi quanh kho để chặn cả 4 hướng! Đợt cuối boss xuất hiện: nó bắn phá chòi và <b>triệu hồi thêm quái</b>.' + (tp.wb > 1 ? ' Boss này <b>mạnh hơn boss thế giới ' + (tp.wb - 1) + '</b>.' : '') + '</div>' : '') +
       '<div style="margin:12px 0 0;padding:12px 14px;border-radius:16px;background:rgba(127,29,29,.45);border:1px solid rgba(252,165,165,.35);font-size:14px;line-height:1.5' + (tp.wb ? ';display:none' : '') + '">👹 <b>Bầy quái đang trộm từ</b> trong kho “' + esc(tp.n) + '”. Mỗi con vác một từ, chạy theo con đường để mang về <b>thành của chúng</b>. Hãy xây chòi chặn đường, <b>không để chúng mang từ nào về thành!</b></div>' +
@@ -534,14 +550,14 @@
   };
   var TW_KEYS = ['arrow', 'ice', 'cannon', 'fire', 'eye', 'snipe', 'rocket', 'tesla', 'poison', 'wind', 'laser', 'meteor'];
   /* (bản 2026.11.08-4) tầm bắn/tầm soi theo cấp: chòi phun lửa +20%/cấp (cấp 5 phun xa gần gấp đôi), chòi mắt +15%/cấp, chòi khác +8%/cấp */
-  function towerRange(t) { return TW[t.k].r * W * (1 + (t.k === 'fire' ? 0.2 : t.k === 'eye' ? 0.15 : 0.08) * (lvEff(t.lv) - 1)); }
+  function towerRange(t) { return TW[t.k].r * W * (1 + (t.k === 'fire' ? 0.2 : t.k === 'eye' ? 0.15 : 0.08) * (lvEff(t.lv) - 1)) * (1 + 0.05 * tu(t, 'r')); }
   function upInfo(t) { if (t.lv >= 5) return 'Tiến hóa ' + TNAME[t.lv + 1] + ': mạnh hơn, hình dáng khủng hơn'; return t.k === 'fire' ? 'Lửa to hơn, phun xa hơn, cháy lan rộng hơn' : t.k === 'eye' ? 'Soi xa hơn, thấy quái tàng hình sớm hơn' : 'Mạnh hơn, bắn xa hơn'; }
   /* (bản 2026.11.08-3) Máu chòi: lính bắn chòi và trùm cuối bắn phá chòi; chòi hết máu thì sập (ô đá trống lại, phải mua chòi mới).
      Người chơi dùng vàng để: 🔧 sửa chòi, 🛡️ mua bảo hộ (khiên hút sát thương), mua chòi mới, hoặc xây 🎯 súng bắn tỉa để diệt lính bắn chòi từ xa. */
   var TOWER_HP = 100, SHIELD_RATE = 0.7;
-  function towerMax(t) { return tHPmax(t.k, t.lv); }   // (bản 2026.11.11-4) có cộng nâng cấp ❤️ vĩnh viễn
+  function towerMax(t) { return Math.round(tHPmax(t.k, t.lv) * (1 + 0.2 * tu(t, 'h'))); }   // (bản 2026.11.11-6) + nâng ❤️ riêng từng chòi   // (bản 2026.11.11-4) có cộng nâng cấp ❤️ vĩnh viễn
   /* (bản 2026.11.08-4) quái có bị chòi nhìn thấy không: quái tàng hình chỉ lộ ra khi đang trong tầm soi của chòi mắt thần */
-  function seen(e) { return !EN[e.t].inv || e.rev > 0; }
+  function seen(e) { return (!EN[e.t].inv || e.rev > 0) && (!G || G.mode !== 'fog' || e.fv); }   // (bản 2026.11.11-6) màn sương mù: chỉ thấy quái ở gần chòi
   var EN = {
     bat: { e: '🦇', hp: 24, spd: 0.13, sz: 0.075 },
     gob: { e: '👺', hp: 42, spd: 0.095, sz: 0.085 },
@@ -560,12 +576,12 @@
     /* (bản 2026.11.08-7) boss thế giới: rất trâu, bắn cầu lửa phá chòi, triệu hồi quái; lần sau mạnh hơn lần trước */
     wboss: { e: '🌍', hp: 2600, spd: 0.03, sz: 0.24, dmg: 15, gun: { r: 0.38, cd: 1.6, d: 24 } }
   };
-  function enE(e) { return e.t === 'wboss' && G.wb ? WB[G.wb - 1].e : EN[e.t].e; }
+  function enE(e) { if (e.t === 'wboss' && G.wb) return WB[G.wb - 1].e; var M = G.mode === 'sea' ? SEA_E : G.mode === 'air' ? AIR_E : null; return (M && M[e.t]) || EN[e.t].e; }
   /* độ trâu của quái: theo đợt, theo kho, theo cấp độ; màn boss thế giới k: quái +15%/boss, boss thế giới +70%/boss */
   function enScale(t) {
     var sc = (1 + 0.15 * G.wave) * (1 + Math.min(0.6, G.tp.ti * 0.012)) * DIFF[G.dif].hp;
     if (G.wb) sc *= (1 + 0.15 * (G.wb - 1)) * (t === 'wboss' ? 1 + 0.7 * (G.wb - 1) : 1);
-    return sc;
+    return sc * (G.pw || 1);   // (bản 2026.11.11-6) quái trâu thêm theo sức mạnh đội chòi
   }
   function onMap(p, m) { m = m || 10; return p.x > -m && p.x < W + m && p.y > -m && p.y < H + m; }
   /* (bản 2026.11.11-3) TỪ DỄ TRƯỚC: từ vựng cơ bản của học sinh tiểu học (EASY) ra ở các đợt đầu, hết rồi mới tới từ khó hơn.
@@ -667,13 +683,110 @@
       list.push({ t: G.wb ? 'wboss' : 'king', w: all[all.length - 1] });   // trùm cuối (màn boss thế giới: BOSS THẾ GIỚI) ra sau cùng
     }
     var off = Math.floor(r() * 4);
-    list.forEach(function (o, i) { o.pi = (G.wb ? (i + off) % 4 : 0) + (o.t === 'fly' ? 100 : 0); });   // quái bay: đường bay thẳng số 100+   // (bản 2026.11.08-7) màn boss thế giới: chia quái đều cho 4 cửa
+    list.forEach(function (o, i) { o.pi = (G.wb ? (i + off) % 4 : 0) + (o.t === 'fly' ? 100 : 0); });
+    if (G.lanes) list.forEach(function (o) { o.pi = 1000 + Math.floor(r() * G.lanes.length); });   // (bản 2026.11.11-6) màn biển / không kích: quái tràn vào theo nhiều luồng   // quái bay: đường bay thẳng số 100+   // (bản 2026.11.08-7) màn boss thế giới: chia quái đều cho 4 cửa
     return list;
+  }
+
+  /* ================= (bản 2026.11.11-6) MÀN LUÂN PHIÊN + ĐỘI CHÒI CHƠI NỐI TIẾP + LƯU TRẬN ĐANG DỞ =================
+     • Mỗi trận (màn) đổi kiểu theo vòng: 🛤️ đi theo lối → 🌊 vượt biển → 🌫️ sương mù → 🦅 không kích → lặp lại (màn boss thế giới luôn đi theo 4 cửa).
+     • Chòi + vàng được giữ khi sang màn mới, đứng đúng ô cũ (11 ô cố định cho mọi màn). Chạm chòi để đổi dạng 🏯 chòi / 🚢 tàu chiến / ✈️ máy bay
+       (tốn vàng): dạng hợp màn bắn 100%, sai dạng chỉ bắn 35% (máy bay 60%). Nâng trực tiếp ⚔️ ⏱️ 🎯 ❤️ cho từng chòi, càng lên càng đắt.
+     • Máu quái nhân thêm theo tổng vàng đã đầu tư vào đội chòi → luôn phải đọc từ kiếm vàng để nâng chòi.
+     • Trận đang chơi được lưu liên tục (khóa tt_run): tắt game mở lại là vào đúng chỗ đang dở. */
+  var MODES = {
+    path: { n: 'Đi theo lối', e: '🛤️', f: 'land', info: 'Quái đi theo con đường. Chòi 🏯 trên đất bắn mạnh nhất.' },
+    sea: { n: 'Vượt biển', e: '🌊', f: 'boat', info: 'Không có đường: quái bơi tràn qua biển theo nhiều hướng. Đổi chòi thành 🚢 tàu chiến để bắn mạnh nhất.' },
+    fog: { n: 'Sương mù', e: '🌫️', f: 'land', info: 'Sương dày che kín bản đồ: chòi chỉ thấy quái ở gần. 👁️ Chòi mắt thần soi được xa.' },
+    air: { n: 'Không kích', e: '🦅', f: 'plane', info: 'Quái bay tràn vào từ trên trời và hai bên. Đổi chòi thành ✈️ máy bay chiến đấu để bắn mạnh nhất.' }
+  };
+  var MODE_SEQ = ['path', 'sea', 'fog', 'air'];
+  var FORMS = { land: { n: 'Chòi', e: '🏯' }, boat: { n: 'Tàu chiến', e: '🚢' }, plane: { n: 'Máy bay chiến đấu', e: '✈️' } };
+  var SEA_E = { bat: '🐡', gob: '🦈', ghost: '🐠', zom: '🐊', ogre: '🐙', gun: '🦀', inv: '🦑', fly: '🦅' };
+  var AIR_E = { bat: '🦇', gob: '🦅', ghost: '👻', zom: '🦉', ogre: '🐉', gun: '🛸', inv: '🦋', fly: '🦅' };
+  var SUPPLY = 50;   // vàng tiếp tế mỗi màn khi mang đội chòi sang
+  /* 11 ô chòi cố định (tỉ lệ theo chiều rộng/chiều cao bản đồ), cách nhau ≥ 0,2 bề rộng → chòi cấp cao cũng không chồng lên nhau */
+  var SLOTS = [[0.3, 0.265], [0.5, 0.265], [0.7, 0.265], [0.3, 0.475], [0.5, 0.475], [0.7, 0.475], [0.3, 0.685], [0.5, 0.685], [0.7, 0.685], [0.14, 0.9], [0.86, 0.9]];
+  /* 2 con đường (đối xứng) chạy vòng quanh các ô chòi; màn đi theo lối và màn sương mù dùng luân phiên */
+  var ROAD_A = [[0.5, -0.06], [0.5, 0.16], [0.9, 0.16], [0.9, 0.37], [0.1, 0.37], [0.1, 0.58], [0.9, 0.58], [0.9, 0.79], [0.5, 0.79], [0.5, 0.9]];
+  var ROADS = [ROAD_A, ROAD_A.map(function (p) { return [1 - p[0], p[1]]; })];
+  var NOMINAL = [[0.5, -0.06], [0.5, 0.16], [0.5, 0.9]];   // màn biển / không kích: không có đường (chỉ dùng để đặt kho từ và thành quái)
+  function nextMode(tp) { return tp && tp.wb ? 'path' : MODE_SEQ[(prog().mc || 0) % MODE_SEQ.length]; }
+  function formMul(t) { var need = MODES[(G && G.mode) || 'path'].f; return (t.f || 'land') === need ? 1 : t.f === 'plane' ? 0.6 : 0.35; }
+  function seaBot(xf) { var d = clamp((Math.abs(xf - 0.5) - 0.22) / 0.1, 0, 1); return 0.84 + 0.15 * d * d * (3 - 2 * d); }   // bờ cát dưới đáy màn biển: chỉ quanh thành quái, hai bên là biển
+  function fmtX(v) { return (Math.round(v * 10) / 10).toLocaleString('vi-VN'); }
+  /* luồng quái của màn biển / không kích (tọa độ tỉ lệ, sinh từ seed để lưu – mở lại vẫn y hệt) */
+  function makeLanes(mode, seed) {
+    var r = rng((seed ^ 0x5eaf00d) >>> 0), out = [], n = 7, i, k;
+    for (i = 0; i < n; i++) {
+      var pts = [];
+      if (mode === 'sea') {
+        var sx = 0.08 + 0.84 * (i + 0.5) / n + (r() - 0.5) * 0.06, ph = r() * 6.28, A = 0.1 + r() * 0.08;
+        pts.push([sx, -0.06]);
+        for (k = 1; k <= 5; k++) { var q = k / 6; pts.push([clamp(sx + (0.5 - sx) * q + A * Math.sin(ph + k * 1.4) * (1 - q * 0.6), 0.05, 0.95), -0.06 + 0.92 * q]); }
+        pts.push([0.5, 0.9]);
+      } else {
+        var sd = i % 3, a = sd === 0 ? [0.12 + 0.76 * r(), -0.07] : sd === 1 ? [-0.09, 0.06 + 0.42 * r()] : [1.09, 0.06 + 0.42 * r()], b = [0.5, 0.9];
+        var mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, dx = b[0] - a[0], dy = b[1] - a[1], dl = Math.hypot(dx, dy) || 1, o = (r() - 0.5) * 0.35;
+        pts.push(a, [clamp(mx - dy / dl * o, 0.04, 0.96), my + dx / dl * o * 0.6], b);
+      }
+      out.push(pts);
+    }
+    return out;
+  }
+  function tu(t, k) { return (t && t.u && t.u[k]) || 0; }
+  var TUP = { d: { n: 'Sát thương', e: '⚔️', p: 15 }, s: { n: 'Tốc độ', e: '⏱️', p: 8 }, r: { n: 'Tầm bắn', e: '🎯', p: 5 }, h: { n: 'Máu', e: '❤️', p: 20 } }, TUP_KEYS = ['d', 's', 'r', 'h'], TUP_MAX = 20;
+  function tupCost(t, k) { return Math.round(Math.max(20, TW[t.k].c * 0.3) * (k === 'h' ? 0.7 : k === 'r' ? 0.9 : 1) * Math.pow(1.42, tu(t, k))); }   // mỗi bậc đắt hơn 42%
+  function cvCost(t, f) { var c = Math.round((45 + TW[t.k].c * 0.6) * (1 + 0.2 * (t.lv - 1))); return f === 'land' ? Math.round(c * 0.4) : c; }
+  function tDmgT(t) { return tDmg(t.k, t.lv) * (1 + 0.15 * tu(t, 'd')) * formMul(t); }
+  function tSpdT(t) { return tSpdMul(t.k, t.lv) * (1 + 0.08 * tu(t, 's')); }
+  function fogR(t) { return towerRange(t) * (t.k === 'eye' ? 1.15 : 0.62); }
+  /* sức mạnh đội chòi = vàng đã đầu tư (xây + nâng cấp, không tính tiền đổi dạng) → hệ số máu quái */
+  function powOf(list) { var p = 0; (list || []).forEach(function (t) { p += Math.max(0, (t.spent || 0) - (t.cv || 0)); }); return p; }
+  function powMul(p) { return Math.pow(1 + Math.max(0, p - 250) / 700, 0.8); }
+  function curPow() { return powMul(powOf(G.towers.concat(G.reserve || []))); }
+  function tNew(o) {
+    if (!o || !TW[o.k]) return null;
+    var u = o.u || {};
+    return { k: o.k, s: o.s | 0, h: o.h != null ? o.h : o.s | 0, lv: clamp(o.lv || 1, 1, MAX_LV), f: FORMS[o.f] ? o.f : 'land', u: { d: u.d || 0, s: u.s || 0, r: u.r || 0, h: u.h || 0 },
+      spent: o.spent || TW[o.k].c, cv: o.cv || 0, cd: 0.3, fl: 0, hp: o.hp, sh: o.sh || 0, hurt: 0 };
+  }
+  function tSer(t) { return { k: t.k, s: t.s, h: t.h, lv: t.lv, f: t.f, u: t.u, spent: t.spent, cv: t.cv || 0, hp: Math.round(t.hp), sh: Math.round(t.sh || 0) }; }
+  function tArmy(o, wb) { return { k: o.k, s: wb && o.h != null && o.h >= 0 ? o.h : o.s, lv: o.lv, f: o.f, u: o.u, spent: o.spent, cv: o.cv || 0 }; }
+  function saveArmy() { var p = prog(); p.army = { t: G.towers.concat(G.reserve || []).map(function (t) { return tArmy(t, G.wb); }), g: Math.max(0, Math.round(G.gold)) }; saveProg(); }
+  var RUN_KEY = 'tt_run', runT = 0;
+  function runGet() { try { var o = JSON.parse(localStorage.getItem(RUN_KEY)); return o && o.v === 1 && o.id ? o : null; } catch (e) { return null; } }
+  function runClear() { try { localStorage.removeItem(RUN_KEY); } catch (e) {} }
+  function runSave() {
+    if (!G || G.ended || !G.spots) return;
+    try {
+      localStorage.setItem(RUN_KEY, JSON.stringify({ v: 1, id: G.tp0.id, n: G.tp0.n, wb: G.wb, mode: G.mode, road: G.road, seed: G.seed, lanes: G.lanes, spots: G.spots, dif: G.dif,
+        wave: G.wave, phase: G.phase, prepT: G.prepT, hp: G.hp, hpMax: G.hpMax, gold: Math.round(G.gold), round: G.round, said: G.said, bank: G.bank, done: G.done, ok: G.ok, gifts: G.gifts, gemE: G.gemE || 0, pw: G.pw,
+        q: G.q, qT: G.qT, fl: [G.invSeen, G.flySeen, G.gunSeen], towers: G.towers.map(tSer), reserve: (G.reserve || []).map(tSer),
+        en: G.enemies.map(function (e) { return { t: e.t, w: e.w, s: e.s, pi: e.pi, hp: Math.round(e.hp), max: Math.round(e.max), f: e.f, said: e.said }; }), at: Date.now() }));
+    } catch (e) {}
+  }
+  /* trận dở bị bỏ để vào trận khác: chòi và vàng của trận dở thành đội chòi mang sang */
+  function armyFromRun(R) { var p = prog(); p.army = { t: (R.towers || []).concat(R.reserve || []).map(function (o) { return tArmy(o, R.wb); }), g: R.gold || 0 }; saveProg(); }
+  /* đặt chòi vào ô: ô trùng / ô không có trên bản đồ này → chuyển sang ô trống; hết ô thì cất vào kho (hiện lại khi có ô trống) */
+  function fixSlots() {
+    var used = {}, all = G.towers.concat(G.reserve || []), rest = []; G.towers = [];
+    all.forEach(function (t) { if (t.s >= 0 && t.s < G.spots.length && !used[t.s]) { used[t.s] = 1; G.towers.push(t); } else rest.push(t); });
+    G.reserve = rest.filter(function (t) { for (var i = 0; i < G.spots.length; i++) if (!used[i]) { used[i] = 1; t.s = i; G.towers.push(t); return false; } return true; });
+    if (!G.wb) G.towers.forEach(function (t) { t.h = t.s; });
+  }
+  function modeCard(tp) {
+    var m = nextMode(tp), M = MODES[m], A = prog().army, n = A && A.t ? A.t.length : 0, R = runGet(), pw = powMul(powOf(A && A.t));
+    return '<div class="tt-mode"><div class="mh"><span>' + M.e + '</span><div><b>Màn này: ' + M.n + '</b><small>' + M.info + '</small></div></div>' +
+      '<div class="ml">🔁 Các màn luân phiên: ' + MODE_SEQ.map(function (k) { return (k === m && !tp.wb ? '<b style="color:#fde68a">' : '') + MODES[k].e + ' ' + MODES[k].n + (k === m && !tp.wb ? '</b>' : ''); }).join(' → ') + (tp.wb ? '<br>🌍 Màn boss thế giới luôn đánh theo 4 cửa (không tính vào vòng luân phiên).' : '') + '</div>' +
+      '<div class="ml">🎒 ' + (n ? 'Đội chòi mang theo: <b>' + n + ' chòi</b> · 💰 <b>' + A.g + '</b> (+' + SUPPLY + ' tiếp tế) · 👹 quái trâu <b>×' + fmtX(pw) + '</b> theo sức mạnh chòi. Chạm chòi trong trận để đổi dạng 🏯/🚢/✈️ và nâng chỉ số.' : 'Chưa có đội chòi: xây chòi trong trận, chòi và vàng sẽ được giữ cho các màn sau.') + '</div>' +
+      (R ? '<div class="ml warn">⚠️ Đang có trận dở ở “' + esc(R.n || '') + '”. Vào trận này thì trận dở kết thúc (chòi và vàng của trận dở vẫn được giữ).</div>' : '') +
+      (n || R ? '<button class="tt-lnk" data-a="armyreset">♻️ Bỏ đội chòi, chơi lại từ đầu</button>' : '') + '</div>';
   }
 
   /* ================= TRẠNG THÁI TRẬN ================= */
   var G = null, CV = null, X = null, BG = null, W = 0, H = 0, DPR = 1, raf = 0, last = 0;
-  function newGame(tp) {
+  function newGame(tp, R) {
     /* (bản 2026.11.08-11) thêm 1 đợt CÂU GIAO TIẾP ngay trước đợt cuối: câu được nối vào sau danh sách từ (chỉ trong trận này) */
     var S = sentOf(tp), wv = planWaves(tp), gtp = tp;
     if (S.length) {
@@ -689,6 +802,26 @@
     };
     if (G.wb) G.gold += 100;   // màn boss thế giới: thêm vàng khởi đầu để xây chòi cho cả 4 hướng
     G.waves[0].forEach(function (w) { addBank(w); });
+    /* (bản 2026.11.11-6) kiểu màn + đội chòi mang sang / khôi phục trận đang dở */
+    var pv = prog();
+    G.mode = R && MODES[R.mode] ? R.mode : nextMode(tp); G.reserve = [];
+    if (R && R.seed != null) G.seed = R.seed;
+    G.road = R && R.road != null ? R.road : (Math.floor((pv.mc || 0) / MODE_SEQ.length) + (G.mode === 'fog' ? 1 : 0)) % 2;
+    if (!G.wb) G.paths = [G.mode === 'sea' || G.mode === 'air' ? NOMINAL : ROADS[G.road]];
+    G.lanes = R ? R.lanes || null : (G.mode === 'sea' || G.mode === 'air' ? makeLanes(G.mode, G.seed) : null);
+    if (R) {
+      ['dif', 'hp', 'hpMax', 'gold', 'wave', 'phase', 'prepT', 'round', 'said', 'bank', 'done', 'ok', 'gifts', 'gemE', 'pw', 'q', 'qT'].forEach(function (k) { if (R[k] != null) G[k] = R[k]; });
+      G.towers = (R.towers || []).map(tNew).filter(Boolean); G.reserve = (R.reserve || []).map(tNew).filter(Boolean);
+      G.towers.concat(G.reserve).forEach(function (t) { if (!(t.hp > 0)) t.hp = towerMax(t); });
+      G.enemies = (R.en || []).filter(function (e) { return EN[e.t]; }).map(function (e) { return { t: e.t, w: e.w, s: e.s || 0, pi: e.pi || 0, hp: e.hp, max: e.max, f: e.f, slowT: 0, stunT: 0, said: !!e.said, bob: Math.random() * 6, hit: 0, gcd: 1, rev: 0 }; });
+      if (R.spots && R.spots.length) G.spots = R.spots;
+      var fl = R.fl || []; G.invSeen = !!fl[0]; G.flySeen = !!fl[1]; G.gunSeen = !!fl[2];
+      G.paused = true; G.resumed = true;
+    } else {
+      var A = pv.army;
+      if (A && A.t) { G.gold = (A.g || 0) + SUPPLY; G.towers = A.t.map(tNew).filter(Boolean); G.towers.forEach(function (t) { t.hp = towerMax(t); }); G.carried = true; }
+      G.pw = curPow();
+    }
   }
   function addBank(w) { if (G.bank.indexOf(w) < 0) G.bank.push(w); }
   /* (bản 2026.11.08-4) từ đang bị khóa: vừa đọc đúng MAX_READ lần liền, phải đọc từ khác trước */
@@ -697,7 +830,12 @@
   function roundLeft() { return G.bank.filter(function (w) { return !G.done[w]; }).length; }
 
   /* ================= BỐ CỤC ================= */
-  var PATH = [], PLEN = 0, PW = 30, PATHS = [], FLY = [];
+  var PATH = [], PLEN = 0, PW = 30, PATHS = [], FLY = [], LANES = [];
+  function mkPath(m) {
+    var pt = m.map(function (p) { return { x: p[0] * W, y: p[1] * H }; }), L = 0;
+    for (var i = 1; i < pt.length; i++) { pt[i].L = L; L += Math.hypot(pt[i].x - pt[i - 1].x, pt[i].y - pt[i - 1].y); pt[i].E = L; }
+    return { p: pt, L: L };
+  }
   function lay() {
     var st = $('ttStage'); if (!st) return;
     var sw = st.clientWidth, sh = st.clientHeight; if (!sw || !sh) return;
@@ -706,15 +844,13 @@
     CV.width = Math.round(W * DPR); CV.height = Math.round(H * DPR);
     CV.style.width = W + 'px'; CV.style.height = H + 'px'; var dock = sw - W >= 230; CV.style.left = Math.round(dock ? Math.max(0, (sw - 222 - W) / 2) : (sw - W) / 2) + 'px'; lbLayout(dock);
     PW = Math.max(26, W * 0.085);
-    PATHS = G.paths.map(function (m) {   // (bản 2026.11.08-7) nhiều đường (màn boss thế giới có 4 đường từ 4 cửa)
-      var pt = m.map(function (p) { return { x: p[0] * W, y: p[1] * H }; }), L = 0;
-      for (var i = 1; i < pt.length; i++) { pt[i].L = L; L += Math.hypot(pt[i].x - pt[i - 1].x, pt[i].y - pt[i - 1].y); pt[i].E = L; }
-      return { p: pt, L: L };
-    });
+    PATHS = G.paths.map(mkPath);   // (bản 2026.11.08-7) nhiều đường (màn boss thế giới có 4 đường từ 4 cửa)
+    LANES = (G.lanes || []).map(mkPath);   // (bản 2026.11.11-6) luồng quái màn biển / không kích
     PATH = PATHS[0].p; PLEN = PATHS[0].L;
     // (bản 2026.11.10-2) ĐƯỜNG BAY của quái biết bay: đường thẳng từ cửa vào tới kho từ (cuối đường đi)
     FLY = PATHS.map(function (P) { var a = P.p[0], b = P.p[P.p.length - 1], L = Math.hypot(b.x - a.x, b.y - a.y) || 1; return { p: [{ x: a.x, y: a.y }, { x: b.x, y: b.y, L: 0, E: L }], L: L }; });
     if (!G.spots) G.spots = makeSpots();
+    if (!G.slotted) { G.slotted = true; fixSlots(); }
     drawBG(); ambInit();
   }
   function distSeg(px, py, a, b) {
@@ -722,9 +858,10 @@
     t = clamp(t, 0, 1); return Math.hypot(px - (a.x + t * dx), py - (a.y + t * dy));
   }
   function distPath(px, py) { var m = 1e9; PATHS.forEach(function (P) { for (var i = 1; i < P.p.length; i++) m = Math.min(m, distSeg(px, py, P.p[i - 1], P.p[i])); }); return m; }
-  function pathOf(pi) { return (pi >= 100 ? FLY[pi - 100] : PATHS[pi || 0]) || PATHS[0]; }   // pi >= 100: đường bay thẳng
+  function pathOf(pi) { return (pi >= 1000 ? LANES[pi - 1000] : pi >= 100 ? FLY[pi - 100] : PATHS[pi || 0]) || PATHS[0]; }   // pi >= 1000: luồng quái màn biển / không kích   // pi >= 100: đường bay thẳng
   function plen(pi) { return pathOf(pi).L; }
   function makeSpots() {
+    if (!G.wb) return SLOTS.map(function (q) { return { nx: q[0], ny: q[1] }; });   // (bản 2026.11.11-6) ô cố định, giống nhau ở mọi màn
     var cand = [], step = W * 0.065, R = W * 0.25, ctr = PATH[PATH.length - 1];
     for (var y = H * 0.05; y < H * (G.wb ? 0.92 : 0.8); y += step) for (var x = W * 0.08; x <= W * 0.92; x += step) {
       var d = distPath(x, y); if (d < PW * 1.05 || d > PW * 1.75) continue;
@@ -735,7 +872,7 @@
     }
     cand.sort(function (a, b) { return b.c - a.c; });
     var out = [], gap = W * (G.wb ? 0.155 : 0.17);
-    cand.forEach(function (c) { if (out.length >= (G.wb ? 12 : 11)) return; if (out.every(function (o) { return Math.hypot(o.x - c.x, o.y - c.y) > gap; })) out.push(c); });
+    cand.forEach(function (c) { if (out.length >= 12) return; if (out.every(function (o) { return Math.hypot(o.x - c.x, o.y - c.y) > gap; })) out.push(c); });
     return out.map(function (o) { return { nx: o.x / W, ny: o.y / H }; });
   }
   function posAt(f, pi) {
@@ -864,8 +1001,21 @@
     var r2 = rng(hashS(G.tp.id + 'gr'));
     if (!S.water) for (i = 0; i < 9; i++) { x = r2() * W; y = r2() * H; var pr = W * (0.2 + r2() * 0.3), pg = b.createRadialGradient(x, y, 0, x, y, pr), dk = r2() < 0.55; pg.addColorStop(0, dk ? 'rgba(0,0,0,.09)' : 'rgba(255,255,230,.07)'); pg.addColorStop(1, 'rgba(0,0,0,0)'); b.fillStyle = pg; b.fillRect(x - pr, y - pr, pr * 2, pr * 2); }
     for (i = 0; i < 2600; i++) { b.fillStyle = r2() < 0.5 ? 'rgba(0,0,0,.08)' : 'rgba(255,255,255,.06)'; b.fillRect(r2() * W, r2() * H, 1.1, 1.1); }
+    // (bản 2026.11.11-6) màn vượt biển: cả bản đồ là biển, trên là bến kho từ, dưới là bãi cát thành quái
+    var noRoad = G.mode === 'sea' || G.mode === 'air';
+    if (G.mode === 'sea') {
+      var yT = H * 0.1, yB = H * 0.84, og = b.createLinearGradient(0, yT, 0, yB); og.addColorStop(0, '#0c4a6e'); og.addColorStop(0.5, '#0369a1'); og.addColorStop(1, '#0e7490');
+      b.fillStyle = '#e7c98f'; b.fillRect(0, yB - H * 0.02, W, H - yB + H * 0.02);
+      b.beginPath(); b.moveTo(0, yT); for (x = 0; x <= W; x += W / 24) b.lineTo(x, yT + Math.sin(x / W * 11) * H * 0.008);
+      for (x = W; x >= 0; x -= W / 48) b.lineTo(x, H * seaBot(x / W) + Math.sin(x / W * 9 + 1) * H * 0.01); b.closePath(); b.fillStyle = og; b.fill();
+      for (i = 0; i < 170; i++) { x = r2() * W; y = yT + r2() * (yB - yT); var wl2 = W * (0.02 + r2() * 0.045); b.strokeStyle = r2() < 0.55 ? 'rgba(255,255,255,.16)' : 'rgba(2,6,23,.2)'; b.lineWidth = 1.5; b.beginPath(); b.moveTo(x - wl2, y); b.quadraticCurveTo(x, y - wl2 * 0.35, x + wl2, y); b.stroke(); }
+      b.strokeStyle = 'rgba(255,255,255,.55)'; b.lineWidth = 3; b.setLineDash([8, 6]);
+      b.beginPath(); for (x = 0; x <= W; x += W / 48) { y = H * seaBot(x / W) + Math.sin(x / W * 9 + 1) * H * 0.01 - 3; if (x) b.lineTo(x, y); else b.moveTo(x, y); } b.stroke();
+      b.beginPath(); for (x = 0; x <= W; x += W / 24) { y = yT + Math.sin(x / W * 11) * H * 0.008 + 3; if (x) b.lineTo(x, y); else b.moveTo(x, y); } b.stroke(); b.setLineDash([]);
+    }
+    if (G.mode === 'air') { var sk = b.createLinearGradient(0, 0, 0, H); sk.addColorStop(0, 'rgba(186,230,253,.28)'); sk.addColorStop(1, 'rgba(186,230,253,.04)'); b.fillStyle = sk; b.fillRect(0, 0, W, H); }
     // con đường
-    function poly() { b.beginPath(); PATHS.forEach(function (P) { b.moveTo(P.p[0].x, P.p[0].y); for (var j = 1; j < P.p.length; j++) b.lineTo(P.p[j].x, P.p[j].y); }); }
+    function poly() { b.beginPath(); if (noRoad) return; PATHS.forEach(function (P) { b.moveTo(P.p[0].x, P.p[0].y); for (var j = 1; j < P.p.length; j++) b.lineTo(P.p[j].x, P.p[j].y); }); }
     b.lineJoin = 'round'; b.lineCap = 'round';
     poly(); b.strokeStyle = 'rgba(0,0,0,.22)'; b.lineWidth = PW + 12; b.stroke();
     if (S.glow) { b.shadowColor = S.glow; b.shadowBlur = 16; }
@@ -876,7 +1026,7 @@
       poly(); b.strokeStyle = 'rgba(0,0,0,.12)'; b.lineWidth = PW; b.stroke();
       poly(); b.strokeStyle = S.road[1]; b.lineWidth = PW * 0.82; b.stroke();
       poly(); b.strokeStyle = 'rgba(255,255,255,.07)'; b.lineWidth = PW * 0.5; b.stroke();
-      for (i = 0; i < 160 * PATHS.length; i++) { var rp = posAt(r2(), Math.floor(r2() * PATHS.length)); b.fillStyle = r2() < 0.5 ? 'rgba(0,0,0,.16)' : 'rgba(255,255,255,.14)'; b.fillRect(rp.x + (r2() - 0.5) * PW * 0.9, rp.y + (r2() - 0.5) * PW * 0.9, 1.3, 1.3); }
+      for (i = 0; i < (noRoad ? 0 : 160 * PATHS.length); i++) { var rp = posAt(r2(), Math.floor(r2() * PATHS.length)); b.fillStyle = r2() < 0.5 ? 'rgba(0,0,0,.16)' : 'rgba(255,255,255,.14)'; b.fillRect(rp.x + (r2() - 0.5) * PW * 0.9, rp.y + (r2() - 0.5) * PW * 0.9, 1.3, 1.3); }
     }
     if (S.board) { poly(); b.strokeStyle = 'rgba(0,0,0,.3)'; b.lineWidth = PW; b.lineCap = 'butt'; b.setLineDash([1.5, PW * 0.3]); b.stroke(); b.setLineDash([]); b.lineCap = 'round'; }
     if (S.water) { poly(); b.strokeStyle = 'rgba(255,255,255,.55)'; b.lineWidth = PW + 10; b.globalAlpha = 0.35; b.setLineDash([3, 7]); b.stroke(); b.setLineDash([]); b.globalAlpha = 1; poly(); b.strokeStyle = S.road[1]; b.lineWidth = PW; b.stroke(); }
@@ -885,7 +1035,7 @@
       if (S.glow) { b.shadowColor = S.glow; b.shadowBlur = 8; }
       if (S.dash) b.setLineDash([PW * 0.35, PW * 0.55]); b.stroke(); b.setLineDash([]); b.shadowBlur = 0;
     }
-    if (S.peb) for (i = 0; i < 90 * PATHS.length; i++) { var p = posAt(r(), Math.floor(r() * PATHS.length)); b.fillStyle = r() < 0.5 ? 'rgba(80,50,20,.4)' : 'rgba(255,255,255,.3)'; b.beginPath(); b.arc(p.x + (r() - 0.5) * PW * 0.8, p.y + (r() - 0.5) * PW * 0.8, 1 + r() * 2, 0, 7); b.fill(); }
+    if (S.peb && !noRoad) for (i = 0; i < 90 * PATHS.length; i++) { var p = posAt(r(), Math.floor(r() * PATHS.length)); b.fillStyle = r() < 0.5 ? 'rgba(80,50,20,.4)' : 'rgba(255,255,255,.3)'; b.beginPath(); b.arc(p.x + (r() - 0.5) * PW * 0.8, p.y + (r() - 0.5) * PW * 0.8, 1 + r() * 2, 0, 7); b.fill(); }
     // ánh vàng quanh kho từ vựng (đầu đường)
     if (!G.wb) { var s0 = PATH[1]; var cg = b.createRadialGradient(s0.x, 0, 4, s0.x, 0, PW * 1.8); cg.addColorStop(0, 'rgba(253,224,71,.55)'); cg.addColorStop(1, 'rgba(253,224,71,0)');
     b.fillStyle = cg; b.fillRect(s0.x - PW * 2, 0, PW * 4, PW * 1.8); }
@@ -899,6 +1049,7 @@
       if (G.wb && Math.hypot(tx - PATH[PATH.length - 1].x, ty - PATH[PATH.length - 1].y) < W * 0.16) continue;
       var e = DEC[Math.floor(r() * DEC.length)];
       if (S.shore && ty < H * S.shore && e !== '⛵') { if (r() < 0.6) continue; e = '⛵'; }   // trên mặt biển chỉ có thuyền
+      if (G.mode === 'sea' && ty > H * 0.08 && ty < H * seaBot(tx / W)) { if (r() < 0.75) continue; e = r() < 0.5 ? '🪨' : '⛵'; }   // (bản 2026.11.11-6) giữa biển chỉ có đá ngầm, thuyền
       var sz = W * (SMALL[e] ? 0.05 : 0.07 + r() * 0.03);
       if (!S.water && !(S.shore && ty < H * S.shore)) { b.fillStyle = 'rgba(0,0,0,.18)'; b.beginPath(); b.ellipse(tx, ty + sz * 0.42, sz * 0.38, sz * 0.13, 0, 0, 7); b.fill(); }
       if (S.vig > 0.5) b.globalAlpha = 0.8;
@@ -1197,6 +1348,7 @@
     var nS = SAY ? 1 : SPD;
     if (m) for (var si = 0; si < nS; si++) { step(dt * m); if (!G || G.ended) break; }
     if (!G) return;
+    if (!G.ended && !G.paused) { runT += dt; if (runT > 3) { runT = 0; runSave(); } }   // (bản 2026.11.11-6) tự lưu trận đang dở
     ambTick(dt);
     if (!G.paused && !G.ended) { lbT += dt; if (lbT > 7) { lbT = 0; lbBotsPlay(1 + Math.floor(Math.random() * 3)); lbSave(); lbRender(); } }
     if (!G.paused && !G.ended && G.phase === 'prep' && !SAY) { G.prepT -= dt * SPD; if (G.prepT <= 0) startWave(); else waveBtn(); }
@@ -1257,6 +1409,8 @@
       var p = posAt(e.f, e.pi), inR = eyes.some(function (t) { var s = spotXY(G.spots[t.s]); return Math.hypot(p.x - s.x, p.y - s.y) <= towerRange(t); });
       if (inR) { if (e.rev <= 0) spark(p.x, p.y - EN[e.t].sz * W * 0.3, ['#c4b5fd', '#fff', '#a78bfa'], 6); e.rev = 0.3; } else if (e.rev > 0) e.rev -= dt;
     });
+    // (bản 2026.11.11-6) màn sương mù: quái chỉ lộ ra khi ở gần một chòi (chòi mắt thần soi xa hơn)
+    if (G.mode === 'fog') G.enemies.forEach(function (e) { var p = posAt(e.f, e.pi); e.fv = G.towers.some(function (t) { var s = spotXY(G.spots[t.s]); return Math.hypot(p.x - s.x, p.y - s.y) <= fogR(t); }); });
     // chòi bắn
     G.towers.forEach(function (t) {
       var T = TW[t.k], s = spotXY(G.spots[t.s]), rr = towerRange(t);
@@ -1265,12 +1419,12 @@
       var best = null;
       G.enemies.forEach(function (e) { var p = posAt(e.f, e.pi); if (seen(e) && onMap(p) && Math.hypot(p.x - s.x, p.y - (s.y - W * 0.02)) <= rr && (!best || e.f > best.f)) best = e; });
       if (!best) return;
-      t.cd = T.cd / tSpdMul(t.k, t.lv); t.fl = 0.15;   // (bản 2026.11.11-5) có cộng nâng cấp ⏱️ tốc độ bắn
-      var dmg = tDmg(t.k, t.lv), sy = s.y - W * 0.075, bp0 = posAt(best.f, best.pi); t.ax = bp0.x; t.ay = bp0.y - EN[best.t].sz * W * 0.3;
+      t.cd = T.cd / tSpdT(t); t.fl = 0.15; t.st = G.t;   // (bản 2026.11.11-5/6) có cộng nâng cấp ⏱️ tốc độ bắn (vĩnh viễn + riêng chòi)
+      var dmg = tDmgT(t), sy = s.y - W * 0.075, bp0 = posAt(best.f, best.pi); t.ax = bp0.x; t.ay = bp0.y - EN[best.t].sz * W * 0.3;
       if (t.k === 'tesla') { teslaAt(t, T, s, best, dmg); return; }
       if (t.k === 'laser') { laserAt(t, best, dmg); return; }
       if (t.k === 'wind') { windAt(t, T, best, dmg); return; }
-      if (t.k === 'poison') { var pq = posAt(Math.min(1, best.f + EN[best.t].spd * W * 0.6 / plen(best.pi)), best.pi); G.shots.push({ k: 'poison', x: s.x, y: sy, sx: s.x, sy: sy, tx: pq.x, ty: pq.y, t: 0, dur: 0.6, d: dmg, sp: T.sp * W * (1 + 0.06 * (lvEff(t.lv) - 1)), psn: T.psn * lvDmg(t.lv, 1.4, 1.2) * (1 + 0.08 * upg(t.k).d) }); sfx('launch'); return; }
+      if (t.k === 'poison') { var pq = posAt(Math.min(1, best.f + EN[best.t].spd * W * 0.6 / plen(best.pi)), best.pi); G.shots.push({ k: 'poison', x: s.x, y: sy, sx: s.x, sy: sy, tx: pq.x, ty: pq.y, t: 0, dur: 0.6, d: dmg, sp: T.sp * W * (1 + 0.06 * (lvEff(t.lv) - 1)), psn: T.psn * lvDmg(t.lv, 1.4, 1.2) * (1 + 0.08 * upg(t.k).d) * (1 + 0.15 * tu(t, 'd')) * formMul(t) }); sfx('launch'); return; }
       if (t.k === 'meteor') { var pm = posAt(Math.min(1, best.f + EN[best.t].spd * W * 0.9 / plen(best.pi)), best.pi); G.shots.push({ k: 'meteor', x: pm.x + W * 0.4, y: -W * 0.2, sx: pm.x + W * 0.4, sy: -W * 0.2, tx: pm.x, ty: pm.y, t: 0, dur: 0.9, d: dmg, sp: T.sp * W * (1 + 0.06 * (lvEff(t.lv) - 1)) }); sfx('launch'); return; }
       if (t.k === 'fire') { fireAt(t, T, s, best, dmg); return; }
       if (t.k === 'snipe') {   // ưu tiên lính bắn chòi / trùm cuối đang trong tầm
@@ -1352,7 +1506,7 @@
     e.stand = (e.stand || 0) + dt;
     e.gcd -= dt; if (e.gcd > 0) return;
     e.gcd = D.gun.cd * (0.85 + Math.random() * 0.3);
-    var dmg = D.gun.d * (1 + 0.08 * G.wave) * Math.sqrt(DIFF[G.dif].hp) * (e.t === 'wboss' ? 1 + 0.25 * (G.wb - 1) : 1), sz = D.sz * W, big = e.t === 'king' || e.t === 'wboss';
+    var dmg = D.gun.d * (1 + 0.08 * G.wave) * Math.sqrt(DIFF[G.dif].hp * (G.pw || 1)) * (e.t === 'wboss' ? 1 + 0.25 * (G.wb - 1) : 1), sz = D.sz * W, big = e.t === 'king' || e.t === 'wboss';
     G.shots.push({ k: big ? 'efire' : 'ebul', x: p.x, y: p.y - sz * 0.35, tw: best, d: dmg, v: W * (big ? 0.9 : 1.4) });
     sfx(big ? 'launch' : 'arrow');
   }
@@ -1480,7 +1634,7 @@
       return '<button class="' + (G.enemies.length && !G.rain ? 'on' : '') + '" data-a="rain" data-k="' + k + '" title="' + RAIN[k].n + '">' + RAIN[k].e + (cnt[k] > 1 ? '<em>' + cnt[k] + '</em>' : '') + '</button>';
     }).join('');
   }
-  function rainSc() { return (1 + 0.15 * G.wave) * (1 + Math.min(0.6, G.tp.ti * 0.012)) * DIFF[G.dif].hp; }   // giống độ trâu của quái
+  function rainSc() { return (1 + 0.15 * G.wave) * (1 + Math.min(0.6, G.tp.ti * 0.012)) * DIFF[G.dif].hp * (G.pw || 1); }   // giống độ trâu của quái
   function useRain(k) {
     var i = G.gifts.indexOf(k); if (i < 0) return;
     if (G.rain) { toast('Trận ' + RAIN[G.rain.k].e + ' ' + RAIN[G.rain.k].n + ' đang rơi, đợi tạnh rồi gọi tiếp nhé!'); return; }
@@ -1560,9 +1714,10 @@
   /* ================= ĐỢT QUÁI ================= */
   function startWave() {
     if (G.phase !== 'prep' || G.ended) return;
+    G.pw = curPow();   // (bản 2026.11.11-6) quái đợt này trâu theo sức mạnh đội chòi lúc bắt đầu đợt
     G.phase = 'run'; G.q = waveEnemies(G, G.wave); G.qT = 0.6; setTimeout(renderGift, 1500);
-    banner((G.wave === G.sw ? '💬 Đợt câu giao tiếp ' : 'Đợt ') + (G.wave + 1) + ' / ' + G.waves.length, G.wave === G.sw ? G.q.length + ' con quái TRÂU vác trộm câu giao tiếp – đọc đúng câu được thưởng gấp rưỡi!' : G.q.length + ' con quái đang lẻn vào trộm từ!'); sfx('horn');
-    waveBtn(); hud();
+    banner(MODES[G.mode].e + ' ' + (G.wave === G.sw ? '💬 Đợt câu giao tiếp ' : 'Đợt ') + (G.wave + 1) + ' / ' + G.waves.length, (G.wave === G.sw ? G.q.length + ' con quái TRÂU vác trộm câu giao tiếp – đọc đúng câu được thưởng gấp rưỡi!' : G.q.length + ' con quái đang lẻn vào trộm từ!') + (G.pw > 1.05 ? ' · 👹 máu ×' + fmtX(G.pw) + ' theo sức mạnh chòi' : '')); sfx('horn');
+    waveBtn(); hud(); runSave();
   }
   function waveDone() {
     if (G.wave >= G.waves.length - 1) { endGame(true); return; }
@@ -1572,7 +1727,7 @@
     else if (G.sw >= 0 && G.wave === G.sw + 1) { G.bank = []; for (var bj = 0; bj <= G.wave; bj++) G.waves[bj].forEach(function (w) { addBank(w); }); G.done = {}; }
     else G.waves[G.wave].forEach(function (w) { addBank(w); });
     banner('Đã chặn đợt ' + G.wave + '! 🎉', G.wave === G.sw ? '💬 Đợt tới CHỈ có câu giao tiếp, quái trâu hơn – đọc các câu ở thanh dưới để có vàng' : G.sw >= 0 && G.wave === G.sw + 1 ? '🔥 Đợt cuối: quái vác TẤT CẢ từ vựng + câu giao tiếp, kèm trùm cuối!' : 'Đọc từ của đợt tới để có thêm vàng xây chòi'); sfx('coin');
-    renderBank(); waveBtn(); hud(); renderGift();
+    renderBank(); waveBtn(); hud(); renderGift(); runSave();
   }
   function waveBtn() {
     var b = $('ttWB'); if (!b) return;
@@ -1676,7 +1831,7 @@
   var hudV = {};
   function hud(fx) {
     var hp = $('ttHP').lastChild, gd = $('ttGold').lastChild, wv = $('ttWv').lastChild;
-    hp.textContent = G.hp; gd.textContent = G.gold; wv.textContent = (G.wave + 1) + '/' + G.waves.length;
+    hp.textContent = G.hp; gd.textContent = G.gold; wv.textContent = MODES[G.mode].e + ' ' + (G.wave + 1) + '/' + G.waves.length;
     if (fx === 'gold') { var e = $('ttGold'); e.classList.remove('bump'); void e.offsetWidth; e.classList.add('bump'); }
     if (fx === 'hp') { var h = $('ttHP'); h.classList.remove('hurt'); void h.offsetWidth; h.classList.add('hurt'); }
     $('ttPau').textContent = G.paused ? '▶' : '⏸'; var sb = $('ttSpd'); if (sb) { sb.textContent = SPD > 1 ? '⏩x2' : 'x1'; sb.classList.toggle('on', SPD > 1); }
@@ -1829,13 +1984,21 @@
   function openPop(si) {
     G.sel = si; var t = towerAt(si), p = spotXY(G.spots[si]), el = $('ttPop'), h;
     if (!t) {
-      h = '<h4>🔨 Xây chòi ở đây</h4>' + TW_KEYS.map(function (k) {
+      h = '<h4>🔨 Xây ở đây · ' + FORMS[MODES[G.mode].f].e + ' ' + FORMS[MODES[G.mode].f].n + '</h4>' + TW_KEYS.map(function (k) {
         var T = TW[k]; return '<button class="tt-opt' + (G.gold < T.c ? ' no' : '') + '" data-a="build" data-k="' + k + '"><i>' + T.e + '</i><span><b>' + T.n + '</b><small>' + T.info + '</small></span><em>' + T.c + ' 💰</em></button>';
       }).join('');
     } else {
-      var T = TW[t.k], up = upCost(t);
-      h = '<h4>' + T.e + ' ' + T.n + ' · cấp ' + t.lv + ' · ' + TNAME[t.lv] + '</h4>' + statLine(t) +
+      var T = TW[t.k], up = upCost(t), need = MODES[G.mode].f;
+      h = '<h4>' + FORMS[t.f || 'land'].e + ' ' + T.e + ' ' + T.n + ' · cấp ' + t.lv + ' · ' + TNAME[t.lv] + '</h4>' + statLine(t) +
+        /* (bản 2026.11.11-6) đổi dạng chòi: dạng hợp màn bắn 100% */
+        '<div class="tt-sub">Dạng chòi · màn ' + MODES[G.mode].e + ' ' + MODES[G.mode].n + ' hợp ' + FORMS[need].e + ' ' + FORMS[need].n + '</div><div class="tt-frm">' +
+        ['land', 'boat', 'plane'].map(function (f) { var on = (t.f || 'land') === f, c = cvCost(t, f); return '<button class="' + (on ? 'on' : '') + (f === need ? ' best' : '') + (!on && G.gold < c ? ' no' : '') + '" data-a="form" data-f="' + f + '"><i>' + FORMS[f].e + '</i>' + (f === 'plane' ? 'Máy bay' : FORMS[f].n) + '<em>' + (on ? 'Đang dùng' : c + ' 💰') + '</em></button>'; }).join('') + '</div>' +
         (t.lv < MAX_LV ? '<button class="tt-opt grn' + (G.gold < up ? ' no' : '') + '" data-a="up"><i>⬆️</i><span><b>Nâng lên cấp ' + (t.lv + 1) + '/' + MAX_LV + ' · ' + TNAME[t.lv + 1] + '</b><small>' + upInfo(t) + '</small></span><em>' + up + ' 💰</em></button>' : '<div style="font-size:13px;opacity:.8;margin:2px 4px 6px">⭐ Đã đạt cấp cao nhất</div>') +
+        /* (bản 2026.11.11-6) nâng trực tiếp từng chỉ số của chòi này, mỗi bậc đắt hơn */
+        '<div class="tt-sub">Nâng chỉ số riêng chòi này</div><div class="tt-ups">' + TUP_KEYS.filter(function (k) { return !(T.eye && (k === 'd' || k === 's')); }).map(function (k) {
+          var n = tu(t, k), U = TUP[k], mx = n >= TUP_MAX, c = tupCost(t, k);
+          return '<button class="' + (mx ? 'mx' : G.gold < c ? 'no' : '') + '" data-a="tup" data-k="' + k + '"><b>' + U.e + ' ' + U.n + ' ' + n + '/' + TUP_MAX + '</b>' + (mx ? 'Tối đa' : '+' + U.p + '% · <em>' + c + ' 💰</em>') + '</button>';
+        }).join('') + '</div>' +
         towerBar(t) +
         (t.hp < towerMax(t) ? '<button class="tt-opt grn' + (G.gold < fixCost(t) ? ' no' : '') + '" data-a="fix"><i>🔧</i><span><b>Sửa chòi</b><small>Hồi đầy máu chòi (' + Math.ceil(t.hp) + '/' + towerMax(t) + ')</small></span><em>' + fixCost(t) + ' 💰</em></button>' : '') +
         (t.sh < shieldMax(t) - 0.5 ? '<button class="tt-opt blu' + (G.gold < shieldCost(t) ? ' no' : '') + '" data-a="shield"><i>🛡️</i><span><b>' + (t.sh > 0 ? 'Nạp đầy bảo hộ' : 'Mua bảo hộ') + '</b><small>Khiên chặn ' + shieldMax(t) + ' sát thương của lính bắn chòi</small></span><em>' + shieldCost(t) + ' 💰</em></button>' : '<div style="font-size:12.5px;opacity:.85;margin:2px 4px 6px">🛡️ Bảo hộ đang đầy</div>') +
@@ -1860,9 +2023,9 @@
   function needGold(n) { toast('Còn thiếu <b>' + (n - G.gold) + ' 💰</b>. Đọc đúng các từ ở thanh dưới (hoặc chạm vào quái để đọc) để nhận vàng!'); sfx('bad'); }
   function build(k) {
     var T = TW[k]; if (G.gold < T.c) { needGold(T.c); return; }
-    G.gold -= T.c; G.towers.push({ k: k, s: G.sel, lv: 1, cd: 0.2, fl: 0, spent: T.c, hp: TOWER_HP, sh: 0, hurt: 0 });
+    G.gold -= T.c; var nt = { k: k, s: G.sel, h: G.wb ? -1 : G.sel, lv: 1, f: MODES[G.mode].f, u: { d: 0, s: 0, r: 0, h: 0 }, cd: 0.2, fl: 0, spent: T.c, cv: 0, hp: TOWER_HP, sh: 0, hurt: 0 }; nt.hp = towerMax(nt); G.towers.push(nt);   // (bản 2026.11.11-6) chòi mới xây theo dạng hợp màn
     var p = spotXY(G.spots[G.sel]); spark(p.x, p.y, ['#fde68a', '#a16207', '#fff'], 12); sfx('build');
-    closePop(); hud('gold');
+    closePop(); hud('gold'); runSave();
   }
 
   /* ================= VẼ ================= */
@@ -1890,8 +2053,15 @@
       if (towerAt(i)) return;
       var p = spotXY(s), r = W * 0.05, can = G.gold >= TW.arrow.c;
       X.fillStyle = 'rgba(0,0,0,.25)'; X.beginPath(); X.ellipse(p.x, p.y + r * 0.35, r * 1.05, r * 0.55, 0, 0, 7); X.fill();
+      if (G.mode === 'sea' && p.y < H * seaBot(p.x / W) - 4) {   // (bản 2026.11.11-6) màn biển: bè gỗ nổi
+        X.fillStyle = '#a16207'; rr(p.x - r * 1.05, p.y - r * 0.58, r * 2.1, r * 1.16, r * 0.25); X.fill(); X.strokeStyle = '#713f12'; X.lineWidth = 1.5; X.stroke();
+        for (var pk = -1; pk <= 1; pk++) { X.beginPath(); X.moveTo(p.x - r, p.y + pk * r * 0.36); X.lineTo(p.x + r, p.y + pk * r * 0.36); X.stroke(); }
+      } else if (G.mode === 'air') {   // màn không kích: bãi đáp máy bay
+        X.fillStyle = '#374151'; X.beginPath(); X.ellipse(p.x, p.y, r, r * 0.62, 0, 0, 7); X.fill(); X.strokeStyle = '#f9fafb'; X.lineWidth = 1.5; X.beginPath(); X.ellipse(p.x, p.y, r * 0.78, r * 0.46, 0, 0, 7); X.stroke();
+      } else {
       var g = X.createLinearGradient(0, p.y - r, 0, p.y + r); g.addColorStop(0, '#d6d3d1'); g.addColorStop(1, '#78716c');
       X.fillStyle = g; X.beginPath(); X.ellipse(p.x, p.y, r, r * 0.62, 0, 0, 7); X.fill();
+      }
       X.strokeStyle = can ? 'rgba(253,224,71,' + (0.55 + 0.45 * pulse) + ')' : 'rgba(255,255,255,.35)'; X.lineWidth = can ? 3 : 2;
       X.beginPath(); X.ellipse(p.x, p.y, r + (can ? pulse * 3 : 0), r * 0.62 + (can ? pulse * 2 : 0), 0, 0, 7); X.stroke();
       X.fillStyle = can ? '#fef08a' : 'rgba(255,255,255,.75)'; X.font = '900 ' + Math.round(r * 1.05) + 'px ' + TF; X.fillText('+', p.x, p.y + 1);
@@ -1908,10 +2078,14 @@
     // chòi + quái theo thứ tự từ trên xuống
     var list = [];
     G.towers.forEach(function (t) { list.push({ y: spotXY(G.spots[t.s]).y, t: t }); });
-    G.enemies.forEach(function (e) { list.push({ y: posAt(e.f, e.pi).y + (EN[e.t].fly ? H * 2 : 0), e: e }); });   // quái bay vẽ sau cùng (bay phía trên)
+    G.enemies.forEach(function (e) { list.push({ y: posAt(e.f, e.pi).y + (EN[e.t].fly || G.mode === 'air' ? H * 2 : 0), e: e }); });   // quái bay vẽ sau cùng (bay phía trên)
+    list.sort(function (a, b) { return a.y - b.y; });
+    G.towers.forEach(function (t) { if (t.f === 'plane') list.push({ y: H * 3 + spotXY(G.spots[t.s]).y, t: t, pl: 1 }); });   // máy bay vẽ trên cùng
+    list = list.filter(function (o) { return !(o.t && o.t.f === 'plane' && !o.pl); });
     list.sort(function (a, b) { return a.y - b.y; });
     list.forEach(function (o) { if (o.t) drawTower(o.t); else drawEnemy(o.e); });
     ambDraw(false); X.textAlign = 'center'; X.textBaseline = 'middle';   // (bản 2026.11.08-12) sương mù, mưa, tuyết, đom đóm… (dưới bảng tên từ)
+    if (G.mode === 'fog') drawFog();   // (bản 2026.11.11-6) lớp sương mù dày, chỉ quang quanh chòi
     G.enemies.forEach(drawSign);
     // đạn
     G.shots.forEach(function (b) {
@@ -2467,7 +2641,7 @@
     var g = c.getContext('2d'); g.scale(DPR, DPR); g.translate(1.45 * su, 2.7 * su); towerBody(g, k, lv, su, thk);
     return sprPut(key, c);
   }
-  function towerSize(lv) { return W * 0.11 * (1 + 0.07 * Math.min(lv - 1, 4)); }
+  function towerSize(lv) { return W * 0.088 * (1 + 0.05 * Math.min(lv - 1, 4)); }   // (bản 2026.11.11-6) thu nhỏ để chòi cấp cao không chồng lên nhau
   /* sao cấp độ: cấp 1–5 sao vàng; cấp 6–10 vẫn 5 sao nhưng đổi màu theo bậc (hồng ngọc → thạch anh tím → kim cương → lục bảo → cầu vồng thần thoại có vương miện) */
   function drawStars(lv, x, y, s, ft) {
     if (lv <= 1) return;
@@ -2696,7 +2870,11 @@
   function tRateTxt(k, lv) { if (TW[k].eye) return '—'; var r = tSpdMul(k, lv) / TW[k].cd; return k === 'laser' ? 'liên tục' : (Math.round(r * 100) / 100).toLocaleString('vi-VN') + '/s'; }
   function tRangePct(k, lv) { return Math.round(TW[k].r * 100 * (1 + (k === 'fire' ? 0.2 : k === 'eye' ? 0.15 : 0.08) * (lvEff(lv) - 1))); }
   function dmgTxt(k, lv) { if (TW[k].eye) return 'soi'; var d = tDmg(k, lv); return k === 'laser' ? Math.round(d * 10) + '/giây' : String(Math.round(d)); }
-  function statLine(t) { return '<div style="font-size:12px;margin:-2px 4px 6px;opacity:.9">❤️ ' + Math.ceil(t.hp) + '/' + towerMax(t) + ' · ⚔️ ' + dmgTxt(t.k, t.lv) + ' · 🛡️ ' + Math.round(tDef(t.k, t.lv) * 100) + '% · ⏱️ ' + tRateTxt(t.k, t.lv) + '</div>'; }
+  function statLine(t) {   // (bản 2026.11.11-6) chỉ số thật của chòi này (gồm nâng cấp riêng + hệ số dạng chòi ở màn này)
+    var fm = formMul(t), ey = TW[t.k].eye, d = ey ? 'soi' : t.k === 'laser' ? Math.round(tDmgT(t) * 10) + '/giây' : String(Math.round(tDmgT(t))), rt = ey ? '—' : t.k === 'laser' ? 'liên tục' : (Math.round(tSpdT(t) / TW[t.k].cd * 100) / 100).toLocaleString('vi-VN') + '/s';
+    return '<div style="font-size:12px;margin:-2px 4px 6px;opacity:.95;line-height:1.45">❤️ ' + Math.ceil(t.hp) + '/' + towerMax(t) + ' · ⚔️ ' + d + ' · 🛡️ ' + Math.round(tDef(t.k, t.lv) * 100) + '% · ⏱️ ' + rt + ' · 🎯 ' + Math.round(towerRange(t) / W * 100) + '%' +
+      (fm < 1 && !ey ? '<br><b style="color:#fca5a5">⚠️ Sai dạng: màn này chỉ bắn ' + Math.round(fm * 100) + '% – đổi sang ' + FORMS[MODES[G.mode].f].e + ' ' + FORMS[MODES[G.mode].f].n + '</b>' : '') + '</div>';
+  }
 
   /* ================= THƯ VIỆN CHÒI: xem hình động 10 cấp + chỉ số + nâng cấp ================= */
   var LIB = { k: 'arrow', lv: 1, play: false, raf: 0, t: 0, pt: 0, last: 0, tw: null, msg: '' };
@@ -2765,7 +2943,59 @@
     if (gems() < c) { LIB.msg = '💎 Chưa đủ ngọc: cần ' + c + ', đang có ' + gems() + '. Đọc đúng thêm từ để kiếm ngọc nhé!'; renderLib(); sfx('bad'); return; }
     var p = prog(); p.gem -= c; u[s2] = n + 1; saveProg(); LIB.msg = '✅ ' + UPS[s2].e + ' ' + UPS[s2].n + ' của ' + TW[LIB.k].n.toLowerCase() + ' lên bậc ' + (n + 1) + '!'; sfx('coin'); renderLib();
   }
+  /* (bản 2026.11.11-6) vẽ chòi theo dạng: 🏯 chòi trên đất, 🚢 tàu chiến (chòi đặt trên thân tàu), ✈️ máy bay chiến đấu bay lượn trên ô */
   function drawTower(t) {
+    if (t.f === 'boat') drawBoat(t); else if (t.f === 'plane') drawPlane(t); else drawTowerLand(t);
+    var m = formMul(t); if (m >= 1 || TW[t.k].eye) return;
+    var p = spotXY(G.spots[t.s]), s = towerSize(t.lv), fs = Math.max(9, Math.round(W * 0.025)), lb = '⚠ ' + Math.round(m * 100) + '%';
+    X.font = '900 ' + fs + 'px ' + TF; var bw = X.measureText(lb).width + fs * 0.8, bx = p.x + s * 0.3, by = p.y - s * 0.1;
+    X.fillStyle = 'rgba(185,28,28,.92)'; rr(bx, by, bw, fs * 1.4, fs * 0.5); X.fill(); X.fillStyle = '#fff'; X.fillText(lb, bx + bw / 2, by + fs * 0.72);
+  }
+  function drawTBar(t, x, y, s) {
+    var tm = towerMax(t); if (t.hp >= tm && !(t.sh > 0)) return;
+    var bw = s * 0.8, bx = x - bw / 2, kk = clamp(t.hp / tm, 0, 1);
+    X.fillStyle = 'rgba(0,0,0,.65)'; X.fillRect(bx - 1, y - 1, bw + 2, 6); X.fillStyle = kk > 0.5 ? '#4ade80' : kk > 0.25 ? '#facc15' : '#f87171'; X.fillRect(bx, y, bw * kk, 4);
+    if (t.sh > 0) { X.fillStyle = '#38bdf8'; X.fillRect(bx, y + 5, bw * clamp(t.sh / shieldMax(t), 0, 1), 3); }
+  }
+  function drawBoat(t) {
+    var T = TW[t.k], p = spotXY(G.spots[t.s]), s = towerSize(t.lv), x = p.x, y = p.y, ft = G.flagT + t.s * 1.7, bob = Math.sin(ft * 2.2) * s * 0.05, hw = s * 0.85, hy = y + s * 0.02 + bob, i;
+    for (i = 0; i < 2; i++) { var k = (ft * 0.6 + i * 0.5) % 1; X.strokeStyle = 'rgba(224,242,254,' + (0.55 * (1 - k)) + ')'; X.lineWidth = 1.5; X.beginPath(); X.ellipse(x, y + s * 0.14, s * (0.85 + k * 0.5), s * (0.22 + k * 0.12), 0, 0, 7); X.stroke(); }
+    X.fillStyle = 'rgba(2,6,23,.3)'; X.beginPath(); X.ellipse(x, y + s * 0.18, hw * 1.05, s * 0.2, 0, 0, 7); X.fill();
+    X.fillStyle = '#92400e'; X.beginPath(); X.ellipse(x, hy - s * 0.05, hw, s * 0.2, 0, 0, 7); X.fill();   // sàn tàu
+    X.strokeStyle = 'rgba(0,0,0,.25)'; X.lineWidth = 1; for (i = -2; i <= 2; i++) { X.beginPath(); X.moveTo(x + i * hw * 0.3, hy - s * 0.22); X.lineTo(x + i * hw * 0.3, hy + s * 0.12); X.stroke(); }
+    X.save(); X.translate(x, y - s * 0.1 + bob); X.scale(0.66, 0.66); X.translate(-x, -y); drawTowerLand(t, true); X.restore();
+    var g = X.createLinearGradient(0, hy - s * 0.05, 0, hy + s * 0.3); g.addColorStop(0, shade(T.roof, 0.15)); g.addColorStop(1, shade(T.roof, -0.5));
+    X.fillStyle = g; X.beginPath(); X.moveTo(x - hw * 1.1, hy - s * 0.04); X.lineTo(x + hw * 1.1, hy - s * 0.04); X.quadraticCurveTo(x + hw * 0.92, hy + s * 0.26, x + hw * 0.55, hy + s * 0.28); X.lineTo(x - hw * 0.55, hy + s * 0.28); X.quadraticCurveTo(x - hw * 0.92, hy + s * 0.26, x - hw * 1.1, hy - s * 0.04); X.closePath(); X.fill();
+    X.strokeStyle = '#1c1917'; X.lineWidth = 1.5; X.stroke();
+    X.fillStyle = '#fef3c7'; X.fillRect(x - hw * 0.98, hy + s * 0.02, hw * 1.96, s * 0.035);
+    X.fillStyle = '#e0f2fe'; X.strokeStyle = '#1c1917'; X.lineWidth = 1; for (i = -2; i <= 2; i++) { X.beginPath(); X.arc(x + i * hw * 0.34, hy + s * 0.15, s * 0.035, 0, 7); X.fill(); X.stroke(); }
+    var fw = Math.sin(ft * 5) * s * 0.03; X.strokeStyle = '#334155'; X.lineWidth = 1.5; X.beginPath(); X.moveTo(x - hw * 0.95, hy - s * 0.04); X.lineTo(x - hw * 0.95, hy - s * 0.42); X.stroke();
+    X.fillStyle = T.roof; X.beginPath(); X.moveTo(x - hw * 0.95, hy - s * 0.42); X.lineTo(x - hw * 0.62, hy - s * 0.36 + fw); X.lineTo(x - hw * 0.95, hy - s * 0.28); X.closePath(); X.fill();
+    drawStars(t.lv, x, hy + s * 0.42, s, ft); drawTBar(t, x, hy + s * 0.55, s);
+  }
+  function drawPlane(t) {
+    var T = TW[t.k], lv = t.lv, p = spotXY(G.spots[t.s]), s = towerSize(lv), ft = G.flagT + t.s * 1.7, L = s * 0.78;
+    var px = p.x + Math.cos(ft * 0.9) * s * 0.18, py = p.y - s * 1.0 + Math.sin(ft * 1.8) * s * 0.07;
+    X.strokeStyle = 'rgba(255,255,255,.4)'; X.lineWidth = 1.5; X.setLineDash([4, 4]); X.beginPath(); X.ellipse(p.x, p.y, s * 0.6, s * 0.24, 0, 0, 7); X.stroke(); X.setLineDash([]);   // bãi đỗ
+    X.fillStyle = 'rgba(0,0,0,.25)'; X.beginPath(); X.ellipse(px, p.y + s * 0.02, L * 0.7, s * 0.13, 0, 0, 7); X.fill();   // bóng in dưới đất
+    var ta = t.st != null && G.t - t.st < 1.5 && t.ax != null ? Math.atan2(t.ay - py, t.ax - px) : -Math.PI / 2;
+    if (t.pa == null) t.pa = ta; var da = ((ta - t.pa + Math.PI * 3) % (Math.PI * 2)) - Math.PI; t.pa += da * 0.12;
+    if (lv >= 5) { var tc = TIERC[Math.min(lv, 10)] || '#fde68a', ag = X.createRadialGradient(px, py, 0, px, py, L * 1.3); ag.addColorStop(0, hexA(tc.charAt(0) === '#' ? tc : '#fde68a', 0.35)); ag.addColorStop(1, 'rgba(0,0,0,0)'); X.fillStyle = ag; X.beginPath(); X.arc(px, py, L * 1.3, 0, 7); X.fill(); }
+    X.save(); X.translate(px, py); X.rotate(t.pa);
+    X.globalCompositeOperation = 'lighter'; var fr = L * (0.35 + Math.random() * 0.12), fg = X.createRadialGradient(-L * 0.95, 0, 0, -L * 0.95, 0, fr); fg.addColorStop(0, 'rgba(255,255,255,.95)'); fg.addColorStop(0.4, 'rgba(253,186,33,.8)'); fg.addColorStop(1, 'rgba(234,88,12,0)'); X.fillStyle = fg; X.beginPath(); X.arc(-L * 0.95, 0, fr, 0, 7); X.fill(); X.globalCompositeOperation = 'source-over';
+    X.fillStyle = shade(T.roof, -0.2); X.strokeStyle = '#0f172a'; X.lineWidth = 1.2;
+    X.beginPath(); X.moveTo(L * 0.25, 0); X.lineTo(-L * 0.22, -L * 0.95); X.lineTo(-L * 0.46, -L * 0.95); X.lineTo(-L * 0.3, 0); X.lineTo(-L * 0.46, L * 0.95); X.lineTo(-L * 0.22, L * 0.95); X.closePath(); X.fill(); X.stroke();
+    X.beginPath(); X.moveTo(-L * 0.6, 0); X.lineTo(-L * 0.86, -L * 0.4); X.lineTo(-L * 0.98, -L * 0.4); X.lineTo(-L * 0.9, 0); X.lineTo(-L * 0.98, L * 0.4); X.lineTo(-L * 0.86, L * 0.4); X.closePath(); X.fill(); X.stroke();
+    var g = X.createLinearGradient(0, -L * 0.18, 0, L * 0.18); g.addColorStop(0, shade(T.roof, 0.4)); g.addColorStop(0.5, T.roof); g.addColorStop(1, shade(T.roof, -0.45));
+    X.fillStyle = g; X.beginPath(); X.moveTo(L * 1.05, 0); X.quadraticCurveTo(L * 0.72, -L * 0.18, L * 0.2, -L * 0.17); X.lineTo(-L * 0.92, -L * 0.1); X.lineTo(-L * 0.92, L * 0.1); X.lineTo(L * 0.2, L * 0.17); X.quadraticCurveTo(L * 0.72, L * 0.18, L * 1.05, 0); X.closePath(); X.fill(); X.stroke();
+    X.fillStyle = '#7dd3fc'; X.beginPath(); X.ellipse(L * 0.52, 0, L * 0.2, L * 0.075, 0, 0, 7); X.fill(); X.fillStyle = 'rgba(255,255,255,.75)'; X.beginPath(); X.ellipse(L * 0.56, -L * 0.025, L * 0.08, L * 0.025, 0, 0, 7); X.fill();
+    X.fillStyle = '#e5e7eb'; [-1, 1].forEach(function (sd) { X.fillRect(-L * 0.05, sd * L * 0.55 - L * 0.03, L * 0.42, L * 0.06); });   // súng dưới cánh
+    if (t.fl > 0) { X.globalCompositeOperation = 'lighter'; [-1, 1].forEach(function (sd) { var mg = X.createRadialGradient(L * 0.4, sd * L * 0.55, 0, L * 0.4, sd * L * 0.55, L * 0.25); mg.addColorStop(0, 'rgba(255,255,255,.95)'); mg.addColorStop(1, 'rgba(253,224,71,0)'); X.fillStyle = mg; X.beginPath(); X.arc(L * 0.4, sd * L * 0.55, L * 0.25, 0, 7); X.fill(); }); X.globalCompositeOperation = 'source-over'; }
+    X.restore();
+    sprAt(emoSpr(T.e, s * 0.36), px, py);
+    drawStars(lv, p.x, p.y + s * 0.3, s, ft); drawTBar(t, px, py + L * 0.85, s);
+  }
+  function drawTowerLand(t, inBoat) {
     var T = TW[t.k], p = spotXY(G.spots[t.s]), lv = t.lv, s = towerSize(lv), x = p.x, y = p.y, fl = t.fl > 0 ? 1.06 : 1, thk = themeKey();
     var gm = tGeo(lv, t.k), L = TGLO[t.k] || '#fde68a', TC = lv >= 5 ? (lv >= 10 ? 'hsl(' + Math.round((G.flagT * 90 + t.s * 40) % 360) + ',100%,65%)' : TIERC[lv]) : L;
     var TCa = function (a) { return lv >= 10 ? TC.replace('hsl(', 'hsla(').replace(')', ',' + a + ')') : hexA(lv >= 5 ? TIERC[lv] : L, a); };
@@ -2858,6 +3088,7 @@
     if (t.sh > 0) { var sa = 0.35 + 0.15 * Math.sin(G.flagT * 4); X.fillStyle = 'rgba(56,189,248,' + (sa * 0.4) + ')'; X.strokeStyle = 'rgba(125,211,252,' + (sa + 0.3) + ')'; X.lineWidth = 2; X.beginPath(); X.ellipse(x, shc, shw, shr, 0, 0, 7); X.fill(); X.stroke(); }
     if (t.hurt > 0) { t.hurt -= 0.016; X.fillStyle = 'rgba(239,68,68,.35)'; X.beginPath(); X.ellipse(x, shc, shw * 0.8, shr * 0.8, 0, 0, 7); X.fill(); }
     var tm = towerMax(t);
+    if (inBoat) return;   // tàu chiến tự vẽ máu + sao bên ngoài thân tàu
     if (t.hp < tm || t.sh > 0) {
       var bw2 = s * 0.8, bx2 = x - bw2 / 2, by2 = y + s * 0.3, kk = clamp(t.hp / tm, 0, 1);
       X.fillStyle = 'rgba(0,0,0,.65)'; X.fillRect(bx2 - 1, by2 - 1, bw2 + 2, 6); X.fillStyle = kk > 0.5 ? '#4ade80' : kk > 0.25 ? '#facc15' : '#f87171'; X.fillRect(bx2, by2, bw2 * kk, 4);
@@ -2883,7 +3114,9 @@
       var ap = spotXY(G.spots[e.aim.s]); X.strokeStyle = 'rgba(239,68,68,' + (0.25 + 0.2 * Math.sin(G.flagT * 9)) + ')'; X.lineWidth = 1.5; X.setLineDash([4, 5]);
       X.beginPath(); X.moveTo(p.x, p.y - sz * 0.35); X.lineTo(ap.x, ap.y - W * 0.06); X.stroke(); X.setLineDash([]);
     }
-    if (D.fly) { X.fillStyle = 'rgba(0,0,0,.2)'; X.beginPath(); X.ellipse(p.x, p.y + sz * 0.95, sz * 0.3 * (0.9 + 0.1 * sb), sz * 0.09, 0, 0, 7); X.fill(); }
+    var FLY_ = D.fly || G.mode === 'air', SWIM = G.mode === 'sea' && !FLY_;   // (bản 2026.11.11-6) màn không kích: quái nào cũng bay; màn biển: quái bơi
+    if (FLY_) { X.fillStyle = 'rgba(0,0,0,.2)'; X.beginPath(); X.ellipse(p.x, p.y + sz * 0.95, sz * 0.3 * (0.9 + 0.1 * sb), sz * 0.09, 0, 0, 7); X.fill(); }
+    else if (SWIM) { for (var wq = 0; wq < 2; wq++) { var wk = (G.flagT * 0.9 + wq * 0.5 + e.bob * 0.1) % 1; X.strokeStyle = 'rgba(224,242,254,' + (0.6 * (1 - wk)) + ')'; X.lineWidth = 1.5; X.beginPath(); X.ellipse(p.x, p.y + sz * 0.2, sz * (0.4 + wk * 0.4), sz * (0.12 + wk * 0.1), 0, 0, 7); X.stroke(); } }
     else {
       X.fillStyle = 'rgba(0,0,0,.34)'; X.beginPath(); X.ellipse(p.x, p.y + sz * 0.32, sz * 0.4 * (1 - 0.15 * sb), sz * 0.13, 0, 0, 7); X.fill();
       if (sb < 0.35 && e.t !== 'ghost') {   // bụi tung lên mỗi bước chân
@@ -2907,17 +3140,35 @@
     var sp = emoSpr(enE(e), sz);
     X.save(); X.translate(p.x, p.y - by);
     if (p.dx < 0) X.scale(-1, 1);
-    if (D.fly) X.scale(1, 0.82 + 0.18 * Math.abs(Math.sin(e.bob * 1.6)));   // đập cánh
+    if (FLY_) X.scale(1, 0.82 + 0.18 * Math.abs(Math.sin(e.bob * 1.6)));   // đập cánh
     else if (e.frzT > 0) { /* bị đóng băng: đứng im */ }
     else { X.rotate(Math.sin(e.bob) * (big ? 0.05 : 0.09)); X.scale(1 + 0.05 * (1 - sb), 1 - 0.06 * (1 - sb)); }   // lắc lư, nhún theo bước chân
     if (e.t === 'ghost') X.globalAlpha = 0.72 + 0.18 * Math.sin(G.flagT * 5 + e.bob);
     sprAt(sp, 0, 0);
     if (e.hit > 0) { X.globalAlpha = 0.75; X.drawImage(sp.w, -sp.n / 2, -sp.n / 2, sp.n, sp.n); }   // chớp trắng khi trúng đòn
     X.restore(); X.globalAlpha = 1;
+    if (SWIM) { X.fillStyle = 'rgba(14,116,144,.6)'; X.beginPath(); X.ellipse(p.x, p.y + sz * 0.22, sz * 0.5, sz * 0.16, 0, 0, 7); X.fill(); }   // nửa thân chìm dưới nước
     if (e.stunT > 0) { for (var i = 0; i < 3; i++) { var a = G.flagT * 5 + i * 2.1; emo('⭐', p.x + Math.cos(a) * sz * 0.4, p.y - sz * 0.55 + Math.sin(a) * sz * 0.12, sz * 0.22); } }
     e._x = p.x; e._y = p.y; e._s = sz;
   }
 
+  /* (bản 2026.11.11-6) MÀN SƯƠNG MÙ: phủ sương dày, khoét vùng nhìn quanh từng chòi (chòi mắt thần nhìn xa hơn), kho từ và thành quái */
+  var FOGC = null;
+  function drawFog() {
+    if (!FOGC || FOGC.width !== CV.width || FOGC.height !== CV.height) { FOGC = document.createElement('canvas'); FOGC.width = CV.width; FOGC.height = CV.height; }
+    var f = FOGC.getContext('2d'), i; f.setTransform(DPR, 0, 0, DPR, 0, 0); f.globalCompositeOperation = 'source-over'; f.clearRect(0, 0, W, H);
+    f.fillStyle = 'rgba(148,163,184,.86)'; f.fillRect(0, 0, W, H);
+    for (i = 0; i < 5; i++) {   // mảng sương trôi
+      var cx = ((G.flagT * W * 0.02 * (1 + i * 0.3) + i * W * 0.45) % (W * 1.6)) - W * 0.3, cy = H * (0.12 + 0.19 * i), cr = W * (0.35 + 0.08 * (i % 3));
+      var cg = f.createRadialGradient(cx, cy, 0, cx, cy, cr); cg.addColorStop(0, i % 2 ? 'rgba(226,232,240,.35)' : 'rgba(71,85,105,.3)'); cg.addColorStop(1, 'rgba(0,0,0,0)'); f.fillStyle = cg; f.fillRect(cx - cr, cy - cr, cr * 2, cr * 2);
+    }
+    f.globalCompositeOperation = 'destination-out';
+    function hole(x, y, r) { var g = f.createRadialGradient(x, y, r * 0.5, x, y, r); g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)'); f.fillStyle = g; f.beginPath(); f.arc(x, y, r, 0, 7); f.fill(); }
+    G.towers.forEach(function (t) { var p = spotXY(G.spots[t.s]); hole(p.x, p.y, fogR(t)); hole(p.x, p.y - towerSize(t.lv) * 0.9, towerSize(t.lv) * 1.1); });
+    var a = PATH[0], b = PATH[PATH.length - 1]; hole(clamp(a.x, W * 0.13, W * 0.87), W * 0.06, W * 0.2); hole(b.x, H - W * 0.08, W * 0.3);
+    if (G.sel >= 0 && !towerAt(G.sel)) { var sp = spotXY(G.spots[G.sel]); hole(sp.x, sp.y, W * 0.08); }
+    X.drawImage(FOGC, 0, 0, W, H);
+  }
   /* ----- NỀN: bóng mây trôi chậm trên mặt đất ----- */
   function cloudSpr() {
     if (CLOUD) return CLOUD; var n = 256, c = document.createElement('canvas'); c.width = c.height = n; var g = c.getContext('2d');
@@ -2958,7 +3209,7 @@
      trình duyệt lại bắn thêm 1 cú "click" vào đúng chỗ đó – mà chỗ đó giờ có thể là nút của bảng vừa hiện ra → tự chọn chòi ngoài ý muốn.
      Cách sửa: ghi lại lúc mở bảng (tapAt), bỏ qua mọi cú bấm vào nút trong bảng xảy ra quá sớm sau đó. */
   var tapAt = 0, TAP_GUARD = 450;
-  var GUARD_ACT = { build: 1, up: 1, fix: 1, shield: 1, sell: 1, pick: 1, mic: 1, topick: 1, tomic: 1, peek: 1, sayx: 1, sayhear: 1 };
+  var GUARD_ACT = { tup: 1, form: 1, build: 1, up: 1, fix: 1, shield: 1, sell: 1, pick: 1, mic: 1, topick: 1, tomic: 1, peek: 1, sayx: 1, sayhear: 1 };
   function onTap(ev) {
     if (!G || G.ended) return;
     tapAt = Date.now();
@@ -2992,6 +3243,8 @@
     G.ended = true; closeSay(); closePop(); waveBtn(); ambStop();
     var st = win ? (G.hp >= G.hpMax * 0.8 ? 3 : G.hp >= G.hpMax * 0.4 ? 2 : 1) : 0, tp = G.tp, pv = prog(), old = pv.s[tp.id] || 0;
     if (win) { if (st > old) pv.s[tp.id] = st; pv.b[tp.id] = Math.max(pv.b[tp.id] || 0, G.hp); if (G.dif > bestDiff(tp.id)) pv.d[tp.id] = G.dif; saveProg(); }
+    /* (bản 2026.11.11-6) giữ đội chòi + vàng cho màn sau, xóa bản lưu trận dở, sang kiểu màn tiếp theo */
+    saveArmy(); runClear(); if (!tp.wb) { pv.mc = (pv.mc || 0) + 1; saveProg(); }
     var vnd = Math.round(((win ? st * STAR_VND * (tp.wb ? 2 : 1) : 0) * DIFF[G.dif].rw + G.ok * WORD_VND) / 1000) * 1000;   // boss thế giới: thưởng sao gấp đôi
     try { if (window.farmEarn && (vnd || G.ok)) window.farmEarn('castle', vnd, G.ok, tp.id); } catch (e) {}
     if (win) { try { localStorage.setItem('farm6_pass', String(Date.now())); } catch (e) {} }
@@ -3014,6 +3267,7 @@
       (G.gemE ? '<div class="farm" style="background:rgba(14,165,233,.3)">💎 +' + G.gemE + ' ngọc nâng cấp chòi · đang có ' + gems().toLocaleString('vi-VN') + ' (vào 🏯 Thư viện chòi để nâng cấp)</div>' : '') +
       '<div class="farm" style="background:rgba(234,179,8,.3)">🏆 ' + (lbp ? '+' + lbp + ' điểm xếp hạng · ' : '') + 'Hạng của bạn: #' + lbRank().toLocaleString('vi-VN') + '</div>' +
       (bad.length ? '<div style="font-size:13.5px;font-weight:800;color:#fca5a5">Từ cần luyện thêm (chạm để nghe):</div><div class="wl">' + bad.slice(0, 24).map(function (i) { var pv = pronOf(tp.w[i]).vi; return '<span class="bd" data-a="hearw" data-i="' + i + '">' + esc(tp.w[i][0]) + (pv ? ' <i style="font-style:normal;color:#fde68a">(' + esc(pv) + ')</i>' : '') + ' · ' + esc(tp.w[i][1]) + '</span>'; }).join('') + '</div>' : '<div class="sum">🎉 Bạn đã đọc đúng toàn bộ từ vựng trong kho!</div>') +
+      '<div class="farm" style="background:rgba(16,185,129,.32)">🎒 Giữ lại ' + (G.towers.length + G.reserve.length) + ' chòi + ' + Math.round(G.gold) + ' 💰 cho màn sau · Màn sau: ' + MODES[nextMode(nextWb >= 0 ? wbTopic(nextWb) : next)].e + ' ' + MODES[nextMode(nextWb >= 0 ? wbTopic(nextWb) : next)].n + '</div>' +
       (nextWb >= 0 ? '<div class="farm" style="background:rgba(220,38,38,.35)">🌍 Đã mở khóa <b>Boss thế giới ' + (nextWb + 1) + ': ' + esc(WB[nextWb].e + ' ' + WB[nextWb].n) + '</b>!</div>' : '') +
       '<div class="acts">' + (nextWb >= 0 ? '<button class="tt-btn g" data-a="wboss" data-k="' + nextWb + '">🌍 Đánh Boss thế giới ' + (nextWb + 1) + '</button>' : '') + (next && win ? '<button class="tt-btn g" data-a="next" data-i="' + next.ti + '">▶ Kho từ tiếp: ' + esc(next.n) + '</button>' : '') +
       '<button class="tt-btn" data-a="again">🔁 Chơi lại kho từ này</button><button class="tt-btn s" data-a="map">🗺️ Về bản đồ các kho từ</button></div></div>';
@@ -3021,18 +3275,38 @@
   }
 
   /* ================= SỰ KIỆN ================= */
-  function startGame(tp) {
+  function startGame(tp, R) {
     hush(); closeSay();
-    newGame(tp); show('ttGame');
+    if (!R) { var OR = runGet(); if (OR) { armyFromRun(OR); runClear(); } }   // (bản 2026.11.11-6) bỏ trận dở để vào trận khác: chòi + vàng vẫn mang theo
+    newGame(tp, R); show('ttGame');
     $('ttEnd').classList.remove('on'); closePop();
     requestAnimationFrame(function () {
       lay(); renderBank(); hud(); waveBtn(); renderGift(); ambStart(SCENES[G.scK].snd);
-      banner(DIFF[G.dif].e + ' ' + DIFF[G.dif].n + ' · ' + tp.n, 'Quái sắp tới trộm từ – mau chuẩn bị chòi chặn đường!');
+      if (R) { showResume(); if (!raf) { last = 0; raf = requestAnimationFrame(loop); } return; }
+      var M = MODES[G.mode];
+      banner(M.e + ' Màn ' + M.n + ' · ' + tp.n, M.info);
+      if (G.carried && G.towers.length) setTimeout(function () {
+        if (!G || G.tp0 !== tp) return; var bad = G.towers.filter(function (t) { return formMul(t) < 1 && !TW[t.k].eye; }).length;
+        toast('🎒 Đội ' + G.towers.length + ' chòi từ màn trước đã vào vị trí · +' + SUPPLY + ' 💰 tiếp tế.' + (bad ? ' <b>' + bad + ' chòi sai dạng</b> (bắn yếu): chạm chòi để đổi thành ' + FORMS[M.f].e + ' ' + FORMS[M.f].n + '.' : '') + (G.reserve.length ? ' ' + G.reserve.length + ' chòi đang cất trong kho vì hết ô.' : ''));
+      }, 2300);
       setTimeout(function () { if (G && G.tp0 === tp && !G.towers.length) toast('💡 Chạm vào từ ở thanh dưới, đọc từ tiếng Anh rồi nói nghĩa tiếng Việt để nhận vàng, rồi chạm ô đá <b>➕</b> để xây chòi chặn quái.'); }, 2200);
       if (!raf) { last = 0; raf = requestAnimationFrame(loop); }
     });
   }
   function stopLoop() { if (raf) cancelAnimationFrame(raf); raf = 0; ambStop(); }
+  /* (bản 2026.11.11-6) mở lại game: vào thẳng trận đang dở (tạm dừng, chờ bấm ▶ Chơi tiếp) */
+  function showResume() {
+    G.paused = true; hud();
+    var e2 = $('ttEnd'), M = MODES[G.mode];
+    e2.innerHTML = '<div class="tt-endc"><div class="big">⏯️</div><h2>Trận đang chơi dở</h2><div class="sum">' + M.e + ' Màn ' + M.n + ' · ' + esc(G.tp0.n) + '</div><div class="sum">Đợt ' + (G.wave + 1) + '/' + G.waves.length + ' · 📚 ' + G.hp + '/' + G.hpMax + ' · 💰 ' + Math.round(G.gold) + ' · ' + G.towers.length + ' chòi</div>' +
+      '<div class="acts"><button class="tt-btn g" data-a="resume">▶ Chơi tiếp</button><button class="tt-btn s" data-a="map">🗺️ Về bản đồ (vẫn giữ trận này)</button></div></div>';
+    e2.classList.add('on');
+  }
+  function resumeRun(R) {
+    var tp = R.wb ? wbTopic(R.wb - 1) : DATA.topics.filter(function (t) { return t.id === R.id; })[0];
+    if (!tp) { armyFromRun(R); runClear(); renderMap(); return; }
+    CUR = tp; if (R.dif != null) DSEL = R.dif; startGame(tp, R);
+  }
   function onClick(ev) {
     var el = ev.target.closest ? ev.target.closest('[data-a]') : null; if (!el) return;
     var a = el.getAttribute('data-a'); ac();
@@ -3064,13 +3338,15 @@
       Array.prototype.forEach.call($('ttDif').children, function (b, i) { b.classList.toggle('on', i === DSEL); }); $('ttDN').innerHTML = diffNote(DSEL); sfx('tap'); return;
     }
     if (a === 'start') { startGame(CUR); return; }
-    if (a === 'map') { stopLoop(); closeSay(); if (G) G.ended = true; G = null; renderMap(); show('ttMap'); return; }
+    if (a === 'cont') { var RC = runGet(); if (RC) resumeRun(RC); else renderMap(); return; }
+    if (a === 'armyreset') { if (window.confirm('Bỏ toàn bộ chòi và vàng đang có (kể cả trận đang dở) để chơi lại từ đầu?')) { var pa = prog(); pa.army = null; saveProg(); runClear(); if (CUR) openIntro(CUR); } return; }
+    if (a === 'map') { if (G && !G.ended) runSave(); stopLoop(); closeSay(); if (G) G.ended = true; G = null; renderMap(); show('ttMap'); return; }
     if (!G) return;
     if (a === 'quit') {
       if (G.ended) { el = null; stopLoop(); G = null; renderMap(); show('ttMap'); return; }
       G.paused = true; hud();
       var e2 = $('ttEnd');
-      e2.innerHTML = '<div class="tt-endc"><div class="big">🏳️</div><h2>Rời trận?</h2><div class="sum">Trận đấu chưa xong sẽ không được lưu.</div><div class="acts"><button class="tt-btn g" data-a="resume">▶ Chơi tiếp</button><button class="tt-btn s" data-a="map">🗺️ Rời trận, về bản đồ</button></div></div>';
+      e2.innerHTML = '<div class="tt-endc"><div class="big">🏳️</div><h2>Rời trận?</h2><div class="sum">Trận đang dở được lưu lại – lần sau mở game sẽ chơi tiếp đúng chỗ này.</div><div class="acts"><button class="tt-btn g" data-a="resume">▶ Chơi tiếp</button><button class="tt-btn s" data-a="map">🗺️ Rời trận, về bản đồ</button></div></div>';
       e2.classList.add('on'); return;
     }
     if (a === 'resume') { $('ttEnd').classList.remove('on'); G.paused = false; hud(); return; }
@@ -3091,7 +3367,21 @@
     if (a === 'up') { var t = towerAt(G.sel); if (!t || t.lv >= MAX_LV) return; var c = upCost(t); if (G.gold < c) { needGold(c); return; } G.gold -= c; t.spent += c; var om = towerMax(t); t.lv++; t.hp += towerMax(t) - om; var p = spotXY(G.spots[t.s]); spark(p.x, p.y - W * 0.05, ['#fde047', '#fff', '#86efac'], 14); sfx('build'); hud('gold'); openPop(G.sel); return; }
     if (a === 'fix') { var tf = towerAt(G.sel); if (!tf) return; var cf = fixCost(tf); if (G.gold < cf) { needGold(cf); return; } G.gold -= cf; tf.hp = towerMax(tf); var pf = spotXY(G.spots[tf.s]); spark(pf.x, pf.y - W * 0.05, ['#86efac', '#fff', '#fde68a'], 12); sfx('build'); hud('gold'); openPop(G.sel); return; }
     if (a === 'shield') { var tsh = towerAt(G.sel); if (!tsh) return; var cs = shieldCost(tsh); if (G.gold < cs) { needGold(cs); return; } G.gold -= cs; tsh.sh = shieldMax(tsh); var ps = spotXY(G.spots[tsh.s]); G.fx.push({ ring: 1, col: '125,211,252', x: ps.x, y: ps.y - W * 0.06, r: W * 0.12, l: 0.45, L: 0.45 }); sfx('ice'); hud('gold'); openPop(G.sel); return; }
-    if (a === 'sell') { var t2 = towerAt(G.sel); G.gold += Math.floor(t2.spent * 0.6); G.towers.splice(G.towers.indexOf(t2), 1); sfx('coin'); hud('gold'); closePop(); return; }
+    if (a === 'sell') { var t2 = towerAt(G.sel); if (!t2) return; G.gold += Math.floor(t2.spent * 0.6); G.towers.splice(G.towers.indexOf(t2), 1); if (G.reserve.length) { var rt = G.reserve.shift(); rt.s = t2.s; if (!G.wb) rt.h = t2.s; G.towers.push(rt); toast('📦 ' + TW[rt.k].n + ' trong kho đã vào ô vừa trống.'); } sfx('coin'); hud('gold'); closePop(); runSave(); return; }
+    if (a === 'tup') {   // (bản 2026.11.11-6) nâng chỉ số riêng chòi
+      var tq = towerAt(G.sel), sk = el.getAttribute('data-k'); if (!tq || !TUP[sk] || tu(tq, sk) >= TUP_MAX) return;
+      var cq = tupCost(tq, sk); if (G.gold < cq) { needGold(cq); return; }
+      G.gold -= cq; tq.spent += cq; var omq = towerMax(tq); tq.u[sk] = tu(tq, sk) + 1; if (sk === 'h') tq.hp += towerMax(tq) - omq;
+      var pq = spotXY(G.spots[tq.s]); spark(pq.x, pq.y - W * 0.05, ['#c4b5fd', '#fff', '#fde047'], 12); sfx('build'); hud('gold'); openPop(G.sel); return;
+    }
+    if (a === 'form') {   // (bản 2026.11.11-6) đổi dạng chòi / tàu chiến / máy bay
+      var tv = towerAt(G.sel), nf = el.getAttribute('data-f'); if (!tv || !FORMS[nf] || (tv.f || 'land') === nf) return;
+      var cvv = cvCost(tv, nf); if (G.gold < cvv) { needGold(cvv); return; }
+      G.gold -= cvv; tv.spent += cvv; tv.cv = (tv.cv || 0) + cvv; tv.f = nf; tv.pa = null;
+      var pv2 = spotXY(G.spots[tv.s]); spark(pv2.x, pv2.y - W * 0.05, ['#7dd3fc', '#fff', '#fde047'], 16); smoke(pv2.x, pv2.y - W * 0.03, 6); sfx('launch'); hud('gold');
+      toast(FORMS[nf].e + ' Đã đổi thành <b>' + FORMS[nf].n + '</b>' + (formMul(tv) < 1 ? ' · màn này chỉ bắn ' + Math.round(formMul(tv) * 100) + '%' : ' · bắn mạnh 100% ở màn này'));
+      openPop(G.sel); runSave(); return;
+    }
     if (a === 'sayx') { closeSay(); return; }
     if (a === 'sayhear') { if (!SAY) return; stopRec(); if (SAY.st === 'rec') SAY.st = ''; say(G.tp.w[SAY.w][0]); drawSay(); return; }
     if (a === 'mic') { if (!SAY || SAY.st === 'ok') return; if (rec) { stopRec(); SAY.st = ''; drawSay(); } else listen(); return; }
@@ -3116,11 +3406,12 @@
     root.classList.add('on');
     $('ttMapB').innerHTML = '<div style="text-align:center;padding:60px 0;font-size:16px;opacity:.85">⏳ Đang mở các kho từ vựng…</div>';
     show('ttMap');
-    loadData().then(function () { renderMap(); }).catch(function () {
+    loadData().then(function () { renderMap(); var R = runGet(); if (R) resumeRun(R); }).catch(function () {
       $('ttMapB').innerHTML = '<div style="text-align:center;padding:50px 16px;font-size:15px;line-height:1.5">Không tải được dữ liệu từ vựng (file words.js).<br>Hãy kiểm tra mạng rồi mở lại game.</div>';
     });
   }
   function close() {
+    if (G && !G.ended) runSave();   // (bản 2026.11.11-6) thoát game giữa trận: lưu để lần sau chơi tiếp
     stopLoop(); closeSay(); hush(); G = null;
     if (root) root.classList.remove('on');
   }

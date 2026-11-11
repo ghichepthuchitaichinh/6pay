@@ -1,4 +1,4 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.11-1: ĐỒ HỌA MỚI – chòi vẽ lại theo 5 cấp càng cao càng hầm hố (chòi gỗ → tháp đá → pháo đài → tháp sắt quỷ có gai, sừng, mắt đỏ → tháp hắc thạch viền vàng, pha lê, cầu năng lượng bay quanh); quái có viền, khối, hào quang, bước đi lắc lư, bụi chân, chớp trắng khi trúng đòn; nền có hạt đất, ánh nắng, mặt đường có khối, bóng mây trôi. Bản 2026.11.10-2: thêm 🦅 QUÁI BIẾT BAY (từ đợt 3) – không đi theo đường mà bay thẳng từ cửa vào tới kho từ, bóng in dưới đất, đập cánh. Bản 2026.11.10-1: BẢNG XẾP HẠNG TỤT HẠNG KHI VẮNG MẶT – cứ mỗi 1 tiếng người chơi không chơi thì người ảo đứng ngay dưới được cộng điểm vượt lên, người chơi tụt 1 hạng. Bản 2026.11.08-12: mỗi kho 10 câu giao tiếp; sau các đợt từ vựng (~5 từ/đợt) là ĐỢT CÂU GIAO TIẾP chỉ gồm câu, quái trâu gấp 1,7 lần; ĐỢT CUỐI riêng gồm tất cả từ vựng + câu + trùm cuối. CẢNH NỀN THEO CHỦ ĐỀ: mỗi kho có cảnh riêng (biển có sóng, nghĩa địa/đầm lầy có sương mù, giông bão có mưa chớp, xứ tuyết, vũ trụ, sân khấu, đêm hội pháo hoa…) kèm ÂM THANH NỀN tự tạo (sóng biển, gió hú rùng rợn, chim hót, mưa sấm, phố xá…), tự tắt khi đang đọc từ. Bản 2026.11.08-11: mỗi kho từ thêm 1 ĐỢT CÂU GIAO TIẾP ngay trước đợt cuối – quái vác trộm câu giao tiếp cơ bản theo chủ đề của kho (6 câu/kho, 60 kho), đọc đúng câu được thưởng gấp rưỡi, bước 2 chọn nghĩa tiếng Việt. Bản 2026.11.08-10: nâng độ khó mức Dễ và Thường lên gần bằng mức Khó – quái trâu hơn, ra dày hơn, nhiều lính bắn chòi/quái tàng hình hơn, kho giữ ít từ hơn, ít vàng khởi đầu hơn; thưởng cũng tăng theo. Bản 2026.11.08-9: đọc/chọn đáp án lấy vàng KHÔNG GIỚI HẠN nhưng theo LƯỢT – mỗi lượt mỗi từ ở thanh dưới chỉ được 1 lần, đọc/chọn hết các từ thì sang lượt mới, tất cả từ mở lại (thay cho luật "3 lần liền"). Bản 2026.11.08-8: bỏ cách đọc kiểu Việt, chỉ giữ phiên âm IPA; chọn đáp án đúng 1 từ đủ 3 lần cũng được tặng 🎁 quà mưa; máy nghe giọng dễ tính hơn. Bản 2026.11.08-7: 60 kho từ chia thành 10 GIAI ĐOẠN (mỗi giai đoạn 6 kho); bảo vệ đủ 6 kho của một giai đoạn thì mở màn 🌍 BOSS THẾ GIỚI – kho từ nằm giữa bản đồ, chòi xây quanh kho, quái tràn vào từ 4 CỬA (Bắc, Nam, Tây, Đông); boss thế giới lần sau mạnh hơn lần trước (máu, sát thương, số quái triệu hồi đều tăng). Bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.11-3: GIỚI HẠN 👆 CHỌN ĐÁP ÁN 5 lần mỗi từ/câu (đếm mãi) – hết lượt muốn thêm vàng phải 🎤 đọc bằng giọng; TỪ DỄ TRƯỚC – từ vựng tiểu học cơ bản ra ở các đợt đầu, hết rồi mới tới từ khó; CÂU GIAO TIẾP soạn lại: 183 câu khó được thay bằng câu ngắn, dễ cho học sinh tiểu học, câu ngắn ra trước. Bản 2026.11.11-2: CHÒI 10 CẤP – từ cấp 6 chòi tiến hóa thêm 5 bậc (Hồng ngọc, Thạch anh tím, Kim cương, Lục bảo, Thần thoại): mọc 2 tháp canh phụ, tầng trên, xích sắt, cánh rồng, tia sét, vầng hào quang; sao đổi màu theo bậc, cấp 10 sao cầu vồng + vương miện. CHÒI THEO CHỦ ĐỀ – 17 phong cách (đá rêu, nhà gỗ rơm, phố gạch, công nghệ neon, kẹo ngọt, chùa tháp phương Đông, gỗ rừng, tre rừng rậm, nấm phép thuật, san hô vỏ sò, băng tuyết, gô-tích giông bão, sa mạc, kho báu, dung nham, đầm lầy, ma quái) theo cảnh của từng kho từ. Bản 2026.11.11-1: ĐỒ HỌA MỚI – chòi vẽ lại theo 5 cấp càng cao càng hầm hố (chòi gỗ → tháp đá → pháo đài → tháp sắt quỷ có gai, sừng, mắt đỏ → tháp hắc thạch viền vàng, pha lê, cầu năng lượng bay quanh); quái có viền, khối, hào quang, bước đi lắc lư, bụi chân, chớp trắng khi trúng đòn; nền có hạt đất, ánh nắng, mặt đường có khối, bóng mây trôi. Bản 2026.11.10-2: thêm 🦅 QUÁI BIẾT BAY (từ đợt 3) – không đi theo đường mà bay thẳng từ cửa vào tới kho từ, bóng in dưới đất, đập cánh. Bản 2026.11.10-1: BẢNG XẾP HẠNG TỤT HẠNG KHI VẮNG MẶT – cứ mỗi 1 tiếng người chơi không chơi thì người ảo đứng ngay dưới được cộng điểm vượt lên, người chơi tụt 1 hạng. Bản 2026.11.08-12: mỗi kho 10 câu giao tiếp; sau các đợt từ vựng (~5 từ/đợt) là ĐỢT CÂU GIAO TIẾP chỉ gồm câu, quái trâu gấp 1,7 lần; ĐỢT CUỐI riêng gồm tất cả từ vựng + câu + trùm cuối. CẢNH NỀN THEO CHỦ ĐỀ: mỗi kho có cảnh riêng (biển có sóng, nghĩa địa/đầm lầy có sương mù, giông bão có mưa chớp, xứ tuyết, vũ trụ, sân khấu, đêm hội pháo hoa…) kèm ÂM THANH NỀN tự tạo (sóng biển, gió hú rùng rợn, chim hót, mưa sấm, phố xá…), tự tắt khi đang đọc từ. Bản 2026.11.08-11: mỗi kho từ thêm 1 ĐỢT CÂU GIAO TIẾP ngay trước đợt cuối – quái vác trộm câu giao tiếp cơ bản theo chủ đề của kho (6 câu/kho, 60 kho), đọc đúng câu được thưởng gấp rưỡi, bước 2 chọn nghĩa tiếng Việt. Bản 2026.11.08-10: nâng độ khó mức Dễ và Thường lên gần bằng mức Khó – quái trâu hơn, ra dày hơn, nhiều lính bắn chòi/quái tàng hình hơn, kho giữ ít từ hơn, ít vàng khởi đầu hơn; thưởng cũng tăng theo. Bản 2026.11.08-9: đọc/chọn đáp án lấy vàng KHÔNG GIỚI HẠN nhưng theo LƯỢT – mỗi lượt mỗi từ ở thanh dưới chỉ được 1 lần, đọc/chọn hết các từ thì sang lượt mới, tất cả từ mở lại (thay cho luật "3 lần liền"). Bản 2026.11.08-8: bỏ cách đọc kiểu Việt, chỉ giữ phiên âm IPA; chọn đáp án đúng 1 từ đủ 3 lần cũng được tặng 🎁 quà mưa; máy nghe giọng dễ tính hơn. Bản 2026.11.08-7: 60 kho từ chia thành 10 GIAI ĐOẠN (mỗi giai đoạn 6 kho); bảo vệ đủ 6 kho của một giai đoạn thì mở màn 🌍 BOSS THẾ GIỚI – kho từ nằm giữa bản đồ, chòi xây quanh kho, quái tràn vào từ 4 CỬA (Bắc, Nam, Tây, Đông); boss thế giới lần sau mạnh hơn lần trước (máu, sát thương, số quái triệu hồi đều tăng). Bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    (bản 2026.11.07-6) CỐT TRUYỆN: bầy quái lẻn vào KHO TỪ VỰNG (đầu đường, phía trên) đánh cắp từ vựng, mỗi con vác 1 từ
    để mang về THÀNH CỦA CHÚNG (cuối đường, phía dưới). Nhiệm vụ của người chơi: xây chòi chặn đường, không cho quái mang từ về thành.
    Mỗi màn là 1 kho từ vựng theo chủ đề (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
@@ -36,7 +36,11 @@
      (bản 2026.11.08-4) Đọc từ ở thanh dưới KHÔNG GIỚI HẠN, nhưng 1 từ đọc đúng MAX_READ lần liền thì phải đọc từ khác rồi mới được đọc lại. */
   var PICK_RATE = 2 / 3, MAX_READ = 3, PICK_GIFT = 3;
   /* (bản 2026.11.08-4) chòi nâng được tới cấp MAX_LV */
-  var MAX_LV = 5;
+  var MAX_LV = 10;   // (bản 2026.11.11-2) nâng tối đa 10 cấp
+  /* cấp hiệu dụng cho tầm bắn/tốc độ/vùng lửa: từ cấp 6 mỗi cấp chỉ tính nửa cấp để chòi không bắn xuyên cả bản đồ */
+  function lvEff(lv) { return Math.min(lv, 5) + 0.5 * Math.max(0, lv - 5); }
+  /* hệ số sát thương: cấp 1–5 ×1,5/cấp như cũ; cấp 6–10 ×1,25/cấp (cấp 10 ≈ 15 lần cấp 1) */
+  function lvDmg(lv, a, b) { return Math.pow(a, Math.min(lv, 5) - 1) * Math.pow(b, Math.max(0, lv - 5)); }
   /* (bản 2026.11.08-5) QUÀ MƯA: mỗi trận, lần đầu đọc đúng 1 từ mới → nhận 1 trận mưa ngẫu nhiên. Mưa phủ khắp bản đồ,
      cứ 0,5 giây gây sát thương cho TẤT CẢ quái đang trên bản đồ (kể cả quái tàng hình). dmg = tổng sát thương cả trận mưa (nhân theo độ trâu của quái). */
   var RAIN = {
@@ -49,6 +53,14 @@
   var PICKPREF = false; try { PICKPREF = localStorage.getItem('tt_pick') === '1'; } catch (e) {}
   function useMic() { return !!SR && !PICKPREF; }
   function pickGain(n) { return Math.max(1, Math.round(n * PICK_RATE)); }
+  /* (bản 2026.11.11-3) GIỚI HẠN CHỌN ĐÁP ÁN: mỗi từ/câu chỉ được dùng cách 👆 CHỌN TỪ tối đa PICK_MAX lần (đếm mãi, không reset theo trận).
+     Hết lượt chọn thì muốn lấy thêm vàng phải 🎤 ĐỌC (phát âm). Máy không có nhận dạng giọng nói thì vẫn chọn được để luyện tập nhưng không nhận vàng. */
+  var PICK_MAX = 5, PKC = null;
+  function pkStore() { if (!PKC) { try { PKC = JSON.parse(localStorage.getItem('tt_pkc')) || {}; } catch (e) { PKC = {}; } } return PKC; }
+  function pkKey(w) { return String(G.tp.w[w][0]).toLowerCase(); }
+  function pickLeft(w) { return Math.max(0, PICK_MAX - (pkStore()[pkKey(w)] || 0)); }
+  function pickUse(w) { var m = pkStore(), k = pkKey(w); m[k] = (m[k] || 0) + 1; try { localStorage.setItem('tt_pkc', JSON.stringify(m)); } catch (e) {} }
+  function mustRead(w) { return !!SR && pickLeft(w) <= 0; }   // hết lượt chọn và máy đọc được giọng → bắt buộc đọc
   function setPickPref(v) { PICKPREF = v; try { localStorage.setItem('tt_pick', v ? '1' : '0'); } catch (e) {} }
   var STAR_VND = 10000, WORD_VND = 2000;
 
@@ -155,66 +167,66 @@
      (bản 2026.11.08-12) Mỗi kho 10 câu; đợt câu giao tiếp chỉ có câu (không có từ vựng), quái trâu hơn; đợt cuối gồm tất cả từ vựng + câu + trùm.
      Mỗi câu: 'câu tiếng Anh|nghĩa tiếng Việt|hình'. Thêm câu: thêm vào đúng mã kho (id chủ đề trong words.js). */
   var SENT = {
-    family: "This is my family.|Đây là gia đình tôi.|👪;How many people are there in your family?|Gia đình bạn có mấy người?|❓;I have one brother and one sister.|Tôi có một anh trai và một em gái.|👫;My father is a teacher.|Bố tôi là giáo viên.|👨‍🏫;I love my mother very much.|Tôi rất yêu mẹ tôi.|❤️;Who is that man?|Người đàn ông kia là ai?|🧔;Do you have any brothers or sisters?|Bạn có anh chị em nào không?|👧;My grandmother is seventy years old.|Bà tôi bảy mươi tuổi.|👵;We have dinner together every evening.|Tối nào cả nhà tôi cũng ăn cơm cùng nhau.|🍲;This is my little brother.|Đây là em trai tôi.|👦",
-    body: "My head hurts.|Tôi bị đau đầu.|🤕;Wash your hands, please.|Làm ơn rửa tay đi.|🧼;Close your eyes.|Nhắm mắt lại.|😌;Open your mouth.|Há miệng ra.|👄;I have a stomachache.|Tôi bị đau bụng.|🤢;She has long hair.|Cô ấy có mái tóc dài.|👩;My leg hurts.|Chân tôi bị đau.|🦵;Raise your hand.|Giơ tay lên.|✋;He has big blue eyes.|Anh ấy có đôi mắt xanh to.|👀;Touch your nose.|Chạm vào mũi của bạn.|👃",
-    emotions: "How are you today?|Hôm nay bạn thế nào?|🙂;I am very happy.|Tôi rất vui.|😊;Why are you sad?|Sao bạn buồn vậy?|😢;Don't be angry.|Đừng giận nhé.|😠;I am tired.|Tôi mệt rồi.|😩;I'm so excited!|Tôi háo hức quá!|🤩;Are you okay?|Bạn ổn chứ?|🤔;I'm scared.|Tôi sợ quá.|😨;Don't worry.|Đừng lo.|🤗;I'm sorry to hear that.|Tôi rất tiếc khi nghe điều đó.|😔",
-    clothes: "What are you wearing?|Bạn đang mặc gì?|👕;Put on your coat.|Mặc áo khoác vào.|🧥;Can I try this on?|Tôi mặc thử cái này được không?|👗;This shirt is too big.|Cái áo này rộng quá.|👔;I like your shoes.|Tôi thích đôi giày của bạn.|👟;Take off your hat.|Bỏ mũ ra.|🧢;It's cold, wear your scarf.|Trời lạnh, quàng khăn vào.|🧣;These jeans are too small.|Cái quần bò này chật quá.|👖;What size do you wear?|Bạn mặc cỡ nào?|📏;You look nice in that dress.|Bạn mặc chiếc váy đó trông đẹp lắm.|👗",
-    personal: "Where is my toothbrush?|Bàn chải đánh răng của tôi đâu?|🪥;Can I borrow your comb?|Cho tôi mượn cái lược được không?|💇;Please pass me a towel.|Làm ơn đưa tôi cái khăn.|🧻;Don't forget your umbrella.|Đừng quên ô nhé.|☂️;I need some soap.|Tôi cần ít xà phòng.|🧼;Keep your things tidy.|Hãy giữ đồ đạc gọn gàng.|🧺;Brush your hair.|Chải tóc đi.|💇;Where are my glasses?|Kính của tôi đâu rồi?|👓;Put your wallet in your bag.|Cất ví vào túi đi.|👛;Can I use your mirror?|Tôi dùng gương của bạn được không?|🪞",
-    health: "I don't feel well.|Tôi thấy không khỏe.|🤒;I need to see a doctor.|Tôi cần đi khám bác sĩ.|👨‍⚕️;Call an ambulance!|Gọi xe cứu thương đi!|🚑;Take this medicine twice a day.|Uống thuốc này ngày hai lần.|💊;I have a fever.|Tôi bị sốt.|🌡️;Get well soon!|Mau khỏe nhé!|💐;Where does it hurt?|Bạn đau ở đâu?|🤕;I have a cough.|Tôi bị ho.|😷;You should stay in bed.|Bạn nên nằm nghỉ trên giường.|🛏️;Drink plenty of water.|Uống nhiều nước vào.|💧",
-    jobs: "What do you do?|Bạn làm nghề gì?|💼;I am a nurse.|Tôi là y tá.|👩‍⚕️;What do you want to be?|Bạn muốn làm nghề gì?|🤔;I want to be a pilot.|Tôi muốn làm phi công.|👨‍✈️;Where does your mother work?|Mẹ bạn làm việc ở đâu?|🏢;He works in a factory.|Anh ấy làm việc ở nhà máy.|🏭;My mother is a doctor.|Mẹ tôi là bác sĩ.|👩‍⚕️;He is a police officer.|Anh ấy là cảnh sát.|👮;Farmers work very hard.|Nông dân làm việc rất vất vả.|👨‍🌾;I like my job.|Tôi thích công việc của mình.|😊",
+    family: "Who is this?|Đây là ai?|❓;This is my family.|Đây là gia đình tôi.|👪;Who is that man?|Người đàn ông kia là ai?|🧔;My grandmother is kind.|Bà tôi rất hiền.|👵;We eat dinner together.|Cả nhà tôi ăn tối cùng nhau.|🍲;My father is a teacher.|Bố tôi là giáo viên.|👨‍🏫;Do you have a sister?|Bạn có chị hay em gái không?|👧;This is my little brother.|Đây là em trai tôi.|👦;I love my mother very much.|Tôi rất yêu mẹ tôi.|❤️;I have one brother and one sister.|Tôi có một anh trai và một em gái.|👫",
+    body: "My head hurts.|Tôi bị đau đầu.|🤕;Close your eyes.|Nhắm mắt lại.|😌;Open your mouth.|Há miệng ra.|👄;My tummy hurts.|Tôi bị đau bụng.|🤢;My leg hurts.|Chân tôi bị đau.|🦵;Raise your hand.|Giơ tay lên.|✋;Touch your nose.|Chạm vào mũi của bạn.|👃;Wash your hands, please.|Làm ơn rửa tay đi.|🧼;She has long hair.|Cô ấy có mái tóc dài.|👩;I have two eyes.|Tôi có hai mắt.|👀",
+    emotions: "I'm scared.|Tôi sợ quá.|😨;Don't worry.|Đừng lo.|🤗;Don't be angry.|Đừng giận nhé.|😠;I am tired.|Tôi mệt rồi.|😩;I'm so excited!|Tôi háo hức quá!|🤩;Are you okay?|Bạn ổn chứ?|🤔;I feel happy.|Tôi thấy vui.|😄;How are you today?|Hôm nay bạn thế nào?|🙂;I am very happy.|Tôi rất vui.|😊;Why are you sad?|Sao bạn buồn vậy?|😢",
+    clothes: "You look nice.|Trông bạn đẹp lắm.|😊;What are you wearing?|Bạn đang mặc gì?|👕;Put on your coat.|Mặc áo khoác vào.|🧥;This is my hat.|Đây là mũ của tôi.|👒;I like your shoes.|Tôi thích đôi giày của bạn.|👟;Take off your hat.|Bỏ mũ ra.|🧢;Put on your scarf.|Quàng khăn vào.|🧣;I like this dress.|Tôi thích chiếc váy này.|👗;This shirt is too big.|Cái áo này rộng quá.|👔;My shoes are too small.|Giày của tôi chật quá.|👟",
+    personal: "Wash your face.|Rửa mặt đi.|🧼;Brush your hair.|Chải tóc đi.|💇;Where is my toothbrush?|Bàn chải đánh răng của tôi đâu?|🪥;This is my comb.|Đây là lược của tôi.|💇;Don't forget your umbrella.|Đừng quên ô nhé.|☂️;I need some soap.|Tôi cần ít xà phòng.|🧼;Where are my glasses?|Kính của tôi đâu rồi?|👓;Where is my watch?|Đồng hồ của tôi đâu?|⌚;Please pass me a towel.|Làm ơn đưa tôi cái khăn.|🧻;Can I use your mirror?|Tôi dùng gương của bạn được không?|🪞",
+    health: "Call an ambulance!|Gọi xe cứu thương đi!|🚑;Take your medicine.|Uống thuốc đi.|💊;Get well soon!|Mau khỏe nhé!|💐;Drink some water.|Uống chút nước đi.|💧;I don't feel well.|Tôi thấy không khỏe.|🤒;I have a fever.|Tôi bị sốt.|🌡️;Where does it hurt?|Bạn đau ở đâu?|🤕;I have a cough.|Tôi bị ho.|😷;Go to bed and rest.|Đi ngủ và nghỉ ngơi đi.|🛏️;I want to see a doctor.|Tôi muốn đi khám bác sĩ.|👨‍⚕️",
+    jobs: "Farmers grow rice.|Nông dân trồng lúa.|🌾;What do you do?|Bạn làm nghề gì?|💼;I am a nurse.|Tôi là y tá.|👩‍⚕️;He is a farmer.|Anh ấy là nông dân.|👨‍🌾;I like my job.|Tôi thích công việc của mình.|😊;She works in a hospital.|Cô ấy làm việc ở bệnh viện.|🏥;My mother is a doctor.|Mẹ tôi là bác sĩ.|👩‍⚕️;He is a police officer.|Anh ấy là cảnh sát.|👮;What do you want to be?|Bạn muốn làm nghề gì?|🤔;I want to be a pilot.|Tôi muốn làm phi công.|👨‍✈️",
     verbs: "Let's go!|Đi thôi!|🏃;Can you swim?|Bạn biết bơi không?|🏊;Please sit down.|Mời ngồi.|🪑;Stand up, please.|Hãy đứng lên.|🧍;I am reading a book.|Tôi đang đọc sách.|📖;Come here, please.|Lại đây nào.|👋;Listen to me.|Hãy nghe tôi nói.|👂;Don't run!|Đừng chạy!|🚫;Can you help me?|Bạn giúp tôi được không?|🙋;Look at the board.|Nhìn lên bảng.|👀",
-    adjectives: "It is very big.|Nó rất to.|🐘;This bag is heavy.|Cái túi này nặng.|🎒;You are so tall!|Bạn cao quá!|🦒;That's too expensive.|Cái đó đắt quá.|💸;The room is clean.|Căn phòng sạch sẽ.|✨;My car is old.|Xe của tôi cũ rồi.|🚗;The water is cold.|Nước lạnh.|🧊;This book is very interesting.|Cuốn sách này rất hay.|📘;The road is long.|Con đường dài.|🛣️;Your house is beautiful.|Nhà bạn đẹp quá.|🏡",
-    daily: "What time do you get up?|Bạn dậy lúc mấy giờ?|⏰;I get up at six o'clock.|Tôi dậy lúc sáu giờ.|🌅;I brush my teeth every morning.|Sáng nào tôi cũng đánh răng.|🪥;It's time for breakfast.|Đến giờ ăn sáng rồi.|🥣;I go to bed at ten.|Tôi đi ngủ lúc mười giờ.|🛏️;What do you do after school?|Sau giờ học bạn làm gì?|🎒;I take a shower every evening.|Tối nào tôi cũng tắm.|🚿;I go to school by bus.|Tôi đi học bằng xe buýt.|🚌;I do my homework after dinner.|Tôi làm bài tập sau bữa tối.|📝;What do you usually do on Sunday?|Chủ nhật bạn thường làm gì?|📅",
-    character: "She is very kind.|Cô ấy rất tốt bụng.|💖;He is friendly and funny.|Anh ấy thân thiện và hài hước.|🤗;Be brave!|Dũng cảm lên!|🦁;Don't be lazy.|Đừng lười biếng.|🦥;You are so clever.|Bạn thông minh quá.|🧠;Always be honest.|Hãy luôn trung thực.|😇;He is very shy.|Cậu ấy rất nhút nhát.|🙈;My teacher is very patient.|Cô giáo tôi rất kiên nhẫn.|👩‍🏫;Don't be rude.|Đừng thô lỗ.|🙅;She is hard-working.|Cô ấy rất chăm chỉ.|💪",
-    home: "Welcome to my house.|Chào mừng đến nhà tôi.|🏠;Please come in.|Mời vào.|🚪;Where is the bathroom?|Phòng tắm ở đâu?|🚽;Close the window, please.|Làm ơn đóng cửa sổ.|🪟;Turn on the light.|Bật đèn lên.|💡;My room is upstairs.|Phòng tôi ở trên lầu.|🛏️;This is the living room.|Đây là phòng khách.|🛋️;Please sit on the sofa.|Mời ngồi ghế sofa.|🪑;Turn off the TV.|Tắt ti vi đi.|📺;Lock the door, please.|Làm ơn khóa cửa lại.|🔐",
-    kitchen: "Dinner is ready!|Cơm tối xong rồi!|🍲;Can you help me cook?|Bạn giúp tôi nấu ăn được không?|👩‍🍳;Pass me a spoon, please.|Đưa tôi cái thìa với.|🥄;Be careful with the knife.|Cẩn thận con dao.|🔪;Please set the table.|Hãy dọn bát đũa ra bàn.|🍽️;Put it in the fridge.|Cho nó vào tủ lạnh.|🧊;Wash your hands before eating.|Rửa tay trước khi ăn.|🧼;The water is boiling.|Nước đang sôi.|♨️;Turn off the stove.|Tắt bếp đi.|🔥;What's for dinner?|Tối nay ăn gì?|🍛",
-    objects: "Where is my phone?|Điện thoại của tôi đâu?|📱;I can't find my keys.|Tôi không tìm thấy chìa khóa.|🔑;Is this your bag?|Đây có phải túi của bạn không?|🎒;Can I use your pen?|Tôi dùng bút của bạn được không?|🖊️;It's on the table.|Nó ở trên bàn.|🪑;What is this?|Đây là cái gì?|❓;Whose umbrella is this?|Cái ô này của ai?|☂️;Put the box under the bed.|Để cái hộp dưới gầm giường.|📦;Can you pass me the scissors?|Đưa tôi cái kéo được không?|✂️;I lost my watch.|Tôi bị mất đồng hồ.|⌚",
-    tools: "Can you fix it?|Bạn sửa nó được không?|🔧;Hand me the hammer, please.|Đưa tôi cái búa với.|🔨;I need a screwdriver.|Tôi cần một cái tua vít.|🪛;Hold the ladder for me.|Giữ thang giúp tôi.|🪜;Be careful, it's sharp.|Cẩn thận, nó sắc đấy.|⚠️;Put the tools away.|Cất dụng cụ đi.|🧰;Let's paint the wall.|Cùng sơn tường nào.|🖌️;Measure it first.|Đo nó trước đã.|📏;Wear your gloves.|Đeo găng tay vào.|🧤;I will cut the wood.|Tôi sẽ cưa gỗ.|🪚",
-    tech: "My computer is not working.|Máy tính của tôi bị hỏng.|💻;Can you turn it on?|Bạn bật nó lên được không?|🔌;Please charge my phone.|Làm ơn sạc điện thoại giúp tôi.|🔋;Let me take a photo.|Để tôi chụp một tấm ảnh.|📷;Print this page, please.|Làm ơn in trang này.|🖨️;Restart the computer.|Khởi động lại máy tính.|🔄;Turn off your phone, please.|Làm ơn tắt điện thoại.|📴;The battery is low.|Pin sắp hết rồi.|🪫;Can you show me how to use it?|Bạn chỉ tôi cách dùng nó được không?|🧑‍💻;Save the file.|Lưu tệp lại.|💾",
-    chores: "Let's clean the house.|Cùng dọn nhà nào.|🧹;Can you wash the dishes?|Bạn rửa bát được không?|🍽️;I will do the laundry.|Tôi sẽ giặt quần áo.|👕;Please take out the trash.|Làm ơn đổ rác.|🗑️;Make your bed.|Dọn giường của con đi.|🛏;Thank you for helping me.|Cảm ơn bạn đã giúp tôi.|🙏;Sweep the floor, please.|Làm ơn quét nhà.|🧹;Let's water the flowers.|Cùng tưới hoa nào.|🌷;I'll iron my shirt.|Tôi sẽ là cái áo sơ mi.|👔;Fold your clothes.|Gấp quần áo của con đi.|👕",
-    internet: "What is the Wi-Fi password?|Mật khẩu wifi là gì?|📶;Send me a message.|Nhắn tin cho tôi nhé.|💬;Can I have your phone number?|Cho tôi xin số điện thoại nhé?|📞;I will call you later.|Tôi sẽ gọi cho bạn sau.|📱;The internet is very slow.|Mạng chậm quá.|🐢;Please like and share.|Hãy bấm thích và chia sẻ nhé.|👍;Check your email.|Kiểm tra email của bạn đi.|📧;Can you hear me?|Bạn nghe thấy tôi không?|🎧;Let's have a video call.|Mình gọi video nhé.|📹;Don't share your password.|Đừng chia sẻ mật khẩu của bạn.|🔒",
-    fruits: "Do you like apples?|Bạn có thích táo không?|🍎;I want a banana.|Tôi muốn một quả chuối.|🍌;How much are these oranges?|Chỗ cam này bao nhiêu tiền?|🍊;This mango is very sweet.|Quả xoài này rất ngọt.|🥭;Let's eat some fruit.|Mình ăn chút trái cây nhé.|🍇;Wash the fruit first.|Rửa trái cây trước đã.|💧;Would you like some grapes?|Bạn ăn nho không?|🍇;Watermelon is my favorite fruit.|Dưa hấu là loại quả tôi thích nhất.|🍉;Peel the orange, please.|Bóc quả cam giúp tôi.|🍊;These strawberries are fresh.|Mấy quả dâu tây này tươi lắm.|🍓",
-    vegetables: "Eat your vegetables.|Ăn rau đi con.|🥦;I don't like onions.|Tôi không thích hành.|🧅;Vegetables are good for you.|Rau tốt cho sức khỏe.|🥕;Can I have some corn?|Cho tôi ít ngô nhé?|🌽;Please cut the carrots.|Làm ơn thái cà rốt.|🔪;We grow tomatoes at home.|Nhà tôi trồng cà chua.|🍅;I like potatoes.|Tôi thích khoai tây.|🥔;Let's make a salad.|Mình làm món sa lát nhé.|🥗;Cabbage is cheap today.|Hôm nay bắp cải rẻ.|🥬;Do you eat peanuts?|Bạn có ăn lạc không?|🥜",
-    food: "I'm hungry.|Tôi đói rồi.|😋;What would you like to eat?|Bạn muốn ăn gì?|🍽️;I'd like a bowl of noodles.|Cho tôi một bát phở.|🍜;It's delicious!|Ngon quá!|😍;Can I have the menu, please?|Cho tôi xem thực đơn nhé.|📋;Enjoy your meal!|Chúc ngon miệng!|🍲;I'm full.|Tôi no rồi.|😌;Can I have some rice?|Cho tôi ít cơm nhé?|🍚;This soup is too salty.|Món canh này mặn quá.|🧂;Let's order a pizza.|Mình gọi pizza nhé.|🍕",
-    drinks: "I'm thirsty.|Tôi khát nước.|🥵;Would you like some tea?|Bạn uống trà không?|🍵;A glass of water, please.|Cho tôi một cốc nước.|💧;I'd like a coffee with milk.|Cho tôi một cà phê sữa.|☕;No ice, please.|Không đá nhé.|🧊;Cheers!|Cạn ly!|🥂;Can I have some orange juice?|Cho tôi ít nước cam nhé?|🧃;Do you want hot or cold?|Bạn muốn nóng hay lạnh?|🌡️;Milk is good for children.|Sữa tốt cho trẻ em.|🥛;Let's have a bubble tea.|Đi uống trà sữa đi.|🧋",
-    sweets: "Can I have some candy?|Cho tôi ít kẹo nhé?|🍬;I love chocolate.|Tôi rất thích sô cô la.|🍫;Let's get some ice cream.|Đi ăn kem đi.|🍦;Don't eat too many sweets.|Đừng ăn nhiều đồ ngọt quá.|🚫;This cake is yummy.|Bánh này ngon tuyệt.|🍰;Would you like a cookie?|Bạn ăn bánh quy không?|🍪;Can I have another piece?|Cho tôi thêm một miếng nữa nhé?|🍰;Don't eat candy before dinner.|Đừng ăn kẹo trước bữa tối.|🍬;I'd like a strawberry ice cream.|Cho tôi một cây kem dâu.|🍨;Let's bake a cake.|Cùng nướng bánh nào.|🎂",
-    school: "Good morning, teacher.|Chào buổi sáng cô giáo.|👩‍🏫;May I come in?|Em vào lớp được không ạ?|🚪;Open your books, please.|Các em mở sách ra.|📖;May I go to the toilet?|Em xin phép đi vệ sinh ạ.|🚻;I don't understand.|Em không hiểu.|🤔;Can you say that again, please?|Cô nói lại được không ạ?|🔁;Be quiet, please.|Các em trật tự nào.|🤫;How do you spell it?|Từ đó đánh vần thế nào ạ?|🔤;Close your books.|Các em gấp sách lại.|📕;Work in pairs.|Các em làm việc theo cặp.|👫",
-    toys: "Let's play together.|Mình chơi cùng nhau nhé.|🤝;Can I play with your doll?|Mình chơi búp bê của bạn được không?|🪆;This is my favorite toy.|Đây là đồ chơi yêu thích của tôi.|🧸;Let's fly a kite.|Đi thả diều nào.|🪁;Put your toys away.|Cất đồ chơi đi.|🧺;It's your turn.|Đến lượt bạn.|🎲;Let's play hide and seek.|Chơi trốn tìm đi.|🙈;Can I borrow your ball?|Cho tôi mượn quả bóng nhé?|⚽;Don't break it!|Đừng làm vỡ nó nhé!|⚠️;I got a teddy bear for my birthday.|Sinh nhật tôi được tặng một con gấu bông.|🧸",
-    sports: "Do you like football?|Bạn có thích bóng đá không?|⚽;Let's play basketball.|Chơi bóng rổ đi.|🏀;What is your favorite sport?|Môn thể thao yêu thích của bạn là gì?|🏅;I go swimming every weekend.|Cuối tuần nào tôi cũng đi bơi.|🏊;Who won the game?|Đội nào thắng?|🏆;Come on! You can do it!|Cố lên! Bạn làm được mà!|💪;Kick the ball!|Sút bóng đi!|⚽;I can run very fast.|Tôi chạy rất nhanh.|🏃;Our team won!|Đội chúng ta thắng rồi!|🎉;Let's go jogging in the morning.|Sáng mai đi chạy bộ nhé.|🌅",
-    music: "Can you play the guitar?|Bạn biết chơi ghi-ta không?|🎸;Let's sing a song.|Hát một bài nào.|🎤;I like this song.|Tôi thích bài hát này.|🎶;Turn up the music.|Vặn to nhạc lên.|🔊;Please turn it down.|Làm ơn vặn nhỏ lại.|🔉;What music do you like?|Bạn thích nghe nhạc gì?|🎧;She sings very well.|Cô ấy hát rất hay.|🎤;I'm learning the piano.|Tôi đang học đàn piano.|🎹;Let's dance!|Cùng nhảy nào!|💃;Who is your favorite singer?|Ca sĩ yêu thích của bạn là ai?|🌟",
-    festivals: "Happy birthday!|Chúc mừng sinh nhật!|🎂;Merry Christmas!|Giáng sinh vui vẻ!|🎄;This gift is for you.|Món quà này dành cho bạn.|🎁;Let's go to the party.|Đi dự tiệc thôi.|🎉;Make a wish!|Ước một điều đi!|🕯️;Thank you for coming.|Cảm ơn bạn đã đến.|🙏;Let's decorate the room.|Cùng trang trí căn phòng nào.|🎈;Blow out the candles!|Thổi nến đi!|🕯️;Happy Halloween!|Chúc Halloween vui vẻ!|🎃;What a wonderful party!|Bữa tiệc tuyệt vời quá!|🥳",
-    fantasy: "Once upon a time…|Ngày xửa ngày xưa…|📜;Look, a dragon!|Nhìn kìa, một con rồng!|🐉;The wizard has magic.|Pháp sư có phép thuật.|🧙;Do you believe in fairies?|Bạn có tin có nàng tiên không?|🧚;Make a wish.|Hãy ước đi.|🌟;They lived happily ever after.|Họ sống hạnh phúc mãi mãi.|💞;The princess lives in a castle.|Công chúa sống trong lâu đài.|🏰;Be careful of the witch!|Coi chừng mụ phù thủy!|🧙‍♀️;The unicorn can fly.|Con kỳ lân biết bay.|🦄;Tell me a story, please.|Kể cho con nghe một câu chuyện đi.|📖",
-    subjects: "What is your favorite subject?|Môn học yêu thích của bạn là gì?|📘;I like English.|Tôi thích tiếng Anh.|🔤;We have math today.|Hôm nay chúng ta có môn toán.|➗;I'm good at art.|Tôi giỏi môn mỹ thuật.|🎨;Science is interesting.|Môn khoa học rất thú vị.|🔬;When do we have music?|Khi nào chúng ta học âm nhạc?|🎵;I'm not good at math.|Tôi không giỏi môn toán.|😓;History is my favorite subject.|Lịch sử là môn tôi thích nhất.|📜;How many subjects do you have?|Bạn học bao nhiêu môn?|📚;I study English every day.|Ngày nào tôi cũng học tiếng Anh.|🔤",
-    science: "Let's do an experiment.|Cùng làm thí nghiệm nào.|⚗️;Look through the microscope.|Nhìn qua kính hiển vi.|🔬;Wear your safety glasses.|Hãy đeo kính bảo hộ.|🥽;What happens next?|Điều gì xảy ra tiếp theo?|🤔;Write down the results.|Ghi lại kết quả.|📝;Don't touch that!|Đừng chạm vào cái đó!|⚠️;Plants need sunlight.|Cây cần ánh nắng mặt trời.|🌱;Mix the two liquids.|Trộn hai chất lỏng lại.|🧪;Let's find out why.|Cùng tìm hiểu tại sao nhé.|🔍;Water boils at one hundred degrees.|Nước sôi ở một trăm độ.|♨️",
-    hobbies: "What do you do in your free time?|Lúc rảnh bạn làm gì?|🕒;I like reading books.|Tôi thích đọc sách.|📚;My hobby is drawing.|Sở thích của tôi là vẽ tranh.|🎨;Do you like cooking?|Bạn có thích nấu ăn không?|🍳;Let's go fishing this weekend.|Cuối tuần này đi câu cá nhé.|🎣;I collect stamps.|Tôi sưu tầm tem.|📮;I like playing chess.|Tôi thích chơi cờ vua.|♟️;Do you like taking photos?|Bạn có thích chụp ảnh không?|📷;I often go camping with my friends.|Tôi hay đi cắm trại với bạn bè.|⛺;Gardening is relaxing.|Làm vườn rất thư giãn.|🌻",
-    tet: "Happy New Year!|Chúc mừng năm mới!|🎊;I wish you good health.|Chúc bạn sức khỏe dồi dào.|💪;Here is your lucky money.|Lì xì cho con này.|🧧;Let's watch the fireworks.|Cùng xem pháo hoa nào.|🎆;We visit our grandparents at Tet.|Tết chúng tôi đi thăm ông bà.|👴;Wishing you a lot of luck!|Chúc bạn thật nhiều may mắn!|🍀;Tet is coming soon.|Tết sắp đến rồi.|🗓️;Let's clean the house before Tet.|Cùng dọn nhà trước Tết nào.|🧹;We decorate with peach blossoms.|Chúng tôi trang trí bằng hoa đào.|🌸;Let's go to the flower market.|Cùng đi chợ hoa nào.|💐",
-    pets: "Do you have a pet?|Bạn có nuôi thú cưng không?|🐾;I have a dog.|Tôi có một con chó.|🐶;What's its name?|Nó tên là gì?|❓;Can I touch your cat?|Tôi vuốt mèo của bạn được không?|🐱;Don't forget to feed the fish.|Đừng quên cho cá ăn.|🐟;My dog likes to play.|Con chó của tôi thích chơi đùa.|🎾;My cat is sleeping.|Con mèo của tôi đang ngủ.|😴;Let's take the dog for a walk.|Dắt chó đi dạo nào.|🦮;Is your dog friendly?|Chó của bạn có hiền không?|🐕;I give my rabbit carrots.|Tôi cho thỏ ăn cà rốt.|🐰",
-    wild: "Let's go to the zoo.|Đi sở thú nào.|🦁;Look at the elephant!|Nhìn con voi kìa!|🐘;Monkeys can climb trees.|Khỉ biết trèo cây.|🐵;Don't feed the animals.|Không cho thú ăn.|🚫;Tigers are dangerous.|Hổ rất nguy hiểm.|🐯;Which animal do you like best?|Bạn thích con vật nào nhất?|🤔;The lion is the king of the jungle.|Sư tử là chúa sơn lâm.|👑;Giraffes have long necks.|Hươu cao cổ có cái cổ dài.|🦒;Look, the bear is eating!|Nhìn kìa, con gấu đang ăn!|🐻;Zebras have black and white stripes.|Ngựa vằn có sọc đen trắng.|🦓",
-    birds: "Listen! The birds are singing.|Nghe kìa! Chim đang hót.|🐦;Birds can fly.|Chim biết bay.|🕊️;Look at that eagle!|Nhìn con đại bàng kia kìa!|🦅;The parrot can talk.|Con vẹt biết nói.|🦜;There is a nest in the tree.|Trên cây có một cái tổ.|🪺;The rooster crows in the morning.|Gà trống gáy vào buổi sáng.|🐓;The owl sleeps in the day.|Con cú ngủ ban ngày.|🦉;Ducks can swim.|Vịt biết bơi.|🦆;Penguins can't fly.|Chim cánh cụt không biết bay.|🐧;Feed the pigeons.|Cho chim bồ câu ăn đi.|🕊️",
-    sea: "Look, a dolphin!|Nhìn kìa, một con cá heo!|🐬;Whales are very big.|Cá voi rất to.|🐋;Don't swim near sharks.|Đừng bơi gần cá mập.|🦈;I like eating crab.|Tôi thích ăn cua.|🦀;Turtles live a long time.|Rùa sống rất lâu.|🐢;Let's go to the aquarium.|Đi thủy cung đi.|🐠;The octopus has eight legs.|Con bạch tuộc có tám cái chân.|🐙;Look at the colorful fish!|Nhìn đàn cá nhiều màu kìa!|🐟;Starfish live in the sea.|Sao biển sống ở biển.|⭐;Don't throw trash into the sea.|Đừng vứt rác xuống biển.|🚯",
-    insects: "There is a bee!|Có con ong kìa!|🐝;Don't be scared, it's just an ant.|Đừng sợ, chỉ là con kiến thôi.|🐜;The butterfly is beautiful.|Con bướm đẹp quá.|🦋;I got a mosquito bite.|Tôi bị muỗi đốt.|🦟;I'm afraid of spiders.|Tôi sợ nhện.|🕷️;Close the door, the flies are coming in.|Đóng cửa lại, ruồi bay vào kìa.|🪰;The ants are carrying food.|Đàn kiến đang tha mồi.|🐜;Catch the butterfly!|Bắt con bướm đi!|🦋;Bees make honey.|Ong làm ra mật.|🍯;Look at the ladybug!|Nhìn con bọ rùa kìa!|🐞",
-    zodiac: "What's your zodiac animal?|Bạn tuổi con gì?|🐲;I was born in the year of the dragon.|Tôi tuổi Thìn.|🐉;This is the year of the horse.|Năm nay là năm con ngựa.|🐎;My mother is a tiger.|Mẹ tôi tuổi Dần.|🐅;How old are you?|Bạn bao nhiêu tuổi?|🎂;We are the same age.|Chúng ta bằng tuổi nhau.|🤝;What year were you born?|Bạn sinh năm nào?|📅;My brother was born in the year of the cat.|Em trai tôi tuổi Mão.|🐈;There are twelve zodiac animals.|Có mười hai con giáp.|🔢;The rat is the first animal.|Chuột là con giáp đầu tiên.|🐀",
-    flowers: "These flowers are for you.|Những bông hoa này tặng bạn.|💐;What a beautiful rose!|Bông hồng đẹp quá!|🌹;Please water the plants.|Làm ơn tưới cây.|🚿;Don't pick the flowers.|Đừng hái hoa.|🚫;The tree is very tall.|Cái cây rất cao.|🌳;Sunflowers are yellow.|Hoa hướng dương màu vàng.|🌻;Smell this flower.|Ngửi bông hoa này đi.|🌸;Let's plant a tree.|Cùng trồng cây nào.|🌱;The leaves are falling.|Lá đang rụng.|🍂;Lotus is the national flower of Vietnam.|Hoa sen là quốc hoa của Việt Nam.|🪷",
-    nature: "Look at the rainbow!|Nhìn cầu vồng kìa!|🌈;The sun is shining.|Mặt trời đang chiếu sáng.|☀️;There are many stars tonight.|Tối nay có nhiều sao.|⭐;Let's go to the mountains.|Đi lên núi chơi nào.|⛰️;Please don't litter.|Làm ơn đừng xả rác.|🗑️;Let's protect nature.|Hãy bảo vệ thiên nhiên.|🌏;The river is very clean.|Dòng sông rất sạch.|🏞️;Listen to the wind.|Hãy nghe tiếng gió.|🍃;The forest is beautiful.|Khu rừng đẹp quá.|🌲;Let's climb that hill.|Cùng leo ngọn đồi kia nào.|🥾",
-    weather: "What's the weather like today?|Hôm nay thời tiết thế nào?|⛅;It's sunny.|Trời nắng.|☀️;It's raining.|Trời đang mưa.|🌧️;Take an umbrella with you.|Mang theo ô nhé.|☂️;It's very hot today.|Hôm nay nóng quá.|🥵;It's cold, wear a jacket.|Trời lạnh, mặc áo khoác vào.|🧥;It's windy today.|Hôm nay trời nhiều gió.|💨;Summer is very hot.|Mùa hè rất nóng.|🌞;I like autumn.|Tôi thích mùa thu.|🍂;There's a storm coming.|Sắp có bão.|⛈️",
-    space: "Look at the moon!|Nhìn mặt trăng kìa!|🌙;I want to be an astronaut.|Tôi muốn làm phi hành gia.|🧑‍🚀;The Earth goes around the Sun.|Trái đất quay quanh Mặt trời.|🌍;How many planets are there?|Có bao nhiêu hành tinh?|🪐;The rocket is taking off.|Tên lửa đang cất cánh.|🚀;Make a wish on a shooting star.|Ước khi thấy sao băng nhé.|🌠;The sun is a star.|Mặt trời là một ngôi sao.|☀️;Mars is red.|Sao Hỏa màu đỏ.|🔴;Can people live on the moon?|Con người có sống được trên mặt trăng không?|🌕;Look through the telescope.|Nhìn qua kính thiên văn.|🔭",
-    farm: "My grandparents live on a farm.|Ông bà tôi sống ở nông trại.|🏡;Let's feed the chickens.|Cho gà ăn nào.|🐔;The farmer is planting rice.|Bác nông dân đang cấy lúa.|👨‍🌾;Help me water the plants.|Giúp tôi tưới cây nhé.|🌱;It's harvest time.|Đến mùa thu hoạch rồi.|🌾;The cows are eating grass.|Mấy con bò đang ăn cỏ.|🐄;The pigs are very dirty.|Mấy con lợn bẩn quá.|🐖;Let's pick up the eggs.|Cùng nhặt trứng nào.|🥚;The tractor is in the field.|Chiếc máy cày ở ngoài đồng.|🚜;Ducks are swimming in the pond.|Vịt đang bơi trong ao.|🦆",
-    places: "Where are you going?|Bạn đang đi đâu?|🚶;I'm going to the supermarket.|Tôi đang đi siêu thị.|🛒;Where is the post office?|Bưu điện ở đâu?|📮;Is it far from here?|Có xa đây không?|📏;It's next to the bank.|Nó ở cạnh ngân hàng.|🏦;Let's meet at the park.|Gặp nhau ở công viên nhé.|🌳;Let's go to the cinema.|Đi xem phim nhé.|🎬;The hospital is over there.|Bệnh viện ở đằng kia.|🏥;I live in a small town.|Tôi sống ở một thị trấn nhỏ.|🏘️;How do I get to the museum?|Đến viện bảo tàng đi đường nào?|🏛️",
-    transport: "How do you go to school?|Bạn đến trường bằng gì?|🏫;I go by bike.|Tôi đi xe đạp.|🚲;Where is the bus stop?|Trạm xe buýt ở đâu?|🚏;Let's take a taxi.|Mình đi taxi nhé.|🚕;Fasten your seat belt.|Thắt dây an toàn vào.|🚗;What time does the train leave?|Mấy giờ tàu chạy?|🚆;The bus is coming.|Xe buýt đến rồi.|🚌;I'm going to take the plane.|Tôi sẽ đi máy bay.|✈️;Don't ride too fast.|Đừng đi xe nhanh quá.|🛵;Let's walk there.|Mình đi bộ tới đó nhé.|🚶",
-    travel: "Where are you from?|Bạn đến từ đâu?|🌏;I'm from Vietnam.|Tôi đến từ Việt Nam.|🇻🇳;Can I see your passport?|Cho tôi xem hộ chiếu của bạn.|🛂;I'd like to book a room.|Tôi muốn đặt một phòng.|🏨;How much is the ticket?|Vé bao nhiêu tiền?|🎫;Have a nice trip!|Chúc chuyến đi vui vẻ!|✈️;Where is the airport?|Sân bay ở đâu?|🛫;Please take a photo of us.|Làm ơn chụp giúp chúng tôi một tấm ảnh.|📸;I'm on holiday.|Tôi đang đi nghỉ.|🏝️;What time is check-out?|Mấy giờ phải trả phòng?|🕚",
-    countries: "Which country are you from?|Bạn đến từ nước nào?|🌏;I'm Vietnamese.|Tôi là người Việt Nam.|🇻🇳;Have you ever been to Japan?|Bạn đã từng đến Nhật Bản chưa?|🇯🇵;I want to visit Korea.|Tôi muốn đi Hàn Quốc.|🇰🇷;What language do they speak?|Họ nói tiếng gì?|🗣️;Thailand is near Vietnam.|Thái Lan ở gần Việt Nam.|🇹🇭;I live in Hanoi, the capital of Vietnam.|Tôi sống ở Hà Nội, thủ đô của Việt Nam.|🏙️;China is a big country.|Trung Quốc là một nước lớn.|🇨🇳;Can you speak English?|Bạn nói được tiếng Anh không?|🗣️;Laos is our neighbor.|Lào là nước láng giềng của chúng ta.|🇱🇦",
-    money: "How much is it?|Cái này bao nhiêu tiền?|💰;It's too expensive.|Đắt quá.|😮;Can you give me a discount?|Bạn bớt cho tôi được không?|🏷️;I'll take it.|Tôi lấy cái này.|🛍️;Can I pay by card?|Tôi trả bằng thẻ được không?|💳;Here is your change.|Đây là tiền thừa của bạn.|🪙;Can I have the bill, please?|Cho tôi xin hóa đơn nhé.|🧾;I don't have enough money.|Tôi không đủ tiền.|😟;It's on sale.|Nó đang được giảm giá.|🏷️;Where can I buy shoes?|Tôi có thể mua giày ở đâu?|👟",
-    beach: "Let's go to the beach.|Đi biển đi.|🏖️;Don't forget your sunscreen.|Đừng quên kem chống nắng.|🧴;The water is so cool.|Nước mát quá.|🌊;Let's build a sandcastle.|Cùng xây lâu đài cát nào.|🏰;Don't swim too far.|Đừng bơi ra xa quá.|⚠️;Let's watch the sunset.|Cùng ngắm hoàng hôn nào.|🌅;Let's go swimming.|Đi bơi nào.|🏊;The sand is very hot.|Cát nóng quá.|🔥;Look at the big waves!|Nhìn những con sóng lớn kìa!|🌊;I found a beautiful shell.|Tôi nhặt được một vỏ ốc đẹp.|🐚",
-    signs: "Stop! The light is red.|Dừng lại! Đèn đỏ rồi.|🛑;Look left and right.|Nhìn bên trái và bên phải.|👀;Please cross at the zebra crossing.|Hãy qua đường ở vạch kẻ đường.|🚸;No smoking here.|Ở đây cấm hút thuốc.|🚭;Be careful!|Cẩn thận!|⚠️;Wear a helmet.|Đội mũ bảo hiểm vào.|⛑️;Don't walk on the grass.|Không giẫm lên cỏ.|🌱;Please wait for the green light.|Hãy chờ đèn xanh.|🟢;Keep out!|Cấm vào!|⛔;Slow down, there's a school.|Đi chậm lại, có trường học.|🏫",
-    world: "Where is Brazil?|Nước Bra-xin ở đâu?|🇧🇷;I'd like to travel around the world.|Tôi muốn đi du lịch vòng quanh thế giới.|🌍;What's the capital of France?|Thủ đô của nước Pháp là gì?|🇫🇷;Canada is a very big country.|Ca-na-đa là một nước rất rộng.|🇨🇦;People in Mexico speak Spanish.|Người Mê-hi-cô nói tiếng Tây Ban Nha.|🇲🇽;Have you been abroad?|Bạn đã ra nước ngoài chưa?|✈️;Japan is famous for sushi.|Nhật Bản nổi tiếng với món sushi.|🍣;The Eiffel Tower is in Paris.|Tháp Eiffel ở Paris.|🗼;Australia has kangaroos.|Nước Úc có chuột túi.|🦘;Egypt has pyramids.|Ai Cập có kim tự tháp.|🏜️",
-    colors: "What color is it?|Nó màu gì?|🎨;It's red.|Nó màu đỏ.|🔴;What's your favorite color?|Màu yêu thích của bạn là gì?|🌈;I like blue.|Tôi thích màu xanh dương.|🔵;Do you have it in black?|Có màu đen không?|⚫;The sky is blue.|Bầu trời màu xanh.|☁️;Mix red and yellow to get orange.|Trộn đỏ với vàng sẽ ra màu cam.|🟠;My bag is pink.|Cặp của tôi màu hồng.|🎒;Grass is green.|Cỏ màu xanh lá.|🌿;What color are your eyes?|Mắt bạn màu gì?|👀",
-    numbers: "How many apples are there?|Có bao nhiêu quả táo?|🍎;There are five.|Có năm quả.|5️⃣;What's your phone number?|Số điện thoại của bạn là gì?|📞;Let's count from one to ten.|Đếm từ một đến mười nào.|🔢;I am ten years old.|Tôi mười tuổi.|🎂;Two plus two is four.|Hai cộng hai bằng bốn.|➕;Ten minus three is seven.|Mười trừ ba bằng bảy.|➖;Count your money.|Đếm tiền của bạn đi.|💵;There are thirty students in my class.|Lớp tôi có ba mươi học sinh.|👩‍🎓;What number is this?|Đây là số mấy?|❓",
-    shapes: "What shape is it?|Nó hình gì?|🔷;It's a circle.|Nó là hình tròn.|⚪;Draw a triangle.|Vẽ một hình tam giác.|🔺;The box is a square.|Cái hộp hình vuông.|🟥;The window is a rectangle.|Cửa sổ hình chữ nhật.|🪟;I like stars.|Tôi thích hình ngôi sao.|⭐;The ball is round.|Quả bóng hình tròn.|⚽;Cut out a heart.|Cắt một hình trái tim.|❤️;How many sides does a square have?|Hình vuông có mấy cạnh?|🟦;An egg is oval.|Quả trứng hình bầu dục.|🥚",
-    days: "What day is it today?|Hôm nay là thứ mấy?|📅;Today is Monday.|Hôm nay là thứ Hai.|🗓️;When is your birthday?|Sinh nhật bạn vào khi nào?|🎂;My birthday is in May.|Sinh nhật tôi vào tháng Năm.|🎉;See you on Friday.|Hẹn gặp bạn vào thứ Sáu.|👋;What's the date today?|Hôm nay là ngày bao nhiêu?|❓;I go swimming on Saturdays.|Thứ Bảy nào tôi cũng đi bơi.|🏊;There are seven days in a week.|Một tuần có bảy ngày.|7️⃣;Tomorrow is Sunday.|Ngày mai là Chủ nhật.|☀️;What month is it now?|Bây giờ là tháng mấy?|🗓️",
-    time: "What time is it?|Bây giờ là mấy giờ?|⏰;It's seven o'clock.|Bây giờ là bảy giờ.|🕖;Hurry up! We are late.|Nhanh lên! Chúng ta muộn rồi.|🏃;See you tomorrow.|Hẹn gặp lại ngày mai.|👋;Wait a minute, please.|Làm ơn đợi một phút.|⏳;Good night.|Chúc ngủ ngon.|🌙;It's half past eight.|Bây giờ là tám giờ rưỡi.|🕣;Don't be late.|Đừng đến muộn nhé.|⏰;I'm early.|Tôi đến sớm.|🐓;How long does it take?|Mất bao lâu?|⏱️",
-    directions: "Excuse me, where is the bank?|Xin lỗi, ngân hàng ở đâu?|🏦;Go straight ahead.|Đi thẳng về phía trước.|⬆️;Turn left.|Rẽ trái.|⬅️;Turn right at the corner.|Đến góc đường thì rẽ phải.|➡️;It's behind the school.|Nó ở phía sau trường học.|🏫;Is it near here?|Nó có gần đây không?|📍;Go past the park.|Đi qua công viên.|🌳;It's opposite the hospital.|Nó ở đối diện bệnh viện.|🏥;Can you show me on the map?|Bạn chỉ trên bản đồ giúp tôi được không?|🗺️;I'm lost.|Tôi bị lạc đường rồi.|😵",
-    office: "Nice to meet you.|Rất vui được gặp bạn.|🤝;What time is the meeting?|Cuộc họp lúc mấy giờ?|👥;Could you send me the file?|Bạn gửi cho tôi tài liệu được không?|📁;I'm busy right now.|Bây giờ tôi đang bận.|⏳;Let's have lunch together.|Cùng ăn trưa nhé.|🍱;Good job!|Làm tốt lắm!|👍;Can I help you?|Tôi giúp gì được cho bạn?|🙋;Please sign here.|Làm ơn ký vào đây.|✍️;I'll call you back.|Tôi sẽ gọi lại cho bạn.|📞;The meeting is over.|Cuộc họp kết thúc rồi.|✅",
-    finance: "How much did you spend today?|Hôm nay bạn đã tiêu bao nhiêu?|💸;I want to save money.|Tôi muốn tiết kiệm tiền.|🐷;Let's make a budget.|Cùng lập ngân sách nào.|📒;Write down every expense.|Hãy ghi lại mọi khoản chi.|📝;Don't spend more than you earn.|Đừng tiêu nhiều hơn số tiền kiếm được.|⚖️;Saving a little every day is a good habit.|Mỗi ngày tiết kiệm một ít là thói quen tốt.|✅;How much money do you earn?|Bạn kiếm được bao nhiêu tiền?|💵;I put money in the bank.|Tôi gửi tiền vào ngân hàng.|🏦;This month I spent too much.|Tháng này tôi tiêu nhiều quá.|📉;Let's check our expenses.|Cùng xem lại các khoản chi nào.|🧾"
+    adjectives: "It is very big.|Nó rất to.|🐘;This bag is heavy.|Cái túi này nặng.|🎒;You are so tall!|Bạn cao quá!|🦒;It is very small.|Nó rất nhỏ.|🐜;The room is clean.|Căn phòng sạch sẽ.|✨;My car is old.|Xe của tôi cũ rồi.|🚗;The water is cold.|Nước lạnh.|🧊;This book is new.|Cuốn sách này mới.|📘;The road is long.|Con đường dài.|🛣️;Your house is beautiful.|Nhà bạn đẹp quá.|🏡",
+    daily: "It's time for breakfast.|Đến giờ ăn sáng rồi.|🥣;I do my homework.|Tôi làm bài tập về nhà.|📝;What time do you get up?|Bạn dậy lúc mấy giờ?|⏰;I get up at six o'clock.|Tôi dậy lúc sáu giờ.|🌅;I brush my teeth every morning.|Sáng nào tôi cũng đánh răng.|🪥;I go to bed at ten.|Tôi đi ngủ lúc mười giờ.|🛏️;What do you do after school?|Sau giờ học bạn làm gì?|🎒;I watch TV in the evening.|Buổi tối tôi xem ti vi.|📺;I go to school by bus.|Tôi đi học bằng xe buýt.|🚌;What do you do on Sunday?|Chủ nhật bạn làm gì?|📅",
+    character: "Be brave!|Dũng cảm lên!|🦁;Be polite.|Hãy lễ phép nhé.|🙇;Don't be lazy.|Đừng lười biếng.|🦥;She works hard.|Cô ấy rất chăm chỉ.|💪;She is very kind.|Cô ấy rất tốt bụng.|💖;You are so clever.|Bạn thông minh quá.|🧠;He is very shy.|Cậu ấy rất nhút nhát.|🙈;My friend is funny.|Bạn tôi rất vui tính.|😄;He is friendly and funny.|Anh ấy thân thiện và hài hước.|🤗;Be nice to your friends.|Hãy tốt với bạn bè nhé.|🤝",
+    home: "Please come in.|Mời vào.|🚪;Welcome to my house.|Chào mừng đến nhà tôi.|🏠;Where is the bathroom?|Phòng tắm ở đâu?|🚽;Close the window, please.|Làm ơn đóng cửa sổ.|🪟;Turn on the light.|Bật đèn lên.|💡;This is my room.|Đây là phòng của tôi.|🛏️;Turn off the TV.|Tắt ti vi đi.|📺;Open the door, please.|Làm ơn mở cửa.|🚪;This is the living room.|Đây là phòng khách.|🛋️;Please sit on the sofa.|Mời ngồi ghế sofa.|🪑",
+    kitchen: "Let's eat!|Ăn thôi!|🍽️;Dinner is ready!|Cơm tối xong rồi!|🍲;What's for dinner?|Tối nay ăn gì?|🍛;The soup is hot.|Canh nóng đấy.|🍲;Can you help me cook?|Bạn giúp tôi nấu ăn được không?|👩‍🍳;Pass me a spoon, please.|Đưa tôi cái thìa với.|🥄;Be careful with the knife.|Cẩn thận con dao.|🔪;Put it in the fridge.|Cho nó vào tủ lạnh.|🧊;Wash your hands before eating.|Rửa tay trước khi ăn.|🧼;Give me a bowl, please.|Đưa tôi cái bát với.|🥣",
+    objects: "What is this?|Đây là cái gì?|❓;Where is my phone?|Điện thoại của tôi đâu?|📱;Where are my keys?|Chìa khóa của tôi đâu?|🔑;Is this your bag?|Đây có phải túi của bạn không?|🎒;It's on the table.|Nó ở trên bàn.|🪑;Is this your umbrella?|Đây có phải ô của bạn không?|☂️;I lost my watch.|Tôi bị mất đồng hồ.|⌚;Can I use your pen?|Tôi dùng bút của bạn được không?|🖊️;Give me the scissors, please.|Đưa tôi cái kéo với.|✂️;The ball is under the bed.|Quả bóng ở dưới gầm giường.|⚽",
+    tools: "Wear your gloves.|Đeo găng tay vào.|🧤;Use the bucket.|Dùng cái xô đi.|🪣;Can you fix it?|Bạn sửa nó được không?|🔧;I need a ruler.|Tôi cần một cái thước.|📏;Climb the ladder slowly.|Leo thang chậm thôi.|🪜;Be careful, it's sharp.|Cẩn thận, nó sắc đấy.|⚠️;Put the tools away.|Cất dụng cụ đi.|🧰;Let's paint the wall.|Cùng sơn tường nào.|🖌️;Give me the hammer, please.|Đưa tôi cái búa với.|🔨;Draw a line with a pencil.|Vẽ một đường bằng bút chì.|✏️",
+    tech: "I like robots.|Tôi thích rô-bốt.|🤖;My phone is new.|Điện thoại của tôi mới.|📱;The battery is low.|Pin sắp hết rồi.|🪫;Put on your headphones.|Đeo tai nghe vào.|🎧;My computer is not working.|Máy tính của tôi bị hỏng.|💻;Can you turn it on?|Bạn bật nó lên được không?|🔌;Let me take a photo.|Để tôi chụp một tấm ảnh.|📷;Turn on the TV, please.|Làm ơn bật ti vi.|📺;Turn off your phone, please.|Làm ơn tắt điện thoại.|📴;Let's play a video game.|Cùng chơi trò chơi điện tử nào.|🎮",
+    chores: "Make your bed.|Dọn giường của con đi.|🛏;Clean your room.|Dọn phòng của con đi.|🧹;Fold your clothes.|Gấp quần áo của con đi.|👕;Let's clean the house.|Cùng dọn nhà nào.|🧹;I wash my clothes.|Tôi giặt quần áo.|👕;Sweep the floor, please.|Làm ơn quét nhà.|🧹;Let's water the flowers.|Cùng tưới hoa nào.|🌷;Can you wash the dishes?|Bạn rửa bát được không?|🍽️;Please take out the trash.|Làm ơn đổ rác.|🗑️;Thank you for helping me.|Cảm ơn bạn đã giúp tôi.|🙏",
+    internet: "Take a selfie!|Chụp ảnh tự sướng nào!|🤳;I like this video.|Tôi thích video này.|🎬;Send me a message.|Nhắn tin cho tôi nhé.|💬;Let's watch a video.|Cùng xem video nào.|📺;Please like and share.|Hãy bấm thích và chia sẻ nhé.|👍;Look at this photo.|Nhìn bức ảnh này đi.|🖼️;Can you hear me?|Bạn nghe thấy tôi không?|🎧;Don't share your password.|Đừng chia sẻ mật khẩu của bạn.|🔒;I will call you later.|Tôi sẽ gọi cho bạn sau.|📱;Let's have a video call.|Mình gọi video nhé.|📹",
+    fruits: "I like oranges.|Tôi thích cam.|🍊;Apples are red.|Táo màu đỏ.|🍎;I like strawberries.|Tôi thích dâu tây.|🍓;Do you like apples?|Bạn có thích táo không?|🍎;I want a banana.|Tôi muốn một quả chuối.|🍌;Let's eat some fruit.|Mình ăn chút trái cây nhé.|🍇;Wash the fruit first.|Rửa trái cây trước đã.|💧;This mango is very sweet.|Quả xoài này rất ngọt.|🥭;Would you like some grapes?|Bạn ăn nho không?|🍇;Watermelon is my favorite fruit.|Dưa hấu là loại quả tôi thích nhất.|🍉",
+    vegetables: "Eat your vegetables.|Ăn rau đi con.|🥦;I like tomatoes.|Tôi thích cà chua.|🍅;I like potatoes.|Tôi thích khoai tây.|🥔;Carrots are orange.|Cà rốt màu cam.|🥕;I don't like onions.|Tôi không thích hành.|🧅;Please cut the carrots.|Làm ơn thái cà rốt.|🔪;Let's make a salad.|Mình làm món sa lát nhé.|🥗;Do you eat peanuts?|Bạn có ăn lạc không?|🥜;Vegetables are good for you.|Rau tốt cho sức khỏe.|🥕;Can I have some corn?|Cho tôi ít ngô nhé?|🌽",
+    food: "I'm hungry.|Tôi đói rồi.|😋;It's delicious!|Ngon quá!|😍;I'm full.|Tôi no rồi.|😌;I like chicken.|Tôi thích thịt gà.|🍗;Enjoy your meal!|Chúc ngon miệng!|🍲;I want some noodles.|Tôi muốn ăn mì.|🍜;This soup is hot.|Món canh này nóng.|🍲;Let's order a pizza.|Mình gọi pizza nhé.|🍕;Can I have some rice?|Cho tôi ít cơm nhé?|🍚;What do you want to eat?|Bạn muốn ăn gì?|🍽️",
+    drinks: "Cheers!|Cạn ly!|🥂;I'm thirsty.|Tôi khát nước.|🥵;I like milk.|Tôi thích sữa.|🥛;No ice, please.|Không đá nhé.|🧊;The tea is hot.|Trà nóng đấy.|🍵;Would you like some tea?|Bạn uống trà không?|🍵;A glass of water, please.|Cho tôi một cốc nước.|💧;Milk is good for children.|Sữa tốt cho trẻ em.|🥛;Let's have a bubble tea.|Đi uống trà sữa đi.|🧋;Can I have some orange juice?|Cho tôi ít nước cam nhé?|🧃",
+    sweets: "I love chocolate.|Tôi rất thích sô cô la.|🍫;This cake is yummy.|Bánh này ngon tuyệt.|🍰;I want a cake.|Tôi muốn một cái bánh.|🎂;I like ice cream.|Tôi thích kem.|🍦;Let's bake a cake.|Cùng nướng bánh nào.|🎂;Can I have some candy?|Cho tôi ít kẹo nhé?|🍬;Let's get some ice cream.|Đi ăn kem đi.|🍦;Don't eat too many sweets.|Đừng ăn nhiều đồ ngọt quá.|🚫;Would you like a cookie?|Bạn ăn bánh quy không?|🍪;Don't eat candy before dinner.|Đừng ăn kẹo trước bữa tối.|🍬",
+    school: "Good morning, teacher.|Chào buổi sáng cô giáo.|👩‍🏫;I don't understand.|Em không hiểu.|🤔;Be quiet, please.|Các em trật tự nào.|🤫;Close your books.|Các em gấp sách lại.|📕;Work in pairs.|Các em làm việc theo cặp.|👫;May I come in?|Em vào lớp được không ạ?|🚪;Open your books, please.|Các em mở sách ra.|📖;Say it again, please.|Nói lại lần nữa nhé.|🔁;How do you spell it?|Từ đó đánh vần thế nào ạ?|🔤;May I go to the toilet?|Em xin phép đi vệ sinh ạ.|🚻",
+    toys: "Let's play together.|Mình chơi cùng nhau nhé.|🤝;It's your turn.|Đến lượt bạn.|🎲;Don't break it!|Đừng làm vỡ nó nhé!|⚠️;Let's fly a kite.|Đi thả diều nào.|🪁;Put your toys away.|Cất đồ chơi đi.|🧺;This is my favorite toy.|Đây là đồ chơi yêu thích của tôi.|🧸;Let's play hide and seek.|Chơi trốn tìm đi.|🙈;Can I borrow your ball?|Cho tôi mượn quả bóng nhé?|⚽;I have a teddy bear.|Tôi có một con gấu bông.|🧸;Can I play with your doll?|Mình chơi búp bê của bạn được không?|🪆",
+    sports: "Let's play basketball.|Chơi bóng rổ đi.|🏀;I play badminton.|Tôi chơi cầu lông.|🏸;I like swimming.|Tôi thích bơi.|🏊;Kick the ball!|Sút bóng đi!|⚽;Our team won!|Đội chúng ta thắng rồi!|🎉;Let's play football.|Cùng chơi bóng đá nào.|⚽;Do you like football?|Bạn có thích bóng đá không?|⚽;What is your favorite sport?|Môn thể thao yêu thích của bạn là gì?|🏅;I can run very fast.|Tôi chạy rất nhanh.|🏃;Come on! You can do it!|Cố lên! Bạn làm được mà!|💪",
+    music: "Let's dance!|Cùng nhảy nào!|💃;I can sing.|Tôi biết hát.|🎤;Let's sing a song.|Hát một bài nào.|🎤;I like this song.|Tôi thích bài hát này.|🎶;Listen to the music.|Nghe nhạc nào.|🎧;She sings very well.|Cô ấy hát rất hay.|🎤;Can you play the guitar?|Bạn biết chơi ghi-ta không?|🎸;What music do you like?|Bạn thích nghe nhạc gì?|🎧;I can play the piano.|Tôi biết chơi đàn piano.|🎹;Who is your favorite singer?|Ca sĩ yêu thích của bạn là ai?|🌟",
+    festivals: "Happy birthday!|Chúc mừng sinh nhật!|🎂;Merry Christmas!|Giáng sinh vui vẻ!|🎄;Happy Halloween!|Chúc Halloween vui vẻ!|🎃;Make a wish!|Ước một điều đi!|🕯️;I like balloons.|Tôi thích bóng bay.|🎈;Thank you for coming.|Cảm ơn bạn đã đến.|🙏;Blow out the candles!|Thổi nến đi!|🕯️;It's a great party!|Bữa tiệc vui quá!|🎉;This gift is for you.|Món quà này dành cho bạn.|🎁;Let's go to the party.|Đi dự tiệc thôi.|🎉",
+    fantasy: "Look, a dragon!|Nhìn kìa, một con rồng!|🐉;I like unicorns.|Tôi thích kỳ lân.|🦄;Make a wish.|Hãy ước đi.|🌟;Once upon a time…|Ngày xửa ngày xưa…|📜;The wizard has magic.|Pháp sư có phép thuật.|🧙;The unicorn can fly.|Con kỳ lân biết bay.|🦄;The fairy is very small.|Cô tiên rất nhỏ bé.|🧚;Tell me a story, please.|Kể cho con nghe một câu chuyện đi.|📖;The princess lives in a castle.|Công chúa sống trong lâu đài.|🏰;The king is in the castle.|Nhà vua ở trong lâu đài.|🏰",
+    subjects: "I like English.|Tôi thích tiếng Anh.|🔤;I like science.|Tôi thích môn khoa học.|🔬;I like music.|Tôi thích môn âm nhạc.|🎵;We have math today.|Hôm nay chúng ta có môn toán.|➗;I'm good at art.|Tôi giỏi môn mỹ thuật.|🎨;We have art today.|Hôm nay chúng ta có môn mĩ thuật.|🎨;What is your favorite subject?|Môn học yêu thích của bạn là gì?|📘;I'm not good at math.|Tôi không giỏi môn toán.|😓;History is my favorite subject.|Lịch sử là môn tôi thích nhất.|📜;I study English every day.|Ngày nào tôi cũng học tiếng Anh.|🔤",
+    science: "What is this?|Đây là cái gì?|❓;Write it down.|Viết lại nhé.|📝;Don't touch that!|Đừng chạm vào cái đó!|⚠️;Plants need sunlight.|Cây cần ánh nắng mặt trời.|🌱;Plants need water.|Cây cần nước.|💧;Let's do an experiment.|Cùng làm thí nghiệm nào.|⚗️;Look through the microscope.|Nhìn qua kính hiển vi.|🔬;Look at this magnet.|Nhìn cục nam châm này đi.|🧲;Robots can help us.|Rô-bốt có thể giúp chúng ta.|🤖;The sun is very hot.|Mặt trời rất nóng.|☀️",
+    hobbies: "I collect stamps.|Tôi sưu tầm tem.|📮;I like camping.|Tôi thích cắm trại.|⛺;I like gardening.|Tôi thích làm vườn.|🌻;What is your hobby?|Sở thích của bạn là gì?|🕒;I like reading books.|Tôi thích đọc sách.|📚;My hobby is drawing.|Sở thích của tôi là vẽ tranh.|🎨;Do you like cooking?|Bạn có thích nấu ăn không?|🍳;I like playing chess.|Tôi thích chơi cờ vua.|♟️;Let's go fishing this weekend.|Cuối tuần này đi câu cá nhé.|🎣;Do you like taking photos?|Bạn có thích chụp ảnh không?|📷",
+    tet: "Good luck!|Chúc may mắn!|🍀;Happy New Year!|Chúc mừng năm mới!|🎊;Let's watch the fireworks.|Cùng xem pháo hoa nào.|🎆;I visit my grandparents.|Tôi đi thăm ông bà.|👴;Tet is coming soon.|Tết sắp đến rồi.|🗓️;Let's clean the house.|Cùng dọn nhà nào.|🧹;I like peach blossoms.|Tôi thích hoa đào.|🌸;I wish you good health.|Chúc bạn sức khỏe dồi dào.|💪;Here is your lucky money.|Lì xì cho con này.|🧧;Let's go to the flower market.|Cùng đi chợ hoa nào.|💐",
+    pets: "What's its name?|Nó tên là gì?|❓;I have a dog.|Tôi có một con chó.|🐶;My cat is sleeping.|Con mèo của tôi đang ngủ.|😴;Let's walk the dog.|Cùng dắt chó đi dạo nào.|🐕;Is your dog friendly?|Chó của bạn có hiền không?|🐕;Do you have a pet?|Bạn có nuôi thú cưng không?|🐾;Can I touch your cat?|Tôi vuốt mèo của bạn được không?|🐱;My dog likes to play.|Con chó của tôi thích chơi đùa.|🎾;I give my rabbit carrots.|Tôi cho thỏ ăn cà rốt.|🐰;Don't forget to feed the fish.|Đừng quên cho cá ăn.|🐟",
+    wild: "Tigers are dangerous.|Hổ rất nguy hiểm.|🐯;Look at the elephant!|Nhìn con voi kìa!|🐘;Monkeys can climb trees.|Khỉ biết trèo cây.|🐵;Don't feed the animals.|Không cho thú ăn.|🚫;The lion is strong.|Sư tử rất khỏe.|🦁;Giraffes have long necks.|Hươu cao cổ có cái cổ dài.|🦒;Let's go to the zoo.|Đi sở thú nào.|🦁;What animal do you like?|Bạn thích con vật nào?|🐾;Look, the bear is eating!|Nhìn kìa, con gấu đang ăn!|🐻;Zebras are black and white.|Ngựa vằn có màu đen và trắng.|🦓",
+    birds: "Birds can fly.|Chim biết bay.|🕊️;Ducks can swim.|Vịt biết bơi.|🦆;Penguins can't fly.|Chim cánh cụt không biết bay.|🐧;Look at that eagle!|Nhìn con đại bàng kia kìa!|🦅;The parrot can talk.|Con vẹt biết nói.|🦜;The rooster is red.|Con gà trống màu đỏ.|🐓;The bird is blue.|Con chim màu xanh.|🐦;Listen! The birds are singing.|Nghe kìa! Chim đang hót.|🐦;The owl sleeps in the day.|Con cú ngủ ban ngày.|🦉;There is a nest in the tree.|Trên cây có một cái tổ.|🪺",
+    sea: "Look, a dolphin!|Nhìn kìa, một con cá heo!|🐬;Turtles are slow.|Rùa đi chậm.|🐢;Fish can swim.|Cá biết bơi.|🐟;Whales are very big.|Cá voi rất to.|🐋;Don't swim near sharks.|Đừng bơi gần cá mập.|🦈;I like eating crab.|Tôi thích ăn cua.|🦀;Keep the sea clean.|Hãy giữ biển sạch.|🌊;The octopus has eight legs.|Con bạch tuộc có tám cái chân.|🐙;Look at the colorful fish!|Nhìn đàn cá nhiều màu kìa!|🐟;Starfish live in the sea.|Sao biển sống ở biển.|⭐",
+    insects: "Don't be scared.|Đừng sợ.|🐞;Ants are small.|Kiến rất nhỏ.|🐜;Catch the butterfly!|Bắt con bướm đi!|🦋;Bees make honey.|Ong làm ra mật.|🍯;There is a bee!|Có con ong kìa!|🐝;The butterfly is beautiful.|Con bướm đẹp quá.|🦋;I don't like mosquitoes.|Tôi không thích muỗi.|🦟;I'm afraid of spiders.|Tôi sợ nhện.|🕷️;There is a fly.|Có một con ruồi.|🪰;Look at the ladybug!|Nhìn con bọ rùa kìa!|🐞",
+    zodiac: "What is your animal?|Bạn tuổi con gì?|🐉;I am a dragon.|Tôi tuổi Thìn (con rồng).|🐲;How old are you?|Bạn bao nhiêu tuổi?|🎂;My mother is a tiger.|Mẹ tôi tuổi Dần.|🐅;We are the same age.|Chúng ta bằng tuổi nhau.|🤝;I am nine years old.|Tôi chín tuổi.|9️⃣;My brother is a cat.|Em trai tôi tuổi Mão (con mèo).|🐱;There are twelve zodiac animals.|Có mười hai con giáp.|🔢;The rat is the first animal.|Chuột là con giáp đầu tiên.|🐀;This is the year of the horse.|Năm nay là năm con ngựa.|🐎",
+    flowers: "Sunflowers are yellow.|Hoa hướng dương màu vàng.|🌻;Smell this flower.|Ngửi bông hoa này đi.|🌸;What a beautiful rose!|Bông hồng đẹp quá!|🌹;Please water the plants.|Làm ơn tưới cây.|🚿;Don't pick the flowers.|Đừng hái hoa.|🚫;Let's plant a tree.|Cùng trồng cây nào.|🌱;The leaves are falling.|Lá đang rụng.|🍂;I like lotus flowers.|Tôi thích hoa sen.|🪷;These flowers are for you.|Những bông hoa này tặng bạn.|💐;The tree is very tall.|Cái cây rất cao.|🌳",
+    nature: "Look at the rainbow!|Nhìn cầu vồng kìa!|🌈;The sun is shining.|Mặt trời đang chiếu sáng.|☀️;Keep the park clean.|Hãy giữ công viên sạch sẽ.|🌳;Listen to the wind.|Hãy nghe tiếng gió.|🍃;The forest is beautiful.|Khu rừng đẹp quá.|🌲;Let's climb the mountain.|Cùng leo núi nào.|⛰️;There are many stars tonight.|Tối nay có nhiều sao.|⭐;Let's go to the mountains.|Đi lên núi chơi nào.|⛰️;Put trash in the bin.|Bỏ rác vào thùng.|🗑️;The river is very clean.|Dòng sông rất sạch.|🏞️",
+    weather: "It's sunny.|Trời nắng.|☀️;It's raining.|Trời đang mưa.|🌧️;It's cloudy.|Trời nhiều mây.|☁️;Take your umbrella.|Mang ô theo nhé.|☂️;It's windy today.|Hôm nay trời nhiều gió.|💨;I like autumn.|Tôi thích mùa thu.|🍂;It's very hot today.|Hôm nay nóng quá.|🥵;Summer is very hot.|Mùa hè rất nóng.|🌞;What's the weather like today?|Hôm nay thời tiết thế nào?|⛅;It's cold, wear a jacket.|Trời lạnh, mặc áo khoác vào.|🧥",
+    space: "Mars is red.|Sao Hỏa màu đỏ.|🔴;Look at the moon!|Nhìn mặt trăng kìa!|🌙;The Earth is round.|Trái Đất hình tròn.|🌍;The rocket is flying.|Tên lửa đang bay.|🚀;Look at the stars!|Nhìn những ngôi sao kìa!|✨;Look through the telescope.|Nhìn qua kính thiên văn.|🔭;How many planets are there?|Có bao nhiêu hành tinh?|🪐;The sun is a star.|Mặt trời là một ngôi sao.|☀️;I want to be an astronaut.|Tôi muốn làm phi hành gia.|🧑‍🚀;The moon is big and round.|Mặt trăng to và tròn.|🌕",
+    farm: "This is a farm.|Đây là nông trại.|🏡;Let's feed the chickens.|Cho gà ăn nào.|🐔;We pick the corn.|Chúng tôi hái ngô.|🌽;The tractor is big.|Máy kéo rất to.|🚜;The farmer is planting rice.|Bác nông dân đang cấy lúa.|👨‍🌾;Help me water the plants.|Giúp tôi tưới cây nhé.|🌱;The cows are eating grass.|Mấy con bò đang ăn cỏ.|🐄;The pigs are very dirty.|Mấy con lợn bẩn quá.|🐖;Let's pick up the eggs.|Cùng nhặt trứng nào.|🥚;Ducks are swimming in the pond.|Vịt đang bơi trong ao.|🦆",
+    places: "Where are you going?|Bạn đang đi đâu?|🚶;Where is the park?|Công viên ở đâu?|🏞️;I'm going to the supermarket.|Tôi đang đi siêu thị.|🛒;Is it far from here?|Có xa đây không?|📏;It's next to the bank.|Nó ở cạnh ngân hàng.|🏦;Let's meet at the park.|Gặp nhau ở công viên nhé.|🌳;Let's go to the cinema.|Đi xem phim nhé.|🎬;The hospital is over there.|Bệnh viện ở đằng kia.|🏥;I live in a village.|Tôi sống ở làng quê.|🏘️;Let's go to the zoo.|Cùng đi sở thú nào.|🦁",
+    transport: "I like planes.|Tôi thích máy bay.|✈️;Let's walk there.|Mình đi bộ tới đó nhé.|🚶;I go by bike.|Tôi đi xe đạp.|🚲;Let's take a taxi.|Mình đi taxi nhé.|🚕;I go by bus.|Tôi đi xe buýt.|🚌;The train is fast.|Tàu hỏa chạy nhanh.|🚆;The bus is coming.|Xe buýt đến rồi.|🚌;Don't ride too fast.|Đừng đi xe nhanh quá.|🛵;Where is the bus stop?|Trạm xe buýt ở đâu?|🚏;How do you go to school?|Bạn đến trường bằng gì?|🏫",
+    travel: "I'm from Vietnam.|Tôi đến từ Việt Nam.|🇻🇳;I'm on holiday.|Tôi đang đi nghỉ.|🏝️;Where are you from?|Bạn đến từ đâu?|🌏;Here is my ticket.|Vé của tôi đây.|🎫;This is my bag.|Đây là túi của tôi.|🧳;Have a nice trip!|Chúc chuyến đi vui vẻ!|✈️;Where is the airport?|Sân bay ở đâu?|🛫;How much is the ticket?|Vé bao nhiêu tiền?|🎫;Let's go to the beach.|Cùng đi biển nào.|🏖️;Please take a photo of us.|Làm ơn chụp giúp chúng tôi một tấm ảnh.|📸",
+    countries: "I'm Vietnamese.|Tôi là người Việt Nam.|🇻🇳;I like Japan.|Tôi thích Nhật Bản.|🇯🇵;I speak Vietnamese.|Tôi nói tiếng Việt.|🗣️;Thailand is near Vietnam.|Thái Lan ở gần Việt Nam.|🇹🇭;I live in Hanoi.|Tôi sống ở Hà Nội.|🏙️;Can you speak English?|Bạn nói được tiếng Anh không?|🗣️;Singapore is very clean.|Xin-ga-po rất sạch.|🇸🇬;Which country are you from?|Bạn đến từ nước nào?|🌏;I want to visit Korea.|Tôi muốn đi Hàn Quốc.|🇰🇷;China is a big country.|Trung Quốc là một nước lớn.|🇨🇳",
+    money: "It's cheap.|Nó rẻ.|🏷️;It's too expensive.|Đắt quá.|😮;I'll take it.|Tôi lấy cái này.|🛍️;How much is it?|Cái này bao nhiêu tiền?|💰;Here is the money.|Tiền đây.|💵;Here is your change.|Đây là tiền thừa của bạn.|🪙;I have ten dollars.|Tôi có mười đô la.|💵;I don't have money.|Tôi không có tiền.|👛;Where can I buy shoes?|Tôi có thể mua giày ở đâu?|👟;I want to buy a ball.|Tôi muốn mua quả bóng.|⚽",
+    beach: "Let's go swimming.|Đi bơi nào.|🏊;Put on your hat.|Đội mũ vào.|👒;Let's build a sandcastle.|Cùng xây lâu đài cát nào.|🏰;Don't swim too far.|Đừng bơi ra xa quá.|⚠️;Let's watch the sunset.|Cùng ngắm hoàng hôn nào.|🌅;Let's go to the beach.|Đi biển đi.|🏖️;The water is so cool.|Nước mát quá.|🌊;The sand is very hot.|Cát nóng quá.|🔥;Look at the big waves!|Nhìn những con sóng lớn kìa!|🌊;I found a beautiful shell.|Tôi nhặt được một vỏ ốc đẹp.|🐚",
+    signs: "Be careful!|Cẩn thận!|⚠️;No smoking here.|Ở đây cấm hút thuốc.|🚭;Wear a helmet.|Đội mũ bảo hiểm vào.|⛑️;Don't go in!|Đừng vào!|⛔;Slow down, please.|Đi chậm lại nhé.|🐢;Look left and right.|Nhìn bên trái và bên phải.|👀;Cross the road carefully.|Qua đường cẩn thận nhé.|🚸;Stop! The light is red.|Dừng lại! Đèn đỏ rồi.|🛑;Don't walk on the grass.|Không giẫm lên cỏ.|🌱;Wait for the green light.|Chờ đèn xanh nhé.|🟢",
+    world: "Where is Brazil?|Nước Bra-xin ở đâu?|🇧🇷;Canada is cold.|Ca-na-đa rất lạnh.|❄️;Mexico is far.|Mê-hi-cô ở xa.|🇲🇽;Australia has kangaroos.|Nước Úc có chuột túi.|🦘;Egypt has pyramids.|Ai Cập có kim tự tháp.|🏜️;I want to travel.|Tôi muốn đi du lịch.|✈️;Paris is in France.|Pa-ri ở nước Pháp.|🇫🇷;Canada is very big.|Ca-na-đa rất rộng lớn.|🇨🇦;Where are you from?|Bạn đến từ đâu?|🌍;People in Japan eat sushi.|Người Nhật ăn sushi.|🍣",
+    colors: "It's red.|Nó màu đỏ.|🔴;I like blue.|Tôi thích màu xanh dương.|🔵;Grass is green.|Cỏ màu xanh lá.|🌿;What color is it?|Nó màu gì?|🎨;What's your favorite color?|Màu yêu thích của bạn là gì?|🌈;My cat is black.|Con mèo của tôi màu đen.|🐈‍⬛;The sky is blue.|Bầu trời màu xanh.|☁️;My bag is pink.|Cặp của tôi màu hồng.|🎒;Red and yellow make orange.|Đỏ và vàng pha thành màu cam.|🎨;What color are your eyes?|Mắt bạn màu gì?|👀",
+    numbers: "There are five.|Có năm quả.|5️⃣;Count with me.|Đếm cùng tôi nào.|🔢;What's your phone number?|Số điện thoại của bạn là gì?|📞;There are ten pens.|Có mười cái bút.|🖊️;What number is this?|Đây là số mấy?|❓;How many apples are there?|Có bao nhiêu quả táo?|🍎;I am ten years old.|Tôi mười tuổi.|🎂;Two plus two is four.|Hai cộng hai bằng bốn.|➕;Ten minus three is seven.|Mười trừ ba bằng bảy.|➖;Let's count from one to ten.|Đếm từ một đến mười nào.|🔢",
+    shapes: "It's a circle.|Nó là hình tròn.|⚪;Draw a triangle.|Vẽ một hình tam giác.|🔺;I like stars.|Tôi thích hình ngôi sao.|⭐;Draw a heart.|Vẽ một hình trái tim.|❤️;What shape is it?|Nó hình gì?|🔷;The ball is round.|Quả bóng hình tròn.|⚽;An egg is oval.|Quả trứng hình bầu dục.|🥚;The box is a square.|Cái hộp hình vuông.|🟥;The window is a rectangle.|Cửa sổ hình chữ nhật.|🪟;A square has four sides.|Hình vuông có bốn cạnh.|🟥",
+    days: "Today is Monday.|Hôm nay là thứ Hai.|🗓️;Tomorrow is Sunday.|Ngày mai là Chủ nhật.|☀️;When is your birthday?|Sinh nhật bạn vào khi nào?|🎂;See you on Friday.|Hẹn gặp bạn vào thứ Sáu.|👋;What day is it today?|Hôm nay là thứ mấy?|📅;My birthday is in May.|Sinh nhật tôi vào tháng Năm.|🎉;I go swimming on Saturdays.|Thứ Bảy nào tôi cũng đi bơi.|🏊;What month is it now?|Bây giờ là tháng mấy?|🗓️;I go to school on Monday.|Tôi đi học vào thứ Hai.|🏫;There are seven days in a week.|Một tuần có bảy ngày.|7️⃣",
+    time: "Good night.|Chúc ngủ ngon.|🌙;Good morning!|Chào buổi sáng!|🌅;It's seven o'clock.|Bây giờ là bảy giờ.|🕖;See you tomorrow.|Hẹn gặp lại ngày mai.|👋;Don't be late.|Đừng đến muộn nhé.|⏰;What time is it?|Bây giờ là mấy giờ?|⏰;Wait a minute, please.|Làm ơn đợi một phút.|⏳;It's half past eight.|Bây giờ là tám giờ rưỡi.|🕣;It's time to go.|Đến giờ đi rồi.|⏰;Hurry up! We are late.|Nhanh lên! Chúng ta muộn rồi.|🏃",
+    directions: "Turn left.|Rẽ trái.|⬅️;Turn right.|Rẽ phải.|➡️;I'm lost.|Tôi bị lạc đường rồi.|😵;Go straight ahead.|Đi thẳng về phía trước.|⬆️;It's behind the school.|Nó ở phía sau trường học.|🏫;Is it near here?|Nó có gần đây không?|📍;It's near the park.|Nó ở gần công viên.|🏞️;Look at the map.|Nhìn bản đồ đi.|🗺️;It's next to the school.|Nó ở cạnh trường học.|🏫;Excuse me, where is the bank?|Xin lỗi, ngân hàng ở đâu?|🏦",
+    office: "Good job!|Làm tốt lắm!|👍;Call me, please.|Gọi cho tôi nhé.|📞;See you tomorrow.|Hẹn gặp lại ngày mai.|👋;Nice to meet you.|Rất vui được gặp bạn.|🤝;My boss is nice.|Sếp của tôi rất tốt.|👔;This is my office.|Đây là văn phòng của tôi.|🏢;I'm busy right now.|Bây giờ tôi đang bận.|⏳;Let's have lunch together.|Cùng ăn trưa nhé.|🍱;Can I help you?|Tôi giúp gì được cho bạn?|🙋;Write your name here.|Viết tên của bạn vào đây.|✍️",
+    finance: "How much is this?|Cái này bao nhiêu tiền?|💰;Let's make a budget.|Cùng lập ngân sách nào.|📒;Don't spend too much.|Đừng tiêu quá nhiều.|🛑;I spent too much.|Tôi đã tiêu quá nhiều.|😟;Let's count our money.|Cùng đếm tiền nào.|💵;I want to save money.|Tôi muốn tiết kiệm tiền.|🐷;Write down what you buy.|Hãy ghi lại những thứ bạn mua.|📝;Save a little every day.|Mỗi ngày tiết kiệm một ít.|🐷;I have a piggy bank.|Tôi có một con lợn đất.|🏦;I put money in the bank.|Tôi gửi tiền vào ngân hàng.|🏦"
   };
   var SENT_CACHE = {}, SENT_HP = 1.7;   // (bản 2026.11.08-12) quái đợt câu giao tiếp trâu gấp 1,7 lần quái thường cùng loại
   function sentOf(tp) {
@@ -494,8 +506,8 @@
   };
   var TW_KEYS = ['arrow', 'ice', 'cannon', 'fire', 'eye', 'snipe', 'rocket'];
   /* (bản 2026.11.08-4) tầm bắn/tầm soi theo cấp: chòi phun lửa +20%/cấp (cấp 5 phun xa gần gấp đôi), chòi mắt +15%/cấp, chòi khác +8%/cấp */
-  function towerRange(t) { return TW[t.k].r * W * (1 + (t.k === 'fire' ? 0.2 : t.k === 'eye' ? 0.15 : 0.08) * (t.lv - 1)); }
-  function upInfo(t) { return t.k === 'fire' ? 'Lửa to hơn, phun xa hơn, cháy lan rộng hơn' : t.k === 'eye' ? 'Soi xa hơn, thấy quái tàng hình sớm hơn' : 'Mạnh hơn, bắn xa hơn'; }
+  function towerRange(t) { return TW[t.k].r * W * (1 + (t.k === 'fire' ? 0.2 : t.k === 'eye' ? 0.15 : 0.08) * (lvEff(t.lv) - 1)); }
+  function upInfo(t) { if (t.lv >= 5) return 'Tiến hóa ' + TNAME[t.lv + 1] + ': mạnh hơn, hình dáng khủng hơn'; return t.k === 'fire' ? 'Lửa to hơn, phun xa hơn, cháy lan rộng hơn' : t.k === 'eye' ? 'Soi xa hơn, thấy quái tàng hình sớm hơn' : 'Mạnh hơn, bắn xa hơn'; }
   /* (bản 2026.11.08-3) Máu chòi: lính bắn chòi và trùm cuối bắn phá chòi; chòi hết máu thì sập (ô đá trống lại, phải mua chòi mới).
      Người chơi dùng vàng để: 🔧 sửa chòi, 🛡️ mua bảo hộ (khiên hút sát thương), mua chòi mới, hoặc xây 🎯 súng bắn tỉa để diệt lính bắn chòi từ xa. */
   var TOWER_HP = 100, SHIELD_RATE = 0.7;
@@ -528,9 +540,67 @@
     return sc;
   }
   function onMap(p, m) { m = m || 10; return p.x > -m && p.x < W + m && p.y > -m && p.y < H + m; }
+  /* (bản 2026.11.11-3) TỪ DỄ TRƯỚC: từ vựng cơ bản của học sinh tiểu học (EASY) ra ở các đợt đầu, hết rồi mới tới từ khó hơn.
+     Bậc 1 = từ trong EASY · bậc 2 = cụm từ ghép toàn từ dễ hoặc từ ngắn · bậc 3 = còn lại (từ dài, ít gặp). */
+  var EASY = {};
+  ('father mother grandfather grandmother baby boy girl child family friends uncle aunt king queen love hug old man twins cousin ' +
+   'eye ear nose mouth hand foot leg arm tooth tongue heart hair nail finger face eyes clap ' +
+   'happy sad angry sleepy scared surprised laughing sick crying bored tired excited shy smiling ' +
+   'shirt pants dress cap socks coat scarf gloves boots hat sandals helmet shorts pajamas backpack raincoat t-shirt sneakers ' +
+   'toothbrush toothpaste comb towel soap shampoo glasses sunglasses watch key phone ring mirror umbrella ' +
+   'hospital doctor nurse medicine mask fever headache toothache healthy sleep ' +
+   'teacher farmer cook pilot singer dancer student driver fisherman astronaut artist firefighter ' +
+   'run walk eat drink read write sing dance swim cry laugh wash draw listen talk look climb drive fly ride kick give sit stand wait open play jump clean help close ' +
+   'big small tall fast slow heavy strong new old young hot cold wet dry loud quiet sweet beautiful dirty hungry ' +
+   'kind brave clever funny friendly lazy helpful polite ' +
+   'house bed door chair window sofa table desk lamp clock fan pillow garden picture ' +
+   'knife fork spoon chopsticks plate bowl cup glass bottle pot salt ' +
+   'book bag computer camera gift balloon flag pen map ' +
+   'hammer ladder pencil ruler bucket keyboard mouse television radio robot headphones photo video message ' +
+   'apple banana orange grape watermelon strawberry pineapple lemon mango coconut pear cherry peach ' +
+   'carrot tomato corn potato onion cucumber mushroom pumpkin peanut ' +
+   'bread rice egg cheese pizza noodles cake chicken hamburger sandwich soup salad cookie chocolate candy donut honey meat popcorn ' +
+   'water milk tea juice coffee lemonade ice cupcake lollipop pie ' +
+   'school notebook eraser glue blackboard library bell crayon homework calendar ' +
+   'doll ball kite yo-yo puzzle blocks chess ' +
+   'football basketball tennis volleyball baseball swimming badminton running cycling fishing climbing ' +
+   'guitar piano drum violin microphone dancing fireworks lantern party snowman ghost mooncake ' +
+   'dragon unicorn fairy mermaid castle crown dinosaur angel superhero ' +
+   'math english science history music art geography planet rocket magnet scientist ' +
+   'reading drawing singing cooking camping writing shopping spring ' +
+   'cat dog rabbit fish horse pig cow sheep goat duck chick puppy hen goldfish parrot ' +
+   'monkey elephant lion tiger frog bear panda snake giraffe zebra kangaroo crocodile owl camel fox deer ' +
+   'bird penguin nest swan eagle whale dolphin shark octopus crab turtle shrimp shell ' +
+   'bee butterfly ant spider ladybug snail worm rat ox rooster rose sunflower tree lotus bamboo flower ' +
+   'sun moon star rain snow cloud rainbow mountain fire earth island leaf river rock forest sea ' +
+   'sunny cloudy rainy snowy windy summer autumn winter alien farm tractor seed ' +
+   'hospital park beach zoo shop market cinema supermarket restaurant bank airport city village museum bridge ' +
+   'car bus train plane bicycle motorbike ship helicopter taxi truck scooter boat hotel tent ticket suitcase ' +
+   'vietnam china japan korea thailand laos cambodia singapore money coin wallet dollar swimsuit sandcastle swim stop exit police ' +
+   'red blue green yellow purple pink brown black white gray gold silver ' +
+   'zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty thirty forty fifty ' +
+   'circle square triangle rectangle oval diamond heart ' +
+   'monday tuesday wednesday thursday friday saturday sunday january february march april may june july august september october november december ' +
+   'morning noon afternoon evening night today tomorrow yesterday week weekend month year hour minute ' +
+   'up down left right here far near inside outside behind office job boss team email cash price goal plan rich')
+    .split(' ').forEach(function (k) { if (k) EASY[k] = 1; });
+  ['old man', 'school uniform', 'police officer', 'wake up', 'brush teeth', 'wash face', 'wash hands', 'have breakfast', 'go to school', 'have lunch', 'do homework', 'play outside', 'go home',
+   'have dinner', 'watch tv', 'read a book', 'listen to music', 'go to bed', 'get dressed', 'ice cream', 'hot dog', 'orange juice', 'teddy bear', 'toy car', 'toy train', 'video game',
+   'table tennis', 'christmas tree', 'santa claus', 'birthday cake', 'lucky money', 'new clothes', 'sweep the floor', 'wash the dishes', 'make the bed', 'water the plants', 'feed the cat',
+   'clean the window', 'tidy the room', 'french fries', 'fried egg', 'pancakes', 'squirrel', 'savings', 'spend money', 'earn money', 'pencil case', 'playing games', 'playing chess', 'turn left', 'turn right', 'go straight', 'next to', 'in front of', 'sky blue', 'one hundred', 'alarm clock']
+    .forEach(function (k) { EASY[k] = 1; });
+  function wordTier(x) {
+    var k = String(x[0]).toLowerCase().trim(); if (EASY[k]) return 1;
+    var parts = k.split(/[\s-]+/);
+    if (parts.length > 1 && parts.every(function (p) { return EASY[p] || /^(the|a|an|to|of|and|in|on)$/.test(p); })) return 2;
+    if (parts.length === 1 && k.length <= 6) return 2;
+    return 3;
+  }
   function planWaves(tp) {
     var n = tp.w.length, K = clamp(Math.ceil(n / (tp.wb ? 6 : 5)), 3, 8);   // (bản 2026.11.08-12) kho thường ~5 từ/đợt (vd. Gia đình 26 từ = 6 đợt từ vựng)
     var r = rng(hashS('tt' + tp.id)), order = shuffle(tp.w.map(function (x, i) { return i; }), r), waves = [], k = 0;
+    var tier = order.map(function (i) { return wordTier(tp.w[i]); }), pos = {}; order.forEach(function (i, q) { pos[i] = q; });
+    order.sort(function (a, b) { return wordTier(tp.w[a]) - wordTier(tp.w[b]) || pos[a] - pos[b]; });   // từ dễ trước, cùng bậc giữ thứ tự xáo trộn
     for (var j = 0; j < K; j++) {
       var sz = Math.floor(n / K) + (j < n % K ? 1 : 0); waves.push(order.slice(k, k + sz)); k += sz;
     }
@@ -1162,8 +1232,8 @@
       var best = null;
       G.enemies.forEach(function (e) { var p = posAt(e.f, e.pi); if (seen(e) && onMap(p) && Math.hypot(p.x - s.x, p.y - (s.y - W * 0.02)) <= rr && (!best || e.f > best.f)) best = e; });
       if (!best) return;
-      t.cd = T.cd / (1 + 0.12 * (t.lv - 1)); t.fl = 0.15;
-      var dmg = T.d * Math.pow(1.5, t.lv - 1), sy = s.y - W * 0.075;
+      t.cd = T.cd / (1 + 0.12 * (lvEff(t.lv) - 1)); t.fl = 0.15;
+      var dmg = T.d * lvDmg(t.lv, 1.5, 1.25), sy = s.y - W * 0.075;
       if (t.k === 'fire') { fireAt(t, T, s, best, dmg); return; }
       if (t.k === 'snipe') {   // ưu tiên lính bắn chòi / trùm cuối đang trong tầm
         var pr = null; G.enemies.forEach(function (e) { if (!EN[e.t].gun || !seen(e)) return; var q = posAt(e.f, e.pi); if (onMap(q) && Math.hypot(q.x - s.x, q.y - s.y) <= rr && (!pr || e.f > pr.f)) pr = e; });
@@ -1275,13 +1345,13 @@
     var p = posAt(best.f, best.pi), tx = p.x, ty = p.y - EN[best.t].sz * W * 0.3, nx = s.x, ny = s.y - W * 0.075;
     var dx = tx - nx, dy = ty - ny, dl = Math.hypot(dx, dy) || 1, sp = dl / 0.32;
     t.fa = Math.atan2(dy, dx); t.fl = 0.18;
-    var big = 1 + 0.28 * (t.lv - 1);   // (bản 2026.11.08-4) cấp càng cao lửa càng to, luồng lửa càng dày
-    for (var i = 0; i < 3 + (t.lv - 1); i++) {
-      var j = (Math.random() - 0.5) * 0.35 * (1 + 0.15 * (t.lv - 1)), c = Math.cos(j), sn = Math.sin(j), vx = (dx * c - dy * sn) / dl * sp, vy = (dx * sn + dy * c) / dl * sp;
+    var big = 1 + 0.28 * (lvEff(t.lv) - 1);   // (bản 2026.11.08-4) cấp càng cao lửa càng to, luồng lửa càng dày
+    for (var i = 0; i < 3 + Math.round(lvEff(t.lv) - 1); i++) {
+      var j = (Math.random() - 0.5) * 0.35 * (1 + 0.15 * (lvEff(t.lv) - 1)), c = Math.cos(j), sn = Math.sin(j), vx = (dx * c - dy * sn) / dl * sp, vy = (dx * sn + dy * c) / dl * sp;
       flame(nx, ny, vx * (0.85 + Math.random() * 0.3), vy * (0.85 + Math.random() * 0.3), W * (0.014 + Math.random() * 0.012) * big, 0.34 + Math.random() * 0.1);
     }
-    if (t.lv >= 3) { var ex = 2 + t.lv; for (var k2 = 0; k2 < ex; k2++) { var a2 = Math.random() * 6.28, v2 = W * (0.05 + Math.random() * 0.1) * big; flame(tx + (Math.random() - 0.5) * W * 0.03, ty, Math.cos(a2) * v2, Math.sin(a2) * v2 - W * 0.05, W * 0.016 * big, 0.3 + Math.random() * 0.15); } }   // lửa bùng tại chỗ trúng
-    var area = T.area * W * (1 + 0.3 * (t.lv - 1)), burn = T.burn * Math.pow(1.4, t.lv - 1);
+    if (t.lv >= 3) { var ex = 2 + Math.round(lvEff(t.lv)); for (var k2 = 0; k2 < ex; k2++) { var a2 = Math.random() * 6.28, v2 = W * (0.05 + Math.random() * 0.1) * big; flame(tx + (Math.random() - 0.5) * W * 0.03, ty, Math.cos(a2) * v2, Math.sin(a2) * v2 - W * 0.05, W * 0.016 * big, 0.3 + Math.random() * 0.15); } }   // lửa bùng tại chỗ trúng
+    var area = T.area * W * (1 + 0.3 * (lvEff(t.lv) - 1)), burn = T.burn * lvDmg(t.lv, 1.4, 1.2);
     G.enemies.slice().forEach(function (e) { if (!seen(e) && e !== best) return; var q = posAt(e.f, e.pi); if (Math.hypot(q.x - p.x, q.y - p.y) <= area || e === best) { e.burnT = 2; e.burnD = Math.max(e.burnD || 0, burn); dmgE(e, dmg, true); if (G.enemies.indexOf(e) >= 0) e.hit = 0.05; } });
     t.snd = (t.snd || 0) - T.cd; if (t.snd <= 0) { t.snd = 0.35; sfx('fire'); }
   }
@@ -1531,9 +1601,9 @@
   function renderBank() {
     var c = $('ttChips'), h = '';
     G.bank.filter(function (w) { return !locked(w); }).concat(G.bank.filter(locked)).forEach(function (w) {   // từ chưa đọc ở lượt này xếp trước
-      var x = G.tp.w[w], s = G.said[w], gain = useMic() ? reward(w) : pickGain(reward(w)), lk = locked(w), rd = 0;
+      var x = G.tp.w[w], s = G.said[w], pl = pickLeft(w), mr = mustRead(w), gain = useMic() || mr ? reward(w) : pl > 0 ? pickGain(reward(w)) : 0, lk = locked(w), rd = 0;
       var pv = pronOf(x).vi;
-      h += '<button class="tt-chip' + (isSent(w) ? ' sen' : '') + (lk ? ' lock' : s && s.n ? ' tried' : '') + '" data-a="chip" data-w="' + w + '"><span class="p">' + picHtml(x[2], 30) + '</span><span><b>' + esc(x[0]) + '</b>' + (pv ? '<span class="vi">🗣️ ' + esc(pv) + '</span>' : '') + '<small>' + (lk ? '✅ Xong lượt ' + G.round : '+' + gain + ' 💰' + (rd ? ' · lần ' + (rd + 1) + '/' + MAX_READ : '')) + '</small></span></button>';
+      h += '<button class="tt-chip' + (isSent(w) ? ' sen' : '') + (lk ? ' lock' : s && s.n ? ' tried' : '') + '" data-a="chip" data-w="' + w + '"><span class="p">' + picHtml(x[2], 30) + '</span><span><b>' + esc(x[0]) + '</b>' + (pv ? '<span class="vi">🗣️ ' + esc(pv) + '</span>' : '') + '<small>' + (lk ? '✅ Xong lượt ' + G.round : '+' + gain + ' 💰' + (useMic() || mr ? (mr && !useMic() ? ' · 🎤 phải đọc' : '') : ' · 👆 còn ' + pl + '/' + PICK_MAX)) + '</small></span></button>';
     });
     if (!h) h = '<div class="tt-empty">✅ Đã đọc hết từ của đợt này. Chạm vào con quái đang trộm từ để đọc từ nó vác, được thêm 💰 và làm quái choáng!</div>';
     c.innerHTML = h;
@@ -1546,8 +1616,8 @@
      Máy so khớp dễ tính (window.SixPron trong index.html): đọc gần đúng vẫn được, sai càng nhiều lần máy càng dễ tính hơn. */
   function openSay(w, e) {
     stopRec(); closePop();
-    var md = useMic() ? 'mic' : 'pick';
-    SAY = { w: w, e: e || null, step: 1, st: '', heard: '', mode: md, vmode: md, opts: null, pick: -1, tr: 0, peek: false, picked: false };
+    var md = useMic() || mustRead(w) ? 'mic' : 'pick';
+    SAY = { w: w, e: e || null, step: 1, st: '', heard: '', mode: md, vmode: md, opts: null, pick: -1, tr: 0, peek: false, picked: false, forced: !useMic() && mustRead(w) };
     drawSay(); $('ttSay').classList.add('on');
     if (SAY.mode === 'mic') { var s0 = SAY; say(G.tp.w[w][0], function () { setTimeout(function () { if (SAY === s0 && !rec && SAY.st === '' && SAY.step === 1) listen(); }, 250); }); }
     else say(G.tp.w[w][0]);
@@ -1574,15 +1644,16 @@
       if (st === 'rec') fb = SAY.step === 1 ? '🎙️ Đang nghe… hãy đọc từ tiếng Anh' : '🎙️ Đang nghe… hãy nói nghĩa tiếng Việt';
       else if (st === 'wrong') fb = '<span class="bad">Máy nghe thành: “' + esc(SAY.heard || '…') + '”</span>&nbsp;– ' + (SAY.step === 1 ? 'nghe mẫu rồi đọc lại nhé' : 'chưa đúng nghĩa, thử lại nhé');
       else if (st === 'nospeech') fb = 'Chưa nghe thấy gì. Bấm 🎤 rồi nói to hơn nhé.';
-      else if (st === 'nosr') fb = '<span class="bad">Không dùng được micro' + (SAY.step === 2 ? ' tiếng Việt' : '') + '.</span>&nbsp;Hãy cho phép app dùng micro, hoặc chọn đáp án thay vì nói.';
-      else fb = SAY.step === 1 ? 'Nghe mẫu, rồi bấm 🎤 và đọc từ này' : 'Bấm 🎤 và nói nghĩa tiếng Việt của từ này';
+      else if (st === 'nosr') fb = '<span class="bad">Không dùng được micro' + (SAY.step === 2 ? ' tiếng Việt' : '') + '.</span>&nbsp;Hãy cho phép app dùng micro' + (SAY.step === 1 && pickLeft(SAY.w) <= 0 ? ' rồi đọc lại nhé (từ này đã hết lượt chọn).' : ', hoặc chọn đáp án thay vì nói.') + '';
+      else fb = SAY.step === 1 ? (SAY.forced ? '👆 Từ này đã hết ' + PICK_MAX + ' lần chọn – muốn thêm 💰 hãy <b>đọc to</b>: nghe mẫu rồi bấm 🎤' : 'Nghe mẫu, rồi bấm 🎤 và đọc từ này') : 'Bấm 🎤 và nói nghĩa tiếng Việt của từ này';
       var left = SAY.step === 1 ? '<button class="tt-ib" data-a="sayhear" style="height:54px;padding:0 14px;font-size:15px">🔊 Nghe mẫu</button>'
         : '<button class="tt-ib" data-a="peek" style="height:54px;padding:0 12px;font-size:14px"' + (SAY.peek ? ' disabled' : '') + '>💡 Xem nghĩa</button>';
       body = '<div class="row">' + left + '<button class="tt-mic' + (st === 'rec' ? ' rec' : '') + '" data-a="mic">🎤</button>' +
-        '<button class="tt-ib" data-a="topick" style="height:54px;padding:0 12px;font-size:14px;line-height:1.15">👆 Chọn đáp án<br><small style="font-size:10.5px;opacity:.8">thưởng 2/3</small></button></div>';
+        (SAY.step === 1 && pickLeft(SAY.w) <= 0 ? '<button class="tt-ib" data-a="topick" style="height:54px;padding:0 10px;font-size:13px;line-height:1.15;opacity:.5">👆 Hết lượt chọn<br><small style="font-size:10.5px">đã chọn ' + PICK_MAX + '/' + PICK_MAX + ' lần</small></button></div>'
+          : '<button class="tt-ib" data-a="topick" style="height:54px;padding:0 12px;font-size:14px;line-height:1.15">👆 Chọn đáp án<br><small style="font-size:10.5px;opacity:.8">' + (SAY.step === 1 ? 'còn ' + pickLeft(SAY.w) + '/' + PICK_MAX + ' lần' : 'thưởng 2/3') + '</small></button></div>');
     } else {
       if (!SAY.opts) SAY.opts = pickOpts(SAY.w);
-      fb = st === 'wrong' ? '<span class="bad">Chưa đúng, thử lại nhé</span>' : st === 'ok1' ? '<span class="ok">✅ Đúng rồi!</span>&nbsp;Giờ chọn đúng <b>nghĩa tiếng Việt</b>' : SAY.step === 1 ? 'Nghe mẫu rồi chọn đúng từ tiếng Anh' : 'Chọn đúng nghĩa tiếng Việt của từ này';
+      fb = st === 'wrong' ? '<span class="bad">Chưa đúng, thử lại nhé</span>' : st === 'ok1' ? '<span class="ok">✅ Đúng rồi!</span>&nbsp;Giờ chọn đúng <b>nghĩa tiếng Việt</b>' : SAY.step === 1 ? (pickLeft(SAY.w) > 0 ? 'Nghe mẫu rồi chọn đúng từ tiếng Anh · 👆 còn <b>' + pickLeft(SAY.w) + '/' + PICK_MAX + '</b> lần chọn' : '👆 Hết lượt chọn từ này – chọn để luyện tập (không nhận 💰)') : 'Chọn đúng nghĩa tiếng Việt của từ này';
       body = '<div class="ch">' + SAY.opts.map(function (i) { var cl = SAY.pick === i && i !== SAY.w ? 'bdb' : (done && i === SAY.w ? 'okb' : ''); return '<button class="' + cl + '" data-a="pick" data-w="' + i + '">' + esc(G.tp.w[i][SAY.step === 1 ? 0 : 1]) + '</button>'; }).join('') +
         '</div><div style="margin-top:8px;display:flex;gap:8px;justify-content:center"><button class="tt-ib" data-a="sayhear" style="padding:0 16px;font-size:15px">🔊 Nghe lại</button>' +
         (SR ? '<button class="tt-ib" data-a="tomic" style="padding:0 14px;font-size:14px">🎤 Đọc bằng giọng</button>' : '') + '</div>';
@@ -1643,12 +1714,15 @@
     } else gain = reward(w);
     var isPick = SAY.picked || SAY.vmode === 'pick' && !SAY.sent2, pts = isPick ? pickGain(LB_READ) : LB_READ;
     if (isPick) gain = pickGain(gain);
+    var noPay = false;
+    if (SAY.picked) { if (pickLeft(w) <= 0) { noPay = true; gain = 0; pts = 0; } else pickUse(w); }   // (bản 2026.11.11-3) đếm lượt chọn từ
     var gk = null;
     if (!s.ok) G.ok++;
     /* (bản 2026.11.08-5/-8) QUÀ MƯA mỗi từ 1 lần/trận: ĐỌC đúng từ đó lần đầu → quà ngay; CHỌN ĐÁP ÁN đúng từ đó đủ PICK_GIFT lần → quà */
     var giftMsg = '';
     if (!s.gift) {
-      if (isPick) { s.pk = (s.pk || 0) + 1; if (s.pk >= PICK_GIFT) { s.gift = 1; gk = giveGift(); } else giftMsg = ' · 🎁 chọn đúng thêm ' + (PICK_GIFT - s.pk) + ' lần để nhận quà'; }
+      if (noPay) { }
+      else if (isPick) { s.pk = (s.pk || 0) + 1; if (s.pk >= PICK_GIFT) { s.gift = 1; gk = giveGift(); } else giftMsg = ' · 🎁 chọn đúng thêm ' + (PICK_GIFT - s.pk) + ' lần để nhận quà'; }
       else { s.gift = 1; gk = giveGift(); }
     }
     s.ok = 1;
@@ -1660,7 +1734,7 @@
       if (!left) { G.round++; G.done = {}; more = ' · 🔄 Hết lượt! Sang lượt ' + G.round + ', tất cả từ đã mở lại'; setTimeout(function () { if (G && !G.ended) banner('🔄 Lượt ' + G.round, 'Tất cả từ đã mở lại – đọc tiếp để lấy vàng!'); }, 1400); }
       else more = ' (lượt ' + G.round + ': còn ' + left + ' từ)';
     }
-    G.gold += gain; SAY.st = 'ok'; SAY.msg = '+' + gain + ' 💰 · +' + pts + ' điểm 🏆' + more + (gk ? ' · 🎁 Quà: ' + RAIN[gk].e + ' ' + RAIN[gk].n + '!' : giftMsg);
+    G.gold += gain; SAY.st = 'ok'; SAY.msg = (noPay ? '👆 Hết lượt chọn – luyện tập (không nhận 💰)' : '+' + gain + ' 💰 · +' + pts + ' điểm 🏆' + (SAY.picked ? ' · 👆 còn ' + pickLeft(w) + '/' + PICK_MAX + ' lần chọn' : '')) + more + (gk ? ' · 🎁 Quà: ' + RAIN[gk].e + ' ' + RAIN[gk].n + '!' : giftMsg);
     sfx('coin'); drawSay(); renderBank(); hud('gold'); lbAdd(pts);
     var s0 = SAY; setTimeout(function () { if (SAY === s0) closeSay(); }, 1300);
   }
@@ -1675,8 +1749,8 @@
       }).join('');
     } else {
       var T = TW[t.k], up = upCost(t);
-      h = '<h4>' + T.e + ' ' + T.n + ' · cấp ' + t.lv + '</h4>' +
-        (t.lv < MAX_LV ? '<button class="tt-opt grn' + (G.gold < up ? ' no' : '') + '" data-a="up"><i>⬆️</i><span><b>Nâng lên cấp ' + (t.lv + 1) + '/' + MAX_LV + '</b><small>' + upInfo(t) + '</small></span><em>' + up + ' 💰</em></button>' : '<div style="font-size:13px;opacity:.8;margin:2px 4px 6px">⭐ Đã đạt cấp cao nhất</div>') +
+      h = '<h4>' + T.e + ' ' + T.n + ' · cấp ' + t.lv + ' · ' + TNAME[t.lv] + '</h4>' +
+        (t.lv < MAX_LV ? '<button class="tt-opt grn' + (G.gold < up ? ' no' : '') + '" data-a="up"><i>⬆️</i><span><b>Nâng lên cấp ' + (t.lv + 1) + '/' + MAX_LV + ' · ' + TNAME[t.lv + 1] + '</b><small>' + upInfo(t) + '</small></span><em>' + up + ' 💰</em></button>' : '<div style="font-size:13px;opacity:.8;margin:2px 4px 6px">⭐ Đã đạt cấp cao nhất</div>') +
         towerBar(t) +
         (t.hp < towerMax(t) ? '<button class="tt-opt grn' + (G.gold < fixCost(t) ? ' no' : '') + '" data-a="fix"><i>🔧</i><span><b>Sửa chòi</b><small>Hồi đầy máu chòi (' + Math.ceil(t.hp) + '/' + towerMax(t) + ')</small></span><em>' + fixCost(t) + ' 💰</em></button>' : '') +
         (t.sh < shieldMax(t) - 0.5 ? '<button class="tt-opt blu' + (G.gold < shieldCost(t) ? ' no' : '') + '" data-a="shield"><i>🛡️</i><span><b>' + (t.sh > 0 ? 'Nạp đầy bảo hộ' : 'Mua bảo hộ') + '</b><small>Khiên chặn ' + shieldMax(t) + ' sát thương của lính bắn chòi</small></span><em>' + shieldCost(t) + ' 💰</em></button>' : '<div style="font-size:12.5px;opacity:.85;margin:2px 4px 6px">🛡️ Bảo hộ đang đầy</div>') +
@@ -1689,7 +1763,7 @@
     el.style.left = Math.round(x) + 'px'; el.style.top = Math.round(Math.max(6, y)) + 'px';
   }
   function closePop() { G && (G.sel = -1); var el = $('ttPop'); if (el) el.classList.remove('on'); }
-  function upCost(t) { return Math.round(TW[t.k].c * 0.8 * t.lv); }
+  function upCost(t) { return Math.round(TW[t.k].c * 0.8 * t.lv * (t.lv >= 5 ? 1 + 0.3 * (t.lv - 4) : 1)); }   // (bản 2026.11.11-2) từ cấp 6 trở lên đắt hơn
   function fixCost(t) { return Math.max(5, Math.ceil((1 - t.hp / towerMax(t)) * t.spent * 0.45)); }   // sửa rẻ hơn xây mới
   function shieldMax(t) { return Math.round(towerMax(t) * SHIELD_RATE); }
   function shieldCost(t) { return Math.max(5, Math.ceil((1 - t.sh / shieldMax(t)) * (30 + 10 * t.lv))); }
@@ -1917,133 +1991,363 @@
   }
   function sprAt(sp, x, y) { X.drawImage(sp.c, x - sp.n / 2, y - sp.n / 2, sp.n, sp.n); }
 
-  /* ----- CHÒI ----- */
+  /* ----- CHÒI (bản 2026.11.11-2): 10 cấp + mỗi chủ đề một phong cách chòi riêng ----- */
   var TGLO = { arrow: '#fca5a5', cannon: '#fcd34d', ice: '#a5f3fc', fire: '#fdba74', rocket: '#c4b5fd', snipe: '#86efac', eye: '#e9d5ff' };
-  function tGeo(lv) {   // vị trí (tính theo cỡ chòi) của cửa sổ, sàn, đỉnh mái
-    if (lv <= 1) return { win: -0.47, apex: -1.02, slab: -0.68, bt: -0.62, wd: 1 };
-    var bt = -(0.70 + 0.09 * (lv - 2)), slab = bt - 0.1;
-    return { bt: bt, slab: slab, win: (-0.22 + bt) / 2 - 0.02, apex: slab - (lv >= 3 ? 0.09 : 0) - (0.36 + 0.06 * (lv - 2)), wd: lv >= 5 ? 1.1 : lv >= 4 ? 1.05 : 1 };
+  /* tên bậc tiến hóa + màu viền/sao từ cấp 5 */
+  var TNAME = ['', 'Chòi gỗ', 'Tháp đá', 'Pháo đài', 'Tháp sắt quỷ', 'Tháp hắc thạch', 'Hồng ngọc', 'Thạch anh tím', 'Kim cương', 'Lục bảo', 'Thần thoại'];
+  var TIERC = { 5: '#fbbf24', 6: '#f43f5e', 7: '#c084fc', 8: '#67e8f9', 9: '#34d399', 10: '#fff3c4' };
+  /* cảnh nền → phong cách chòi */
+  var THEME_OF = { meadow: 'nature', park: 'nature', garden: 'nature', orchard: 'nature', village: 'rustic', farm: 'rustic', city: 'city', school: 'city', indoor: 'city', landmark: 'city', stadium: 'city',
+    neon: 'tech', space: 'tech', candy: 'candy', stage: 'candy', festival: 'oriental', tet: 'oriental', forest: 'forest', jungle: 'jungle', magic: 'magic', ocean: 'sea', beach: 'sea', deep: 'sea',
+    snow: 'ice', storm: 'storm', night: 'spooky', desert: 'desert', treasure: 'treasure', volcano: 'fire', swamp: 'swamp', spooky: 'spooky', dark: 'spooky' };
+  /* M: 3 màu tường (sáng, vừa, tối) · wall: kiểu tường · roof: kiểu mái · rc: màu mái (null = theo màu loại chòi) · d: đồ trang trí · gl: màu phát sáng · post: màu cột chòi cấp 1 */
+  var THM = {
+    nature: { M: ['#f5f5f4', '#a8a29e', '#57534e'], wall: 'brick', roof: 'cone', rc: null, d: 'vine' },
+    rustic: { M: ['#fef9ec', '#e7d8b5', '#6b4423'], wall: 'timber', roof: 'thatch', rc: '#d4a64a', d: 'hay' },
+    city: { M: ['#f8b4a4', '#b4533f', '#4a1d14'], wall: 'brick', roof: 'cone', rc: '#475569', d: 'lights' },
+    tech: { M: ['#f1f5f9', '#64748b', '#0f172a'], wall: 'panel', roof: 'tech', rc: '#334155', d: 'neon', gl: '#22d3ee', post: '#94a3b8' },
+    candy: { M: ['#fdf2f8', '#f9a8d4', '#be185d'], wall: 'stripe', roof: 'candy', rc: '#f472b6', d: 'sweets', post: '#fbcfe8' },
+    oriental: { M: ['#fecaca', '#dc2626', '#7f1d1d'], wall: 'pillar', roof: 'pagoda', rc: '#991b1b', d: 'lantern', gl: '#fde047' },
+    forest: { M: ['#e0aa72', '#8b5a2b', '#3b2412'], wall: 'log', roof: 'leaf', rc: '#3f7d32', d: 'moss' },
+    jungle: { M: ['#ecfccb', '#84cc16', '#365314'], wall: 'bamboo', roof: 'leaf', rc: '#4d7c0f', d: 'liana', post: '#65a30d' },
+    magic: { M: ['#ede9fe', '#8b5cf6', '#2e1065'], wall: 'stone', roof: 'mushroom', rc: '#dc2626', d: 'crystal', gl: '#e879f9' },
+    sea: { M: ['#fef3c7', '#e0b98a', '#7c5a3a'], wall: 'coral', roof: 'shell', rc: '#fda4af', d: 'shells', gl: '#5eead4' },
+    ice: { M: ['#f0f9ff', '#93c5fd', '#1e3a8a'], wall: 'ice', roof: 'ice', rc: '#dbeafe', d: 'icicle', gl: '#bae6fd', post: '#bae6fd' },
+    storm: { M: ['#cbd5e1', '#64748b', '#0f172a'], wall: 'stone', roof: 'gothic', rc: '#334155', d: 'rod', gl: '#fde047' },
+    desert: { M: ['#fef3c7', '#e0b061', '#7c4a12'], wall: 'sand', roof: 'dome', rc: '#e9b863', d: 'glyph', gl: '#fbbf24' },
+    treasure: { M: ['#fde68a', '#b45309', '#451a03'], wall: 'sand', roof: 'dome', rc: '#facc15', d: 'gold', gl: '#fde047' },
+    fire: { M: ['#57534e', '#292524', '#0c0a09'], wall: 'basalt', roof: 'spike', rc: '#1c1917', d: 'lava', gl: '#f97316' },
+    swamp: { M: ['#bef264', '#4d7c0f', '#1a2e05'], wall: 'crypt', roof: 'mushroom', rc: '#57534e', d: 'liana', gl: '#a3e635' },
+    spooky: { M: ['#a8a29e', '#57534e', '#1c1917'], wall: 'crypt', roof: 'gothic', rc: '#3b2f4a', d: 'skull', gl: '#a3e635' }
+  };
+  function themeKey() { return THEME_OF[G && G.scK] || 'nature'; }
+  function tGeo(lv) {   // vị trí (tính theo cỡ chòi) của cửa sổ, sàn, tầng trên, đỉnh mái
+    if (lv <= 1) return { win: -0.47, apex: -1.02, slab: -0.68, bt: -0.62, wd: 1, rb: -0.64 };
+    var L5 = Math.min(lv, 5), bt = -(0.70 + 0.09 * (L5 - 2)), slab = bt - 0.1, wd = lv >= 5 ? 1.1 : lv >= 4 ? 1.05 : 1;
+    var g = { bt: bt, slab: slab, wd: wd, win: (-0.22 + bt) / 2 - 0.02 }, top = slab;
+    if (lv >= 6) { g.ut = slab - (0.2 + 0.035 * (lv - 6)); g.us = g.ut - 0.08; top = g.us; g.tt = -0.62 - 0.05 * (lv - 6); g.tx = 0.62 * wd; }
+    g.rb = top; g.apex = top - (lv >= 3 ? 0.09 : 0) - (0.36 + 0.06 * (Math.min(lv, 5) - 2));
+    return g;
   }
-  function towerBody(c, k, lv, u) {
-    var A = TW[k].roof, L = TGLO[k] || '#fde68a', i, j, x, y, gold = '#fbbf24';
+  function towerBody(c, k, lv, u, thk) {
+    var TH = THM[thk] || THM.nature, A = TW[k].roof, L = TGLO[k] || '#fde68a', GL = TH.gl || L, R = rng(hashS(thk + k + lv)), i, j, x, y;
+    var trim = lv >= 5 ? TIERC[lv] : null;
     function P(pts) { c.beginPath(); c.moveTo(pts[0][0] * u, pts[0][1] * u); for (var q = 1; q < pts.length; q++) c.lineTo(pts[q][0] * u, pts[q][1] * u); c.closePath(); }
-    function cyl(w, m) { var g = c.createLinearGradient(-w * u, 0, w * u, 0); g.addColorStop(0, m[2]); g.addColorStop(0.3, m[0]); g.addColorStop(0.68, m[1]); g.addColorStop(1, m[2]); return g; }
+    function cylx(x0, w, m) { var g = c.createLinearGradient((x0 - w) * u, 0, (x0 + w) * u, 0); g.addColorStop(0, m[2]); g.addColorStop(0.3, m[0]); g.addColorStop(0.68, m[1]); g.addColorStop(1, m[2]); return g; }
+    function cyl(w, m) { return cylx(0, w, m); }
     function ln(x1, y1, x2, y2) { c.beginPath(); c.moveTo(x1 * u, y1 * u); c.lineTo(x2 * u, y2 * u); c.stroke(); }
+    function dot(x0, y0, r) { c.beginPath(); c.arc(x0 * u, y0 * u, r * u, 0, 7); c.fill(); }
     function glow(col, b) { c.shadowColor = col; c.shadowBlur = b * DPR; }
+    function noglow() { c.shadowBlur = 0; }
     c.lineJoin = 'round'; c.lineCap = 'round';
-    /* ===== CẤP 1: chòi gỗ mái tranh ===== */
-    if (lv <= 1) {
-      var ST = ['#e7e5e4', '#a8a29e', '#57534e'], WD = ['#ca8a04', '#92400e', '#451a03'];
-      P([[-0.42, 0.05], [0.42, 0.05], [0.34, -0.2], [-0.34, -0.2]]); c.fillStyle = cyl(0.42, ST); c.fill(); c.strokeStyle = '#44403c'; c.lineWidth = u * 0.02; c.stroke();
-      c.strokeStyle = 'rgba(41,37,36,.45)'; c.lineWidth = u * 0.012; ln(-0.38, -0.07, 0.38, -0.07); ln(-0.36, -0.14, 0.36, -0.14);
-      for (i = -2; i <= 2; i++) { ln(i * 0.16 + 0.05, 0.04, i * 0.16 + 0.05, -0.07); ln(i * 0.16 - 0.03, -0.07, i * 0.16 - 0.03, -0.14); }
-      [-0.31, 0.23].forEach(function (px) { c.fillStyle = cyl(0.04, WD); c.save(); c.translate(px * u + 0.04 * u, 0); c.fillRect(-0.04 * u, -0.66 * u, 0.08 * u, 0.47 * u); c.restore(); });
-      c.strokeStyle = WD[1]; c.lineWidth = u * 0.035; ln(-0.3, -0.3, 0.3, -0.3); ln(-0.3, -0.24, 0.3, -0.24);
-      for (i = -2; i <= 2; i++) ln(i * 0.1, -0.3, i * 0.1, -0.24);
-      c.fillStyle = cyl(0.4, ['#d97706', '#92400e', '#451a03']); c.fillRect(-0.4 * u, -0.7 * u, 0.8 * u, 0.1 * u);
-      c.strokeStyle = 'rgba(69,26,3,.6)'; c.lineWidth = u * 0.01; for (i = -3; i <= 3; i++) ln(i * 0.11, -0.7, i * 0.11, -0.6);
-      P([[-0.5, -0.64], [0, -1.02], [0.5, -0.64]]);
-      var rg = c.createLinearGradient(-0.5 * u, 0, 0.5 * u, 0); rg.addColorStop(0, shade(A, 0.25)); rg.addColorStop(0.55, A); rg.addColorStop(1, shade(A, -0.4));
-      c.fillStyle = rg; c.fill(); c.strokeStyle = shade(A, -0.55); c.lineWidth = u * 0.02; c.stroke();
-      c.save(); P([[-0.5, -0.64], [0, -1.02], [0.5, -0.64]]); c.clip(); c.strokeStyle = 'rgba(0,0,0,.18)'; c.lineWidth = u * 0.012;
-      for (i = -6; i <= 6; i++) ln(i * 0.07, -0.64, i * 0.02, -1.0);
-      c.restore();
-      c.strokeStyle = shade(A, -0.5); c.lineWidth = u * 0.018; for (i = -9; i <= 9; i++) ln(i * 0.053, -0.645, i * 0.053 + 0.01, -0.6);
-      return;
-    }
-    /* ===== CẤP 2–5: tháp đá → pháo đài → tháp sắt quỷ → tháp hắc thạch ===== */
-    var M = lv === 2 ? ['#f5f5f4', '#a8a29e', '#57534e'] : lv === 3 ? ['#d6d3d1', '#78716c', '#292524'] : lv === 4 ? ['#71717a', '#27272a', '#09090b'] : ['#44403c', '#1c1917', '#000000'];
-    var g2 = tGeo(lv), wd = g2.wd, bt = g2.bt, sl = g2.slab, ap = g2.apex, edge = lv >= 5 ? gold : M[2];
-    function hw(yy) { return (0.31 + (0.26 - 0.31) * (yy + 0.22) / (bt + 0.22)) * wd; }
-    // gai nhọn hai bên thân (cấp 4+), vẽ trước để nằm sau thân
-    if (lv >= 4) {
-      var ns = lv >= 5 ? 3 : 2;
-      for (i = 0; i < ns; i++) {
-        y = -0.3 + (bt + 0.12 + 0.3) * (i + 0.5) / ns; var len = (lv >= 5 ? 0.24 : 0.18) + (i % 2 ? 0.06 : 0);
-        [-1, 1].forEach(function (sd) {
-          var h0 = hw(y) - 0.02;
-          P([[sd * h0, y - 0.045], [sd * (h0 + len), y - len * 0.4], [sd * h0, y + 0.045]]);
-          var sg = c.createLinearGradient(0, (y - 0.05) * u, 0, (y + 0.05) * u);
-          if (lv >= 5) { sg.addColorStop(0, '#57534e'); sg.addColorStop(1, '#0c0a09'); } else { sg.addColorStop(0, '#f4f4f5'); sg.addColorStop(1, '#3f3f46'); }
-          c.fillStyle = sg; c.fill(); c.strokeStyle = lv >= 5 ? gold : '#18181b'; c.lineWidth = u * 0.012; c.stroke();
+    /* bảng màu theo cấp: cấp 4 sẫm lại, cấp 5+ gần như đen (riêng băng giữ ánh xanh) */
+    var dk = lv >= 5 ? 0.32 : lv >= 4 ? 0.25 : lv >= 3 ? 0.08 : 0;   // giữ chất liệu chủ đề rõ ở cấp cao
+    if (thk === 'ice' || thk === 'candy') dk *= 0.6;
+    var M = [shade(TH.M[0], -dk), shade(TH.M[1], -dk), shade(TH.M[2], -dk * 0.6)], edge = trim || M[2];
+    var RC = TH.rc ? shade(TH.rc, -dk * 0.7) : (lv >= 5 ? shade(A, -0.55) : lv >= 4 ? shade(A, -0.35) : A);
+
+    /* ---------- MÁI theo phong cách ---------- */
+    function roof(st, cx, rb, hw, ap, col) {
+      var h = rb - ap, ec = trim || shade(col, -0.6);
+      var rg = c.createLinearGradient((cx - hw) * u, 0, (cx + hw) * u, 0); rg.addColorStop(0, shade(col, 0.3)); rg.addColorStop(0.5, col); rg.addColorStop(1, shade(col, -0.5));
+      function fillStroke(f) { c.fillStyle = f || rg; c.fill(); c.strokeStyle = ec; c.lineWidth = u * 0.02; c.stroke(); }
+      function cone(w) { P([[cx - w, rb], [cx, ap], [cx + w, rb]]); }
+      if (st === 'dome') {
+        c.beginPath(); c.moveTo((cx - hw) * u, rb * u); c.bezierCurveTo((cx - hw) * u, (rb - h * 1.05) * u, (cx + hw) * u, (rb - h * 1.05) * u, (cx + hw) * u, rb * u); c.closePath(); fillStroke();
+        c.strokeStyle = 'rgba(0,0,0,.22)'; c.lineWidth = u * 0.012;
+        for (j = -2; j <= 2; j++) { c.beginPath(); c.moveTo((cx + j * hw * 0.38) * u, rb * u); c.quadraticCurveTo((cx + j * hw * 0.3) * u, (rb - h * 0.7) * u, cx * u, (rb - h * 0.78) * u); c.stroke(); }
+        c.strokeStyle = trim || '#b45309'; c.lineWidth = u * 0.025; ln(cx, rb - h * 0.78, cx, ap); c.fillStyle = trim || '#fbbf24'; dot(cx, ap, 0.035);
+      } else if (st === 'mushroom') {
+        var mw = hw * 1.3;
+        c.beginPath(); c.moveTo((cx - mw) * u, (rb + 0.02) * u); c.bezierCurveTo((cx - mw) * u, (ap - h * 0.1) * u, (cx + mw) * u, (ap - h * 0.1) * u, (cx + mw) * u, (rb + 0.02) * u);
+        c.quadraticCurveTo(cx * u, (rb - 0.05) * u, (cx - mw) * u, (rb + 0.02) * u); fillStroke();
+        c.fillStyle = 'rgba(255,251,235,.92)';
+        [[-0.55, 0.55], [0.1, 0.75], [0.5, 0.45], [-0.2, 0.35], [0.7, 0.25], [-0.75, 0.25]].forEach(function (q) { dot(cx + q[0] * mw, rb - h * q[1], 0.035 + 0.012 * (q[1] > 0.5 ? 1 : 0)); });
+      } else if (st === 'pagoda') {
+        [[rb, hw * 1.2, rb - h * 0.48], [rb - h * 0.42, hw * 0.78, ap + h * 0.08]].forEach(function (tr) {
+          var b0 = tr[0], w = tr[1], t0 = tr[2];
+          c.beginPath(); c.moveTo((cx - w * 1.15) * u, (b0 - 0.08) * u); c.quadraticCurveTo((cx - w * 0.85) * u, (b0 + 0.015) * u, (cx - w * 0.55) * u, b0 * u);
+          c.lineTo((cx + w * 0.55) * u, b0 * u); c.quadraticCurveTo((cx + w * 0.85) * u, (b0 + 0.015) * u, (cx + w * 1.15) * u, (b0 - 0.08) * u);
+          c.quadraticCurveTo((cx + w * 0.5) * u, (b0 - 0.04) * u, (cx + w * 0.22) * u, t0 * u); c.lineTo((cx - w * 0.22) * u, t0 * u); c.quadraticCurveTo((cx - w * 0.5) * u, (b0 - 0.04) * u, (cx - w * 1.15) * u, (b0 - 0.08) * u); c.closePath();
+          fillStroke(); c.strokeStyle = trim || '#fbbf24'; c.lineWidth = u * 0.022; c.beginPath(); c.moveTo((cx - w * 1.15) * u, (b0 - 0.08) * u); c.quadraticCurveTo((cx - w * 0.85) * u, (b0 + 0.015) * u, (cx - w * 0.55) * u, b0 * u); c.lineTo((cx + w * 0.55) * u, b0 * u); c.quadraticCurveTo((cx + w * 0.85) * u, (b0 + 0.015) * u, (cx + w * 1.15) * u, (b0 - 0.08) * u); c.stroke();
         });
+        c.strokeStyle = trim || '#fbbf24'; c.lineWidth = u * 0.025; ln(cx, ap + h * 0.08, cx, ap - 0.04); c.fillStyle = trim || '#fbbf24'; dot(cx, ap + h * 0.02, 0.025); dot(cx, ap - 0.05, 0.03);
+      } else if (st === 'tech') {
+        var tb = rb - h * 0.32;
+        P([[cx - hw, rb], [cx + hw, rb], [cx + hw * 0.62, tb], [cx - hw * 0.62, tb]]); fillStroke();
+        c.beginPath(); c.arc(cx * u, tb * u, hw * 0.5 * u, Math.PI, 0); c.closePath();
+        var dg = c.createRadialGradient((cx - hw * 0.15) * u, (tb - hw * 0.25) * u, 1, cx * u, tb * u, hw * 0.5 * u); dg.addColorStop(0, '#e0f2fe'); dg.addColorStop(1, shade(GL, -0.4)); fillStroke(dg);
+        c.save(); glow(GL, 8); c.strokeStyle = GL; c.lineWidth = u * 0.02; ln(cx - hw * 0.85, rb - 0.04, cx + hw * 0.85, rb - 0.04); c.restore();
+        c.strokeStyle = '#94a3b8'; c.lineWidth = u * 0.018; ln(cx, tb - hw * 0.5, cx, ap); ln(cx - 0.05, ap + 0.08, cx + 0.05, ap + 0.08);
+        c.save(); glow('#ef4444', 8); c.fillStyle = '#ef4444'; dot(cx, ap, 0.025); c.restore();
+      } else if (st === 'candy') {
+        cone(hw); fillStroke();
+        c.save(); cone(hw); c.clip(); c.strokeStyle = 'rgba(255,255,255,.85)'; c.lineWidth = u * 0.045;
+        for (j = -6; j <= 6; j++) ln(cx + j * 0.12 - 0.3, rb + 0.05, cx + j * 0.12 + 0.3, ap - 0.05);
+        c.restore(); cone(hw); c.strokeStyle = ec; c.lineWidth = u * 0.02; c.stroke();
+        c.strokeStyle = '#166534'; c.lineWidth = u * 0.015; c.beginPath(); c.moveTo(cx * u, (ap - 0.03) * u); c.quadraticCurveTo((cx + 0.05) * u, (ap - 0.1) * u, (cx + 0.08) * u, (ap - 0.12) * u); c.stroke();
+        var cg = c.createRadialGradient((cx - 0.015) * u, (ap - 0.05) * u, 1, cx * u, (ap - 0.03) * u, 0.05 * u); cg.addColorStop(0, '#fecaca'); cg.addColorStop(1, '#b91c1c'); c.fillStyle = cg; dot(cx, ap - 0.03, 0.045);
+      } else if (st === 'gothic') {
+        [-1, 1].forEach(function (sd) { var sx = cx + sd * hw * 0.82; P([[sx - hw * 0.22, rb], [sx, rb - h * 0.62], [sx + hw * 0.22, rb]]); fillStroke(); });
+        P([[cx - hw * 0.72, rb], [cx, ap - h * 0.15], [cx + hw * 0.72, rb]]); fillStroke();
+        c.fillStyle = shade(col, -0.4); for (j = 1; j <= 4; j++) { var ty = rb - (h * 1.15) * j / 5, tw = hw * 0.72 * (1 - j / 5); P([[cx - tw, ty], [cx - tw - 0.035, ty - 0.03], [cx - tw + 0.01, ty - 0.02]]); c.fill(); P([[cx + tw, ty], [cx + tw + 0.035, ty - 0.03], [cx + tw - 0.01, ty - 0.02]]); c.fill(); }
+      } else if (st === 'spike') {
+        var pk = [[cx - hw, rb], [cx - hw * 0.8, rb - h * 0.45], [cx - hw * 0.55, rb - h * 0.2], [cx - hw * 0.35, rb - h * 0.75], [cx - hw * 0.15, rb - h * 0.4], [cx, ap], [cx + hw * 0.15, rb - h * 0.4], [cx + hw * 0.35, rb - h * 0.75], [cx + hw * 0.55, rb - h * 0.2], [cx + hw * 0.8, rb - h * 0.45], [cx + hw, rb]];
+        P(pk); fillStroke(); c.save(); P(pk); c.clip(); glow(GL, 8); c.strokeStyle = GL; c.lineWidth = u * 0.016;
+        c.beginPath(); c.moveTo(cx * u, ap * u); c.lineTo((cx - 0.04) * u, (rb - h * 0.5) * u); c.lineTo((cx + 0.03) * u, (rb - h * 0.25) * u); c.lineTo(cx * u, rb * u); c.stroke(); c.restore();
+      } else if (st === 'leaf') {
+        for (j = 0; j < 4; j++) {
+          var ly = rb - j * h * 0.26, lw = hw * (1.15 - j * 0.27);
+          for (i = -3; i <= 3; i++) {
+            var lx = cx + i * lw / 3.2; if (Math.abs(lx - cx) > lw) continue;
+            c.save(); c.translate(lx * u, ly * u); c.rotate(i * 0.25); c.beginPath(); c.ellipse(0, -0.06 * u, 0.06 * u, 0.12 * u, 0, 0, 7);
+            c.fillStyle = (i + j) % 2 ? shade(col, 0.15) : shade(col, -0.15); c.fill(); c.strokeStyle = shade(col, -0.5); c.lineWidth = u * 0.008; c.stroke(); c.restore();
+          }
+        }
+        c.fillStyle = shade(col, 0.2); c.beginPath(); c.ellipse(cx * u, (ap + 0.04) * u, 0.05 * u, 0.1 * u, 0, 0, 7); c.fill();
+      } else if (st === 'shell') {
+        cone(hw); fillStroke();
+        c.save(); cone(hw); c.clip(); c.strokeStyle = 'rgba(255,255,255,.5)'; c.lineWidth = u * 0.014; for (j = -4; j <= 4; j++) ln(cx, ap, cx + j * hw / 4, rb); c.restore();
+        c.fillStyle = shade(col, -0.2); for (x = cx - hw; x < cx + hw - 0.01; x += hw / 4) { c.beginPath(); c.arc((x + hw / 8) * u, rb * u, hw / 8 * u, 0, Math.PI); c.fill(); }
+        c.strokeStyle = ec; c.lineWidth = u * 0.02; c.beginPath(); c.arc((cx + 0.03) * u, (ap - 0.02) * u, 0.035 * u, 0.5, 5); c.stroke();
+      } else if (st === 'ice') {
+        cone(hw); var ig = c.createLinearGradient((cx - hw) * u, 0, (cx + hw) * u, 0); ig.addColorStop(0, '#f0f9ff'); ig.addColorStop(0.5, shade('#93c5fd', -dk * 0.5)); ig.addColorStop(1, shade('#1d4ed8', -dk * 0.5)); fillStroke(ig);
+        c.fillStyle = '#fff'; c.beginPath(); c.moveTo(cx * u, ap * u); var sy = ap + h * 0.42;
+        c.lineTo((cx - hw * 0.42) * u, sy * u); for (j = 0; j <= 6; j++) { var px = cx - hw * 0.42 + j * hw * 0.14; c.quadraticCurveTo((px + hw * 0.07) * u, (sy + 0.05 * (j % 2 ? 1 : 0.4)) * u, (px + hw * 0.14) * u, sy * u); } c.closePath(); c.fill();
+        c.fillStyle = 'rgba(219,234,254,.95)'; for (x = cx - hw * 0.9; x <= cx + hw * 0.9; x += hw * 0.22) { var il = 0.05 + R() * 0.07; P([[x - 0.025, rb], [x + 0.025, rb], [x, rb + il]]); c.fill(); }
+      } else {   // 'cone' (ngói) và 'thatch' (rơm)
+        var tw2 = st === 'thatch' ? hw * 1.08 : hw;
+        cone(tw2); fillStroke();
+        c.save(); cone(tw2); c.clip();
+        if (st === 'thatch') { c.strokeStyle = 'rgba(92,52,10,.35)'; c.lineWidth = u * 0.012; for (j = -8; j <= 8; j++) ln(cx + j * 0.06, rb, cx + j * 0.015, ap); }
+        else { c.strokeStyle = 'rgba(0,0,0,.25)'; c.lineWidth = u * 0.012; for (y = rb - 0.07; y > ap; y -= 0.07) { c.beginPath(); for (x = cx - tw2; x <= cx + tw2; x += 0.08) c.arc((x + 0.04) * u, y * u, 0.04 * u, 0, Math.PI); c.stroke(); } }
+        c.restore();
+        if (st === 'thatch') { c.strokeStyle = shade(col, -0.45); c.lineWidth = u * 0.018; for (x = cx - tw2; x <= cx + tw2; x += 0.05) ln(x, rb - 0.005, x + 0.008, rb + 0.045); }
+      }
+      if (st !== 'pagoda' && st !== 'mushroom') { c.strokeStyle = A; c.lineWidth = u * 0.028; ln(cx - hw * 0.78, rb - 0.035, cx + hw * 0.78, rb - 0.035); }   // vạch màu loại chòi
+    }
+
+    /* ---------- HOA VĂN TƯỜNG theo phong cách (đã clip vào vùng tường) ---------- */
+    function wallPat(x0, x1, y0, y1) {
+      var p = TH.wall, row = 0;
+      c.lineWidth = u * 0.011;
+      if (p === 'brick' || p === 'stone' || p === 'coral' || p === 'crypt') {
+        var bh = p === 'stone' || p === 'crypt' ? 0.1 : 0.075;
+        for (y = y0; y > y1; y -= bh, row++) {
+          c.strokeStyle = 'rgba(0,0,0,.3)'; ln(x0, y, x1, y); c.strokeStyle = 'rgba(255,255,255,.14)'; ln(x0, y - 0.008, x1, y - 0.008); c.strokeStyle = 'rgba(0,0,0,.28)';
+          var bw = p === 'brick' || p === 'coral' ? 0.13 : 0.16 + R() * 0.08;
+          for (x = x0 + (row % 2) * bw / 2 + (p === 'brick' ? 0 : R() * 0.05); x < x1; x += p === 'brick' || p === 'coral' ? bw : 0.12 + R() * 0.1) ln(x, y, x, y - bh);
+        }
+        if (p === 'coral') { for (i = 0; i < 10; i++) { c.fillStyle = R() < 0.5 ? 'rgba(251,113,133,.7)' : 'rgba(255,255,255,.55)'; dot(x0 + R() * (x1 - x0), y1 + R() * (y0 - y1), 0.012 + R() * 0.02); } }
+        if (p === 'crypt') { c.strokeStyle = 'rgba(0,0,0,.55)'; c.lineWidth = u * 0.012; for (i = 0; i < 2; i++) { x = x0 + 0.1 + R() * (x1 - x0 - 0.2); y = y1 + 0.05 + R() * (y0 - y1 - 0.1); c.beginPath(); c.moveTo(x * u, y * u); for (j = 0; j < 4; j++) { x += (R() - 0.5) * 0.08; y += 0.04; c.lineTo(x * u, y * u); } c.stroke(); }
+          c.fillStyle = 'rgba(101,163,13,.35)'; for (i = 0; i < 5; i++) { c.beginPath(); c.ellipse((x0 + R() * (x1 - x0)) * u, (y0 - R() * 0.15) * u, 0.05 * u, 0.02 * u, 0, 0, 7); c.fill(); } }
+      } else if (p === 'timber') {
+        c.strokeStyle = M[2]; c.lineWidth = u * 0.035; ln(x0 + 0.05, y0, x0 + 0.05, y1); ln(x1 - 0.05, y0, x1 - 0.05, y1); ln(0, y0, 0, y1); ln(x0, (y0 + y1) / 2, x1, (y0 + y1) / 2); ln(x0, y1 + 0.02, x1, y1 + 0.02);
+        ln(x0 + 0.05, y0, 0, (y0 + y1) / 2); ln(x1 - 0.05, y0, 0, (y0 + y1) / 2);
+      } else if (p === 'log') {
+        for (y = y0; y > y1; y -= 0.07, row++) { var lg = c.createLinearGradient(0, (y - 0.07) * u, 0, y * u); lg.addColorStop(0, shade(M[0], 0.1)); lg.addColorStop(0.5, M[1]); lg.addColorStop(1, M[2]); c.fillStyle = lg; c.fillRect(x0 * u, (y - 0.068) * u, (x1 - x0) * u, 0.066 * u); }
+      } else if (p === 'bamboo') {
+        for (x = x0; x < x1; x += 0.07) { var bg = c.createLinearGradient(x * u, 0, (x + 0.07) * u, 0); bg.addColorStop(0, M[2]); bg.addColorStop(0.4, M[0]); bg.addColorStop(1, M[1]); c.fillStyle = bg; c.fillRect(x * u, y1 * u, 0.066 * u, (y0 - y1) * u);
+          c.strokeStyle = M[2]; c.lineWidth = u * 0.012; for (y = y0 - 0.05 - (x * 37 % 0.06); y > y1; y -= 0.13) ln(x, y, x + 0.066, y); }
+      } else if (p === 'ice') {
+        for (y = y0; y > y1; y -= 0.12, row++) { c.strokeStyle = 'rgba(255,255,255,.75)'; ln(x0, y, x1, y); for (x = x0 + (row % 2) * 0.1; x < x1; x += 0.2) ln(x, y, x, y - 0.12); }
+        c.fillStyle = 'rgba(255,255,255,.35)'; for (i = 0; i < 4; i++) { P([[x0 + 0.05 + i * 0.13, y0], [x0 + 0.1 + i * 0.13, y0], [x0 + 0.2 + i * 0.13, y1], [x0 + 0.15 + i * 0.13, y1]]); c.fill(); }
+      } else if (p === 'panel') {
+        c.strokeStyle = 'rgba(15,23,42,.6)'; for (y = y0; y > y1; y -= 0.12) ln(x0, y, x1, y); ln(-0.1, y0, -0.1, y1); ln(0.1, y0, 0.1, y1);
+        c.fillStyle = 'rgba(226,232,240,.8)'; for (y = y0 - 0.02; y > y1; y -= 0.12) { dot(-0.14, y, 0.008); dot(0.14, y, 0.008); }
+        c.save(); glow(GL, 8); c.strokeStyle = GL; c.lineWidth = u * 0.016; ln(x0 + 0.06, y0, x0 + 0.06, y1); ln(x1 - 0.06, y0, x1 - 0.06, y1); c.restore();
+      } else if (p === 'stripe') {
+        c.strokeStyle = 'rgba(255,255,255,.75)'; c.lineWidth = u * 0.04; for (x = x0 - 0.6; x < x1 + 0.2; x += 0.13) ln(x, y0, x + 0.5, y1);
+        for (i = 0; i < 14; i++) { c.fillStyle = ['#facc15', '#38bdf8', '#4ade80', '#fff'][i % 4]; dot(x0 + R() * (x1 - x0), y1 + R() * (y0 - y1), 0.01); }
+      } else if (p === 'pillar') {
+        c.fillStyle = shade(M[2], -0.2); c.fillRect((x0 + 0.02) * u, y1 * u, 0.07 * u, (y0 - y1) * u); c.fillRect((x1 - 0.09) * u, y1 * u, 0.07 * u, (y0 - y1) * u);
+        c.fillStyle = trim || '#fbbf24'; c.fillRect(x0 * u, (y1 + 0.02) * u, (x1 - x0) * u, 0.025 * u); c.fillRect(x0 * u, (y0 - 0.05) * u, (x1 - x0) * u, 0.025 * u);
+      } else if (p === 'sand') {
+        for (y = y0; y > y1; y -= 0.09) { c.strokeStyle = 'rgba(120,53,15,.3)'; c.beginPath(); c.moveTo(x0 * u, y * u); c.quadraticCurveTo(0, (y - 0.02) * u, x1 * u, y * u); c.stroke(); }
+      } else if (p === 'basalt') {
+        c.strokeStyle = 'rgba(0,0,0,.6)'; for (x = x0; x < x1; x += 0.09) ln(x, y0, x + 0.01, y1);
+        c.save(); glow(GL, 8); c.strokeStyle = GL; c.lineWidth = u * 0.014; for (i = 0; i < 2; i++) { x = x0 + 0.1 + R() * (x1 - x0 - 0.2); y = y0; c.beginPath(); c.moveTo(x * u, y * u); while (y > y1 + 0.05) { y -= 0.06; x += (R() - 0.5) * 0.06; c.lineTo(x * u, y * u); } c.stroke(); } c.restore();
       }
     }
-    // móng
-    P([[-0.5 * wd, 0.04], [0.5 * wd, 0.04], [0.4 * wd, -0.22], [-0.4 * wd, -0.22]]);
-    c.fillStyle = cyl(0.5 * wd, [shade(M[0], -0.1), shade(M[1], -0.15), M[2]]); c.fill(); c.strokeStyle = edge; c.lineWidth = u * 0.02; c.stroke();
-    c.save(); P([[-0.5 * wd, 0.04], [0.5 * wd, 0.04], [0.4 * wd, -0.22], [-0.4 * wd, -0.22]]); c.clip();
-    c.strokeStyle = 'rgba(0,0,0,.35)'; c.lineWidth = u * 0.012;
-    for (j = 0; j < 3; j++) { y = 0.04 - (j + 1) * 0.087; ln(-0.6, y, 0.6, y); for (i = -4; i <= 4; i++) ln(i * 0.15 + (j % 2) * 0.075, y, i * 0.15 + (j % 2) * 0.075, y + 0.087); }
-    c.restore();
+
+    /* ---------- ĐỒ TRANG TRÍ theo chủ đề (dưới chân + trên thân) ---------- */
+    function deco(g2, small) {
+      var d = TH.d, bt = g2.bt;
+      if (d === 'vine' && !small) {
+        c.strokeStyle = '#15803d'; c.lineWidth = u * 0.016;
+        [-1, 1].forEach(function (sd) { c.beginPath(); c.moveTo(sd * 0.3 * u, 0); c.bezierCurveTo(sd * 0.1 * u, -0.3 * u, sd * 0.3 * u, -0.45 * u, sd * 0.18 * u, (bt + 0.15) * u); c.stroke();
+          for (j = 0; j < 6; j++) { var vy = -0.05 - j * (-bt - 0.2) / 6, vx = sd * (0.22 - 0.04 * Math.sin(j)); c.fillStyle = j % 2 ? '#22c55e' : '#16a34a'; c.beginPath(); c.ellipse(vx * u, vy * u, 0.035 * u, 0.018 * u, sd * 0.6, 0, 7); c.fill(); if (j % 3 === 1) { c.fillStyle = ['#f472b6', '#fde047', '#fff'][j % 3]; dot(vx + sd * 0.03, vy - 0.02, 0.016); } } });
+      }
+      if (d === 'hay') {
+        [-1, 1].forEach(function (sd) { var hx = sd * 0.5; var hg = c.createLinearGradient(0, -0.16 * u, 0, 0.04 * u); hg.addColorStop(0, '#fde68a'); hg.addColorStop(1, '#b45309'); c.fillStyle = hg; c.beginPath(); c.ellipse(hx * u, -0.03 * u, 0.1 * u, 0.08 * u, 0, 0, 7); c.fill(); c.strokeStyle = 'rgba(120,53,15,.5)'; c.lineWidth = u * 0.01; ln(hx - 0.08, -0.06, hx + 0.08, -0.06); ln(hx - 0.09, 0, hx + 0.09, 0); });
+      }
+      if (d === 'lights' && !small) {
+        c.save(); glow('#fde047', 6); c.fillStyle = '#fde68a';
+        [[-0.17, -0.32], [0.17, -0.32]].forEach(function (q) { c.fillRect((q[0] - 0.03) * u, (q[1] - 0.04) * u, 0.06 * u, 0.07 * u); }); c.restore();
+        c.strokeStyle = '#1f2937'; c.lineWidth = u * 0.02; ln(0.52, 0.03, 0.52, -0.35); ln(0.52, -0.35, 0.46, -0.35); c.save(); glow('#fde047', 10); c.fillStyle = '#fef08a'; dot(0.46, -0.33, 0.03); c.restore();
+      }
+      if (d === 'neon') { c.strokeStyle = '#94a3b8'; c.lineWidth = u * 0.016; ln(0.5, 0.03, 0.5, -0.3); c.fillStyle = '#cbd5e1'; c.beginPath(); c.ellipse(0.5 * u, -0.33 * u, 0.09 * u, 0.04 * u, -0.5, 0, 7); c.fill(); c.save(); glow(GL, 8); c.fillStyle = GL; dot(0.5, -0.36, 0.015); c.restore(); }
+      if (d === 'sweets') {
+        [[-0.5, 0], [0.52, 0]].forEach(function (q, n) { c.strokeStyle = '#f5f5f4'; c.lineWidth = u * 0.02; ln(q[0], q[1] + 0.03, q[0], q[1] - 0.22); var cl = n ? '#38bdf8' : '#f43f5e'; c.fillStyle = cl; dot(q[0], q[1] - 0.29, 0.075); c.strokeStyle = '#fff'; c.lineWidth = u * 0.014; c.beginPath(); for (var a = 0; a < 12; a += 0.4) c.lineTo((q[0] + Math.cos(a) * a * 0.006) * u, (q[1] - 0.29 + Math.sin(a) * a * 0.006) * u); c.stroke(); });
+      }
+      if (d === 'lantern' && !small) {
+        [-1, 1].forEach(function (sd) { var lx = sd * 0.44 * g2.wd, ly = g2.slab + 0.14; c.strokeStyle = '#78350f'; c.lineWidth = u * 0.01; ln(lx, g2.slab, lx, ly - 0.05);
+          c.save(); glow('#f97316', 10); var lg = c.createRadialGradient(lx * u, ly * u, 1, lx * u, ly * u, 0.07 * u); lg.addColorStop(0, '#fde047'); lg.addColorStop(0.5, '#ef4444'); lg.addColorStop(1, '#991b1b'); c.fillStyle = lg; c.beginPath(); c.ellipse(lx * u, ly * u, 0.055 * u, 0.065 * u, 0, 0, 7); c.fill(); c.restore();
+          c.fillStyle = '#fbbf24'; c.fillRect((lx - 0.03) * u, (ly - 0.075) * u, 0.06 * u, 0.02 * u); c.fillRect((lx - 0.03) * u, (ly + 0.055) * u, 0.06 * u, 0.02 * u); c.strokeStyle = '#dc2626'; ln(lx, ly + 0.075, lx, ly + 0.13); });
+      }
+      if (d === 'moss' || d === 'crystal' || d === 'skull' || d === 'gold' || d === 'shells' || d === 'lava' || d === 'glyph' || d === 'rod' || d === 'icicle' || d === 'liana') {
+        [-1, 1].forEach(function (sd) {
+          var fx = sd * (0.5 + R() * 0.04);
+          if (d === 'moss') { c.fillStyle = '#fef3c7'; c.fillRect((fx - 0.012) * u, -0.08 * u, 0.024 * u, 0.09 * u); c.fillStyle = sd > 0 ? '#dc2626' : '#a16207'; c.beginPath(); c.ellipse(fx * u, -0.08 * u, 0.06 * u, 0.04 * u, 0, Math.PI, 0); c.fill(); c.fillStyle = '#fff'; dot(fx - 0.02, -0.1, 0.01); }
+          if (d === 'crystal') { c.save(); glow(GL, 10); [[0, 0.2], [-0.05, 0.13], [0.05, 0.12]].forEach(function (q) { var cx2 = fx + q[0]; P([[cx2 - 0.03, 0.02], [cx2, -q[1]], [cx2 + 0.03, 0.02]]); var gg = c.createLinearGradient((cx2 - 0.03) * u, 0, (cx2 + 0.03) * u, 0); gg.addColorStop(0, '#fff'); gg.addColorStop(1, GL); c.fillStyle = gg; c.fill(); }); c.restore(); }
+          if (d === 'skull') { c.fillStyle = '#f5f5f4'; dot(fx, -0.05, 0.05); c.fillRect((fx - 0.03) * u, -0.03 * u, 0.06 * u, 0.04 * u); c.fillStyle = '#0c0a09'; dot(fx - 0.018, -0.055, 0.013); dot(fx + 0.018, -0.055, 0.013); c.save(); glow(GL, 6); c.fillStyle = GL; dot(fx - 0.018, -0.055, 0.005); dot(fx + 0.018, -0.055, 0.005); c.restore(); }
+          if (d === 'gold') { for (j = 0; j < 6; j++) { c.fillStyle = j % 2 ? '#fde047' : '#eab308'; c.strokeStyle = '#a16207'; c.lineWidth = u * 0.006; c.beginPath(); c.ellipse((fx + (j % 3 - 1) * 0.05) * u, (0.02 - Math.floor(j / 3) * 0.03 - (j % 3 === 1 ? 0.02 : 0)) * u, 0.035 * u, 0.014 * u, 0, 0, 7); c.fill(); c.stroke(); } c.save(); glow('#f472b6', 6); c.fillStyle = sd > 0 ? '#f472b6' : '#22d3ee'; P([[fx, -0.12], [fx + 0.03, -0.08], [fx, -0.04], [fx - 0.03, -0.08]]); c.fill(); c.restore(); }
+          if (d === 'shells') { c.strokeStyle = '#15803d'; c.lineWidth = u * 0.016; for (j = -1; j <= 1; j++) { c.beginPath(); c.moveTo((fx + j * 0.03) * u, 0.02 * u); c.quadraticCurveTo((fx + j * 0.06) * u, -0.1 * u, (fx + j * 0.02) * u, -0.2 * u); c.stroke(); }
+            c.fillStyle = sd > 0 ? '#fb923c' : '#fda4af'; c.beginPath(); for (j = 0; j < 10; j++) { var ra = j % 2 ? 0.022 : 0.055, aa = j / 10 * 6.283 - 1.57; c.lineTo((fx + 0.06 * sd + Math.cos(aa) * ra) * u, (-0.01 + Math.sin(aa) * ra) * u); } c.closePath(); c.fill(); }
+          if (d === 'lava') { c.save(); glow('#f97316', 12); var lg2 = c.createRadialGradient(fx * u, 0.01 * u, 1, fx * u, 0.01 * u, 0.1 * u); lg2.addColorStop(0, '#fde047'); lg2.addColorStop(1, 'rgba(234,88,12,0)'); c.fillStyle = lg2; c.beginPath(); c.ellipse(fx * u, 0.01 * u, 0.1 * u, 0.04 * u, 0, 0, 7); c.fill(); c.restore(); }
+          if (d === 'glyph') { var sg = c.createLinearGradient(0, -0.08 * u, 0, 0.04 * u); sg.addColorStop(0, '#fde68a'); sg.addColorStop(1, '#d97706'); c.fillStyle = sg; c.beginPath(); c.ellipse(fx * u, 0.02 * u, 0.12 * u, 0.06 * u, 0, Math.PI, 0); c.fill(); }
+          if (d === 'icicle') { c.fillStyle = '#fff'; c.beginPath(); c.ellipse(fx * u, 0.02 * u, 0.1 * u, 0.05 * u, 0, Math.PI, 0); c.fill(); }
+          if (d === 'rod') { c.strokeStyle = '#71717a'; c.lineWidth = u * 0.012; for (j = 0; j < 5; j++) { c.beginPath(); c.ellipse(fx * u, (-0.02 - j * 0.045) * u, 0.015 * u, 0.025 * u, 0, 0, 7); c.stroke(); } }
+          if (d === 'liana' && !small) { var lx = sd * 0.4 * g2.wd; c.strokeStyle = '#3f6212'; c.lineWidth = u * 0.014; c.beginPath(); c.moveTo(lx * u, g2.slab * u); c.quadraticCurveTo((lx - sd * 0.06) * u, (g2.slab + 0.2) * u, (lx + sd * 0.02) * u, (g2.slab + 0.38) * u); c.stroke(); c.fillStyle = '#65a30d'; for (j = 1; j <= 4; j++) { c.beginPath(); c.ellipse((lx - sd * 0.02) * u, (g2.slab + j * 0.09) * u, 0.03 * u, 0.015 * u, sd, 0, 7); c.fill(); } }
+        });
+      }
+      if (!small && d === 'glyph') { c.strokeStyle = 'rgba(120,53,15,.65)'; c.lineWidth = u * 0.012; [[-0.17, -0.32], [0.17, -0.32]].forEach(function (q) { c.beginPath(); c.ellipse(q[0] * u, q[1] * u, 0.035 * u, 0.018 * u, 0, 0, 7); c.stroke(); dot(q[0], q[1], 0.01); ln(q[0] - 0.01, q[1] + 0.018, q[0] - 0.02, q[1] + 0.05); }); }
+      if (!small && d === 'icicle') { c.fillStyle = '#fff'; c.fillRect(-0.44 * g2.wd * u, (g2.slab - 0.02) * u, 0.88 * g2.wd * u, 0.025 * u); c.fillStyle = 'rgba(219,234,254,.95)'; for (x = -0.4 * g2.wd; x <= 0.4 * g2.wd; x += 0.07) { var il = 0.04 + R() * 0.07; P([[x - 0.018, g2.bt], [x + 0.018, g2.bt], [x, g2.bt + il]]); c.fill(); } }
+      if (!small && d === 'rod') { c.save(); glow(GL, 10); c.fillStyle = GL; P([[0.02, -0.2], [-0.05, -0.1], [0, -0.1], [-0.03, -0.03], [0.05, -0.13], [0.0, -0.13]]); c.fill(); c.restore(); }
+      if (!small && d === 'skull') { c.strokeStyle = 'rgba(255,255,255,.45)'; c.lineWidth = u * 0.006; var wx = 0.42 * g2.wd, wy = g2.bt; for (j = 0; j < 4; j++) ln(-wx, wy, -wx + 0.13 * Math.cos(j * 0.4), wy + 0.13 * Math.sin(j * 0.4 + 0.1)); for (j = 1; j <= 2; j++) { c.beginPath(); c.arc(-wx * u, wy * u, 0.05 * j * u, 0.05, 1.3); c.stroke(); } }
+    }
+
+    /* ===== CẤP 1: chòi nhỏ (mái, cột theo chủ đề) ===== */
+    if (lv <= 1) {
+      var ST = thk === 'ice' ? ['#f0f9ff', '#93c5fd', '#1e40af'] : thk === 'tech' ? ['#e2e8f0', '#64748b', '#1e293b'] : thk === 'candy' ? ['#fdf2f8', '#f9a8d4', '#9d174d'] : ['#e7e5e4', '#a8a29e', '#57534e'];
+      var PC = TH.post || '#a16207', WD = [shade(PC, 0.2), shade(PC, -0.35), shade(PC, -0.7)];
+      P([[-0.42, 0.05], [0.42, 0.05], [0.34, -0.2], [-0.34, -0.2]]); c.fillStyle = cyl(0.42, ST); c.fill(); c.strokeStyle = ST[2]; c.lineWidth = u * 0.02; c.stroke();
+      c.save(); P([[-0.42, 0.05], [0.42, 0.05], [0.34, -0.2], [-0.34, -0.2]]); c.clip(); c.strokeStyle = 'rgba(41,37,36,.4)'; c.lineWidth = u * 0.012; ln(-0.38, -0.07, 0.38, -0.07); ln(-0.36, -0.14, 0.36, -0.14);
+      for (i = -2; i <= 2; i++) { ln(i * 0.16 + 0.05, 0.04, i * 0.16 + 0.05, -0.07); ln(i * 0.16 - 0.03, -0.07, i * 0.16 - 0.03, -0.14); } c.restore();
+      [-0.31, 0.23].forEach(function (px) { c.fillStyle = cylx(px + 0.04, 0.04, WD); c.fillRect(px * u, -0.66 * u, 0.08 * u, 0.47 * u); if (thk === 'candy') { c.strokeStyle = '#ef4444'; c.lineWidth = u * 0.02; for (var q = -0.62; q < -0.2; q += 0.08) ln(px, q, px + 0.08, q + 0.04); } });
+      c.strokeStyle = WD[1]; c.lineWidth = u * 0.035; ln(-0.3, -0.3, 0.3, -0.3); ln(-0.3, -0.24, 0.3, -0.24);
+      for (i = -2; i <= 2; i++) ln(i * 0.1, -0.3, i * 0.1, -0.24);
+      c.fillStyle = cyl(0.4, WD); c.fillRect(-0.4 * u, -0.7 * u, 0.8 * u, 0.1 * u);
+      var r1 = TH.roof === 'cone' ? 'thatch' : TH.roof, c1 = TH.rc || A;
+      roof(r1, 0, -0.64, r1 === 'mushroom' ? 0.42 : 0.5, -1.02, c1);
+      deco(tGeo(1), true);
+      return;
+    }
+
+    /* ===== CẤP 2–10 ===== */
+    var g2 = tGeo(lv), wd = g2.wd, bt = g2.bt, sl = g2.slab, ap = g2.apex, rbase = g2.rb;
+    function hw(yy) { return (0.31 + (0.26 - 0.31) * (yy + 0.22) / (bt + 0.22)) * wd; }
+    function spikes(x0, y0, y1, n, len, sd) {
+      for (var q = 0; q < n; q++) {
+        var yy = y0 + (y1 - y0) * (q + 0.5) / n, ll = len + (q % 2 ? 0.05 : 0);
+        P([[x0, yy - 0.04], [x0 + sd * ll, yy - ll * 0.4], [x0, yy + 0.04]]);
+        var sg = c.createLinearGradient(0, (yy - 0.05) * u, 0, (yy + 0.05) * u);
+        if (lv >= 5) { sg.addColorStop(0, '#57534e'); sg.addColorStop(1, '#0c0a09'); } else { sg.addColorStop(0, '#f4f4f5'); sg.addColorStop(1, '#3f3f46'); }
+        c.fillStyle = sg; c.fill(); c.strokeStyle = trim || '#18181b'; c.lineWidth = u * 0.012; c.stroke();
+      }
+    }
+    // --- cánh rồng khổng lồ phía sau (cấp 8+) ---
+    if (lv >= 8) {
+      var kk = lv - 8, ut = g2.ut;
+      [-1, 1].forEach(function (sd) {
+        var sx = sd * 0.18 * wd, sy = ut + 0.04, tx = sd * (1.0 + 0.12 * kk), ty = ut - 0.5 - 0.08 * kk, ex = sd * 0.5, ey = ty + 0.12;
+        var f = [[sd * (0.95 + 0.11 * kk), ut + 0.12], [sd * (0.7 + 0.06 * kk), ut + 0.34], [sd * 0.42, ut + 0.38]];
+        c.beginPath(); c.moveTo(sx * u, sy * u); c.quadraticCurveTo(sd * 0.45 * u, (ty - 0.02) * u, tx * u, ty * u);
+        var pv = [tx, ty]; f.forEach(function (fn) { c.quadraticCurveTo(((pv[0] + fn[0]) / 2 * 0.86) * u, ((pv[1] + fn[1]) / 2 - 0.04) * u, fn[0] * u, fn[1] * u); pv = fn; });
+        c.quadraticCurveTo(sd * 0.3 * u, (ut + 0.3) * u, sd * 0.16 * u, (ut + 0.28) * u); c.closePath();
+        var mg = c.createLinearGradient(sx * u, ut * u, tx * u, ty * u); var WC = TH.rc || TH.M[1]; mg.addColorStop(0, shade(M[2], -0.3)); mg.addColorStop(0.55, shade(WC, -0.35)); mg.addColorStop(1, shade(WC, 0.1));
+        c.globalAlpha = 0.95; c.fillStyle = mg; c.fill(); c.globalAlpha = 1; c.strokeStyle = trim; c.lineWidth = u * 0.012; c.stroke();
+        c.strokeStyle = shade(trim, -0.2); c.lineWidth = u * 0.03; c.beginPath(); c.moveTo(sx * u, sy * u); c.quadraticCurveTo(sd * 0.3 * u, (ey + 0.06) * u, ex * u, ey * u); c.lineTo(tx * u, ty * u); c.stroke();
+        c.lineWidth = u * 0.018; f.forEach(function (fn) { ln(ex, ey, fn[0], fn[1]); });
+        c.fillStyle = trim; P([[tx, ty], [tx + sd * 0.05, ty - 0.1], [tx - sd * 0.02, ty - 0.02]]); c.fill();
+      });
+    }
+    // --- 2 tháp canh phụ hai bên + tường nối (cấp 6+) ---
+    if (lv >= 6) {
+      var tx2 = g2.tx, tt = g2.tt;
+      P([[-tx2, -0.08], [tx2, -0.08], [tx2, -0.36], [-tx2, -0.36]]); c.fillStyle = cyl(tx2, M); c.fill(); c.strokeStyle = edge; c.lineWidth = u * 0.016; c.stroke();
+      for (j = -3; j <= 3; j++) { if (Math.abs(j) < 1) continue; x = j * tx2 / 3.4; P([[x - 0.035, -0.36], [x + 0.035, -0.36], [x + 0.035, -0.42], [x - 0.035, -0.42]]); c.fillStyle = M[1]; c.fill(); c.stroke(); }
+      [-1, 1].forEach(function (sd) {
+        var cx = sd * tx2, tw = 0.11;
+        if (lv >= 7) spikes(cx + sd * tw, -0.15, tt + 0.08, 2, 0.12 + 0.02 * (lv - 7), sd);
+        P([[cx - tw, 0.04], [cx + tw, 0.04], [cx + tw * 0.85, tt], [cx - tw * 0.85, tt]]); c.fillStyle = cylx(cx, tw, M); c.fill();
+        c.save(); P([[cx - tw, 0.04], [cx + tw, 0.04], [cx + tw * 0.85, tt], [cx - tw * 0.85, tt]]); c.clip(); wallPat(cx - tw, cx + tw, 0.04, tt); c.restore();
+        P([[cx - tw, 0.04], [cx + tw, 0.04], [cx + tw * 0.85, tt], [cx - tw * 0.85, tt]]); c.strokeStyle = edge; c.lineWidth = u * 0.016; c.stroke();
+        c.save(); glow(trim, 8); c.fillStyle = trim; c.fillRect((cx - 0.02) * u, (tt + 0.1) * u, 0.04 * u, 0.09 * u); c.restore();
+        c.fillStyle = cylx(cx, tw * 1.15, M); c.fillRect((cx - tw * 1.15) * u, (tt - 0.05) * u, tw * 2.3 * u, 0.05 * u); c.strokeStyle = edge; c.strokeRect((cx - tw * 1.15) * u, (tt - 0.05) * u, tw * 2.3 * u, 0.05 * u);
+        roof(TH.roof, cx, tt - 0.05, tw * 1.05, tt - 0.05 - (0.26 + 0.03 * (lv - 6)), RC);
+      });
+    }
+    // --- gai nhọn thân chính (cấp 4+) ---
+    if (lv >= 4) { var ns = lv >= 5 ? 3 : 2; [-1, 1].forEach(function (sd) { spikes(sd * (hw(-0.3) - 0.02), -0.3, bt + 0.12, ns, lv >= 5 ? 0.24 : 0.18, sd); }); }
+    // --- móng ---
+    var fpath = [[-0.5 * wd, 0.04], [0.5 * wd, 0.04], [0.4 * wd, -0.22], [-0.4 * wd, -0.22]];
+    P(fpath); c.fillStyle = cyl(0.5 * wd, [shade(M[0], -0.1), shade(M[1], -0.15), M[2]]); c.fill();
+    c.save(); P(fpath); c.clip(); wallPat(-0.55, 0.55, 0.04, -0.22); c.restore();
+    P(fpath); c.strokeStyle = edge; c.lineWidth = u * 0.02; c.stroke();
     if (lv >= 4) {   // phù chú phát sáng trên móng
-      c.save(); glow(L, 8); c.strokeStyle = L; c.lineWidth = u * 0.022;
-      [-0.22, 0, 0.22].forEach(function (rx, q) {
+      c.save(); glow(GL, 8); c.strokeStyle = GL; c.lineWidth = u * 0.022;
+      [-0.24, 0, 0.24].forEach(function (rx, q) {
+        if (lv >= 6 && q === 1) return;
         ln(rx, -0.04, rx, -0.18);
         if (q === 1) { ln(rx - 0.05, -0.15, rx, -0.11); ln(rx + 0.05, -0.15, rx, -0.11); } else { ln(rx, -0.13, rx + 0.05 * (q ? 1 : -1), -0.17); ln(rx, -0.08, rx - 0.05 * (q ? 1 : -1), -0.12); }
       });
       c.restore();
     }
-    // thân tháp
+    if (lv >= 6) {   // viên ngọc bậc tiến hóa gắn giữa móng
+      c.save(); glow(trim, 12); P([[0, -0.2], [0.065, -0.1], [0, 0.0], [-0.065, -0.1]]);
+      var gg2 = c.createLinearGradient(-0.065 * u, 0, 0.065 * u, 0); gg2.addColorStop(0, '#fff'); gg2.addColorStop(0.45, trim); gg2.addColorStop(1, shade(trim, -0.55)); c.fillStyle = gg2; c.fill(); c.restore();
+      c.strokeStyle = shade(trim, -0.3); c.lineWidth = u * 0.015; c.stroke();
+    }
+    // --- thân tháp ---
     var body = [[-0.31 * wd, -0.22], [0.31 * wd, -0.22], [0.26 * wd, bt], [-0.26 * wd, bt]];
     P(body); c.fillStyle = cyl(0.31 * wd, M); c.fill();
-    c.save(); P(body); c.clip();
-    if (lv <= 3) {   // gạch đá
-      var row = 0;
-      for (y = -0.22; y > bt; y -= 0.075, row++) {
-        c.strokeStyle = 'rgba(0,0,0,.28)'; c.lineWidth = u * 0.011; ln(-0.4, y, 0.4, y);
-        c.strokeStyle = 'rgba(255,255,255,.14)'; ln(-0.4, y - 0.008, 0.4, y - 0.008);
-        c.strokeStyle = 'rgba(0,0,0,.25)'; for (i = -3; i <= 3; i++) { x = i * 0.13 + (row % 2) * 0.065; ln(x, y, x, y - 0.075); }
-      }
-      if (lv === 3) { c.fillStyle = 'rgba(21,128,61,.28)'; for (i = 0; i < 6; i++) { c.beginPath(); c.ellipse((i % 2 ? 0.18 : -0.2) * u, (-0.26 - i * 0.07) * u, 0.05 * u, 0.025 * u, 0.3, 0, 7); c.fill(); } }   // rêu
-    } else if (lv === 4) {   // tấm thép đinh tán
-      c.strokeStyle = 'rgba(0,0,0,.6)'; c.lineWidth = u * 0.012; for (i = -2; i <= 2; i++) ln(i * 0.12, -0.22, i * 0.11, bt);
-      [-0.27, bt + 0.05].forEach(function (by) {
-        var bg = c.createLinearGradient(0, (by - 0.03) * u, 0, (by + 0.03) * u); bg.addColorStop(0, '#a1a1aa'); bg.addColorStop(1, '#3f3f46');
-        c.fillStyle = bg; c.fillRect(-0.4 * u, (by - 0.03) * u, 0.8 * u, 0.06 * u);
-        c.fillStyle = '#e4e4e7'; for (i = -3; i <= 3; i++) { c.beginPath(); c.arc(i * 0.08 * u, by * u, 0.012 * u, 0, 7); c.fill(); }
-      });
-    } else {   // hắc thạch nứt dung nham ma thuật + đai vàng
-      c.save(); glow(L, 10); c.strokeStyle = L; c.lineWidth = u * 0.016;
+    c.save(); P(body); c.clip(); wallPat(-0.4, 0.4, -0.22, bt);
+    if (lv === 4) {
+      [-0.27, bt + 0.05].forEach(function (by) { var bg = c.createLinearGradient(0, (by - 0.03) * u, 0, (by + 0.03) * u); bg.addColorStop(0, '#a1a1aa'); bg.addColorStop(1, '#3f3f46'); c.fillStyle = bg; c.fillRect(-0.4 * u, (by - 0.03) * u, 0.8 * u, 0.06 * u); c.fillStyle = '#e4e4e7'; for (i = -3; i <= 3; i++) dot(i * 0.08, by, 0.012); });
+    } else if (lv >= 5) {
+      c.save(); glow(GL, 10); c.strokeStyle = GL; c.lineWidth = u * 0.016;
       c.beginPath(); c.moveTo(-0.2 * u, -0.22 * u); c.lineTo(-0.14 * u, -0.34 * u); c.lineTo(-0.2 * u, -0.45 * u); c.lineTo(-0.15 * u, (bt + 0.1) * u); c.stroke();
-      c.beginPath(); c.moveTo(0.21 * u, -0.22 * u); c.lineTo(0.16 * u, -0.31 * u); c.lineTo(0.22 * u, -0.42 * u); c.lineTo(0.17 * u, -0.55 * u); c.stroke();
-      c.restore();
-      [-0.26, bt + 0.04].forEach(function (by) {
-        var bg = c.createLinearGradient(0, (by - 0.025) * u, 0, (by + 0.025) * u); bg.addColorStop(0, '#fde68a'); bg.addColorStop(0.5, gold); bg.addColorStop(1, '#92400e');
-        c.fillStyle = bg; c.fillRect(-0.4 * u, (by - 0.025) * u, 0.8 * u, 0.05 * u);
-      });
+      c.beginPath(); c.moveTo(0.21 * u, -0.22 * u); c.lineTo(0.16 * u, -0.31 * u); c.lineTo(0.22 * u, -0.42 * u); c.lineTo(0.17 * u, -0.55 * u); c.stroke(); c.restore();
+      [-0.26, bt + 0.04].forEach(function (by) { var bg = c.createLinearGradient(0, (by - 0.025) * u, 0, (by + 0.025) * u); bg.addColorStop(0, shade(trim, 0.5)); bg.addColorStop(0.5, trim); bg.addColorStop(1, shade(trim, -0.55)); c.fillStyle = bg; c.fillRect(-0.4 * u, (by - 0.025) * u, 0.8 * u, 0.05 * u); });
     }
     c.restore();
     P(body); c.strokeStyle = edge; c.lineWidth = u * 0.02; c.stroke();
     // lỗ châu mai (cấp 3+)
-    if (lv >= 3) {
-      [-0.17, 0.17].forEach(function (sx) {
-        c.save(); if (lv >= 4) glow(L, 6);
-        c.fillStyle = lv >= 4 ? L : '#0c0a09'; c.fillRect((sx - 0.016) * u, -0.37 * u, 0.032 * u, 0.1 * u); c.fillRect((sx - 0.04) * u, -0.335 * u, 0.08 * u, 0.025 * u);
-        c.restore();
-      });
-    }
+    if (lv >= 3) { [-0.17, 0.17].forEach(function (sx) { c.save(); if (lv >= 4) glow(L, 6); c.fillStyle = lv >= 4 ? L : '#0c0a09'; c.fillRect((sx - 0.016) * u, -0.37 * u, 0.032 * u, 0.1 * u); c.fillRect((sx - 0.04) * u, -0.335 * u, 0.08 * u, 0.025 * u); c.restore(); }); }
     // cửa sổ vòm (nơi xạ thủ/vũ khí đứng)
     var wy = g2.win, ww = 0.14;
     c.beginPath(); c.moveTo(-ww * u, (wy + 0.15) * u); c.lineTo(-ww * u, (wy - 0.04) * u); c.arc(0, (wy - 0.04) * u, ww * u, Math.PI, 0); c.lineTo(ww * u, (wy + 0.15) * u); c.closePath();
     c.fillStyle = '#0b0a0f'; c.fill();
     if (lv >= 3) { var wg = c.createRadialGradient(0, wy * u, 0, 0, wy * u, 0.2 * u); wg.addColorStop(0, hexA(L, 0.55)); wg.addColorStop(1, hexA(L, 0)); c.fillStyle = wg; c.fill(); }
-    c.strokeStyle = lv >= 5 ? gold : lv >= 4 ? '#a1a1aa' : M[0]; c.lineWidth = u * 0.032; c.stroke();
+    c.strokeStyle = trim || (lv >= 4 ? '#a1a1aa' : M[0]); c.lineWidth = u * 0.032; c.stroke();
     // đỡ sàn + sàn
     c.fillStyle = M[1]; for (i = -1.5; i <= 1.5; i++) { P([[i * 0.24 - 0.045, bt], [i * 0.24 + 0.045, bt], [i * 0.24, bt + 0.07]]); c.fill(); }
     var sw2 = 0.42 * wd;
     c.fillStyle = cyl(sw2, M); c.fillRect(-sw2 * u, sl * u, sw2 * 2 * u, (bt - sl) * u); c.strokeStyle = edge; c.lineWidth = u * 0.018; c.strokeRect(-sw2 * u, sl * u, sw2 * 2 * u, (bt - sl) * u);
-    // mái
-    var rw = lv >= 3 ? 0.34 * wd : 0.48, rbase = sl, roofC = lv >= 5 ? shade(A, -0.6) : lv >= 4 ? shade(A, -0.4) : A;
-    var rpath = [[-rw, rbase], [0, ap], [rw, rbase]];
-    P(rpath); var rg2 = c.createLinearGradient(-rw * u, 0, rw * u, 0); rg2.addColorStop(0, shade(roofC, 0.3)); rg2.addColorStop(0.5, roofC); rg2.addColorStop(1, shade(roofC, -0.5));
-    c.fillStyle = rg2; c.fill(); c.strokeStyle = lv >= 5 ? gold : shade(roofC, -0.6); c.lineWidth = u * 0.02; c.stroke();
-    c.save(); P(rpath); c.clip(); c.strokeStyle = 'rgba(0,0,0,.25)'; c.lineWidth = u * 0.012;
-    for (y = rbase - 0.07; y > ap; y -= 0.07) { c.beginPath(); for (x = -rw; x <= rw; x += 0.08) c.arc((x + 0.04) * u, y * u, 0.04 * u, 0, Math.PI); c.stroke(); }
-    if (lv >= 5) { glow(L, 8); c.strokeStyle = L; c.lineWidth = u * 0.014; ln(0, ap, -0.12, rbase); ln(0, ap, 0.12, rbase); }
-    c.restore();
-    if (lv >= 4) {   // diềm mái răng cưa
-      c.fillStyle = shade(roofC, -0.5);
+    function merlons(y0, n, x0, x1, skip, mw) {
+      for (j = 0; j < n; j++) {
+        if (skip && skip(j)) continue; x = x0 + (x1 - x0) * j / (n - 1);
+        var mp = lv >= 4 ? [[x - mw, y0], [x + mw, y0], [x + mw, y0 - 0.08], [x, y0 - 0.14], [x - mw, y0 - 0.08]] : [[x - mw, y0], [x + mw, y0], [x + mw, y0 - 0.09], [x - mw, y0 - 0.09]];
+        P(mp); var mg2 = c.createLinearGradient((x - mw) * u, 0, (x + mw) * u, 0); mg2.addColorStop(0, M[0]); mg2.addColorStop(0.6, M[1]); mg2.addColorStop(1, M[2]); c.fillStyle = mg2; c.fill(); c.strokeStyle = edge; c.lineWidth = u * 0.015; c.stroke();
+      }
+    }
+    // --- tầng trên (cấp 6+) ---
+    if (lv >= 6) {
+      merlons(sl, 5, -0.36 * wd, 0.36 * wd, function (q) { return q > 0 && q < 4; }, 0.05);
+      var ub = [[-0.3 * wd, sl], [0.3 * wd, sl], [0.27 * wd, g2.ut], [-0.27 * wd, g2.ut]];
+      P(ub); c.fillStyle = cyl(0.3 * wd, M); c.fill(); c.save(); P(ub); c.clip(); wallPat(-0.35, 0.35, sl, g2.ut); c.restore(); P(ub); c.strokeStyle = edge; c.lineWidth = u * 0.018; c.stroke();
+      c.save(); glow(trim, 10); c.fillStyle = trim; [-0.12, 0.12].forEach(function (sx) { c.beginPath(); c.moveTo((sx - 0.03) * u, (sl - 0.04) * u); c.lineTo((sx - 0.03) * u, (g2.ut + 0.07) * u); c.arc(sx * u, (g2.ut + 0.07) * u, 0.03 * u, Math.PI, 0); c.lineTo((sx + 0.03) * u, (sl - 0.04) * u); c.fill(); }); c.restore();
+      var uw = 0.36 * wd; c.fillStyle = cyl(uw, M); c.fillRect(-uw * u, g2.us * u, uw * 2 * u, (g2.ut - g2.us) * u); c.strokeStyle = edge; c.strokeRect(-uw * u, g2.us * u, uw * 2 * u, (g2.ut - g2.us) * u);
+      // xích sắt nối sàn với 2 tháp phụ (cấp 8+)
+      if (lv >= 8) { c.strokeStyle = '#a1a1aa'; c.lineWidth = u * 0.01; [-1, 1].forEach(function (sd) { var ax = sd * sw2, ay = sl + 0.03, bx = sd * g2.tx, by = g2.tt - 0.06; for (var q = 0; q <= 8; q++) { var tq = q / 8, lx = ax + (bx - ax) * tq, ly = ay + (by - ay) * tq + Math.sin(tq * Math.PI) * 0.1; c.beginPath(); c.ellipse(lx * u, ly * u, 0.016 * u, 0.01 * u, q % 2 ? 0 : 1.2, 0, 7); c.stroke(); } }); }
+    }
+    // --- mái chính ---
+    var rw = lv >= 6 ? 0.29 * wd : lv >= 3 ? 0.34 * wd : 0.48, ms = TH.roof;
+    roof(ms, 0, rbase, ms === 'mushroom' ? rw * 0.95 : rw, ap, RC);
+    if (lv >= 5 && ms !== 'spike') { c.save(); P([[-rw, rbase], [0, ap], [rw, rbase]]); c.clip(); glow(GL, 8); c.strokeStyle = GL; c.lineWidth = u * 0.012; ln(0, ap, -rw * 0.35, rbase); ln(0, ap, rw * 0.35, rbase); c.restore(); }
+    if (lv >= 4) {   // diềm răng cưa
+      c.fillStyle = shade(RC, -0.5);
       for (x = -rw; x < rw - 0.01; x += 0.085) { P([[x, rbase - 0.005], [x + 0.085, rbase - 0.005], [x + 0.042, rbase + 0.06]]); c.fill(); }
     }
     // sừng quỷ (cấp 4+)
@@ -2052,57 +2356,71 @@
       c.quadraticCurveTo(sd * 0.5 * k1 * u, (hy + 0.04) * u, sd * 0.6 * k1 * u, (hy - 0.36 * k1) * u);
       c.quadraticCurveTo(sd * 0.38 * k1 * u, (hy - 0.06) * u, sd * 0.12 * u, (hy - 0.05) * u); c.closePath();
       var hg = c.createLinearGradient(0, (hy + 0.05) * u, 0, (hy - 0.36 * k1) * u);
-      if (lv >= 5) { hg.addColorStop(0, '#1c1917'); hg.addColorStop(0.45, '#92400e'); hg.addColorStop(0.8, '#f59e0b'); hg.addColorStop(1, '#fef3c7'); } else { hg.addColorStop(0, '#78716c'); hg.addColorStop(0.6, '#e7e5e4'); hg.addColorStop(1, '#fafaf9'); }
-      c.fillStyle = hg; c.fill(); c.strokeStyle = lv >= 5 ? '#fbbf24' : '#44403c'; c.lineWidth = u * 0.014; c.stroke();
-      c.strokeStyle = 'rgba(0,0,0,.3)'; c.lineWidth = u * 0.01;
-      for (var q = 1; q <= 3; q++) { var tq = q / 4.2; ln(sd * (0.12 + 0.36 * k1 * tq), hy + 0.04 - 0.1 * k1 * tq * tq * 2, sd * (0.12 + 0.3 * k1 * tq), hy - 0.03 - 0.12 * k1 * tq * tq * 2); }
+      if (lv >= 5) { hg.addColorStop(0, '#1c1917'); hg.addColorStop(0.45, shade(trim, -0.6)); hg.addColorStop(0.8, trim); hg.addColorStop(1, '#fff'); } else { hg.addColorStop(0, '#78716c'); hg.addColorStop(0.6, '#e7e5e4'); hg.addColorStop(1, '#fafaf9'); }
+      c.fillStyle = hg; c.fill(); c.strokeStyle = trim || '#44403c'; c.lineWidth = u * 0.014; c.stroke();
     }
     if (lv >= 4) {
-      var hy = (rbase + ap) / 2 + 0.06;
+      var hy = (rbase + ap) / 2 + 0.06, hk = lv >= 5 ? 1.3 + 0.05 * (lv - 5) : 1;
       if (lv >= 5) { horn(-1, 0.75, rbase - 0.02); horn(1, 0.75, rbase - 0.02); }
-      horn(-1, lv >= 5 ? 1.3 : 1, hy); horn(1, lv >= 5 ? 1.3 : 1, hy);
+      horn(-1, hk, hy); horn(1, hk, hy);
     }
-    // lỗ châu mai trên sàn (cấp 3+): răng cưa thành
-    if (lv >= 3) {
-      for (j = 0; j < 5; j++) {
-        x = (-0.36 + j * 0.18) * wd;
-        var mp = lv >= 4 ? [[x - 0.05, sl], [x + 0.05, sl], [x + 0.05, sl - 0.08], [x, sl - 0.14], [x - 0.05, sl - 0.08]] : [[x - 0.05, sl], [x + 0.05, sl], [x + 0.05, sl - 0.09], [x - 0.05, sl - 0.09]];
-        P(mp); var mg = c.createLinearGradient((x - 0.05) * u, 0, (x + 0.05) * u, 0); mg.addColorStop(0, M[0]); mg.addColorStop(0.6, M[1]); mg.addColorStop(1, M[2]); c.fillStyle = mg; c.fill(); c.strokeStyle = edge; c.lineWidth = u * 0.015; c.stroke();
-      }
-    }
+    if (lv >= 3) merlons(lv >= 6 ? g2.us : sl, 5, (lv >= 6 ? -0.3 : -0.36) * wd, (lv >= 6 ? 0.3 : 0.36) * wd, null, lv >= 6 ? 0.045 : 0.05);
     // chóp
-    if (lv === 2) { c.strokeStyle = '#57534e'; c.lineWidth = u * 0.02; ln(0, ap, 0, ap - 0.06); }
-    if (lv === 3) { c.strokeStyle = '#44403c'; c.lineWidth = u * 0.025; ln(0, ap, 0, ap - 0.12); c.fillStyle = gold; c.beginPath(); c.arc(0, (ap - 0.12) * u, 0.035 * u, 0, 7); c.fill(); }
+    if (lv === 3 && ms !== 'tech' && ms !== 'candy' && ms !== 'dome' && ms !== 'pagoda') { c.strokeStyle = '#44403c'; c.lineWidth = u * 0.025; ln(0, ap, 0, ap - 0.12); c.fillStyle = '#fbbf24'; dot(0, ap - 0.12, 0.035); }
     if (lv === 4) { P([[-0.03, ap + 0.02], [0.03, ap + 0.02], [0, ap - 0.22]]); c.fillStyle = '#d4d4d8'; c.fill(); c.strokeStyle = '#18181b'; c.lineWidth = u * 0.01; c.stroke(); }
     if (lv >= 5) {
-      c.strokeStyle = gold; c.lineWidth = u * 0.03; ln(0, ap, 0, ap - 0.06);
-      P([[0, ap - 0.06], [0.07, ap - 0.17], [0, ap - 0.32], [-0.07, ap - 0.17]]);
-      c.save(); glow(L, 14); var cg = c.createLinearGradient(-0.07 * u, 0, 0.07 * u, 0); cg.addColorStop(0, '#fff'); cg.addColorStop(0.45, L); cg.addColorStop(1, shade(L, -0.5)); c.fillStyle = cg; c.fill(); c.restore();
-      c.strokeStyle = 'rgba(255,255,255,.7)'; c.lineWidth = u * 0.008; ln(0, ap - 0.06, 0, ap - 0.32); ln(-0.07, ap - 0.17, 0.07, ap - 0.17);
+      var ch = 0.26 + 0.02 * (lv - 5);
+      c.strokeStyle = trim; c.lineWidth = u * 0.03; ln(0, ap, 0, ap - 0.06);
+      P([[0, ap - 0.06], [0.07, ap - 0.06 - ch * 0.42], [0, ap - 0.06 - ch], [-0.07, ap - 0.06 - ch * 0.42]]);
+      c.save(); glow(trim, 14); var cg = c.createLinearGradient(-0.07 * u, 0, 0.07 * u, 0); cg.addColorStop(0, '#fff'); cg.addColorStop(0.45, lv === 5 ? L : trim); cg.addColorStop(1, shade(lv === 5 ? L : trim, -0.5)); c.fillStyle = cg; c.fill(); c.restore();
+      c.strokeStyle = 'rgba(255,255,255,.7)'; c.lineWidth = u * 0.008; ln(0, ap - 0.06, 0, ap - 0.06 - ch); ln(-0.07, ap - 0.06 - ch * 0.42, 0.07, ap - 0.06 - ch * 0.42);
     }
+    deco(g2, false);
   }
-  function towerSpr(k, lv, s) {
-    var su = Math.max(10, Math.round(s)), key = 't|' + k + '|' + lv + '|' + su + '|' + DPR;
+  function towerSpr(k, lv, s, thk) {
+    var su = Math.max(10, Math.round(s)), key = 't|' + thk + '|' + k + '|' + lv + '|' + su + '|' + DPR;
     if (SPR[key]) return SPR[key];
-    var c = document.createElement('canvas'); c.width = Math.ceil(2 * su * DPR); c.height = Math.ceil(2.2 * su * DPR);
-    var g = c.getContext('2d'); g.scale(DPR, DPR); g.translate(su, 2.0 * su); towerBody(g, k, lv, su);
+    var c = document.createElement('canvas'); c.width = Math.ceil(2.9 * su * DPR); c.height = Math.ceil(2.95 * su * DPR);
+    var g = c.getContext('2d'); g.scale(DPR, DPR); g.translate(1.45 * su, 2.7 * su); towerBody(g, k, lv, su, thk);
     return sprPut(key, c);
   }
+  function towerSize(lv) { return W * 0.11 * (1 + 0.07 * Math.min(lv - 1, 4)); }
+  /* sao cấp độ: cấp 1–5 sao vàng; cấp 6–10 vẫn 5 sao nhưng đổi màu theo bậc (hồng ngọc → thạch anh tím → kim cương → lục bảo → cầu vồng thần thoại có vương miện) */
+  function drawStars(lv, x, y, s, ft) {
+    if (lv <= 1) return;
+    var fs = Math.round(s * (lv > 5 ? 0.18 : lv > 3 ? 0.16 : 0.19)); X.font = '900 ' + fs + 'px ' + TF;
+    if (lv <= 5) { X.fillStyle = '#fde047'; X.strokeStyle = '#000'; X.lineWidth = 3; var st = '★'.repeat(lv); X.strokeText(st, x, y); X.fillText(st, x, y); return; }
+    var sw = fs * 0.92, x0 = x - sw * 2, sp = Math.floor(ft * 2.5) % 5;
+    for (var i = 0; i < 5; i++) {
+      var col = lv >= 10 ? 'hsl(' + Math.round((ft * 120 + i * 72) % 360) + ',100%,62%)' : TIERC[lv], sx = x0 + i * sw, sy = y + (lv >= 9 ? Math.sin(ft * 4 + i) * fs * 0.08 : 0);
+      X.save(); X.shadowColor = col; X.shadowBlur = 6 + 4 * Math.sin(ft * 3 + i); X.lineWidth = 3; X.strokeStyle = '#000'; X.strokeText(lv === 8 ? '◆' : '★', sx, sy); X.fillStyle = col; X.fillText(lv === 8 ? '◆' : '★', sx, sy); X.restore();
+      if (lv >= 8 && i === sp) { X.strokeStyle = 'rgba(255,255,255,.9)'; X.lineWidth = 1.2; var r = fs * 0.35; X.beginPath(); X.moveTo(sx - r, sy - fs * 0.2); X.lineTo(sx + r, sy - fs * 0.2); X.moveTo(sx, sy - fs * 0.2 - r); X.lineTo(sx, sy - fs * 0.2 + r); X.stroke(); }
+    }
+    if (lv >= 10) sprAt(emoSpr('👑', fs * 1.05), x, y - fs * 0.95);
+  }
   function drawTower(t) {
-    var T = TW[t.k], p = spotXY(G.spots[t.s]), lv = t.lv, s = W * 0.11 * (1 + 0.07 * (lv - 1)), x = p.x, y = p.y, fl = t.fl > 0 ? 1.06 : 1;
-    var gm = tGeo(lv), L = TGLO[t.k] || '#fde68a', ft = G.flagT + t.s * 1.7, wy = y + gm.win * s, ay = y + gm.apex * s, pu = 0.5 + 0.5 * Math.sin(ft * 2.6), i;
+    var T = TW[t.k], p = spotXY(G.spots[t.s]), lv = t.lv, s = towerSize(lv), x = p.x, y = p.y, fl = t.fl > 0 ? 1.06 : 1, thk = themeKey();
+    var gm = tGeo(lv), L = TGLO[t.k] || '#fde68a', TC = lv >= 5 ? (lv >= 10 ? 'hsl(' + Math.round((G.flagT * 90 + t.s * 40) % 360) + ',100%,65%)' : TIERC[lv]) : L;
+    var TCa = function (a) { return lv >= 10 ? TC.replace('hsl(', 'hsla(').replace(')', ',' + a + ')') : hexA(lv >= 5 ? TIERC[lv] : L, a); };
+    var ft = G.flagT + t.s * 1.7, wy = y + gm.win * s, ay = y + gm.apex * s, pu = 0.5 + 0.5 * Math.sin(ft * 2.6), i;
     // bóng đổ + hào quang dưới chân (cấp 4+)
-    X.fillStyle = 'rgba(0,0,0,.34)'; X.beginPath(); X.ellipse(x + s * 0.07, y + s * 0.08, s * (0.48 + 0.05 * lv), s * 0.2, 0, 0, 7); X.fill();
+    X.fillStyle = 'rgba(0,0,0,.34)'; X.beginPath(); X.ellipse(x + s * 0.07, y + s * 0.08, s * (lv >= 6 ? 0.85 : 0.48 + 0.05 * lv), s * 0.22, 0, 0, 7); X.fill();
     if (lv >= 4) {
-      var ag = X.createRadialGradient(x, y + s * 0.04, s * 0.1, x, y + s * 0.04, s * 0.8); ag.addColorStop(0, hexA(L, 0.3 + 0.2 * pu)); ag.addColorStop(1, hexA(L, 0));
-      X.fillStyle = ag; X.beginPath(); X.ellipse(x, y + s * 0.04, s * 0.8, s * 0.32, 0, 0, 7); X.fill();
+      var ar = s * (lv >= 6 ? 1.0 : 0.8), ag = X.createRadialGradient(x, y + s * 0.04, s * 0.1, x, y + s * 0.04, ar); ag.addColorStop(0, TCa(0.3 + 0.2 * pu)); ag.addColorStop(1, TCa(0));
+      X.fillStyle = ag; X.beginPath(); X.ellipse(x, y + s * 0.04, ar, ar * 0.4, 0, 0, 7); X.fill();
     }
-    if (lv >= 5) {   // vòng phù chú xoay
-      X.save(); X.strokeStyle = hexA(L, 0.7); X.lineWidth = 2; X.setLineDash([s * 0.08, s * 0.05]); X.lineDashOffset = -ft * s * 0.3;
-      X.beginPath(); X.ellipse(x, y + s * 0.05, s * 0.72, s * 0.27, 0, 0, 7); X.stroke(); X.setLineDash([]); X.restore();
+    if (lv >= 5) {   // vòng phù chú xoay dưới chân
+      X.save(); X.strokeStyle = TCa(0.7); X.lineWidth = 2; X.setLineDash([s * 0.08, s * 0.05]); X.lineDashOffset = -ft * s * 0.3;
+      X.beginPath(); X.ellipse(x, y + s * 0.05, s * (lv >= 6 ? 0.95 : 0.72), s * (lv >= 6 ? 0.34 : 0.27), 0, 0, 7); X.stroke();
+      if (lv >= 7) { X.lineDashOffset = ft * s * 0.4; X.beginPath(); X.ellipse(x, y + s * 0.05, s * 1.08, s * 0.4, 0, 0, 7); X.stroke(); }
+      X.setLineDash([]); X.restore();
     }
-    X.drawImage(towerSpr(t.k, lv, s), x - s, y - 2.0 * s, 2 * s, 2.2 * s);
-    // cờ: cấp 2–3 cờ trên chóp; cấp 4–5 cờ chiến treo hai bên
+    if (lv >= 10) {   // cột sáng thần thoại
+      var pg = X.createLinearGradient(0, ay - s * 1.2, 0, ay); pg.addColorStop(0, TCa(0)); pg.addColorStop(1, TCa(0.35 + 0.15 * pu));
+      X.fillStyle = pg; X.fillRect(x - s * 0.12, ay - s * 1.2, s * 0.24, s * 1.2);
+    }
+    X.drawImage(towerSpr(t.k, lv, s, thk), x - 1.45 * s, y - 2.7 * s, 2.9 * s, 2.95 * s);
+    // cờ: cấp 2–3 cờ trên chóp; cấp 4+ cờ chiến treo hai bên
     if (lv === 2 || lv === 3) {
       var py = ay - (lv === 3 ? 0.15 : 0.06) * s, ph = s * 0.22;
       X.strokeStyle = '#44403c'; X.lineWidth = 1.6; X.beginPath(); X.moveTo(x, py); X.lineTo(x, py - ph); X.stroke();
@@ -2112,54 +2430,80 @@
       X.closePath(); X.fill(); X.strokeStyle = 'rgba(0,0,0,.4)'; X.lineWidth = 1; X.stroke();
     }
     if (lv >= 4) {
+      var bcol = lv >= 5 ? TC : '#18181b';
       [-1, 1].forEach(function (sd) {
-        var bx = x + sd * 0.4 * gm.wd * s, by = y + gm.slab * s + s * 0.02, bl = s * 0.38, bw = s * 0.12, sw = Math.sin(ft * 2.2 + sd) * s * 0.03;
+        var bx = x + sd * 0.4 * gm.wd * s, by = y + gm.slab * s + s * 0.02, bl = s * (lv >= 6 ? 0.44 : 0.38), bw = s * 0.12, sw = Math.sin(ft * 2.2 + sd) * s * 0.03;
         X.beginPath(); X.moveTo(bx - bw / 2, by); X.lineTo(bx + bw / 2, by); X.lineTo(bx + bw / 2 + sw, by + bl); X.lineTo(bx + sw, by + bl * 0.8); X.lineTo(bx - bw / 2 + sw, by + bl); X.closePath();
-        X.fillStyle = shade(T.roof, -0.25); X.fill(); X.strokeStyle = lv >= 5 ? '#fbbf24' : '#18181b'; X.lineWidth = 1.5; X.stroke();
-        X.fillStyle = lv >= 5 ? '#fbbf24' : '#18181b'; X.fillRect(bx - bw / 2 - 1, by - 2, bw + 2, 3);
-        var gy = by + bl * 0.4; X.fillStyle = hexA(L, 0.6 + 0.4 * pu); X.beginPath(); X.moveTo(bx + sw * 0.4, gy - bw * 0.3); X.lineTo(bx + sw * 0.4 + bw * 0.22, gy); X.lineTo(bx + sw * 0.4, gy + bw * 0.3); X.lineTo(bx + sw * 0.4 - bw * 0.22, gy); X.closePath(); X.fill();
+        X.fillStyle = shade(T.roof, -0.25); X.fill(); X.strokeStyle = bcol; X.lineWidth = 1.5; X.stroke();
+        X.fillStyle = bcol; X.fillRect(bx - bw / 2 - 1, by - 2, bw + 2, 3);
+        var gy = by + bl * 0.4; X.fillStyle = TCa(0.6 + 0.4 * pu); X.beginPath(); X.moveTo(bx + sw * 0.4, gy - bw * 0.3); X.lineTo(bx + sw * 0.4 + bw * 0.22, gy); X.lineTo(bx + sw * 0.4, gy + bw * 0.3); X.lineTo(bx + sw * 0.4 - bw * 0.22, gy); X.closePath(); X.fill();
       });
       // đôi mắt đỏ rực trên mái
-      var ey = y + ((gm.slab + gm.apex) / 2 + 0.03) * s, ec = lv >= 5 ? '#ff2d2d' : '#ff4d4d';
+      var ey = y + ((gm.rb + gm.apex) / 2 + 0.03) * s;
       X.save(); X.globalCompositeOperation = 'lighter';
       var eg = X.createRadialGradient(x, ey, 0, x, ey, s * 0.22); eg.addColorStop(0, 'rgba(255,40,40,' + (0.35 + 0.3 * pu) + ')'); eg.addColorStop(1, 'rgba(255,40,40,0)'); X.fillStyle = eg; X.beginPath(); X.arc(x, ey, s * 0.22, 0, 7); X.fill(); X.restore();
-      X.fillStyle = ec; [-1, 1].forEach(function (sd) { X.beginPath(); X.moveTo(x + sd * s * 0.025, ey + s * 0.03); X.lineTo(x + sd * s * 0.13, ey - s * 0.03); X.lineTo(x + sd * s * 0.12, ey + s * 0.03); X.closePath(); X.fill(); });
+      X.fillStyle = '#ff3b3b'; [-1, 1].forEach(function (sd) { X.beginPath(); X.moveTo(x + sd * s * 0.025, ey + s * 0.03); X.lineTo(x + sd * s * 0.13, ey - s * 0.03); X.lineTo(x + sd * s * 0.12, ey + s * 0.03); X.closePath(); X.fill(); });
       X.fillStyle = '#fff7ed'; [-1, 1].forEach(function (sd) { X.beginPath(); X.arc(x + sd * s * 0.09, ey + s * 0.01, s * 0.016, 0, 7); X.fill(); });
     }
     // cửa sổ sáng lập lòe (cấp 3+)
     if (lv >= 3) { X.save(); X.globalCompositeOperation = 'lighter'; var wg = X.createRadialGradient(x, wy, 0, x, wy, s * 0.26); wg.addColorStop(0, hexA(L, 0.15 + 0.2 * pu)); wg.addColorStop(1, hexA(L, 0)); X.fillStyle = wg; X.beginPath(); X.arc(x, wy, s * 0.26, 0, 7); X.fill(); X.restore(); }
     // người/vũ khí trong chòi
     if (t.k === 'eye') { var eg2 = 0.5 + 0.5 * Math.sin(G.flagT * 3 + t.s); X.fillStyle = 'rgba(167,139,250,' + (0.25 + 0.25 * eg2) + ')'; X.beginPath(); X.arc(x, wy, s * (0.3 + 0.06 * eg2), 0, 7); X.fill(); }
-    if (t.k === 'fire' && t.fl > 0) { var gl = X.createRadialGradient(x, wy, 1, x, wy, s * 0.55 * (1 + 0.2 * (lv - 1))); gl.addColorStop(0, 'rgba(253,186,33,.7)'); gl.addColorStop(1, 'rgba(234,88,12,0)'); X.globalCompositeOperation = 'lighter'; X.fillStyle = gl; X.beginPath(); X.arc(x, wy, s * 0.55 * (1 + 0.2 * (lv - 1)), 0, 7); X.fill(); X.globalCompositeOperation = 'source-over'; }
+    if (t.k === 'fire' && t.fl > 0) { var fr = s * 0.55 * (1 + 0.2 * (lvEff(lv) - 1)), gl = X.createRadialGradient(x, wy, 1, x, wy, fr); gl.addColorStop(0, 'rgba(253,186,33,.7)'); gl.addColorStop(1, 'rgba(234,88,12,0)'); X.globalCompositeOperation = 'lighter'; X.fillStyle = gl; X.beginPath(); X.arc(x, wy, fr, 0, 7); X.fill(); X.globalCompositeOperation = 'source-over'; }
     if (t.k === 'rocket' && t.cd <= 0.4) { X.strokeStyle = 'rgba(167,139,250,' + (0.5 + 0.5 * Math.sin(G.flagT * 10)) + ')'; X.lineWidth = 2; X.beginPath(); X.arc(x, wy, s * 0.32, 0, 7); X.stroke(); }
     X.save(); X.translate(x, wy); X.scale(fl, fl); sprAt(emoSpr(T.e, s * (lv >= 2 ? 0.25 : 0.34)), 0, 0); X.restore();
-    // cấp 5: pha lê rực sáng, cầu năng lượng bay quanh, tàn lửa bốc lên
+    // cấp 5+: pha lê rực sáng, cầu năng lượng bay quanh, tàn lửa bốc lên
     if (lv >= 5) {
-      var cy = ay - s * 0.19;
+      var ch = s * (0.26 + 0.02 * (lv - 5)), cy = ay - s * 0.06 - ch * 0.42;
       X.save(); X.globalCompositeOperation = 'lighter';
-      var cg2 = X.createRadialGradient(x, cy, 0, x, cy, s * (0.3 + 0.08 * pu)); cg2.addColorStop(0, hexA(L, 0.7)); cg2.addColorStop(1, hexA(L, 0)); X.fillStyle = cg2; X.beginPath(); X.arc(x, cy, s * 0.38, 0, 7); X.fill();
-      for (i = 0; i < 3; i++) {
-        var an = ft * 1.8 + i * 2.094, ox = x + Math.cos(an) * s * 0.58, oy = wy + Math.sin(an) * s * 0.16;
-        var og = X.createRadialGradient(ox, oy, 0, ox, oy, s * 0.09); og.addColorStop(0, 'rgba(255,255,255,.95)'); og.addColorStop(0.35, hexA(L, 0.85)); og.addColorStop(1, hexA(L, 0)); X.fillStyle = og; X.beginPath(); X.arc(ox, oy, s * 0.09, 0, 7); X.fill();
+      var cr = s * (0.3 + 0.08 * pu + 0.03 * (lv - 5)), cg2 = X.createRadialGradient(x, cy, 0, x, cy, cr); cg2.addColorStop(0, TCa(0.75)); cg2.addColorStop(1, TCa(0)); X.fillStyle = cg2; X.beginPath(); X.arc(x, cy, cr, 0, 7); X.fill();
+      var no = Math.min(6, 3 + (lv - 5)), oy0 = lv >= 6 ? y + (gm.ut + 0.05) * s : wy, orx = s * (lv >= 6 ? 0.72 : 0.58);
+      for (i = 0; i < no; i++) {
+        var an = ft * 1.8 + i * 6.283 / no, ox = x + Math.cos(an) * orx, oy = oy0 + Math.sin(an) * s * 0.17, orr = s * (0.09 + 0.01 * (lv - 5));
+        var og = X.createRadialGradient(ox, oy, 0, ox, oy, orr); og.addColorStop(0, 'rgba(255,255,255,.95)'); og.addColorStop(0.35, TCa(0.85)); og.addColorStop(1, TCa(0)); X.fillStyle = og; X.beginPath(); X.arc(ox, oy, orr, 0, 7); X.fill();
       }
-      for (i = 0; i < 8; i++) {
-        var ph2 = (ft * 0.45 + i / 8) % 1, ex = x + Math.sin(i * 7.3 + ft * 0.9) * s * 0.42, ey2 = y - s * 0.1 - ph2 * s * 1.7;
-        X.fillStyle = i % 2 ? 'rgba(251,146,60,' + (1 - ph2) * 0.9 + ')' : hexA(L, (1 - ph2) * 0.9); X.beginPath(); X.arc(ex, ey2, s * 0.018 * (1.4 - ph2), 0, 7); X.fill();
+      var ne = 8 + 2 * (lv - 5);
+      for (i = 0; i < ne; i++) {
+        var ph2 = (ft * 0.45 + i / ne) % 1, ex = x + Math.sin(i * 7.3 + ft * 0.9) * s * (lv >= 6 ? 0.6 : 0.42), ey2 = y - s * 0.1 - ph2 * s * (1.7 + 0.1 * (lv - 5));
+        X.fillStyle = i % 2 ? 'rgba(251,146,60,' + (1 - ph2) * 0.9 + ')' : TCa((1 - ph2) * 0.9); X.beginPath(); X.arc(ex, ey2, s * 0.018 * (1.4 - ph2), 0, 7); X.fill();
       }
       X.restore();
     }
+    // cấp 7+: vòng phù chú lơ lửng quanh tầng trên
+    if (lv >= 7) {
+      var ry = y + (gm.ut - 0.02) * s;
+      X.save(); X.strokeStyle = TCa(0.8); X.lineWidth = 2.2; X.setLineDash([s * 0.05, s * 0.04]); X.lineDashOffset = -ft * s * 0.5;
+      X.beginPath(); X.ellipse(x, ry, s * 0.55, s * 0.13, 0, 0, Math.PI); X.stroke(); X.setLineDash([]); X.restore();
+    }
+    // cấp 9+: tia sét nối pha lê với 2 tháp phụ
+    if (lv >= 9) {
+      X.save(); X.globalCompositeOperation = 'lighter'; X.strokeStyle = TCa(0.85); X.lineWidth = 1.8; X.shadowColor = '#fff'; X.shadowBlur = 8;
+      [-1, 1].forEach(function (sd) {
+        if (Math.sin(ft * 7 + sd * 2) < 0.2) return;
+        var x1 = x + sd * gm.tx * s, y1 = y + (gm.tt - 0.32) * s, x2 = x, y2 = ay - s * 0.15, n = 6;
+        X.beginPath(); X.moveTo(x1, y1); for (var q = 1; q < n; q++) X.lineTo(x1 + (x2 - x1) * q / n + (Math.random() - 0.5) * s * 0.1, y1 + (y2 - y1) * q / n + (Math.random() - 0.5) * s * 0.1); X.lineTo(x2, y2); X.stroke();
+      });
+      X.restore();
+    }
+    // cấp 10: vầng hào quang gai nhọn xoay trên đỉnh
+    if (lv >= 10) {
+      var hyy = ay - s * 0.62, hr = s * 0.24;
+      X.save(); X.translate(x, hyy); X.rotate(ft * 0.8); X.strokeStyle = TCa(0.95); X.lineWidth = 2.5; X.shadowColor = TC; X.shadowBlur = 10;
+      X.beginPath(); X.ellipse(0, 0, hr, hr, 0, 0, 7); X.stroke();
+      X.fillStyle = TCa(0.95); for (i = 0; i < 8; i++) { var a3 = i * 0.785; X.beginPath(); X.moveTo(Math.cos(a3 - 0.12) * hr, Math.sin(a3 - 0.12) * hr); X.lineTo(Math.cos(a3) * hr * 1.45, Math.sin(a3) * hr * 1.45); X.lineTo(Math.cos(a3 + 0.12) * hr, Math.sin(a3 + 0.12) * hr); X.fill(); }
+      X.restore();
+    }
     // khiên bảo hộ + máu chòi
-    var shc = y + gm.apex * s * 0.48, shr = -gm.apex * s * 0.62;
-    if (t.sh > 0) { var sa = 0.35 + 0.15 * Math.sin(G.flagT * 4); X.fillStyle = 'rgba(56,189,248,' + (sa * 0.4) + ')'; X.strokeStyle = 'rgba(125,211,252,' + (sa + 0.3) + ')'; X.lineWidth = 2; X.beginPath(); X.ellipse(x, shc, s * (0.6 + 0.03 * lv), shr, 0, 0, 7); X.fill(); X.stroke(); }
-    if (t.hurt > 0) { t.hurt -= 0.016; X.fillStyle = 'rgba(239,68,68,.35)'; X.beginPath(); X.ellipse(x, shc, s * 0.5, shr * 0.8, 0, 0, 7); X.fill(); }
+    var shc = y + gm.apex * s * 0.48, shr = -gm.apex * s * 0.62, shw = s * (lv >= 6 ? 0.95 : 0.6 + 0.03 * lv);
+    if (t.sh > 0) { var sa = 0.35 + 0.15 * Math.sin(G.flagT * 4); X.fillStyle = 'rgba(56,189,248,' + (sa * 0.4) + ')'; X.strokeStyle = 'rgba(125,211,252,' + (sa + 0.3) + ')'; X.lineWidth = 2; X.beginPath(); X.ellipse(x, shc, shw, shr, 0, 0, 7); X.fill(); X.stroke(); }
+    if (t.hurt > 0) { t.hurt -= 0.016; X.fillStyle = 'rgba(239,68,68,.35)'; X.beginPath(); X.ellipse(x, shc, shw * 0.8, shr * 0.8, 0, 0, 7); X.fill(); }
     var tm = towerMax(t);
     if (t.hp < tm || t.sh > 0) {
       var bw2 = s * 0.8, bx2 = x - bw2 / 2, by2 = y + s * 0.3, kk = clamp(t.hp / tm, 0, 1);
       X.fillStyle = 'rgba(0,0,0,.65)'; X.fillRect(bx2 - 1, by2 - 1, bw2 + 2, 6); X.fillStyle = kk > 0.5 ? '#4ade80' : kk > 0.25 ? '#facc15' : '#f87171'; X.fillRect(bx2, by2, bw2 * kk, 4);
       if (t.sh > 0) { X.fillStyle = '#38bdf8'; X.fillRect(bx2, by2 + 5, bw2 * clamp(t.sh / shieldMax(t), 0, 1), 3); }
     }
-    // sao cấp độ
-    if (lv > 1) { X.font = '900 ' + Math.round(s * (lv > 3 ? 0.16 : 0.19)) + 'px ' + TF; X.fillStyle = '#fde047'; X.strokeStyle = '#000'; X.lineWidth = 3; var st = '★'.repeat(lv); X.strokeText(st, x, y + s * 0.18); X.fillText(st, x, y + s * 0.18); }
+    drawStars(lv, x, y + s * 0.18, s, ft);
   }
 
   /* ----- QUÁI ----- */
@@ -2382,7 +2726,7 @@
     if (a === 'sayx') { closeSay(); return; }
     if (a === 'sayhear') { if (!SAY) return; stopRec(); if (SAY.st === 'rec') SAY.st = ''; say(G.tp.w[SAY.w][0]); drawSay(); return; }
     if (a === 'mic') { if (!SAY || SAY.st === 'ok') return; if (rec) { stopRec(); SAY.st = ''; drawSay(); } else listen(); return; }
-    if (a === 'topick') { if (!SAY) return; stopRec(); setPickPref(true); renderBank(); if (SAY.step === 1) { SAY.mode = 'pick'; SAY.vmode = 'pick'; } else SAY.vmode = 'pick'; SAY.st = ''; SAY.opts = null; drawSay(); if (SAY.step === 1) say(G.tp.w[SAY.w][0]); return; }
+    if (a === 'topick') { if (!SAY) return; if (SAY.step === 1 && mustRead(SAY.w)) { toast('👆 Từ <b>' + esc(G.tp.w[SAY.w][0]) + '</b> đã chọn đủ ' + PICK_MAX + ' lần. Muốn kiếm thêm 💰 hãy <b>đọc bằng giọng</b> 🎤 nhé!'); sfx('bad'); return; } stopRec(); setPickPref(true); renderBank(); if (SAY.step === 1) { SAY.mode = 'pick'; SAY.vmode = 'pick'; } else SAY.vmode = 'pick'; SAY.st = ''; SAY.opts = null; drawSay(); if (SAY.step === 1) say(G.tp.w[SAY.w][0]); return; }
     if (a === 'tomic') { if (!SAY || !SR || SAY.st === 'ok') return; setPickPref(false); renderBank(); if (SAY.step === 1) { SAY.mode = 'mic'; SAY.vmode = 'mic'; } else SAY.vmode = 'mic'; SAY.st = ''; SAY.opts = null; SAY.pick = -1; drawSay(); listen(); return; }
     if (a === 'peek') { if (!SAY || SAY.peek) return; stopRec(); SAY.peek = true; var sp = G.said[SAY.w] || (G.said[SAY.w] = { n: 0, ok: 0 }); sp.n++; SAY.tr++; SAY.st = ''; drawSay(); renderBank(); return; }
     if (a === 'pick') {

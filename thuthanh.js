@@ -1,4 +1,4 @@
-/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.11-7: 🧱 XÂY TƯỜNG THÀNH CHẶN QUÁI – chạm vào con đường (màn biển: dòng nước, boss thế giới: lối mòn) để xây tường, quái đi bộ/bơi phải đứng lại phá tường mới đi tiếp, quái bay vượt qua; nâng cấp 8 bậc, sửa, bán; hết màn tháo tường hoàn 50% vàng. 🌍 BOSS THẾ GIỚI BỐ TRÍ LẠI – không còn kho ở giữa: kho/thành quái như các màn khác, 4 cửa quái ở phía trên tràn vào bản đồ theo nhiều lối mòn; mỗi đợt là toàn bộ quái của 1 kho trong giai đoạn (tổng cộng bằng quái của cả 6 kho), đợt cuối có boss; chòi đứng đúng ô như các màn khác. Bản 2026.11.11-6: 🔁 MÀN LUÂN PHIÊN – 🛤️ đi theo lối → 🌊 vượt biển (quái bơi tràn qua biển, chòi đổi thành 🚢 tàu chiến) → 🌫️ sương mù (chòi chỉ thấy quái ở gần) → 🦅 không kích (quái bay tràn vào, chòi đổi thành ✈️ máy bay chiến đấu); 🎒 ĐỘI CHÒI CHƠI NỐI TIẾP – chòi và vàng giữ nguyên khi sang màn/chủ đề mới, cùng vị trí; chạm chòi để ĐỔI DẠNG (tốn vàng) và NÂNG TRỰC TIẾP ⚔️ sát thương, 🎯 tầm bắn, ⏱️ tốc độ, ❤️ máu (càng lên càng đắt); 👹 MÁU QUÁI TĂNG THEO SỨC MẠNH ĐỘI CHÒI; ⏯️ LƯU TRẬN ĐANG DỞ – tắt game mở lại chơi tiếp đúng chỗ; 11 Ô CHÒI CỐ ĐỊNH cách đều, chòi thu nhỏ để không chồng lên nhau. Bản 2026.11.11-5: ⏱️ NÂNG CẤP TỐC ĐỘ BẮN cho từng loại chòi (+6%/bậc, 10 bậc) trong Thư viện chòi, bảng chỉ số có cột tốc độ bắn; ⏩ TUA GAME x2 – nút x1/x2 trên thanh trên cùng, nhớ lựa chọn, bảng đọc từ vẫn chạy chậm. Bản 2026.11.11-4: MỞ KHÓA LƯỢT CHỌN – hết 5 lần chọn, mỗi lần đọc hết 1 lượt từ thì từ đó được thêm 1 lần chọn, lặp mãi; 5 CHÒI MỚI ⚡ sấm sét, ☠️ độc dược, 🌪️ lốc xoáy, 🔴 tia tử thần, ☄️ thiên thạch; MỖI LOẠI CHÒI CÓ VŨ KHÍ + ĐỈNH THÁP + DÁNG THÂN RIÊNG, vũ khí xoay theo quái; 🏯 THƯ VIỆN CHÒI – xem hình động 12 loại × 10 cấp, bảng máu/dame/thủ/tầm, nâng cấp ❤️ máu ⚔️ dame 🛡️ thủ vĩnh viễn bằng 💎 ngọc (đọc đúng +2, chọn đúng +1, thắng +10/⭐). Bản 2026.11.11-3: GIỚI HẠN 👆 CHỌN ĐÁP ÁN 5 lần mỗi từ/câu (đếm mãi) – hết lượt muốn thêm vàng phải 🎤 đọc bằng giọng; TỪ DỄ TRƯỚC – từ vựng tiểu học cơ bản ra ở các đợt đầu, hết rồi mới tới từ khó; CÂU GIAO TIẾP soạn lại: 183 câu khó được thay bằng câu ngắn, dễ cho học sinh tiểu học, câu ngắn ra trước. Bản 2026.11.11-2: CHÒI 10 CẤP – từ cấp 6 chòi tiến hóa thêm 5 bậc (Hồng ngọc, Thạch anh tím, Kim cương, Lục bảo, Thần thoại): mọc 2 tháp canh phụ, tầng trên, xích sắt, cánh rồng, tia sét, vầng hào quang; sao đổi màu theo bậc, cấp 10 sao cầu vồng + vương miện. CHÒI THEO CHỦ ĐỀ – 17 phong cách (đá rêu, nhà gỗ rơm, phố gạch, công nghệ neon, kẹo ngọt, chùa tháp phương Đông, gỗ rừng, tre rừng rậm, nấm phép thuật, san hô vỏ sò, băng tuyết, gô-tích giông bão, sa mạc, kho báu, dung nham, đầm lầy, ma quái) theo cảnh của từng kho từ. Bản 2026.11.11-1: ĐỒ HỌA MỚI – chòi vẽ lại theo 5 cấp càng cao càng hầm hố (chòi gỗ → tháp đá → pháo đài → tháp sắt quỷ có gai, sừng, mắt đỏ → tháp hắc thạch viền vàng, pha lê, cầu năng lượng bay quanh); quái có viền, khối, hào quang, bước đi lắc lư, bụi chân, chớp trắng khi trúng đòn; nền có hạt đất, ánh nắng, mặt đường có khối, bóng mây trôi. Bản 2026.11.10-2: thêm 🦅 QUÁI BIẾT BAY (từ đợt 3) – không đi theo đường mà bay thẳng từ cửa vào tới kho từ, bóng in dưới đất, đập cánh. Bản 2026.11.10-1: BẢNG XẾP HẠNG TỤT HẠNG KHI VẮNG MẶT – cứ mỗi 1 tiếng người chơi không chơi thì người ảo đứng ngay dưới được cộng điểm vượt lên, người chơi tụt 1 hạng. Bản 2026.11.08-12: mỗi kho 10 câu giao tiếp; sau các đợt từ vựng (~5 từ/đợt) là ĐỢT CÂU GIAO TIẾP chỉ gồm câu, quái trâu gấp 1,7 lần; ĐỢT CUỐI riêng gồm tất cả từ vựng + câu + trùm cuối. CẢNH NỀN THEO CHỦ ĐỀ: mỗi kho có cảnh riêng (biển có sóng, nghĩa địa/đầm lầy có sương mù, giông bão có mưa chớp, xứ tuyết, vũ trụ, sân khấu, đêm hội pháo hoa…) kèm ÂM THANH NỀN tự tạo (sóng biển, gió hú rùng rợn, chim hót, mưa sấm, phố xá…), tự tắt khi đang đọc từ. Bản 2026.11.08-11: mỗi kho từ thêm 1 ĐỢT CÂU GIAO TIẾP ngay trước đợt cuối – quái vác trộm câu giao tiếp cơ bản theo chủ đề của kho (6 câu/kho, 60 kho), đọc đúng câu được thưởng gấp rưỡi, bước 2 chọn nghĩa tiếng Việt. Bản 2026.11.08-10: nâng độ khó mức Dễ và Thường lên gần bằng mức Khó – quái trâu hơn, ra dày hơn, nhiều lính bắn chòi/quái tàng hình hơn, kho giữ ít từ hơn, ít vàng khởi đầu hơn; thưởng cũng tăng theo. Bản 2026.11.08-9: đọc/chọn đáp án lấy vàng KHÔNG GIỚI HẠN nhưng theo LƯỢT – mỗi lượt mỗi từ ở thanh dưới chỉ được 1 lần, đọc/chọn hết các từ thì sang lượt mới, tất cả từ mở lại (thay cho luật "3 lần liền"). Bản 2026.11.08-8: bỏ cách đọc kiểu Việt, chỉ giữ phiên âm IPA; chọn đáp án đúng 1 từ đủ 3 lần cũng được tặng 🎁 quà mưa; máy nghe giọng dễ tính hơn. Bản 2026.11.08-7: 60 kho từ chia thành 10 GIAI ĐOẠN (mỗi giai đoạn 6 kho); bảo vệ đủ 6 kho của một giai đoạn thì mở màn 🌍 BOSS THẾ GIỚI – kho từ nằm giữa bản đồ, chòi xây quanh kho, quái tràn vào từ 4 CỬA (Bắc, Nam, Tây, Đông); boss thế giới lần sau mạnh hơn lần trước (máu, sát thương, số quái triệu hồi đều tăng). Bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
+/* 6PAY - Game "THỦ THÀNH TIẾNG ANH" (bản 2026.11.11-7: 🧱 XÂY TƯỜNG THÀNH CHẶN QUÁI – chạm vào con đường (màn biển: dòng nước, boss thế giới: lối mòn) để xây tường, quái đi bộ/bơi phải đứng lại phá tường mới đi tiếp, quái bay vượt qua; nâng cấp 8 bậc, sửa, bán; hết màn tháo tường hoàn 50% vàng. 🌍 BOSS THẾ GIỚI BỐ TRÍ LẠI – không còn kho ở giữa: kho/thành quái như các màn khác, 4 cửa quái ở phía trên tràn vào bản đồ theo nhiều lối mòn; mỗi đợt là toàn bộ quái của 1 kho trong giai đoạn (tổng cộng bằng quái của cả 6 kho), đợt cuối có boss; chòi đứng đúng ô như các màn khác. Bản 2026.11.11-6: 🔁 MÀN LUÂN PHIÊN – 🛤️ đi theo lối → 🌊 vượt biển (quái bơi tràn qua biển, chòi đổi thành 🚢 tàu chiến) → 🌫️ sương mù (chòi chỉ thấy quái ở gần) → 🦅 không kích (quái bay tràn vào, chòi đổi thành ✈️ máy bay chiến đấu); 🎒 ĐỘI CHÒI CHƠI NỐI TIẾP – chòi và vàng giữ nguyên khi sang màn/chủ đề mới, cùng vị trí; chạm chòi để ĐỔI DẠNG (tốn vàng) và NÂNG TRỰC TIẾP ⚔️ sát thương, 🎯 tầm bắn, ⏱️ tốc độ, ❤️ máu (càng lên càng đắt); 👹 MÁU QUÁI TĂNG THEO SỨC MẠNH ĐỘI CHÒI; ⏯️ LƯU TRẬN ĐANG DỞ – tắt game mở lại chơi tiếp đúng chỗ; 11 Ô CHÒI CỐ ĐỊNH cách đều, chòi thu nhỏ để không chồng lên nhau. Bản 2026.11.11-5: ⏱️ NÂNG CẤP TỐC ĐỘ BẮN cho từng loại chòi (+6%/bậc, 10 bậc) trong Thư viện chòi, bảng chỉ số có cột tốc độ bắn; ⏩ TUA GAME x2 – nút x1/x2 trên thanh trên cùng, nhớ lựa chọn, bảng đọc từ vẫn chạy chậm. Bản 2026.11.11-4: MỞ KHÓA LƯỢT CHỌN – hết 5 lần chọn, mỗi lần đọc hết 1 lượt từ thì từ đó được thêm 1 lần chọn, lặp mãi; 5 CHÒI MỚI ⚡ sấm sét, ☠️ độc dược, 🌪️ lốc xoáy, 🔴 tia tử thần, ☄️ thiên thạch; MỖI LOẠI CHÒI CÓ VŨ KHÍ + ĐỈNH THÁP + DÁNG THÂN RIÊNG, vũ khí xoay theo quái; 🏯 THƯ VIỆN CHÒI – xem hình động 12 loại × 10 cấp, bảng máu/dame/thủ/tầm, nâng cấp ❤️ máu ⚔️ dame 🛡️ thủ vĩnh viễn bằng 💎 kim cương (đọc đúng +2, chọn đúng +1, thắng +10/⭐). Bản 2026.11.11-3: GIỚI HẠN 👆 CHỌN ĐÁP ÁN 5 lần mỗi từ/câu (đếm mãi) – hết lượt muốn thêm vàng phải 🎤 đọc bằng giọng; TỪ DỄ TRƯỚC – từ vựng tiểu học cơ bản ra ở các đợt đầu, hết rồi mới tới từ khó; CÂU GIAO TIẾP soạn lại: 183 câu khó được thay bằng câu ngắn, dễ cho học sinh tiểu học, câu ngắn ra trước. Bản 2026.11.11-2: CHÒI 10 CẤP – từ cấp 6 chòi tiến hóa thêm 5 bậc (Hồng ngọc, Thạch anh tím, Kim cương, Lục bảo, Thần thoại): mọc 2 tháp canh phụ, tầng trên, xích sắt, cánh rồng, tia sét, vầng hào quang; sao đổi màu theo bậc, cấp 10 sao cầu vồng + vương miện. CHÒI THEO CHỦ ĐỀ – 17 phong cách (đá rêu, nhà gỗ rơm, phố gạch, công nghệ neon, kẹo ngọt, chùa tháp phương Đông, gỗ rừng, tre rừng rậm, nấm phép thuật, san hô vỏ sò, băng tuyết, gô-tích giông bão, sa mạc, kho báu, dung nham, đầm lầy, ma quái) theo cảnh của từng kho từ. Bản 2026.11.11-1: ĐỒ HỌA MỚI – chòi vẽ lại theo 5 cấp càng cao càng hầm hố (chòi gỗ → tháp đá → pháo đài → tháp sắt quỷ có gai, sừng, mắt đỏ → tháp hắc thạch viền vàng, pha lê, cầu năng lượng bay quanh); quái có viền, khối, hào quang, bước đi lắc lư, bụi chân, chớp trắng khi trúng đòn; nền có hạt đất, ánh nắng, mặt đường có khối, bóng mây trôi. Bản 2026.11.10-2: thêm 🦅 QUÁI BIẾT BAY (từ đợt 3) – không đi theo đường mà bay thẳng từ cửa vào tới kho từ, bóng in dưới đất, đập cánh. Bản 2026.11.10-1: BẢNG XẾP HẠNG TỤT HẠNG KHI VẮNG MẶT – cứ mỗi 1 tiếng người chơi không chơi thì người ảo đứng ngay dưới được cộng điểm vượt lên, người chơi tụt 1 hạng. Bản 2026.11.08-12: mỗi kho 10 câu giao tiếp; sau các đợt từ vựng (~5 từ/đợt) là ĐỢT CÂU GIAO TIẾP chỉ gồm câu, quái trâu gấp 1,7 lần; ĐỢT CUỐI riêng gồm tất cả từ vựng + câu + trùm cuối. CẢNH NỀN THEO CHỦ ĐỀ: mỗi kho có cảnh riêng (biển có sóng, nghĩa địa/đầm lầy có sương mù, giông bão có mưa chớp, xứ tuyết, vũ trụ, sân khấu, đêm hội pháo hoa…) kèm ÂM THANH NỀN tự tạo (sóng biển, gió hú rùng rợn, chim hót, mưa sấm, phố xá…), tự tắt khi đang đọc từ. Bản 2026.11.08-11: mỗi kho từ thêm 1 ĐỢT CÂU GIAO TIẾP ngay trước đợt cuối – quái vác trộm câu giao tiếp cơ bản theo chủ đề của kho (6 câu/kho, 60 kho), đọc đúng câu được thưởng gấp rưỡi, bước 2 chọn nghĩa tiếng Việt. Bản 2026.11.08-10: nâng độ khó mức Dễ và Thường lên gần bằng mức Khó – quái trâu hơn, ra dày hơn, nhiều lính bắn chòi/quái tàng hình hơn, kho giữ ít từ hơn, ít vàng khởi đầu hơn; thưởng cũng tăng theo. Bản 2026.11.08-9: đọc/chọn đáp án lấy vàng KHÔNG GIỚI HẠN nhưng theo LƯỢT – mỗi lượt mỗi từ ở thanh dưới chỉ được 1 lần, đọc/chọn hết các từ thì sang lượt mới, tất cả từ mở lại (thay cho luật "3 lần liền"). Bản 2026.11.08-8: bỏ cách đọc kiểu Việt, chỉ giữ phiên âm IPA; chọn đáp án đúng 1 từ đủ 3 lần cũng được tặng 🎁 quà mưa; máy nghe giọng dễ tính hơn. Bản 2026.11.08-7: 60 kho từ chia thành 10 GIAI ĐOẠN (mỗi giai đoạn 6 kho); bảo vệ đủ 6 kho của một giai đoạn thì mở màn 🌍 BOSS THẾ GIỚI – kho từ nằm giữa bản đồ, chòi xây quanh kho, quái tràn vào từ 4 CỬA (Bắc, Nam, Tây, Đông); boss thế giới lần sau mạnh hơn lần trước (máu, sát thương, số quái triệu hồi đều tăng). Bản 2026.11.08-6: sửa lỗi chạm vào ô đá thì bảng chòi vừa hiện ra bị “ăn” luôn cú chạm đó, tự xây/nâng/bán chòi ngoài ý muốn. Bản 2026.11.08-5: QUÀ MƯA – mỗi trận, lần đầu đọc đúng một từ mới được thưởng 🎁 1 trận mưa (☄️ mưa sao băng, 🧪 mưa axit, 🔥 mưa lửa, ❄️ mưa tuyết); bấm nút quà ở góc trái để gọi mưa phủ khắp bản đồ, gây sát thương đồng loạt cả bầy quái. Bản 2026.11.08-4: chòi nâng được tới ⭐ CẤP 5 – chòi phun lửa lên cấp thì lửa to hơn, phun xa hơn, cháy lan rộng hơn; thêm 🦎 QUÁI TÀNG HÌNH (từ đợt 2) – chòi thường không thấy, phải xây 👁️ CHÒI MẮT THẦN để soi thì các chòi khác mới bắn được; đọc từ ở thanh dưới KHÔNG GIỚI HẠN số lần, nhưng đọc 1 từ 3 lần liền thì phải đọc từ khác rồi mới đọc lại được từ đó. Bản 2026.11.08-3: ĐỢT QUÁI CỘNG DỒN – đợt 1 là quái của nhóm từ đầu, đợt 2 gộp quái của đợt 1 + đợt 2, …, đợt cuối có quái mang tất cả từ vựng, kèm 🐲 trùm và 👿 TRÙM CUỐI; thêm 🥷 LÍNH BẮN CHÒI (từ đợt 2) đứng lại bắn phá chòi, chòi có máu và có thể bị sập – người chơi dùng vàng để 🔧 sửa chòi, mua 🛡️ bảo hộ (khiên), mua chòi mới hoặc xây 🎯 súng bắn tỉa tầm xa ưu tiên diệt lính bắn chòi. Bản 2026.11.08-2: thêm nút 👆 CHỌN ĐÁP ÁN thay cho đọc bằng giọng (máy nào cũng chơi được), thưởng vàng và điểm xếp hạng khi chọn chỉ bằng 2/3 khi đọc; mỗi từ ở thanh dưới đọc được tối đa 3 lần, lần nào đúng cũng được thưởng; số quái mỗi đợt tăng gấp 2. Bản 2026.11.08-1: thêm 🏆 BẢNG XẾP HẠNG bên phải màn chơi – 200~300 người chơi ảo, người mới vào đứng cuối bảng; mỗi lần đọc đúng +10 điểm, bảo vệ kho từ thành công +50 điểm/⭐ (nhân theo cấp độ); top 3 có cúp vàng/bạc/đồng, hạng 4–10 có khiên. Bản 2026.11.07-8: đọc từ 2 bước – đọc tiếng Anh rồi nói đúng nghĩa tiếng Việt; máy nghe dễ tính hơn, đọc gần đúng vẫn được. Bản 2026.11.07-7: thêm 🔥 chòi phun lửa, 🚀 chòi tên lửa kèm hiệu ứng lửa/khói/nổ, 5 cấp độ Dễ – Thường – Khó – Cực khó – Khó vô địch. Bản 2026.11.07-6: cốt truyện quái trộm từ vựng mang về thành của chúng. Bản 2026.11.07-5: bỏ nút tua nhanh 2×, game luôn chạy tốc độ bình thường để người chơi nghe rõ từng từ. Bản 2026.11.07-4: hiện phiên âm IPA + cách đọc kiểu Việt ở màn ôn từ, thanh từ vựng, bảng đọc từ và bảng kết quả)
    (bản 2026.11.07-6) CỐT TRUYỆN: bầy quái lẻn vào KHO TỪ VỰNG (đầu đường, phía trên) đánh cắp từ vựng, mỗi con vác 1 từ
    để mang về THÀNH CỦA CHÚNG (cuối đường, phía dưới). Nhiệm vụ của người chơi: xây chòi chặn đường, không cho quái mang từ về thành.
    Mỗi màn là 1 kho từ vựng theo chủ đề (dùng chung 60 chủ đề của Game học từ vựng tiếng Anh – words.js).
@@ -327,7 +327,13 @@
     '.tt-btn{display:block;width:100%;border:0;border-radius:18px;padding:15px;font-size:18px;font-weight:900;font-family:inherit;color:#fff;cursor:pointer;background:linear-gradient(180deg,#f97316,#c2410c);box-shadow:0 5px 0 #7c2d12,0 10px 22px rgba(0,0,0,.35)}.tt-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #7c2d12}',
     '.tt-btn.g{background:linear-gradient(180deg,#22c55e,#15803d);box-shadow:0 5px 0 #14532d,0 10px 22px rgba(0,0,0,.35)}.tt-btn.s{background:rgba(255,255,255,.16);box-shadow:none}',
     /* trận đấu */
-    '.tt-hud{display:flex;gap:6px;flex:1;min-width:0;justify-content:center}',
+    '.tt-hud{display:flex;gap:5px;flex:1;min-width:0;justify-content:flex-start;overflow:hidden}',
+    /* (bản 2026.11.12-1) thanh chỉ số 2 hàng: hàng trên 📚 👹 + nút, hàng dưới 💰 💎 */
+    '#ttGame .tt-top{gap:5px;padding-bottom:5px}#ttGame .tt-top .tt-ib{min-width:36px;height:36px;padding:0 7px;font-size:17px}#ttGame .tt-top .tt-spd{min-width:46px;font-size:14px}#ttGame .tt-top .tt-gup{font-size:15px;padding:0 6px}',
+    '#ttGame .tt-hud .tt-pill{font-size:14px;padding:4px 8px}',
+    '.tt-hud2{display:flex;gap:8px;justify-content:center;padding:0 10px 6px;background:rgba(8,15,40,.82);position:relative;z-index:3;box-shadow:0 2px 10px rgba(0,0,0,.3)}',
+    '.tt-hud2 .tt-pill{flex:1;max-width:190px;justify-content:center;font-size:16px;padding:5px 10px}.tt-hud2 .tt-pill small{font-size:12px;font-weight:800;color:#86efac;margin-left:3px}',
+    '.tt-pill.gem{cursor:pointer;border-color:rgba(125,211,252,.5);background:rgba(14,116,144,.35)}',
     '.tt-pill{display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:5px 10px;font-weight:900;font-size:15px;white-space:nowrap}.tt-pill i{font-style:normal;font-family:' + EF + '}',
     '.tt-pill.bump{animation:ttBump .45s}@keyframes ttBump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}',
     '.tt-pill.hurt{animation:ttHurt .45s}@keyframes ttHurt{0%,100%{background:rgba(0,0,0,.35)}40%{background:#dc2626}}',
@@ -439,8 +445,10 @@
       '<div class="tt-scr tt-mapbg" id="ttIntro"><div class="tt-top"><button class="tt-ib" data-a="map" aria-label="Quay lại">←</button><h1 id="ttIT"></h1></div><div class="tt-body" id="ttIB"></div></div>' +
       '<div class="tt-scr" id="ttGame">' +
       '<div class="tt-top"><button class="tt-ib" data-a="quit" aria-label="Quay lại">←</button>' +
-      '<div class="tt-hud"><span class="tt-pill" id="ttHP" title="Số từ trong kho còn giữ được"><i>📚</i><span></span></span><span class="tt-pill" id="ttGold"><i>💰</i><span></span></span><span class="tt-pill" id="ttWv"><i>👹</i><span></span></span></div>' +
-      '<button class="tt-ib tt-spd" data-a="spd" id="ttSpd">x1</button><button class="tt-ib" data-a="pause" id="ttPau">⏸</button></div>' +
+      '<div class="tt-hud"><span class="tt-pill" id="ttHP" title="Số từ trong kho còn giữ được"><i>📚</i><span></span></span><span class="tt-pill" id="ttWv" title="Đợt quái"><i>👹</i><span></span></span></div>' +
+      '<button class="tt-ib tt-gup" data-a="glib" title="Nâng cấp chòi bằng kim cương">🏯💎</button><button class="tt-ib tt-spd" data-a="spd" id="ttSpd">x1</button><button class="tt-ib" data-a="pause" id="ttPau">⏸</button></div>' +
+      /* (bản 2026.11.12-1) hàng thứ 2: vàng (tiền) và kim cương kiếm được */
+      '<div class="tt-hud2"><span class="tt-pill" id="ttGold" title="Vàng để xây, nâng cấp chòi"><i>💰</i><span></span></span><span class="tt-pill gem" id="ttGem" data-a="glib" title="Kim cương – chạm để nâng cấp chòi"><i>💎</i><span></span></span></div>' +
       '<div class="tt-stage" id="ttStage"><canvas id="ttCv"></canvas><div class="tt-lb" id="ttLB"></div><div class="tt-gift" id="ttGift"></div>' +
       '<button class="tt-wavebtn" data-a="wave" id="ttWB"></button>' +
       '<div class="tt-banner" id="ttBan"></div><div class="tt-toast" id="ttToast"></div><div class="tt-pop" id="ttPop"></div>' +
@@ -716,7 +724,8 @@
   var FORMS = { land: { n: 'Chòi', e: '🏯' }, boat: { n: 'Tàu chiến', e: '🚢' }, plane: { n: 'Máy bay chiến đấu', e: '✈️' } };
   var SEA_E = { bat: '🐡', gob: '🦈', ghost: '🐠', zom: '🐊', ogre: '🐙', gun: '🦀', inv: '🦑', fly: '🦅' };
   var AIR_E = { bat: '🦇', gob: '🦅', ghost: '👻', zom: '🦉', ogre: '🐉', gun: '🛸', inv: '🦋', fly: '🦅' };
-  var SUPPLY = 50;   // vàng tiếp tế mỗi màn khi mang đội chòi sang
+  var SUPPLY = 50;
+  var KILL_GOLD = 2;   // (bản 2026.11.12-1) vàng thưởng mỗi con quái bị bắn chết   // vàng tiếp tế mỗi màn khi mang đội chòi sang
   /* 11 ô chòi cố định (tỉ lệ theo chiều rộng/chiều cao bản đồ), cách nhau ≥ 0,2 bề rộng → chòi cấp cao cũng không chồng lên nhau */
   var SLOTS = [[0.3, 0.265], [0.5, 0.265], [0.7, 0.265], [0.3, 0.475], [0.5, 0.475], [0.7, 0.475], [0.3, 0.685], [0.5, 0.685], [0.7, 0.685], [0.14, 0.9], [0.86, 0.9]];
   /* 2 con đường (đối xứng) chạy vòng quanh các ô chòi; màn đi theo lối và màn sương mù dùng luân phiên */
@@ -1493,7 +1502,7 @@
     if (!G) return;
     if (!G.ended && !G.paused) { runT += dt; if (runT > 3) { runT = 0; runSave(); } }   // (bản 2026.11.11-6) tự lưu trận đang dở
     ambTick(dt);
-    if (!G.paused && !G.ended) { lbT += dt; if (lbT > 7) { lbT = 0; lbBotsPlay(1 + Math.floor(Math.random() * 3)); lbSave(); lbRender(); } }
+    if (!G.paused && !G.ended) { lbT += dt; if (lbT > 7) { lbT = 0; lbBotsPlay(1 + Math.floor(Math.random() * 3)); lbTouch(); lbRender(); } }   // (bản 2026.11.12-1) đang chơi → không bị tính vắng mặt
     if (!G.paused && !G.ended && G.phase === 'prep' && !SAY) { G.prepT -= dt * SPD; if (G.prepT <= 0) startWave(); else waveBtn(); }
     render(dt);
   }
@@ -1680,6 +1689,8 @@
       var p = posAt(e.f, e.pi), x = G.tp.w[e.w];
       G.enemies.splice(G.enemies.indexOf(e), 1);
       spark(p.x, p.y - W * 0.03, ['#fde047', '#f97316', '#fff', '#a3e635'], 12);
+      /* (bản 2026.11.12-1) bắn chết mỗi con quái +KILL_GOLD vàng */
+      G.gold += KILL_GOLD; G.kills = (G.kills || 0) + 1; G.txt.push({ x: p.x, y: p.y - W * 0.03, s: '+' + KILL_GOLD + ' 💰', c: '#fde047', l: 1 }); hud();
       var ty = p.y - W * 0.1; G.txt.forEach(function (t) { if (Math.abs(t.y - ty) < W * 0.05 && Math.abs(t.x - p.x) < W * 0.4) ty = t.y - W * 0.055; });
       G.txt.push({ x: p.x, y: ty, s: x[0] + ' · ' + x[1], c: '#fff', l: 1.6, big: 1 });
       sfx('die');
@@ -1921,13 +1932,16 @@
       try { LB = JSON.parse(localStorage.getItem(LB_KEY)); } catch (e) {}
       if (!LB || !LB.b || !LB.b.length) LB = { b: lbMake(), me: 0, t: Date.now() };
       if (!LB.p) LB.p = LB.t || Date.now();                            // (bản 2026.11.10-1) lần cuối người chơi thật sự chơi
-      var hrs = (Date.now() - (LB.t || Date.now())) / 36e5;          // vắng mặt bao lâu thì người ảo chơi thêm bấy nhiêu
-      lbBotsPlay(Math.min(300, Math.floor(hrs * 6))); LB.t = Date.now();
+      /* (bản 2026.11.12-1) khi người chơi vắng mặt, người ảo KHÔNG tự cộng điểm nữa: chỉ áp luật tụt đúng 1 hạng mỗi giờ */
+      LB.t = Date.now();
       lbDecay(); lbSave();
     }
     return LB;
   }
-  /* (bản 2026.11.10-1) TỤT HẠNG KHI VẮNG MẶT: cứ mỗi 1 tiếng người chơi không chơi (không đọc đúng / không bảo vệ kho),
+  /* (bản 2026.11.12-1) LUẬT TỤT HẠNG: cứ mỗi 1 giờ người chơi KHÔNG VÀO CHƠI (không ở trong trận) thì tụt đúng 1 hạng.
+     Ví dụ đang hạng 1, vắng 10 tiếng → hạng 11 (ra khỏi top 10). Đang ở trong trận (không tạm dừng) thì đồng hồ vắng mặt luôn được đặt lại.
+     Hạng đã tụt không tự lấy lại: phải chơi, đọc đúng, giữ kho để kiếm điểm vượt lên lại.
+     (bản 2026.11.10-1) TỤT HẠNG KHI VẮNG MẶT: cứ mỗi 1 tiếng người chơi không chơi (không đọc đúng / không bảo vệ kho),
      người ảo đứng ngay dưới được cộng điểm vượt lên trên người chơi -> người chơi tụt 1 hạng.
      LB.p = thời điểm chơi gần nhất, LB.dc = số hạng đã bị tụt trong lần vắng mặt này. Chơi lại thì đếm lại từ đầu. */
   var LB_IDLE = 36e5;   // 1 tiếng
@@ -1945,6 +1959,7 @@
     return moved;
   }
   setInterval(function () { if (LB && lbDecay()) { lbSave(); lbRender(); } }, 60000);   // đang mở game mà không chơi cũng tính
+  function lbTouch() { var d = lbData(); lbDecay(); d.p = Date.now(); d.dc = 0; lbSave(); }   // (bản 2026.11.12-1) đang vào chơi: đặt lại đồng hồ vắng mặt
   function lbRank() { var d = lbData(), r = 1; d.b.forEach(function (b) { if (b.s >= d.me) r++; }); return r; }   // bằng điểm thì người ảo đứng trước
   function lbAdd(n) {
     var d = lbData(); d.me += n; d.t = d.p = Date.now(); d.dc = 0; lbSave();
@@ -1969,6 +1984,7 @@
     });
     var need = 0; d.b.forEach(function (b) { if (b.s >= d.me && (!need || b.s - d.me + 1 < need)) need = b.s - d.me + 1; });   // điểm cần để vượt người ngay trên
     var hint = r > 1 ? 'Còn ' + need.toLocaleString('vi-VN') + ' điểm nữa để lên hạng #' + (r - 1).toLocaleString('vi-VN') : '👑 Bạn đang đứng đầu!';
+    hint += '<br>' + (d.dc ? '⏬ Vắng ' + d.dc + ' giờ nên đã tụt ' + d.dc + ' hạng' : '⏳ Không vào chơi 1 giờ sẽ tụt 1 hạng');
     if (!mini) h += '</ol><div class="my"><div class="t">Bạn <b>#' + r.toLocaleString('vi-VN') + '</b><span>' + d.me.toLocaleString('vi-VN') + ' điểm</span></div><small>' + hint + '</small></div>';
     else h += '</ol>';
     el.innerHTML = h;
@@ -1979,8 +1995,10 @@
   /* ================= HUD & THANH TỪ VỰNG ================= */
   var hudV = {};
   function hud(fx) {
-    var hp = $('ttHP').lastChild, gd = $('ttGold').lastChild, wv = $('ttWv').lastChild;
-    hp.textContent = G.hp; gd.textContent = G.gold; wv.textContent = MODES[G.mode].e + ' ' + (G.wave + 1) + '/' + G.waves.length;
+    var hp = $('ttHP').lastChild, gd = $('ttGold').lastChild, wv = $('ttWv').lastChild, gmE = $('ttGem');
+    hp.textContent = G.hp; gd.textContent = Math.floor(G.gold).toLocaleString('vi-VN');
+    if (gmE) gmE.lastChild.innerHTML = gems().toLocaleString('vi-VN') + (G.gemE ? '<small>+' + G.gemE + '</small>' : '');
+    if (fx === 'gem' && gmE) { gmE.classList.remove('bump'); void gmE.offsetWidth; gmE.classList.add('bump'); } wv.textContent = MODES[G.mode].e + ' ' + (G.wave + 1) + '/' + G.waves.length;
     if (fx === 'gold') { var e = $('ttGold'); e.classList.remove('bump'); void e.offsetWidth; e.classList.add('bump'); }
     if (fx === 'hp') { var h = $('ttHP'); h.classList.remove('hurt'); void h.offsetWidth; h.classList.add('hurt'); }
     $('ttPau').textContent = G.paused ? '▶' : '⏸'; var sb = $('ttSpd'); if (sb) { sb.textContent = SPD > 1 ? '⏩x2' : 'x1'; sb.classList.toggle('on', SPD > 1); }
@@ -2147,6 +2165,11 @@
         '<div class="tt-sub">Nâng chỉ số riêng chòi này</div><div class="tt-ups">' + TUP_KEYS.filter(function (k) { return !(T.eye && (k === 'd' || k === 's')); }).map(function (k) {
           var n = tu(t, k), U = TUP[k], mx = n >= TUP_MAX, c = tupCost(t, k);
           return '<button class="' + (mx ? 'mx' : G.gold < c ? 'no' : '') + '" data-a="tup" data-k="' + k + '"><b>' + U.e + ' ' + U.n + ' ' + n + '/' + TUP_MAX + '</b>' + (mx ? 'Tối đa' : '+' + U.p + '% · <em>' + c + ' 💰</em>') + '</button>';
+        }).join('') + '</div>' +
+        /* (bản 2026.11.12-1) nâng vĩnh viễn bằng kim cương ngay trong trận */
+        '<div class="tt-sub">💎 Nâng vĩnh viễn mọi ' + esc(T.n.toLowerCase()) + ' · có 💎 ' + gems().toLocaleString('vi-VN') + '</div><div class="tt-ups">' + (T.eye ? ['h', 'f'] : ['h', 'd', 'f', 's']).map(function (k) {
+          var n = upg(t.k)[k], U = UPS[k], mx = n >= UP_MAX, c = upStatCost(n);
+          return '<button class="' + (mx ? 'mx' : gems() < c ? 'no' : '') + '" data-a="gup" data-k="' + k + '"><b>' + U.e + ' ' + U.n + ' ' + n + '/' + UP_MAX + '</b>' + (mx ? 'Tối đa' : '+' + U.p + '% · <em>' + c + ' 💎</em>') + '</button>';
         }).join('') + '</div>' +
         towerBar(t) +
         (t.hp < towerMax(t) ? '<button class="tt-opt grn' + (G.gold < fixCost(t) ? ' no' : '') + '" data-a="fix"><i>🔧</i><span><b>Sửa chòi</b><small>Hồi đầy máu chòi (' + Math.ceil(t.hp) + '/' + towerMax(t) + ')</small></span><em>' + fixCost(t) + ' 💰</em></button>' : '') +
@@ -3010,7 +3033,7 @@
   var UP_MAX = 10, UPS = { h: { n: 'Máu', e: '❤️', p: 10 }, d: { n: 'Dame', e: '⚔️', p: 8 }, f: { n: 'Thủ', e: '🛡️', p: 4 }, s: { n: 'Tốc độ bắn', e: '⏱️', p: 6 } };   // (bản 2026.11.11-5) thêm ⏱️ tốc độ bắn
   function upg(k) { var p = prog(); if (!p.up) p.up = {}; var u = p.up[k] || (p.up[k] = { h: 0, d: 0, f: 0, s: 0 }); if (u.s == null) u.s = 0; return u; }
   function gems() { return prog().gem || 0; }
-  function addGem(n) { var p = prog(); p.gem = (p.gem || 0) + n; saveProg(); if (G) G.gemE = (G.gemE || 0) + n; }
+  function addGem(n) { var p = prog(); p.gem = (p.gem || 0) + n; saveProg(); if (G) G.gemE = (G.gemE || 0) + n; try { if (G && G.waves && !G.ended && $('ttGame').classList.contains('on')) hud('gem'); } catch (e) {} }
   function upStatCost(n) { return 30 * (n + 1); }
   function tHPmax(k, lv) { return Math.round(TOWER_HP * (1 + 0.5 * (lv - 1)) * (1 + 0.1 * upg(k).h)); }
   function tDmg(k, lv) { return TW[k].d * lvDmg(lv, 1.5, 1.25) * (1 + 0.08 * upg(k).d); }
@@ -3031,7 +3054,7 @@
   function closeLib() { var el = $('ttLib'); if (el) el.classList.remove('on'); if (LIB.raf) cancelAnimationFrame(LIB.raf); LIB.raf = 0; LIB.play = false; }
   function renderLib() {
     var k = LIB.k, T = TW[k], u = upg(k), h = '';
-    h += '<div class="hd"><b>🏯 Thư viện chòi</b><span class="gm">💎 ' + gems().toLocaleString('vi-VN') + ' ngọc</span><button class="tt-ib" data-a="libx">✕</button></div>';
+    h += '<div class="hd"><b>🏯 Thư viện chòi</b><span class="gm">💎 ' + gems().toLocaleString('vi-VN') + ' kim cương</span><button class="tt-ib" data-a="libx">✕</button></div>';
     h += '<div class="tabs">' + TW_KEYS.map(function (q) { return '<button class="' + (q === k ? 'on' : '') + '" data-a="libk" data-k="' + q + '"><i>' + TW[q].e + '</i><span>' + esc(TW[q].n.replace('Chòi ', '').replace('Súng bắn tỉa tầm xa', 'bắn tỉa')) + '</span></button>'; }).join('') + '</div>';
     h += '<div class="pv"><canvas id="ttLibCv"></canvas><div class="cap" id="ttLibCap"></div></div>';
     h += '<div class="lvs">' + [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(function (l) { return '<button class="' + (l === LIB.lv ? 'on' : '') + '" data-a="libl" data-l="' + l + '" style="' + (l >= 5 ? '--c:' + TIERC[l] : '') + '">' + l + '</button>'; }).join('') +
@@ -3044,7 +3067,7 @@
       return '<div class="ur"><i>' + U.e + '</i><span><b>' + U.n + ' +' + (n * U.p) + '%</b><small>bậc ' + n + '/' + UP_MAX + ' · mỗi bậc +' + U.p + '%</small><em class="bar"><em style="width:' + (n * 10) + '%"></em></em></span>' +
         (mx ? '<button disabled>Tối đa</button>' : '<button data-a="libup" data-s="' + s2 + '"' + (gems() < c ? ' class="no"' : '') + '>Nâng · 💎 ' + c + '</button>') + '</div>';
     }).join('') + (LIB.msg ? '<div class="msg">' + LIB.msg + '</div>' : '') +
-      '<div class="note">💎 Ngọc nâng cấp: đọc đúng bằng giọng <b>+2</b>, chọn đáp án đúng <b>+1</b>, thắng trận <b>+10 mỗi ⭐</b>. Chỉ số nâng cấp áp dụng cho chòi loại này ở mọi kho từ.</div></div>';
+      '<div class="note">💎 Kim cương nâng cấp: đọc đúng bằng giọng <b>+2</b>, chọn đáp án đúng <b>+1</b>, thắng trận <b>+10 mỗi ⭐</b>. Chỉ số nâng cấp áp dụng cho chòi loại này ở mọi kho từ.</div></div>';
     $('ttLib').innerHTML = '<div class="in">' + h + '</div>';
     libCap();
   }
@@ -3086,12 +3109,19 @@
     } catch (err) { if (window.__TTDBG) console.error(err); }
     X = sv.X; W = sv.W; H = sv.H; G = sv.G; DPR = sv.DPR;
   }
-  function libUp(s2) {
-    var u = upg(LIB.k), n = u[s2], c = upStatCost(n);
-    if (n >= UP_MAX) return;
-    if (gems() < c) { LIB.msg = '💎 Chưa đủ ngọc: cần ' + c + ', đang có ' + gems() + '. Đọc đúng thêm từ để kiếm ngọc nhé!'; renderLib(); sfx('bad'); return; }
-    var p = prog(); p.gem -= c; u[s2] = n + 1; saveProg(); LIB.msg = '✅ ' + UPS[s2].e + ' ' + UPS[s2].n + ' của ' + TW[LIB.k].n.toLowerCase() + ' lên bậc ' + (n + 1) + '!'; sfx('coin'); renderLib();
+  /* (bản 2026.11.12-1) nâng vĩnh viễn 1 chỉ số của loại chòi k bằng kim cương; nếu đang trong trận thì chòi đang đứng trên bản đồ được cộng ngay */
+  function gemUp(k, s2) {
+    var u = upg(k), n = u[s2], c = upStatCost(n);
+    if (n >= UP_MAX) return false;
+    if (gems() < c) { var m = '💎 Chưa đủ kim cương: cần ' + c + ', đang có ' + gems() + '. Đọc đúng thêm từ để kiếm kim cương nhé!'; LIB.msg = m; if (G && G.waves && !$('ttLib').classList.contains('on')) toast(m); sfx('bad'); return false; }
+    var live = G && G.towers && G.waves ? G.towers.filter(function (t) { return t.k === k; }) : [], om = live.map(towerMax);
+    var p = prog(); p.gem -= c; u[s2] = n + 1; saveProg();
+    live.forEach(function (t, i) { if (s2 === 'h') t.hp += towerMax(t) - om[i]; });
+    LIB.msg = '✅ ' + UPS[s2].e + ' ' + UPS[s2].n + ' của ' + TW[k].n.toLowerCase() + ' lên bậc ' + (n + 1) + '!' + (live.length ? ' Các chòi đang đứng trên bản đồ đã được cộng ngay.' : '');
+    sfx('coin'); if (G && G.waves && !G.ended && $('ttGame').classList.contains('on')) { hud('gem'); runSave(); }
+    return true;
   }
+  function libUp(s2) { gemUp(LIB.k, s2); renderLib(); }
   /* (bản 2026.11.11-6) vẽ chòi theo dạng: 🏯 chòi trên đất, 🚢 tàu chiến (chòi đặt trên thân tàu), ✈️ máy bay chiến đấu bay lượn trên ô */
   function drawTower(t) {
     if (t.f === 'boat') drawBoat(t); else if (t.f === 'plane') drawPlane(t); else drawTowerLand(t);
@@ -3421,7 +3451,7 @@
       '<div class="sum" style="margin-bottom:4px">Cấp độ: <b style="color:' + DIFF[G.dif].c + ';background:#fff;border-radius:8px;padding:1px 8px">' + DIFF[G.dif].e + ' ' + DIFF[G.dif].n + '</b></div>' +
       '<div class="sum">' + (win ? 'Kho còn giữ ' + G.hp + '/' + G.hpMax + ' 📚 · ' : 'Bạn chặn được ' + G.wave + '/' + G.waves.length + ' đợt · ') + 'Đọc đúng <b>' + G.ok + '/' + tp.w.length + '</b> ' + (tp.nW ? 'từ & câu' : 'từ') + '</div>' +
       (vnd ? '<div class="farm">🧑‍🌾 +' + money(vnd) + ' vào Nông trại</div>' : '') +
-      (G.gemE ? '<div class="farm" style="background:rgba(14,165,233,.3)">💎 +' + G.gemE + ' ngọc nâng cấp chòi · đang có ' + gems().toLocaleString('vi-VN') + ' (vào 🏯 Thư viện chòi để nâng cấp)</div>' : '') +
+      (G.gemE ? '<div class="farm" style="background:rgba(14,165,233,.3)">💎 +' + G.gemE + ' kim cương nâng cấp chòi · đang có ' + gems().toLocaleString('vi-VN') + ' (vào 🏯 Thư viện chòi để nâng cấp)</div>' : '') +
       '<div class="farm" style="background:rgba(234,179,8,.3)">🏆 ' + (lbp ? '+' + lbp + ' điểm xếp hạng · ' : '') + 'Hạng của bạn: #' + lbRank().toLocaleString('vi-VN') + '</div>' +
       (bad.length ? '<div style="font-size:13.5px;font-weight:800;color:#fca5a5">Từ cần luyện thêm (chạm để nghe):</div><div class="wl">' + bad.slice(0, 24).map(function (i) { var pv = pronOf(tp.w[i]).vi; return '<span class="bd" data-a="hearw" data-i="' + i + '">' + esc(tp.w[i][0]) + (pv ? ' <i style="font-style:normal;color:#fde68a">(' + esc(pv) + ')</i>' : '') + ' · ' + esc(tp.w[i][1]) + '</span>'; }).join('') + '</div>' : '<div class="sum">🎉 Bạn đã đọc đúng toàn bộ từ vựng trong kho!</div>') +
       '<div class="farm" style="background:rgba(16,185,129,.32)">🎒 Giữ lại ' + (G.towers.length + G.reserve.length) + ' chòi + ' + Math.round(G.gold) + ' 💰 cho màn sau' + (G.wRef ? ' (gồm +' + G.wRef + ' 💰 tháo tường)' : '') + ' · Màn sau: ' + MODES[nextMode(nextWb >= 0 ? wbTopic(nextWb) : next)].e + ' ' + MODES[nextMode(nextWb >= 0 ? wbTopic(nextWb) : next)].n + '</div>' +
@@ -3435,6 +3465,7 @@
   function startGame(tp, R) {
     hush(); closeSay();
     if (!R) { var OR = runGet(); if (OR) { armyFromRun(OR); runClear(); } }   // (bản 2026.11.11-6) bỏ trận dở để vào trận khác: chòi + vàng vẫn mang theo
+    lbTouch();   // (bản 2026.11.12-1) vào chơi: đặt lại đồng hồ tụt hạng
     newGame(tp, R); show('ttGame');
     $('ttEnd').classList.remove('on'); closePop();
     requestAnimationFrame(function () {
@@ -3471,6 +3502,7 @@
     if (GUARD_ACT[a] && Date.now() - tapAt < TAP_GUARD) return;   // cú bấm "dội" từ lần chạm mở bảng – bỏ qua
     if (a === 'close') { close(); return; }
     if (a === 'lib') { LIB.msg = ''; openLib(); return; }
+    if (a === 'libx' && G && G.waves && !G.ended && $('ttGame').classList.contains('on')) { closeLib(); if (G.libPau) { G.paused = false; G.libPau = false; } hud(); return; }
     if (a === 'libx') { closeLib(); if ($('ttMap').classList.contains('on')) renderMap(); else if (CUR && $('ttIntro').classList.contains('on')) openIntro(CUR); return; }
     if (a === 'libk') { LIB.k = el.getAttribute('data-k'); LIB.msg = ''; LIB.tw = null; renderLib(); return; }
     if (a === 'libl') { LIB.play = false; libSetLv(+el.getAttribute('data-l')); var pb = $('ttLib').querySelector('[data-a="libplay"]'); if (pb) { pb.classList.remove('on'); pb.textContent = '▶ Xem lần lượt'; } return; }
@@ -3536,6 +3568,16 @@
     if (a === 'wup') { var wu = G.wsel; if (!wu || wu.lv >= WALL_LV) return; var cu = wallUp(wu); if (G.gold < cu) { needGold(cu); return; } G.gold -= cu; wu.spent += cu; var omw = wallMax(wu); wu.lv++; wu.hp += wallMax(wu) - omw; spark(wu.x * W, wu.y * H - W * 0.03, ['#fde047', '#fff', '#a8a29e'], 14); sfx('build'); hud('gold'); openWallPop(wu); return; }
     if (a === 'wfix') { var wf = G.wsel; if (!wf) return; var cf2 = wallFix(wf); if (G.gold < cf2) { needGold(cf2); return; } G.gold -= cf2; wf.hp = wallMax(wf); spark(wf.x * W, wf.y * H - W * 0.03, ['#86efac', '#fff'], 10); sfx('build'); hud('gold'); openWallPop(wf); return; }
     if (a === 'wsell') { var wsl = G.wsel; if (!wsl) return; G.gold += Math.floor(wsl.spent * 0.5); G.walls.splice(G.walls.indexOf(wsl), 1); sfx('coin'); hud('gold'); closePop(); runSave(); return; }
+    if (a === 'gup') {   // (bản 2026.11.12-1) nâng vĩnh viễn loại chòi bằng kim cương ngay trong trận
+      var tg = towerAt(G.sel), gk = el.getAttribute('data-k'); if (!tg || !UPS[gk]) return;
+      gemUp(tg.k, gk); openPop(G.sel); return;
+    }
+    if (a === 'glib') {   // (bản 2026.11.12-1) mở Thư viện chòi trong trận: tạm dừng game, đóng lại thì chơi tiếp
+      if (!G || G.ended) return; closePop(); closeSay();
+      G.libPau = !G.paused; G.paused = true; hud();
+      var tk = G.sel != null && towerAt(G.sel) ? towerAt(G.sel).k : (G.towers[0] ? G.towers[0].k : null);
+      LIB.msg = '⏸ Trận đấu đang tạm dừng. Nâng cấp xong bấm ✕ để chơi tiếp.'; openLib(tk); return;
+    }
     if (a === 'tup') {   // (bản 2026.11.11-6) nâng chỉ số riêng chòi
       var tq = towerAt(G.sel), sk = el.getAttribute('data-k'); if (!tq || !TUP[sk] || tu(tq, sk) >= TUP_MAX) return;
       var cq = tupCost(tq, sk); if (G.gold < cq) { needGold(cq); return; }

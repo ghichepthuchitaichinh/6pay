@@ -364,6 +364,8 @@
     '.eg-fab .pm,.eg-fab .pm2{position:absolute;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;line-height:1;pointer-events:none;filter:drop-shadow(0 3px 2px rgba(0,60,40,.35))}' +
     '.eg-fab .pm{font-size:54px;left:14px;top:-44px;transform:rotate(-8deg)}.eg-fab .pm2{font-size:36px;left:56px;top:-26px;transform:rotate(10deg)}' +
     '.eg-fab:active{transform:scale(.96)}@keyframes egFab{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}';
+  /* Menu có 4 hình thức học: cho cuộn được trên màn hình nhỏ (bản 2026.11.12-1) */
+  st.textContent += '#egMenu .eg-choice{overflow-y:auto;justify-content:flex-start;gap:12px}#egMenu .eg-big{padding:16px 14px;flex:none}#egMenu .eg-big .ic{font-size:42px}';
   document.head.appendChild(st);
 
   /* ================= DOM ================= */
@@ -375,6 +377,7 @@
     '<button class="eg-big" data-a="topics" style="background:linear-gradient(145deg,#3b82f6,#1d4ed8)"><span class="ic">📚</span><span class="nm">Từ vựng tiếng Anh theo chủ đề</span><span class="sub">Chọn chủ đề yêu thích và hứng từ trong 2 phút</span></button>' +
     '<button class="eg-big" data-a="day" style="background:linear-gradient(145deg,#f59e0b,#ea580c)"><span class="ic">🌞</span><span class="nm">Một ngày của bạn</span><span class="sub">Phá đảo 15 màn từ lúc thức dậy đến khi đi ngủ, hơn ' + DAYWORDS + ' từ vựng</span></button>' +
     '<button class="eg-big" data-a="phr" style="background:linear-gradient(145deg,#14b8a6,#0f766e)"><span class="ic">💬</span><span class="nm">Những câu giao tiếp cơ bản</span><span class="sub">' + PHRN + ' câu thông dụng theo ' + PHR.length + ' tình huống: nghe, đọc theo và luyện tập</span></button>' +
+    '<button class="eg-big" data-a="grammar" style="background:linear-gradient(145deg,#8b5cf6,#6d28d9)"><span class="ic">📘</span><span class="nm">Ngữ pháp & bảng chữ cái</span><span class="sub">Bảng chữ cái, ngữ pháp cơ bản, chia động từ theo ngôi, bảng động từ bất quy tắc</span></button>' +
     '</div></div>' +
   '<div class="eg-scr" id="egTopics"><div class="eg-top"><button class="eg-btn" data-a="menu" style="padding:8px 14px;font-size:20px">←</button><div class="eg-title fl">Hãy chọn một chủ đề để bắt đầu chơi</div></div><div class="eg-grid" id="egGrid" style="padding-bottom:96px"></div><button class="eg-fab" data-a="island"><span class="pm">🌴</span><span class="pm2">🌴</span><span class="tx">Phá đảo chủ đề</span></button></div>' +
   '<div class="eg-scr" id="egMap"><div class="eg-top"><button class="eg-btn" data-a="menu" style="padding:8px 14px;font-size:20px">←</button><div class="eg-title fl">🌞 Một ngày của bạn</div></div>' +
@@ -757,6 +760,7 @@
     else if (a === 'quizlv') startQuiz(i);
     else if (a === 'endback') { if (G && G.mode === 'topic') toTopics(); else toMap(); }
     else if (a === 'phr') { stopSpeak(); renderPhr(); }
+    else if (a === 'grammar') { stopSpeak(); if (window.SixGrammar) window.SixGrammar.open(); }
     else if (a === 'phrcat') { if (i >= lkFree(PHR.length) && !lkOpen()) lkAsk(function () { renderPhr(); renderPhrList(i); }); else renderPhrList(i); }
     else if (a === 'phsay') phSay(PHR[phG].p[i]);
     else if (a === 'phquiz') phQuizStart();
@@ -788,10 +792,657 @@
       if (o && o.topic) { for (var i = 0; i < TOPICS.length; i++) if (TOPICS[i].id === o.topic) { openTopicIntro(TOPICS[i]); break; } }
       else if (o && o.topics) toTopics();   // mở thẳng danh sách chủ đề (từ màn hình nghỉ của Nông trại)
     },
-    close: function () { cancelAnimationFrame(raf); stopSpeak(); G = null; root.classList.remove('on'); document.body.style.overflow = ''; },
+    close: function () { cancelAnimationFrame(raf); stopSpeak(); G = null; root.classList.remove('on'); document.body.style.overflow = ''; try { if (window.SixGrammar) window.SixGrammar.close(); } catch (e) {} },
     // Dữ liệu chủ đề dùng chung cho game Xếp kẹo từ vựng (match.js)
     data: { topics: TOPICS, groups: GROUPS, img: function (k) { return IMGS[k] || null; }, pron: prTxt }
   };
   window.SixWordGame = api;
   window.SixDayGame = api;
+})();
+
+/* ================= NGỮ PHÁP & BẢNG CHỮ CÁI (bản 2026.11.12-1) =================
+   Mở từ nút "Ngữ pháp & bảng chữ cái" trong menu game học tiếng Anh.
+   Gồm: 1) Bảng chữ cái & cách đọc  2) Ngữ pháp cơ bản (26 bài, 3 cấp độ)
+        3) Chia động từ theo ngôi (6 thì, khẳng định/phủ định/nghi vấn)  4) Bảng động từ bất quy tắc
+   Mỗi phần đều có Luyện tập. Tiền thưởng chỉ cộng khi bạn làm tốt hơn kỷ lục cũ của bài đó (chuyển vào Nông trại). */
+(function () {
+  if (window.SixGrammar) return;
+  var EF = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+
+  /* ---------- Đọc tiếng Anh ---------- */
+  function say(t, queue) {
+    if (!t) return;
+    try {
+      if (window.SixTTS && window.SixTTS.ok) { window.SixTTS.speak(t, 'en-US', 0.85, null, { flush: !queue }); return; }
+      if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
+      if (!queue) speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; u.rate = 0.85; speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+  function hush() { try { if (window.SixTTS) window.SixTTS.stop(); else if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {} }
+  function sfx(k) { try { if (window.sfx) window.sfx(k); } catch (e) {} }
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function getN(k) { try { return +localStorage.getItem(k) || 0; } catch (e) { return 0; } }
+  function setN(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function money(n) { return n.toLocaleString('vi-VN') + 'đ'; }
+
+  /* =====================================================================
+     1) BẢNG CHỮ CÁI: [chữ, phiên âm tên chữ, đọc kiểu Việt, chữ để máy đọc tên, âm thường gặp, từ ví dụ, nghĩa, hình]
+     ===================================================================== */
+  var ABC = [
+    ['A', 'eɪ', 'ây', 'ay', '/æ/ như trong apple', 'apple', 'quả táo', '🍎'],
+    ['B', 'biː', 'bi', 'bee', '/b/', 'ball', 'quả bóng', '⚽'],
+    ['C', 'siː', 'xi', 'see', '/k/ (cat) hoặc /s/ (city)', 'cat', 'con mèo', '🐱'],
+    ['D', 'diː', 'đi', 'dee', '/d/', 'dog', 'con chó', '🐶'],
+    ['E', 'iː', 'i', 'ee', '/e/ như trong egg', 'egg', 'quả trứng', '🥚'],
+    ['F', 'ef', 'ép', 'ef', '/f/', 'fish', 'con cá', '🐟'],
+    ['G', 'dʒiː', 'gi', 'jee', '/g/ (go) hoặc /dʒ/ (giraffe)', 'goat', 'con dê', '🐐'],
+    ['H', 'eɪtʃ', 'ếch', 'aitch', '/h/', 'hat', 'cái mũ', '🎩'],
+    ['I', 'aɪ', 'ai', 'eye', '/ɪ/ (pig) hoặc /aɪ/ (ice)', 'ice cream', 'kem', '🍦'],
+    ['J', 'dʒeɪ', 'giây', 'jay', '/dʒ/', 'juice', 'nước ép', '🧃'],
+    ['K', 'keɪ', 'cây', 'kay', '/k/', 'kite', 'con diều', '🪁'],
+    ['L', 'el', 'eo (en-lờ)', 'el', '/l/', 'lion', 'sư tử', '🦁'],
+    ['M', 'em', 'em', 'em', '/m/', 'moon', 'mặt trăng', '🌙'],
+    ['N', 'en', 'en', 'en', '/n/', 'nose', 'cái mũi', '👃'],
+    ['O', 'oʊ', 'âu', 'oh', '/ɑ/ (hot) hoặc /oʊ/ (go)', 'orange', 'quả cam', '🍊'],
+    ['P', 'piː', 'pi', 'pee', '/p/', 'pen', 'bút mực', '🖊️'],
+    ['Q', 'kjuː', 'kiu', 'cue', '/kw/ (thường đi với u: qu)', 'queen', 'nữ hoàng', '👸'],
+    ['R', 'ɑːr', 'a (uốn lưỡi)', 'ar', '/r/', 'rabbit', 'con thỏ', '🐰'],
+    ['S', 'es', 'ét', 'ess', '/s/ hoặc /z/', 'sun', 'mặt trời', '☀️'],
+    ['T', 'tiː', 'ti', 'tee', '/t/', 'tiger', 'con hổ', '🐯'],
+    ['U', 'juː', 'diu', 'you', '/ʌ/ (sun) hoặc /juː/ (use)', 'umbrella', 'cái ô', '☂️'],
+    ['V', 'viː', 'vi', 'vee', '/v/', 'van', 'xe tải nhỏ', '🚐'],
+    ['W', 'ˈdʌbəl.juː', 'đắp-bồ-diu', 'double you', '/w/', 'watch', 'đồng hồ đeo tay', '⌚'],
+    ['X', 'eks', 'éc-xơ', 'ex', '/ks/ (box)', 'fox', 'con cáo (x ở cuối)', '🦊'],
+    ['Y', 'waɪ', 'quai', 'why', '/j/ (yes) hoặc /aɪ/ (my)', 'yo-yo', 'cái yo-yo', '🪀'],
+    ['Z', 'ziː', 'di (Anh-Anh: zed – dét)', 'zee', '/z/', 'zebra', 'ngựa vằn', '🦓']
+  ];
+  var VOW = 'AEIOU';
+
+  /* =====================================================================
+     2) BÀI NGỮ PHÁP
+     Mỗi bài: i biểu tượng, n tên, lv cấp độ (1 tiểu học, 2 THCS, 3 nâng cao), c màu,
+     t giải thích, tb bảng (dòng đầu là tiêu đề), f công thức, tip ghi nhớ, ex ví dụ [Anh, Việt],
+     q luyện tập [câu có ___, [đáp án...], số thứ tự đáp án đúng (từ 0), giải thích]
+     ===================================================================== */
+  var LV = { 1: 'Cấp độ 1 · Cơ bản (tiểu học)', 2: 'Cấp độ 2 · Trung cấp (lớp 6–7)', 3: 'Cấp độ 3 · Nâng cao (lớp 8–9)' };
+  var LS = [
+    { i: '👤', n: 'Đại từ nhân xưng', lv: 1, c: '#3b82f6',
+      t: 'Đại từ nhân xưng dùng để thay cho tên người, con vật hay đồ vật. Có 2 dạng: <b>chủ ngữ</b> (đứng đầu câu, trước động từ) và <b>tân ngữ</b> (đứng sau động từ hoặc giới từ).',
+      tb: [['Chủ ngữ', 'Tân ngữ', 'Nghĩa'], ['I', 'me', 'tôi, mình'], ['you', 'you', 'bạn, các bạn'], ['he', 'him', 'anh ấy, cậu ấy, ông ấy'], ['she', 'her', 'cô ấy, bà ấy'], ['it', 'it', 'nó (con vật, đồ vật)'], ['we', 'us', 'chúng tôi, chúng ta'], ['they', 'them', 'họ, chúng nó']],
+      tip: 'Chữ <b>I</b> (tôi) luôn viết hoa ở bất cứ vị trí nào trong câu.',
+      ex: [['I love my mother.', 'Tôi yêu mẹ của tôi.'], ['She is my teacher.', 'Cô ấy là cô giáo của tôi.'], ['My mother loves me.', 'Mẹ yêu tôi.'], ['Look at them!', 'Hãy nhìn họ kìa!'], ['This is my cat. It is very cute.', 'Đây là con mèo của tôi. Nó rất dễ thương.']],
+      q: [['___ am a student.', ['I', 'Me', 'My'], 0, 'Đứng đầu câu làm chủ ngữ → I.'], ['Lan is my friend. ___ is ten years old.', ['He', 'She', 'It'], 1, 'Lan là bạn gái → She.'], ['Can you help ___?', ['I', 'my', 'me'], 2, 'Sau động từ help cần tân ngữ → me.'], ['Tom and I are friends. ___ play together.', ['We', 'Us', 'They'], 0, 'Tom và tôi = chúng tôi → We.'], ['I like these books. I read ___ every day.', ['they', 'them', 'it'], 1, 'these books là số nhiều, đứng sau động từ → them.']] },
+
+    { i: '🟰', n: 'Động từ to be (am / is / are)', lv: 1, c: '#6366f1',
+      t: 'Động từ <b>to be</b> nghĩa là "thì, là, ở". Ở hiện tại có 3 dạng <b>am, is, are</b>, chọn theo chủ ngữ.',
+      tb: [['Chủ ngữ', 'to be', 'Viết tắt'], ['I', 'am', "I'm"], ['He / She / It / danh từ số ít', 'is', "he's, she's, it's"], ['You / We / They / danh từ số nhiều', 'are', "you're, we're, they're"]],
+      f: ['(+) S + am / is / are + ...', "(−) S + am / is / are + not + ...  (is not = isn't, are not = aren't)", "(?) Am / Is / Are + S + ...?  → Yes, S + am/is/are. / No, S + am not / isn't / aren't."],
+      ex: [["I'm a student.", 'Tôi là học sinh.'], ['He is in the classroom.', 'Cậu ấy đang ở trong lớp.'], ["They aren't hungry.", 'Họ không đói.'], ['Are you happy? – Yes, I am.', 'Bạn có vui không? – Có, mình vui.'], ["Is it a cat? – No, it isn't.", 'Nó có phải con mèo không? – Không phải.']],
+      q: [['She ___ my sister.', ['am', 'is', 'are'], 1, 'She → is.'], ['We ___ in class 3A.', ['am', 'is', 'are'], 2, 'We → are.'], ['I ___ not tired.', ['am', 'is', 'are'], 0, 'I → am.'], ['___ they your friends?', ['Is', 'Am', 'Are'], 2, 'They → Are.'], ['My cat ___ black and white.', ['are', 'is', 'am'], 1, 'My cat là số ít → is.'], ['Is he a doctor? – No, he ___.', ["isn't", "aren't", 'am not'], 0, "He → isn't."]] },
+
+    { i: '🅰️', n: 'Mạo từ a / an / the', lv: 1, c: '#0ea5e9',
+      t: '<b>a / an</b> đứng trước danh từ <b>số ít đếm được</b>, khi nói đến một vật chưa xác định (lần đầu nhắc đến). <b>an</b> đứng trước từ bắt đầu bằng <b>nguyên âm</b> (âm a, e, i, o, u), <b>a</b> đứng trước phụ âm.<br><b>the</b> dùng khi vật đã được nhắc đến, khi cả người nói và người nghe đều biết đó là vật nào, hoặc vật duy nhất (the sun, the moon, the sky).',
+      tip: 'Xét theo <b>âm đọc</b>, không theo chữ viết: <b>an</b> hour (h câm), <b>an</b> umbrella; nhưng <b>a</b> university, <b>a</b> uniform (vì đọc là /juː/).',
+      ex: [['I have a dog.', 'Tôi có một con chó.'], ['She eats an apple.', 'Cô ấy ăn một quả táo.'], ['I have a cat. The cat is white.', 'Tôi có một con mèo. Con mèo đó màu trắng.'], ['The sun is hot.', 'Mặt trời thì nóng.'], ['My father is an engineer.', 'Bố tôi là kỹ sư.']],
+      q: [['I see ___ elephant.', ['a', 'an', 'the'], 1, 'elephant bắt đầu bằng nguyên âm e → an.'], ['She has ___ new bike.', ['a', 'an', 'the'], 0, 'new bắt đầu bằng phụ âm n → a.'], ['___ moon is bright tonight.', ['A', 'An', 'The'], 2, 'Mặt trăng là duy nhất → The.'], ['He is ___ honest boy.', ['a', 'an', 'the'], 1, 'honest có h câm, đọc bắt đầu bằng nguyên âm → an.'], ['I bought a book. ___ book is interesting.', ['A', 'An', 'The'], 2, 'Cuốn sách đã được nhắc đến → The.'], ['She wears ___ uniform.', ['a', 'an', 'the'], 0, 'uniform đọc /juː/ (phụ âm) → a.']] },
+
+    { i: '🔢', n: 'Danh từ số ít – số nhiều', lv: 1, c: '#14b8a6',
+      t: 'Danh từ đếm được có dạng <b>số ít</b> (1 cái) và <b>số nhiều</b> (từ 2 trở lên). Phần lớn chỉ cần thêm <b>-s</b>.',
+      tb: [['Quy tắc', 'Ví dụ'], ['Thông thường: + s', 'book → books, cat → cats'], ['Tận cùng s, ss, sh, ch, x, o: + es', 'bus → buses, dish → dishes, watch → watches, box → boxes, tomato → tomatoes'], ['Phụ âm + y: bỏ y, thêm ies', 'baby → babies, city → cities (nhưng boy → boys)'], ['Tận cùng f / fe: bỏ f/fe, thêm ves', 'leaf → leaves, knife → knives, wolf → wolves'], ['Bất quy tắc', 'man → men, woman → women, child → children, person → people, foot → feet, tooth → teeth, mouse → mice'], ['Không đổi', 'sheep → sheep, fish → fish, deer → deer']],
+      tip: 'Một số từ tận cùng o chỉ thêm s: photo → photos, piano → pianos, radio → radios.',
+      ex: [['one book – two books', 'một quyển sách – hai quyển sách'], ['three boxes', 'ba cái hộp'], ['five babies', 'năm em bé'], ['two children', 'hai đứa trẻ'], ['I brush my teeth.', 'Tôi đánh răng.']],
+      q: [['two ___ (box)', ['boxs', 'boxes', 'boxies'], 1, 'Tận cùng x → thêm es.'], ['three ___ (baby)', ['babys', 'babyes', 'babies'], 2, 'Phụ âm + y → bỏ y thêm ies.'], ['four ___ (child)', ['childs', 'children', 'childrens'], 1, 'child → children (bất quy tắc).'], ['many ___ (leaf)', ['leafs', 'leaves', 'leafes'], 1, 'Tận cùng f → ves.'], ['two ___ (toy)', ['toys', 'toies', 'toyes'], 0, 'Nguyên âm o + y → chỉ thêm s.'], ['five ___ (sheep)', ['sheeps', 'sheepes', 'sheep'], 2, 'sheep không đổi.']] },
+
+    { i: '👉', n: 'This / That / These / Those', lv: 1, c: '#f59e0b',
+      tb: [['', 'Ở gần', 'Ở xa'], ['Số ít', 'this (cái này)', 'that (cái kia)'], ['Số nhiều', 'these (những cái này)', 'those (những cái kia)']],
+      f: ['This / That + is + danh từ số ít', 'These / Those + are + danh từ số nhiều'],
+      ex: [['This is my pen.', 'Đây là bút của tôi.'], ['That is a big tree.', 'Kia là một cái cây to.'], ['These are my books.', 'Đây là những quyển sách của tôi.'], ['Those birds are beautiful.', 'Những con chim kia thật đẹp.'], ["What is this? – It's a ruler.", 'Đây là cái gì? – Đó là cái thước.']],
+      q: [['___ is my bag. (ở gần, 1 cái)', ['This', 'These', 'Those'], 0, 'Gần, số ít → This.'], ['___ are my friends over there.', ['This', 'That', 'Those'], 2, 'Ở xa (over there), số nhiều → Those.'], ['These ___ my shoes.', ['is', 'are', 'am'], 1, 'These → are.'], ['Look at ___ stars in the sky!', ['this', 'that', 'those'], 2, 'Ở xa, số nhiều → those.'], ['___ apples are fresh. (ở gần)', ['This', 'These', 'That'], 1, 'Gần, số nhiều → These.']] },
+
+    { i: '🎒', n: 'Tính từ sở hữu & sở hữu cách \'s', lv: 1, c: '#ec4899',
+      t: 'Tính từ sở hữu luôn đứng <b>trước danh từ</b>. Để nói đồ của một người cụ thể, thêm <b>\'s</b> sau tên: Nam\'s bag (cặp của Nam). Danh từ số nhiều đã có s thì chỉ thêm dấu \': my parents\' house.',
+      tb: [['Đại từ', 'Tính từ sở hữu', 'Nghĩa'], ['I', 'my', 'của tôi'], ['you', 'your', 'của bạn'], ['he', 'his', 'của anh ấy'], ['she', 'her', 'của cô ấy'], ['it', 'its', 'của nó'], ['we', 'our', 'của chúng tôi'], ['they', 'their', 'của họ']],
+      tip: "Đừng nhầm <b>its</b> (của nó) với <b>it's</b> (= it is).",
+      ex: [['This is my book.', 'Đây là sách của tôi.'], ['Her name is Lan.', 'Tên cô ấy là Lan.'], ['Our school is big.', 'Trường của chúng tôi rộng.'], ["This is Nam's bike.", 'Đây là xe đạp của Nam.'], ['The dog is wagging its tail.', 'Con chó đang vẫy đuôi của nó.']],
+      q: [['He is my brother. ___ name is Minh.', ['He', 'His', 'Him'], 1, 'Trước danh từ name → tính từ sở hữu His.'], ['We love ___ teacher.', ['our', 'us', 'we'], 0, 'của chúng tôi → our.'], ['This is ___ pencil. (của Mai)', ['Mai', "Mai's", 'Mais'], 1, "Sở hữu cách → Mai's."], ['They live with ___ grandparents.', ['they', 'them', 'their'], 2, 'của họ → their.'], ['The cat is drinking ___ milk.', ["it's", 'its', 'it'], 1, 'của nó → its (không có dấu \').']] },
+
+    { i: '📦', n: 'There is / There are', lv: 1, c: '#22c55e',
+      t: 'Dùng để nói "<b>có</b>" cái gì ở đâu đó.',
+      f: ["There is + a/an + danh từ số ít / danh từ không đếm được  (There's)", 'There are + danh từ số nhiều', "(−) There isn't ... / There aren't any ...", '(?) Is there ...? / Are there any ...?  → Yes, there is/are. / No, there isn\'t/aren\'t.'],
+      ex: [['There is a cat under the table.', 'Có một con mèo ở dưới gầm bàn.'], ['There are three books on the desk.', 'Có ba quyển sách trên bàn.'], ["There isn't any milk.", 'Không có chút sữa nào.'], ['Are there any pens in your bag? – Yes, there are.', 'Trong cặp bạn có cái bút nào không? – Có.'], ['How many students are there in your class?', 'Lớp bạn có bao nhiêu học sinh?']],
+      q: [['There ___ a lamp in my room.', ['is', 'are', 'am'], 0, 'a lamp số ít → is.'], ['There ___ two windows.', ['is', 'are', 'be'], 1, 'two windows số nhiều → are.'], ['___ there any eggs in the fridge?', ['Is', 'Are', 'Do'], 1, 'eggs số nhiều → Are.'], ['There ___ any water in the bottle.', ["isn't", "aren't", 'not'], 0, "water không đếm được → isn't."], ['How many chairs ___ there?', ['is', 'are', 'do'], 1, 'chairs số nhiều → are.']] },
+
+    { i: '🤲', n: 'Have / Has (có)', lv: 1, c: '#a855f7',
+      t: '<b>have / has</b> nghĩa là "có". I, you, we, they và danh từ số nhiều dùng <b>have</b>; he, she, it và danh từ số ít dùng <b>has</b>.',
+      f: ['(+) S + have / has + ...', "(−) S + don't / doesn't + have + ...", '(?) Do / Does + S + have + ...?  → Yes, S do/does. / No, S don\'t/doesn\'t.'],
+      tip: "Sau <b>doesn't / does</b> phải dùng <b>have</b>, không dùng has: She doesn't have a cat.",
+      ex: [['I have a new bike.', 'Tôi có một chiếc xe đạp mới.'], ['She has long hair.', 'Cô ấy có mái tóc dài.'], ["We don't have a car.", 'Chúng tôi không có ô tô.'], ['Does he have a sister? – Yes, he does.', 'Cậu ấy có chị gái không? – Có.'], ['My house has three rooms.', 'Nhà tôi có ba phòng.']],
+      q: [['My sister ___ a doll.', ['have', 'has', 'haves'], 1, 'My sister = she → has.'], ['They ___ many friends.', ['have', 'has', 'is'], 0, 'They → have.'], ["He doesn't ___ a pet.", ['has', 'have', 'having'], 1, "Sau doesn't dùng have."], ['___ you have a pen?', ['Does', 'Do', 'Are'], 1, 'you → Do.'], ['Our school ___ a big library.', ['have', 'has', 'are'], 1, 'Our school số ít → has.']] },
+
+    { i: '💪', n: 'Can / Can\'t (có thể, biết)', lv: 1, c: '#ef4444',
+      t: '<b>can</b> nghĩa là "có thể, biết (làm gì)". Dùng chung cho mọi ngôi; sau can là <b>động từ nguyên mẫu</b> (không thêm s, không có to).',
+      f: ['(+) S + can + V', "(−) S + cannot / can't + V", "(?) Can + S + V?  → Yes, S can. / No, S can't.", 'Xin phép, nhờ vả: Can I ...? / Can you ...?'],
+      ex: [['I can swim.', 'Tôi biết bơi.'], ["She can't ride a bike.", 'Cô ấy không biết đi xe đạp.'], ['Can you sing? – Yes, I can.', 'Bạn biết hát không? – Có.'], ['Can I go out?', 'Em ra ngoài được không ạ?'], ['Birds can fly.', 'Chim có thể bay.']],
+      q: [['He can ___ very fast.', ['runs', 'run', 'running'], 1, 'Sau can dùng động từ nguyên mẫu.'], ['___ you play chess?', ['Do', 'Can', 'Are'], 1, 'Hỏi khả năng → Can.'], ["Fish can't ___.", ['walk', 'walks', 'to walk'], 0, "Sau can't dùng V nguyên mẫu, không có to."], ['Can she cook? – No, she ___.', ["can't", "doesn't", "isn't"], 0, "Trả lời câu hỏi Can → can't."], ['My brother ___ speak English well.', ['can', 'cans', 'is'], 0, 'can không bao giờ thêm s.']] },
+
+    { i: '📍', n: 'Giới từ chỉ vị trí', lv: 1, c: '#0891b2',
+      tb: [['Giới từ', 'Nghĩa', 'Ví dụ'], ['in', 'ở trong', 'in the box'], ['on', 'ở trên (có chạm)', 'on the table'], ['under', 'ở dưới', 'under the bed'], ['next to', 'bên cạnh', 'next to the door'], ['behind', 'phía sau', 'behind the house'], ['in front of', 'phía trước', 'in front of the school'], ['between ... and ...', 'ở giữa', 'between the bank and the shop'], ['near', 'gần', 'near my house'], ['above', 'phía trên (không chạm)', 'above the door']],
+      ex: [['The cat is under the chair.', 'Con mèo ở dưới ghế.'], ['My book is on the desk.', 'Sách của tôi ở trên bàn.'], ['The ball is in the box.', 'Quả bóng ở trong hộp.'], ['The park is next to my school.', 'Công viên ở cạnh trường tôi.'], ['Lan sits between Mai and Hoa.', 'Lan ngồi giữa Mai và Hoa.']],
+      q: [['The fish are ___ the water.', ['in', 'on', 'under'], 0, 'Ở trong nước → in.'], ['The picture is ___ the wall.', ['in', 'on', 'under'], 1, 'Treo trên tường (có chạm) → on.'], ['The dog is sleeping ___ the table. (ở dưới)', ['on', 'under', 'above'], 1, 'Ở dưới → under.'], ['The bank is ___ the post office and the café.', ['next', 'between', 'behind'], 1, 'between ... and ... = ở giữa.'], ['There is a garden ___ my house. (phía sau)', ['behind', 'in', 'on'], 0, 'Phía sau → behind.']] },
+
+    { i: '🕖', n: 'Giới từ chỉ thời gian: at / on / in', lv: 1, c: '#0d9488',
+      tb: [['Giới từ', 'Dùng với', 'Ví dụ'], ['at', 'giờ, thời điểm', "at 7 o'clock, at noon, at night, at the weekend"], ['on', 'thứ, ngày, ngày lễ cụ thể', 'on Monday, on 2nd September, on my birthday'], ['in', 'buổi, tháng, mùa, năm', 'in the morning, in May, in summer, in 2026']],
+      tip: 'Nói <b>in</b> the morning / <b>in</b> the afternoon / <b>in</b> the evening, nhưng <b>at</b> night.',
+      ex: [["I get up at six o'clock.", 'Tôi thức dậy lúc 6 giờ.'], ['We have English on Monday.', 'Chúng tôi học tiếng Anh vào thứ Hai.'], ['My birthday is in June.', 'Sinh nhật tôi vào tháng Sáu.'], ["It's cold in winter.", 'Trời lạnh vào mùa đông.'], ['I do my homework in the evening.', 'Tôi làm bài tập vào buổi tối.']],
+      q: [['I go to school ___ 7 a.m.', ['in', 'on', 'at'], 2, 'Giờ → at.'], ['She was born ___ 2015.', ['in', 'on', 'at'], 0, 'Năm → in.'], ['We play football ___ Sunday.', ['in', 'on', 'at'], 1, 'Thứ → on.'], ['I read books ___ the evening.', ['in', 'on', 'at'], 0, 'in the evening.'], ['The stars shine ___ night.', ['in', 'on', 'at'], 2, 'at night.']] },
+
+    { i: '❓', n: 'Câu hỏi với từ để hỏi (Wh-)', lv: 1, c: '#7c3aed',
+      tb: [['Từ để hỏi', 'Hỏi về', 'Ví dụ'], ['What', 'cái gì', 'What is your name?'], ['Where', 'ở đâu', 'Where do you live?'], ['When', 'khi nào', 'When is your birthday?'], ['Who', 'ai', 'Who is that girl?'], ['Why', 'tại sao (trả lời: Because ...)', 'Why are you sad?'], ['How', 'thế nào, bằng cách nào', 'How are you? How do you go to school?'], ['How old', 'bao nhiêu tuổi', 'How old are you?'], ['How many', 'bao nhiêu (đếm được)', 'How many books do you have?'], ['How much', 'bao nhiêu (không đếm được, giá tiền)', 'How much is this hat?'], ['Which', 'cái nào (có lựa chọn)', 'Which color do you like, red or blue?'], ['What time', 'mấy giờ', 'What time is it?']],
+      f: ['Wh- + am / is / are + S ...?', 'Wh- + do / does + S + V ...?'],
+      ex: [["What's your name? – My name is Minh.", 'Bạn tên gì? – Mình tên là Minh.'], ['Where do you live? – I live in Hanoi.', 'Bạn sống ở đâu? – Mình sống ở Hà Nội.'], ["How old are you? – I'm nine.", 'Bạn bao nhiêu tuổi? – Mình chín tuổi.'], ['How many pens do you have? – Three.', 'Bạn có bao nhiêu cái bút? – Ba cái.'], ['Why are you happy? – Because today is my birthday.', 'Sao bạn vui thế? – Vì hôm nay là sinh nhật mình.']],
+      q: [['___ is your teacher? – Ms. Hoa.', ['What', 'Who', 'Where'], 1, 'Hỏi người → Who.'], ['___ do you live? – In Hanoi.', ['Where', 'When', 'Why'], 0, 'Hỏi nơi chốn → Where.'], ['___ old is your brother? – He is twelve.', ['What', 'How', 'Who'], 1, 'How old = bao nhiêu tuổi.'], ['___ apples are there? – Five.', ['How much', 'How many', 'How old'], 1, 'apples đếm được → How many.'], ['___ are you crying? – Because I am hurt.', ['Why', 'What', 'Which'], 0, 'Trả lời Because → hỏi Why.'], ["___ is the T-shirt? – It's 100,000 dong.", ['How many', 'How much', 'How old'], 1, 'Hỏi giá → How much.']] },
+
+    { i: '📣', n: "Câu mệnh lệnh & Let's", lv: 1, c: '#dc2626',
+      f: ['Khẳng định: V + ...  (Open the door.)', "Phủ định: Don't + V + ...  (Don't run.)", 'Lịch sự: thêm please  (Sit down, please.)', "Rủ rê: Let's + V  (Let's go!)  – Let's not + V"],
+      ex: [['Stand up, please.', 'Mời đứng lên.'], ["Don't talk in class.", 'Đừng nói chuyện trong lớp.'], ['Be careful!', 'Cẩn thận!'], ["Let's play football.", 'Chúng mình đi đá bóng đi.'], ["Don't be late.", 'Đừng đến muộn.']],
+      q: [['___ the window, please.', ['Open', 'Opens', 'Opening'], 0, 'Câu mệnh lệnh bắt đầu bằng V nguyên mẫu.'], ["___ touch it! It's hot.", ["Don't", "Doesn't", 'Not'], 0, "Cấm đoán → Don't + V."], ["Let's ___ to the park.", ['go', 'goes', 'to go'], 0, "Let's + V nguyên mẫu."], ['___ quiet, please.', ['Is', 'Be', 'Are'], 1, 'Mệnh lệnh với tính từ → Be + tính từ.'], ["Don't ___ noise.", ['make', 'makes', 'making'], 0, "Don't + V nguyên mẫu."]] },
+
+    { i: '🔁', n: 'Thì hiện tại đơn', lv: 2, c: '#2563eb',
+      t: 'Dùng để nói về <b>thói quen, việc lặp đi lặp lại, sự thật hiển nhiên</b> và lịch trình cố định.',
+      f: ['(+) I / You / We / They + V    |    He / She / It + V-s/es', "(−) S + don't / doesn't + V (nguyên mẫu)", "(?) Do / Does + S + V?  → Yes, S do/does. / No, S don't/doesn't."],
+      tb: [['Thêm s/es cho he/she/it', 'Ví dụ'], ['Thông thường: + s', 'play → plays, read → reads'], ['Tận cùng o, s, ss, sh, ch, x, z: + es', 'go → goes, watch → watches, wash → washes, fix → fixes'], ['Phụ âm + y: bỏ y, thêm ies', 'study → studies, fly → flies'], ['Đặc biệt', 'have → has, be → is']],
+      tip: 'Dấu hiệu: every day / week, always, usually, often, sometimes, never, on Mondays, once a week...',
+      ex: [['I go to school every day.', 'Tôi đi học hằng ngày.'], ['She watches TV in the evening.', 'Cô ấy xem ti vi vào buổi tối.'], ['The sun rises in the east.', 'Mặt trời mọc ở hướng đông.'], ["He doesn't like milk.", 'Cậu ấy không thích sữa.'], ['Do you play badminton? – Yes, I do.', 'Bạn có chơi cầu lông không? – Có.']],
+      q: [['My father ___ to work by bus.', ['go', 'goes', 'going'], 1, 'My father = he → goes.'], ['They ___ English on Tuesday.', ['study', 'studies', 'studys'], 0, 'They → giữ nguyên study.'], ['She ___ like fish.', ["don't", "doesn't", "isn't"], 1, "She → doesn't."], ['___ your mother cook dinner?', ['Do', 'Does', 'Is'], 1, 'your mother = she → Does.'], ['Water ___ at 100°C.', ['boil', 'boils', 'boiling'], 1, 'Sự thật hiển nhiên, water số ít → boils.'], ['Tom ___ his homework after dinner.', ['do', 'dos', 'does'], 2, 'do → does.']] },
+
+    { i: '📊', n: 'Trạng từ chỉ tần suất', lv: 2, c: '#0284c7',
+      tb: [['Trạng từ', 'Mức độ', 'Nghĩa'], ['always', '100%', 'luôn luôn'], ['usually', '≈ 80%', 'thường xuyên'], ['often', '≈ 60%', 'thường'], ['sometimes', '≈ 40%', 'thỉnh thoảng'], ['rarely / seldom', '≈ 10%', 'hiếm khi'], ['never', '0%', 'không bao giờ']],
+      f: ['Đứng TRƯỚC động từ thường: She always gets up early.', 'Đứng SAU động từ to be: He is never late.', 'Hỏi: How often do you ...?  → every day, once a week, twice a month, three times a year...'],
+      ex: [['I always brush my teeth before bed.', 'Tôi luôn đánh răng trước khi ngủ.'], ['She usually walks to school.', 'Cô ấy thường đi bộ đến trường.'], ['We sometimes go to the cinema.', 'Thỉnh thoảng chúng tôi đi xem phim.'], ['He is never late.', 'Cậu ấy không bao giờ đi muộn.'], ['How often do you play sports? – Three times a week.', 'Bạn chơi thể thao bao lâu một lần? – Một tuần ba lần.']],
+      q: [['She is ___ late for school. (không bao giờ)', ['always', 'never', 'often'], 1, 'không bao giờ → never.'], ['Chọn câu đúng:', ['I go always to school by bike.', 'I always go to school by bike.', 'Always I go to school by bike.'], 1, 'Trạng từ tần suất đứng trước động từ thường.'], ['Chọn câu đúng:', ['He is usually happy.', 'He usually is happy.', 'Usually he happy is.'], 0, 'Trạng từ tần suất đứng sau to be.'], ['___ do you go swimming? – Twice a week.', ['How many', 'How often', 'How long'], 1, 'Hỏi bao lâu một lần → How often.'], ['We ___ eat breakfast at 6:30. (luôn luôn)', ['always', 'sometimes', 'never'], 0, 'luôn luôn → always.']] },
+
+    { i: '▶️', n: 'Thì hiện tại tiếp diễn', lv: 2, c: '#16a34a',
+      t: 'Dùng để nói về hành động <b>đang xảy ra</b> lúc nói, hoặc kế hoạch đã sắp xếp trong tương lai gần.',
+      f: ['(+) S + am / is / are + V-ing', '(−) S + am / is / are + not + V-ing', '(?) Am / Is / Are + S + V-ing?'],
+      tb: [['Cách thêm -ing', 'Ví dụ'], ['Thông thường: + ing', 'play → playing, read → reading'], ['Tận cùng e câm: bỏ e + ing', 'write → writing, dance → dancing (nhưng see → seeing)'], ['Tận cùng ie: đổi thành y + ing', 'lie → lying, die → dying'], ['1 âm tiết, kết thúc phụ âm – nguyên âm – phụ âm: gấp đôi phụ âm cuối', 'run → running, swim → swimming, sit → sitting']],
+      tip: 'Dấu hiệu: now, right now, at the moment, at present, Look!, Listen!. Thường không dùng thì này với động từ chỉ cảm xúc, nhận thức: like, love, know, want, understand, need.',
+      ex: [['I am reading a book now.', 'Bây giờ tôi đang đọc sách.'], ['Look! It is raining.', 'Nhìn kìa! Trời đang mưa.'], ['They are playing football.', 'Họ đang đá bóng.'], ["She isn't sleeping.", 'Cô ấy không đang ngủ.'], ["What are you doing? – I'm drawing.", 'Bạn đang làm gì đấy? – Mình đang vẽ.']],
+      q: [['Listen! The baby ___.', ['cry', 'cries', 'is crying'], 2, 'Listen! → đang xảy ra → is crying.'], ['They ___ swimming now.', ['are', 'is', 'am'], 0, 'They → are.'], ['She is ___ a letter.', ['writeing', 'writing', 'writting'], 1, 'write bỏ e → writing.'], ['He is ___ in the park.', ['runing', 'running', 'runs'], 1, 'run gấp đôi n → running.'], ["___ you watching TV? – No, I'm not.", ['Do', 'Are', 'Is'], 1, 'you → Are.'], ['I ___ my homework at the moment.', ['do', 'am doing', 'does'], 1, 'at the moment → am doing.']] },
+
+    { i: '⏪', n: 'Thì quá khứ đơn', lv: 2, c: '#b45309',
+      t: 'Dùng cho hành động <b>đã xảy ra và kết thúc</b> trong quá khứ.',
+      f: ['to be: I / He / She / It + was    |    You / We / They + were', '(+) S + V-ed / V2 (cột 2 bảng động từ bất quy tắc)', "(−) S + didn't + V (nguyên mẫu)", "(?) Did + S + V?  → Yes, S did. / No, S didn't."],
+      tb: [['Cách thêm -ed', 'Ví dụ'], ['Thông thường: + ed', 'play → played, watch → watched'], ['Tận cùng e: + d', 'live → lived, dance → danced'], ['Phụ âm + y: bỏ y, thêm ied', 'study → studied, cry → cried (nhưng play → played)'], ['1 âm tiết phụ âm – nguyên âm – phụ âm: gấp đôi', 'stop → stopped, plan → planned'], ['Bất quy tắc: tra cột 2', 'go → went, eat → ate, see → saw']],
+      tip: 'Dấu hiệu: yesterday, last night / week / year, ago (two days ago), in 2020, when I was young.<br>Đọc đuôi -ed: <b>/ɪd/</b> sau t, d (wanted, needed); <b>/t/</b> sau p, k, s, sh, ch, f (stopped, watched); <b>/d/</b> với các trường hợp còn lại (played, lived).',
+      ex: [['I visited my grandma yesterday.', 'Hôm qua tôi đến thăm bà.'], ['We went to the zoo last Sunday.', 'Chủ nhật trước chúng tôi đi sở thú.'], ['She was ill yesterday.', 'Hôm qua cô ấy bị ốm.'], ["He didn't go to school.", 'Cậu ấy đã không đi học.'], ['Did you see the film? – Yes, I did.', 'Bạn đã xem phim đó chưa? – Rồi.']],
+      q: [['I ___ football yesterday.', ['play', 'played', 'playing'], 1, 'yesterday → quá khứ → played.'], ['She ___ to Da Nang last summer.', ['go', 'goes', 'went'], 2, 'go → went (bất quy tắc).'], ['They ___ at home last night.', ['was', 'were', 'are'], 1, 'They → were.'], ["He didn't ___ breakfast this morning.", ['eat', 'ate', 'eaten'], 0, "Sau didn't dùng V nguyên mẫu."], ['___ you finish your homework?', ['Do', 'Did', 'Were'], 1, 'Câu hỏi quá khứ với động từ thường → Did.'], ['We ___ English two hours ago. (study)', ['studyed', 'studied', 'studies'], 1, 'Phụ âm + y → ied.']] },
+
+    { i: '⏩', n: 'Tương lai: will & be going to', lv: 2, c: '#7c3aed',
+      t: '<b>will + V</b>: quyết định ngay lúc nói, dự đoán, lời hứa, đề nghị giúp đỡ.<br><b>be going to + V</b>: kế hoạch, dự định đã có từ trước, hoặc dự đoán có dấu hiệu rõ ràng.',
+      f: ["(+) S + will + V   (I'll, she'll...)", "(−) S + will not (won't) + V", '(?) Will + S + V?', '(+) S + am / is / are + going to + V', '(?) Am / Is / Are + S + going to + V?'],
+      tip: 'Dấu hiệu: tomorrow, next week / month / year, soon, tonight, in the future.',
+      ex: [['I will help you.', 'Tôi sẽ giúp bạn.'], ['It will be sunny tomorrow.', 'Ngày mai trời sẽ nắng.'], ["I won't tell anyone.", 'Mình sẽ không nói với ai.'], ['We are going to visit Hue next week.', 'Tuần sau chúng tôi định đi Huế.'], ['Look at the clouds! It is going to rain.', 'Nhìn mây kìa! Trời sắp mưa.']],
+      q: [['I think it ___ rain tomorrow.', ['will', 'is', 'does'], 0, 'Dự đoán (I think) → will.'], ['She ___ going to buy a new dress.', ['will', 'is', 'are'], 1, 'She → is going to.'], ['The phone is ringing. – I ___ answer it.', ["'ll", "'m going", 'am'], 0, 'Quyết định ngay lúc nói → will (I\'ll).'], ['They ___ come to the party. They are busy.', ["won't", "don't", "aren't"], 0, "Tương lai phủ định → won't."], ['We are going ___ our grandparents.', ['visit', 'to visit', 'visiting'], 1, 'be going to + V.'], ['___ you help me, please?', ['Will', 'Are', 'Do'], 0, 'Lời nhờ vả → Will you ...?']] },
+
+    { i: '📏', n: 'So sánh hơn & so sánh nhất', lv: 2, c: '#ea580c',
+      tb: [['Loại tính từ', 'So sánh hơn', 'So sánh nhất'], ['Ngắn (1 âm tiết)', 'adj + er + than: tall → taller', 'the + adj + est: the tallest'], ['Tận cùng e', 'large → larger', 'the largest'], ['Phụ âm – nguyên âm – phụ âm', 'big → bigger, hot → hotter', 'the biggest, the hottest'], ['Tận cùng y', 'happy → happier, easy → easier', 'the happiest, the easiest'], ['Dài (2 âm tiết trở lên)', 'more + adj + than: more beautiful', 'the most beautiful'], ['Bất quy tắc', 'good → better, bad → worse, far → farther/further', 'the best, the worst, the farthest']],
+      ex: [['An elephant is bigger than a dog.', 'Con voi to hơn con chó.'], ['My sister is taller than me.', 'Chị tôi cao hơn tôi.'], ['This book is more interesting than that one.', 'Quyển sách này hay hơn quyển kia.'], ['Mount Everest is the highest mountain in the world.', 'Đỉnh Everest là ngọn núi cao nhất thế giới.'], ['She is the best student in my class.', 'Bạn ấy là học sinh giỏi nhất lớp tôi.']],
+      q: [['A car is ___ than a bike.', ['fast', 'faster', 'fastest'], 1, 'Có than → so sánh hơn: faster.'], ['This is the ___ day of the year.', ['hotter', 'hottest', 'most hot'], 1, 'the + so sánh nhất; hot gấp đôi t → hottest.'], ['English is ___ than Math for me.', ['easyer', 'easier', 'more easy'], 1, 'Tận cùng y → ier.'], ['This dress is ___ than that one.', ['beautifuler', 'more beautiful', 'most beautiful'], 1, 'Tính từ dài → more + adj.'], ['He is the ___ singer in the band.', ['good', 'better', 'best'], 2, 'good → the best.'], ['My score is ___ than yours.', ['bad', 'worse', 'worst'], 1, 'bad → worse.']] },
+
+    { i: '🧺', n: 'Some / Any · Much / Many / A lot of', lv: 2, c: '#65a30d',
+      tb: [['Từ', 'Dùng với', 'Ví dụ'], ['some', 'câu khẳng định, lời mời / đề nghị', 'I have some apples. Would you like some tea?'], ['any', 'câu phủ định và câu hỏi', "I don't have any money. Do you have any pets?"], ['many', 'danh từ đếm được số nhiều', 'many books, How many ...?'], ['much', 'danh từ không đếm được (thường trong câu phủ định / hỏi)', 'much water, How much ...?'], ['a lot of / lots of', 'cả hai loại, câu khẳng định', 'a lot of friends, a lot of milk']],
+      tip: 'Danh từ không đếm được thường gặp: water, milk, rice, bread, money, time, sugar, juice, homework, information.',
+      ex: [['I have some candies.', 'Tôi có vài cái kẹo.'], ['Is there any milk?', 'Còn sữa không?'], ['How many books do you have?', 'Bạn có bao nhiêu quyển sách?'], ["I don't drink much coffee.", 'Tôi không uống nhiều cà phê.'], ['She has a lot of friends.', 'Cô ấy có rất nhiều bạn.']],
+      q: [['There are ___ eggs in the basket.', ['some', 'any', 'much'], 0, 'Câu khẳng định → some.'], ["I don't have ___ brothers.", ['some', 'any', 'much'], 1, 'Câu phủ định → any.'], ['How ___ students are there?', ['much', 'many', 'any'], 1, 'students đếm được → many.'], ['How ___ milk do you drink a day?', ['many', 'much', 'some'], 1, 'milk không đếm được → much.'], ["She doesn't have ___ time.", ['many', 'much', 'a'], 1, 'time không đếm được → much.'], ['Would you like ___ juice?', ['some', 'any', 'many'], 0, 'Lời mời → some.']] },
+
+    { i: '❤️', n: 'Like + V-ing · Want + to V', lv: 2, c: '#db2777',
+      t: 'Sau <b>like, love, enjoy, hate, finish, practise, mind</b> dùng <b>V-ing</b>.<br>Sau <b>want, would like, need, hope, decide, plan, learn</b> dùng <b>to + V</b>.<br>Sau <b>can, will, should, must, let\'s</b> dùng <b>V nguyên mẫu</b>.',
+      tip: 'Với like / love / hate, nói "I like to read" cũng đúng (người Mỹ hay dùng). Nhưng sau <b>enjoy, finish</b> chỉ dùng V-ing.',
+      ex: [['I like reading comics.', 'Tôi thích đọc truyện tranh.'], ['She enjoys cooking.', 'Cô ấy thích nấu ăn.'], ['I want to be a doctor.', 'Tôi muốn trở thành bác sĩ.'], ['Would you like to come?', 'Bạn có muốn đến không?'], ['He finished doing his homework.', 'Cậu ấy đã làm xong bài tập.']],
+      q: [['She enjoys ___ to music.', ['listen', 'listening', 'to listen'], 1, 'enjoy + V-ing.'], ['I want ___ a new bike.', ['buy', 'buying', 'to buy'], 2, 'want + to V.'], ['They love ___ football.', ['playing', 'play', 'plays'], 0, 'love + V-ing.'], ['Would you like ___ some cake?', ['eat', 'to eat', 'eating'], 1, 'would like + to V.'], ['He finished ___ the book.', ['reading', 'to read', 'read'], 0, 'finish + V-ing.']] },
+
+    { i: '✅', n: 'Thì hiện tại hoàn thành', lv: 3, c: '#0f766e',
+      t: 'Diễn tả hành động <b>đã xảy ra nhưng không nói rõ thời gian</b>, kinh nghiệm (đã từng), hoặc việc bắt đầu trong quá khứ và <b>kéo dài đến hiện tại</b>.',
+      f: ['(+) S + have / has + V3 (V-ed hoặc cột 3 bảng bất quy tắc)', "(−) S + haven't / hasn't + V3", '(?) Have / Has + S + V3?'],
+      tip: 'Dấu hiệu: just, already, yet, ever, never, recently, so far, <b>since</b> + mốc thời gian (since 2020), <b>for</b> + khoảng thời gian (for 3 years).',
+      ex: [['I have finished my homework.', 'Tôi đã làm xong bài tập.'], ['She has lived here for five years.', 'Cô ấy đã sống ở đây được năm năm.'], ['Have you ever been to Ha Long Bay?', 'Bạn đã từng đến vịnh Hạ Long chưa?'], ["He hasn't eaten yet.", 'Cậu ấy vẫn chưa ăn.'], ['We have known each other since 2020.', 'Chúng tôi quen nhau từ năm 2020.']],
+      q: [['I have ___ this film twice.', ['saw', 'seen', 'see'], 1, 'have + V3: see → seen.'], ['She ___ lived here since 2019.', ['have', 'has', 'is'], 1, 'She → has.'], ['They have studied English ___ three years.', ['since', 'for', 'ago'], 1, 'Khoảng thời gian → for.'], ['___ you ever eaten sushi?', ['Did', 'Have', 'Has'], 1, 'ever + hiện tại hoàn thành → Have you ...?'], ["He hasn't finished his work ___.", ['already', 'yet', 'just'], 1, 'Câu phủ định cuối câu → yet.'], ['We have known her ___ last year.', ['for', 'since', 'ago'], 1, 'Mốc thời gian → since.']] },
+
+    { i: '🎞️', n: 'Thì quá khứ tiếp diễn', lv: 3, c: '#9333ea',
+      t: 'Diễn tả hành động <b>đang xảy ra tại một thời điểm</b> trong quá khứ, hoặc đang diễn ra thì có hành động khác xen vào.',
+      f: ['(+) S + was / were + V-ing', "(−) S + wasn't / weren't + V-ing", '(?) Was / Were + S + V-ing?', 'When + quá khứ đơn, quá khứ tiếp diễn: When she came, I was cooking.', 'While + quá khứ tiếp diễn: While I was walking, it started to rain.'],
+      ex: [['At 8 p.m. yesterday, I was watching TV.', 'Lúc 8 giờ tối qua, tôi đang xem ti vi.'], ['They were playing when it started to rain.', 'Họ đang chơi thì trời bắt đầu mưa.'], ['What were you doing at that time?', 'Lúc đó bạn đang làm gì?'], ["She wasn't sleeping.", 'Lúc đó cô ấy không ngủ.'], ['While Mom was cooking, Dad was reading.', 'Trong khi mẹ nấu ăn thì bố đọc sách.']],
+      q: [["At 7 o'clock last night, I ___ dinner.", ['have', 'was having', 'had having'], 1, 'Thời điểm cụ thể trong quá khứ → was having.'], ['They ___ football when it rained.', ['was playing', 'were playing', 'are playing'], 1, 'They → were playing.'], ['When the phone rang, she ___ a shower.', ['was taking', 'took', 'takes'], 0, 'Đang tắm thì điện thoại reo → was taking.'], ['___ you sleeping at 10 p.m.?', ['Was', 'Were', 'Did'], 1, 'you → Were.'], ['While I ___ to school, I met my teacher.', ['walked', 'was walking', 'am walking'], 1, 'While + quá khứ tiếp diễn.']] },
+
+    { i: '⚖️', n: 'Động từ khuyết thiếu: must, should, have to, may', lv: 3, c: '#475569',
+      tb: [['Động từ', 'Nghĩa', 'Ví dụ'], ['must', 'phải (bắt buộc từ người nói, luật lệ)', 'You must wear a helmet.'], ["mustn't", 'cấm, không được', "You mustn't smoke here."], ['have to / has to', 'phải (do hoàn cảnh)', 'I have to get up early.'], ["don't have to", 'không cần phải', "You don't have to pay. It's free."], ["should / shouldn't", 'nên / không nên', 'You should drink more water.'], ['may / might', 'có lẽ, có thể (khả năng); may: xin phép lịch sự', 'It may rain. May I come in?'], ['could', 'có thể (quá khứ của can); nhờ vả lịch sự', 'Could you help me?']],
+      f: ['S + must / should / may / might / could + V (nguyên mẫu)', 'Riêng have to chia theo ngôi: He has to ... / Does he have to ...?'],
+      ex: [['You must do your homework.', 'Bạn phải làm bài tập về nhà.'], ["You mustn't run in the corridor.", 'Không được chạy ở hành lang.'], ['You should eat more vegetables.', 'Bạn nên ăn nhiều rau hơn.'], ['I have to clean my room.', 'Tôi phải dọn phòng.'], ['It might rain this afternoon.', 'Chiều nay có thể sẽ mưa.']],
+      q: [["You ___ wear a seat belt. It's the law.", ['must', 'may', "shouldn't"], 0, 'Luật lệ bắt buộc → must.'], ['You look tired. You ___ go to bed early.', ['should', "mustn't", "don't have to"], 0, 'Lời khuyên → should.'], ["It's Sunday. I ___ go to school.", ["don't have to", "mustn't", 'must'], 0, 'Không cần phải → don\'t have to.'], ["You ___ swim here. It's dangerous.", ["mustn't", "don't have to", 'should'], 0, "Cấm → mustn't."], ['She has to ___ her grandma.', ['help', 'helps', 'helping'], 0, 'has to + V nguyên mẫu.'], ['___ I borrow your pen?', ['May', 'Must', 'Should'], 0, 'Xin phép lịch sự → May I ...?']] },
+
+    { i: '🔄', n: 'Câu bị động', lv: 3, c: '#1d4ed8',
+      t: 'Dùng khi muốn nhấn mạnh <b>người / vật chịu tác động</b> hơn là người làm. Người làm (nếu cần) đứng sau <b>by</b>.',
+      f: ['Công thức chung: S + be + V3 (+ by + người làm)', 'Hiện tại đơn: am / is / are + V3', 'Quá khứ đơn: was / were + V3', 'Tương lai đơn: will be + V3', 'Hiện tại hoàn thành: have / has been + V3', 'Động từ khuyết thiếu: can / must / should + be + V3'],
+      ex: [['English is spoken all over the world.', 'Tiếng Anh được nói trên khắp thế giới.'], ['This house was built in 1990.', 'Ngôi nhà này được xây năm 1990.'], ['The letter was written by Nam.', 'Lá thư được viết bởi Nam.'], ['The work will be finished tomorrow.', 'Công việc sẽ được hoàn thành vào ngày mai.'], ['The room has been cleaned.', 'Căn phòng đã được dọn dẹp.']],
+      q: [['Rice ___ in many Asian countries.', ['grows', 'is grown', 'grown'], 1, 'Lúa được trồng → bị động hiện tại: is grown.'], ['This bridge ___ in 2010.', ['built', 'was built', 'is building'], 1, 'Quá khứ bị động → was built.'], ['The cake was made ___ my mother.', ['by', 'with', 'from'], 0, 'Người làm đứng sau by.'], ['The homework must ___ before Friday.', ['finish', 'be finished', 'finished'], 1, 'must + be + V3.'], ['These letters ___ yesterday.', ['was sent', 'were sent', 'sent'], 1, 'These letters số nhiều → were sent.']] },
+
+    { i: '🔀', n: 'Câu điều kiện (loại 0, 1, 2, 3)', lv: 3, c: '#be123c',
+      tb: [['Loại', 'Dùng khi', 'Công thức'], ['Loại 0', 'sự thật hiển nhiên', 'If + hiện tại đơn, hiện tại đơn'], ['Loại 1', 'có thể xảy ra ở hiện tại / tương lai', 'If + hiện tại đơn, S + will + V'], ['Loại 2', 'không có thật ở hiện tại (giả định)', 'If + quá khứ đơn (be → were), S + would + V'], ['Loại 3', 'không có thật trong quá khứ', 'If + had + V3, S + would have + V3']],
+      ex: [['If you heat ice, it melts.', 'Nếu làm nóng nước đá, nó sẽ tan.'], ['If it rains, I will stay at home.', 'Nếu trời mưa, tôi sẽ ở nhà.'], ['If I were a bird, I would fly.', 'Nếu tôi là con chim, tôi sẽ bay.'], ['If I had a lot of money, I would buy a big house.', 'Nếu tôi có nhiều tiền, tôi sẽ mua một ngôi nhà lớn.'], ['If she had studied harder, she would have passed the exam.', 'Nếu cô ấy học chăm hơn thì đã đỗ kỳ thi rồi.']],
+      q: [['If it ___ sunny tomorrow, we will go camping.', ['is', 'will be', 'was'], 0, 'Loại 1: mệnh đề If dùng hiện tại đơn.'], ['If I ___ you, I would study harder.', ['am', 'were', 'will be'], 1, 'Loại 2: be → were với mọi ngôi.'], ['If you study hard, you ___ pass the exam.', ['will', 'would', 'are'], 0, 'Loại 1 → will.'], ['If he had time, he ___ travel more.', ['will', 'would', 'can'], 1, 'Loại 2 → would.'], ['If you mix red and white, you ___ pink.', ['get', 'got', 'would get'], 0, 'Loại 0: sự thật → hiện tại đơn.'], ['If I had known, I ___ you.', ['would tell', 'would have told', 'will tell'], 1, 'Loại 3 → would have + V3.']] }
+  ];
+
+  /* =====================================================================
+     3) BẢNG ĐỘNG TỪ BẤT QUY TẮC: V1|V2|V3|nghĩa|cấp (1 cơ bản, 2 thông dụng, 3 nâng cao)
+     ===================================================================== */
+  var IRR = ("arise|arose|arisen|phát sinh, nảy sinh|3;awake|awoke|awoken|thức tỉnh|3;be|was/were|been|thì, là, ở|1;bear|bore|borne/born|chịu đựng, sinh ra|3;beat|beat|beaten|đánh, đánh bại|2;become|became|become|trở thành|2;begin|began|begun|bắt đầu|1;bend|bent|bent|uốn cong, cúi xuống|3;bet|bet|bet|đánh cược|3;bite|bit|bitten|cắn|2;bleed|bled|bled|chảy máu|3;blow|blew|blown|thổi|2;break|broke|broken|làm vỡ, làm gãy|1;breed|bred|bred|nuôi, gây giống|3;bring|brought|brought|mang đến|1;broadcast|broadcast|broadcast|phát sóng|3;build|built|built|xây dựng|1;burn|burnt/burned|burnt/burned|đốt cháy|2;burst|burst|burst|nổ tung, vỡ òa|3;buy|bought|bought|mua|1;catch|caught|caught|bắt, chụp|1;choose|chose|chosen|chọn|2;come|came|come|đến|1;cost|cost|cost|có giá là|2;creep|crept|crept|bò, rón rén|3;cut|cut|cut|cắt|1;deal|dealt|dealt|giải quyết|3;dig|dug|dug|đào|2;do|did|done|làm|1;draw|drew|drawn|vẽ, kéo|1;dream|dreamt/dreamed|dreamt/dreamed|mơ|2;drink|drank|drunk|uống|1;drive|drove|driven|lái xe|1;eat|ate|eaten|ăn|1;fall|fell|fallen|ngã, rơi|1;feed|fed|fed|cho ăn|2;feel|felt|felt|cảm thấy|1;fight|fought|fought|chiến đấu, đánh nhau|2;find|found|found|tìm thấy|1;flee|fled|fled|chạy trốn|3;fly|flew|flown|bay|1;forbid|forbade|forbidden|cấm|3;forget|forgot|forgotten|quên|1;forgive|forgave|forgiven|tha thứ|2;freeze|froze|frozen|đóng băng|3;get|got|got/gotten|có được, lấy|1;give|gave|given|cho, tặng|1;go|went|gone|đi|1;grind|ground|ground|xay, nghiền|3;grow|grew|grown|lớn lên, trồng|1;hang|hung|hung|treo|2;have|had|had|có|1;hear|heard|heard|nghe thấy|1;hide|hid|hidden|giấu, trốn|2;hit|hit|hit|đánh, đụng|2;hold|held|held|cầm, nắm, tổ chức|2;hurt|hurt|hurt|làm đau|2;keep|kept|kept|giữ|1;kneel|knelt|knelt|quỳ|3;know|knew|known|biết|1;lay|laid|laid|đặt, để, đẻ (trứng)|3;lead|led|led|dẫn dắt|2;lean|leant/leaned|leant/leaned|dựa vào|3;learn|learnt/learned|learnt/learned|học|1;leave|left|left|rời đi, để lại|1;lend|lent|lent|cho mượn|2;let|let|let|để cho|2;lie|lay|lain|nằm|3;light|lit|lit|thắp sáng|3;lose|lost|lost|đánh mất, thua|1;make|made|made|làm, chế tạo|1;mean|meant|meant|có nghĩa là|2;meet|met|met|gặp|1;mistake|mistook|mistaken|nhầm lẫn|3;misunderstand|misunderstood|misunderstood|hiểu lầm|3;overcome|overcame|overcome|vượt qua|3;pay|paid|paid|trả tiền|1;prove|proved|proven/proved|chứng minh|3;put|put|put|đặt, để|1;quit|quit|quit|từ bỏ|3;read|read|read|đọc (V2, V3 đọc là /red/)|1;ride|rode|ridden|cưỡi, đạp (xe)|1;ring|rang|rung|reo, gọi điện|2;rise|rose|risen|mọc, tăng lên|2;run|ran|run|chạy|1;say|said|said|nói|1;see|saw|seen|nhìn thấy|1;seek|sought|sought|tìm kiếm|3;sell|sold|sold|bán|1;send|sent|sent|gửi|1;set|set|set|đặt, thiết lập|2;sew|sewed|sewn/sewed|khâu, may|3;shake|shook|shaken|lắc, rung|2;shine|shone|shone|chiếu sáng|2;shoot|shot|shot|bắn|2;show|showed|shown|chỉ, cho xem|2;shrink|shrank|shrunk|co lại|3;shut|shut|shut|đóng|2;sing|sang|sung|hát|1;sink|sank|sunk|chìm|3;sit|sat|sat|ngồi|1;sleep|slept|slept|ngủ|1;slide|slid|slid|trượt|3;smell|smelt/smelled|smelt/smelled|ngửi|2;speak|spoke|spoken|nói|1;spell|spelt/spelled|spelt/spelled|đánh vần|2;spend|spent|spent|tiêu (tiền), dành (thời gian)|1;spin|spun|spun|quay tròn|3;split|split|split|chia ra|3;spread|spread|spread|lan truyền, trải ra|3;stand|stood|stood|đứng|1;steal|stole|stolen|ăn trộm|2;stick|stuck|stuck|dán, dính|3;sting|stung|stung|châm, đốt|3;strike|struck|struck|đánh, đình công|3;swear|swore|sworn|thề|3;sweep|swept|swept|quét|2;swim|swam|swum|bơi|1;swing|swung|swung|đu đưa|3;take|took|taken|cầm, lấy, mang đi|1;teach|taught|taught|dạy|1;tear|tore|torn|xé|2;tell|told|told|kể, bảo|1;think|thought|thought|nghĩ|1;throw|threw|thrown|ném|1;understand|understood|understood|hiểu|1;upset|upset|upset|làm buồn lòng|3;wake|woke|woken|thức dậy|1;wear|wore|worn|mặc, đội, đeo|1;weep|wept|wept|khóc|3;win|won|won|thắng|1;wind|wound|wound|quấn, lên dây cót|3;withdraw|withdrew|withdrawn|rút (tiền)|3;write|wrote|written|viết|1")
+    .split(';').map(function (s) { var a = s.split('|'); return { v1: a[0], v2: a[1], v3: a[2], vi: a[3], lv: +a[4] }; });
+  var IRM = {}; IRR.forEach(function (r) { IRM[r.v1] = r; });
+
+  /* Động từ có quy tắc để chia thử: từ|nghĩa */
+  var REG = 'play|chơi;watch|xem;study|học;live|sống;like|thích;love|yêu;want|muốn;need|cần;help|giúp đỡ;clean|dọn dẹp;cook|nấu ăn;listen|nghe;visit|thăm;work|làm việc;walk|đi bộ;talk|nói chuyện;dance|nhảy múa;wash|rửa, giặt;finish|hoàn thành;start|bắt đầu;open|mở;close|đóng;stop|dừng lại;plan|lên kế hoạch;try|cố gắng, thử;cry|khóc;carry|mang, vác;jump|nhảy;ask|hỏi;answer|trả lời;use|sử dụng;arrive|đến nơi;enjoy|thích thú;stay|ở lại;fix|sửa chữa;rain|mưa'
+    .split(';').map(function (s) { var a = s.split('|'); return { v: a[0], vi: a[1] }; });
+
+  /* ---------- Bộ máy chia động từ ---------- */
+  var VW = 'aeiou';
+  function isV(ch) { return VW.indexOf(ch) >= 0; }
+  var DBL = { begin: 1, forget: 1, forbid: 1, prefer: 1, admit: 1, permit: 1, occur: 1, refer: 1, control: 1, regret: 1, upset: 1, quit: 1 };
+  function oneSyl(v) { var m = v.match(/[aeiouy]+/g); return m && m.length === 1; }
+  function dbl(v) {
+    if (DBL[v]) return true;
+    var n = v.length; if (n < 3 || !oneSyl(v)) return false;
+    var a = v[n - 3], b = v[n - 2], c = v[n - 1];
+    return !isV(a) && isV(b) && !isV(c) && 'wxy'.indexOf(c) < 0;
+  }
+  function s3(v) {
+    if (v === 'be') return 'is'; if (v === 'have') return 'has';
+    if (/(s|x|z|ch|sh|o)$/.test(v)) return v + 'es';
+    if (/[^aeiou]y$/.test(v)) return v.slice(0, -1) + 'ies';
+    return v + 's';
+  }
+  function ing(v) {
+    if (v === 'be') return 'being';
+    if (/ie$/.test(v)) return v.slice(0, -2) + 'ying';
+    if (/[^aeiouy]e$/.test(v) || v === 'use') return v.slice(0, -1) + 'ing';
+    if (dbl(v)) return v + v.slice(-1) + 'ing';
+    return v + 'ing';
+  }
+  function edReg(v) {
+    if (/e$/.test(v)) return v + 'd';
+    if (/[^aeiou]y$/.test(v)) return v.slice(0, -1) + 'ied';
+    if (dbl(v)) return v + v.slice(-1) + 'ed';
+    return v + 'ed';
+  }
+  function v2(v) { return IRM[v] ? IRM[v].v2 : edReg(v); }
+  function v3(v) { return IRM[v] ? IRM[v].v3 : edReg(v); }
+  var PERS = [['I', 'tôi'], ['You', 'bạn'], ['He', 'anh ấy'], ['She', 'cô ấy'], ['It', 'nó'], ['We', 'chúng tôi'], ['They', 'họ']];
+  function third(p) { return p >= 2 && p <= 4; }
+  function beNow(p) { return p === 0 ? 'am' : third(p) ? 'is' : 'are'; }
+  function bePast(p) { return p === 0 || third(p) ? 'was' : 'were'; }
+  function low(p) { return p === 0 ? 'I' : PERS[p][0].toLowerCase(); }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  var TENSES = [
+    { k: 'ps', n: 'Hiện tại đơn', vi: 'thói quen, sự thật', sig: 'every day, always, usually, often, sometimes, never',
+      f: "(+) S + V / V-s,es  ·  (−) S + don't/doesn't + V  ·  (?) Do/Does + S + V?" },
+    { k: 'pc', n: 'Hiện tại tiếp diễn', vi: 'đang xảy ra lúc nói', sig: 'now, right now, at the moment, Look!, Listen!',
+      f: '(+) S + am/is/are + V-ing  ·  (−) S + am/is/are + not + V-ing  ·  (?) Am/Is/Are + S + V-ing?' },
+    { k: 'past', n: 'Quá khứ đơn', vi: 'đã xảy ra, đã kết thúc', sig: 'yesterday, last week, two days ago, in 2020',
+      f: "(+) S + V-ed / V2  ·  (−) S + didn't + V  ·  (?) Did + S + V?" },
+    { k: 'pastc', n: 'Quá khứ tiếp diễn', vi: 'đang xảy ra tại một lúc trong quá khứ', sig: 'at 8 p.m. yesterday, when ..., while ...',
+      f: "(+) S + was/were + V-ing  ·  (−) S + wasn't/weren't + V-ing  ·  (?) Was/Were + S + V-ing?" },
+    { k: 'pp', n: 'Hiện tại hoàn thành', vi: 'đã làm (không rõ lúc nào), kéo dài đến nay', sig: 'already, just, yet, ever, never, since, for',
+      f: "(+) S + have/has + V3  ·  (−) S + haven't/hasn't + V3  ·  (?) Have/Has + S + V3?" },
+    { k: 'fut', n: 'Tương lai đơn', vi: 'sẽ làm', sig: 'tomorrow, next week, soon, in the future',
+      f: "(+) S + will + V  ·  (−) S + won't + V  ·  (?) Will + S + V?" }
+  ];
+  /* Trả về câu đã chia: tense k, ngôi p, dạng m (0 khẳng định, 1 phủ định, 2 nghi vấn) */
+  function conj(v, k, p, m) {
+    var S = PERS[p][0], s = low(p), be = v === 'be', t3 = third(p);
+    if (k === 'ps') {
+      if (be) return m === 0 ? S + ' ' + beNow(p) : m === 1 ? S + ' ' + (p === 0 ? 'am not' : t3 ? "isn't" : "aren't") : cap(beNow(p)) + ' ' + s + '?';
+      return m === 0 ? S + ' ' + (t3 ? s3(v) : v) : m === 1 ? S + ' ' + (t3 ? "doesn't " : "don't ") + v : (t3 ? 'Does ' : 'Do ') + s + ' ' + v + '?';
+    }
+    if (k === 'pc') {
+      var b = beNow(p);
+      return m === 0 ? S + ' ' + b + ' ' + ing(v) : m === 1 ? S + ' ' + (p === 0 ? 'am not' : t3 ? "isn't" : "aren't") + ' ' + ing(v) : cap(b) + ' ' + s + ' ' + ing(v) + '?';
+    }
+    if (k === 'past') {
+      if (be) return m === 0 ? S + ' ' + bePast(p) : m === 1 ? S + ' ' + bePast(p) + "n't" : cap(bePast(p)) + ' ' + s + '?';
+      return m === 0 ? S + ' ' + v2(v) : m === 1 ? S + " didn't " + v : 'Did ' + s + ' ' + v + '?';
+    }
+    if (k === 'pastc') {
+      var w = bePast(p);
+      return m === 0 ? S + ' ' + w + ' ' + ing(v) : m === 1 ? S + ' ' + w + "n't " + ing(v) : cap(w) + ' ' + s + ' ' + ing(v) + '?';
+    }
+    if (k === 'pp') {
+      var h = t3 ? 'has' : 'have';
+      return m === 0 ? S + ' ' + h + ' ' + v3(v) : m === 1 ? S + ' ' + h + "n't " + v3(v) : cap(h) + ' ' + s + ' ' + v3(v) + '?';
+    }
+    return m === 0 ? S + ' will ' + v : m === 1 ? S + " won't " + v : 'Will ' + s + ' ' + v + '?';
+  }
+  function verbVi(v) { if (IRM[v]) return IRM[v].vi; for (var i = 0; i < REG.length; i++) if (REG[i].v === v) return REG[i].vi; return ''; }
+  /* Đọc to: bỏ dấu "/" (burnt/burned → burnt or burned) */
+  function sayable(s) { return String(s).replace(/\//g, ' or '); }
+
+  /* =====================================================================
+     GIAO DIỆN
+     ===================================================================== */
+  var st = document.createElement('style');
+  st.textContent = '' +
+    '.gr-root{z-index:100000}' +
+    '.gr-sec{font-size:16px;font-weight:800;color:#fde68a;margin:16px 0 8px}' +
+    '.gr-card{background:rgba(255,255,255,.1);border-radius:16px;padding:12px 14px;margin-bottom:10px;font-size:15px;line-height:1.6;-webkit-user-select:text;user-select:text}' +
+    '.gr-card b{color:#fde68a}' +
+    '.gr-tip{background:rgba(245,158,11,.2);border-left:4px solid #f59e0b}' +
+    '.gr-f{background:rgba(34,197,94,.16);border-left:4px solid #22c55e;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px}' +
+    '.gr-f div{padding:3px 0}' +
+    '.gr-tb{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:10px;background:rgba(255,255,255,.06);border-radius:12px;overflow:hidden}' +
+    '.gr-tb th{background:rgba(255,255,255,.18);color:#fde68a;text-align:left;padding:8px;font-weight:800}' +
+    '.gr-tb td{padding:7px 8px;border-top:1px solid rgba(255,255,255,.1);vertical-align:top}' +
+    '.gr-tb tr.sp{cursor:pointer}.gr-tb tr.sp:active td{background:rgba(255,255,255,.12)}' +
+    '.gr-tbw{overflow-x:auto;-webkit-overflow-scrolling:touch}' +
+    '.gr-abc{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}' +
+    '.gr-l{background:rgba(255,255,255,.12);border-radius:16px;padding:10px 6px 8px;text-align:center;cursor:pointer;border:0;color:#fff;font-family:inherit}' +
+    '.gr-l:active{transform:scale(.96)}.gr-l.vw{background:rgba(239,68,68,.3)}' +
+    '.gr-l .big{font-size:34px;font-weight:900;line-height:1.05}.gr-l .big small{font-size:24px;opacity:.85;margin-left:3px}' +
+    '.gr-l .ipa{font-size:12px;color:#bcd3ff}.gr-l .vi{font-size:13px;font-weight:700;color:#fde68a}.gr-l .ex{font-size:12px;opacity:.9;margin-top:3px}.gr-l .ex i{font-style:normal;font-family:' + EF + '}' +
+    '.gr-det{background:rgba(255,255,255,.14);border-radius:18px;padding:14px;margin-bottom:12px;text-align:center}' +
+    '.gr-det .L{font-size:64px;font-weight:900;line-height:1}' +
+    '.gr-in{width:100%;border:0;border-radius:14px;padding:12px 14px;font-size:17px;font-family:inherit;background:#fff;color:#0f2a52}' +
+    '.gr-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}' +
+    '.gr-chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:10px}.gr-chips span{background:#fff;color:#0f2a52;font-weight:900;font-size:22px;border-radius:10px;min-width:38px;padding:4px 8px;text-align:center}.gr-chips span.on{background:#f59e0b;color:#fff}' +
+    '.gr-ex{background:rgba(255,255,255,.12);border-radius:14px;padding:10px 12px;margin-bottom:8px;cursor:pointer;display:flex;gap:10px;align-items:center}' +
+    '.gr-ex:active{transform:scale(.99)}.gr-ex .sp{flex:none;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:17px}' +
+    '.gr-ex b{display:block;font-size:17px;line-height:1.35}.gr-ex span.vi{display:block;opacity:.85;font-size:14px}' +
+    '.gr-sel{border:0;border-radius:12px;padding:10px 12px;font-size:16px;font-family:inherit;background:#fff;color:#0f2a52;max-width:100%}' +
+    '.gr-tabs{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;margin:8px 0}' +
+    '.gr-tabs button{flex:none;border:0;border-radius:999px;padding:8px 13px;font-size:14px;font-weight:700;color:#fff;background:rgba(255,255,255,.16);font-family:inherit;cursor:pointer}' +
+    '.gr-tabs button.on{background:#f59e0b}' +
+    '.gr-q{max-width:560px;margin:0 auto;text-align:center}' +
+    '.gr-q .qb{background:rgba(255,255,255,.14);border-radius:18px;padding:18px 14px;margin:8px 0 14px}' +
+    '.gr-q .qb small{display:block;color:#bcd3ff;font-size:13px;margin-bottom:6px}.gr-q .qb b{display:block;font-size:22px;line-height:1.4}' +
+    '.gr-q .blank{display:inline-block;min-width:70px;border-bottom:3px solid #fde68a;color:#fde68a}' +
+    '.gr-q .expl{background:rgba(255,255,255,.12);border-radius:14px;padding:10px 12px;text-align:left;font-size:15px;line-height:1.5;margin-top:4px}' +
+    '.gr-done{font-size:12px;font-weight:900;color:#3b2300;background:#fde68a;border-radius:999px;padding:2px 8px}' +
+    '#grMenu .eg-big{padding:18px 14px}#grMenu .eg-big .ic{font-size:42px}';
+  document.head.appendChild(st);
+
+  var root = document.createElement('div');
+  root.className = 'eg-root gr-root';
+  function top(back, title, id) { return '<div class="eg-top"><button class="eg-btn" data-g="' + back + '" style="padding:8px 14px;font-size:20px">←</button><div class="eg-title fl"' + (id ? ' id="' + id + '"' : '') + '>' + title + '</div></div>'; }
+  root.innerHTML = '' +
+    '<div class="eg-scr on" id="grMenu">' + top('close', '📘 Ngữ pháp & bảng chữ cái') +
+      '<div class="eg-choice" style="overflow-y:auto;justify-content:flex-start">' +
+      '<button class="eg-big" data-g="abc" style="background:linear-gradient(145deg,#f43f5e,#be123c)"><span class="ic">🔤</span><span class="nm">Bảng chữ cái & cách đọc</span><span class="sub">26 chữ cái: phiên âm, cách đọc, âm thường gặp, tập đánh vần</span></button>' +
+      '<button class="eg-big" data-g="lessons" style="background:linear-gradient(145deg,#3b82f6,#1d4ed8)"><span class="ic">📖</span><span class="nm">Ngữ pháp cơ bản</span><span class="sub">' + LS.length + ' bài từ dễ đến khó, có ví dụ nghe đọc và bài luyện tập</span></button>' +
+      '<button class="eg-big" data-g="conj" style="background:linear-gradient(145deg,#22c55e,#15803d)"><span class="ic">🧩</span><span class="nm">Chia động từ theo ngôi</span><span class="sub">I, you, he, she, it, we, they · 6 thì · khẳng định, phủ định, nghi vấn</span></button>' +
+      '<button class="eg-big" data-g="irr" style="background:linear-gradient(145deg,#f59e0b,#c2410c)"><span class="ic">📋</span><span class="nm">Bảng động từ bất quy tắc</span><span class="sub">' + IRR.length + ' động từ (V1 – V2 – V3), tìm kiếm, nghe đọc, luyện tập</span></button>' +
+      '</div></div>' +
+    '<div class="eg-scr" id="grAbc">' + top('menu', '🔤 Bảng chữ cái tiếng Anh') + '<div class="eg-scroll" id="grAbcB"></div></div>' +
+    '<div class="eg-scr" id="grLessons">' + top('menu', '📖 Ngữ pháp cơ bản') + '<div class="eg-scroll" id="grLessonsB"></div></div>' +
+    '<div class="eg-scr" id="grLesson">' + top('lessons', '', 'grLessonT') + '<div class="eg-scroll" id="grLessonB"></div></div>' +
+    '<div class="eg-scr" id="grConj">' + top('menu', '🧩 Chia động từ theo ngôi') + '<div class="eg-scroll" id="grConjB"></div></div>' +
+    '<div class="eg-scr" id="grIrr">' + top('menu', '📋 Động từ bất quy tắc') + '<div class="eg-scroll" id="grIrrB"></div></div>' +
+    '<div class="eg-scr" id="grQuiz">' + top('qback', '', 'grQuizT') + '<div class="eg-scroll"><div class="gr-q" id="grQuizB"></div></div></div>';
+  document.body.appendChild(root);
+  var $ = function (id) { return document.getElementById(id); };
+  var SCR = { menu: 'grMenu', abc: 'grAbc', lessons: 'grLessons', lesson: 'grLesson', conj: 'grConj', irr: 'grIrr', quiz: 'grQuiz' };
+  var cur = 'menu';
+  function show(k) { cur = k; for (var n in SCR) $(SCR[n]).classList.toggle('on', n === k); var el = $(SCR[k]).querySelector('.eg-scroll'); if (el) el.scrollTop = 0; }
+
+  /* ---------- 1) Bảng chữ cái ---------- */
+  var abcSel = 0;
+  function renderAbc() {
+    var a = ABC[abcSel];
+    var h = '<div class="gr-card">Tiếng Anh có <b>26 chữ cái</b>: <b>5 nguyên âm</b> A, E, I, O, U (ô màu đỏ) và 21 phụ âm. Chạm vào từng chữ để nghe <b>tên chữ cái</b> và từ ví dụ. Lưu ý: <b>tên</b> chữ cái (đọc khi đánh vần) khác với <b>âm</b> mà chữ đó tạo ra trong từ.</div>' +
+      '<div class="gr-det" id="grDet"></div>' +
+      '<div class="gr-abc">' + ABC.map(function (x, i) {
+        return '<button class="gr-l' + (VOW.indexOf(x[0]) >= 0 ? ' vw' : '') + '" data-g="letter" data-i="' + i + '"><div class="big">' + x[0] + '<small>' + x[0].toLowerCase() + '</small></div><div class="ipa">/' + x[1] + '/</div><div class="vi">' + x[2] + '</div><div class="ex"><i>' + x[7] + '</i> ' + x[5] + '</div></button>';
+      }).join('') + '</div>' +
+      '<div class="gr-sec">✍️ Tập đánh vần</div>' +
+      '<div class="gr-card">Gõ tên bạn hoặc một từ tiếng Anh rồi bấm Đánh vần, app sẽ đọc từng chữ cái. Người bản xứ hay hỏi: <b>How do you spell your name?</b> (Tên bạn đánh vần thế nào?)' +
+      '<div class="gr-row" style="margin-top:10px"><input class="gr-in" id="grSpIn" maxlength="24" placeholder="Ví dụ: NAM, LAN, APPLE" style="flex:1;min-width:160px"><button class="eg-btn main" data-g="spell">🔊 Đánh vần</button></div><div class="gr-chips" id="grSpOut"></div></div>' +
+      '<div class="gr-sec">📌 Ghi nhớ</div>' +
+      '<div class="gr-card">• Cặp hay nhầm: <b>E</b> (i) – <b>I</b> (ai); <b>G</b> (gi) – <b>J</b> (giây); <b>A</b> (ây) – <b>R</b> (a); <b>B</b> – <b>V</b>; <b>M</b> – <b>N</b>.<br>• Hai chữ giống nhau liền nhau đọc là <b>double</b>: "ll" → double L (Anna → A, double N, A).<br>• <b>Z</b> người Mỹ đọc /ziː/, người Anh đọc /zed/.</div>' +
+      '<div style="text-align:center;position:sticky;bottom:0;padding:14px 0 6px;background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.45) 55%)"><button class="eg-btn main" data-g="abcquiz">🎯 Luyện tập bảng chữ cái</button></div>';
+    $('grAbcB').innerHTML = h; drawDet();
+  }
+  function drawDet() {
+    var a = ABC[abcSel];
+    $('grDet').innerHTML = '<div class="L">' + a[0] + ' ' + a[0].toLowerCase() + '</div>' +
+      '<div style="margin-top:6px;font-size:16px">Tên chữ: <b>/' + a[1] + '/</b> · đọc gần giống "<b style="color:#fde68a">' + a[2] + '</b>"</div>' +
+      '<div style="font-size:14px;opacity:.9;margin-top:4px">Âm thường gặp: ' + a[4] + '</div>' +
+      '<div style="font-size:17px;margin-top:8px"><span style="font-family:' + EF + ';font-size:26px">' + a[7] + '</span> <b>' + a[5] + '</b> – ' + a[6] + '</div>' +
+      '<div class="eg-acts" style="margin:10px 0 0"><button class="eg-btn" data-g="lsay">🔊 Tên chữ</button><button class="eg-btn" data-g="wsay">🔊 Từ ví dụ</button></div>';
+  }
+  function spell() {
+    var w = ($('grSpIn').value || '').toUpperCase().replace(/[^A-Z ]/g, '').trim();
+    var out = $('grSpOut'); if (!w) { out.innerHTML = '<span style="background:none;color:#fecaca;font-size:15px">Hãy gõ chữ cái A–Z (không dấu)</span>'; return; }
+    var ch = w.split(''); out.innerHTML = ch.map(function (c) { return c === ' ' ? '<span style="background:none;min-width:14px"></span>' : '<span>' + c + '</span>'; }).join('');
+    hush();
+    var spans = out.querySelectorAll('span'), k = 0, i = 0;
+    function step() {
+      if (cur !== 'abc') return;
+      for (var j = 0; j < spans.length; j++) spans[j].classList.toggle('on', j === k);
+      if (i >= ch.length) { for (var z = 0; z < spans.length; z++) spans[z].classList.remove('on'); say(w.toLowerCase(), true); return; }
+      var c = ch[i]; i++; k = i - 1;
+      if (c === ' ') { setTimeout(step, 250); return; }
+      var x = ABC[c.charCodeAt(0) - 65]; say(x[3], true); setTimeout(step, 800);
+    }
+    step();
+  }
+
+  /* ---------- 2) Ngữ pháp ---------- */
+  var curL = 0;
+  function lkey(i) { return 'gr_l' + i; }
+  function renderLessons() {
+    var h = '<div class="gr-card">Học lần lượt từ <b>cấp độ 1</b>. Mỗi bài có giải thích, công thức, ví dụ (chạm để nghe) và bài luyện tập. Làm đúng hết sẽ có dấu ✓.</div>', last = 0;
+    LS.forEach(function (l, i) {
+      if (l.lv !== last) { last = l.lv; h += '<div class="gr-sec">' + LV[l.lv] + '</div><div class="eg-grid" style="padding:0;overflow:visible">'; }
+      var b = getN(lkey(i)), done = b >= l.q.length;
+      h += '<button class="eg-topic" data-g="lesson" data-i="' + i + '" style="background:linear-gradient(145deg,' + l.c + ',' + l.c + 'bb)"><span class="ic">' + l.i + '</span><span class="nm">' + (i + 1) + '. ' + l.n + '</span><span class="sub">' + (done ? '<span class="gr-done">✓ Đã hoàn thành</span>' : b ? 'Luyện tập: ' + b + '/' + l.q.length : l.q.length + ' câu luyện tập') + '</span></button>';
+      if (!LS[i + 1] || LS[i + 1].lv !== l.lv) h += '</div>';
+    });
+    $('grLessonsB').innerHTML = h;
+  }
+  function tableHtml(tb) {
+    return '<div class="gr-tbw"><table class="gr-tb"><tr>' + tb[0].map(function (c) { return '<th>' + c + '</th>'; }).join('') + '</tr>' +
+      tb.slice(1).map(function (r) { return '<tr>' + r.map(function (c) { return '<td>' + c + '</td>'; }).join('') + '</tr>'; }).join('') + '</table></div>';
+  }
+  function openLesson(i) {
+    curL = i; var l = LS[i];
+    $('grLessonT').textContent = l.i + ' ' + l.n;
+    var h = '';
+    if (l.t) h += '<div class="gr-card">' + l.t + '</div>';
+    if (l.tb) h += tableHtml(l.tb);
+    if (l.f) h += '<div class="gr-sec">🧮 Công thức</div><div class="gr-card gr-f">' + l.f.map(function (x) { return '<div>' + esc(x) + '</div>'; }).join('') + '</div>';
+    if (l.tip) h += '<div class="gr-card gr-tip">💡 ' + l.tip + '</div>';
+    if (l.ex) h += '<div class="gr-sec">🔊 Ví dụ – chạm để nghe</div>' + l.ex.map(function (e, k) { return '<div class="gr-ex" data-g="exsay" data-i="' + k + '"><span class="sp">🔊</span><span><b>' + esc(e[0]) + '</b><span class="vi">' + esc(e[1]) + '</span></span></div>'; }).join('');
+    h += '<div style="text-align:center;position:sticky;bottom:0;padding:14px 0 6px;background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.45) 55%)">' +
+      (i > 0 ? '<button class="eg-btn" data-g="lesson" data-i="' + (i - 1) + '">◀</button> ' : '') +
+      '<button class="eg-btn main" data-g="lquiz">🎯 Luyện tập (' + l.q.length + ' câu)</button>' +
+      (i < LS.length - 1 ? ' <button class="eg-btn" data-g="lesson" data-i="' + (i + 1) + '">▶</button>' : '') + '</div>';
+    $('grLessonB').innerHTML = h; show('lesson');
+  }
+  function lessonQuiz(i) {
+    var l = LS[i];
+    var qs = l.q.map(function (q) {
+      var o = q[1].map(function (t, k) { return { t: t, ok: k === q[2] }; }); shuffle(o);
+      var full = q[0].indexOf('___') >= 0 ? q[0].replace('___', q[1][q[2]]).replace(/\s*\([^)]*\)\s*$/, '') : q[1][q[2]];
+      return { p: esc(q[0]).replace('___', '<span class="blank">&nbsp;?&nbsp;</span>'), sub: q[0].indexOf('___') >= 0 ? 'Chọn từ đúng điền vào chỗ trống' : '', opts: o.map(function (x) { return x.t; }), ans: o.findIndex(function (x) { return x.ok; }), ex: q[3] || '', say2: full };
+    });
+    startQuiz({ title: '🎯 ' + l.n, qs: shuffle(qs), key: lkey(i), back: function () { openLesson(i); }, again: function () { lessonQuiz(i); } });
+  }
+
+  /* ---------- 3) Chia động từ ---------- */
+  var cv = 'go', ct = 'ps', cm = 0;
+  function verbOptions() {
+    var sp = ['be', 'have', 'do', 'go'];
+    var h = '<optgroup label="Động từ đặc biệt">' + sp.map(function (v) { return '<option value="' + v + '">' + v + ' – ' + verbVi(v) + '</option>'; }).join('') + '</optgroup>';
+    h += '<optgroup label="Động từ có quy tắc">' + REG.slice().sort(function (a, b) { return a.v < b.v ? -1 : 1; }).map(function (r) { return '<option value="' + r.v + '">' + r.v + ' – ' + r.vi + '</option>'; }).join('') + '</optgroup>';
+    h += '<optgroup label="Động từ bất quy tắc">' + IRR.filter(function (r) { return sp.indexOf(r.v1) < 0; }).map(function (r) { return '<option value="' + r.v1 + '">' + r.v1 + ' – ' + r.vi + '</option>'; }).join('') + '</optgroup>';
+    return h;
+  }
+  function renderConj() {
+    var h = '<div class="gr-card">Chọn một động từ và một thì, app sẽ chia sẵn cho cả 7 ngôi. Chạm vào từng dòng để nghe đọc.</div>' +
+      '<div class="gr-row"><select class="gr-sel" id="grVerb" style="flex:1">' + verbOptions() + '</select></div>' +
+      '<div class="gr-tabs" id="grTense">' + TENSES.map(function (t) { return '<button data-g="tense" data-k="' + t.k + '"' + (t.k === ct ? ' class="on"' : '') + '>' + t.n + '</button>'; }).join('') + '</div>' +
+      '<div class="gr-tabs" id="grMode">' + ['(+) Khẳng định', '(−) Phủ định', '(?) Nghi vấn'].map(function (t, i) { return '<button data-g="mode" data-i="' + i + '"' + (i === cm ? ' class="on"' : '') + '>' + t + '</button>'; }).join('') + '</div>' +
+      '<div id="grConjT"></div>' +
+      '<div class="gr-sec">📌 Quy tắc chia theo ngôi</div>' +
+      '<div class="gr-card"><b>Ngôi thứ 3 số ít</b> (he, she, it, tên một người, danh từ số ít) là ngôi "đặc biệt":<br>• Hiện tại đơn: động từ thêm <b>s / es</b> (he plays, she goes, it flies), phủ định & nghi vấn dùng <b>doesn\'t / does</b>.<br>• to be: <b>is</b> (hiện tại), <b>was</b> (quá khứ). Hiện tại hoàn thành: <b>has</b>.<br><b>I</b> đi với <b>am</b> và <b>was</b>. <b>You, we, they</b> đi với <b>are</b>, <b>were</b>, <b>have</b>, <b>do</b>.<br>Thì tương lai đơn và động từ khuyết thiếu (can, must...) <b>giống nhau ở mọi ngôi</b>.</div>' +
+      '<div style="text-align:center;position:sticky;bottom:0;padding:14px 0 6px;background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.45) 55%)"><button class="eg-btn main" data-g="cquiz">🎯 Luyện tập chia động từ</button></div>';
+    $('grConjB').innerHTML = h;
+    var sel = $('grVerb'); sel.value = cv;
+    sel.addEventListener('change', function () { cv = sel.value; drawConj(); });
+    drawConj();
+  }
+  function drawConj() {
+    var t = TENSES.filter(function (x) { return x.k === ct; })[0];
+    var info = '<div class="gr-card gr-f" style="font-size:13px"><div><b>' + t.n + '</b> – ' + t.vi + '</div><div>' + esc(t.f) + '</div><div style="font-family:inherit">Dấu hiệu: ' + t.sig + '</div></div>';
+    var forms = '<div class="gr-card" style="font-size:14px;padding:10px 14px"><b>' + cv + '</b> – ' + verbVi(cv) + ' &nbsp;·&nbsp; V2: <b>' + v2(cv) + '</b> · V3: <b>' + v3(cv) + '</b> · V-ing: <b>' + ing(cv) + '</b> · he/she/it: <b>' + s3(cv) + '</b>' + (IRM[cv] ? ' <span class="gr-done">bất quy tắc</span>' : '') + '</div>';
+    var rows = PERS.map(function (p, i) { return '<tr class="sp" data-g="csay" data-i="' + i + '"><td style="width:34%;opacity:.9">' + p[0] + ' <span style="opacity:.7;font-size:12px">(' + p[1] + ')</span></td><td><b style="font-size:16px">' + esc(conj(cv, ct, i, cm)) + '</b>' + (third(i) && (ct === 'ps' || ct === 'pp') ? ' <span style="color:#fca5a5;font-size:12px">●</span>' : '') + '</td><td style="width:36px;text-align:center">🔊</td></tr>'; }).join('');
+    $('grConjT').innerHTML = forms + info + '<div class="gr-tbw"><table class="gr-tb"><tr><th>Ngôi</th><th>Động từ đã chia</th><th></th></tr>' + rows + '</table></div>' +
+      (ct === 'ps' || ct === 'pp' ? '<div style="font-size:13px;opacity:.85;margin:-4px 0 6px"><span style="color:#fca5a5">●</span> ngôi thứ 3 số ít – động từ thay đổi</div>' : '');
+    var tb = $('grTense').querySelectorAll('button'); for (var i = 0; i < tb.length; i++) tb[i].classList.toggle('on', tb[i].getAttribute('data-k') === ct);
+    var mb = $('grMode').querySelectorAll('button'); for (var j = 0; j < mb.length; j++) mb[j].classList.toggle('on', j === cm);
+  }
+  var PRAC = ['play', 'watch', 'study', 'cook', 'clean', 'walk', 'dance', 'wash', 'visit', 'stop', 'cry', 'try', 'carry', 'open', 'listen', 'swim', 'run', 'read', 'write', 'eat', 'drink', 'go', 'come', 'sing', 'draw', 'ride', 'fly', 'sleep', 'sit', 'buy', 'make', 'do', 'speak', 'teach', 'drive', 'take', 'give', 'catch', 'throw', 'get'];
+  var SIG = { ps: 'every day', pc: 'now', past: 'yesterday', pastc: 'at 8 p.m. yesterday', pp: 'before', fut: 'tomorrow' };
+  function conjQuiz() {
+    var qs = [];
+    for (var n = 0; n < 10; n++) {
+      var v = PRAC[Math.floor(Math.random() * PRAC.length)], p = Math.floor(Math.random() * 7), t = TENSES[Math.floor(Math.random() * TENSES.length)].k;
+      var S = PERS[p][0], ok = conj(v, t, p, 0).slice(S.length + 1);
+      var pool = [];
+      TENSES.forEach(function (x) { pool.push(conj(v, x.k, p, 0).slice(S.length + 1)); });
+      [0, 2, 5].forEach(function (pp) { if (pp !== p) pool.push(conj(v, t, pp, 0).slice(PERS[pp][0].length + 1)); });
+      pool.push(v, ing(v), v3(v), (t === 'past' ? edReg(v) : s3(v)));
+      var seen = {}; seen[ok] = 1;
+      var wrong = shuffle(pool).filter(function (x) { if (seen[x]) return false; seen[x] = 1; return true; }).slice(0, 3);
+      var opts = shuffle([ok].concat(wrong));
+      var tn = TENSES.filter(function (x) { return x.k === t; })[0].n;
+      qs.push({ sub: 'Thì ' + tn.toLowerCase(), p: esc(S) + ' <span class="blank">&nbsp;?&nbsp;</span> <i style="font-style:normal;opacity:.8">(' + v + ')</i> ' + SIG[t] + '.', opts: opts, ans: opts.indexOf(ok), ex: S + ' + ' + tn.toLowerCase() + ' → <b>' + esc(ok) + '</b>. ' + TENSES.filter(function (x) { return x.k === t; })[0].f.split('·')[0], say2: S + ' ' + ok + ' ' + SIG[t] + '.' });
+    }
+    startQuiz({ title: '🎯 Luyện tập chia động từ', qs: qs, key: 'gr_conj', back: function () { renderConj(); show('conj'); }, again: conjQuiz });
+  }
+
+  /* ---------- 4) Bất quy tắc ---------- */
+  var irLv = 1, irQ = '';
+  function renderIrr() {
+    $('grIrrB').innerHTML = '<div class="gr-card">V1: nguyên mẫu · <b>V2</b>: quá khứ đơn · <b>V3</b>: quá khứ phân từ (dùng trong thì hoàn thành và câu bị động). Chạm vào một dòng để nghe đọc cả 3 dạng.</div>' +
+      '<input class="gr-in" id="grIrS" placeholder="🔍 Tìm động từ hoặc nghĩa tiếng Việt..." value="' + esc(irQ) + '">' +
+      '<div class="gr-tabs" id="grIrLv">' + [['Cơ bản', 1], ['+ Thông dụng', 2], ['Tất cả', 3]].map(function (x) { return '<button data-g="irlv" data-i="' + x[1] + '"' + (x[1] === irLv ? ' class="on"' : '') + '>' + x[0] + '</button>'; }).join('') + '</div>' +
+      '<div id="grIrT"></div>' +
+      '<div class="gr-sec">💡 Mẹo nhớ theo nhóm</div>' +
+      '<div class="gr-card">• <b>3 dạng giống nhau</b>: cut – cut – cut, put, let, hit, hurt, cost, set, shut, read (đọc khác)...<br>• <b>V2 = V3</b>: buy – bought – bought, bring, think, teach, catch, sleep, keep, feel, meet, make, find...<br>• <b>i – a – u</b>: begin – began – begun, sing, drink, swim, ring, sink.<br>• <b>V3 thêm -n / -en</b>: speak – spoke – spoken, take – took – taken, eat – ate – eaten, write – wrote – written.<br>• <b>-ew – -own</b>: blow – blew – blown, grow, know, throw, fly (flew – flown).</div>' +
+      '<div style="text-align:center;position:sticky;bottom:0;padding:14px 0 6px;background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.45) 55%)"><button class="eg-btn main" data-g="iquiz">🎯 Luyện tập động từ bất quy tắc</button></div>';
+    var s = $('grIrS'); s.addEventListener('input', function () { irQ = s.value; drawIrr(); });
+    drawIrr();
+  }
+  function norm(s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd'); }
+  function irList() { var q = norm(irQ.trim()); return IRR.filter(function (r) { return (q ? true : r.lv <= irLv) && (!q || norm(r.v1 + ' ' + r.v2 + ' ' + r.v3 + ' ' + r.vi).indexOf(q) >= 0); }); }
+  function drawIrr() {
+    var L = irList();
+    $('grIrT').innerHTML = '<div style="font-size:13px;opacity:.85;margin:2px 0 6px">' + L.length + ' động từ</div>' +
+      (L.length ? '<div class="gr-tbw"><table class="gr-tb"><tr><th>V1 · nghĩa</th><th>V2</th><th>V3</th></tr>' + L.map(function (r) { return '<tr class="sp" data-g="isay" data-v="' + r.v1 + '"><td><b style="font-size:16px">' + r.v1 + '</b><div style="font-size:12px;opacity:.8">' + r.vi + '</div></td><td><b>' + r.v2.replace(/\//g, ' / ') + '</b></td><td><b>' + r.v3.replace(/\//g, ' / ') + '</b></td></tr>'; }).join('') + '</table></div>' : '<div class="gr-card">Không tìm thấy. Có thể đây là động từ có quy tắc (thêm -ed).</div>');
+    var b = $('grIrLv').querySelectorAll('button'); for (var i = 0; i < b.length; i++) b[i].classList.toggle('on', +b[i].getAttribute('data-i') === irLv);
+  }
+  function irrQuiz() {
+    var pool = IRR.filter(function (r) { return r.lv <= irLv && r.v1 !== 'be'; });
+    var qs = shuffle(pool.slice()).slice(0, 10).map(function (r, n) {
+      var askV3 = n % 2 === 1 && r.v3 !== r.v2, want = askV3 ? r.v3 : r.v2;
+      var cand = [askV3 ? r.v2 : r.v3, edReg(r.v1), r.v1 + 'ed', askV3 ? r.v1 + 'en' : r.v2 + 'ed'];
+      shuffle(pool.slice()).slice(0, 6).forEach(function (o) { if (o !== r) cand.push(askV3 ? o.v3 : o.v2); });
+      var seen = {}; seen[want] = 1; seen[r.v1] = 1;
+      var wrong = cand.filter(function (x) { if (seen[x]) return false; seen[x] = 1; return true; }).slice(0, 3);
+      var opts = shuffle([want].concat(wrong));
+      return { sub: (askV3 ? 'Chọn dạng V3 (quá khứ phân từ)' : 'Chọn dạng V2 (quá khứ đơn)'), p: '<span style="font-size:30px">' + r.v1 + '</span><br><span style="font-size:16px;font-weight:600;opacity:.85">' + r.vi + '</span>', opts: opts, ans: opts.indexOf(want), ex: '<b>' + r.v1 + ' – ' + r.v2 + ' – ' + r.v3 + '</b> (' + r.vi + ')', say2: sayable(r.v1 + ', ' + r.v2 + ', ' + r.v3) };
+    });
+    startQuiz({ title: '🎯 Động từ bất quy tắc', qs: qs, key: 'gr_irr' + irLv, back: function () { renderIrr(); show('irr'); }, again: irrQuiz });
+  }
+
+  /* ---------- Luyện tập bảng chữ cái ---------- */
+  function abcQuiz() {
+    var qs = shuffle(ABC.slice()).slice(0, 10).map(function (a, n) {
+      var others = shuffle(ABC.filter(function (x) { return x !== a; })).slice(0, 3);
+      if (n % 2 === 0) {
+        var o = shuffle([a].concat(others));
+        return { sub: 'Nghe và chọn chữ cái đúng', p: '<span style="font-size:44px">🔊</span><br><span style="font-size:14px;opacity:.85">Chạm vào đây để nghe lại</span>', tap: a[3], opts: o.map(function (x) { return x[0] + ' ' + x[0].toLowerCase(); }), ans: o.indexOf(a), ex: 'Chữ <b>' + a[0] + '</b> đọc là /' + a[1] + '/ (gần giống "' + a[2] + '").', say2: a[3] };
+      }
+      var o2 = shuffle([a].concat(others));
+      return { sub: 'Chữ cái này đọc là gì?', p: '<span style="font-size:60px">' + a[0] + ' ' + a[0].toLowerCase() + '</span>', opts: o2.map(function (x) { return '/' + x[1] + '/ – ' + x[2]; }), ans: o2.indexOf(a), ex: 'Chữ <b>' + a[0] + '</b> đọc là /' + a[1] + '/.', say2: a[3] };
+    });
+    startQuiz({ title: '🎯 Luyện tập bảng chữ cái', qs: qs, key: 'gr_abc', back: function () { renderAbc(); show('abc'); }, again: abcQuiz });
+  }
+
+  /* ---------- Màn luyện tập dùng chung ---------- */
+  var QZ = null;
+  function startQuiz(o) { hush(); QZ = o; QZ.n = 0; QZ.ok = 0; QZ.pick = -1; $('grQuizT').textContent = o.title; drawQuiz(); show('quiz'); }
+  function drawQuiz() {
+    var B = $('grQuizB'), N = QZ.qs.length;
+    if (QZ.n >= N) {
+      var prev = getN(QZ.key), gain = 0;
+      if (QZ.ok > prev) { gain = (QZ.ok - prev) * 2000; setN(QZ.key, QZ.ok); try { if (window.farmEarn) window.farmEarn('en', gain, QZ.ok - prev); } catch (e) {} }
+      var all = QZ.ok === N; sfx(QZ.ok * 2 >= N ? 'win' : 'bad');
+      B.innerHTML = '<div style="font-size:56px">' + (all ? '🏆' : QZ.ok * 2 >= N ? '🎉' : '💪') + '</div><h2 style="margin:6px 0">Đúng ' + QZ.ok + '/' + N + ' câu</h2>' +
+        '<div style="opacity:.9">' + (all ? 'Tuyệt vời! Bạn đã nắm vững phần này.' : QZ.ok * 2 >= N ? 'Khá lắm! Xem lại phần lý thuyết rồi luyện lại để đạt điểm tối đa nhé.' : 'Hãy đọc lại lý thuyết và ví dụ, rồi luyện tập lại nhé.') + '</div>' +
+        (gain ? '<div style="font-size:26px;font-weight:900;color:#4ade80;margin-top:8px">+' + money(gain) + '</div><div style="font-size:13px;opacity:.85">Kỷ lục mới: ' + QZ.ok + '/' + N + '</div>' : (prev ? '<div style="font-size:13px;opacity:.8;margin-top:6px">Kỷ lục: ' + prev + '/' + N + ' · tiền thưởng chỉ cộng khi vượt kỷ lục</div>' : '')) +
+        '<div class="eg-acts"><button class="eg-btn main" data-g="qagain">↻ Luyện lại</button><button class="eg-btn" data-g="qback">📖 Xem lại lý thuyết</button></div>';
+      return;
+    }
+    var q = QZ.qs[QZ.n], done = QZ.pick >= 0;
+    if (!done && q.tap && !q._said) { q._said = 1; setTimeout(function () { say(q.tap); }, 200); }
+    B.innerHTML = '<div style="opacity:.85;font-size:14px">Câu ' + (QZ.n + 1) + '/' + N + ' · Đúng: ' + QZ.ok + '</div>' +
+      '<div class="qb"' + (q.tap ? ' data-g="qtap" style="cursor:pointer"' : '') + '>' + (q.sub ? '<small>' + q.sub + '</small>' : '') + '<b>' + q.p + '</b></div>' +
+      q.opts.map(function (t, i) { var c = done ? (i === q.ans ? ' ok' : (i === QZ.pick ? ' bad' : '')) : ''; return '<button class="eg-opt' + c + '" data-g="qans" data-i="' + i + '"' + (done ? ' disabled' : '') + '>' + esc(t) + '</button>'; }).join('') +
+      (done ? '<div class="expl">' + (QZ.pick === q.ans ? '✅ <b>Chính xác!</b> ' : '❌ <b>Chưa đúng.</b> Đáp án: <b>' + esc(q.opts[q.ans]) + '</b>. ') + (q.ex || '') + (q.say2 ? ' <span data-g="qsay" style="cursor:pointer">🔊</span>' : '') + '</div>' +
+        '<div class="eg-acts"><button class="eg-btn main" data-g="qnext">' + (QZ.n + 1 < N ? 'Câu tiếp theo ▶' : 'Xem kết quả ▶') + '</button></div>' : '');
+  }
+
+  /* ---------- Sự kiện ---------- */
+  root.addEventListener('click', function (e) {
+    var el = e.target.closest ? e.target.closest('[data-g]') : null; if (!el) return;
+    var a = el.getAttribute('data-g'), i = parseInt(el.getAttribute('data-i'), 10);
+    if (a === 'close') api.close();
+    else if (a === 'menu') { hush(); show('menu'); }
+    else if (a === 'abc') { renderAbc(); show('abc'); }
+    else if (a === 'letter') { abcSel = i; drawDet(); say(ABC[i][3]); var d = $('grDet'); if (d && d.scrollIntoView) d.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+    else if (a === 'lsay') say(ABC[abcSel][3]);
+    else if (a === 'wsay') say(ABC[abcSel][5]);
+    else if (a === 'spell') spell();
+    else if (a === 'abcquiz') abcQuiz();
+    else if (a === 'lessons') { hush(); renderLessons(); show('lessons'); }
+    else if (a === 'lesson') { hush(); openLesson(i); }
+    else if (a === 'exsay') say(LS[curL].ex[i][0]);
+    else if (a === 'lquiz') lessonQuiz(curL);
+    else if (a === 'conj') { renderConj(); show('conj'); }
+    else if (a === 'tense') { ct = el.getAttribute('data-k'); drawConj(); }
+    else if (a === 'mode') { cm = i; drawConj(); }
+    else if (a === 'csay') say(conj(cv, ct, i, cm).replace(/\//g, ' or '));
+    else if (a === 'cquiz') conjQuiz();
+    else if (a === 'irr') { renderIrr(); show('irr'); }
+    else if (a === 'irlv') { irLv = i; drawIrr(); }
+    else if (a === 'isay') { var r = IRM[el.getAttribute('data-v')]; if (r) say(sayable(r.v1 + ', ' + r.v2 + ', ' + r.v3)); }
+    else if (a === 'iquiz') irrQuiz();
+    else if (a === 'qtap') { var q0 = QZ.qs[QZ.n]; if (q0 && q0.tap) say(q0.tap); }
+    else if (a === 'qans') {
+      if (QZ.pick >= 0) return; QZ.pick = i; var q = QZ.qs[QZ.n];
+      if (i === q.ans) { QZ.ok++; sfx('ok'); if (q.say2) say(q.say2); } else sfx('bad');
+      drawQuiz();
+    }
+    else if (a === 'qsay') { var q2 = QZ.qs[QZ.n]; if (q2 && q2.say2) say(q2.say2); }
+    else if (a === 'qnext') { QZ.n++; QZ.pick = -1; drawQuiz(); }
+    else if (a === 'qagain') QZ.again();
+    else if (a === 'qback') { hush(); QZ.back(); }
+  });
+
+  var api = {
+    open: function (o) { show(o && o.part && SCR[o.part] ? o.part : 'menu'); if (o && o.part === 'abc') renderAbc(); root.classList.add('on'); document.body.style.overflow = 'hidden'; },
+    close: function () { hush(); root.classList.remove('on'); },
+    _t: { conj: conj, s3: s3, ing: ing, edReg: edReg, v2: v2, v3: v3, IRR: IRR, LS: LS }
+  };
+  window.SixGrammar = api;
 })();

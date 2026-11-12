@@ -334,6 +334,7 @@
     /* (bản 2026.11.12-1) thanh chỉ số 2 hàng: hàng trên 📚 👹 + nút, hàng dưới 💰 💎 */
     '#ttGame .tt-top{gap:5px;padding-bottom:5px}#ttGame .tt-top .tt-ib{min-width:36px;height:36px;padding:0 7px;font-size:17px}#ttGame .tt-top .tt-spd{min-width:46px;font-size:14px}#ttGame .tt-top .tt-gup{font-size:15px;padding:0 6px}',
     '#ttGame .tt-hud .tt-pill{font-size:14px;padding:4px 8px}',
+    '.tt-opt.lvlk>span{flex:1;min-width:0}.tt-opt.lvlk{background:rgba(234,179,8,.16);border:1px dashed rgba(253,224,71,.6)}.tt-opt span.pb{display:block;height:5px;border-radius:4px;background:rgba(0,0,0,.45);margin-top:4px;overflow:hidden}.tt-opt span.pb span{display:block;height:100%;background:linear-gradient(90deg,#facc15,#4ade80)}',
     '.tt-hud2{display:flex;gap:8px;justify-content:center;padding:0 10px 6px;background:rgba(8,15,40,.82);position:relative;z-index:3;box-shadow:0 2px 10px rgba(0,0,0,.3)}',
     '.tt-hud2 .tt-pill{flex:1;max-width:190px;justify-content:center;font-size:16px;padding:5px 10px}.tt-hud2 .tt-pill small{font-size:12px;font-weight:800;color:#86efac;margin-left:3px}',
     '.tt-pill.gem{cursor:pointer;border-color:rgba(125,211,252,.5);background:rgba(14,116,144,.35)}',
@@ -2185,17 +2186,16 @@
     } else {
       var T = TW[t.k], up = upCost(t), need = MODES[G.mode].f;
       h = '<h4>' + FORMS[t.f || 'land'].e + ' ' + T.e + ' ' + T.n + ' · cấp ' + t.lv + ' · ' + TNAME[t.lv] + '</h4>' + statLine(t) +
-        /* (bản 2026.11.11-6) đổi dạng chòi: dạng hợp màn bắn 100% */
-        '<div class="tt-sub">Dạng chòi · màn ' + MODES[G.mode].e + ' ' + MODES[G.mode].n + ' hợp ' + FORMS[need].e + ' ' + FORMS[need].n + '</div><div class="tt-frm">' +
-        ['land', 'boat', 'plane'].map(function (f) { var on = (t.f || 'land') === f, c = cvCost(t, f); return '<button class="' + (on ? 'on' : '') + (f === need ? ' best' : '') + (!on && G.gold < c ? ' no' : '') + '" data-a="form" data-f="' + f + '"><i>' + FORMS[f].e + '</i>' + (f === 'plane' ? 'Máy bay' : FORMS[f].n) + '<em>' + (on ? 'Đang dùng' : c + ' 💰') + '</em></button>'; }).join('') + '</div>' +
-        /* (bản 2026.11.12-3) cấp gồm 20 bậc mỗi chỉ số; đủ 20/20 tất cả mới lên cấp */
-        '<div class="tt-sub">Cấp ' + t.lv + ' · nâng từng chỉ số bậc 1 → ' + STEP_N + ' (💰 vàng)</div><div class="tt-ups">' + tKeys(t).map(function (k) {
+        /* (bản 2026.11.12-6) KHU NÂNG CẤP đặt ngay đầu bảng chòi: nút lên cấp luôn hiện (khóa + thanh tiến độ khi chưa đủ bậc) */
+        lvBlock(t) +
+        '<div class="tt-sub">Nâng sức mạnh cấp ' + t.lv + ' · mỗi chỉ số bậc 1 → ' + STEP_N + ' (chỉ cần 💰 vàng)</div><div class="tt-ups">' + tKeys(t).map(function (k) {
           var n = tu(t, k), U = TUP[k], mx = n >= STEP_N, c = tupCost(t, k);
           return '<button class="' + (mx ? 'mx' : G.gold < c ? 'no' : '') + '" data-a="tup" data-k="' + k + '"><b>' + U.e + ' ' + U.n + ' ' + n + '/' + STEP_N + '</b>' + (mx ? '✅ Đủ bậc' : '+' + (Math.round(stepPct(t, k) * 10) / 10).toLocaleString('vi-VN') + '% · <em>' + c + ' 💰</em>') + '</button>';
         }).join('') + '</div>' +
-        (t.lv < MAX_LV ? (stepsDone(t) ? '<button class="tt-opt grn' + (G.gold < lvGateCost(t) || gems() < lvGemCost(t) ? ' no' : '') + '" data-a="up"><i>⬆️</i><span><b>Lên cấp ' + (t.lv + 1) + '/' + MAX_LV + ' · ' + TNAME[t.lv + 1] + '</b><small>Đã đủ ' + STEP_N + '/' + STEP_N + ' mọi chỉ số · hình dáng mới, mở ' + STEP_N + ' bậc tiếp theo · cần cả 💰 và 💎</small></span><em>' + lvGateCost(t) + ' 💰<br>' + lvGemCost(t) + ' 💎</em></button>'
-          : '<div style="font-size:12px;opacity:.85;margin:0 4px 7px">🔒 Lên cấp ' + (t.lv + 1) + ' (' + lvGateCost(t) + ' 💰 + ' + lvGemCost(t) + ' 💎): cần nâng đủ ' + STEP_N + '/' + STEP_N + ' tất cả chỉ số (còn ' + tKeys(t).reduce(function (a, k) { return a + Math.max(0, STEP_N - tu(t, k)); }, 0) + ' bậc)</div>')
-          : '<div style="font-size:13px;opacity:.8;margin:2px 4px 6px">⭐ Đã đạt cấp cao nhất</div>') +
+        (stepsDone(t) ? '' : '<button class="tt-opt" data-a="tupall"><i>⚡</i><span><b>Nâng nhanh</b><small>Tự nâng các bậc rẻ nhất cho tới khi hết vàng hoặc đủ ' + STEP_N + '/' + STEP_N + '</small></span></button>') +
+        /* (bản 2026.11.11-6) đổi dạng chòi: dạng hợp màn bắn 100% */
+        '<div class="tt-sub">Dạng chòi · màn ' + MODES[G.mode].e + ' ' + MODES[G.mode].n + ' hợp ' + FORMS[need].e + ' ' + FORMS[need].n + '</div><div class="tt-frm">' +
+        ['land', 'boat', 'plane'].map(function (f) { var on = (t.f || 'land') === f, c = cvCost(t, f); return '<button class="' + (on ? 'on' : '') + (f === need ? ' best' : '') + (!on && G.gold < c ? ' no' : '') + '" data-a="form" data-f="' + f + '"><i>' + FORMS[f].e + '</i>' + (f === 'plane' ? 'Máy bay' : FORMS[f].n) + '<em>' + (on ? 'Đang dùng' : c + ' 💰') + '</em></button>'; }).join('') + '</div>' +
         /* (bản 2026.11.12-1) nâng vĩnh viễn bằng kim cương ngay trong trận */
         '<div class="tt-sub">♾️ Nâng vĩnh viễn mọi ' + esc(T.n.toLowerCase()) + ' (💰 vàng)</div><div class="tt-ups">' + (T.eye ? ['h', 'f'] : ['h', 'd', 'f', 's']).map(function (k) {
           var n = upg(t.k)[k], U = UPS[k], mx = n >= UP_MAX, c = upStatCost(n);
@@ -2216,6 +2216,14 @@
   }
   function closePop() { if (G) { G.sel = -1; G.wsel = null; G.wpos = null; } var el = $('ttPop'); if (el) el.classList.remove('on'); }
   function upCost(t) { return Math.round(TW[t.k].c * 0.8 * t.lv * (t.lv >= 5 ? 1 + 0.3 * (t.lv - 4) : 1)); }   // (bản 2026.11.11-2) từ cấp 6 trở lên đắt hơn
+  /* (bản 2026.11.12-6) khối LÊN CẤP: luôn hiện để người chơi biết chỗ nâng cấp; chưa đủ bậc thì hiện khóa + thanh tiến độ */
+  function lvBlock(t) {
+    if (t.lv >= MAX_LV) return '<div style="font-size:13px;margin:2px 4px 8px;color:#fde68a;font-weight:800">⭐ Đã đạt cấp cao nhất (' + MAX_LV + '/' + MAX_LV + ')</div>';
+    var tot = tKeys(t).length * STEP_N, dn = tKeys(t).reduce(function (a, k) { return a + Math.min(STEP_N, tu(t, k)); }, 0), ok = dn >= tot, gc = lvGateCost(t), mc = lvGemCost(t);
+    return '<button class="tt-opt ' + (ok ? 'grn' + (G.gold < gc || gems() < mc ? ' no' : '') : 'lvlk') + '" data-a="up"><i>' + (ok ? '⬆️' : '🔒') + '</i><span><b>Lên cấp ' + (t.lv + 1) + '/' + MAX_LV + ' · ' + TNAME[t.lv + 1] + '</b>' +
+      '<small>' + (ok ? 'Đã đủ bậc · đổi hình dáng mới, mở ' + STEP_N + ' bậc tiếp theo' : 'Nâng đủ ' + STEP_N + '/' + STEP_N + ' cả ' + tKeys(t).length + ' chỉ số bên dưới để mở · đã ' + dn + '/' + tot + ' bậc') + '</small>' +
+      (ok ? '' : '<span class="pb"><span style="width:' + Math.round(dn / tot * 100) + '%"></span></span>') + '</span><em>' + gc + ' 💰<br>' + mc + ' 💎</em></button>';
+  }
   function sellGold(t) { return Math.floor((t.gm ? Math.max(0, t.spent - TW[t.k].c) : t.spent) * 0.6); }   // chòi mua bằng 💎: chỉ hoàn vàng đã nâng cấp
   function fixCost(t) { return Math.max(5, Math.ceil((1 - t.hp / towerMax(t)) * t.spent * 0.45)); }   // sửa rẻ hơn xây mới
   function shieldMax(t) { return Math.round(towerMax(t) * SHIELD_RATE); }
@@ -3605,7 +3613,7 @@
     }
     if (a === 'build') { build(el.getAttribute('data-k')); return; }
     if (a === 'rain') { useRain(el.getAttribute('data-k')); return; }
-    if (a === 'up') { var t = towerAt(G.sel); if (!t || t.lv >= MAX_LV) return; if (!stepsDone(t)) { toast('🔒 Cần nâng đủ ' + STEP_N + '/' + STEP_N + ' tất cả chỉ số mới lên cấp được'); sfx('bad'); return; } var c = lvGateCost(t), cg = lvGemCost(t); if (G.gold < c) { needGold(c); return; } if (gems() < cg) { toast('Lên cấp cần thêm <b>' + (cg - gems()) + ' 💎</b> kim cương. Chọn hoặc đọc đúng từ ở thanh dưới để nhận 💎!'); sfx('bad'); return; } G.gold -= c; t.spent += c; var pgl = prog(); pgl.gem -= cg; saveProg(); t.gm = (t.gm || 0) + cg; hud('gem'); var om = towerMax(t); t.lv++; t.u = { d: 0, s: 0, r: 0, h: 0 }; t.hp += towerMax(t) - om; var p = spotXY(G.spots[t.s]); spark(p.x, p.y - W * 0.05, ['#fde047', '#fff', '#86efac'], 14); sfx('build'); hud('gold'); openPop(G.sel); return; }
+    if (a === 'up') { var t = towerAt(G.sel); if (!t || t.lv >= MAX_LV) return; if (!stepsDone(t)) { toast('🔒 Muốn lên cấp ' + (t.lv + 1) + ': hãy bấm các nút ⚔️ ⏱️ 🎯 ❤️ ngay bên dưới (hoặc ⚡ Nâng nhanh) để nâng đủ ' + STEP_N + '/' + STEP_N + ' mọi chỉ số bằng 💰 vàng.'); sfx('bad'); return; } var c = lvGateCost(t), cg = lvGemCost(t); if (G.gold < c) { needGold(c); return; } if (gems() < cg) { toast('Lên cấp cần thêm <b>' + (cg - gems()) + ' 💎</b> kim cương. Chọn hoặc đọc đúng từ ở thanh dưới để nhận 💎!'); sfx('bad'); return; } G.gold -= c; t.spent += c; var pgl = prog(); pgl.gem -= cg; saveProg(); t.gm = (t.gm || 0) + cg; hud('gem'); var om = towerMax(t); t.lv++; t.u = { d: 0, s: 0, r: 0, h: 0 }; t.hp += towerMax(t) - om; var p = spotXY(G.spots[t.s]); spark(p.x, p.y - W * 0.05, ['#fde047', '#fff', '#86efac'], 14); sfx('build'); hud('gold'); openPop(G.sel); return; }
     if (a === 'fix') { var tf = towerAt(G.sel); if (!tf) return; var cf = fixCost(tf); if (G.gold < cf) { needGold(cf); return; } G.gold -= cf; tf.hp = towerMax(tf); var pf = spotXY(G.spots[tf.s]); spark(pf.x, pf.y - W * 0.05, ['#86efac', '#fff', '#fde68a'], 12); sfx('build'); hud('gold'); openPop(G.sel); return; }
     if (a === 'shield') { var tsh = towerAt(G.sel); if (!tsh) return; var cs = shieldCost(tsh); if (G.gold < cs) { needGold(cs); return; } G.gold -= cs; tsh.sh = shieldMax(tsh); var ps = spotXY(G.spots[tsh.s]); G.fx.push({ ring: 1, col: '125,211,252', x: ps.x, y: ps.y - W * 0.06, r: W * 0.12, l: 0.45, L: 0.45 }); sfx('ice'); hud('gold'); openPop(G.sel); return; }
     if (a === 'sell') { var t2 = towerAt(G.sel); if (!t2) return; G.gold += sellGold(t2); if (t2.gm) addGem(Math.floor(t2.gm * 0.5)); G.towers.splice(G.towers.indexOf(t2), 1); if (G.reserve.length) { var rt = G.reserve.shift(); rt.s = t2.s; rt.h = t2.s; G.towers.push(rt); toast('📦 ' + TW[rt.k].n + ' trong kho đã vào ô vừa trống.'); } sfx('coin'); hud('gold'); closePop(); runSave(); return; }
@@ -3633,6 +3641,17 @@
       G.libPau = !G.paused; G.paused = true; hud();
       var tk = G.sel != null && towerAt(G.sel) ? towerAt(G.sel).k : (G.towers[0] ? G.towers[0].k : null);
       LIB.msg = '⏸ Trận đấu đang tạm dừng. Nâng cấp xong bấm ✕ để chơi tiếp.'; openLib(tk); return;
+    }
+    if (a === 'tupall') {   // (bản 2026.11.12-6) nâng nhanh: mua liên tục bậc rẻ nhất tới khi hết vàng / đủ bậc
+      var ta = towerAt(G.sel); if (!ta) return; var nb = 0, spentA = 0;
+      for (var gi = 0; gi < 200; gi++) {
+        var bk = null, bc = 1e9; tKeys(ta).forEach(function (k) { if (tu(ta, k) < STEP_N) { var cc = tupCost(ta, k); if (cc < bc) { bc = cc; bk = k; } } });
+        if (!bk || G.gold < bc) break;
+        var oma = towerMax(ta); G.gold -= bc; ta.spent += bc; spentA += bc; ta.u[bk] = tu(ta, bk) + 1; if (bk === 'h') ta.hp += towerMax(ta) - oma; nb++;
+      }
+      if (!nb) { needGold(tKeys(ta).reduce(function (m, k) { return tu(ta, k) < STEP_N ? Math.min(m, tupCost(ta, k)) : m; }, 1e9)); return; }
+      var pa2 = spotXY(G.spots[ta.s]); spark(pa2.x, pa2.y - W * 0.05, ['#c4b5fd', '#fff', '#fde047'], 16); sfx('build'); hud('gold');
+      toast('⚡ Đã nâng <b>' + nb + ' bậc</b> (−' + spentA + ' 💰)' + (stepsDone(ta) ? ' · ✅ Đủ bậc – bấm <b>⬆️ Lên cấp</b>!' : '')); openPop(G.sel); runSave(); return;
     }
     if (a === 'tup') {   // (bản 2026.11.11-6) nâng chỉ số riêng chòi
       var tq = towerAt(G.sel), sk = el.getAttribute('data-k'); if (!tq || !TUP[sk] || tu(tq, sk) >= STEP_N || tKeys(tq).indexOf(sk) < 0) return;

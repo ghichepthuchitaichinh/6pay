@@ -561,7 +561,9 @@
     laser: { n: 'Chòi tia tử thần', e: '🔴', c: 175, r: 0.3, d: 1.6, cd: 0.1, roof: '#be123c', info: 'Tia laser bám mục tiêu, càng lâu càng nóng (gấp 4)' },
     meteor: { n: 'Chòi thiên thạch', e: '☄️', c: 220, r: 0.55, d: 110, cd: 4.6, sp: 0.14, roof: '#7f1d1d', info: 'Gọi thiên thạch khổng lồ, nổ cực rộng, đốt cháy' }
   };
-  var TW_KEYS = ['arrow', 'ice', 'cannon', 'fire', 'eye', 'snipe', 'rocket', 'tesla', 'poison', 'wind', 'laser', 'meteor'];
+  /* (bản 2026.11.12-2) thứ tự chòi: nhóm BẮN ĐƠN trước, nhóm BẮN LAN sau; trong mỗi nhóm xếp từ rẻ đến đắt */
+  var TW_KEYS = ['arrow', 'ice', 'eye', 'snipe', 'laser', 'cannon', 'fire', 'poison', 'tesla', 'wind', 'rocket', 'meteor'];
+  var TW_AOE = { cannon: 1, fire: 1, poison: 1, tesla: 1, wind: 1, rocket: 1, meteor: 1 };   // chòi bắn lan (nổ, lửa, độc, sét lan, lốc, tên lửa, thiên thạch)
   /* (bản 2026.11.08-4) tầm bắn/tầm soi theo cấp: chòi phun lửa +20%/cấp (cấp 5 phun xa gần gấp đôi), chòi mắt +15%/cấp, chòi khác +8%/cấp */
   function towerRange(t) { return TW[t.k].r * W * (1 + (t.k === 'fire' ? 0.2 : t.k === 'eye' ? 0.15 : 0.08) * (lvEff(t.lv) - 1)) * (1 + 0.05 * tu(t, 'r')); }
   function upInfo(t) { if (t.lv >= 5) return 'Tiến hóa ' + TNAME[t.lv + 1] + ': mạnh hơn, hình dáng khủng hơn'; return t.k === 'fire' ? 'Lửa to hơn, phun xa hơn, cháy lan rộng hơn' : t.k === 'eye' ? 'Soi xa hơn, thấy quái tàng hình sớm hơn' : 'Mạnh hơn, bắn xa hơn'; }
@@ -2151,8 +2153,8 @@
   function openPop(si) {
     G.wsel = null; G.wpos = null; G.sel = si; var t = towerAt(si), p = spotXY(G.spots[si]), el = $('ttPop'), h;
     if (!t) {
-      h = '<h4>🔨 Xây ở đây · ' + FORMS[MODES[G.mode].f].e + ' ' + FORMS[MODES[G.mode].f].n + '</h4>' + TW_KEYS.map(function (k) {
-        var T = TW[k]; return '<button class="tt-opt' + (G.gold < T.c ? ' no' : '') + '" data-a="build" data-k="' + k + '"><i>' + T.e + '</i><span><b>' + T.n + '</b><small>' + T.info + '</small></span><em>' + T.c + ' 💰</em></button>';
+      h = '<h4>🔨 Xây ở đây · ' + FORMS[MODES[G.mode].f].e + ' ' + FORMS[MODES[G.mode].f].n + '</h4>' + TW_KEYS.map(function (k, ki) {
+        var T = TW[k], gh = !ki ? '<div class="tt-sub">🎯 Bắn đơn · từ rẻ đến đắt</div>' : TW_AOE[k] && !TW_AOE[TW_KEYS[ki - 1]] ? '<div class="tt-sub">💥 Bắn lan · từ rẻ đến đắt</div>' : ''; return gh + '<button class="tt-opt' + (G.gold < T.c ? ' no' : '') + '" data-a="build" data-k="' + k + '"><i>' + T.e + '</i><span><b>' + T.n + '</b><small>' + T.info + '</small></span><em>' + T.c + ' 💰</em></button>';
       }).join('');
     } else {
       var T = TW[t.k], up = upCost(t), need = MODES[G.mode].f;
@@ -2174,6 +2176,8 @@
         towerBar(t) +
         (t.hp < towerMax(t) ? '<button class="tt-opt grn' + (G.gold < fixCost(t) ? ' no' : '') + '" data-a="fix"><i>🔧</i><span><b>Sửa chòi</b><small>Hồi đầy máu chòi (' + Math.ceil(t.hp) + '/' + towerMax(t) + ')</small></span><em>' + fixCost(t) + ' 💰</em></button>' : '') +
         (t.sh < shieldMax(t) - 0.5 ? '<button class="tt-opt blu' + (G.gold < shieldCost(t) ? ' no' : '') + '" data-a="shield"><i>🛡️</i><span><b>' + (t.sh > 0 ? 'Nạp đầy bảo hộ' : 'Mua bảo hộ') + '</b><small>Khiên chặn ' + shieldMax(t) + ' sát thương của lính bắn chòi</small></span><em>' + shieldCost(t) + ' 💰</em></button>' : '<div style="font-size:12.5px;opacity:.85;margin:2px 4px 6px">🛡️ Bảo hộ đang đầy</div>') +
+        /* (bản 2026.11.12-2) di chuyển chòi sang ô khác / đổi chỗ với chòi khác */
+        '<button class="tt-opt blu" data-a="move"><i>🔀</i><span><b>Di chuyển chòi</b><small>Chạm ô trống để chuyển tới, chạm chòi khác để đổi chỗ</small></span><em>Miễn phí</em></button>' +
         '<button class="tt-opt red" data-a="sell"><i>💱</i><span><b>Bán chòi</b><small>Lấy lại một phần vàng</small></span><em>+' + Math.floor(t.spent * 0.6) + ' 💰</em></button>';
     }
     el.innerHTML = h; el.classList.add('on');
@@ -2239,6 +2243,14 @@
       X.beginPath(); X.ellipse(p.x, p.y, r + (can ? pulse * 3 : 0), r * 0.62 + (can ? pulse * 2 : 0), 0, 0, 7); X.stroke();
       X.fillStyle = can ? '#fef08a' : 'rgba(255,255,255,.75)'; X.font = '900 ' + Math.round(r * 1.05) + 'px ' + TF; X.fillText('+', p.x, p.y + 1);
     });
+    /* (bản 2026.11.12-2) đang di chuyển chòi: ô trống viền xanh lá, chòi khác viền xanh dương, chòi đang chọn viền vàng */
+    if (G.move != null && G.move >= 0) {
+      G.spots.forEach(function (s, i) {
+        var p = spotXY(s), r = W * 0.062 + pulse * 3, tw = towerAt(i);
+        X.lineWidth = 3.5; X.strokeStyle = i === G.move ? '#fde047' : tw ? 'rgba(56,189,248,.9)' : 'rgba(74,222,128,.95)';
+        X.setLineDash(i === G.move ? [] : [6, 5]); X.beginPath(); X.ellipse(p.x, p.y, r * 1.15, r * 0.7, 0, 0, 7); X.stroke(); X.setLineDash([]);
+      });
+    }
     // (bản 2026.11.08-4) vùng soi của chòi mắt thần: vòng tím mờ + tia quét
     G.towers.forEach(function (t) {
       if (t.k !== 'eye') return;
@@ -3395,6 +3407,20 @@
     ac();
     var r = CV.getBoundingClientRect(), x = ev.clientX - r.left, y = ev.clientY - r.top;
     if (SAY) { closeSay(); return; }
+    /* (bản 2026.11.12-2) đang di chuyển chòi: chạm ô trống → chuyển tới; chạm chòi khác → đổi chỗ; chạm chỗ khác → hủy */
+    if (G.move != null && G.move >= 0) {
+      var ms = -1, md = W * 0.085, mt = towerAt(G.move);
+      G.spots.forEach(function (s, i) { var p = spotXY(s), d = Math.hypot(x - p.x, y - (p.y - (towerAt(i) ? W * 0.04 : 0))); if (d < md) { md = d; ms = i; } });
+      G.move = -1;
+      if (!mt || ms < 0 || ms === mt.s) { toast('Đã hủy di chuyển chòi'); return; }
+      var other = towerAt(ms), from = mt.s;
+      mt.s = mt.h = ms; mt.cd = Math.max(mt.cd || 0, 0.8); mt.pa = null; mt.bm = null; mt.lr = 0;
+      if (other) { other.s = other.h = from; other.cd = Math.max(other.cd || 0, 0.8); other.pa = null; other.bm = null; other.lr = 0; }
+      var pm = spotXY(G.spots[ms]); spark(pm.x, pm.y - W * 0.04, ['#7dd3fc', '#fff', '#fde047'], 14); smoke(pm.x, pm.y - W * 0.02, 5); sfx('build');
+      if (other) { var po = spotXY(G.spots[from]); spark(po.x, po.y - W * 0.04, ['#7dd3fc', '#fff'], 10); }
+      toast(other ? '🔀 Đã đổi chỗ ' + TW[mt.k].e + ' và ' + TW[other.k].e : '🔀 Đã chuyển ' + TW[mt.k].e + ' ' + esc(TW[mt.k].n) + ' sang vị trí mới');
+      runSave(); return;
+    }
     // chạm vào quái (thân hoặc biển từ)
     var hit = null, bd = 1e9;
     G.enemies.forEach(function (e) {
@@ -3568,6 +3594,11 @@
     if (a === 'wup') { var wu = G.wsel; if (!wu || wu.lv >= WALL_LV) return; var cu = wallUp(wu); if (G.gold < cu) { needGold(cu); return; } G.gold -= cu; wu.spent += cu; var omw = wallMax(wu); wu.lv++; wu.hp += wallMax(wu) - omw; spark(wu.x * W, wu.y * H - W * 0.03, ['#fde047', '#fff', '#a8a29e'], 14); sfx('build'); hud('gold'); openWallPop(wu); return; }
     if (a === 'wfix') { var wf = G.wsel; if (!wf) return; var cf2 = wallFix(wf); if (G.gold < cf2) { needGold(cf2); return; } G.gold -= cf2; wf.hp = wallMax(wf); spark(wf.x * W, wf.y * H - W * 0.03, ['#86efac', '#fff'], 10); sfx('build'); hud('gold'); openWallPop(wf); return; }
     if (a === 'wsell') { var wsl = G.wsel; if (!wsl) return; G.gold += Math.floor(wsl.spent * 0.5); G.walls.splice(G.walls.indexOf(wsl), 1); sfx('coin'); hud('gold'); closePop(); runSave(); return; }
+    if (a === 'move') {   // (bản 2026.11.12-2) bắt đầu di chuyển chòi
+      var tm = towerAt(G.sel); if (!tm) return;
+      G.move = tm.s; closePop(); sfx('tap');
+      toast('🔀 Chạm vào <b>ô trống ➕</b> để chuyển chòi ' + TW[tm.k].e + ' tới đó, hoặc chạm <b>chòi khác</b> để đổi chỗ. Chạm chỗ khác để hủy.'); return;
+    }
     if (a === 'gup') {   // (bản 2026.11.12-1) nâng vĩnh viễn loại chòi bằng kim cương ngay trong trận
       var tg = towerAt(G.sel), gk = el.getAttribute('data-k'); if (!tg || !UPS[gk]) return;
       gemUp(tg.k, gk); openPop(G.sel); return;
